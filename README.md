@@ -31,7 +31,7 @@ $ apt build-dep dde-grand-search
 $ cd dde-grand-search
 $ mkdir Build
 $ cd Build
-$ qmake ..
+$ cmake ..
 $ make
 ```
 
