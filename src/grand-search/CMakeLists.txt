@@ -43,3 +43,6 @@ target_include_directories(${BIN_NAME} PUBLIC
 target_link_libraries(${BIN_NAME} PRIVATE
     ${Qt_LIBS}
 )
+
+# bin
+install(TARGETS ${BIN_NAME} DESTINATION bin)
