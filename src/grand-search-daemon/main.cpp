@@ -21,8 +21,11 @@
  */
 
 #include "../environments.h"
+#include "dbusservice/grandsearchinterface.h"
 
 #include <QCoreApplication>
+#include <QDBusConnection>
+#include <QDBusError>
 #include <QDebug>
 
 #include <unistd.h>
@@ -36,6 +39,34 @@ int main(int argc, char *argv[])
     app.setApplicationName("dde-grand-search-daemon");
     app.setApplicationVersion(VERSION);
     qInfo() << "starting " << app.applicationName() << app.applicationVersion() << getpid();
+
+    //todo
+    //加载翻译文件
+    //dtk日志
+
+    //服务接口
+    GrandSearchInterface interface;
+    if (!interface.init()) {
+        qCritical() << "initialization failed.";
+        exit(0x0001);
+    }
+
+    //注册DBus服务
+    {
+        QDBusConnection session = QDBusConnection::sessionBus();
+        if (!session.registerService(GrandSearchServiceName)) {
+            qCritical() << "registerService Failed, maybe service exist" << QDBusError::errorString(session.lastError().type());
+            exit(0x0002);
+        }
+
+        if (!session.registerObject(GrandSearchServicePath, &interface,
+                                 QDBusConnection::ExportScriptableSlots |
+                                 QDBusConnection::ExportScriptableSignals |
+                                 QDBusConnection::ExportScriptableProperties)) {
+            qCritical() << "registerObject Failed" << QDBusError::errorString(session.lastError().type());
+            exit(0x0003);
+        }
+    }
 
     app.exec();
 }

@@ -30,8 +30,57 @@ set(Qt_LIBS
 )
 
 # 源文件
+set(DBUS
+    dbusservice/grandsearchinterfaceprivate.h
+    dbusservice/grandsearchinterface.h
+    dbusservice/grandsearchinterface.cpp
+)
+
+set(MAINCTRL
+    maincontroller/maincontroller.h
+    maincontroller/maincontrollerprivate.h
+    maincontroller/maincontroller.cpp
+    maincontroller/task/taskcommander.h
+    maincontroller/task/taskcommander.cpp
+)
+
+set(SEARCHER
+    searcher/searchergroup.h
+    searcher/searchergroup.cpp
+    searcher/searcher.h
+    searcher/searcher.cpp
+    searcher/proxyworker.h
+    searcher/proxyworker.cpp
+    searcher/file/filenamesearcher.h
+    searcher/file/filenamesearcher.cpp
+    searcher/app/desktopappsearcher.h
+    searcher/app/desktopappsearcher.cpp
+#    searcher/setting/controlcentersearcher.h
+#    searcher/setting/controlcentersearcher.cpp
+#    searcher/fulltext/fulltextsearcher.h
+#    searcher/fulltext/fulltextsearcher.cpp
+    searcher/extend/extendsearcher.h
+    searcher/extend/extendsearcher.cpp
+)
+
+set(SEARCHPLUGIN
+    searchplugin/pluginmanager.h
+    searchplugin/pluginmanager.cpp
+    searchplugin/loader/pluginloader.h
+    searchplugin/loader/pluginloader.cpp
+    searchplugin/process/pluginprocess.h
+    searchplugin/process/pluginprocess.cpp
+    searchplugin/dataconvertor.h
+    searchplugin/dataconvertor.cpp
+    searchplugin/convertors/abstractconvertor.h
+)
+
 set(SRCS
     main.cpp
+    ${DBUS}
+    ${MAINCTRL}
+    ${SEARCHER}
+    ${SEARCHPLUGIN}
 )
 
 # 可执行程序
