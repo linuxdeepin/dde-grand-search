@@ -30,18 +30,49 @@ set(Qt_LIBS
     Qt5::DBus
 )
 
+# gui
+set(GUISRC
+    gui/mainwindow_p.h
+    gui/mainwindow.h
+    gui/mainwindow.cpp
+    # 入口界面
+    gui/entrance/entrancewidget_p.h
+    gui/entrance/entrancewidget.h
+    gui/entrance/entrancewidget.cpp
+    # 展示界面
+    gui/exhibition/exhibitionwidget_p.h
+    gui/exhibition/exhibitionwidget.h
+    gui/exhibition/exhibitionwidget.cpp
+    gui/exhibition/matchresult/matchwidget_p.h
+    gui/exhibition/matchresult/matchwidget.h
+    gui/exhibition/matchresult/matchwidget.cpp
+    )
+
+# business
+set(BUSINESSSRC
+    business/query/querycontroller_p.h
+    business/query/querycontroller.h
+    business/query/querycontroller.cpp
+    business/matchresult/matchcontroller_p.h
+    business/matchresult/matchcontroller.h
+    business/matchresult/matchcontroller.cpp
+    )
 # 源文件
 set(SRCS
     main.cpp
 )
 
-add_executable(${BIN_NAME} ${SRCS})
+add_executable(${BIN_NAME} ${SRCS} ${GUISRC} ${BUSINESSSRC})
 target_include_directories(${BIN_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include
+    ${DtkWidget_INCLUDE_DIRS}
+    ${DtkGUI_INCLUDE_DIRS}
 )
 
 target_link_libraries(${BIN_NAME} PRIVATE
     ${Qt_LIBS}
+    ${DtkWidget_LIBRARIES}
+    ${DtkGUI_LIBRARIES}
 )
 
 # bin

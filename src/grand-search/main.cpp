@@ -22,14 +22,23 @@
 
 #include "../environments.h"
 
-#include <QApplication>
+#include "gui/mainwindow.h"
+#include "business/query/querycontroller.h"
+#include "business/matchresult/matchcontroller.h"
+
+#include <DApplication>
 #include <QDebug>
+#include <QTimer>
 
 #include <unistd.h>
 
+DGUI_USE_NAMESPACE
+DWIDGET_USE_NAMESPACE
+DCORE_USE_NAMESPACE
+
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
+    DApplication app(argc, argv);
 
     //设置应用信息
     app.setOrganizationName("deepin");
@@ -37,6 +46,14 @@ int main(int argc, char *argv[])
     app.setApplicationDisplayName("DDE Grand Search");
     app.setApplicationVersion(VERSION);
     qInfo() << "starting" << app.applicationName() << app.applicationVersion() << getpid();
+
+
+    MainWindow::instance();
+
+    QTimer::singleShot(1, MainWindow::instance(), [](){
+        QueryController::instance();
+        MatchController::instance();
+    });
 
     app.exec();
 }
