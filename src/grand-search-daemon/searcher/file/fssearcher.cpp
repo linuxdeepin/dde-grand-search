@@ -18,16 +18,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef FILENAMESEARCHER_H
-#define FILENAMESEARCHER_H
+#include "fssearcher.h"
+#include "fsworker.h"
 
-#include "searcher/searcher.h"
-
-class FileNameSearcher : public Searcher
+FsSearcher::FsSearcher(QObject *parent) : Searcher(parent)
 {
-    Q_OBJECT
-public:
-    explicit FileNameSearcher(QObject *parent = nullptr);
-};
 
-#endif // FILENAMESEARCHER_H
+}
+
+ProxyWorker *FsSearcher::createWorker() const
+{
+    auto worker = new FsWorker(name());
+    return worker;
+}

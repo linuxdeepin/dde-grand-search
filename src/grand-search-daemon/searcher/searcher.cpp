@@ -25,3 +25,8 @@ Searcher::Searcher(QObject *parent) : QObject(parent)
 {
 
 }
+
+bool Searcher::activate()
+{
+    return false;
+}

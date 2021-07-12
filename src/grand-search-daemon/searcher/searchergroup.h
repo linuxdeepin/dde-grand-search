@@ -22,17 +22,26 @@
 #ifndef SEARCHERGROUP_H
 #define SEARCHERGROUP_H
 
+#include "searcher.h"
+
 #include <QObject>
 
+class SearcherGroupPrivate;
 class SearcherGroup : public QObject
 {
     Q_OBJECT
 public:
     explicit SearcherGroup(QObject *parent = nullptr);
 
+    bool init();
+    bool addExtendSearcher(const QVariant &pluginInfo);
+    QList<Searcher *> searchers() const;
+    Searcher *searcher(const QString &name) const;
 signals:
 
 public slots:
+private:
+    SearcherGroupPrivate *d;
 };
 
 #endif // SEARCHERGROUP_H

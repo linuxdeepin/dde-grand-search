@@ -24,11 +24,17 @@
 
 #include <QObject>
 
+class ProxyWorker;
 class Searcher : public QObject
 {
     Q_OBJECT
 public:
-    Searcher(QObject *parent = nullptr);
+    explicit Searcher(QObject *parent = nullptr);
+    virtual QString name() const = 0;
+    virtual bool isActive() const = 0;
+    virtual bool activate();
+    virtual ProxyWorker *createWorker() const = 0;
+    virtual void action(const QString &action, const QString &item) = 0;
 };
 
 #endif // SEARCHER_H

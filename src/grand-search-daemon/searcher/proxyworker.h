@@ -21,17 +21,29 @@
 #ifndef PROXYWORKER_H
 #define PROXYWORKER_H
 
+#include "global/matcheditem.h"
+
 #include <QObject>
 
 class ProxyWorker : public QObject
 {
     Q_OBJECT
 public:
-    explicit ProxyWorker(QObject *parent = nullptr);
-
+    enum Status {Ready,Runing,Completed,Terminated};
+public:
+    explicit ProxyWorker(const QString &name, QObject *parent = nullptr);
+    QString name() const;
+    virtual void setContext(const QString &context) = 0;
+    virtual bool isAsync() const = 0;
+    virtual bool working(void *context) = 0;
+    virtual void terminate() = 0;
+    virtual Status status() = 0;
+    virtual bool hasItem() const = 0;
+    virtual GrandSearch::MatchedItemMap takeAll() = 0;
 signals:
-
-public slots:
+    void unearthed(ProxyWorker *worker);
+protected:
+    QString m_name;
 };
 
 #endif // PROXYWORKER_H

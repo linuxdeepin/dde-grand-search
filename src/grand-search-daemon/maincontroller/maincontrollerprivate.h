@@ -23,6 +23,9 @@
 #define MAINCONTROLLERPRIVATE_H
 
 #include "maincontroller/maincontroller.h"
+#include "searcher/searchergroup.h"
+#include "searchplugin/pluginmanager.h"
+#include "task/taskcommander.h"
 
 class MainControllerPrivate : public QObject
 {
@@ -30,9 +33,13 @@ class MainControllerPrivate : public QObject
     friend class MainController;
 public:
     MainControllerPrivate(MainController *parent);
-
+    ~MainControllerPrivate();
+    void buildWorker(TaskCommander *task);
 private:
     MainController *q;
+    SearcherGroup *m_searchers = nullptr;
+    PluginManager *m_plugins = nullptr;
+    TaskCommander *m_currentTask = nullptr;
 };
 
 

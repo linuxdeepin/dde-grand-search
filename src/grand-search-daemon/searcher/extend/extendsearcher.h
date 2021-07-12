@@ -26,8 +26,9 @@
 
 class ExtendSearcher : public Searcher
 {
+    Q_OBJECT
 public:
-    ExtendSearcher(QObject *parent = nullptr);
+    explicit ExtendSearcher(QObject *parent = nullptr);
 };
 
 #endif // EXTENDSEARCHER_H

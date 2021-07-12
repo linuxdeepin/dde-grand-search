@@ -33,8 +33,13 @@ public:
     explicit MainController(QObject *parent = nullptr);
     bool init();
 
+    bool newSearch(const QString &key);
+    void terminate();
+    QString getResults() const;
+    QString readBuffer() const;
+    bool isBufferEmpty() const;
 signals:
-
+    void matched();
 public slots:
 private:
     MainControllerPrivate *d = nullptr;

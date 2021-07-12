@@ -20,8 +20,38 @@
  */
 
 #include "desktopappsearcher.h"
+#include "desktopappworker.h"
+
+#include <QDebug>
 
 DesktopAppSearcher::DesktopAppSearcher(QObject *parent) : Searcher(parent)
 {
 
+}
+
+QString DesktopAppSearcher::name() const
+{
+    return "com.deepin.dde-grand-search.DesktopApp";
+}
+
+bool DesktopAppSearcher::isActive() const
+{
+
+}
+
+bool DesktopAppSearcher::activate()
+{
+    return true;
+}
+
+ProxyWorker *DesktopAppSearcher::createWorker() const
+{
+    auto worker = nullptr;//new DesktopAppWorker(name());
+    return worker;
+}
+
+void DesktopAppSearcher::action(const QString &action, const QString &item)
+{
+    Q_UNUSED(item);
+    qWarning() << "no such action:" << action << ".";
 }

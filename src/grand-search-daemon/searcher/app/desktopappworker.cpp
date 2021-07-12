@@ -18,16 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef FILENAMESEARCHER_H
-#define FILENAMESEARCHER_H
+#include "desktopappworker.h"
 
-#include "searcher/searcher.h"
-
-class FileNameSearcher : public Searcher
+DesktopAppWorker::DesktopAppWorker(const QString &name, QObject *parent) : ProxyWorker(name, parent)
 {
-    Q_OBJECT
-public:
-    explicit FileNameSearcher(QObject *parent = nullptr);
-};
 
-#endif // FILENAMESEARCHER_H
+}

@@ -23,6 +23,7 @@
 #define GRANDSEARCHINTERFACE_H
 
 #include <QObject>
+#include <QDBusContext>
 #include <QMap>
 
 //后端程序DBus服务
@@ -31,7 +32,7 @@
 #define GrandSearchServiceInterface     "com.deepin.dde.daemon.GrandSearch"
 
 class GrandSearchInterfacePrivate;
-class GrandSearchInterface : public QObject
+class GrandSearchInterface : public QObject, public QDBusContext
 {
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", GrandSearchServiceInterface)
@@ -43,8 +44,8 @@ public:
 public slots:
     Q_SCRIPTABLE bool Search(const QString &session, const QString &key);
     Q_SCRIPTABLE void Terminate();
-    Q_SCRIPTABLE QString MatchingResults(const QString &session);
-    Q_SCRIPTABLE QString MatchingBuffer(const QString &session);
+    Q_SCRIPTABLE QString MatchedResults(const QString &session);
+    Q_SCRIPTABLE QString MatchedBuffer(const QString &session);
     Q_SCRIPTABLE bool OpenWithPlugin(const QString &item);
     Q_SCRIPTABLE bool Configure(const QMap<QString,QString> &);
     Q_SCRIPTABLE QMap<QString,QString> Configuration() const;

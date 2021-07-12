@@ -25,16 +25,31 @@
 #include "grandsearchinterface.h"
 #include "maincontroller/maincontroller.h"
 
-class GrandSearchInterfacePrivate
+#include <QTimer>
+#include <QDBusMessage>
+
+class GrandSearchInterfacePrivate : public QObject
 {
+    Q_OBJECT
     friend class GrandSearchInterface;
 public:
-    GrandSearchInterfacePrivate(GrandSearchInterface *parent);
+    explicit GrandSearchInterfacePrivate(GrandSearchInterface *parent);
     ~GrandSearchInterfacePrivate();
 
+    inline bool vaildSession(const QString &session) {
+        if (session.isEmpty())
+            return false;
+        return m_session == session;
+    }
+    bool isAccessable(const QDBusMessage &msg) const;
+private slots:
+    void onMatched();
 private:
     GrandSearchInterface *q;
     MainController *m_main = nullptr;
+    QString m_session;
+    QTimer m_deadline;
+    QHash<QString, bool> m_permit;
 };
 
 #endif // GRANDSEARCHINTERFACEPRIVATE_H

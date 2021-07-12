@@ -22,17 +22,34 @@
 #ifndef TASKCOMMANDER_H
 #define TASKCOMMANDER_H
 
+#include "global/matcheditem.h"
+
 #include <QObject>
 
+class ProxyWorker;
+class TaskCommanderPrivate;
 class TaskCommander : public QObject
 {
     Q_OBJECT
+    friend class TaskCommander;
 public:
-    explicit TaskCommander(QObject *parent = nullptr);
-
+    explicit TaskCommander(const QString &content, QObject *parent = nullptr);
+    QString taskID() const;
+    QString content() const;
+    bool start();
+    void stop();
+    GrandSearch::MatchedItemMap getResults() const;
+    GrandSearch::MatchedItemMap readBuffer() const;
+    bool isBufferEmpty() const;
+    bool join(ProxyWorker *);
+    void deleteSelf();
+protected:
+    ~TaskCommander();
 signals:
-
-public slots:
+    void matched();
+    void finished();
+private:
+    TaskCommanderPrivate *d;
 };
 
 #endif // TASKCOMMANDER_H

@@ -20,7 +20,14 @@
  */
 #include "proxyworker.h"
 
-ProxyWorker::ProxyWorker(QObject *parent) : QObject(parent)
+ProxyWorker::ProxyWorker(const QString &name, QObject *parent)
+    : QObject(parent)
+    , m_name(name)
 {
+    Q_ASSERT(!name.isEmpty());
+}
 
+QString ProxyWorker::name() const
+{
+    return m_name;
 }

@@ -18,16 +18,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef FILENAMESEARCHER_H
-#define FILENAMESEARCHER_H
+#ifndef FSSEARCHER_H
+#define FSSEARCHER_H
 
 #include "searcher/searcher.h"
 
-class FileNameSearcher : public Searcher
+class FsSearcher : public Searcher
 {
     Q_OBJECT
 public:
-    explicit FileNameSearcher(QObject *parent = nullptr);
+    explicit FsSearcher(QObject *parent = nullptr);
+    virtual QString name() const;
+    virtual bool isActive() const;
+    virtual bool activate();
+    virtual ProxyWorker *createWorker() const;
+    virtual void action(const QString &action, const QString &item);
 };
 
-#endif // FILENAMESEARCHER_H
+#endif // FSSEARCHER_H

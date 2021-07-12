@@ -42,19 +42,21 @@ set(MAINCTRL
     maincontroller/maincontroller.cpp
     maincontroller/task/taskcommander.h
     maincontroller/task/taskcommander.cpp
+    maincontroller/task/taskcommanderprivate.h
 )
 
 set(SEARCHER
     searcher/searchergroup.h
+    searcher/searchergroupprivate.h
     searcher/searchergroup.cpp
     searcher/searcher.h
     searcher/searcher.cpp
     searcher/proxyworker.h
     searcher/proxyworker.cpp
-    searcher/file/filenamesearcher.h
-    searcher/file/filenamesearcher.cpp
     searcher/app/desktopappsearcher.h
     searcher/app/desktopappsearcher.cpp
+    searcher/app/desktopappworker.h
+    searcher/app/desktopappworker.cpp
 #    searcher/setting/controlcentersearcher.h
 #    searcher/setting/controlcentersearcher.cpp
 #    searcher/fulltext/fulltextsearcher.h
@@ -62,6 +64,52 @@ set(SEARCHER
     searcher/extend/extendsearcher.h
     searcher/extend/extendsearcher.cpp
 )
+
+#未实现，编译不过
+if (0)
+#文件搜索
+if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm")
+    message(${CMAKE_SYSTEM_PROCESSOR} ": using fsearch")
+    ADD_DEFINITIONS(-DENABLE_FSEARCH)
+    set(SEARCHER
+        ${SEARCHER}
+        searcher/file/fssearcher.h
+        searcher/file/fssearcher.cpp
+        searcher/file/fsworker.h
+        searcher/file/fsworker.cpp
+    )
+else ()
+    message(${CMAKE_SYSTEM_PROCESSOR} ": using deepin-anything.")
+    ADD_DEFINITIONS(-DENABLE_DEEPINANYTHING)
+    set(SEARCHER
+        ${SEARCHER}
+        searcher/file/filenamesearcher.h
+        searcher/file/filenamesearcher.cpp
+        searcher/file/filenameworker.h
+        searcher/file/filenameworker.cpp
+    )
+endif()
+
+#测试，发布前需删除以下内容
+ADD_DEFINITIONS(-DENABLE_FSEARCH)
+set(SEARCHER
+    ${SEARCHER}
+    searcher/file/fssearcher.h
+    searcher/file/fssearcher.cpp
+    searcher/file/fsworker.h
+    searcher/file/fsworker.cpp
+)
+ADD_DEFINITIONS(-DENABLE_DEEPINANYTHING)
+set(SEARCHER
+    ${SEARCHER}
+    searcher/file/filenamesearcher.h
+    searcher/file/filenamesearcher.cpp
+    searcher/file/filenameworker.h
+    searcher/file/filenameworker.cpp
+)
+message("local test fsearch and deepin-anything")
+#end
+endif()
 
 set(SEARCHPLUGIN
     searchplugin/pluginmanager.h
@@ -75,8 +123,14 @@ set(SEARCHPLUGIN
     searchplugin/convertors/abstractconvertor.h
 )
 
+#set(UTILS
+#    utils/datadefinition.h
+#)
+
 set(SRCS
     main.cpp
+    ${GLOBAL_SRC}
+    ${UTILS}
     ${DBUS}
     ${MAINCTRL}
     ${SEARCHER}

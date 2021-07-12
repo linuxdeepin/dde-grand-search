@@ -20,7 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../environments.h"
+#include "environments.h"
 
 #include "gui/mainwindow.h"
 #include "business/query/querycontroller.h"

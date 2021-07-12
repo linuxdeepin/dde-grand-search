@@ -18,16 +18,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef FILENAMESEARCHER_H
-#define FILENAMESEARCHER_H
+#ifndef MATCHEDITEM_H
+#define MATCHEDITEM_H
 
-#include "searcher/searcher.h"
+#include <QtCore>
 
-class FileNameSearcher : public Searcher
+namespace GrandSearch {
+
+//搜索结果
+struct MatchedItem
 {
-    Q_OBJECT
-public:
-    explicit FileNameSearcher(QObject *parent = nullptr);
+    QString item;   //匹配的内容
+    QString name;   //界面显示的名称
+    QString icon;   //界面显示的图标
+    QString type;   //界面显示的类型
+    QString searcher;   //出自的搜索项
 };
 
-#endif // FILENAMESEARCHER_H
+typedef QList<MatchedItem> MatchedItems;
+typedef QMap<QString, MatchedItems> MatchedItemMap; //组-匹配项列表
+}
+
+#endif // MATCHEDITEM_H

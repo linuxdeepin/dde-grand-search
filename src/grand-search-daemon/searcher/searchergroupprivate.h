@@ -18,16 +18,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef FILENAMESEARCHER_H
-#define FILENAMESEARCHER_H
+#ifndef SEARCHERGROUPPRIVATE_H
+#define SEARCHERGROUPPRIVATE_H
 
-#include "searcher/searcher.h"
+#include "searchergroup.h"
+#include "app/desktopappsearcher.h"
+#include "extend/extendsearcher.h"
 
-class FileNameSearcher : public Searcher
+#ifdef ENABLE_DEEPINANYTHING
+    #include "file/filenamesearcher.h"
+#endif
+
+#ifdef ENABLE_FSEARCH
+    #include "file/fssearcher.h"
+#endif
+
+class SearcherGroupPrivate : public QObject
 {
     Q_OBJECT
+    friend class SearcherGroup;
 public:
-    explicit FileNameSearcher(QObject *parent = nullptr);
+    explicit SearcherGroupPrivate(SearcherGroup *parent);
+private:
+    SearcherGroup *q;
+    QList<Searcher *> m_builtin;
+    QList<Searcher *> m_extend;
 };
 
-#endif // FILENAMESEARCHER_H
+#endif // SEARCHERGROUPPRIVATE_H

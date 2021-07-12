@@ -26,8 +26,14 @@
 
 class DesktopAppSearcher : public Searcher
 {
+    Q_OBJECT
 public:
-    DesktopAppSearcher(QObject *parent = nullptr);
+    explicit DesktopAppSearcher(QObject *parent = nullptr);
+    QString name() const Q_DECL_OVERRIDE;
+    bool isActive() const Q_DECL_OVERRIDE;
+    bool activate() Q_DECL_OVERRIDE;
+    ProxyWorker *createWorker() const Q_DECL_OVERRIDE;
+    void action(const QString &action, const QString &item) Q_DECL_OVERRIDE;
 };
 
 #endif // DESKTOPAPPSEARCHER_H

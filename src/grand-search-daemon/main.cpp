@@ -20,7 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../environments.h"
+#include "environments.h"
 #include "dbusservice/grandsearchinterface.h"
 
 #include <QCoreApplication>

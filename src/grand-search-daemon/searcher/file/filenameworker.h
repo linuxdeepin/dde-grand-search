@@ -18,16 +18,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef FILENAMESEARCHER_H
-#define FILENAMESEARCHER_H
+#ifndef FILENAMEWORKER_H
+#define FILENAMEWORKER_H
 
-#include "searcher/searcher.h"
+#include "searcher/proxyworker.h"
 
-class FileNameSearcher : public Searcher
+class FileNameWorker : public ProxyWorker
 {
-    Q_OBJECT
 public:
-    explicit FileNameSearcher(QObject *parent = nullptr);
+    explicit FileNameWorker(const QString &name, QObject *parent = nullptr);
 };
 
-#endif // FILENAMESEARCHER_H
+#endif // FILENAMEWORKER_H

@@ -20,8 +20,56 @@
  */
 
 #include "searchergroup.h"
+#include "searchergroupprivate.h"
 
-SearcherGroup::SearcherGroup(QObject *parent) : QObject(parent)
+#include <QDebug>
+
+SearcherGroupPrivate::SearcherGroupPrivate(SearcherGroup *parent)
+    : QObject(parent)
+    , q(parent)
+{
+}
+
+SearcherGroup::SearcherGroup(QObject *parent)
+    : QObject(parent)
+    , d(new SearcherGroupPrivate(this))
+{
+}
+
+bool SearcherGroup::init()
+{
+#ifdef ENABLE_DEEPINANYTHING
+    qInfo() << "create FileNameSearcher";
+    auto fileSearcher = new FileNameSearcher(this);
+    d->m_builtin << fileSearcher;
+#endif
+
+#ifdef ENABLE_FSEARCH
+    qInfo() << "create FsSearcher.";
+    auto fSearcher = new FsSearcher(this);
+    d->m_builtin << fSearcher;
+#endif
+
+    qInfo() << "create DesktopAppSearcher.";
+    auto appSearcher = new DesktopAppSearcher(this);
+    d->m_builtin << appSearcher;
+
+    //todo 设置搜索，全文搜索
+    return true;
+}
+
+bool SearcherGroup::addExtendSearcher(const QVariant &pluginInfo)
+{
+
+}
+
+QList<Searcher *> SearcherGroup::searchers() const
+{
+    //todo 排序
+    return d->m_builtin + d->m_extend;
+}
+
+Searcher *SearcherGroup::searcher(const QString &name) const
 {
 
 }
