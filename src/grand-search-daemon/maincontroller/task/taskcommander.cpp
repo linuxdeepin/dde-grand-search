@@ -37,6 +37,18 @@ TaskCommanderPrivate::~TaskCommanderPrivate()
 
 }
 
+void TaskCommanderPrivate::merge(GrandSearch::MatchedItemMap &addTo, const GrandSearch::MatchedItemMap &addFrom)
+{
+    for (auto iter = addFrom.begin(); iter != addFrom.end(); ++iter) {
+        GrandSearch::MatchedItemMap::iterator org = addTo.find(iter.key());
+        if (org == addTo.end()) {
+            addTo.insert(iter.key(), iter.value());
+        } else {
+            org.value().append(iter.value());
+        }
+    }
+}
+
 void TaskCommanderPrivate::working(ProxyWorker *worker)
 {
     Q_ASSERT(worker);
@@ -46,23 +58,18 @@ void TaskCommanderPrivate::working(ProxyWorker *worker)
 void TaskCommanderPrivate::onUnearthed(ProxyWorker *worker)
 {
     Q_ASSERT(worker);
-    //todo 拉取数据的策略
-#if 0
     if (m_allWorkers.contains(worker) && worker->hasItem()) {
         auto results = worker->takeAll();
         QWriteLocker lk(&m_lock);
-        for (auto iter = results.begin(); iter != results.end(); ++iter) {
-            GrandSearch::MatchedItemMap::iterator org = m_results.find(iter.key());
-            if (org == m_results.end()) {
-                m_results.insert(iter.key(), iter.value());
-            } else {
-                org.value().append(iter.value());
-            }
-        }
+        bool emptyBuffer = m_buffer.isEmpty();
 
-        emit q->matched();
+        merge(m_results, results);
+        merge(m_buffer, results);
+
+        //回到主线程发送信号
+        if (emptyBuffer)
+            QMetaObject::invokeMethod(q, "matched", Qt::QueuedConnection);
     }
-#endif
 }
 
 void TaskCommanderPrivate::onFinished()

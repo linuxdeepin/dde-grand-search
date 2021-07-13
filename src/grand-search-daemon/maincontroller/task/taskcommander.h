@@ -31,7 +31,7 @@ class TaskCommanderPrivate;
 class TaskCommander : public QObject
 {
     Q_OBJECT
-    friend class TaskCommander;
+    friend class TaskCommanderPrivate;
 public:
     explicit TaskCommander(const QString &content, QObject *parent = nullptr);
     QString taskID() const;

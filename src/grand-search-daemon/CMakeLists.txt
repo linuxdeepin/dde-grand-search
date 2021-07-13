@@ -11,10 +11,9 @@ set(CMAKE_CXX_FLAGS "-g -Wall -Wl,--as-need -fPIE")
 set(BIN_NAME dde-grand-search-daemon)
 
 # 依赖包
-find_package(PkgConfig REQUIRED)
-find_package(DtkWidget REQUIRED)
-find_package(DtkGui REQUIRED)
-find_package(DtkCMake REQUIRED)
+#find_package(PkgConfig REQUIRED)
+find_package(DtkCore REQUIRED)
+#find_package(DtkCMake REQUIRED)
 find_package(Qt5 COMPONENTS
     Core
     Gui
@@ -54,6 +53,7 @@ set(SEARCHER
     searcher/proxyworker.h
     searcher/proxyworker.cpp
     searcher/app/desktopappsearcher.h
+    searcher/app/desktopappsearcherprivate.h
     searcher/app/desktopappsearcher.cpp
     searcher/app/desktopappworker.h
     searcher/app/desktopappworker.cpp
@@ -124,7 +124,6 @@ set(SEARCHPLUGIN
 )
 
 #set(UTILS
-#    utils/datadefinition.h
 #)
 
 set(SRCS
@@ -146,6 +145,7 @@ target_include_directories(${BIN_NAME} PUBLIC
 
 target_link_libraries(${BIN_NAME} PRIVATE
     ${Qt_LIBS}
+    ${DtkCore_LIBRARIES}
 )
 
 # bin

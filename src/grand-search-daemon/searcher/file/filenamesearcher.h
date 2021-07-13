@@ -28,6 +28,7 @@ class FileNameSearcher : public Searcher
     Q_OBJECT
 public:
     explicit FileNameSearcher(QObject *parent = nullptr);
+    QString name() const;
 };
 
 #endif // FILENAMESEARCHER_H

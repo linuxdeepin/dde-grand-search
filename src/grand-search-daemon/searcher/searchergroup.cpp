@@ -52,6 +52,7 @@ bool SearcherGroup::init()
 
     qInfo() << "create DesktopAppSearcher.";
     auto appSearcher = new DesktopAppSearcher(this);
+    appSearcher->asyncInit();
     d->m_builtin << appSearcher;
 
     //todo 设置搜索，全文搜索

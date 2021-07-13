@@ -35,6 +35,7 @@ class TaskCommanderPrivate : public QObject
 public:
     explicit TaskCommanderPrivate(TaskCommander *parent = nullptr);
     ~TaskCommanderPrivate();
+    void merge(GrandSearch::MatchedItemMap &addTo, const GrandSearch::MatchedItemMap &addFrom);
 private:
     static void working(ProxyWorker *);
 private slots:

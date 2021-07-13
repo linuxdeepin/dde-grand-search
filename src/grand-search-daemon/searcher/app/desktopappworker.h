@@ -23,11 +23,32 @@
 
 #include "searcher/proxyworker.h"
 
+#include <QMutex>
+
 class DesktopAppWorker : public ProxyWorker
 {
     Q_OBJECT
 public:
     explicit DesktopAppWorker(const QString &name, QObject *parent = nullptr);
+    void setContext(const QString &context) Q_DECL_OVERRIDE;
+    bool isAsync() const Q_DECL_OVERRIDE;
+    bool working(void *context) Q_DECL_OVERRIDE;
+    void terminate() Q_DECL_OVERRIDE;
+    Status status() Q_DECL_OVERRIDE;
+    bool hasItem() const Q_DECL_OVERRIDE;
+    GrandSearch::MatchedItemMap takeAll() Q_DECL_OVERRIDE;
+public:
+    void setIndexTable(const QHash<QString, QList<QSharedPointer<GrandSearch::MatchedItem>>> &table);
+private:
+    QString group() const;
+private:
+    QAtomicInt m_status = Ready;
+    QString m_context;
+    QHash<QString, QList<QSharedPointer<GrandSearch::MatchedItem>>> m_indexTable;
+
+    //搜索结果
+    mutable QMutex m_mtx;
+    GrandSearch::MatchedItems m_items;
 };
 
 #endif // DESKTOPAPPWORKER_H

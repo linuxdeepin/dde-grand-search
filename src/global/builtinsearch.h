@@ -18,21 +18,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef FSSEARCHER_H
-#define FSSEARCHER_H
+#ifndef BUILTINSEARCH_H
+#define BUILTINSEARCH_H
 
-#include "searcher/searcher.h"
+//定义内置搜索项的名称
+#define GRANDSEARCH_CLASS_FILE_DEEPIN "com.deepin.dde-grand-search.file-deepin"
+#define GRANDSEARCH_CLASS_FILE_FSEARCH "com.deepin.dde-grand-search.file-fsearch"
+#define GRANDSEARCH_CLASS_APP_DESKTOP "com.deepin.dde-grand-search.app-desktop"
+#define GRANDSEARCH_CLASS_SETTING_CONTROLCENTER "com.deepin.dde-grand-search.setting-controlcenter"
 
-class FsSearcher : public Searcher
-{
-    Q_OBJECT
-public:
-    explicit FsSearcher(QObject *parent = nullptr);
-    QString name() const Q_DECL_OVERRIDE;
-    bool isActive() const Q_DECL_OVERRIDE;
-    bool activate() Q_DECL_OVERRIDE;
-    ProxyWorker *createWorker() const Q_DECL_OVERRIDE;
-    void action(const QString &action, const QString &item) Q_DECL_OVERRIDE;
-};
-
-#endif // FSSEARCHER_H
+#endif // BUILTINSEARCH_H

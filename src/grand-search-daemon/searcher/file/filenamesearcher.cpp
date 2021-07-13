@@ -19,8 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "filenamesearcher.h"
+#include "global/builtinsearch.h"
 
 FileNameSearcher::FileNameSearcher(QObject *parent) : Searcher(parent)
 {
 
+}
+
+QString FileNameSearcher::name() const
+{
+    return GRANDSEARCH_CLASS_FILE_DEEPIN;
 }

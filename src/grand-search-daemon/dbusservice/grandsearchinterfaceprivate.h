@@ -43,6 +43,7 @@ public:
     }
     bool isAccessable(const QDBusMessage &msg) const;
 private slots:
+    void terminate();
     void onMatched();
 private:
     GrandSearchInterface *q;

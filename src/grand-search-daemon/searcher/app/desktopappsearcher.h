@@ -24,16 +24,21 @@
 
 #include "searcher/searcher.h"
 
+class DesktopAppSearcherPrivate;
 class DesktopAppSearcher : public Searcher
 {
     Q_OBJECT
+    friend class DesktopAppSearcherPrivate;
 public:
     explicit DesktopAppSearcher(QObject *parent = nullptr);
+    void asyncInit();
     QString name() const Q_DECL_OVERRIDE;
     bool isActive() const Q_DECL_OVERRIDE;
     bool activate() Q_DECL_OVERRIDE;
     ProxyWorker *createWorker() const Q_DECL_OVERRIDE;
     void action(const QString &action, const QString &item) Q_DECL_OVERRIDE;
+private:
+    DesktopAppSearcherPrivate *d;
 };
 
 #endif // DESKTOPAPPSEARCHER_H

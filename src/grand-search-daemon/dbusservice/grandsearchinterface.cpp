@@ -27,6 +27,8 @@
 #include <QDBusConnectionInterface>
 #include <QDBusMessage>
 #include <QFileInfo>
+#include <QThread>
+#include <QCoreApplication>
 #include <QDebug>
 
 #define CHECKINVOKER(ret) if (!d->isAccessable(message()))\
@@ -71,8 +73,19 @@ bool GrandSearchInterfacePrivate::isAccessable(const QDBusMessage &msg) const
     return accessable;
 }
 
+void GrandSearchInterfacePrivate::terminate()
+{
+    m_deadline.stop();
+
+    //停止搜索
+    if (m_main)
+        m_main->terminate();
+}
+
 void GrandSearchInterfacePrivate::onMatched()
 {
+    //控制在主线程
+    Q_ASSERT(QThread::currentThread() == qApp->thread());
     if (!m_session.isEmpty()) {
         emit q->Matched(m_session);
     }
@@ -96,7 +109,7 @@ bool GrandSearchInterface::init()
     //超时后强制结束任务
     d->m_deadline.setInterval(10000);
     d->m_deadline.setSingleShot(true);
-    connect(&d->m_deadline, &QTimer::timeout, this, &GrandSearchInterface::Terminate);
+    connect(&d->m_deadline, &QTimer::timeout, d, &GrandSearchInterfacePrivate::terminate);
 
     d->m_main = new MainController;
     //直连，防止被事件循环打乱时序
@@ -132,11 +145,7 @@ bool GrandSearchInterface::Search(const QString &session, const QString &key)
 void GrandSearchInterface::Terminate()
 {
     CHECKINVOKER();
-
-    d->m_deadline.stop();
-
-    //停止搜索
-    d->m_main->terminate();
+    d->terminate();
 }
 
 QString GrandSearchInterface::MatchedResults(const QString &session)

@@ -20,10 +20,16 @@
  */
 #include "fssearcher.h"
 #include "fsworker.h"
+#include "global/builtinsearch.h"
 
 FsSearcher::FsSearcher(QObject *parent) : Searcher(parent)
 {
 
+}
+
+QString FsSearcher::name() const
+{
+    return GRANDSEARCH_CLASS_FILE_FSEARCH;
 }
 
 ProxyWorker *FsSearcher::createWorker() const
