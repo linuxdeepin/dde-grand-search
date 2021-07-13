@@ -18,39 +18,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef GRANDSEARCHSERVICE_P_H
+#define GRANDSEARCHSERVICE_P_H
 
-#include <DWidget>
+#include "grandsearchservice.h"
 
-#include <QScopedPointer>
-
-class MainWindowPrivate;
-
-class MainWindow : public Dtk::Widget::DWidget
+class GrandSearchServicePrivate
 {
-    Q_OBJECT
 public:
-    static MainWindow *instance();
-    ~MainWindow() Q_DECL_OVERRIDE;
+    explicit GrandSearchServicePrivate(GrandSearchService *parent = nullptr);
 
-private:
-    void initUI();
-    void initConnect();
-
-protected:
-    explicit MainWindow(QWidget *parent = nullptr);
-
-protected:
-    virtual void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
-    virtual void hideEvent(QHideEvent *event) Q_DECL_OVERRIDE;
-    virtual void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
-
-signals:
-    void visibleChanged(const bool visible);
-
-private:
-    QScopedPointer<MainWindowPrivate> d_p;
+    GrandSearchService *q_p;
 };
 
-#endif // MAINWINDOW_H
+#endif // GRANDSEARCHSERVICE_P_H

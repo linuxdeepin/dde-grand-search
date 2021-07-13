@@ -21,6 +21,9 @@
 #include "mainwindow_p.h"
 #include "mainwindow.h"
 
+#include <QDebug>
+#include <QTimer>
+
 class MainWindowGlobal : public MainWindow{};
 Q_GLOBAL_STATIC(MainWindowGlobal, mainWindowGlobal)
 
@@ -36,7 +39,13 @@ MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
     , d_p(new MainWindowPrivate(this))
 {
+    //  设置窗口标识为无边框、不在任务栏显示
+    Qt::WindowFlags flags = windowFlags();
+    flags |= Qt::Tool | Qt::FramelessWindowHint;
+    setWindowFlags(flags);
 
+    initUI();
+    initConnect();
 }
 
 MainWindow::~MainWindow()
@@ -47,4 +56,32 @@ MainWindow::~MainWindow()
 MainWindow *MainWindow::instance()
 {
     return mainWindowGlobal;
+}
+
+void MainWindow::initUI()
+{
+
+}
+
+void MainWindow::initConnect()
+{
+
+}
+
+void MainWindow::showEvent(QShowEvent *event)
+{
+    emit visibleChanged(true);
+    return DWidget::showEvent(event);
+}
+
+void MainWindow::hideEvent(QHideEvent *event)
+{
+    emit visibleChanged(false);
+    return DWidget::hideEvent(event);
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    // todo 通知controller停止处理，搜索任务的controller将通知后端停止搜索
+    return DWidget::closeEvent(event);
 }

@@ -50,19 +50,32 @@ set(GUISRC
 
 # business
 set(BUSINESSSRC
+    # 查询控制
     business/query/querycontroller_p.h
     business/query/querycontroller.h
     business/query/querycontroller.cpp
+    # 匹配结果控制
     business/matchresult/matchcontroller_p.h
     business/matchresult/matchcontroller.h
     business/matchresult/matchcontroller.cpp
     )
+
+# contacts
+set(CONTACTSSRC
+    # dbus服务
+    contacts/services/grandsearchservice_p.h
+    contacts/services/grandsearchservice.h
+    contacts/services/grandsearchservice.cpp
+    contacts/services/grandsearchserviceadaptor.h
+    contacts/services/grandsearchserviceadaptor.cpp
+    )
+
 # 源文件
 set(SRCS
     main.cpp
 )
 
-add_executable(${BIN_NAME} ${SRCS} ${GUISRC} ${BUSINESSSRC})
+add_executable(${BIN_NAME} ${SRCS} ${GUISRC} ${BUSINESSSRC} ${CONTACTSSRC})
 target_include_directories(${BIN_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${DtkWidget_INCLUDE_DIRS}
@@ -75,5 +88,14 @@ target_link_libraries(${BIN_NAME} PRIVATE
     ${DtkGUI_LIBRARIES}
 )
 
+# Install settings
+if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX /usr)
+endif ()
+
 # bin
 install(TARGETS ${BIN_NAME} DESTINATION bin)
+
+# dbus
+install(FILES contacts/services/com.deepin.dde.GrandSearch.service DESTINATION share/dbus-1/services)
+install(FILES contacts/services/com.deepin.dde.GrandSearch.xml DESTINATION share/dbus-1/interfaces)

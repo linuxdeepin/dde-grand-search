@@ -18,39 +18,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef GRANDSEARCHSERVICE_H
+#define GRANDSEARCHSERVICE_H
 
-#include <DWidget>
-
+#include <QObject>
 #include <QScopedPointer>
 
-class MainWindowPrivate;
+#define GrandSearchViewServiceName          "com.deepin.dde.GrandSearch"
+#define GrandSearchViewServicePath          "/com/deepin/dde/GrandSearch"
+#define GrandSearchViewServiceInterface     "com.deepin.dde.GrandSearch"
 
-class MainWindow : public Dtk::Widget::DWidget
+class GrandSearchServicePrivate;
+
+class GrandSearchService : public QObject
 {
     Q_OBJECT
+    Q_CLASSINFO("D-Bus Interface", GrandSearchViewServiceInterface)
 public:
-    static MainWindow *instance();
-    ~MainWindow() Q_DECL_OVERRIDE;
+    explicit GrandSearchService(QObject *parent = nullptr);
+    ~GrandSearchService();
 
-private:
-    void initUI();
-    void initConnect();
-
-protected:
-    explicit MainWindow(QWidget *parent = nullptr);
-
-protected:
-    virtual void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
-    virtual void hideEvent(QHideEvent *event) Q_DECL_OVERRIDE;
-    virtual void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
+    Q_SCRIPTABLE bool IsVisible() const;
+    Q_SCRIPTABLE void SetVisible(const bool visible);
 
 signals:
-    void visibleChanged(const bool visible);
+    Q_SCRIPTABLE void VisibleChanged(const bool vidible);
 
 private:
-    QScopedPointer<MainWindowPrivate> d_p;
+    QScopedPointer<GrandSearchServicePrivate> d_p;
 };
 
-#endif // MAINWINDOW_H
+#endif // GRANDSEARCHSERVICE_H
