@@ -27,6 +27,10 @@
 #include <QScopedPointer>
 
 class ExhibitionWidgetPrivate;
+class MatchWidget;
+class QHBoxLayout;
+class QVBoxLayout;
+class QPushButton;
 class ExhibitionWidget : public Dtk::Widget::DWidget
 {
     Q_OBJECT
@@ -34,8 +38,23 @@ public:
     explicit ExhibitionWidget(QWidget *parent = nullptr);
     ~ExhibitionWidget();
 
+    void test_search();
+    void test_clear();
+
+protected:
+    void initUi();
+    void initConnect();
+
+    void paintEvent(QPaintEvent *event) override;
 private:
     QScopedPointer<ExhibitionWidgetPrivate> d_p;
+
+    QHBoxLayout *m_hLayout = nullptr;
+
+    QVBoxLayout *m_vLayout = nullptr;
+    QPushButton *m_btnSearch = nullptr;
+    QPushButton *m_btnClear = nullptr;
+    MatchWidget *m_matchWidget = nullptr;
 };
 
 #endif // EXHIBITIONWIDGET_H

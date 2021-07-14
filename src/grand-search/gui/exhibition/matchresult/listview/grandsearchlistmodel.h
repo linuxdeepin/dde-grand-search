@@ -1,9 +1,7 @@
 /*
  * Copyright (C) 2021 Uniontech Software Technology Co., Ltd.
  *
- * Author:     zhangyu<zhangyub@uniontech.com>
- *
- * Maintainer: zhangyu<zhangyub@uniontech.com>
+ * Author:     houchengqiu <houchengqiu@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,26 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef MATCHEDITEM_H
-#define MATCHEDITEM_H
+#ifndef GRANDSEARCHLISTMODEL_H
+#define GRANDSEARCHLISTMODEL_H
 
-#include <QtCore>
+#include <QStandardItemModel>
+#include <QScopedPointer>
 
-namespace GrandSearch {
+class GrandSearchListModel : public QStandardItemModel
+{
+    Q_OBJECT
+public:
+    GrandSearchListModel(int rows, int columns, QObject *parent = Q_NULLPTR);
+    ~GrandSearchListModel() override;
 
-//搜索结果
-struct MatchedItem {
-    QString item;   //匹配的内容
-    QString name;   //界面显示的名称
-    QString icon;   //界面显示的图标
-    QString type;   //界面显示的类型
-    QString searcher;   //出自的搜索项
+    virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) Q_DECL_OVERRIDE;
+    virtual Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE;
 };
 
-typedef QList<MatchedItem> MatchedItems;
-typedef QMap<QString, MatchedItems> MatchedItemMap; //组-匹配项列表
-}
-
-Q_DECLARE_METATYPE(GrandSearch::MatchedItem)
-
-#endif // MATCHEDITEM_H
+#endif // GRANDSEARCHLISTMODEL_H

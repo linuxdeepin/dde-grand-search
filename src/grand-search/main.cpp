@@ -30,6 +30,7 @@
 
 #include <DApplication>
 #include <DLog>
+#include <DWidgetUtil>
 
 #include <QDebug>
 #include <QTimer>
@@ -66,6 +67,7 @@ int main(int argc, char *argv[])
 
     qDebug() << "starting" << app.applicationName() << app.applicationVersion() << getpid();
     MainWindow::instance()->show();
+    moveToCenter(MainWindow::instance());
 
     // 注册dbus服务
     QDBusConnection conn = QDBusConnection::sessionBus();
@@ -86,7 +88,7 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    QTimer::singleShot(0, MainWindow::instance(), [](){
+    QTimer::singleShot(0, MainWindow::instance(), []() {
         QueryController::instance();
         MatchController::instance();
     });

@@ -22,11 +22,14 @@
 #ifndef MATCHWIDGET_H
 #define MATCHWIDGET_H
 
+#include "groupwidget.h"
+
 #include <DWidget>
 
 #include <QScopedPointer>
 
 class MatchWidgetPrivate;
+class QVBoxLayout;
 class MatchWidget : public Dtk::Widget::DWidget
 {
     Q_OBJECT
@@ -34,8 +37,32 @@ public:
     explicit MatchWidget(QWidget *parent = nullptr);
     ~MatchWidget();
 
+    void reLayout();
+    void setMatchedData(const MatchedItemMap &matchedData);
+
+public slots:
+
+
+protected:
+    void initUi();
+    void initConnect();
+
+    void paintEvent(QPaintEvent *event) override;
 private:
     QScopedPointer<MatchWidgetPrivate> d_p;
+
+    QVBoxLayout *m_vLayout = nullptr;
+    GroupWidgetMap m_GroupWidgetMap;// 按group哈希值存放组列表
+
+    MatchedItemMap m_MatchedItemMap;// 匹配结果数据
+
+    // 依据产品需求，规定group哈希值对应组列表显示顺序
+    QStringList m_GroupHashShowOrder{
+        AC_GroupHash_App,
+        AC_GroupHash_Folder,
+        AC_GroupHash_File};
+
+    GroupWidgets m_vGroupWidgets;// 组列表按显示顺序存放
 };
 
 #endif // MATCHWIDGET_H

@@ -1,9 +1,10 @@
 /*
  * Copyright (C) 2021 Uniontech Software Technology Co., Ltd.
  *
- * Author:     zhangyu<zhangyub@uniontech.com>
+ * Author:     houchengqiu<houchengqiu@uniontech.com>
  *
- * Maintainer: zhangyu<zhangyub@uniontech.com>
+ * Maintainer: wangchunlin<wangchunlin@uniontech.com>
+ *             houchengqiu<houchengqiu@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,26 +19,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef MATCHEDITEM_H
-#define MATCHEDITEM_H
+#ifndef GROUPWIDGET_P_H
+#define GROUPWIDGET_P_H
 
-#include <QtCore>
+#include "groupwidget.h"
 
-namespace GrandSearch {
+class GroupWidgetPrivate
+{
+public:
+    explicit GroupWidgetPrivate(GroupWidget *parent = nullptr);
 
-//搜索结果
-struct MatchedItem {
-    QString item;   //匹配的内容
-    QString name;   //界面显示的名称
-    QString icon;   //界面显示的图标
-    QString type;   //界面显示的类型
-    QString searcher;   //出自的搜索项
+    GroupWidget *q_p;
 };
 
-typedef QList<MatchedItem> MatchedItems;
-typedef QMap<QString, MatchedItems> MatchedItemMap; //组-匹配项列表
-}
-
-Q_DECLARE_METATYPE(GrandSearch::MatchedItem)
-
-#endif // MATCHEDITEM_H
+#endif // GROUPWIDGET_P_H

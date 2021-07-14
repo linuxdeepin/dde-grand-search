@@ -35,6 +35,8 @@ set(GUISRC
     gui/mainwindow_p.h
     gui/mainwindow.h
     gui/mainwindow.cpp
+    # 界面相关数据定义
+    gui/datadefine.h
     # 入口界面
     gui/entrance/entrancewidget_p.h
     gui/entrance/entrancewidget.h
@@ -46,6 +48,16 @@ set(GUISRC
     gui/exhibition/matchresult/matchwidget_p.h
     gui/exhibition/matchresult/matchwidget.h
     gui/exhibition/matchresult/matchwidget.cpp
+    gui/exhibition/matchresult/groupwidget_p.h
+    gui/exhibition/matchresult/groupwidget.h
+    gui/exhibition/matchresult/groupwidget.cpp
+    # listView
+    gui/exhibition/matchresult/listview/grandsearchlistdelegate.h
+    gui/exhibition/matchresult/listview/grandsearchlistdelegate.cpp
+    gui/exhibition/matchresult/listview/grandsearchlistmodel.h
+    gui/exhibition/matchresult/listview/grandsearchlistmodel.cpp
+    gui/exhibition/matchresult/listview/grandsearchlistview.h
+    gui/exhibition/matchresult/listview/grandsearchlistview.cpp
     )
 
 # business
