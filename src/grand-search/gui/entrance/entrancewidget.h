@@ -35,6 +35,13 @@ public:
     ~EntranceWidget();
 
 private:
+    void initUI();
+    void initConnections();
+
+signals:
+    void searchTextChanged(const QString &txt);
+
+private:
     QScopedPointer<EntranceWidgetPrivate> d_p;
 };
 

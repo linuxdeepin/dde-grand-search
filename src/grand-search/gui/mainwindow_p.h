@@ -25,12 +25,20 @@
 
 #include <QWidget>
 
+class EntranceWidget;
+class ExhibitionWidget;
+
+class QVBoxLayout;
+
 class MainWindowPrivate
 {
 public:
     explicit MainWindowPrivate(MainWindow *parent);
 
     MainWindow *q_p;
+    EntranceWidget *m_entranceWidget = nullptr;
+    ExhibitionWidget *m_exhibitionWidget = nullptr;
+    QVBoxLayout *m_mainLayout = nullptr;
 };
 
 #endif // MAINWINDOW_P_H

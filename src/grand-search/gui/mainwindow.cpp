@@ -20,9 +20,12 @@
  */
 #include "mainwindow_p.h"
 #include "mainwindow.h"
+#include "entrance/entrancewidget.h"
+#include "exhibition/exhibitionwidget.h"
 
 #include <QDebug>
 #include <QTimer>
+#include <QVBoxLayout>
 
 class MainWindowGlobal : public MainWindow{};
 Q_GLOBAL_STATIC(MainWindowGlobal, mainWindowGlobal)
@@ -60,7 +63,12 @@ MainWindow *MainWindow::instance()
 
 void MainWindow::initUI()
 {
-
+    d_p->m_entranceWidget = new EntranceWidget(this);
+    d_p->m_exhibitionWidget = new ExhibitionWidget(this);
+    d_p->m_mainLayout = new QVBoxLayout(this);
+    d_p->m_mainLayout->addWidget(d_p->m_entranceWidget);
+    d_p->m_mainLayout->addWidget(d_p->m_exhibitionWidget);
+    this->setLayout(d_p->m_mainLayout);
 }
 
 void MainWindow::initConnect()

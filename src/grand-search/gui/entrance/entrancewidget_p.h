@@ -23,12 +23,27 @@
 
 #include "entrancewidget.h"
 
+namespace Dtk {
+    namespace Widget {
+        class DSearchEdit;
+    }
+}
+
+class QHBoxLayout;
+class QTimer;
+
 class EntranceWidgetPrivate
 {
 public:
     explicit EntranceWidgetPrivate(EntranceWidget *parent = nullptr);
 
+    void delayChangeText();
+
     EntranceWidget *q_p;
+    Dtk::Widget::DSearchEdit *m_searchEdit = nullptr;
+    QHBoxLayout *m_mainLayout = nullptr;
+
+    QTimer *m_timer = nullptr;      // 延迟发出搜索文本改变
 };
 
 #endif // ENTRANCEWIDGET_P_H
