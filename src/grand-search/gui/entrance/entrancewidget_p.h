@@ -21,23 +21,23 @@
 #ifndef ENTRANCEWIDGET_P_H
 #define ENTRANCEWIDGET_P_H
 
+#include "QObject"
 #include "entrancewidget.h"
 
-namespace Dtk {
-    namespace Widget {
-        class DSearchEdit;
-    }
-}
+DWIDGET_BEGIN_NAMESPACE
+class DSearchEdit;
+DWIDGET_END_NAMESPACE
 
 class QHBoxLayout;
 class QTimer;
-
-class EntranceWidgetPrivate
+class EntranceWidgetPrivate : public QObject
 {
+    Q_OBJECT
 public:
     explicit EntranceWidgetPrivate(EntranceWidget *parent = nullptr);
 
     void delayChangeText();
+    void notifyTextChanged();
 
     EntranceWidget *q_p;
     Dtk::Widget::DSearchEdit *m_searchEdit = nullptr;

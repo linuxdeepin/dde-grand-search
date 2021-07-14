@@ -29,7 +29,6 @@
 #define GrandSearchViewServiceInterface     "com.deepin.dde.GrandSearch"
 
 class GrandSearchServicePrivate;
-
 class GrandSearchService : public QObject
 {
     Q_OBJECT

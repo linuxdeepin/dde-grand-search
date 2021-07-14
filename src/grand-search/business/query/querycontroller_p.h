@@ -29,6 +29,7 @@ public:
     explicit QueryControllerPrivate(QueryController *parent = nullptr);
 
     QueryController *q_p;
+    QString m_missionId;
 };
 
 #endif // QUERYCONTROLLER_P_H

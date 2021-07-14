@@ -27,7 +27,6 @@
 #include <QScopedPointer>
 
 class ExhibitionWidgetPrivate;
-
 class ExhibitionWidget : public Dtk::Widget::DWidget
 {
     Q_OBJECT

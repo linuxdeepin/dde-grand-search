@@ -27,9 +27,7 @@
 
 class EntranceWidget;
 class ExhibitionWidget;
-
 class QVBoxLayout;
-
 class MainWindowPrivate
 {
 public:

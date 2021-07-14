@@ -26,7 +26,6 @@
 #include <QScopedPointer>
 
 class MatchControllerPrivate;
-
 class MatchController : public QObject
 {
     Q_OBJECT

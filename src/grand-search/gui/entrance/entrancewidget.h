@@ -21,13 +21,12 @@
 #ifndef ENTRANCEWIDGET_H
 #define ENTRANCEWIDGET_H
 
-#include <DWidget>
+#include <DBlurEffectWidget>
 
 #include <QScopedPointer>
 
 class EntranceWidgetPrivate;
-
-class EntranceWidget : public Dtk::Widget::DWidget
+class EntranceWidget : public Dtk::Widget::DBlurEffectWidget
 {
     Q_OBJECT
 public:

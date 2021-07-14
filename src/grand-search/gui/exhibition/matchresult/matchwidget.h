@@ -27,7 +27,6 @@
 #include <QScopedPointer>
 
 class MatchWidgetPrivate;
-
 class MatchWidget : public Dtk::Widget::DWidget
 {
     Q_OBJECT

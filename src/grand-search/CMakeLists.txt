@@ -68,6 +68,9 @@ set(CONTACTSSRC
     contacts/services/grandsearchservice.cpp
     contacts/services/grandsearchserviceadaptor.h
     contacts/services/grandsearchserviceadaptor.cpp
+    # dbus接口
+    contacts/interface/daemongrandsearchinterface.h
+    contacts/interface/daemongrandsearchinterface.cpp
     )
 
 # 源文件

@@ -25,13 +25,14 @@
 #include <QScopedPointer>
 
 class QueryControllerPrivate;
-
 class QueryController : public QObject
 {
     Q_OBJECT
 public:
     static QueryController *instance();
     ~QueryController();
+
+    QString getMissionID() const;
 
 protected:
     explicit QueryController(QObject *parent = nullptr);

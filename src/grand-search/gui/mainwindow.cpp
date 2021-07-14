@@ -39,14 +39,9 @@ MainWindowPrivate::MainWindowPrivate(MainWindow *parent)
 }
 
 MainWindow::MainWindow(QWidget *parent)
-    : QWidget(parent)
+    : DBlurEffectWidget(parent)
     , d_p(new MainWindowPrivate(this))
 {
-    //  设置窗口标识为无边框、不在任务栏显示
-    Qt::WindowFlags flags = windowFlags();
-    flags |= Qt::Tool | Qt::FramelessWindowHint;
-    setWindowFlags(flags);
-
     initUI();
     initConnect();
 }
@@ -63,8 +58,32 @@ MainWindow *MainWindow::instance()
 
 void MainWindow::initUI()
 {
+    move(100,100);
+    //  设置窗口标识为无边框、不在任务栏显示
+    Qt::WindowFlags flags = windowFlags();
+    flags |= Qt::Tool | Qt::FramelessWindowHint;
+    setWindowFlags(flags);
+
+//    // 模糊半径
+//    setRadius(30);
+//    // 透明背景
+//    setAttribute(Qt::WA_TranslucentBackground);
+//    // 焦点策略
+//    setFocusPolicy(Qt::NoFocus);
+//    // 模糊模式
+    setBlendMode(DBlurEffectWidget::BehindWindowBlend);
+//    // X和Y方向的圆角半径
+//    setBlurRectXRadius(10);
+//    setBlurRectYRadius(10);
+//    // 遮罩层颜色设置
+//    setMaskColor(DBlurEffectWidget::DarkColor);
+
+    // 搜索入口界面
     d_p->m_entranceWidget = new EntranceWidget(this);
+
+    // 结果展示界面
     d_p->m_exhibitionWidget = new ExhibitionWidget(this);
+
     d_p->m_mainLayout = new QVBoxLayout(this);
     d_p->m_mainLayout->addWidget(d_p->m_entranceWidget);
     d_p->m_mainLayout->addWidget(d_p->m_exhibitionWidget);

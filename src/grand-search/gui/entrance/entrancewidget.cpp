@@ -34,16 +34,45 @@ DWIDGET_USE_NAMESPACE
 EntranceWidgetPrivate::EntranceWidgetPrivate(EntranceWidget *parent)
     : q_p(parent)
 {
-    m_searchEdit = new DSearchEdit(q_p);
-    m_mainLayout = new QHBoxLayout(q_p);
-    m_mainLayout->addWidget(m_searchEdit);
-    q_p->setLayout(m_mainLayout);
+    m_timer = new QTimer(this);
+    m_timer->setSingleShot(true);
+    m_timer->setInterval(50);
 
-//    QObject::connect(m_searchEdit, &DSearchEdit::textChanged, this, [](const QString &txt){
-//       qDebug()<<"@@:"<<txt;
-//    });
+    connect(m_timer, &QTimer::timeout, this, &EntranceWidgetPrivate::notifyTextChanged);
+}
 
-    // todo 搜索框图标与清楚按钮定制
+void EntranceWidgetPrivate::delayChangeText()
+{
+    m_timer->start();
+}
+
+void EntranceWidgetPrivate::notifyTextChanged()
+{
+    const QString &currentSearchText = m_searchEdit->text();
+    emit q_p->searchTextChanged(currentSearchText);
+}
+
+EntranceWidget::EntranceWidget(QWidget *parent)
+    : DBlurEffectWidget(parent)
+    , d_p(new EntranceWidgetPrivate(this))
+{
+    initUI();
+    initConnections();
+}
+
+EntranceWidget::~EntranceWidget()
+{
+
+}
+
+void EntranceWidget::initUI()
+{
+    d_p->m_searchEdit = new DSearchEdit(this);
+    d_p->m_mainLayout = new QHBoxLayout(this);
+    d_p->m_mainLayout->addWidget(d_p->m_searchEdit);
+    this->setLayout(d_p->m_mainLayout);
+
+    // todo 搜索框图标与清除按钮定制
 //    QAction *leftaction = d_p->m_searchEdit->findChild<QAction *>("_d_search_leftAction");
 //    if (leftaction) {
 //        leftaction->setIcon(QIcon(":/icons/skin/icons/search_36px.svg"));
@@ -59,37 +88,11 @@ EntranceWidgetPrivate::EntranceWidgetPrivate(EntranceWidget *parent)
 //    DStyle::setFocusRectVisible(d_p->m_searchEdit->lineEdit(), true);
 //    setFocusPolicy(Qt::NoFocus);
 
-    m_timer = new QTimer(q_p);
-    m_timer->setSingleShot(true);
-    m_timer->setInterval(50);
-
-}
-
-void EntranceWidgetPrivate::delayChangeText()
-{
-
-}
-
-EntranceWidget::EntranceWidget(QWidget *parent)
-    : QWidget(parent)
-    , d_p(new EntranceWidgetPrivate(this))
-{
-    initUI();
-    initConnections();
-}
-
-EntranceWidget::~EntranceWidget()
-{
-
-}
-
-void EntranceWidget::initUI()
-{
 
 }
 
 void EntranceWidget::initConnections()
 {
-//    connect(d_p->m_searchEdit, &DSearchEdit::textChanged, d_p.data(), &EntranceWidgetPrivate::delayChangeText);
-//    connect(d_p->m_timer, &QTimer::timeout, this, &EntranceWidget::sea)
+    // 输入改变时重置定时器，避免短时间内发起大量无效调用
+    connect(d_p->m_searchEdit, &DSearchEdit::textChanged, d_p.data(), &EntranceWidgetPrivate::delayChangeText);
 }

@@ -148,25 +148,25 @@ void GrandSearchInterface::Terminate()
     d->terminate();
 }
 
-QString GrandSearchInterface::MatchedResults(const QString &session)
+QVariantMap GrandSearchInterface::MatchedResults(const QString &session)
 {
-    QString ret;
+    QVariantMap ret;
     CHECKINVOKER(ret);
 
     if (d->vaildSession(session)) {
-        ret = d->m_main->getResults();
+//        ret = d->m_main->getResults();
     }
 
     return ret;
 }
 
-QString GrandSearchInterface::MatchedBuffer(const QString &session)
+QVariantMap GrandSearchInterface::MatchedBuffer(const QString &session)
 {
-    QString ret;
+    QVariantMap ret;
     CHECKINVOKER(ret);
 
     if (d->vaildSession(session) && !d->m_main->isBufferEmpty()) {
-        ret = d->m_main->readBuffer();
+//        ret = d->m_main->readBuffer();
     }
 
     return ret;
@@ -179,26 +179,26 @@ bool GrandSearchInterface::OpenWithPlugin(const QString &item)
     return false;
 }
 
-bool GrandSearchInterface::Configure(const QMap<QString, QString> &)
+bool GrandSearchInterface::Configure(const QVariantMap &)
 {
     CHECKINVOKER(false);
 
     return false;
 }
 
-QMap<QString, QString> GrandSearchInterface::Configuration() const
+QVariantMap GrandSearchInterface::Configuration() const
 {
 
 }
 
-bool GrandSearchInterface::SetFeedBackStrategy(const QMap<QString, QString> &)
+bool GrandSearchInterface::SetFeedBackStrategy(const QVariantMap &)
 {
     CHECKINVOKER(false);
 
     return false;
 }
 
-QMap<QString, QString> GrandSearchInterface::FeedBackStrategy() const
+QVariantMap GrandSearchInterface::FeedBackStrategy() const
 {
 
 }

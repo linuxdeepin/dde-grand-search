@@ -44,13 +44,13 @@ public:
 public slots:
     Q_SCRIPTABLE bool Search(const QString &session, const QString &key);
     Q_SCRIPTABLE void Terminate();
-    Q_SCRIPTABLE QString MatchedResults(const QString &session);
-    Q_SCRIPTABLE QString MatchedBuffer(const QString &session);
+    Q_SCRIPTABLE QVariantMap MatchedResults(const QString &session);
+    Q_SCRIPTABLE QVariantMap MatchedBuffer(const QString &session);
     Q_SCRIPTABLE bool OpenWithPlugin(const QString &item);
-    Q_SCRIPTABLE bool Configure(const QMap<QString,QString> &);
-    Q_SCRIPTABLE QMap<QString,QString> Configuration() const;
-    Q_SCRIPTABLE bool SetFeedBackStrategy(const QMap<QString,QString> &);
-    Q_SCRIPTABLE QMap<QString,QString> FeedBackStrategy() const;
+    Q_SCRIPTABLE bool Configure(const QVariantMap &);
+    Q_SCRIPTABLE QVariantMap Configuration() const;
+    Q_SCRIPTABLE bool SetFeedBackStrategy(const QVariantMap &);
+    Q_SCRIPTABLE QVariantMap FeedBackStrategy() const;
     Q_SCRIPTABLE bool KeepAlive(const QString &session);
 signals:
     Q_SCRIPTABLE void Matched(const QString &session);
