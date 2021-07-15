@@ -29,6 +29,7 @@ class DSearchEdit;
 DWIDGET_END_NAMESPACE
 
 class QHBoxLayout;
+class QSpacerItem;
 class QTimer;
 class EntranceWidgetPrivate : public QObject
 {
@@ -42,6 +43,7 @@ public:
     EntranceWidget *q_p;
     Dtk::Widget::DSearchEdit *m_searchEdit = nullptr;
     QHBoxLayout *m_mainLayout = nullptr;
+    QSpacerItem *m_horSpace = nullptr;//搜索框后的小空隙，用于展示界面垂直滚动条对齐
 
     QTimer *m_delayChangeTimer = nullptr;      // 延迟发出搜索文本改变
 };

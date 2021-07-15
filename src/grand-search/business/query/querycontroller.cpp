@@ -61,12 +61,12 @@ void QueryControllerPrivate::onSearchTextChanged(const QString &txt)
     m_missionId = QUuid::createUuid().toString(QUuid::WithoutBraces);
     emit q_p->missionIdChanged(m_missionId);
 
-    qDebug() << "search started and missionId:" << m_missionId;
+    qDebug() << QString("search started and missionId:%1 searchText:%2").arg(m_missionId).arg(m_searchText);
     bool started = m_daemonDbus->Search(m_missionId, m_searchText);
     if (started) {
         m_keepAliveTimer->start();
     } else {
-        qWarning() << "search failed:"<<m_missionId;
+        qWarning() << QString("search failed missionId:%1 searchText:%2").arg(m_missionId).arg(m_searchText);
     }
 }
 

@@ -37,6 +37,7 @@ class ExhibitionWidget : public Dtk::Widget::DWidget
 public:
     explicit ExhibitionWidget(QWidget *parent = nullptr);
     ~ExhibitionWidget();
+    void connectToController();
 
     void test_search();
     void test_clear();

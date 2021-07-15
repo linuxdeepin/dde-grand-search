@@ -24,6 +24,7 @@
 
 #include <QObject>
 #include <QScopedPointer>
+#include "global/matcheditem.h"
 
 class MatchControllerPrivate;
 class MatchController : public QObject
@@ -35,6 +36,9 @@ public:
 
 protected:
     explicit MatchController(QObject *parent = nullptr);
+
+signals:
+    void matchedResult(const GrandSearch::MatchedItemMap &);
 
 private:
     QScopedPointer<MatchControllerPrivate> d_p;

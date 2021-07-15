@@ -53,7 +53,7 @@ void EntranceWidgetPrivate::notifyTextChanged()
 }
 
 EntranceWidget::EntranceWidget(QWidget *parent)
-    : DBlurEffectWidget(parent)
+    : DWidget(parent)
     , d_p(new EntranceWidgetPrivate(this))
 {
     initUI();
@@ -65,11 +65,22 @@ EntranceWidget::~EntranceWidget()
 
 }
 
+void EntranceWidget::connectToController()
+{
+
+}
+
 void EntranceWidget::initUI()
 {
     d_p->m_searchEdit = new DSearchEdit(this);
     d_p->m_mainLayout = new QHBoxLayout(this);
+    d_p->m_mainLayout->setContentsMargins(8, 8, 0, 8);
+    d_p->m_mainLayout->setSpacing(0);
     d_p->m_mainLayout->addWidget(d_p->m_searchEdit);
+
+    d_p->m_horSpace = new QSpacerItem(10, 20, QSizePolicy::Fixed);
+    d_p->m_mainLayout->addSpacerItem(d_p->m_horSpace);
+
     this->setLayout(d_p->m_mainLayout);
 
     // todo 搜索框图标与清除按钮定制

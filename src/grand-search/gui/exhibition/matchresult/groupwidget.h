@@ -24,7 +24,6 @@
 
 #include "../../datadefine.h"
 #include "../../../../global/matcheditem.h"
-using namespace GrandSearch;
 
 #include <DWidget>
 
@@ -40,6 +39,8 @@ class DHorizontalLine;
 DWIDGET_END_NAMESPACE
 DWIDGET_USE_NAMESPACE
 
+//#define SHOW_BACKCOLOR
+
 class QVBoxLayout;
 class GroupWidget : public DWidget
 {
@@ -49,7 +50,7 @@ public:
     ~GroupWidget();
 
     void setGroupName(const QString &groupHash);
-    void setMatchedItems(const MatchedItems &items);
+    void setMatchedItems(const GrandSearch::MatchedItems &items);
     void showHorLine(bool bShow = true);
     bool isHorLineVisilbe();
     GrandSearchListview *getListView();

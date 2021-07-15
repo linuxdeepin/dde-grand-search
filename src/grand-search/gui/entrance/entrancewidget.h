@@ -21,17 +21,18 @@
 #ifndef ENTRANCEWIDGET_H
 #define ENTRANCEWIDGET_H
 
-#include <DBlurEffectWidget>
+#include <DWidget>
 
 #include <QScopedPointer>
 
 class EntranceWidgetPrivate;
-class EntranceWidget : public Dtk::Widget::DBlurEffectWidget
+class EntranceWidget : public Dtk::Widget::DWidget
 {
     Q_OBJECT
 public:
     explicit EntranceWidget(QWidget *parent = nullptr);
     ~EntranceWidget();
+    void connectToController();
 
 private:
     void initUI();

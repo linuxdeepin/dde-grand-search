@@ -27,7 +27,7 @@
 #include <QTimer>
 #include <QVBoxLayout>
 
-class MainWindowGlobal : public MainWindow{};
+class MainWindowGlobal : public MainWindow {};
 Q_GLOBAL_STATIC(MainWindowGlobal, mainWindowGlobal)
 
 DWIDGET_USE_NAMESPACE
@@ -51,6 +51,12 @@ MainWindow::~MainWindow()
 
 }
 
+void MainWindow::connectToController()
+{
+    d_p->m_entranceWidget->connectToController();
+    d_p->m_exhibitionWidget->connectToController();
+}
+
 MainWindow *MainWindow::instance()
 {
     return mainWindowGlobal;
@@ -58,11 +64,11 @@ MainWindow *MainWindow::instance()
 
 void MainWindow::initUI()
 {
-    move(100,100);
+    move(100, 100);
     //  设置窗口标识为无边框、不在任务栏显示
-    Qt::WindowFlags flags = windowFlags();
-    flags |= Qt::Tool | Qt::FramelessWindowHint;
-    setWindowFlags(flags);
+//    Qt::WindowFlags flags = windowFlags();
+//     flags |= Qt::Tool | Qt::FramelessWindowHint;
+//    setWindowFlags(flags);
 
 //    // 模糊半径
 //    setRadius(30);
@@ -85,9 +91,12 @@ void MainWindow::initUI()
     d_p->m_exhibitionWidget = new ExhibitionWidget(this);
 
     d_p->m_mainLayout = new QVBoxLayout(this);
+    d_p->m_mainLayout->setSpacing(0);
     d_p->m_mainLayout->addWidget(d_p->m_entranceWidget);
     d_p->m_mainLayout->addWidget(d_p->m_exhibitionWidget);
     this->setLayout(d_p->m_mainLayout);
+
+    this->resize(760, 520);
 }
 
 void MainWindow::initConnect()
@@ -98,17 +107,17 @@ void MainWindow::initConnect()
 void MainWindow::showEvent(QShowEvent *event)
 {
     emit visibleChanged(true);
-    return DWidget::showEvent(event);
+    return DBlurEffectWidget::showEvent(event);
 }
 
 void MainWindow::hideEvent(QHideEvent *event)
 {
     emit visibleChanged(false);
-    return DWidget::hideEvent(event);
+    return DBlurEffectWidget::hideEvent(event);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     // todo 通知controller停止处理，搜索任务的controller将通知后端停止搜索
-    return DWidget::closeEvent(event);
+    return DBlurEffectWidget::closeEvent(event);
 }

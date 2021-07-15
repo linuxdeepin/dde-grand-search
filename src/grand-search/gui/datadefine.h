@@ -26,19 +26,19 @@
 namespace GrandSearch {
 
 // 组-hash值
-#define AC_GroupHash_App                "app"
-#define AC_GroupHash_Folder             "folder"
-#define AC_GroupHash_File               "file"
+#define GroupHash_App                "Application"
+#define GroupHash_Folder             "Folder"
+#define GroupHash_File               "File"
 
 // 组-列表对象名
-#define AC_GroupObjName_App             "Group_App"
-#define AC_GroupObjName_Folder          "Group_Folder"
-#define AC_GroupObjName_File            "Group_File"
+#define GroupObjName_App             "Group_App"
+#define GroupObjName_Folder          "Group_Folder"
+#define GroupObjName_File            "Group_File"
 
 // 组-中文词典翻译
-#define AC_GroupName_App                QObject::tr("GroupApp")
-#define AC_GroupName_Folder             QObject::tr("GroupFolder")
-#define AC_GroupName_File               QObject::tr("GroupFile")
+#define GroupName_App                QObject::tr("GroupApp")
+#define GroupName_Folder             QObject::tr("GroupFolder")
+#define GroupName_File               QObject::tr("GroupFile")
 };
 
 #endif // DATADEFINE_H

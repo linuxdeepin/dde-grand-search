@@ -32,6 +32,7 @@ class MainWindow : public Dtk::Widget::DBlurEffectWidget
 public:
     static MainWindow *instance();
     ~MainWindow() Q_DECL_OVERRIDE;
+    void connectToController();
 
 private:
     void initUI();

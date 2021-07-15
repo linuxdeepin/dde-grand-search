@@ -24,12 +24,27 @@
 
 #include "matchcontroller.h"
 
-class MatchControllerPrivate
+class DaemonGrandSearchInterface;
+class MatchControllerPrivate : public QObject
 {
+    Q_OBJECT
 public:
     explicit MatchControllerPrivate(MatchController *parent = nullptr);
 
+public slots:
+    void onMissionIdChanged(const QString &missionId);
+    void onMatched(const QString &missonId);
+    void onSearchCompleted(const QString &session);
+
+public:
+    void initConnect();
+
+public:
     MatchController *q_p;
+
+    QString m_missonId;
+
+    DaemonGrandSearchInterface *m_daemonDbus = nullptr;
 };
 
 #endif // MATCHCONTROLLER_P_H

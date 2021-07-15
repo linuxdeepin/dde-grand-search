@@ -21,6 +21,10 @@
  */
 #include "matchcontroller_p.h"
 #include "matchcontroller.h"
+#include "../query/querycontroller.h"
+#include "contacts/interface/daemongrandsearchinterface.h"
+
+using namespace GrandSearch;
 
 class MatchControllerGlobal : public MatchController {};
 Q_GLOBAL_STATIC(MatchControllerGlobal, matchControllerGlobal)
@@ -28,6 +32,48 @@ Q_GLOBAL_STATIC(MatchControllerGlobal, matchControllerGlobal)
 MatchControllerPrivate::MatchControllerPrivate(MatchController *parent)
     : q_p(parent)
 {
+    m_daemonDbus = new DaemonGrandSearchInterface(this);
+
+    initConnect();
+}
+
+void MatchControllerPrivate::initConnect()
+{
+    connect(QueryController::instance(), &QueryController::missionIdChanged, this, &MatchControllerPrivate::onMissionIdChanged);
+
+    connect(m_daemonDbus, &DaemonGrandSearchInterface::Matched, this, &MatchControllerPrivate::onMatched);
+}
+
+void MatchControllerPrivate::onMissionIdChanged(const QString &missionId)
+{
+    m_missonId = missionId;
+}
+
+void MatchControllerPrivate::onMatched(const QString &missonId)
+{
+    if (missonId != m_missonId || m_missonId.isEmpty())
+        return;
+
+    //获取数据解析
+    QByteArray matchedBytes = m_daemonDbus->MatchedBuffer(m_missonId);
+    qDebug() << QString("m_daemonDbus->MatchedBuffer missonId:%1").arg(m_missonId);
+
+    QDataStream stream(&matchedBytes, QIODevice::ReadOnly);
+
+    MatchedItemMap items;
+    stream >> items;
+
+    emit q_p->matchedResult(items);
+
+    qDebug() << QString("matched %1 groups.").arg(items.size());
+}
+
+void MatchControllerPrivate::onSearchCompleted(const QString &session)
+{
+    if (session != m_missonId || m_missonId.isEmpty())
+        return;
+
+    //通知界面刷新，若界面有数据不做处理，否则就刷新
 
 }
 

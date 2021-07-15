@@ -29,6 +29,8 @@
 
 #include <QVBoxLayout>
 
+using namespace GrandSearch;
+
 GroupWidgetPrivate::GroupWidgetPrivate(GroupWidget *parent)
     : q_p(parent)
 {
@@ -143,28 +145,28 @@ QString GroupWidget::groupName()
 
 QString GroupWidget::getGroupName(const QString &groupHash)
 {
-    QString strName = AC_GroupName_File;
+    QString strName = groupHash;
 
-    if (AC_GroupHash_App == groupHash)
-        strName = AC_GroupName_App;
-    else if (AC_GroupHash_Folder == groupHash)
-        strName = AC_GroupName_Folder;
-    else if (AC_GroupHash_File == groupHash)
-        strName = AC_GroupName_File;
+    if (GroupHash_App == groupHash)
+        strName = GroupName_App;
+    else if (GroupHash_Folder == groupHash)
+        strName = GroupName_Folder;
+    else if (GroupHash_File == groupHash)
+        strName = GroupName_File;
 
     return strName;
 }
 
 QString GroupWidget::getGroupObjName(const QString &groupHash)
 {
-    QString strObjName = AC_GroupObjName_File;
+    QString strObjName = groupHash;
 
-    if (AC_GroupHash_App == groupHash)
-        strObjName = AC_GroupObjName_App;
-    else if (AC_GroupHash_Folder == groupHash)
-        strObjName = AC_GroupObjName_Folder;
-    else if (AC_GroupHash_File == groupHash)
-        strObjName = AC_GroupObjName_File;
+    if (GroupHash_App == groupHash)
+        strObjName = GroupObjName_App;
+    else if (GroupHash_Folder == groupHash)
+        strObjName = GroupObjName_Folder;
+    else if (GroupHash_File == groupHash)
+        strObjName = GroupObjName_File;
 
     return strObjName;
 }
@@ -177,7 +179,7 @@ void GroupWidget::initUi()
 
     // 组列表内控件沿垂直方向布局
     m_vLayout = new QVBoxLayout(this);
-    m_vLayout->setContentsMargins(0, 0, 0, 0);
+    m_vLayout->setContentsMargins(0, 0, 10, 0);
     m_vLayout->setSpacing(0);
     this->setLayout(m_vLayout);
 
@@ -211,7 +213,7 @@ void GroupWidget::initConnect()
 
 void GroupWidget::paintEvent(QPaintEvent *event)
 {
-#if 0
+#ifdef SHOW_BACKCOLOR
     Q_UNUSED(event);
 
     QPainter painter(this);

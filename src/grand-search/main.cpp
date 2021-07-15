@@ -69,6 +69,14 @@ int main(int argc, char *argv[])
     MainWindow::instance()->show();
     moveToCenter(MainWindow::instance());
 
+    QTimer::singleShot(0, MainWindow::instance(), [](){
+        QueryController::instance();
+        MatchController::instance();
+
+        // 界面初始化完成后，再处理与业务有关的连接
+        MainWindow::instance()->connectToController();
+    });
+
     // 注册dbus服务
     QDBusConnection conn = QDBusConnection::sessionBus();
     if (!conn.isConnected()) {
@@ -87,11 +95,6 @@ int main(int argc, char *argv[])
         qWarning() << "registerObject Failed:" << conn.lastError();
         return -1;
     }
-
-    QTimer::singleShot(0, MainWindow::instance(), []() {
-        QueryController::instance();
-        MatchController::instance();
-    });
 
     app.exec();
 }

@@ -36,9 +36,10 @@ class MatchWidget : public Dtk::Widget::DWidget
 public:
     explicit MatchWidget(QWidget *parent = nullptr);
     ~MatchWidget();
+    void connectToController();
 
     void reLayout();
-    void setMatchedData(const MatchedItemMap &matchedData);
+    void setMatchedData(const GrandSearch::MatchedItemMap &matchedData);
 
 public slots:
 
@@ -48,19 +49,24 @@ protected:
     void initConnect();
 
     void paintEvent(QPaintEvent *event) override;
+
 private:
     QScopedPointer<MatchWidgetPrivate> d_p;
 
-    QVBoxLayout *m_vLayout = nullptr;
+    QVBoxLayout *m_vMainLayout = nullptr;//匹配界面主体布局
+    Dtk::Widget::DScrollArea *m_scrollArea = nullptr;//滚动区域部件
+    DWidget *m_scrollAreaContent = nullptr;//滚动区域内容部件
+    QVBoxLayout *m_vScrollLayout = nullptr;//滚动区域内部部件整体布局
+
     GroupWidgetMap m_GroupWidgetMap;// 按group哈希值存放组列表
 
-    MatchedItemMap m_MatchedItemMap;// 匹配结果数据
+    GrandSearch::MatchedItemMap m_MatchedItemMap;// 匹配结果数据
 
     // 依据产品需求，规定group哈希值对应组列表显示顺序
     QStringList m_GroupHashShowOrder{
-        AC_GroupHash_App,
-        AC_GroupHash_Folder,
-        AC_GroupHash_File};
+        GroupHash_App,
+        GroupHash_Folder,
+        GroupHash_File};
 
     GroupWidgets m_vGroupWidgets;// 组列表按显示顺序存放
 };
