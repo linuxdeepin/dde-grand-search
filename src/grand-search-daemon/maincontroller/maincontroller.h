@@ -35,9 +35,9 @@ public:
 
     bool newSearch(const QString &key);
     void terminate();
-    QString getResults() const;
-    QString readBuffer() const;
-    bool isBufferEmpty() const;
+    QByteArray getResults() const;
+    QByteArray readBuffer() const;
+    bool isEmptyBuffer() const;
 signals:
     void matched();
 public slots:

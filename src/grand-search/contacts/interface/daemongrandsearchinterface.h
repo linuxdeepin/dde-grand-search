@@ -86,14 +86,14 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QStringLiteral("KeepAlive"), argumentList);
     }
 
-    inline QDBusPendingReply<QVariantMap> MatchedBuffer(const QString &session)
+    inline QDBusPendingReply<QByteArray> MatchedBuffer(const QString &session)
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(session);
         return asyncCallWithArgumentList(QStringLiteral("MatchedBuffer"), argumentList);
     }
 
-    inline QDBusPendingReply<QVariantMap> MatchedResults(const QString &session)
+    inline QDBusPendingReply<QByteArray> MatchedResults(const QString &session)
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(session);

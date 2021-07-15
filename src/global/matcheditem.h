@@ -36,6 +36,20 @@ struct MatchedItem {
 
 typedef QList<MatchedItem> MatchedItems;
 typedef QMap<QString, MatchedItems> MatchedItemMap; //组-匹配项列表
+
+//序列化
+inline QDataStream &operator<<(QDataStream &stream, const GrandSearch::MatchedItem &in)
+{
+    stream << in.item << in.name << in.icon << in.type << in.searcher;
+    return stream;
+}
+
+inline QDataStream &operator>>(QDataStream &stream, GrandSearch::MatchedItem &out)
+{
+    stream >> out.item >> out.name >> out.icon >> out.type >> out.searcher;
+    return stream;
+}
+
 }
 
 Q_DECLARE_METATYPE(GrandSearch::MatchedItem)

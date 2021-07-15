@@ -120,6 +120,7 @@ bool GrandSearchInterface::init()
 
 bool GrandSearchInterface::Search(const QString &session, const QString &key)
 {
+    qDebug() << __FUNCTION__ << "session " << session;
     CHECKINVOKER(false);
 
     //会话ID检查，符合UUID宽度36。
@@ -144,29 +145,32 @@ bool GrandSearchInterface::Search(const QString &session, const QString &key)
 
 void GrandSearchInterface::Terminate()
 {
+    qDebug() << __FUNCTION__;
     CHECKINVOKER();
     d->terminate();
 }
 
-QVariantMap GrandSearchInterface::MatchedResults(const QString &session)
+QByteArray GrandSearchInterface::MatchedResults(const QString &session)
 {
-    QVariantMap ret;
+    qDebug() << __FUNCTION__ << "session " << session;
+    QByteArray ret;
     CHECKINVOKER(ret);
 
     if (d->vaildSession(session)) {
-//        ret = d->m_main->getResults();
+        ret = d->m_main->getResults();
     }
 
     return ret;
 }
 
-QVariantMap GrandSearchInterface::MatchedBuffer(const QString &session)
+QByteArray GrandSearchInterface::MatchedBuffer(const QString &session)
 {
-    QVariantMap ret;
+    qDebug() << __FUNCTION__ << "session " << session;
+    QByteArray ret;
     CHECKINVOKER(ret);
 
-    if (d->vaildSession(session) && !d->m_main->isBufferEmpty()) {
-//        ret = d->m_main->readBuffer();
+    if (d->vaildSession(session) && !d->m_main->isEmptyBuffer()) {
+        ret = d->m_main->readBuffer();
     }
 
     return ret;
@@ -188,7 +192,7 @@ bool GrandSearchInterface::Configure(const QVariantMap &)
 
 QVariantMap GrandSearchInterface::Configuration() const
 {
-
+    return QVariantMap();
 }
 
 bool GrandSearchInterface::SetFeedBackStrategy(const QVariantMap &)
@@ -200,11 +204,12 @@ bool GrandSearchInterface::SetFeedBackStrategy(const QVariantMap &)
 
 QVariantMap GrandSearchInterface::FeedBackStrategy() const
 {
-
+    return QVariantMap();
 }
 
 bool GrandSearchInterface::KeepAlive(const QString &session)
 {
+    qDebug() << __FUNCTION__ << "session " << session;
     CHECKINVOKER(false);
 
     //重新计时

@@ -116,17 +116,43 @@ void MainController::terminate()
     }
 }
 
-QString MainController::getResults() const
+QByteArray MainController::getResults() const
 {
+    if (d->m_currentTask) {
+        GrandSearch::MatchedItemMap items = d->m_currentTask->getResults();
 
+        //序列化
+        QByteArray bytes;
+        QDataStream stream(&bytes, QIODevice::WriteOnly);
+        stream << items;
+
+        return bytes;
+    }
+
+    return QByteArray();
 }
 
-QString MainController::readBuffer() const
+QByteArray MainController::readBuffer() const
 {
+    if (d->m_currentTask) {
+        GrandSearch::MatchedItemMap items = d->m_currentTask->readBuffer();
 
+        //序列化
+        QByteArray bytes;
+        QDataStream stream(&bytes, QIODevice::WriteOnly);
+        stream << items;
+
+        return bytes;
+    }
+
+    return QByteArray();
 }
 
-bool MainController::isBufferEmpty() const
+bool MainController::isEmptyBuffer() const
 {
+    if (d->m_currentTask) {
+        return d->m_currentTask->isEmptyBuffer();
+    }
 
+    return true;
 }

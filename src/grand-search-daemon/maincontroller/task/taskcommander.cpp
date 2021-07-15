@@ -162,7 +162,7 @@ GrandSearch::MatchedItemMap TaskCommander::readBuffer() const
     return ret;
 }
 
-bool TaskCommander::isBufferEmpty() const
+bool TaskCommander::isEmptyBuffer() const
 {
     QReadLocker lk(&d->m_lock);
     return d->m_buffer.isEmpty();

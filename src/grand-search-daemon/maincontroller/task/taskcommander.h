@@ -40,7 +40,7 @@ public:
     void stop();
     GrandSearch::MatchedItemMap getResults() const;
     GrandSearch::MatchedItemMap readBuffer() const;
-    bool isBufferEmpty() const;
+    bool isEmptyBuffer() const;
     bool join(ProxyWorker *);
     void deleteSelf();
 protected:
