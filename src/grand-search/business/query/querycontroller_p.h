@@ -23,13 +23,29 @@
 
 #include "querycontroller.h"
 
-class QueryControllerPrivate
+#include <QObject>
+#include <QTimer>
+
+class DaemonGrandSearchInterface;
+class QueryControllerPrivate : public QObject
 {
+    Q_OBJECT
 public:
     explicit QueryControllerPrivate(QueryController *parent = nullptr);
 
+public slots:
+    void onSearchTextChanged(const QString &txt);
+    void keepAlive();
+
+    void onSearchCompleted(const QString &missionId);
+
+public:
     QueryController *q_p;
     QString m_missionId;
+    QString m_searchText;
+    QTimer *m_keepAliveTimer = nullptr;
+
+    DaemonGrandSearchInterface *m_daemonDbus = nullptr;
 };
 
 #endif // QUERYCONTROLLER_P_H

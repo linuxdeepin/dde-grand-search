@@ -47,6 +47,7 @@ protected:
 
 signals:
     void visibleChanged(const bool visible);
+    void searchTextChanged(const QString &txt);
 
 private:
     QScopedPointer<MainWindowPrivate> d_p;

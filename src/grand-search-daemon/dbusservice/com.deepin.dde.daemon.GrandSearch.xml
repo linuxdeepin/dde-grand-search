@@ -15,13 +15,11 @@
     <method name="Terminate">
     </method>
     <method name="MatchedResults">
-      <arg type="a{sv}" direction="out"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
+      <arg type="ay" direction="out"/>
       <arg name="session" type="s" direction="in"/>
     </method>
     <method name="MatchedBuffer">
-      <arg type="a{sv}" direction="out"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
+      <arg type="ay" direction="out"/>
       <arg name="session" type="s" direction="in"/>
     </method>
     <method name="OpenWithPlugin">

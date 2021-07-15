@@ -92,7 +92,7 @@ void MainWindow::initUI()
 
 void MainWindow::initConnect()
 {
-
+    connect(d_p->m_entranceWidget, &EntranceWidget::searchTextChanged, this, &MainWindow::searchTextChanged);
 }
 
 void MainWindow::showEvent(QShowEvent *event)

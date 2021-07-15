@@ -43,7 +43,7 @@ public:
     Dtk::Widget::DSearchEdit *m_searchEdit = nullptr;
     QHBoxLayout *m_mainLayout = nullptr;
 
-    QTimer *m_timer = nullptr;      // 延迟发出搜索文本改变
+    QTimer *m_delayChangeTimer = nullptr;      // 延迟发出搜索文本改变
 };
 
 #endif // ENTRANCEWIDGET_P_H

@@ -20,6 +20,11 @@
  */
 #include "querycontroller_p.h"
 #include "querycontroller.h"
+#include "gui/mainwindow.h"
+#include "contacts/interface/daemongrandsearchinterface.h"
+
+#include <QUuid>
+#include <QDebug>
 
 class QueryControllerGlobal : public QueryController{};
 Q_GLOBAL_STATIC(QueryControllerGlobal, queryControllerGlobal)
@@ -27,19 +32,72 @@ Q_GLOBAL_STATIC(QueryControllerGlobal, queryControllerGlobal)
 QueryControllerPrivate::QueryControllerPrivate(QueryController *parent)
     : q_p(parent)
 {
+    m_keepAliveTimer = new QTimer(this);
+    m_keepAliveTimer->setInterval(3000);
 
+    m_daemonDbus = new DaemonGrandSearchInterface(this);
+
+    connect(m_keepAliveTimer, &QTimer::timeout, this, &QueryControllerPrivate::keepAlive);
+}
+
+void QueryControllerPrivate::onSearchTextChanged(const QString &txt)
+{
+    if (m_searchText == txt)
+        return;
+
+    m_keepAliveTimer->stop();
+
+    if (txt.isEmpty()) {
+        m_daemonDbus->Terminate();
+        qDebug() << "search terminate and missionId:" << m_missionId;
+        m_searchText.clear();
+        m_missionId.clear();
+        return;
+    }
+
+    m_searchText = txt;
+
+    // 搜索文本改变，创建新的会话ID
+    m_missionId = QUuid::createUuid().toString(QUuid::WithoutBraces);
+    emit q_p->missionIdChanged(m_missionId);
+
+    qDebug() << "search started and missionId:" << m_missionId;
+    bool started = m_daemonDbus->Search(m_missionId, m_searchText);
+    if (started) {
+        m_keepAliveTimer->start();
+    } else {
+        qWarning() << "search failed:"<<m_missionId;
+    }
+}
+
+void QueryControllerPrivate::keepAlive()
+{
+    m_daemonDbus->KeepAlive(m_missionId);
+}
+
+void QueryControllerPrivate::onSearchCompleted(const QString &missionId)
+{
+    if (missionId == m_missionId) {
+        m_keepAliveTimer->stop();
+        qDebug() << "search completed and missionId:" << m_missionId;
+    }
 }
 
 QueryController::QueryController(QObject *parent)
     : QObject(parent)
     , d_p(new QueryControllerPrivate(this))
 {
-
+    connect(MainWindow::instance(), &MainWindow::searchTextChanged, d_p.data(), &QueryControllerPrivate::onSearchTextChanged);
 }
 
 QueryController::~QueryController()
 {
 
+}
+
+QString QueryController::getMissionID() const
+{
+    return d_p->m_missionId;
 }
 
 QueryController *QueryController::instance()

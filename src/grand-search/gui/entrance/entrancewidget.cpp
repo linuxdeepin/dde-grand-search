@@ -34,21 +34,21 @@ DWIDGET_USE_NAMESPACE
 EntranceWidgetPrivate::EntranceWidgetPrivate(EntranceWidget *parent)
     : q_p(parent)
 {
-    m_timer = new QTimer(this);
-    m_timer->setSingleShot(true);
-    m_timer->setInterval(50);
+    m_delayChangeTimer = new QTimer(this);
+    m_delayChangeTimer->setSingleShot(true);
+    m_delayChangeTimer->setInterval(50);
 
-    connect(m_timer, &QTimer::timeout, this, &EntranceWidgetPrivate::notifyTextChanged);
+    connect(m_delayChangeTimer, &QTimer::timeout, this, &EntranceWidgetPrivate::notifyTextChanged);
 }
 
 void EntranceWidgetPrivate::delayChangeText()
 {
-    m_timer->start();
+    m_delayChangeTimer->start();
 }
 
 void EntranceWidgetPrivate::notifyTextChanged()
 {
-    const QString &currentSearchText = m_searchEdit->text();
+    const QString &currentSearchText = m_searchEdit->text().trimmed();
     emit q_p->searchTextChanged(currentSearchText);
 }
 

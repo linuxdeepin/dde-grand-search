@@ -34,6 +34,9 @@ public:
 
     QString getMissionID() const;
 
+signals:
+    void missionIdChanged(const QString &missionId);
+
 protected:
     explicit QueryController(QObject *parent = nullptr);
 
