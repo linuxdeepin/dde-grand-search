@@ -3,7 +3,8 @@
  *
  * Author:     zhangyu<zhangyub@uniontech.com>
  *
- * Maintainer: zhangyu<zhangyub@uniontech.com>
+ * Maintainer: wangchunlin<wangchunlin@uniontech.com>
+ *             zhangyu<zhangyub@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,9 +20,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "controlcentersearcher.h"
+#include <gtest/gtest.h>
 
-ControlCenterSearcher::ControlCenterSearcher(QObject *parent) : Searcher(parent)
+#include <QApplication>
+
+#include <unistd.h>
+
+static void noMessageHandler(QtMsgType type, const QMessageLogContext &context,
+                                   const QString &message)
 {
+    return;
+}
 
+int main(int argc, char *argv[])
+{
+    QApplication app(argc, argv);
+
+    testing::InitGoogleTest(&argc,argv);
+
+    //不打印应用的输出日志
+    qInstallMessageHandler(noMessageHandler);
+
+    int ret = RUN_ALL_TESTS();
+
+    return ret;
 }
