@@ -22,15 +22,20 @@
 #include "mainwindow.h"
 #include "entrance/entrancewidget.h"
 #include "exhibition/exhibitionwidget.h"
+#include "gui/datadefine.h"
+
+#include <DApplication>
 
 #include <QDebug>
 #include <QTimer>
 #include <QVBoxLayout>
+#include <QScreen>
 
 class MainWindowGlobal : public MainWindow {};
 Q_GLOBAL_STATIC(MainWindowGlobal, mainWindowGlobal)
 
 DWIDGET_USE_NAMESPACE
+using namespace GrandSearch;
 
 MainWindowPrivate::MainWindowPrivate(MainWindow *parent)
     : q_p(parent)
@@ -57,6 +62,25 @@ void MainWindow::connectToController()
     d_p->m_exhibitionWidget->connectToController();
 }
 
+void MainWindow::onPrimaryScreenChanged(QScreen *screen)
+{
+    // 主窗口显示在主屏
+    disconnect(this, SLOT(onGeometryChanged(const QRect &)));
+    onGeometryChanged(screen->geometry());
+    connect(screen, &QScreen::geometryChanged, this, &MainWindow::onGeometryChanged);
+}
+
+void MainWindow::onGeometryChanged(const QRect &geometry)
+{
+    int sWidth = geometry.width();
+    int sHeight = geometry.height();
+
+    // 移动窗口到屏幕的居中偏上位置
+    sWidth = geometry.x() + sWidth/2 - int(MainWindowWidth/2);
+    sHeight = geometry.y() + sHeight/4;
+    move(sWidth, sHeight);
+}
+
 MainWindow *MainWindow::instance()
 {
     return mainWindowGlobal;
@@ -64,44 +88,56 @@ MainWindow *MainWindow::instance()
 
 void MainWindow::initUI()
 {
-    move(100, 100);
-    //  设置窗口标识为无边框、不在任务栏显示
-//    Qt::WindowFlags flags = windowFlags();
-//     flags |= Qt::Tool | Qt::FramelessWindowHint;
-//    setWindowFlags(flags);
+    //  设置窗口标识不在任务栏显示
+    setWindowFlag(Qt::Tool, true);
 
-//    // 模糊半径
-//    setRadius(30);
-//    // 透明背景
-//    setAttribute(Qt::WA_TranslucentBackground);
-//    // 焦点策略
-//    setFocusPolicy(Qt::NoFocus);
-//    // 模糊模式
+    // 控制界面大小和位置
+    setFixedSize(MainWindowWidth, MainWindowHeight);
+    QScreen *screen = qApp->primaryScreen();
+    onPrimaryScreenChanged(screen);
+
+    // 模糊模式
     setBlendMode(DBlurEffectWidget::BehindWindowBlend);
-//    // X和Y方向的圆角半径
-//    setBlurRectXRadius(10);
-//    setBlurRectYRadius(10);
-//    // 遮罩层颜色设置
-//    setMaskColor(DBlurEffectWidget::DarkColor);
 
     // 搜索入口界面
     d_p->m_entranceWidget = new EntranceWidget(this);
 
     // 结果展示界面
     d_p->m_exhibitionWidget = new ExhibitionWidget(this);
+    d_p->m_exhibitionWidget->hide();
 
     d_p->m_mainLayout = new QVBoxLayout(this);
-    d_p->m_mainLayout->setSpacing(0);
     d_p->m_mainLayout->addWidget(d_p->m_entranceWidget);
     d_p->m_mainLayout->addWidget(d_p->m_exhibitionWidget);
-    this->setLayout(d_p->m_mainLayout);
 
-    this->resize(760, 520);
+    // 根据设计图调整主界面布局，限制边距和内容间距为0
+    d_p->m_mainLayout->setSpacing(0);
+    d_p->m_mainLayout->setMargin(0);
+
+    this->setLayout(d_p->m_mainLayout);
 }
 
 void MainWindow::initConnect()
 {
+    // 通知查询控制模块发起新的搜索
     connect(d_p->m_entranceWidget, &EntranceWidget::searchTextChanged, this, &MainWindow::searchTextChanged);
+
+    // 展开展示界面
+    connect(d_p->m_entranceWidget, &EntranceWidget::searchTextChanged, this, &MainWindow::showExhibitionWidget);
+
+    // 监控主屏改变信号，及时更新窗口位置
+    connect(qApp, &QGuiApplication::primaryScreenChanged, this, &MainWindow::onPrimaryScreenChanged);
+}
+
+void MainWindow::showExhibitionWidget(const QString &txt)
+{
+    if (txt.isEmpty() && !d_p->m_exhibitionWidget->isHidden()) {
+        setFixedSize(MainWindowWidth, MainWindowHeight);
+        d_p->m_exhibitionWidget->hide();
+    } else if (!txt.isEmpty() && d_p->m_exhibitionWidget->isHidden()){
+        setFixedSize(MainWindowWidth, MainWindowExpandHeight);
+        d_p->m_exhibitionWidget->show();
+    }
 }
 
 void MainWindow::showEvent(QShowEvent *event)
@@ -118,6 +154,7 @@ void MainWindow::hideEvent(QHideEvent *event)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    // todo 通知controller停止处理，搜索任务的controller将通知后端停止搜索
+    // 通知查询控制器停止搜索
+    emit terminateSearch();
     return DBlurEffectWidget::closeEvent(event);
 }

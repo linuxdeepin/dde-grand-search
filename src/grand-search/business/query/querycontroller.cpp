@@ -22,9 +22,12 @@
 #include "querycontroller.h"
 #include "gui/mainwindow.h"
 #include "contacts/interface/daemongrandsearchinterface.h"
+#include "gui/datadefine.h"
 
 #include <QUuid>
 #include <QDebug>
+
+using namespace GrandSearch;
 
 class QueryControllerGlobal : public QueryController{};
 Q_GLOBAL_STATIC(QueryControllerGlobal, queryControllerGlobal)
@@ -33,7 +36,7 @@ QueryControllerPrivate::QueryControllerPrivate(QueryController *parent)
     : q_p(parent)
 {
     m_keepAliveTimer = new QTimer(this);
-    m_keepAliveTimer->setInterval(3000);
+    m_keepAliveTimer->setInterval(KeepAliveTime);
 
     m_daemonDbus = new DaemonGrandSearchInterface(this);
 
@@ -48,7 +51,7 @@ void QueryControllerPrivate::onSearchTextChanged(const QString &txt)
     m_keepAliveTimer->stop();
 
     if (txt.isEmpty()) {
-        m_daemonDbus->Terminate();
+        onTerminateSearch();
         qDebug() << "search terminate and missionId:" << m_missionId;
         m_searchText.clear();
         m_missionId.clear();
@@ -70,6 +73,11 @@ void QueryControllerPrivate::onSearchTextChanged(const QString &txt)
     }
 }
 
+void QueryControllerPrivate::onTerminateSearch()
+{
+    m_daemonDbus->Terminate();
+}
+
 void QueryControllerPrivate::keepAlive()
 {
     m_daemonDbus->KeepAlive(m_missionId);
@@ -88,6 +96,7 @@ QueryController::QueryController(QObject *parent)
     , d_p(new QueryControllerPrivate(this))
 {
     connect(MainWindow::instance(), &MainWindow::searchTextChanged, d_p.data(), &QueryControllerPrivate::onSearchTextChanged);
+    connect(MainWindow::instance(), &MainWindow::terminateSearch, d_p.data(), &QueryControllerPrivate::onTerminateSearch);
 }
 
 QueryController::~QueryController()

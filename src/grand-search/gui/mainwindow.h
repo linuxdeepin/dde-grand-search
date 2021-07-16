@@ -32,11 +32,22 @@ class MainWindow : public Dtk::Widget::DBlurEffectWidget
 public:
     static MainWindow *instance();
     ~MainWindow() Q_DECL_OVERRIDE;
+
+    // 必须在主界面显示后再调用该函数，处理业务相关流程
     void connectToController();
+
+private slots:
+    // 主屏改变响应槽，移动已显示的主界面到主屏
+    void onPrimaryScreenChanged(QScreen *screen);
+    // 主屏分辨率改变响应槽，调整显示的位置
+    void onGeometryChanged(const QRect &geometry);
 
 private:
     void initUI();
     void initConnect();
+
+    // 根据是否发起搜索，调整展示界面是否显示
+    void showExhibitionWidget(const QString &txt);
 
 protected:
     explicit MainWindow(QWidget *parent = nullptr);
@@ -47,8 +58,12 @@ protected:
     virtual void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 
 signals:
+    // 显示状态改变信号
     void visibleChanged(const bool visible);
+    // 搜索文本改变信号，通知查询控制器发起新的搜索
     void searchTextChanged(const QString &txt);
+    // 终止搜索信号，软件退出前通知后端终止搜索
+    void terminateSearch();
 
 private:
     QScopedPointer<MainWindowPrivate> d_p;

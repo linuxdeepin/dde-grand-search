@@ -30,7 +30,6 @@
 
 #include <DApplication>
 #include <DLog>
-#include <DWidgetUtil>
 
 #include <QDebug>
 #include <QTimer>
@@ -67,7 +66,6 @@ int main(int argc, char *argv[])
 
     qDebug() << "starting" << app.applicationName() << app.applicationVersion() << getpid();
     MainWindow::instance()->show();
-    moveToCenter(MainWindow::instance());
 
     QTimer::singleShot(0, MainWindow::instance(), [](){
         QueryController::instance();

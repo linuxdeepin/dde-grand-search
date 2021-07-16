@@ -20,6 +20,7 @@
  */
 #include "entrancewidget_p.h"
 #include "entrancewidget.h"
+#include "gui/datadefine.h"
 
 #include <DSearchEdit>
 #include <DStyle>
@@ -30,13 +31,14 @@
 #include <QTimer>
 
 DWIDGET_USE_NAMESPACE
+using namespace GrandSearch;
 
 EntranceWidgetPrivate::EntranceWidgetPrivate(EntranceWidget *parent)
     : q_p(parent)
 {
     m_delayChangeTimer = new QTimer(this);
     m_delayChangeTimer->setSingleShot(true);
-    m_delayChangeTimer->setInterval(50);
+    m_delayChangeTimer->setInterval(DelayReponseTime);
 
     connect(m_delayChangeTimer, &QTimer::timeout, this, &EntranceWidgetPrivate::notifyTextChanged);
 }
@@ -73,13 +75,23 @@ void EntranceWidget::connectToController()
 void EntranceWidget::initUI()
 {
     d_p->m_searchEdit = new DSearchEdit(this);
-    d_p->m_mainLayout = new QHBoxLayout(this);
-    d_p->m_mainLayout->setContentsMargins(8, 8, 0, 8);
-    d_p->m_mainLayout->setSpacing(0);
-    d_p->m_mainLayout->addWidget(d_p->m_searchEdit);
 
-    d_p->m_horSpace = new QSpacerItem(10, 20, QSizePolicy::Fixed);
-    d_p->m_mainLayout->addSpacerItem(d_p->m_horSpace);
+    // 搜索框界面布局设置
+    // 必须对搜索框控件的边距和间隔设置为0,否则其内含的LineEdit不满足大小显示要求
+    d_p->m_searchEdit->layout()->setSpacing(0);
+    d_p->m_searchEdit->layout()->setMargin(0);
+    d_p->m_searchEdit->lineEdit()->setFixedSize(EntraceWidgetWidth, EntraceWidgetHeight);
+
+    // 搜索框提示信息设置
+    d_p->m_searchEdit->setPlaceHolder(tr("Search"));
+    d_p->m_searchEdit->setPlaceholderText(tr("input your word"));
+
+    // 搜索界面布局设置
+    d_p->m_mainLayout = new QHBoxLayout(this);
+    d_p->m_mainLayout->addWidget(d_p->m_searchEdit);
+    // 根据设计图要求，设置边距和间隔
+    d_p->m_mainLayout->setSpacing(0);
+    d_p->m_mainLayout->setMargin(WidgetMargins);
 
     this->setLayout(d_p->m_mainLayout);
 

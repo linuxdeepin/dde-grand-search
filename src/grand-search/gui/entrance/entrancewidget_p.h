@@ -41,11 +41,10 @@ public:
     void notifyTextChanged();
 
     EntranceWidget *q_p;
-    Dtk::Widget::DSearchEdit *m_searchEdit = nullptr;
+    Dtk::Widget::DSearchEdit *m_searchEdit = nullptr;   // 搜索输入框控件
     QHBoxLayout *m_mainLayout = nullptr;
-    QSpacerItem *m_horSpace = nullptr;//搜索框后的小空隙，用于展示界面垂直滚动条对齐
 
-    QTimer *m_delayChangeTimer = nullptr;      // 延迟发出搜索文本改变
+    QTimer *m_delayChangeTimer = nullptr;               // 延迟发出搜索文本改变
 };
 
 #endif // ENTRANCEWIDGET_P_H
