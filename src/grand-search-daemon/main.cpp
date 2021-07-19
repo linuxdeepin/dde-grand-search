@@ -23,6 +23,8 @@
 #include "environments.h"
 #include "dbusservice/grandsearchinterface.h"
 
+#include <DLog>
+
 #include <QCoreApplication>
 #include <QDBusConnection>
 #include <QDBusError>
@@ -30,19 +32,29 @@
 
 #include <unistd.h>
 
+DCORE_USE_NAMESPACE
+
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
 
-    //设置应用信息
-    app.setOrganizationName("deepin");
-    app.setApplicationName("dde-grand-search-daemon");
-    app.setApplicationVersion(VERSION);
-    qInfo() << "starting " << app.applicationName() << app.applicationVersion() << getpid();
+    {
+        QString dateTime = QDateTime::currentDateTime().toString(Qt::ISODateWithMs);
+        //设置应用信息
+        app.setOrganizationName("deepin");
+        app.setApplicationName("dde-grand-search-daemon");
+        app.setApplicationVersion(VERSION);
+
+        // 设置终端和文件记录日志
+        const QString logFormat = "%{time}{yyyyMMdd.HH:mm:ss.zzz}[%{type:1}][%{function:-35} %{line:-4} %{threadid} ] %{message}\n";
+        DLogManager::setLogFormat(logFormat);
+        DLogManager::registerConsoleAppender();
+        DLogManager::registerFileAppender();
+        qInfo() << dateTime << "starting " << app.applicationName() << app.applicationVersion() << getpid();
+    }
 
     //todo
     //加载翻译文件
-    //dtk日志
 
     //服务接口
     GrandSearchInterface interface;

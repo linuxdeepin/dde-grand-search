@@ -79,22 +79,26 @@ bool MainController::init()
 
 bool MainController::newSearch(const QString &key)
 {
-    qDebug() << __FUNCTION__ << key;
+    qInfo() << "new search, current task:" << d->m_currentTask << key.size();
     if (Q_UNLIKELY(key.isEmpty()))
         return false;
 
     //释放当前任务
     if (d->m_currentTask) {
         d->m_currentTask->stop();
+        disconnect(d->m_currentTask, nullptr, this, nullptr);
+
         d->m_currentTask->deleteSelf();
         d->m_currentTask = nullptr;
     }
 
     auto task = new TaskCommander(key);
+    qInfo() << "new task:" << task << task->taskID();
     Q_ASSERT(task);
 
     //直连，防止被事件循环打乱时序
     connect(task, &TaskCommander::matched, this, &MainController::matched, Qt::DirectConnection);
+    connect(task, &TaskCommander::finished, this, &MainController::searchCompleted, Qt::DirectConnection);
 
     d->buildWorker(task);
     if (task->start()) {
@@ -102,6 +106,7 @@ bool MainController::newSearch(const QString &key)
         return true;
     }
 
+    qWarning() << "fail to start task" << task << task->taskID();
     task->deleteSelf();
     return false;
 }

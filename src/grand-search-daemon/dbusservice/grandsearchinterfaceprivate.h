@@ -45,6 +45,7 @@ public:
 private slots:
     void terminate();
     void onMatched();
+    void onSearchCompleted();
 private:
     GrandSearchInterface *q;
     MainController *m_main = nullptr;

@@ -40,6 +40,7 @@ public:
     bool isEmptyBuffer() const;
 signals:
     void matched();
+    void searchCompleted();
 public slots:
 private:
     MainControllerPrivate *d = nullptr;

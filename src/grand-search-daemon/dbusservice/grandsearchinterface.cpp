@@ -85,9 +85,20 @@ void GrandSearchInterfacePrivate::terminate()
 void GrandSearchInterfacePrivate::onMatched()
 {
     //控制在主线程
+    qInfo() << "notify matched" << m_session;
     Q_ASSERT(QThread::currentThread() == qApp->thread());
     if (!m_session.isEmpty()) {
         emit q->Matched(m_session);
+    }
+}
+
+void GrandSearchInterfacePrivate::onSearchCompleted()
+{
+    //控制在主线程
+    qInfo() << "notify finished" << m_session;
+    Q_ASSERT(QThread::currentThread() == qApp->thread());
+    if (!m_session.isEmpty()) {
+        emit q->SearchCompleted(m_session);
     }
 }
 
@@ -114,6 +125,7 @@ bool GrandSearchInterface::init()
     d->m_main = new MainController;
     //直连，防止被事件循环打乱时序
     connect(d->m_main, &MainController::matched, d, &GrandSearchInterfacePrivate::onMatched, Qt::DirectConnection);
+    connect(d->m_main, &MainController::searchCompleted, d, &GrandSearchInterfacePrivate::onSearchCompleted, Qt::DirectConnection);
 
     return d->m_main->init();
 }
@@ -133,8 +145,8 @@ bool GrandSearchInterface::Search(const QString &session, const QString &key)
 
     //发起新的搜索
     if (d->m_main->newSearch(key)) {
-        d->m_deadline.start();
         d->m_session = session;
+        d->m_deadline.start();
         return true;
     }
 

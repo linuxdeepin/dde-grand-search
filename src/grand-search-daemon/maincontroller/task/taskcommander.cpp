@@ -108,6 +108,8 @@ QString TaskCommander::content() const
 
 bool TaskCommander::start()
 {
+    qDebug() << "start" << this->taskID() << d->m_working
+             << "async" << d->m_asyncWorkers.size() << "sync" << d->m_syncWorkers.size();
     if (d->m_working)
         return false;
 
@@ -137,6 +139,7 @@ bool TaskCommander::start()
 
 void TaskCommander::stop()
 {
+    qDebug() << "stop" << this->taskID();
     d->m_asyncLine.cancel();
     d->m_syncLine.cancel();
 
