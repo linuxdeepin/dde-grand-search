@@ -27,6 +27,9 @@
 
 class EntranceWidget;
 class ExhibitionWidget;
+DWIDGET_BEGIN_NAMESPACE
+class DLabel;
+DWIDGET_END_NAMESPACE
 class QVBoxLayout;
 class MainWindowPrivate
 {
@@ -36,6 +39,7 @@ public:
     MainWindow *q_p;
     EntranceWidget *m_entranceWidget = nullptr;
     ExhibitionWidget *m_exhibitionWidget = nullptr;
+    Dtk::Widget::DLabel *m_searchNoContentWidget = nullptr;
     QVBoxLayout *m_mainLayout = nullptr;
 };
 

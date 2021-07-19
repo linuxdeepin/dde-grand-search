@@ -39,9 +39,12 @@ class DHorizontalLine;
 DWIDGET_END_NAMESPACE
 DWIDGET_USE_NAMESPACE
 
+//调试使用，最后发布时需删除todo
+//定义显示窗口背景色宏，若使用，可显示各个界面背景色，用于更好调整窗口布局和大小，该宏仅在dev阶段使用
 //#define SHOW_BACKCOLOR
 
 class QVBoxLayout;
+class QHBoxLayout;
 class GroupWidget : public DWidget
 {
     Q_OBJECT
@@ -69,16 +72,23 @@ protected:
 
 public slots:
     void setThemeType(int type);
+    void onMoreBtnClcked();
+
+signals:
+    void showMore();
 
 private:
     QScopedPointer<GroupWidgetPrivate> d_p;
 
-    QVBoxLayout *m_vLayout = nullptr;
+    QVBoxLayout *m_vLayout = nullptr;//主体垂直布局
+    QHBoxLayout *m_HTitelLayout = nullptr;//顶部标题水平布局
 
     DLabel *m_GroupLabel = nullptr;
+    DPushButton* m_MoreButton = nullptr;
     GrandSearchListview *m_ListView = nullptr;
     DHorizontalLine *m_Line = nullptr;
 
+    GrandSearch::MatchedItems m_MatchedItems;
 };
 
 typedef QMap<QString, GroupWidget *> GroupWidgetMap;

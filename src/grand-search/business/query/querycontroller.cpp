@@ -64,18 +64,21 @@ void QueryControllerPrivate::onSearchTextChanged(const QString &txt)
     m_missionId = QUuid::createUuid().toString(QUuid::WithoutBraces);
     emit q_p->missionIdChanged(m_missionId);
 
-    qDebug() << QString("search started and missionId:%1 searchText:%2").arg(m_missionId).arg(m_searchText);
+    qDebug() << QString("m_daemonDbus->Search begin missionId:%1").arg(m_missionId);
     bool started = m_daemonDbus->Search(m_missionId, m_searchText);
+    qDebug() << QString("m_daemonDbus->Search end   missionId:%1").arg(m_missionId);
     if (started) {
         m_keepAliveTimer->start();
     } else {
-        qWarning() << QString("search failed missionId:%1 searchText:%2").arg(m_missionId).arg(m_searchText);
+        qWarning() << QString("search failed missionId:%1").arg(m_missionId);
     }
 }
 
 void QueryControllerPrivate::onTerminateSearch()
 {
+    qDebug() << "m_daemonDbus->Terminate begin missionId:" << m_missionId;
     m_daemonDbus->Terminate();
+    qDebug() << "m_daemonDbus->Terminate end   missionId:" << m_missionId;
 }
 
 void QueryControllerPrivate::keepAlive()
@@ -107,6 +110,11 @@ QueryController::~QueryController()
 QString QueryController::getMissionID() const
 {
     return d_p->m_missionId;
+}
+
+bool QueryController::isEmptySearchText() const
+{
+    return d_p->m_searchText.isEmpty();
 }
 
 QueryController *QueryController::instance()

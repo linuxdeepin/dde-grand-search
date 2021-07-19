@@ -63,30 +63,47 @@ void GrandSearchListview::setMatchedItems(const MatchedItems &items)
     m_matchedItems = items;
     m_model->clear();
     for (MatchedItem item : m_matchedItems) {
-        QStandardItem *newItem = new QStandardItem;
-        m_model->appendRow(newItem);
+        addRow(item);
+    }
+}
 
-        auto row = m_model->rowCount() - 1;
-        QModelIndex index = m_model->index(row, 0, QModelIndex());
+void GrandSearchListview::addRow(const MatchedItem &item)
+{
+    QStandardItem *newItem = new QStandardItem;
+    m_model->appendRow(newItem);
 
-        QVariant searchMeta;
-        searchMeta.setValue(item);
-        m_model->setData(index, searchMeta, DATA_ROLE);
+    auto row = m_model->rowCount() - 1;
+    QModelIndex index = m_model->index(row, 0, QModelIndex());
 
-        // 设置icon
-        QVariant IconMeta;
-        QString imagesDirPath = item.icon;
-        //QString imagesDirPath = cacheDir() + "/images/" + result.icon + ".jpg";
+    QVariant searchMeta;
+    searchMeta.setValue(item);
+    m_model->setData(index, searchMeta, DATA_ROLE);
+
+    // 设置icon
+    QVariant iconVariantData;
+    QString imagesDirPath = item.icon;
+    // 判断icon是路径还是图标名
+    bool isFilePath = imagesDirPath.contains('/');
+    if (isFilePath) {
         QFileInfo file(imagesDirPath);
+
         if (file.exists()) {
-            QPixmap icon(imagesDirPath);
-            IconMeta.setValue(icon);
-            m_model->setData(index, IconMeta, ICON_ROLE);
-        } else {
-            IconMeta.setValue(m_defaultIcon);
-            m_model->setData(index, IconMeta, ICON_ROLE);
+             iconVariantData.setValue(QImage(imagesDirPath));
+        }
+        else {
+            iconVariantData.setValue(m_defaultIcon);
         }
     }
+    else {
+        QIcon icon = QIcon::fromTheme(item.icon);
+
+        if (icon.isNull())
+            iconVariantData.setValue(m_defaultIcon);
+        else
+            iconVariantData.setValue(icon.pixmap(static_cast<int>(64 * qApp->devicePixelRatio()), static_cast<int>(64 * qApp->devicePixelRatio())));
+    }
+
+    m_model->setData(index,iconVariantData, ICON_ROLE);
 }
 
 int GrandSearchListview::rowCount()

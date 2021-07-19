@@ -22,6 +22,9 @@
 #include "entrancewidget.h"
 #include "gui/datadefine.h"
 
+//调试使用，最后发布时需删除todo
+#include "gui/exhibition/matchresult/groupwidget.h"
+
 #include <DSearchEdit>
 #include <DStyle>
 
@@ -70,6 +73,21 @@ EntranceWidget::~EntranceWidget()
 void EntranceWidget::connectToController()
 {
 
+}
+
+void EntranceWidget::paintEvent(QPaintEvent *event)
+{
+    // 调试使用，最后发布时需删除todo 用于显示搜索入口界面背景色
+#ifdef SHOW_BACKCOLOR
+    Q_UNUSED(event);
+
+    QPainter painter(this);
+
+    painter.setBrush(Qt::darkCyan);
+    painter.drawRect(rect());
+#else
+    DWidget::paintEvent(event);
+#endif
 }
 
 void EntranceWidget::initUI()

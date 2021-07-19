@@ -34,6 +34,9 @@ public:
     ~EntranceWidget();
     void connectToController();
 
+protected:
+    void paintEvent(QPaintEvent *event) override;
+
 private:
     void initUI();
     void initConnections();

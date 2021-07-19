@@ -23,6 +23,8 @@
 #include "matchwidget.h"
 #include "listview/grandsearchlistview.h"
 #include "business/matchresult/matchcontroller.h"
+#include "business/query/querycontroller.h"
+#include "gui/mainwindow.h"
 
 #include <DScrollArea>
 #include <DApplicationHelper>
@@ -60,87 +62,38 @@ MatchWidget::~MatchWidget()
 void MatchWidget::connectToController()
 {
     connect(MatchController::instance(), &MatchController::matchedResult, this, &MatchWidget::setMatchedData);
-}
-
-void MatchWidget::reLayout()
-{
-    this->show();
-
-    // 计算匹配结果界面整体高度
-    int nTotalHeight = 0;
-    for (int i = 0; i < m_vGroupWidgets.size(); i++) {
-        GroupWidget *groupWidget = m_vGroupWidgets[i];
-        if (groupWidget) {
-
-            // 默认显示组列表内分割横线
-            groupWidget->showHorLine(true);
-
-            // 隐藏视觉上最后一个组列表横线
-            if (i == m_vGroupWidgets.size() - 1)
-                groupWidget->showHorLine(false);
-
-            // 组列表重新布局
-            groupWidget->reLayout();
-            int nHeight = groupWidget->height();
-            qDebug() << QString("MatchWidget::reLayout groupWidget:[%1] height:[%2]").arg(groupWidget->groupName()).arg(nHeight);
-            nTotalHeight += nHeight;
-
-            // 添加组列表之间的间隙
-            if (i != m_vGroupWidgets.size() - 1)
-                nTotalHeight += 5;
-        }
-    }
-
-    // 设置滚动区域内容部件整体高度
-    if (m_scrollAreaContent)
-        m_scrollAreaContent->setFixedHeight(nTotalHeight);
-
-    // 打破当前布局，根据最新显示组列表重新布局
-    if (m_vScrollLayout) {
-        delete m_vScrollLayout;
-        m_vScrollLayout = nullptr;
-    }
-    m_vScrollLayout = new QVBoxLayout(m_scrollAreaContent);
-    m_vScrollLayout->setContentsMargins(0, 0, 0, 0);
-    m_vScrollLayout->setSpacing(0);
-    m_scrollAreaContent->setLayout(m_vScrollLayout);
-
-    for (auto groupWidget : m_vGroupWidgets) {
-        if (groupWidget)
-            m_vScrollLayout->addWidget(groupWidget, 0);
-    }
-
-    layout();
-    qDebug() << QString("MatchWidget::reLayout nTotalHeight:[%1]").arg(nTotalHeight);
+    connect(QueryController::instance(), &QueryController::missionIdChanged, this, &MatchWidget::clearMatchedData);
 }
 
 void MatchWidget::setMatchedData(const MatchedItemMap &matchedData)
 {
     qDebug() << "MatchWidget::setMatchedData";
 
-    m_MatchedItemMap = matchedData;
+    m_matchedItemMap = matchedData;
 
-    // 动态创建组列表
-    MatchedItemMap::Iterator itData = m_MatchedItemMap.begin();
-    while (itData != m_MatchedItemMap.end()) {
+    // 动态创建类目列表
+    MatchedItemMap::Iterator itData = m_matchedItemMap.begin();
+    while (itData != m_matchedItemMap.end()) {
 
         QString groupHash = itData.key();
         if (groupHash.isEmpty())
             continue;
 
-        if (!m_GroupWidgetMap.contains(groupHash) || nullptr == m_GroupWidgetMap[groupHash]) {
+        if (!m_groupWidgetMap.contains(groupHash) || nullptr == m_groupWidgetMap[groupHash]) {
             GroupWidget *groupWidget = new GroupWidget(m_scrollAreaContent);
+            connect(groupWidget, &GroupWidget::showMore, this, &MatchWidget::reLayout);
+
             groupWidget->setGroupName(groupHash);
 
-            m_GroupWidgetMap[groupHash] = groupWidget;
+            m_groupWidgetMap[groupHash] = groupWidget;
         }
 
         itData++;
     }
 
-    // 动态显隐组列表，设置匹配结果到组列表
-    GroupWidgetMap::Iterator itemWidget = m_GroupWidgetMap.begin();
-    while (itemWidget != m_GroupWidgetMap.end()) {
+    // 动态显隐类目列表，设置匹配结果到类目列表
+    GroupWidgetMap::Iterator itemWidget = m_groupWidgetMap.begin();
+    while (itemWidget != m_groupWidgetMap.end()) {
 
         QString groupHash = itemWidget.key();
         GroupWidget *groupWidget = itemWidget.value();
@@ -149,26 +102,26 @@ void MatchWidget::setMatchedData(const MatchedItemMap &matchedData)
             continue;
         }
 
-        if (m_MatchedItemMap.contains(groupHash))
-            groupWidget->setMatchedItems(m_MatchedItemMap[groupHash]);
+        if (m_matchedItemMap.contains(groupHash))
+            groupWidget->setMatchedItems(m_matchedItemMap[groupHash]);
 
-        // 匹配结果组内有数据，显示对应组列表，否则，不显示
-        groupWidget->setVisible(m_MatchedItemMap.contains(groupHash) && m_MatchedItemMap[groupHash].size() > 0);
+        // 匹配结果类目内有数据，显示对应类目列表，否则，不显示
+        groupWidget->setVisible(m_matchedItemMap.contains(groupHash) && m_matchedItemMap[groupHash].size() > 0);
 
         itemWidget++;
     }
 
-    // 对需要显示的组列表排序
-    // a.优先在界面中显示应用、文件夹和文件组，显示顺序为: 应用 > 文件夹 > 文件
+    // 对需要显示的类目列表排序
+    // a.优先在界面中显示应用、文件夹和文件类目，显示顺序为: 应用 > 文件夹 > 文件
     m_vGroupWidgets.clear();
-    for (auto groupHash : m_GroupHashShowOrder) {
-        if (m_GroupWidgetMap[groupHash] && !m_GroupWidgetMap[groupHash]->isHidden())
-            m_vGroupWidgets.push_back(m_GroupWidgetMap[groupHash]);
+    for (auto groupHash : m_groupHashShowOrder) {
+        if (m_groupWidgetMap[groupHash] && !m_groupWidgetMap[groupHash]->isHidden())
+            m_vGroupWidgets.push_back(m_groupWidgetMap[groupHash]);
     }
 
-    // b.其他组追加在后面
-    itemWidget = m_GroupWidgetMap.begin();
-    while (itemWidget != m_GroupWidgetMap.end()) {
+    // b.其他类目追加在后面
+    itemWidget = m_groupWidgetMap.begin();
+    while (itemWidget != m_groupWidgetMap.end()) {
 
         if (itemWidget.value()
                 && !itemWidget.value()->isHidden()
@@ -179,6 +132,32 @@ void MatchWidget::setMatchedData(const MatchedItemMap &matchedData)
     }
 
     reLayout();
+
+    //有搜索结果 显示展示界面
+    MainWindow::instance()->showExhitionWidget(m_vGroupWidgets.size() > 0);
+}
+
+void MatchWidget::clearMatchedData()
+{
+    m_matchedItemMap.clear();
+    m_vGroupWidgets.clear();
+
+    MatchedItems items;
+    items.clear();
+
+    //清空并隐藏所有类目列表
+    for (GroupWidgetMap::Iterator it= m_groupWidgetMap.begin(); it!=m_groupWidgetMap.end(); ++it) {
+        if (it.value()) {
+            it.value()->setMatchedItems(items);
+            it.value()->hide();
+        }
+    }
+
+    //重置滚动区域内容部件高度
+    if (m_scrollAreaContent)
+        m_scrollAreaContent->setFixedHeight(0);
+
+    layout();
 }
 
 void MatchWidget::initUi()
@@ -211,8 +190,61 @@ void MatchWidget::initConnect()
 }
 
 
+void MatchWidget::reLayout()
+{
+    this->show();
+
+    // 计算匹配结果界面整体高度
+    int nTotalHeight = 0;
+    for (int i = 0; i < m_vGroupWidgets.size(); i++) {
+        GroupWidget *groupWidget = m_vGroupWidgets[i];
+        if (groupWidget) {
+
+            // 默认显示类目列表内分割横线
+            groupWidget->showHorLine(true);
+
+            // 隐藏视觉上最后一个类目列表横线
+            if (i == m_vGroupWidgets.size() - 1)
+                groupWidget->showHorLine(false);
+
+            // 类目列表重新布局
+            groupWidget->reLayout();
+            int nHeight = groupWidget->height();
+            qDebug() << QString("MatchWidget::reLayout groupWidget:[%1] height:[%2]").arg(groupWidget->groupName()).arg(nHeight);
+            nTotalHeight += nHeight;
+
+            // 添加类目列表之间的间隙
+            if (i != m_vGroupWidgets.size() - 1)
+                nTotalHeight += 5;
+        }
+    }
+
+    // 设置滚动区域内容部件整体高度
+    if (m_scrollAreaContent)
+        m_scrollAreaContent->setFixedHeight(nTotalHeight);
+
+    // 打破当前布局，根据最新显示类目列表重新布局
+    if (m_vScrollLayout) {
+        delete m_vScrollLayout;
+        m_vScrollLayout = nullptr;
+    }
+    m_vScrollLayout = new QVBoxLayout(m_scrollAreaContent);
+    m_vScrollLayout->setContentsMargins(0, 0, 0, 0);
+    m_vScrollLayout->setSpacing(0);
+    m_scrollAreaContent->setLayout(m_vScrollLayout);
+
+    for (auto groupWidget : m_vGroupWidgets) {
+        if (groupWidget)
+            m_vScrollLayout->addWidget(groupWidget, 0);
+    }
+
+    layout();
+    qDebug() << QString("MatchWidget::reLayout nTotalHeight:[%1]").arg(nTotalHeight);
+}
+
 void MatchWidget::paintEvent(QPaintEvent *event)
 {
+// 调试使用，最后发布时需删除todo
 #ifdef SHOW_BACKCOLOR
     Q_UNUSED(event);
 

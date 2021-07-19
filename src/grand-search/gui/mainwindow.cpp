@@ -25,6 +25,7 @@
 #include "gui/datadefine.h"
 
 #include <DApplication>
+#include <DLabel>
 
 #include <QDebug>
 #include <QTimer>
@@ -62,6 +63,33 @@ void MainWindow::connectToController()
     d_p->m_exhibitionWidget->connectToController();
 }
 
+void MainWindow::showExhitionWidget(bool bShow)
+{
+    //已经显示/隐藏，就不再重复显示/隐藏
+    if (d_p->m_exhibitionWidget && !d_p->m_exhibitionWidget->isHidden() == bShow)
+        return;
+
+    d_p->m_exhibitionWidget->setVisible(bShow);
+
+    if (bShow)
+        this->setFixedSize(MainWindowWidth,MainWindowExpandHeight);
+    else
+        this->setFixedSize(MainWindowWidth,MainWindowHeight);
+}
+
+void MainWindow::showSerachNoContent(bool bShow)
+{
+    if (d_p->m_searchNoContentWidget)
+        d_p->m_searchNoContentWidget->setVisible(bShow);
+
+    if (bShow) {
+        if (d_p->m_exhibitionWidget)
+            d_p->m_exhibitionWidget->setVisible(false);
+
+        this->setFixedSize(MainWindowWidth,MainWindowExpandHeight);
+    }
+}
+
 void MainWindow::onPrimaryScreenChanged(QScreen *screen)
 {
     // 主窗口显示在主屏
@@ -81,6 +109,16 @@ void MainWindow::onGeometryChanged(const QRect &geometry)
     move(sWidth, sHeight);
 }
 
+void MainWindow::onSearchTextChanged(const QString &txt)
+{
+    if (txt.isEmpty()) {
+        showExhitionWidget(false);
+        showSerachNoContent(false);
+    } else if (!txt.isEmpty()){
+        showExhitionWidget(true);
+    }
+}
+
 MainWindow *MainWindow::instance()
 {
     return mainWindowGlobal;
@@ -88,7 +126,7 @@ MainWindow *MainWindow::instance()
 
 void MainWindow::initUI()
 {
-    //  设置窗口标识不在任务栏显示
+    // 设置窗口标识不在任务栏显示
     setWindowFlag(Qt::Tool, true);
 
     // 控制界面大小和位置
@@ -101,14 +139,21 @@ void MainWindow::initUI()
 
     // 搜索入口界面
     d_p->m_entranceWidget = new EntranceWidget(this);
+    //d_p->m_entranceWidget->setFixedHeight(52);hcq
 
     // 结果展示界面
     d_p->m_exhibitionWidget = new ExhibitionWidget(this);
     d_p->m_exhibitionWidget->hide();
 
+    // 未搜到内容界面
+    d_p->m_searchNoContentWidget = new DLabel(tr("no content found"),this);
+    d_p->m_searchNoContentWidget->setAlignment(Qt::AlignCenter);
+    d_p->m_searchNoContentWidget->hide();
+
     d_p->m_mainLayout = new QVBoxLayout(this);
     d_p->m_mainLayout->addWidget(d_p->m_entranceWidget);
     d_p->m_mainLayout->addWidget(d_p->m_exhibitionWidget);
+    d_p->m_mainLayout->addWidget(d_p->m_searchNoContentWidget);
 
     // 根据设计图调整主界面布局，限制边距和内容间距为0
     d_p->m_mainLayout->setSpacing(0);
@@ -123,21 +168,10 @@ void MainWindow::initConnect()
     connect(d_p->m_entranceWidget, &EntranceWidget::searchTextChanged, this, &MainWindow::searchTextChanged);
 
     // 展开展示界面
-    connect(d_p->m_entranceWidget, &EntranceWidget::searchTextChanged, this, &MainWindow::showExhibitionWidget);
+    connect(d_p->m_entranceWidget, &EntranceWidget::searchTextChanged, this, &MainWindow::onSearchTextChanged);
 
     // 监控主屏改变信号，及时更新窗口位置
     connect(qApp, &QGuiApplication::primaryScreenChanged, this, &MainWindow::onPrimaryScreenChanged);
-}
-
-void MainWindow::showExhibitionWidget(const QString &txt)
-{
-    if (txt.isEmpty() && !d_p->m_exhibitionWidget->isHidden()) {
-        setFixedSize(MainWindowWidth, MainWindowHeight);
-        d_p->m_exhibitionWidget->hide();
-    } else if (!txt.isEmpty() && d_p->m_exhibitionWidget->isHidden()){
-        setFixedSize(MainWindowWidth, MainWindowExpandHeight);
-        d_p->m_exhibitionWidget->show();
-    }
 }
 
 void MainWindow::showEvent(QShowEvent *event)

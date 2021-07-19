@@ -38,15 +38,14 @@ public:
     ~MatchWidget();
     void connectToController();
 
-    void reLayout();
-    void setMatchedData(const GrandSearch::MatchedItemMap &matchedData);
-
 public slots:
-
+    void setMatchedData(const GrandSearch::MatchedItemMap &matchedData);
+    void clearMatchedData();
 
 protected:
     void initUi();
     void initConnect();
+    void reLayout();
 
     void paintEvent(QPaintEvent *event) override;
 
@@ -58,17 +57,17 @@ private:
     DWidget *m_scrollAreaContent = nullptr;//滚动区域内容部件
     QVBoxLayout *m_vScrollLayout = nullptr;//滚动区域内部部件整体布局
 
-    GroupWidgetMap m_GroupWidgetMap;// 按group哈希值存放组列表
+    GroupWidgetMap m_groupWidgetMap;// 按group哈希值存放类目列表
 
-    GrandSearch::MatchedItemMap m_MatchedItemMap;// 匹配结果数据
+    GrandSearch::MatchedItemMap m_matchedItemMap;// 匹配结果数据
 
-    // 依据产品需求，规定group哈希值对应组列表显示顺序
-    QStringList m_GroupHashShowOrder{
+    // 依据产品需求，规定group哈希值对应类目列表显示顺序
+    QStringList m_groupHashShowOrder{
         GroupHash_App,
         GroupHash_Folder,
         GroupHash_File};
 
-    GroupWidgets m_vGroupWidgets;// 组列表按显示顺序存放
+    GroupWidgets m_vGroupWidgets;// 类目列表按显示顺序存放
 };
 
 #endif // MATCHWIDGET_H

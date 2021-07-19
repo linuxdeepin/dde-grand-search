@@ -24,12 +24,16 @@
 #include "listview/grandsearchlistview.h"
 
 #include <DLabel>
+#include <DPushButton>
 #include <DHorizontalLine>
 #include <DApplicationHelper>
 
+#include <QHBoxLayout>
 #include <QVBoxLayout>
 
 using namespace GrandSearch;
+
+#define GROUP_MAX_SHOW 5
 
 GroupWidgetPrivate::GroupWidgetPrivate(GroupWidget *parent)
     : q_p(parent)
@@ -72,8 +76,21 @@ void GroupWidget::setMatchedItems(const MatchedItems &items)
 {
     qDebug() << QString("GroupWidget::setMatchedItems group:%1").arg(m_GroupLabel->text());
 
-    if (m_ListView)
-        m_ListView->setMatchedItems(items);
+    m_MatchedItems = items;
+
+    bool bSimpleShow = false;
+    bSimpleShow = items.size() > GROUP_MAX_SHOW;
+
+    if (m_ListView) {
+        if (bSimpleShow)
+            m_ListView->setMatchedItems(items.mid(0,5));
+
+        else
+            m_ListView->setMatchedItems(items);
+    }
+
+    if (m_MoreButton)
+        m_MoreButton->setVisible(bSimpleShow);
 
     layout();
 }
@@ -190,17 +207,42 @@ void GroupWidget::initUi()
     m_GroupLabel->setContentsMargins(0, 0, 0, 0);
     DFontSizeManager::instance()->bind(m_GroupLabel, DFontSizeManager::T8, QFont::Normal);
 
+    // 查看更多按钮
+    m_MoreButton = new DPushButton(tr("view more"), this);
+    m_MoreButton->setFixedSize(48,17);
+    m_MoreButton->setFlat(true);
+    m_MoreButton->setContentsMargins(0, 0, 0, 0);
+
+    // 使'查看更多'按钮按下时，背景色变淡
+    QPalette palette = m_MoreButton->palette();
+    QBrush brush(QColor(0,0,0,0));
+    palette.setBrush(QPalette::Active, QPalette::Button, brush);
+    palette.setBrush(QPalette::Active, QPalette::Light, brush);
+    palette.setBrush(QPalette::Active, QPalette::Midlight, brush);
+    palette.setBrush(QPalette::Active, QPalette::Dark, brush);
+    palette.setBrush(QPalette::Active, QPalette::Mid, brush);
+    m_MoreButton->setPalette(palette);
+    DFontSizeManager::instance()->bind(m_MoreButton, DFontSizeManager::T8, QFont::Normal);
+    m_MoreButton->hide();
+
+    // 组列表标题栏布局
+    m_HTitelLayout = new QHBoxLayout();
+    m_HTitelLayout->setContentsMargins(0,0,0,0);
+    m_HTitelLayout->setSpacing(0);
+    m_HTitelLayout->addWidget(m_GroupLabel);
+    m_HTitelLayout->addSpacerItem(new QSpacerItem(40,20,QSizePolicy::Expanding, QSizePolicy::Minimum));
+    m_HTitelLayout->addWidget(m_MoreButton);
+
     // 组内结果列表
     m_ListView = new GrandSearchListview(this);
-    m_ListView->setMinimumWidth(380);
 
     // 分割线
     m_Line = new DHorizontalLine;
     m_Line->setFrameShadow(DHorizontalLine::Raised);
     m_Line->setLineWidth(1);
 
-    // 控件放置到布局内
-    m_vLayout->addWidget(m_GroupLabel, 1);
+    // 控件放置到主布局内
+    m_vLayout->addLayout(m_HTitelLayout);
     m_vLayout->addWidget(m_ListView);
     m_vLayout->addWidget(m_Line);
 }
@@ -209,10 +251,13 @@ void GroupWidget::initConnect()
 {
     connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged,
             this, &GroupWidget::setThemeType);
+
+    connect(m_MoreButton, &DPushButton::clicked, this, &GroupWidget::onMoreBtnClcked);
 }
 
 void GroupWidget::paintEvent(QPaintEvent *event)
 {
+// 调试使用，最后发布时需删除todo
 #ifdef SHOW_BACKCOLOR
     Q_UNUSED(event);
 
@@ -238,6 +283,19 @@ void GroupWidget::setThemeType(int type)
 //        labelPalette.setColor(QPalette::Text, QColor("#414D68 "));
 //    }
 //    m_ListView->setPalette(labelPalette);
+}
+
+void GroupWidget::onMoreBtnClcked()
+{
+    if (m_ListView) {
+        for (int i = GROUP_MAX_SHOW; i < m_MatchedItems.size(); i++)
+            m_ListView->addRow(m_MatchedItems.at(i));
+    }
+
+    reLayout();
+
+    emit showMore();
+    m_MoreButton->hide();
 }
 
 

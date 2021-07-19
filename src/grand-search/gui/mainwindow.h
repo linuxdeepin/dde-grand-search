@@ -35,19 +35,20 @@ public:
 
     // 必须在主界面显示后再调用该函数，处理业务相关流程
     void connectToController();
+    void showExhitionWidget(bool bShow = true);
+    void showSerachNoContent(bool bShow = true);
 
 private slots:
     // 主屏改变响应槽，移动已显示的主界面到主屏
     void onPrimaryScreenChanged(QScreen *screen);
     // 主屏分辨率改变响应槽，调整显示的位置
     void onGeometryChanged(const QRect &geometry);
+    // 根据是否发起搜索，调整展示界面是否显示
+    void onSearchTextChanged(const QString &txt);
 
 private:
     void initUI();
     void initConnect();
-
-    // 根据是否发起搜索，调整展示界面是否显示
-    void showExhibitionWidget(const QString &txt);
 
 protected:
     explicit MainWindow(QWidget *parent = nullptr);

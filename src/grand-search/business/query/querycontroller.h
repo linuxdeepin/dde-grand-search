@@ -34,6 +34,7 @@ public:
 
     // 返回当前任务ID，如果没有执行中的任务，则返回空
     QString getMissionID() const;
+    bool isEmptySearchText() const;
 
 signals:
     // 搜索文本改变后，发起新的搜索前，发出该任务ID改变信号

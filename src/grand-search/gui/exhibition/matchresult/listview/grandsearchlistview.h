@@ -42,6 +42,8 @@ public:
     ~GrandSearchListview() override;
 
     void setMatchedItems(const MatchedItems &items);
+    void addRow(const MatchedItem &item);
+
     int rowCount();
     int getIndexInt()const;
     void setCurrentIndexInt(int row);

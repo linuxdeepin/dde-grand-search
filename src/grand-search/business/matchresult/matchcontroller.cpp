@@ -55,8 +55,9 @@ void MatchControllerPrivate::onMatched(const QString &missonId)
         return;
 
     //获取数据解析
+    qDebug() << QString("m_daemonDbus->MatchedBuffer begin missonId:%1").arg(m_missonId);
     QByteArray matchedBytes = m_daemonDbus->MatchedBuffer(m_missonId);
-    qDebug() << QString("m_daemonDbus->MatchedBuffer missonId:%1").arg(m_missonId);
+    qDebug() << QString("m_daemonDbus->MatchedBuffer end   missonId:%1").arg(m_missonId);
 
     QDataStream stream(&matchedBytes, QIODevice::ReadOnly);
 
