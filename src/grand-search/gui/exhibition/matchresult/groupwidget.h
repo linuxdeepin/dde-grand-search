@@ -53,12 +53,13 @@ public:
     ~GroupWidget();
 
     void setGroupName(const QString &groupHash);
-    void setMatchedItems(const GrandSearch::MatchedItems &items);
+    void appendMatchedItems(const GrandSearch::MatchedItems &items);
     void showHorLine(bool bShow = true);
     bool isHorLineVisilbe();
     GrandSearchListview *getListView();
     int itemCount();
     void reLayout();
+    void clear();
 
     QString groupName();
     static QString getGroupName(const QString &groupHash);
@@ -84,11 +85,14 @@ private:
     QHBoxLayout *m_HTitelLayout = nullptr;//顶部标题水平布局
 
     DLabel *m_GroupLabel = nullptr;
-    DPushButton* m_MoreButton = nullptr;
+    DPushButton* m_viewMoreButton = nullptr;
     GrandSearchListview *m_ListView = nullptr;
     DHorizontalLine *m_Line = nullptr;
 
-    GrandSearch::MatchedItems m_MatchedItems;
+    bool m_bListExpanded = false;                   // 结果列表是否已展开
+    GrandSearch::MatchedItems m_firstFiveItems;     // 前5行正在显示的匹配结果
+    GrandSearch::MatchedItems m_restShowItems;      // 剩余正在显示的匹配结果
+    GrandSearch::MatchedItems m_cacheItems;         // 缓存中的匹配结果
 };
 
 typedef QMap<QString, GroupWidget *> GroupWidgetMap;

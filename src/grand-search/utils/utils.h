@@ -1,10 +1,9 @@
 /*
  * Copyright (C) 2021 Uniontech Software Technology Co., Ltd.
  *
- * Author:     wangchunlin<wangchunlin@uniontech.com>
+ * Author:     houchengqiu<houchengqiu@uniontech.com>
  *
  * Maintainer: wangchunlin<wangchunlin@uniontech.com>
- *             houchengqiu<houchengqiu@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,30 +18,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef MATCHCONTROLLER_H
-#define MATCHCONTROLLER_H
 
-#include <QObject>
-#include <QScopedPointer>
+#ifndef SORTMATCHITEM_H
+#define SORTMATCHITEM_H
+
 #include "global/matcheditem.h"
 
-class MatchControllerPrivate;
-class MatchController : public QObject
+class Utils
 {
-    Q_OBJECT
 public:
-    static MatchController *instance();
-    ~MatchController();
+    static bool sort(GrandSearch::MatchedItems &list, Qt::SortOrder order = Qt::AscendingOrder);
 
-protected:
-    explicit MatchController(QObject *parent = nullptr);
-
-signals:
-    void matchedResult(const GrandSearch::MatchedItemMap &);
-    void searchCompleted();
-
-private:
-    QScopedPointer<MatchControllerPrivate> d_p;
+    static bool compareByString(const QString &str1, const QString &str2, Qt::SortOrder order = Qt::AscendingOrder);
+    static bool startWithSymbol(const QString &text);
+    static bool startWithHanzi(const QString &text);
+    static bool startWithLatin(const QString &text);
+    static bool startWithOtherLang(const QString &text);
 };
 
-#endif // MATCHCONTROLLER_H
+#endif // SORTMATCHITEM_H

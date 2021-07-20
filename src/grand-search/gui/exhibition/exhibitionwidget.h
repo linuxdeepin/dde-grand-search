@@ -39,9 +39,6 @@ public:
     ~ExhibitionWidget();
     void connectToController();
 
-    void test_search();
-    void test_clear();
-
 protected:
     void initUi();
     void initConnect();

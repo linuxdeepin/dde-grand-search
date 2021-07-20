@@ -39,35 +39,39 @@ public:
     void connectToController();
 
 public slots:
-    void setMatchedData(const GrandSearch::MatchedItemMap &matchedData);
+    void appendMatchedData(const GrandSearch::MatchedItemMap &matchedData);//追加显示匹配数据
     void clearMatchedData();
+    void onSearchCompleted();
+    void onShowMore();
 
 protected:
     void initUi();
     void initConnect();
     void reLayout();
 
+    // 动态创建类目列表，若对应类目已存在，则返回已有类目列表
+    GroupWidget *createGroupWidget(const QString &groupHash);
+
+    // 对要显示的类目列表进行排序
+    void sortVislibleGroupList();
+
     void paintEvent(QPaintEvent *event) override;
 
 private:
     QScopedPointer<MatchWidgetPrivate> d_p;
 
-    QVBoxLayout *m_vMainLayout = nullptr;//匹配界面主体布局
-    Dtk::Widget::DScrollArea *m_scrollArea = nullptr;//滚动区域部件
-    DWidget *m_scrollAreaContent = nullptr;//滚动区域内容部件
-    QVBoxLayout *m_vScrollLayout = nullptr;//滚动区域内部部件整体布局
+    QVBoxLayout *m_vMainLayout = nullptr;               // 匹配界面主体布局
+    Dtk::Widget::DScrollArea *m_scrollArea = nullptr;   // 滚动区域部件
+    DWidget *m_scrollAreaContent = nullptr;             // 滚动区域内容部件
+    QVBoxLayout *m_vScrollLayout = nullptr;             // 滚动区域内部部件整体布局
 
-    GroupWidgetMap m_groupWidgetMap;// 按group哈希值存放类目列表
-
-    GrandSearch::MatchedItemMap m_matchedItemMap;// 匹配结果数据
-
-    // 依据产品需求，规定group哈希值对应类目列表显示顺序
-    QStringList m_groupHashShowOrder{
+    QStringList m_groupHashShowOrder{                   // 依据产品需求，规定group哈希值对应类目列表显示顺序
         GroupHash_App,
         GroupHash_Folder,
         GroupHash_File};
 
-    GroupWidgets m_vGroupWidgets;// 类目列表按显示顺序存放
+    GroupWidgetMap m_groupWidgetMap;                    // 按group哈希值存放类目列表
+    GroupWidgets m_vGroupWidgets;                       // 类目列表按显示顺序存放
 };
 
 #endif // MATCHWIDGET_H

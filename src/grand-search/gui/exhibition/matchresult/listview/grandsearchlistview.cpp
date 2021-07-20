@@ -106,9 +106,14 @@ void GrandSearchListview::addRow(const MatchedItem &item)
     m_model->setData(index,iconVariantData, ICON_ROLE);
 }
 
+void GrandSearchListview::addRows(const MatchedItems &items)
+{
+    for (auto item : items)
+        addRow(item);
+}
+
 int GrandSearchListview::rowCount()
 {
-    qDebug() << QString("GrandSearchListview::rowCount: %1").arg(m_model->rowCount());
     return m_model->rowCount();
 }
 
@@ -125,6 +130,12 @@ void GrandSearchListview::setCurrentIndexInt(int row)
 int GrandSearchListview::getThemeType() const
 {
     return m_themeType;
+}
+
+void GrandSearchListview::clear()
+{
+    if (m_model)
+        m_model->clear();
 }
 
 void GrandSearchListview::onItemClicked(const QModelIndex &index)

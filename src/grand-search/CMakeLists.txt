@@ -95,12 +95,18 @@ set(CONTACTSSRC
     contacts/interface/daemongrandsearchinterface.cpp
     )
 
+# utils
+set(UTILSSRC
+    utils/utils.h
+    utils/utils.cpp
+    )
+
 # 源文件
 set(SRCS
     main.cpp
 )
 
-add_executable(${BIN_NAME} ${SRCS} ${GUISRC} ${BUSINESSSRC} ${CONTACTSSRC})
+add_executable(${BIN_NAME} ${SRCS} ${GUISRC} ${BUSINESSSRC} ${CONTACTSSRC} ${UTILSSRC})
 target_include_directories(${BIN_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${DtkWidget_INCLUDE_DIRS}

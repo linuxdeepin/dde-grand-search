@@ -80,11 +80,6 @@ void MainWindow::showExhitionWidget(bool bShow)
         return;
 
     d_p->m_exhibitionWidget->setVisible(bShow);
-
-    if (bShow)
-        this->setFixedSize(MainWindowWidth,MainWindowExpandHeight);
-    else
-        this->setFixedSize(MainWindowWidth,MainWindowHeight);
 }
 
 void MainWindow::showSerachNoContent(bool bShow)
@@ -95,8 +90,6 @@ void MainWindow::showSerachNoContent(bool bShow)
     if (bShow) {
         if (d_p->m_exhibitionWidget)
             d_p->m_exhibitionWidget->setVisible(false);
-
-        this->setFixedSize(MainWindowWidth,MainWindowExpandHeight);
     }
 }
 
@@ -121,12 +114,15 @@ void MainWindow::onGeometryChanged(const QRect &geometry)
 
 void MainWindow::onSearchTextChanged(const QString &txt)
 {
+    // todo:后续流程优化，展示界面和无内容界面显隐控制应依赖搜索结果发出的信号
+    showSerachNoContent(false);
     if (txt.isEmpty()) {
         showExhitionWidget(false);
-        showSerachNoContent(false);
-    } else if (!txt.isEmpty()){
+    } else {
         showExhitionWidget(true);
     }
+
+    updateMainWindowHeight();
 }
 
 void MainWindow::onApplicationStateChanged(const Qt::ApplicationState state)
@@ -166,6 +162,7 @@ void MainWindow::initUI()
 
     // 搜索入口界面
     d_p->m_entranceWidget = new EntranceWidget(this);
+    d_p->m_entranceWidget->setFixedHeight(MainWindowHeight);
 
     // 结果展示界面
     d_p->m_exhibitionWidget = new ExhibitionWidget(this);
@@ -207,6 +204,22 @@ void MainWindow::activeMainWindow()
 {
     activateWindow();
     raise();
+}
+
+void MainWindow::updateMainWindowHeight()
+{
+    bool bExhibitionWidgetShow = false;
+    bool bSearchNoContentWidgetShow = false;
+
+    if (d_p->m_exhibitionWidget)
+        bExhibitionWidgetShow = !d_p->m_exhibitionWidget->isHidden();
+    if (d_p->m_searchNoContentWidget)
+        bSearchNoContentWidgetShow = !d_p->m_searchNoContentWidget->isHidden();
+
+    if (bExhibitionWidgetShow || bSearchNoContentWidgetShow)
+        this->setFixedSize(MainWindowWidth,MainWindowExpandHeight);
+    else
+        this->setFixedSize(MainWindowWidth,MainWindowHeight);
 }
 
 void MainWindow::showEvent(QShowEvent *event)

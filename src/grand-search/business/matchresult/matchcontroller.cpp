@@ -42,6 +42,7 @@ void MatchControllerPrivate::initConnect()
     connect(QueryController::instance(), &QueryController::missionIdChanged, this, &MatchControllerPrivate::onMissionIdChanged);
 
     connect(m_daemonDbus, &DaemonGrandSearchInterface::Matched, this, &MatchControllerPrivate::onMatched);
+    connect(m_daemonDbus, &DaemonGrandSearchInterface::SearchCompleted, this, &MatchControllerPrivate::onSearchCompleted);
 }
 
 void MatchControllerPrivate::onMissionIdChanged(const QString &missionId)
@@ -75,7 +76,9 @@ void MatchControllerPrivate::onSearchCompleted(const QString &session)
         return;
 
     //通知界面刷新，若界面有数据不做处理，否则就刷新
+    emit q_p->searchCompleted();
 
+    qDebug() << QString("search Completed.");
 }
 
 MatchController::MatchController(QObject *parent)

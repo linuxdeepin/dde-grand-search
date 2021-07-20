@@ -61,103 +61,75 @@ MatchWidget::~MatchWidget()
 
 void MatchWidget::connectToController()
 {
-    connect(MatchController::instance(), &MatchController::matchedResult, this, &MatchWidget::setMatchedData);
+    connect(MatchController::instance(), &MatchController::matchedResult, this, &MatchWidget::appendMatchedData);
     connect(QueryController::instance(), &QueryController::missionIdChanged, this, &MatchWidget::clearMatchedData);
+    connect(MatchController::instance(), &MatchController::searchCompleted, this, &MatchWidget::onSearchCompleted);
 }
 
-void MatchWidget::setMatchedData(const MatchedItemMap &matchedData)
+void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
 {
-    qDebug() << "MatchWidget::setMatchedData";
+    bool bNeedRelayout = false;
 
-    m_matchedItemMap = matchedData;
-
-    // 动态创建类目列表
-    MatchedItemMap::Iterator itData = m_matchedItemMap.begin();
-    while (itData != m_matchedItemMap.end()) {
+    // 数据处理
+    MatchedItemMap::ConstIterator itData = matchedData.begin();
+    while (itData != matchedData.end()) {
 
         QString groupHash = itData.key();
-        if (groupHash.isEmpty())
+
+        // 根据groupHash创建对应类目列表，若已存在，直接返回已有类目列表
+        GroupWidget* groupWidget = createGroupWidget(groupHash);
+        if (!groupWidget)
             continue;
 
-        if (!m_groupWidgetMap.contains(groupHash) || nullptr == m_groupWidgetMap[groupHash]) {
-            GroupWidget *groupWidget = new GroupWidget(m_scrollAreaContent);
-            connect(groupWidget, &GroupWidget::showMore, this, &MatchWidget::reLayout);
+        // 追加匹配数据到类目列表中
+        groupWidget->appendMatchedItems(itData.value());
 
-            groupWidget->setGroupName(groupHash);
+        // 列表中有数据，显示类目列表
+        groupWidget->setVisible(groupWidget->itemCount() > 0);
 
-            m_groupWidgetMap[groupHash] = groupWidget;
-        }
+        //有新增匹配结果，需要调整重新布局
+        if (itData.value().size() > 0)
+            bNeedRelayout = true;
 
         itData++;
     }
 
-    // 动态显隐类目列表，设置匹配结果到类目列表
-    GroupWidgetMap::Iterator itemWidget = m_groupWidgetMap.begin();
-    while (itemWidget != m_groupWidgetMap.end()) {
-
-        QString groupHash = itemWidget.key();
-        GroupWidget *groupWidget = itemWidget.value();
-        if (!groupWidget) {
-            itemWidget++;
-            continue;
-        }
-
-        if (m_matchedItemMap.contains(groupHash))
-            groupWidget->setMatchedItems(m_matchedItemMap[groupHash]);
-
-        // 匹配结果类目内有数据，显示对应类目列表，否则，不显示
-        groupWidget->setVisible(m_matchedItemMap.contains(groupHash) && m_matchedItemMap[groupHash].size() > 0);
-
-        itemWidget++;
-    }
-
     // 对需要显示的类目列表排序
-    // a.优先在界面中显示应用、文件夹和文件类目，显示顺序为: 应用 > 文件夹 > 文件
-    m_vGroupWidgets.clear();
-    for (auto groupHash : m_groupHashShowOrder) {
-        if (m_groupWidgetMap[groupHash] && !m_groupWidgetMap[groupHash]->isHidden())
-            m_vGroupWidgets.push_back(m_groupWidgetMap[groupHash]);
-    }
+    sortVislibleGroupList();
 
-    // b.其他类目追加在后面
-    itemWidget = m_groupWidgetMap.begin();
-    while (itemWidget != m_groupWidgetMap.end()) {
-
-        if (itemWidget.value()
-                && !itemWidget.value()->isHidden()
-                && !m_vGroupWidgets.contains(itemWidget.value()))
-            m_vGroupWidgets.push_back(itemWidget.value());
-
-        itemWidget++;
-    }
-
-    reLayout();
-
-    //有搜索结果 显示展示界面
-    MainWindow::instance()->showExhitionWidget(m_vGroupWidgets.size() > 0);
+    // 重新调整布局
+    if (bNeedRelayout)
+        reLayout();
 }
 
 void MatchWidget::clearMatchedData()
 {
-    m_matchedItemMap.clear();
     m_vGroupWidgets.clear();
 
-    MatchedItems items;
-    items.clear();
-
-    //清空并隐藏所有类目列表
+    // 清空并隐藏所有类目列表
     for (GroupWidgetMap::Iterator it= m_groupWidgetMap.begin(); it!=m_groupWidgetMap.end(); ++it) {
-        if (it.value()) {
-            it.value()->setMatchedItems(items);
-            it.value()->hide();
-        }
+        if (it.value())
+            it.value()->clear();
     }
 
-    //重置滚动区域内容部件高度
+    // 重置滚动区域内容部件高度
     if (m_scrollAreaContent)
         m_scrollAreaContent->setFixedHeight(0);
 
     layout();
+}
+
+void MatchWidget::onSearchCompleted()
+{
+    if (!m_vGroupWidgets.isEmpty())
+        return;
+
+    MainWindow::instance()->showSerachNoContent(true);
+}
+
+void MatchWidget::onShowMore()
+{
+    reLayout();
 }
 
 void MatchWidget::initUi()
@@ -210,7 +182,6 @@ void MatchWidget::reLayout()
             // 类目列表重新布局
             groupWidget->reLayout();
             int nHeight = groupWidget->height();
-            qDebug() << QString("MatchWidget::reLayout groupWidget:[%1] height:[%2]").arg(groupWidget->groupName()).arg(nHeight);
             nTotalHeight += nHeight;
 
             // 添加类目列表之间的间隙
@@ -239,7 +210,47 @@ void MatchWidget::reLayout()
     }
 
     layout();
-    qDebug() << QString("MatchWidget::reLayout nTotalHeight:[%1]").arg(nTotalHeight);
+}
+
+GroupWidget *MatchWidget::createGroupWidget(const QString &groupHash)
+{
+    if (groupHash.isEmpty())
+        return nullptr;
+
+    if (!m_groupWidgetMap[groupHash]) {
+        GroupWidget* groupWidget = new GroupWidget(m_scrollAreaContent);
+        connect(groupWidget, &GroupWidget::showMore, this, &MatchWidget::reLayout);
+
+        groupWidget->setGroupName(groupHash);
+        m_groupWidgetMap[groupHash] = groupWidget;
+
+        return groupWidget;
+    }
+
+    return m_groupWidgetMap[groupHash];
+}
+
+void MatchWidget::sortVislibleGroupList()
+{
+    // 1.优先在界面中显示应用、文件夹和文件类目，显示顺序为: 应用 > 文件夹 > 文件
+    m_vGroupWidgets.clear();
+    for (auto groupHash : m_groupHashShowOrder) {
+        if (m_groupWidgetMap[groupHash] && !m_groupWidgetMap[groupHash]->isHidden())
+            m_vGroupWidgets.push_back(m_groupWidgetMap[groupHash]);
+    }
+
+    // 2.其他类目追加在后面
+    GroupWidgetMap::Iterator itemWidget = m_groupWidgetMap.begin();
+    while (itemWidget != m_groupWidgetMap.end()) {
+
+        if (itemWidget.value()
+                && !itemWidget.value()->isHidden()
+                && !m_vGroupWidgets.contains(itemWidget.value()))
+            m_vGroupWidgets.push_back(itemWidget.value());
+
+        itemWidget++;
+    }
+
 }
 
 void MatchWidget::paintEvent(QPaintEvent *event)

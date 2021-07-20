@@ -22,6 +22,7 @@
 #include "groupwidget_p.h"
 #include "groupwidget.h"
 #include "listview/grandsearchlistview.h"
+#include "utils/utils.h"
 
 #include <DLabel>
 #include <DPushButton>
@@ -34,6 +35,13 @@
 using namespace GrandSearch;
 
 #define GROUP_MAX_SHOW 5
+#define ListItemHeight            36       // 列表行高
+#define GroupLabelHeight          28       // 组标签高度
+#define ViewMoreBtnWidth          80       // 查看更多按钮宽度
+#define ViewMoreBtnHeight         17       // 查看更多按钮高度
+#define LayoutMagrinSize          10       // 布局边距
+#define SpacerWidth               40       // 弹簧宽度
+#define SpacerHeight              20       // 弹簧高度
 
 GroupWidgetPrivate::GroupWidgetPrivate(GroupWidget *parent)
     : q_p(parent)
@@ -45,6 +53,10 @@ GroupWidget::GroupWidget(QWidget *parent)
     : DWidget(parent)
     , d_p(new GroupWidgetPrivate(this))
 {
+    m_firstFiveItems.clear();
+    m_restShowItems.clear();
+    m_cacheItems.clear();
+
     initUi();
     initConnect();
 
@@ -68,29 +80,43 @@ void GroupWidget::setGroupName(const QString &groupHash)
 
     if (m_GroupLabel)
         m_GroupLabel->setText(groupName);
-
-    qDebug() << QString("GroupWidget::setGroupName groupName:[%1] groupHash:[%2]").arg(groupName).arg(groupHash);
 }
 
-void GroupWidget::setMatchedItems(const MatchedItems &items)
+void GroupWidget::appendMatchedItems(const MatchedItems &newItems)
 {
-    qDebug() << QString("GroupWidget::setMatchedItems group:%1").arg(m_GroupLabel->text());
+    if (newItems.isEmpty())
+        return;
 
-    m_MatchedItems = items;
+    // 结果列表未展开
+    if (!m_bListExpanded) {
 
-    bool bSimpleShow = false;
-    bSimpleShow = items.size() > GROUP_MAX_SHOW;
+        // 新来的数据先放入缓存中
+        m_cacheItems << newItems;
 
-    if (m_ListView) {
-        if (bSimpleShow)
-            m_ListView->setMatchedItems(items.mid(0,5));
+        // 显示结果不足5个，连带新增数据一起重新排序
+        if (m_firstFiveItems.size() < GROUP_MAX_SHOW) {
 
-        else
-            m_ListView->setMatchedItems(items);
+            m_cacheItems << m_firstFiveItems;
+            Utils::sort(m_cacheItems);
+
+            m_firstFiveItems.clear();
+            for (int i = 0; i < GROUP_MAX_SHOW; i++) {
+                if (!m_cacheItems.isEmpty())
+                    m_firstFiveItems.push_back(m_cacheItems.takeFirst());
+            }
+
+            m_ListView->setMatchedItems(m_firstFiveItems);
+        }
+
+        // 缓存中有数据，显示'查看更多'按钮
+        m_viewMoreButton->setVisible(!m_cacheItems.isEmpty());
     }
-
-    if (m_MoreButton)
-        m_MoreButton->setVisible(bSimpleShow);
+    else {
+        // 结果列表已展开，已经显示的数据保持不变，仅对新增数据排序，然后追加到列表末尾
+        MatchedItems& tempNewItems = const_cast<MatchedItems&>(newItems);
+        Utils::sort(tempNewItems);
+        m_ListView->addRows(tempNewItems);
+    }
 
     layout();
 }
@@ -129,27 +155,33 @@ void GroupWidget::reLayout()
     if (nullptr == m_ListView)
         return;
 
-    m_ListView->setFixedHeight(m_ListView->rowCount() * 34);
+    m_ListView->setFixedHeight(m_ListView->rowCount() * ListItemHeight);
 
     int nHeight = 0;
     if (m_GroupLabel) {
-        qDebug() << QString("GroupWidget::reLayout m_GroupLabel height:[%1]").arg(m_GroupLabel->height());
         nHeight += m_GroupLabel->height();
     }
     if (m_ListView) {
-        qDebug() << QString("GroupWidget::reLayout m_listView height:[%1]").arg(m_ListView->height());
         nHeight += m_ListView->height();
     }
     if (m_Line && !m_Line->isHidden()) {
-        qDebug() << QString("GroupWidget::reLayout m_Line height:[%1]").arg(m_Line->height());
         nHeight += m_Line->height();
     }
 
     this->setFixedHeight(nHeight);
 
     layout();
+}
 
-    qDebug() << QString("GroupWidget::reLayout groupWidget height:[%1]").arg(this->height());
+void GroupWidget::clear()
+{
+    m_firstFiveItems.clear();
+    m_restShowItems.clear();
+    m_cacheItems.clear();
+    m_bListExpanded = false;
+
+    m_ListView->clear();
+    setVisible(false);
 }
 
 QString GroupWidget::groupName()
@@ -192,46 +224,49 @@ void GroupWidget::initUi()
 {
     // 获取设置当前窗口文本颜色
     QPalette labelPalette;
-    labelPalette.setColor(QPalette::WindowText, QColor("#414D68 "));
+    labelPalette.setColor(QPalette::WindowText, QColor(0,0,0, static_cast<int>(255*0.6)));
 
     // 组列表内控件沿垂直方向布局
     m_vLayout = new QVBoxLayout(this);
-    m_vLayout->setContentsMargins(0, 0, 10, 0);
+    m_vLayout->setContentsMargins(0, 0, LayoutMagrinSize, 0);
     m_vLayout->setSpacing(0);
     this->setLayout(m_vLayout);
 
     // 组名标签
     m_GroupLabel = new DLabel(tr(""), this);
-    m_GroupLabel->setFixedHeight(34);
+    m_GroupLabel->setFixedHeight(GroupLabelHeight);
     m_GroupLabel->setPalette(labelPalette);
+    m_GroupLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
     m_GroupLabel->setContentsMargins(0, 0, 0, 0);
-    DFontSizeManager::instance()->bind(m_GroupLabel, DFontSizeManager::T8, QFont::Normal);
+    //DFontSizeManager::instance()->bind(m_GroupLabel, DFontSizeManager::T8, QFont::Normal);
 
     // 查看更多按钮
-    m_MoreButton = new DPushButton(tr("view more"), this);
-    m_MoreButton->setFixedSize(48,17);
-    m_MoreButton->setFlat(true);
-    m_MoreButton->setContentsMargins(0, 0, 0, 0);
+    m_viewMoreButton = new DPushButton(tr("view more"), this);
+    m_viewMoreButton->setFixedSize(ViewMoreBtnWidth,ViewMoreBtnHeight);
+    m_viewMoreButton->setFlat(true);
+    //DFontSizeManager::instance()->bind(m_viewMoreButton, DFontSizeManager::T8, QFont::Normal);
 
+    QPalette palette = m_viewMoreButton->palette();
+    // 设置查看按钮文本颜色
+    palette.setColor(QPalette::ButtonText, QColor(0,0,0, static_cast<int>(255*0.4)));
     // 使'查看更多'按钮按下时，背景色变淡
-    QPalette palette = m_MoreButton->palette();
     QBrush brush(QColor(0,0,0,0));
     palette.setBrush(QPalette::Active, QPalette::Button, brush);
     palette.setBrush(QPalette::Active, QPalette::Light, brush);
     palette.setBrush(QPalette::Active, QPalette::Midlight, brush);
     palette.setBrush(QPalette::Active, QPalette::Dark, brush);
     palette.setBrush(QPalette::Active, QPalette::Mid, brush);
-    m_MoreButton->setPalette(palette);
-    DFontSizeManager::instance()->bind(m_MoreButton, DFontSizeManager::T8, QFont::Normal);
-    m_MoreButton->hide();
+    m_viewMoreButton->setPalette(palette);
+    DFontSizeManager::instance()->bind(m_viewMoreButton, DFontSizeManager::T8, QFont::Normal);
+    m_viewMoreButton->hide();
 
     // 组列表标题栏布局
     m_HTitelLayout = new QHBoxLayout();
-    m_HTitelLayout->setContentsMargins(0,0,0,0);
+    m_HTitelLayout->setContentsMargins(LayoutMagrinSize,0,0,0);
     m_HTitelLayout->setSpacing(0);
     m_HTitelLayout->addWidget(m_GroupLabel);
-    m_HTitelLayout->addSpacerItem(new QSpacerItem(40,20,QSizePolicy::Expanding, QSizePolicy::Minimum));
-    m_HTitelLayout->addWidget(m_MoreButton);
+    m_HTitelLayout->addSpacerItem(new QSpacerItem(SpacerWidth,SpacerHeight,QSizePolicy::Expanding, QSizePolicy::Minimum));
+    m_HTitelLayout->addWidget(m_viewMoreButton);
 
     // 组内结果列表
     m_ListView = new GrandSearchListview(this);
@@ -252,7 +287,7 @@ void GroupWidget::initConnect()
     connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged,
             this, &GroupWidget::setThemeType);
 
-    connect(m_MoreButton, &DPushButton::clicked, this, &GroupWidget::onMoreBtnClcked);
+    connect(m_viewMoreButton, &DPushButton::clicked, this, &GroupWidget::onMoreBtnClcked);
 }
 
 void GroupWidget::paintEvent(QPaintEvent *event)
@@ -287,15 +322,25 @@ void GroupWidget::setThemeType(int type)
 
 void GroupWidget::onMoreBtnClcked()
 {
+    // '查看更多'被点击，列表被展开
     if (m_ListView) {
-        for (int i = GROUP_MAX_SHOW; i < m_MatchedItems.size(); i++)
-            m_ListView->addRow(m_MatchedItems.at(i));
+        // 将缓存中的数据转移到剩余显示结果中
+        m_restShowItems << m_cacheItems;
+        Utils::sort(m_restShowItems);
+
+        // 剩余显示结果追加显示到列表中
+        m_ListView->addRows(m_restShowItems);
+
+        // 清空缓存中数据
+        m_cacheItems.clear();
     }
 
     reLayout();
 
     emit showMore();
-    m_MoreButton->hide();
+    m_viewMoreButton->hide();
+
+    m_bListExpanded = true;
 }
 
 

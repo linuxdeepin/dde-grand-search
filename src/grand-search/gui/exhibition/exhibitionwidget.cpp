@@ -57,52 +57,6 @@ void ExhibitionWidget::connectToController()
     m_matchWidget->connectToController();
 }
 
-void ExhibitionWidget::test_search()
-{
-
-    MatchedItemMap matchedData;
-
-    int nAppCount = 4;
-    int nFolderCount = 5;
-    int nFileCount = 6;
-
-    // app
-    matchedData[GroupHash_App].clear();
-    for (int i = 0; i < nAppCount; i++) {
-        MatchedItem item;
-        item.name = QString("%1%2").arg(GroupName_App).arg(i + 1);
-        matchedData[GroupHash_App].push_back(item);
-    }
-
-    // folder
-    matchedData[GroupHash_Folder].clear();
-    for (int i = 0; i < nFolderCount; i++) {
-        MatchedItem item;
-        item.name = QString("%1%2").arg(GroupName_Folder).arg(i + 1);
-        matchedData[GroupHash_Folder].push_back(item);
-    }
-
-    // file
-    matchedData[GroupHash_File].clear();
-    for (int i = 0; i < nFileCount; i++) {
-        MatchedItem item;
-        item.name = QString("%1%2").arg(GroupName_File).arg(i + 1);
-        matchedData[GroupHash_File].push_back(item);
-    }
-
-    if (m_matchWidget)
-        m_matchWidget->setMatchedData(matchedData);
-}
-
-void ExhibitionWidget::test_clear()
-{
-    MatchedItemMap matchedData;
-    matchedData.clear();
-
-    if (m_matchWidget)
-        m_matchWidget->setMatchedData(matchedData);
-}
-
 void ExhibitionWidget::initUi()
 {
     m_hLayout = new QHBoxLayout(this);

@@ -29,6 +29,13 @@
 #include <QAbstractTextDocumentLayout>
 #include <QApplication>
 
+#define ListItemSpace             10       // 列表图标与文本间间距
+#define ListItemHeight            36       // 列表行高
+#define ListIconSize              24       // 列表图标大小
+#define ListRowWidth              350      // 列表行宽
+#define ListIconMargin            6        // 列表图标边距距
+#define ListItemTextMaxWidth      251      // 文本元素最大显示宽度
+
 GrandSearchListDelegate::GrandSearchListDelegate(QWidget *parent)
     : QStyledItemDelegate(parent)
 {
@@ -75,7 +82,7 @@ QSize GrandSearchListDelegate::sizeHint(const QStyleOptionViewItem &option, cons
 {
     Q_UNUSED(option)
     Q_UNUSED(index)
-    return QSize(350, 34);
+    return QSize(ListRowWidth, ListItemHeight);
 }
 
 void GrandSearchListDelegate::drawSelectState(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -126,7 +133,7 @@ void GrandSearchListDelegate::drawSearchResultIcon(QPainter *painter, const QSty
     QPixmap image;
     image = index.data(ICON_ROLE).value<QPixmap>();
     painter->save();
-    QRect imageRect(0, index.row() * 34 + 5, 24, 24);
+    QRect imageRect(ListItemSpace, index.row() * static_cast<int>(ListItemHeight) + ListIconMargin, ListIconSize, ListIconSize);
 
     QPainterPath clipPath;
     clipPath.addRoundedRect(imageRect, 5, 5);
@@ -168,7 +175,7 @@ void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QSty
     mtext = index.data(DATA_ROLE).value<MatchedItem>().name;
 
     QFontMetricsF fontWidth(fontT6);
-    mtext = fontWidth.elidedText(mtext, Qt::ElideMiddle, 251);
+    mtext = fontWidth.elidedText(mtext, Qt::ElideMiddle, ListItemTextMaxWidth);
     QStyleOptionViewItem viewOption(option);
     initStyleOption(&viewOption, index);
     if (option.state.testFlag(QStyle::State_HasFocus))
@@ -197,7 +204,7 @@ void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QSty
     // 动态计算边距，保证调整字体大小时绘制居中
     QAbstractTextDocumentLayout::PaintContext paintContext;
     int margin = static_cast<int>(((option.rect.height() - fontWidth.height()) / 2));
-    QRect textRect(29, option.rect.y() + margin, 251, option.rect.height());
+    QRect textRect(ListItemSpace * 2 + ListIconSize, option.rect.y() + margin, ListItemTextMaxWidth, option.rect.height());
     painter->save();
     painter->translate(textRect.topLeft());
     painter->setClipRect(textRect.translated(-textRect.topLeft()));

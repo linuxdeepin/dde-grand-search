@@ -43,11 +43,14 @@ public:
 
     void setMatchedItems(const MatchedItems &items);
     void addRow(const MatchedItem &item);
+    void addRows(const MatchedItems &items);
 
     int rowCount();
     int getIndexInt()const;
     void setCurrentIndexInt(int row);
     int getThemeType() const;
+
+    void clear();
 
 public slots:
     void onItemClicked(const QModelIndex &index);

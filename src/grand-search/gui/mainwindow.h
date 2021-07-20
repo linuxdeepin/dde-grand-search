@@ -54,6 +54,7 @@ private:
     void initConnect();
 
     void activeMainWindow();
+    void updateMainWindowHeight();
 
 protected:
     explicit MainWindow(QWidget *parent = nullptr);
