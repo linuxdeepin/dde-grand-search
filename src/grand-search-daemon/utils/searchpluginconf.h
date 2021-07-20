@@ -18,24 +18,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef PLUGINMANAGER_H
-#define PLUGINMANAGER_H
+#ifndef SEARCHPLUGINCONF_H
+#define SEARCHPLUGINCONF_H
 
-#include <QObject>
+//插件配置文件conf
+#define PLUGININTERFACE_CONF_ROOT "Grand Search"
+#define PLUGININTERFACE_CONF_NAME "Name"
+#define PLUGININTERFACE_CONF_MODE "Mode"
+#define PLUGININTERFACE_CONF_MODE_AUTO "auto"
+#define PLUGININTERFACE_CONF_MODE_MANUAL "manual"
+#define PLUGININTERFACE_CONF_PRIORITY "Priority"
+#define PLUGININTERFACE_CONF_DBUSSERVICE "DBusService"
+#define PLUGININTERFACE_CONF_DBUSADDRESS "DBusAddress"
+#define PLUGININTERFACE_CONF_DBUSINTERFACE "DBusInterface"
+#define PLUGININTERFACE_CONF_INTERFACEVERSION "InterfaceVersion"
+#define PLUGININTERFACE_CONF_EXEC "Exec"
 
-class PluginManagerPrivate;
-class PluginManager : public QObject
-{
-    Q_OBJECT
-public:
-    explicit PluginManager(QObject *parent = nullptr);
 
-    bool loadPlugin();
-signals:
-
-public slots:
-private:
-    PluginManagerPrivate *d;
-};
-
-#endif // PLUGINMANAGER_H
+#endif // SEARCHPLUGINCONF_H

@@ -10,6 +10,16 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wl,--as-need -fPIE")
 # 定义可执行程序名称
 set(BIN_NAME dde-grand-search-daemon)
 
+# 应用库目录
+set(LIB_BASE_DIR "${LIB_PLATFORM_DIR}/${BIN_NAME}")
+
+# 插件目录
+set(PLUGIN_DIR "${LIB_BASE_DIR}/plugins")
+
+# 扩展搜索插件目录
+set(PLUGIN_SEARCHER_DIR "${PLUGIN_DIR}/searcher")
+add_definitions(-DPLUGIN_SEARCHER_DIR="${PLUGIN_SEARCHER_DIR}")
+
 # 依赖包
 #find_package(PkgConfig REQUIRED)
 find_package(DtkCore REQUIRED)
@@ -113,6 +123,7 @@ endif()
 
 set(SEARCHPLUGIN
     searchplugin/pluginmanager.h
+    searchplugin/pluginmanagerprivate.h
     searchplugin/pluginmanager.cpp
     searchplugin/loader/pluginloader.h
     searchplugin/loader/pluginloader.cpp
@@ -123,8 +134,10 @@ set(SEARCHPLUGIN
     searchplugin/convertors/abstractconvertor.h
 )
 
-#set(UTILS
-#)
+set(UTILS
+    utils/searchpluginconf.h
+    utils/searchplugininfo.h
+)
 
 set(SRCS
     main.cpp
@@ -150,3 +163,4 @@ target_link_libraries(${BIN_NAME} PRIVATE
 
 # bin
 install(TARGETS ${BIN_NAME} DESTINATION bin)
+

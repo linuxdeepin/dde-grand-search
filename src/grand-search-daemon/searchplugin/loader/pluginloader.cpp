@@ -19,8 +19,126 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "pluginloader.h"
+#include "utils/searchpluginconf.h"
+
+#include <QDir>
+#include <QSettings>
+#include <QDebug>
 
 PluginLoader::PluginLoader(QObject *parent) : QObject(parent)
 {
 
+}
+
+void PluginLoader::setPluginPath(const QStringList &dirPaths)
+{
+    QStringList paths;
+    for (const QString &path : dirPaths) {
+        QDir dir(path);
+        if (dir.isReadable()) {
+            qDebug() << "add plugin path:" << path;
+            paths << path;
+        }
+        else
+            qWarning() << "invaild plugin path:" << path;
+    }
+
+    qDebug() << "update plugin paths" << paths.size();
+    m_paths = paths;
+}
+
+bool PluginLoader::load()
+{
+    m_plugins.clear();
+    for (const QString &path : m_paths) {
+        QDir dir(path);
+        if (!dir.isReadable())
+            continue;
+
+        auto entrys = dir.entryInfoList({"*.conf"}, QDir::Files, QDir::Name);
+        for (const QFileInfo &entry : entrys) {
+            GrandSearch::SearchPluginInfo info;
+            if (readInfo(entry.absoluteFilePath(), info)) {
+                if (m_plugins.contains(info.name)) {
+                    qWarning() << "duplicate plugin name" << path << info.name;
+                    continue;
+                }
+
+                qInfo() << "add plugin info" << entry.fileName() << info.name;
+                m_plugins.insert(info.name, info);
+            }
+        }
+    }
+
+    return true;
+}
+
+QList<GrandSearch::SearchPluginInfo> PluginLoader::plugins() const
+{
+    return m_plugins.values();
+}
+
+bool PluginLoader::getPlugin(const QString &name, GrandSearch::SearchPluginInfo &plugin) const
+{
+    if (m_plugins.contains(name)) {
+        plugin = m_plugins.value(name);
+        return true;
+    }
+
+    return false;
+}
+
+bool PluginLoader::readInfo(const QString &path, GrandSearch::SearchPluginInfo &info)
+{
+    qDebug() << "load conf" << path;
+    QSettings conf(path, QSettings::IniFormat);
+
+    if (!conf.childGroups().contains(PLUGININTERFACE_CONF_ROOT))
+        return false;
+
+    conf.beginGroup(PLUGININTERFACE_CONF_ROOT);
+
+    //插件名称
+    info.name = conf.value(PLUGININTERFACE_CONF_NAME, "").toString();
+    if (info.name.isEmpty() || m_plugins.contains(info.name))
+        return false;
+
+    //通信接口版本
+    info.ifsVersion = conf.value(PLUGININTERFACE_CONF_INTERFACEVERSION, "").toString();
+    if (info.ifsVersion.isEmpty())
+        return false;
+
+    //运行方式
+    info.mode = conf.value(PLUGININTERFACE_CONF_MODE, "").toString().toLower() == PLUGININTERFACE_CONF_MODE_AUTO ?
+                    GrandSearch::SearchPluginInfo::Mode::Auto : GrandSearch::SearchPluginInfo::Mode::Manual;
+
+    if (info.mode == GrandSearch::SearchPluginInfo::Mode::Auto) {
+        //优先级
+        info.priority = static_cast<GrandSearch::SearchPluginInfo::Priority>(conf.value(PLUGININTERFACE_CONF_PRIORITY, -1).toInt());
+        if (info.priority < GrandSearch::SearchPluginInfo::Priority::High || info.priority > GrandSearch::SearchPluginInfo::Priority::Low)
+            info.priority = GrandSearch::SearchPluginInfo::Priority::Low;
+
+        //启动命令
+        info.exec = conf.value(PLUGININTERFACE_CONF_EXEC, "").toString();
+        if (info.exec.isEmpty())
+            return false;
+    }
+
+    //服务名
+    info.servie = conf.value(PLUGININTERFACE_CONF_DBUSSERVICE, "").toString();
+    if (info.servie.isEmpty())
+        return false;
+
+    //服务地址
+    info.address = conf.value(PLUGININTERFACE_CONF_DBUSADDRESS, "").toString();
+    if (info.address.isEmpty())
+        return false;
+
+    //接口名
+    info.interface = conf.value(PLUGININTERFACE_CONF_DBUSINTERFACE, "").toString();
+    if (info.interface.isEmpty())
+        return false;
+
+    info.from = path;
+    return true;
 }

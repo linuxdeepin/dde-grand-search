@@ -66,13 +66,17 @@ MainController::MainController(QObject *parent)
 bool MainController::init()
 {
     Q_ASSERT(d->m_searchers == nullptr);
+    Q_ASSERT(d->m_pluginManager == nullptr);
 
     //初始化搜索项
     d->m_searchers = new SearcherGroup(this);
     if (!d->m_searchers->init())
         return false;
 
-    //初始化插件 todo
+    //初始化插件
+    d->m_pluginManager = new PluginManager(this);
+    if (!d->m_pluginManager->loadPlugin())
+        return false;
 
     return true;
 }

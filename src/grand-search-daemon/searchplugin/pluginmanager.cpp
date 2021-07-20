@@ -19,8 +19,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "pluginmanager.h"
+#include "pluginmanagerprivate.h"
+#include "loader/pluginloader.h"
 
-PluginManager::PluginManager(QObject *parent) : QObject(parent)
+#include <QStandardPaths>
+#include <QDebug>
+
+PluginManagerPrivate::PluginManagerPrivate(PluginManager *parent)
+    : QObject(parent)
+    , q(parent)
 {
 
+}
+
+PluginManager::PluginManager(QObject *parent)
+    : QObject(parent)
+    , d(new PluginManagerPrivate(this))
+{
+
+}
+
+bool PluginManager::loadPlugin()
+{
+    if (!d->m_loader) {
+        d->m_loader = new PluginLoader(this);
+
+        auto defaultPath = PLUGIN_SEARCHER_DIR;
+        static_assert(std::is_same<decltype(defaultPath), const char *>::value, "PLUGIN_SEARCHER_DIR is not a string.");
+
+        d->m_loader->setPluginPath({QString(defaultPath)});
+    }
+
+    return d->m_loader->load();
 }

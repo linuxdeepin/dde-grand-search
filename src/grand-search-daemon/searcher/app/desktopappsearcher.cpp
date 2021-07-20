@@ -96,7 +96,7 @@ void DesktopAppSearcherPrivate::createIndex(DesktopAppSearcherPrivate *d)
     d->m_inited = true;
     d->m_creating = false;
 
-    qDebug() << "create index completed, spend" << time.elapsed() << "cout" << indexTable.size();
+    qInfo() << "create index completed, spend" << time.elapsed() << "cout" << indexTable.size();
     //todo 开启监视器监控变化
 }
 

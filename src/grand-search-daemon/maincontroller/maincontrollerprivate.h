@@ -40,6 +40,7 @@ private:
     SearcherGroup *m_searchers = nullptr;
     PluginManager *m_plugins = nullptr;
     TaskCommander *m_currentTask = nullptr;
+    PluginManager *m_pluginManager = nullptr;
 };
 
 

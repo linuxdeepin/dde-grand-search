@@ -58,10 +58,6 @@ int main(int argc, char *argv[])
 
     //服务接口
     GrandSearchInterface interface;
-    if (!interface.init()) {
-        qCritical() << "initialization failed.";
-        exit(0x0001);
-    }
 
     //注册DBus服务
     {
@@ -78,6 +74,12 @@ int main(int argc, char *argv[])
             qCritical() << "registerObject Failed" << QDBusError::errorString(session.lastError().type());
             exit(0x0003);
         }
+    }
+
+    //初始化
+    if (!interface.init()) {
+        qCritical() << "initialization failed.";
+        exit(0x0001);
     }
 
     app.exec();

@@ -18,24 +18,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef PLUGINMANAGER_H
-#define PLUGINMANAGER_H
+#ifndef PLUGINMANAGERPRIVATE_H
+#define PLUGINMANAGERPRIVATE_H
 
-#include <QObject>
+#include "pluginmanager.h"
+#include "loader/pluginloader.h"
 
-class PluginManagerPrivate;
-class PluginManager : public QObject
+class PluginManagerPrivate : public QObject
 {
     Q_OBJECT
+    friend class PluginManager;
 public:
-    explicit PluginManager(QObject *parent = nullptr);
+    explicit PluginManagerPrivate(PluginManager *parent);
 
-    bool loadPlugin();
 signals:
 
 public slots:
 private:
-    PluginManagerPrivate *d;
+    PluginManager *q;
+    PluginLoader *m_loader = nullptr;
 };
 
-#endif // PLUGINMANAGER_H
+#endif // PLUGINMANAGERPRIVATE_H

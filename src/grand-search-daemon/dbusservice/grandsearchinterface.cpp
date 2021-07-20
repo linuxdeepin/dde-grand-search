@@ -68,8 +68,13 @@ bool GrandSearchInterfacePrivate::isAccessable(const QDBusMessage &msg) const
     auto invokerPath = fileInfo.canonicalFilePath();
 
     bool accessable = m_permit.value(invokerPath, false);
-    qInfo() << "invoker:" << invokerPath << "pid" << invokerPid << accessable;
+    if (!accessable)
+        qWarning() << "invalid invoker:" << invokerPath << "pid" << invokerPid << accessable;
 
+//调试使用
+#ifdef QT_DEBUG
+    return true;
+#endif
     return accessable;
 }
 
@@ -118,7 +123,7 @@ bool GrandSearchInterface::init()
     Q_ASSERT(d->m_main == nullptr);
 
     //超时后强制结束任务
-    d->m_deadline.setInterval(10000);
+    d->m_deadline.setInterval(40000);
     d->m_deadline.setSingleShot(true);
     connect(&d->m_deadline, &QTimer::timeout, d, &GrandSearchInterfacePrivate::terminate);
 
@@ -221,7 +226,6 @@ QVariantMap GrandSearchInterface::FeedBackStrategy() const
 
 bool GrandSearchInterface::KeepAlive(const QString &session)
 {
-    qDebug() << __FUNCTION__ << "session " << session;
     CHECKINVOKER(false);
 
     //重新计时
