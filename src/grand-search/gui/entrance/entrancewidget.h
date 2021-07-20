@@ -32,6 +32,7 @@ class EntranceWidget : public Dtk::Widget::DWidget
 public:
     explicit EntranceWidget(QWidget *parent = nullptr);
     ~EntranceWidget();
+
     void connectToController();
 
 protected:

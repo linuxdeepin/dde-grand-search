@@ -38,6 +38,10 @@ Q_GLOBAL_STATIC(MainWindowGlobal, mainWindowGlobal)
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
 
+static const uint MainWindowWidth           = 760;      // 主界面宽度
+static const uint MainWindowHeight          = 68;       // 主界面高度
+static const uint MainWindowExpandHeight    = 520;      // 主界面高度
+
 MainWindowPrivate::MainWindowPrivate(MainWindow *parent)
     : q_p(parent)
 {
@@ -50,6 +54,12 @@ MainWindow::MainWindow(QWidget *parent)
 {
     initUI();
     initConnect();
+}
+
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+    activeMainWindow();
+    return DBlurEffectWidget::mousePressEvent(event);
 }
 
 MainWindow::~MainWindow()
@@ -119,6 +129,22 @@ void MainWindow::onSearchTextChanged(const QString &txt)
     }
 }
 
+void MainWindow::onApplicationStateChanged(const Qt::ApplicationState state)
+{
+    if (Qt::ApplicationInactive == state) {
+        qDebug() << "application state change to inactive,so i will exit.";
+#ifndef QT_DEBUG
+        this->close();
+#else
+        qDebug() << "测试流程：需要点击主窗口来激活后才能输入，直接点击输入框子控件无效！正常流程会直接退出！";
+#endif
+
+    } else if (Qt::ApplicationActive == state) {
+        qDebug() << "application state change to active.";
+        activeMainWindow();
+    }
+}
+
 MainWindow *MainWindow::instance()
 {
     return mainWindowGlobal;
@@ -126,8 +152,9 @@ MainWindow *MainWindow::instance()
 
 void MainWindow::initUI()
 {
-    // 设置窗口标识不在任务栏显示
-    setWindowFlag(Qt::Tool, true);
+    // 禁用窗口管理器并置顶
+    setWindowFlags(Qt::BypassWindowManagerHint | Qt::WindowStaysOnTopHint);
+    setFocusPolicy(Qt::NoFocus);
 
     // 控制界面大小和位置
     setFixedSize(MainWindowWidth, MainWindowHeight);
@@ -139,7 +166,6 @@ void MainWindow::initUI()
 
     // 搜索入口界面
     d_p->m_entranceWidget = new EntranceWidget(this);
-    //d_p->m_entranceWidget->setFixedHeight(52);hcq
 
     // 结果展示界面
     d_p->m_exhibitionWidget = new ExhibitionWidget(this);
@@ -172,11 +198,24 @@ void MainWindow::initConnect()
 
     // 监控主屏改变信号，及时更新窗口位置
     connect(qApp, &QGuiApplication::primaryScreenChanged, this, &MainWindow::onPrimaryScreenChanged);
+
+    // 进程变为非激活状态时，退出
+    connect(qApp, &QGuiApplication::applicationStateChanged, this, &MainWindow::onApplicationStateChanged);
+}
+
+void MainWindow::activeMainWindow()
+{
+    activateWindow();
+    raise();
 }
 
 void MainWindow::showEvent(QShowEvent *event)
 {
     emit visibleChanged(true);
+
+    // 已禁用窗口管理器，在窗口被显示后，需要激活该窗口
+    QTimer::singleShot(1, this, &MainWindow::activeMainWindow);
+
     return DBlurEffectWidget::showEvent(event);
 }
 

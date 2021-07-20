@@ -35,6 +35,7 @@ public:
 
     // 必须在主界面显示后再调用该函数，处理业务相关流程
     void connectToController();
+
     void showExhitionWidget(bool bShow = true);
     void showSerachNoContent(bool bShow = true);
 
@@ -46,14 +47,19 @@ private slots:
     // 根据是否发起搜索，调整展示界面是否显示
     void onSearchTextChanged(const QString &txt);
 
+    void onApplicationStateChanged(const Qt::ApplicationState state);
+
 private:
     void initUI();
     void initConnect();
+
+    void activeMainWindow();
 
 protected:
     explicit MainWindow(QWidget *parent = nullptr);
 
 protected:
+    virtual void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     virtual void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
     virtual void hideEvent(QHideEvent *event) Q_DECL_OVERRIDE;
     virtual void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;

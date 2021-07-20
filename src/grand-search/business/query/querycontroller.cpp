@@ -29,6 +29,8 @@
 
 using namespace GrandSearch;
 
+static const uint KeepAliveTime             = 15000;    // 搜索过程中，调用后端心跳函数间隔时间
+
 class QueryControllerGlobal : public QueryController{};
 Q_GLOBAL_STATIC(QueryControllerGlobal, queryControllerGlobal)
 

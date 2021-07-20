@@ -32,9 +32,15 @@
 #include <QHBoxLayout>
 #include <QAction>
 #include <QTimer>
+#include <QGuiApplication>
 
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
+
+static const uint DelayReponseTime          = 50;       // 输入延迟搜索时间
+static const uint EntraceWidgetWidth        = 740;      // 搜索界面宽度度
+static const uint EntraceWidgetHeight       = 48;       // 搜索界面高度
+static const uint WidgetMargins             = 10;       // 界面边距
 
 EntranceWidgetPrivate::EntranceWidgetPrivate(EntranceWidget *parent)
     : q_p(parent)
@@ -55,6 +61,19 @@ void EntranceWidgetPrivate::notifyTextChanged()
 {
     const QString &currentSearchText = m_searchEdit->text().trimmed();
     emit q_p->searchTextChanged(currentSearchText);
+}
+
+void EntranceWidgetPrivate::setLineEditFocus()
+{
+    m_searchEdit->lineEdit()->setFocus();
+}
+
+void EntranceWidgetPrivate::onFocusObjectChanged(QObject *obj)
+{
+    if (obj && obj != m_searchEdit->lineEdit()) {
+        // 收到焦点改变信号后，必须等已有事件循环结束后，设置才能生效
+        QTimer::singleShot(1, this, &EntranceWidgetPrivate::setLineEditFocus);
+    }
 }
 
 EntranceWidget::EntranceWidget(QWidget *parent)
@@ -128,12 +147,13 @@ void EntranceWidget::initUI()
 //    this->setMouseTracking(true);
 //    DStyle::setFocusRectVisible(d_p->m_searchEdit->lineEdit(), true);
 //    setFocusPolicy(Qt::NoFocus);
-
-
 }
 
 void EntranceWidget::initConnections()
 {
     // 输入改变时重置定时器，避免短时间内发起大量无效调用
     connect(d_p->m_searchEdit, &DSearchEdit::textChanged, d_p.data(), &EntranceWidgetPrivate::delayChangeText);
+
+    // 焦点改变后，将焦点设置回输入框
+    connect(qApp, &QGuiApplication::focusObjectChanged, d_p.data(), &EntranceWidgetPrivate::onFocusObjectChanged);
 }

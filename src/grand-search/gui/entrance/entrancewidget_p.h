@@ -39,6 +39,9 @@ public:
 
     void delayChangeText();
     void notifyTextChanged();
+    void setLineEditFocus();
+
+    void onFocusObjectChanged(QObject *obj);
 
     EntranceWidget *q_p;
     Dtk::Widget::DSearchEdit *m_searchEdit = nullptr;   // 搜索输入框控件

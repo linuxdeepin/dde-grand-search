@@ -40,18 +40,6 @@ namespace GrandSearch {
 #define GroupName_Folder             QObject::tr("GroupFolder")
 #define GroupName_File               QObject::tr("GroupFile")
 
-static const uint DelayReponseTime          = 50;       // 输入延迟搜索时间
-static const uint KeepAliveTime             = 3000;     // 搜索过程中，调用后端心跳函数间隔时间
-
-static const uint MainWindowWidth           = 760;      // 主界面宽度
-static const uint MainWindowHeight          = 68;       // 主界面高度
-static const uint MainWindowExpandHeight    = 520;      // 主界面高度
-static const uint EntraceWidgetWidth        = 740;      // 搜索界面宽度度
-static const uint EntraceWidgetHeight       = 48;       // 搜索界面高度
-static const uint MatchItemWidth            = 740;      // 搜索结果项的宽度
-static const uint MatchItemHeight           = 36;       // 搜索结果项的高度
-static const uint WidgetMargins             = 10;       // 界面边距
-
 };
 
 #endif // DATADEFINE_H
