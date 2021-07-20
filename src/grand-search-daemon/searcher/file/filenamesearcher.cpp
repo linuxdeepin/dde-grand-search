@@ -20,13 +20,40 @@
  */
 #include "filenamesearcher.h"
 #include "global/builtinsearch.h"
+#include "filenameworker.h"
+#include "anything_interface.h"
 
 FileNameSearcher::FileNameSearcher(QObject *parent) : Searcher(parent)
 {
-
+    anythingInterface = new ComDeepinAnythingInterface("com.deepin.anything",
+                                                       "/com/deepin/anything",
+                                                       QDBusConnection::systemBus(),
+                                                       this);
 }
 
 QString FileNameSearcher::name() const
 {
     return GRANDSEARCH_CLASS_FILE_DEEPIN;
+}
+
+bool FileNameSearcher::isActive() const
+{
+    return anythingInterface->isValid();
+}
+
+bool FileNameSearcher::activate()
+{
+    return false;
+}
+
+ProxyWorker *FileNameSearcher::createWorker() const
+{
+    auto worker = new FileNameWorker(name());
+    return worker;
+}
+
+void FileNameSearcher::action(const QString &action, const QString &item)
+{
+    Q_UNUSED(action)
+    Q_UNUSED(item)
 }

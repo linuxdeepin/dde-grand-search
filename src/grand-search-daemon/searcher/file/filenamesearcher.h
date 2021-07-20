@@ -23,12 +23,19 @@
 
 #include "searcher/searcher.h"
 
+class ComDeepinAnythingInterface;
 class FileNameSearcher : public Searcher
 {
     Q_OBJECT
 public:
     explicit FileNameSearcher(QObject *parent = nullptr);
-    QString name() const;
+    QString name() const Q_DECL_OVERRIDE;
+    bool isActive() const Q_DECL_OVERRIDE;
+    bool activate() Q_DECL_OVERRIDE;
+    ProxyWorker *createWorker() const Q_DECL_OVERRIDE;
+    void action(const QString &action, const QString &item) Q_DECL_OVERRIDE;
+private:
+    ComDeepinAnythingInterface *anythingInterface = nullptr;
 };
 
 #endif // FILENAMESEARCHER_H

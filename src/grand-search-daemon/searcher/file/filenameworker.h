@@ -23,10 +23,31 @@
 
 #include "searcher/proxyworker.h"
 
+class ComDeepinAnythingInterface;
 class FileNameWorker : public ProxyWorker
 {
 public:
     explicit FileNameWorker(const QString &name, QObject *parent = nullptr);
+
+    void setContext(const QString &context) Q_DECL_OVERRIDE;
+    bool isAsync() const Q_DECL_OVERRIDE;
+    bool working(void *context) Q_DECL_OVERRIDE;
+    void terminate() Q_DECL_OVERRIDE;
+    Status status() Q_DECL_OVERRIDE;
+    bool hasItem() const Q_DECL_OVERRIDE;
+    GrandSearch::MatchedItemMap takeAll() Q_DECL_OVERRIDE;
+private:
+    QString group() const;
+private:
+    QAtomicInt m_status = Ready;
+    QString m_searchPath;
+    QString m_context;
+    bool m_isAddDataPrefix = false;
+    QRegExp m_regExpFlag;
+
+    mutable QMutex m_mutex;
+    GrandSearch::MatchedItems m_items;  // 搜索结果
+    ComDeepinAnythingInterface *anythingInterface = nullptr;
 };
 
 #endif // FILENAMEWORKER_H

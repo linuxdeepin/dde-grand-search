@@ -74,6 +74,8 @@ set(SEARCHER
     searcher/extend/extendsearcher.h
     searcher/extend/extendsearcher.cpp
 )
+#后期需要添加到使用anything的情况下
+qt5_add_dbus_interface(ANYTHING_SRC /usr/share/dbus-1/interfaces/com.deepin.anything.xml anything_interface)
 
 #未实现，编译不过
 if (0)
@@ -99,7 +101,6 @@ else ()
         searcher/file/filenameworker.cpp
     )
 endif()
-
 #测试，发布前需删除以下内容
 ADD_DEFINITIONS(-DENABLE_FSEARCH)
 set(SEARCHER
@@ -109,9 +110,12 @@ set(SEARCHER
     searcher/file/fsworker.h
     searcher/file/fsworker.cpp
 )
+endif()
+
 ADD_DEFINITIONS(-DENABLE_DEEPINANYTHING)
 set(SEARCHER
     ${SEARCHER}
+    ${ANYTHING_SRC}
     searcher/file/filenamesearcher.h
     searcher/file/filenamesearcher.cpp
     searcher/file/filenameworker.h
@@ -119,7 +123,6 @@ set(SEARCHER
 )
 message("local test fsearch and deepin-anything")
 #end
-endif()
 
 set(SEARCHPLUGIN
     searchplugin/pluginmanager.h
