@@ -23,6 +23,8 @@
 
 #include <QObject>
 
+#include "utils/searchplugininfo.h"
+
 class PluginManagerPrivate;
 class PluginManager : public QObject
 {
@@ -31,6 +33,8 @@ public:
     explicit PluginManager(QObject *parent = nullptr);
 
     bool loadPlugin();
+    QList<GrandSearch::SearchPluginInfo> plugins() const;
+    void autoActivate();
 signals:
 
 public slots:

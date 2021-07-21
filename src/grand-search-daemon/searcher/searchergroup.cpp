@@ -59,18 +59,38 @@ bool SearcherGroup::init()
     return true;
 }
 
-bool SearcherGroup::addExtendSearcher(const QVariant &pluginInfo)
+bool SearcherGroup::addExtendSearcher(const GrandSearch::SearchPluginInfo &pluginInfo)
 {
+    //在插件模块需对以下信息做严格的校验，此处不再做有效性检查
+    if (Q_UNLIKELY(pluginInfo.name.isEmpty() || pluginInfo.address.isEmpty()
+            || pluginInfo.servie.isEmpty() || pluginInfo.interface.isEmpty()
+            || pluginInfo.ifsVersion.isEmpty()))
+        return false;
 
+    if (searcher(pluginInfo.name)) {
+        qWarning() << "searcher has existed." << pluginInfo.name;
+        return false;
+    }
+
+    //todo new ExtendSearcher
+    return true;
 }
 
 QList<Searcher *> SearcherGroup::searchers() const
 {
-    //todo 排序
     return d->m_builtin + d->m_extend;
 }
 
 Searcher *SearcherGroup::searcher(const QString &name) const
 {
+    auto allSearcher = searchers();
 
+    auto iter = std::find_if(allSearcher.begin(), allSearcher.end(), [name](const Searcher *s) {
+        return s->name() == name;
+    });
+
+    if (iter != allSearcher.end())
+        return *iter;
+    else
+        return nullptr;
 }

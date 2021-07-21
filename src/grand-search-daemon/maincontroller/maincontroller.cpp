@@ -49,12 +49,38 @@ void MainControllerPrivate::buildWorker(TaskCommander *task)
         Q_ASSERT(searcher);
         //判断搜索项是否激活，若未激活则先激活
         if (searcher->isActive() || searcher->activate()) {
-            auto worker = searcher->createWorker();
-            if (worker) {
+            if (auto worker = searcher->createWorker()) {
                 task->join(worker);
             }
         }
     }
+}
+
+bool MainControllerPrivate::initSearchGroup()
+{
+    Q_ASSERT(m_searchers == nullptr);
+
+    m_searchers = new SearcherGroup(this);
+    return m_searchers->init();
+}
+
+bool MainControllerPrivate::initPluinManager()
+{
+    Q_ASSERT(m_pluginManager == nullptr);
+
+    m_pluginManager = new PluginManager(this);
+    return m_pluginManager->loadPlugin();
+}
+
+void MainControllerPrivate::initExtendSearcher()
+{
+    Q_ASSERT(m_searchers);
+    Q_ASSERT(m_pluginManager);
+
+    QList<GrandSearch::SearchPluginInfo> plugins = m_pluginManager->plugins();
+    for (const GrandSearch::SearchPluginInfo &info : plugins)
+        if (!m_searchers->addExtendSearcher(info))
+            qWarning() << "create ExtendSearcher error:" << info.name;
 }
 
 MainController::MainController(QObject *parent)
@@ -65,18 +91,23 @@ MainController::MainController(QObject *parent)
 
 bool MainController::init()
 {
-    Q_ASSERT(d->m_searchers == nullptr);
-    Q_ASSERT(d->m_pluginManager == nullptr);
-
     //初始化搜索项
-    d->m_searchers = new SearcherGroup(this);
-    if (!d->m_searchers->init())
+    if (!d->initSearchGroup()) {
+        qCritical() << "error: fail to init SearchGroup.";
         return false;
+    }
 
     //初始化插件
-    d->m_pluginManager = new PluginManager(this);
-    if (!d->m_pluginManager->loadPlugin())
+    if (!d->initPluinManager()) {
+        qCritical() << "error: fail to init PluinManager.";
         return false;
+    }
+
+    //创建扩展搜索项
+    d->initExtendSearcher();
+
+    //启动高优先级插件
+    d->m_pluginManager->autoActivate();
 
     return true;
 }

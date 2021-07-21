@@ -95,3 +95,24 @@ bool PluginManager::loadPlugin()
 
     return ret;
 }
+
+QList<GrandSearch::SearchPluginInfo> PluginManager::plugins() const
+{
+    if (d->m_loader)
+        return d->m_loader->plugins();
+}
+
+void PluginManager::autoActivate()
+{
+    Q_ASSERT(d->m_loader);
+    Q_ASSERT(d->m_process);
+
+    QList<GrandSearch::SearchPluginInfo> plugins = d->m_loader->plugins();
+    for (const GrandSearch::SearchPluginInfo &plugin : plugins) {
+        //启动高优先级的Auto类型插件
+        if (plugin.mode == GrandSearch::SearchPluginInfo::Auto
+                && plugin.priority  == GrandSearch::SearchPluginInfo::High) {
+            d->m_process->startProgram(plugin.name);
+        }
+    }
+}

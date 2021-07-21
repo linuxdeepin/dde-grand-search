@@ -35,10 +35,13 @@ public:
     MainControllerPrivate(MainController *parent);
     ~MainControllerPrivate();
     void buildWorker(TaskCommander *task);
+protected:
+    bool initSearchGroup();
+    bool initPluinManager();
+    void initExtendSearcher();
 private:
     MainController *q;
     SearcherGroup *m_searchers = nullptr;
-    PluginManager *m_plugins = nullptr;
     TaskCommander *m_currentTask = nullptr;
     PluginManager *m_pluginManager = nullptr;
 };
