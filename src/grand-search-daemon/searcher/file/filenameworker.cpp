@@ -19,32 +19,71 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "filenameworker.h"
+#include "filenameworkerprivate.h"
 #include "anything_interface.h"
 
 #include <QStandardPaths>
-#include <QRegExp>
 
 #define MAX_SEARCH_NUM 100
 
-FileNameWorker::FileNameWorker(const QString &name, QObject *parent) : ProxyWorker(name, parent)
+FileNameWorkerPrivate::FileNameWorkerPrivate(FileNameWorker *qq)
+    : q_ptr(qq)
 {
     // 搜索目录为user
     QStringList homePaths = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
     if (!homePaths.isEmpty())
         m_searchPath = homePaths.first();
 
-    anythingInterface = new ComDeepinAnythingInterface("com.deepin.anything",
-                                                       "/com/deepin/anything",
-                                                       QDBusConnection::systemBus(),
-                                                       this);
-    anythingInterface->setTimeout(1000);
+    m_anythingInterface = new ComDeepinAnythingInterface("com.deepin.anything",
+                                                         "/com/deepin/anything",
+                                                         QDBusConnection::systemBus(),
+                                                         qq);
+    m_anythingInterface->setTimeout(1000);
+}
+
+bool FileNameWorkerPrivate::isHiddenFile(const QString &filePath)
+{
+    if (filePath == m_searchPath)
+        return false;
+
+    QFileInfo fileInfo(filePath);
+    if (fileInfo.isHidden())
+        return true;
+
+    return isHiddenFile(fileInfo.absolutePath());
+}
+
+void FileNameWorkerPrivate::appendSearchResult(const QString &fileName)
+{
+    Q_Q(FileNameWorker);
+
+    QMimeType mimeType = m_mimeDB.mimeTypeForFile(fileName);
+
+    GrandSearch::MatchedItem item;
+    item.item = fileName;
+    item.name = QFileInfo(fileName).fileName();
+    item.type = mimeType.name();
+    item.icon = mimeType.iconName();
+    item.searcher = q->name();
+
+    QMutexLocker lk(&m_mutex);
+    m_items << item;
+}
+
+FileNameWorker::FileNameWorker(const QString &name, QObject *parent)
+    : ProxyWorker(name, parent),
+      d_ptr(new FileNameWorkerPrivate(this))
+{
+
 }
 
 void FileNameWorker::setContext(const QString &context)
 {
+    Q_D(FileNameWorker);
+
     if (context.isEmpty())
         qWarning() << "search key is empty.";
-    m_context = context;
+    d->m_context = context;
 }
 
 bool FileNameWorker::isAsync() const
@@ -54,29 +93,29 @@ bool FileNameWorker::isAsync() const
 
 bool FileNameWorker::working(void *context)
 {
+    Q_D(FileNameWorker);
+
     //准备状态切运行中，否则直接返回
-    if (!m_status.testAndSetRelease(Ready, Runing))
+    if (!d->m_status.testAndSetRelease(Ready, Runing))
         return false;
 
-    if (!anythingInterface->isValid() || m_context.isEmpty() || m_searchPath.isEmpty()) {
-        m_status.storeRelease(Completed);
+    if (!d->m_anythingInterface->isValid() || d->m_context.isEmpty() || d->m_searchPath.isEmpty()) {
+        d->m_status.storeRelease(Completed);
         return false;
     }
 
-    if (!anythingInterface->hasLFT(m_searchPath)) {
+    if (!d->m_anythingInterface->hasLFT(d->m_searchPath)) {
         // 有可能 anything 不支持/home目录，但是支持/data/home
         if (QFile("/data/home").exists()) {
-            m_searchPath.prepend("/data");
-            if (!anythingInterface->hasLFT(m_searchPath)) {
-                qWarning() << "Do not support quick search for " << m_searchPath;
-                m_status.storeRelease(Completed);
+            d->m_searchPath.prepend("/data");
+            if (!d->m_anythingInterface->hasLFT(d->m_searchPath)) {
+                qWarning() << "Do not support quick search for " << d->m_searchPath;
+                d->m_status.storeRelease(Completed);
                 return false;
             }
-            m_isAddDataPrefix = true;
-            m_regExpFlag.setPattern("^/data");
         } else {
             qWarning() << "Data path is not exist!";
-            m_status.storeRelease(Completed);
+            d->m_status.storeRelease(Completed);
             return false;
         }
     }
@@ -84,13 +123,14 @@ bool FileNameWorker::working(void *context)
     Q_UNUSED(context)
     // 如果挂载在此路径下的其它目录也支持索引数据, 则一并搜索
     QStringList searchDirList;
-    searchDirList << anythingInterface->hasLFTSubdirectories(m_searchPath);
-    if (searchDirList.isEmpty() || searchDirList.first() != m_searchPath)
-        searchDirList.prepend(m_searchPath);
+    searchDirList << d->m_anythingInterface->hasLFTSubdirectories(d->m_searchPath);
+    if (searchDirList.isEmpty() || searchDirList.first() != d->m_searchPath)
+        searchDirList.prepend(d->m_searchPath);
 
     //计时
     QTime time;
     time.start();
+    int lastEmit = 0;
 
     // 搜索
     quint32 searchStartOffset = 0;
@@ -98,11 +138,11 @@ bool FileNameWorker::working(void *context)
     quint16 resultCount = 0;
     while (resultCount < MAX_SEARCH_NUM && !searchDirList.isEmpty()) {
         //中断
-        if (m_status.loadAcquire() != Runing)
+        if (d->m_status.loadAcquire() != Runing)
             return false;
 
-        const auto result = anythingInterface->search(MAX_SEARCH_NUM, 100, searchStartOffset,
-                                                      searchEndOffset, searchDirList.first(), m_context, false);
+        const auto result = d->m_anythingInterface->search(MAX_SEARCH_NUM, 100, searchStartOffset,
+                                                           searchEndOffset, searchDirList.first(), d->m_context, false);
         QStringList searchResults = result.argumentAt<0>();
         searchStartOffset = result.argumentAt<1>();
         searchEndOffset = result.argumentAt<2>();
@@ -115,73 +155,88 @@ bool FileNameWorker::working(void *context)
 
         for (auto &path : searchResults) {
             //中断
-            if (m_status.loadAcquire() != Runing)
+            if (d->m_status.loadAcquire() != Runing)
                 return false;
 
             if (resultCount >= MAX_SEARCH_NUM)
                 break;
 
             // 过滤隐藏文件
-            QFileInfo fileInfo(path);
-            if (fileInfo.isHidden())
+            if (d->isHiddenFile(path))
                 continue;
 
-            // 删除添加的/data前缀
-            if (m_isAddDataPrefix)
-                path.remove(m_regExpFlag);
-
-            GrandSearch::MatchedItem item;
-            QFileInfo file(path);
-            item.item = path;
-            item.name = file.fileName();
-
-            QMutexLocker lk(&m_mutex);
-            m_items.append(item);
+            d->appendSearchResult(path);
+            {
+                //50ms推送一次
+                int cur = time.elapsed();
+                if ((cur - lastEmit) > 50) {
+                    lastEmit = cur;
+                    qDebug() << "unearthed, current spend:" << cur;
+                    emit unearthed(this);
+                }
+            }
             ++resultCount;
         }
     }
 
-    qInfo() << "search completed, found items:" << resultCount << "total spend:" << time.elapsed()
-            << "current items" << m_items.count();
+    d->m_status.storeRelease(Completed);
 
-    emit unearthed(this);
-    m_status.storeRelease(Completed);
+    int leave = 0;
+    {
+        QMutexLocker lk(&d->m_mutex);
+        leave = d->m_items.count();
+    }
+
+    qInfo() << "search completed, found items:" << resultCount << "total spend:" << time.elapsed()
+            << "current items" << leave;
+
+    //还有数据再发一次
+    if (leave > 0)
+        emit unearthed(this);
 
     return true;
 }
 
 void FileNameWorker::terminate()
 {
-    m_status.storeRelease(Terminated);
+    Q_D(FileNameWorker);
+
+    d->m_status.storeRelease(Terminated);
 }
 
 ProxyWorker::Status FileNameWorker::status()
 {
-    return static_cast<ProxyWorker::Status>(m_status.loadAcquire());
+    Q_D(FileNameWorker);
+
+    return static_cast<ProxyWorker::Status>(d->m_status.loadAcquire());
 }
 
 bool FileNameWorker::hasItem() const
 {
-    QMutexLocker lk(&m_mutex);
-    return !m_items.isEmpty();
+    Q_D(const FileNameWorker);
+
+    QMutexLocker lk(&d->m_mutex);
+    return !d->m_items.isEmpty();
 }
 
 GrandSearch::MatchedItemMap FileNameWorker::takeAll()
 {
-    QMutexLocker lk(&m_mutex);
-    GrandSearch::MatchedItems items = std::move(m_items);
+    Q_D(FileNameWorker);
 
-    Q_ASSERT(m_items.isEmpty());
+    QMutexLocker lk(&d->m_mutex);
+    GrandSearch::MatchedItems items = std::move(d->m_items);
+
+    Q_ASSERT(d->m_items.isEmpty());
     lk.unlock();
 
     //添加分组
     GrandSearch::MatchedItemMap ret;
-    ret.insert(group(),items);
+    ret.insert(group(), items);
 
     return ret;
 }
 
 QString FileNameWorker::group() const
 {
-    return tr("filename");
+    return tr("Files");
 }

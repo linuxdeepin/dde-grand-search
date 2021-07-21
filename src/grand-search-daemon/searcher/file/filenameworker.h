@@ -24,6 +24,8 @@
 #include "searcher/proxyworker.h"
 
 class ComDeepinAnythingInterface;
+class FileNameWorkerPrivate;
+
 class FileNameWorker : public ProxyWorker
 {
 public:
@@ -39,15 +41,8 @@ public:
 private:
     QString group() const;
 private:
-    QAtomicInt m_status = Ready;
-    QString m_searchPath;
-    QString m_context;
-    bool m_isAddDataPrefix = false;
-    QRegExp m_regExpFlag;
-
-    mutable QMutex m_mutex;
-    GrandSearch::MatchedItems m_items;  // 搜索结果
-    ComDeepinAnythingInterface *anythingInterface = nullptr;
+    QScopedPointer<FileNameWorkerPrivate> d_ptr;
+    Q_DECLARE_PRIVATE(FileNameWorker)
 };
 
 #endif // FILENAMEWORKER_H

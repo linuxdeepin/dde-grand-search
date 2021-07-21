@@ -95,10 +95,12 @@ else ()
     ADD_DEFINITIONS(-DENABLE_DEEPINANYTHING)
     set(SEARCHER
         ${SEARCHER}
+        ${ANYTHING_SRC}
         searcher/file/filenamesearcher.h
         searcher/file/filenamesearcher.cpp
         searcher/file/filenameworker.h
         searcher/file/filenameworker.cpp
+        searcher/file/filenameworkerprivate.h
     )
 endif()
 #测试，发布前需删除以下内容
@@ -120,6 +122,7 @@ set(SEARCHER
     searcher/file/filenamesearcher.cpp
     searcher/file/filenameworker.h
     searcher/file/filenameworker.cpp
+    searcher/file/filenameworkerprivate.h
 )
 message("local test fsearch and deepin-anything")
 #end
