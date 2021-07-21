@@ -31,11 +31,24 @@
 #include <QDebug>
 
 #include <unistd.h>
+#include <signal.h>
 
 DCORE_USE_NAMESPACE
 
+static void appExitHandler(int sig) {
+    qInfo() << "signal" << sig << "exit.";
+
+    //释放资源，退出插件子进程。
+    qApp->quit();
+}
+
 int main(int argc, char *argv[])
 {
+    //安全退出
+    signal(SIGINT, appExitHandler);
+    signal(SIGQUIT, appExitHandler);
+    signal(SIGTERM, appExitHandler);
+
     QCoreApplication app(argc, argv);
 
     {

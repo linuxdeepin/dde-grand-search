@@ -33,7 +33,7 @@ struct SearchPluginInfo
     QString name;       //插件名，推荐使用com.company.app.xxxx 的格式
     QString ifsVersion; //dbus接口协议
     QString from;       //conf文件
-    QString exec;       //插件可执行程序路径
+    QString exec;       //插件启动命令
     QString servie;     //dbus服务
     QString address;    //dbus地址
     QString interface;  //dbus接口

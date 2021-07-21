@@ -23,6 +23,7 @@
 
 #include "pluginmanager.h"
 #include "loader/pluginloader.h"
+#include "process/pluginprocess.h"
 
 class PluginManagerPrivate : public QObject
 {
@@ -30,13 +31,15 @@ class PluginManagerPrivate : public QObject
     friend class PluginManager;
 public:
     explicit PluginManagerPrivate(PluginManager *parent);
-
+    bool readConf();
+    void prepareProcess();
 signals:
 
 public slots:
 private:
     PluginManager *q;
     PluginLoader *m_loader = nullptr;
+    PluginProcess *m_process = nullptr;
 };
 
 #endif // PLUGINMANAGERPRIVATE_H

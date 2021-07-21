@@ -20,7 +20,6 @@
  */
 #include "pluginmanager.h"
 #include "pluginmanagerprivate.h"
-#include "loader/pluginloader.h"
 
 #include <QStandardPaths>
 #include <QDebug>
@@ -32,6 +31,53 @@ PluginManagerPrivate::PluginManagerPrivate(PluginManager *parent)
 
 }
 
+bool PluginManagerPrivate::readConf()
+{
+    if (!m_loader) {
+        m_loader = new PluginLoader(this);
+
+        //默认路径
+#ifdef QT_DEBUG
+        const char *defaultPath = realpath("./", nullptr);
+#else
+        auto defaultPath = PLUGIN_SEARCHER_DIR;
+#endif
+        static_assert(std::is_same<decltype(defaultPath), const char *>::value, "PLUGIN_SEARCHER_DIR is not a string.");
+
+        m_loader->setPluginPath({QString(defaultPath)});
+    }
+
+    return m_loader->load();
+}
+
+void PluginManagerPrivate::prepareProcess()
+{
+    if (!m_process)
+        m_process = new PluginProcess(this);
+
+    Q_ASSERT(m_loader);
+
+    //清除所有进程
+    m_process->clear();
+
+    QList<GrandSearch::SearchPluginInfo> plugins = m_loader->plugins();
+    for (const GrandSearch::SearchPluginInfo &plugin : plugins) {
+        //Auto类型的插件需进行进程管理
+        if (plugin.mode == GrandSearch::SearchPluginInfo::Auto) {
+            qDebug() << "create process" << plugin.name;
+
+            if (m_process->addProgram(plugin.name, plugin.exec)) {
+
+                //高，中优先级添加守护
+                if (plugin.priority  <= GrandSearch::SearchPluginInfo::Middle)
+                    m_process->setWatched(plugin.name, true);
+            } else {
+                qWarning() << "program error: " <<  plugin.name << plugin.exec << plugin.from;
+            }
+        }
+    }
+}
+
 PluginManager::PluginManager(QObject *parent)
     : QObject(parent)
     , d(new PluginManagerPrivate(this))
@@ -41,14 +87,11 @@ PluginManager::PluginManager(QObject *parent)
 
 bool PluginManager::loadPlugin()
 {
-    if (!d->m_loader) {
-        d->m_loader = new PluginLoader(this);
+    //读取插件目录下的conf
+    bool ret = d->readConf();
 
-        auto defaultPath = PLUGIN_SEARCHER_DIR;
-        static_assert(std::is_same<decltype(defaultPath), const char *>::value, "PLUGIN_SEARCHER_DIR is not a string.");
+    //加入进程管理
+    d->prepareProcess();
 
-        d->m_loader->setPluginPath({QString(defaultPath)});
-    }
-
-    return d->m_loader->load();
+    return ret;
 }

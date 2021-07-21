@@ -143,6 +143,8 @@ set(SEARCHPLUGIN
 set(UTILS
     utils/searchpluginconf.h
     utils/searchplugininfo.h
+    utils/utiltools.h
+    utils/utiltools.cpp
 )
 
 set(SRCS

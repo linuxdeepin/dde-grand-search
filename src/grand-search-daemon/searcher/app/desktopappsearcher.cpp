@@ -78,6 +78,7 @@ void DesktopAppSearcherPrivate::createIndex(DesktopAppSearcherPrivate *d)
         info->item = app.key();
         info->icon = value->stringValue("Icon");
         info->type = "application/x-desktop"; //此项写固定值，.desktop文件的mimetype为application/x-desktop
+        info->searcher = d->q->name();
 
         //放入索引表
         for (const QString &key : keys) {

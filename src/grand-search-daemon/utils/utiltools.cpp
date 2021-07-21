@@ -18,32 +18,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef PLUGINPROCESS_H
-#define PLUGINPROCESS_H
+#include "utiltools.h"
 
-#include <QMap>
-#include <QObject>
+#include <QStringList>
 
-class QProcess;
-class PluginProcess : public QObject
+namespace GrandSearch {
+
+bool UtilTools::splitCommand(const QString &cmd, QString &program, QStringList &args)
 {
-    Q_OBJECT
-public:
-    explicit PluginProcess(QObject *parent = nullptr);
-    ~PluginProcess();
-    bool addProgram(const QString &name, const QString &path);
-    void setWatched(const QString &name, bool watch);
-    void clear();
-signals:
+    if (cmd.isEmpty())
+        return false;
+    QStringList cmds = cmd.split(" ");
+    if (cmds.size() == 0)
+        return false;
 
-public slots:
-private slots:
-    void processStateChanged();
-private:
-    QMap<QString, QString> m_programs;
-    QMap<QString, QProcess *> m_processes;
-    QMap<QString, bool> m_watch;
+    program = cmds.first();
+    if (program.isEmpty())
+        return false;
 
-};
+    for (int i = 1; i < cmds.size(); ++i) {
+        const QString &arg = cmds.at(i);
+        if (arg.isEmpty())
+            continue;
+        args << arg;
+    }
 
-#endif // PLUGINPROCESS_H
+    return true;
+}
+
+}
