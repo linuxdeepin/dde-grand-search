@@ -29,8 +29,8 @@ class FileNameWorkerPrivate
 {
 public:
     explicit FileNameWorkerPrivate(FileNameWorker *qq);
-    // 递归判断文件或所在目录是否隐藏
-    bool isHiddenFile(const QString &filePath);
+    QFileInfoList traverseDirAndFile(const QString &path);
+    bool sortFileName(const QFileInfo &info1, const QFileInfo &info2);
     void appendSearchResult(const QString &fileName);
 
 public:
