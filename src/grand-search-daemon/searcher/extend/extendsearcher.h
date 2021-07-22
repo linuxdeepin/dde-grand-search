@@ -24,11 +24,25 @@
 
 #include "searcher/searcher.h"
 
+class ExtendSearcherPrivate;
 class ExtendSearcher : public Searcher
 {
     Q_OBJECT
+    friend class ExtendSearcherPrivate;
 public:
-    explicit ExtendSearcher(QObject *parent = nullptr);
+    explicit ExtendSearcher(const QString &name, QObject *parent = nullptr);
+    void setService(const QString &service, const QString &address,
+                    const QString &interface, const QString &ver);
+    void setActivatable(bool);
+    QString name() const;
+    bool isActive() const;
+    bool activate();
+    ProxyWorker *createWorker() const;
+    void action(const QString &action, const QString &item);
+signals:
+    void activateRequest(const QString &name, bool &ret);
+private:
+    ExtendSearcherPrivate *d;
 };
 
 #endif // EXTENDSEARCHER_H

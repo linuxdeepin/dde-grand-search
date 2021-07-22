@@ -24,7 +24,6 @@
 
 #include "maincontroller/maincontroller.h"
 #include "searcher/searchergroup.h"
-#include "searchplugin/pluginmanager.h"
 #include "task/taskcommander.h"
 
 class MainControllerPrivate : public QObject
@@ -35,15 +34,11 @@ public:
     MainControllerPrivate(MainController *parent);
     ~MainControllerPrivate();
     void buildWorker(TaskCommander *task);
-protected:
-    bool initSearchGroup();
-    bool initPluinManager();
-    void initExtendSearcher();
+
 private:
     MainController *q;
     SearcherGroup *m_searchers = nullptr;
     TaskCommander *m_currentTask = nullptr;
-    PluginManager *m_pluginManager = nullptr;
 };
 
 

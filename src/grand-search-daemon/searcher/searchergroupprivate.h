@@ -22,6 +22,7 @@
 #define SEARCHERGROUPPRIVATE_H
 
 #include "searchergroup.h"
+#include "searchplugin/pluginmanager.h"
 #include "app/desktopappsearcher.h"
 #include "extend/extendsearcher.h"
 
@@ -39,10 +40,18 @@ class SearcherGroupPrivate : public QObject
     friend class SearcherGroup;
 public:
     explicit SearcherGroupPrivate(SearcherGroup *parent);
+
+    void initBuiltin();
+    bool initPluinManager();
+    void initExtendSearcher();
+    bool addExtendSearcher(const GrandSearch::SearchPluginInfo &pluginInfo);
+private slots:
+    void onActivatePlugin(const QString &name, bool &ret);
 private:
     SearcherGroup *q;
     QList<Searcher *> m_builtin;
     QList<Searcher *> m_extend;
+    PluginManager *m_pluginManager = nullptr;
 };
 
 #endif // SEARCHERGROUPPRIVATE_H

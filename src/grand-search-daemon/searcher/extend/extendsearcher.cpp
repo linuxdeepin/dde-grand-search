@@ -20,8 +20,75 @@
  */
 
 #include "extendsearcher.h"
+#include "extendsearcherprivate.h"
 
-ExtendSearcher::ExtendSearcher(QObject *parent) : Searcher(parent)
+#include <QDBusConnectionInterface>
+
+ExtendSearcherPrivate::ExtendSearcherPrivate(ExtendSearcher *parent)
+    : QObject(parent)
+{
+
+}
+
+ExtendSearcher::ExtendSearcher(const QString &name, QObject *parent)
+    : Searcher(parent)
+    , d(new ExtendSearcherPrivate(this))
+{
+    d->m_name = name;
+}
+
+void ExtendSearcher::setService(const QString &service, const QString &address, const QString &interface, const QString &ver)
+{
+    if (Q_UNLIKELY(address.isEmpty()
+            || service.isEmpty() || interface.isEmpty()
+            || ver.isEmpty()))
+        return ;
+
+    d->m_service = service;
+    d->m_address = address;
+    d->m_interface = interface;
+    d->m_version = ver;
+}
+
+void ExtendSearcher::setActivatable(bool act)
+{
+    d->m_activatable = act;
+}
+
+QString ExtendSearcher::name() const
+{
+    return d->m_name;
+}
+
+bool ExtendSearcher::isActive() const
+{
+    if (d->m_service.isEmpty())
+        return false;
+
+    QDBusConnectionInterface *cif = QDBusConnection::sessionBus().interface();
+    Q_ASSERT(cif);
+
+    return cif->isServiceRegistered(d->m_service);
+}
+
+bool ExtendSearcher::activate()
+{
+    //受管理的插件才支持激活操作
+    if (d->m_activatable) {
+        bool ret = false;
+        emit activateRequest(name(), ret);
+        return ret;
+    }
+
+    return false;
+}
+
+ProxyWorker *ExtendSearcher::createWorker() const
+{
+    return nullptr;
+}
+
+void ExtendSearcher::action(const QString &action, const QString &item)
 {
 
 }

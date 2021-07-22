@@ -30,6 +30,84 @@ SearcherGroupPrivate::SearcherGroupPrivate(SearcherGroup *parent)
 {
 }
 
+void SearcherGroupPrivate::initBuiltin()
+{
+    Q_ASSERT(m_builtin.isEmpty());
+
+#ifdef ENABLE_DEEPINANYTHING
+    qInfo() << "create FileNameSearcher";
+    auto fileSearcher = new FileNameSearcher(this);
+    m_builtin << fileSearcher;
+#endif
+
+#ifdef ENABLE_FSEARCH
+    qInfo() << "create FsSearcher.";
+    auto fSearcher = new FsSearcher(this);
+    m_builtin << fSearcher;
+#endif
+
+    qInfo() << "create DesktopAppSearcher.";
+    auto appSearcher = new DesktopAppSearcher(this);
+    appSearcher->asyncInit();
+    m_builtin << appSearcher;
+
+    //todo 设置搜索，全文搜索
+}
+
+bool SearcherGroupPrivate::addExtendSearcher(const GrandSearch::SearchPluginInfo &pluginInfo)
+{
+    //在插件模块需对以下信息做严格的校验，此处不再做有效性检查
+    if (Q_UNLIKELY(pluginInfo.name.isEmpty() || pluginInfo.address.isEmpty()
+            || pluginInfo.service.isEmpty() || pluginInfo.interface.isEmpty()
+            || pluginInfo.ifsVersion.isEmpty()))
+        return false;
+
+    if (q->searcher(pluginInfo.name)) {
+        qWarning() << "searcher has existed." << pluginInfo.name;
+        return false;
+    }
+
+    qDebug() << "cretate ExtendSearcher" << pluginInfo.name;
+    ExtendSearcher *extend = new ExtendSearcher(pluginInfo.name, this);
+    extend->setService(pluginInfo.service, pluginInfo.address,
+                         pluginInfo.interface, pluginInfo.ifsVersion);
+
+    //自动启动的插件设置为可激活
+    if (pluginInfo.mode == GrandSearch::SearchPluginInfo::Auto) {
+        extend->setActivatable(true);
+
+        //激活操作,必须直连
+        connect(extend, &ExtendSearcher::activateRequest, this, &SearcherGroupPrivate::onActivatePlugin, Qt::DirectConnection);
+    }
+
+    m_extend << extend;
+    return true;
+}
+
+void SearcherGroupPrivate::onActivatePlugin(const QString &name, bool &ret)
+{
+    Q_ASSERT(m_pluginManager);
+    ret = m_pluginManager->activatePlugin(name);
+}
+
+bool SearcherGroupPrivate::initPluinManager()
+{
+    Q_ASSERT(m_pluginManager == nullptr);
+
+    m_pluginManager = new PluginManager(this);
+    return m_pluginManager->loadPlugin();
+}
+
+void SearcherGroupPrivate::initExtendSearcher()
+{
+    Q_ASSERT(m_pluginManager);
+
+    QList<GrandSearch::SearchPluginInfo> plugins = m_pluginManager->plugins();
+    for (const GrandSearch::SearchPluginInfo &info : plugins)
+        if (!addExtendSearcher(info))
+            qWarning() << "create ExtendSearcher error:" << info.name;
+}
+
 SearcherGroup::SearcherGroup(QObject *parent)
     : QObject(parent)
     , d(new SearcherGroupPrivate(this))
@@ -38,41 +116,21 @@ SearcherGroup::SearcherGroup(QObject *parent)
 
 bool SearcherGroup::init()
 {
-#ifdef ENABLE_DEEPINANYTHING
-    qInfo() << "create FileNameSearcher";
-    auto fileSearcher = new FileNameSearcher(this);
-    d->m_builtin << fileSearcher;
-#endif
+    //初始化内置搜索项
+    d->initBuiltin();
 
-#ifdef ENABLE_FSEARCH
-    qInfo() << "create FsSearcher.";
-    auto fSearcher = new FsSearcher(this);
-    d->m_builtin << fSearcher;
-#endif
-
-    qInfo() << "create DesktopAppSearcher.";
-    auto appSearcher = new DesktopAppSearcher(this);
-    appSearcher->asyncInit();
-    d->m_builtin << appSearcher;
-
-    //todo 设置搜索，全文搜索
-    return true;
-}
-
-bool SearcherGroup::addExtendSearcher(const GrandSearch::SearchPluginInfo &pluginInfo)
-{
-    //在插件模块需对以下信息做严格的校验，此处不再做有效性检查
-    if (Q_UNLIKELY(pluginInfo.name.isEmpty() || pluginInfo.address.isEmpty()
-            || pluginInfo.servie.isEmpty() || pluginInfo.interface.isEmpty()
-            || pluginInfo.ifsVersion.isEmpty()))
-        return false;
-
-    if (searcher(pluginInfo.name)) {
-        qWarning() << "searcher has existed." << pluginInfo.name;
+    //初始化插件
+    if (!d->initPluinManager()) {
+        qCritical() << "error: fail to init PluinManager.";
         return false;
     }
 
-    //todo new ExtendSearcher
+    //创建扩展搜索项
+    d->initExtendSearcher();
+
+    //启动高优先级插件
+    d->m_pluginManager->autoActivate();
+
     return true;
 }
 
@@ -94,3 +152,4 @@ Searcher *SearcherGroup::searcher(const QString &name) const
     else
         return nullptr;
 }
+

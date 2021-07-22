@@ -125,8 +125,8 @@ bool PluginLoader::readInfo(const QString &path, GrandSearch::SearchPluginInfo &
     }
 
     //服务名
-    info.servie = conf.value(PLUGININTERFACE_CONF_DBUSSERVICE, "").toString();
-    if (info.servie.isEmpty())
+    info.service = conf.value(PLUGININTERFACE_CONF_DBUSSERVICE, "").toString();
+    if (info.service.isEmpty())
         return false;
 
     //服务地址

@@ -72,6 +72,7 @@ set(SEARCHER
 #    searcher/fulltext/fulltextsearcher.h
 #    searcher/fulltext/fulltextsearcher.cpp
     searcher/extend/extendsearcher.h
+    searcher/extend/extendsearcherprivate.h
     searcher/extend/extendsearcher.cpp
 )
 #后期需要添加到使用anything的情况下

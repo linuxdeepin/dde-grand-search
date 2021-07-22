@@ -143,12 +143,21 @@ void PluginProcess::terminate(const QString &name)
     if (iter != m_processes.end()) {
         QProcess *process = iter.value();
         Q_ASSERT(process);
+        if (process->state() == QProcess::NotRunning)
+            return;
+
         //取消状态监控，防止被重启
         disconnect(process, nullptr, this, nullptr);
 
         qInfo() << "terminate" << name;
         process->terminate();
-        process->waitForFinished(1000);
+
+        //等待1s退出
+        if(!process->waitForFinished(1000)) {
+            //没有退出，直接kill
+            process->kill();
+            qWarning() << "kill proccess" << name;
+        }
         qInfo() << name << "is terminated";
 
         //清理启动状态

@@ -18,30 +18,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SEARCHPLUGININFO_H
-#define SEARCHPLUGININFO_H
+#ifndef EXTENDSEARCHERPRIVATE_H
+#define EXTENDSEARCHERPRIVATE_H
 
-#include <QString>
+#include "extendsearcher.h"
 
-namespace GrandSearch {
-
-struct SearchPluginInfo
+class ExtendSearcherPrivate : public QObject
 {
-    enum Mode {Auto, Manual};   //运行模式，auto为由本程序控制启动，Manual为由外部控制
-    enum Priority {High = 0, Middle, Low};  //优先级
+    Q_OBJECT
+    friend class ExtendSearcher;
+public:
+    ExtendSearcherPrivate(ExtendSearcher *parent);
+private:
+    QString m_name;
+    QString m_version;
+    bool m_activatable = false;
 
-    QString name;       //插件名，推荐使用com.company.app.xxxx 的格式
-    QString ifsVersion; //dbus接口协议
-    QString from;       //conf文件
-    QString exec;       //插件启动命令
-    QString service;    //dbus服务
-    QString address;    //dbus地址
-    QString interface;  //dbus接口
-
-    Mode mode = Manual ;    //默认为Manual
-    Priority priority = Low;    //仅在mode为auto时有效
+    QString m_service;    //dbus服务
+    QString m_address;    //dbus地址
+    QString m_interface;  //dbus接口
 };
 
-}
-
-#endif // SEARCHPLUGININFO_H
+#endif // EXTENDSEARCHERPRIVATE_H

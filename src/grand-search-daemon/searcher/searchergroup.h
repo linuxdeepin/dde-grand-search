@@ -23,7 +23,6 @@
 #define SEARCHERGROUP_H
 
 #include "searcher.h"
-#include "utils/searchplugininfo.h"
 
 #include <QObject>
 
@@ -35,7 +34,6 @@ public:
     explicit SearcherGroup(QObject *parent = nullptr);
 
     bool init();
-    bool addExtendSearcher(const GrandSearch::SearchPluginInfo &pluginInfo);
     QList<Searcher *> searchers() const;
     Searcher *searcher(const QString &name) const;
 signals:

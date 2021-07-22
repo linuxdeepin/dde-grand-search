@@ -21,9 +21,9 @@
 #ifndef PLUGINMANAGER_H
 #define PLUGINMANAGER_H
 
-#include <QObject>
-
 #include "utils/searchplugininfo.h"
+
+#include <QObject>
 
 class PluginManagerPrivate;
 class PluginManager : public QObject
@@ -38,6 +38,7 @@ public:
 signals:
 
 public slots:
+    bool activatePlugin(const QString &name);
 private:
     PluginManagerPrivate *d;
 };

@@ -100,6 +100,8 @@ QList<GrandSearch::SearchPluginInfo> PluginManager::plugins() const
 {
     if (d->m_loader)
         return d->m_loader->plugins();
+
+    return {};
 }
 
 void PluginManager::autoActivate()
@@ -111,8 +113,14 @@ void PluginManager::autoActivate()
     for (const GrandSearch::SearchPluginInfo &plugin : plugins) {
         //启动高优先级的Auto类型插件
         if (plugin.mode == GrandSearch::SearchPluginInfo::Auto
-                && plugin.priority  == GrandSearch::SearchPluginInfo::High) {
+                && plugin.priority == GrandSearch::SearchPluginInfo::High) {
             d->m_process->startProgram(plugin.name);
         }
     }
+}
+
+bool PluginManager::activatePlugin(const QString &name)
+{
+    Q_ASSERT(d->m_process);
+    return d->m_process->startProgram(name);
 }
