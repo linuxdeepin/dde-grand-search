@@ -65,11 +65,11 @@ void GrandSearchListDelegate::paint(QPainter *painter, const QStyleOptionViewIte
     painter->setRenderHint(QPainter::Antialiasing);
     painter->setRenderHint(QPainter::HighQualityAntialiasing);
 
-    // 绘制选中状态
-    drawSelectState(painter, option, index);
+    // 绘制选中状态(UI设计图暂无选择外框线）
+//    drawSelectState(painter, option, index);
 
-    // 键盘上下键移动时，绘制选中的行
-    drawUpDownSelected(painter, option, index);
+    // 绘制选中的行(暂用默认背景色）
+//    drawUpDownSelected(painter, option, index);
 
     // 绘制匹配结果图标
     drawSearchResultIcon(painter, option, index);
@@ -111,8 +111,8 @@ void GrandSearchListDelegate::drawUpDownSelected(QPainter *painter, const QStyle
 
     const GrandSearchListview *listview = qobject_cast<const GrandSearchListview *>(option.widget);
 
-    if (listview && index.row() == listview->getIndexInt()
-            && listview->getIndexInt() >= 0) {
+    if (listview && index.row() == listview->currentIndex().row()
+            && listview->model()->rowCount() >= 0) {
         painter->save();
         painter->setPen(Qt::NoPen);
         QColor hovertColor(option.palette.highlight().color());
@@ -163,7 +163,7 @@ void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QSty
     lightColor = selectColor;
 
     if ((option.state & QStyle::State_MouseOver)
-            || (index.row() == listview->getIndexInt() && listview->getIndexInt() >= 0)) {
+            || (index.isValid() && index == listview->currentIndex())) {
         textColor = QColor("#FFFFFF");
         lightColor = QColor("#FFFFFF");
     }

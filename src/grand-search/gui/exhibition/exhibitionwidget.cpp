@@ -57,6 +57,21 @@ void ExhibitionWidget::connectToController()
     m_matchWidget->connectToController();
 }
 
+void ExhibitionWidget::onSelectNextItem()
+{
+    m_matchWidget->selectNextItem();
+}
+
+void ExhibitionWidget::onSelectPreviousItem()
+{
+    m_matchWidget->selectPreviousItem();
+}
+
+void ExhibitionWidget::onHandleItem()
+{
+    m_matchWidget->handleItem();
+}
+
 void ExhibitionWidget::initUi()
 {
     m_hLayout = new QHBoxLayout(this);

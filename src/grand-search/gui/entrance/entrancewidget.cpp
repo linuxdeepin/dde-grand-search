@@ -33,6 +33,11 @@
 #include <QAction>
 #include <QTimer>
 #include <QGuiApplication>
+#include <QKeyEvent>
+#include <QMenu>
+#include <QClipboard>
+#include <QContextMenuEvent>
+#include <QEvent>
 
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
@@ -76,6 +81,27 @@ void EntranceWidgetPrivate::onFocusObjectChanged(QObject *obj)
     }
 }
 
+void EntranceWidgetPrivate::showMenu(const QPoint &pos)
+{
+    QMenu *menu = new QMenu;
+    QAction *action = nullptr;
+
+    action = menu->addAction(tr("&Cut"));
+    action->setEnabled(m_lineEdit->hasSelectedText() && m_lineEdit->echoMode() == QLineEdit::Normal);
+    connect(action, &QAction::triggered, m_lineEdit, &QLineEdit::cut);
+
+    action = menu->addAction(tr("&Copy"));
+    action->setEnabled(m_lineEdit->hasSelectedText() && m_lineEdit->echoMode() == QLineEdit::Normal);
+    connect(action, &QAction::triggered, m_lineEdit, &QLineEdit::copy);
+
+    action = menu->addAction(tr("&Paste"));
+    action->setEnabled(!QGuiApplication::clipboard()->text().isEmpty());
+    connect(action, &QAction::triggered, m_lineEdit, &QLineEdit::paste);
+
+    menu->exec(pos);
+    menu->deleteLater();
+}
+
 EntranceWidget::EntranceWidget(QWidget *parent)
     : DWidget(parent)
     , d_p(new EntranceWidgetPrivate(this))
@@ -109,9 +135,49 @@ void EntranceWidget::paintEvent(QPaintEvent *event)
 #endif
 }
 
+bool EntranceWidget::eventFilter(QObject *watched, QEvent *event)
+{
+    if (watched == d_p->m_lineEdit && QEvent::KeyPress == event->type()) {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+        if (keyEvent) {
+            int key = keyEvent->key();
+            switch (key) {
+            case Qt::Key_Up : {
+                emit sigSelectPreviousItem();
+                return true;
+            }
+            case Qt::Key_Tab :
+            case Qt::Key_Down : {
+                emit sigSelectNextItem();
+                return true;
+            }
+            case Qt::Key_Return:
+            case Qt::Key_Enter: {
+                emit sigHandleItem();
+                return true;
+            }
+            case Qt::Key_Escape : {
+                emit sigCloseWindow();
+                return true;
+            }
+            default:break;
+            }
+        }
+    } else if (watched == d_p->m_lineEdit && QEvent::ContextMenu == event->type()) {
+        QContextMenuEvent *contextMenuEvent = static_cast<QContextMenuEvent*>(event);
+        if (contextMenuEvent) {
+            d_p->showMenu(contextMenuEvent->globalPos());
+            return true;
+        }
+    }
+    return DWidget::eventFilter(watched, event);
+}
+
 void EntranceWidget::initUI()
 {
     d_p->m_searchEdit = new DSearchEdit(this);
+    d_p->m_lineEdit = d_p->m_searchEdit->lineEdit();
+    d_p->m_lineEdit->installEventFilter(this);
 
     // 搜索框界面布局设置
     // 必须对搜索框控件的边距和间隔设置为0,否则其内含的LineEdit不满足大小显示要求

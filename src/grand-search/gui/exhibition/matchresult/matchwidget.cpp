@@ -100,6 +100,10 @@ void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
     // 重新调整布局
     if (bNeedRelayout)
         reLayout();
+
+    // 确保有结果被选中
+    if (!hasSelectItem())
+        selectFirstItem();
 }
 
 void MatchWidget::clearMatchedData()
@@ -130,6 +134,165 @@ void MatchWidget::onSearchCompleted()
 void MatchWidget::onShowMore()
 {
     reLayout();
+}
+
+void MatchWidget::selectNextItem()
+{
+    for (int i=0; i<m_vGroupWidgets.count(); ++i) {
+
+        if (!hasSelectItem(i))
+            continue;
+
+        // 选择项在当前列表中
+        GroupWidget *group = m_vGroupWidgets.at(i);
+        GrandSearchListview *listView = group->getListView();
+        const QModelIndex &index = listView->currentIndex();
+
+        int nextRow = index.row() + 1;
+        const QModelIndex &nextIndex = listView->model()->index(nextRow, 0);
+        if (nextIndex.isValid()) {
+            qDebug() << "select item:" << group->groupName() << nextIndex.row();
+            listView->setCurrentIndex(nextIndex);
+            return;
+        } else {
+            // 选择项是当前列表的最后一项，需要选择下一个列表的第一项
+            if (i < m_vGroupWidgets.count() - 1) {
+                bool selected = selectFirstItem(++i);
+                if (selected) {
+                    // 切换成功后，需要将当前列表选择为空
+                    listView->setCurrentIndex(QModelIndex());
+                } else {
+                    qWarning() << "select next failed";
+                }
+                return;
+            } else {
+                qInfo() << "it's the last one";
+            }
+        }
+    }
+}
+
+void MatchWidget::selectPreviousItem()
+{
+    for (int i=0; i<m_vGroupWidgets.count(); ++i) {
+
+        if (!hasSelectItem(i))
+            continue;
+
+        // 选择项在当前列表中
+        GroupWidget *group = m_vGroupWidgets.at(i);
+        GrandSearchListview *listView = group->getListView();
+        const QModelIndex &index = listView->currentIndex();
+
+        int previousRow = index.row() - 1;
+        const QModelIndex &previousIndex = listView->model()->index(previousRow, 0);
+        if (previousIndex.isValid()) {
+            qDebug() << "select item:" << group->groupName() << previousIndex.row();
+            listView->setCurrentIndex(previousIndex);
+            return;
+        } else {
+            // 选择项是当前列表的第一项，需要选择上一个列表的最后一项
+            if (i > 0) {
+                bool selected = selectLastItem(--i);
+                if (selected) {
+                    // 切换成功后，需要将当前列表选择为空
+                    listView->setCurrentIndex(QModelIndex());
+                } else {
+                    qWarning() << "select previous failed";
+                }
+                return;
+            } else {
+                qInfo() << "it's the first one";
+            }
+        }
+    }
+}
+
+void MatchWidget::handleItem()
+{
+    // todo handle item
+}
+
+void MatchWidget::onSelectItemByMouse(const GrandSearchListview *listView)
+{
+    for (int i=0; i<m_vGroupWidgets.count(); ++i) {
+        if (hasSelectItem(i)) {
+            GrandSearchListview *tmpListView = m_vGroupWidgets.at(i)->getListView();
+            Q_ASSERT(tmpListView);
+            if (listView != tmpListView)
+                tmpListView->setCurrentIndex(QModelIndex());
+        }
+    }
+}
+
+bool MatchWidget::selectFirstItem(int groupNumber)
+{
+    for (int i=groupNumber; i<m_vGroupWidgets.count(); ++i) {
+
+        GroupWidget *group = m_vGroupWidgets.at(i);
+        Q_ASSERT(group);
+
+        GrandSearchListview *listView = group->getListView();
+        Q_ASSERT(listView);
+
+        if (listView->rowCount() > 0) {
+            const QModelIndex &index = listView->model()->index(0, 0);
+            if (index.isValid()) {
+                qDebug() << "select item:" << group->groupName() << index.row();
+                listView->setCurrentIndex(index);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool MatchWidget::selectLastItem(int groupNumber)
+{
+    for (int i=groupNumber; i<m_vGroupWidgets.count(); --i) {
+
+        GroupWidget *group = m_vGroupWidgets.at(i);
+        Q_ASSERT(group);
+
+        GrandSearchListview *listView = group->getListView();
+        Q_ASSERT(listView);
+
+        if (listView->rowCount() > 0) {
+            const QModelIndex &index = listView->model()->index(listView->rowCount() - 1, 0);
+            if (index.isValid()) {
+                qDebug() << "select item:" << group->groupName() << index.row();
+                listView->setCurrentIndex(index);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool MatchWidget::hasSelectItem()
+{
+    for (int i=0; i<m_vGroupWidgets.count(); ++i) {
+        if (hasSelectItem(i))
+            return true;
+    }
+    return false;
+}
+
+bool MatchWidget::hasSelectItem(int groupNumber)
+{
+    GroupWidget *group = m_vGroupWidgets.at(groupNumber);
+    if (!group)
+        return false;
+
+    GrandSearchListview *listView = group->getListView();
+    if (!listView)
+        return false;
+
+    const QModelIndex &index = listView->currentIndex();
+    if (index.isValid())
+        return true;
+
+    return false;
 }
 
 void MatchWidget::initUi()
@@ -220,6 +383,10 @@ GroupWidget *MatchWidget::createGroupWidget(const QString &groupHash)
     if (!m_groupWidgetMap[groupHash]) {
         GroupWidget* groupWidget = new GroupWidget(m_scrollAreaContent);
         connect(groupWidget, &GroupWidget::showMore, this, &MatchWidget::reLayout);
+
+        GrandSearchListview *listView = groupWidget->getListView();
+        Q_ASSERT(listView);
+        connect(listView, &GrandSearchListview::sigSelectItemByMouse, this, &MatchWidget::onSelectItemByMouse);
 
         groupWidget->setGroupName(groupHash);
         m_groupWidgetMap[groupHash] = groupWidget;

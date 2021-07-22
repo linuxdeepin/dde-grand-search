@@ -29,8 +29,8 @@ class DSearchEdit;
 DWIDGET_END_NAMESPACE
 
 class QHBoxLayout;
-class QSpacerItem;
 class QTimer;
+class QLineEdit;
 class EntranceWidgetPrivate : public QObject
 {
     Q_OBJECT
@@ -43,8 +43,11 @@ public:
 
     void onFocusObjectChanged(QObject *obj);
 
+    void showMenu(const QPoint& pos);
+
     EntranceWidget *q_p;
     Dtk::Widget::DSearchEdit *m_searchEdit = nullptr;   // 搜索输入框控件
+    QLineEdit *m_lineEdit = nullptr;                    // 输入控件
     QHBoxLayout *m_mainLayout = nullptr;
 
     QTimer *m_delayChangeTimer = nullptr;               // 延迟发出搜索文本改变

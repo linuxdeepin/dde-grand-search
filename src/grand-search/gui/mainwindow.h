@@ -48,6 +48,7 @@ private slots:
     void onSearchTextChanged(const QString &txt);
 
     void onApplicationStateChanged(const Qt::ApplicationState state);
+    void onCloseWindow();
 
 private:
     void initUI();

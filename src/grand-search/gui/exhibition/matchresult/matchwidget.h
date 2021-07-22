@@ -44,6 +44,25 @@ public slots:
     void onSearchCompleted();
     void onShowMore();
 
+    void selectNextItem();
+    void selectPreviousItem();
+    void handleItem();
+
+private slots:
+    void onSelectItemByMouse(const GrandSearchListview *listView);
+
+private:
+    // 在显示列表中，选择指定组的第一个项
+    // 组或组的视图为空，或组的视图中项为空，则查找下一个组
+    // 从给定的组查找到最后仍然失败，则返回false，否则返回true
+    bool selectFirstItem(int groupNumber = 0);
+
+    // 选择给定组的最后一项
+    bool selectLastItem(int groupNumber);
+
+    bool hasSelectItem();
+    bool hasSelectItem(int groupNumber);
+
 protected:
     void initUi();
     void initConnect();

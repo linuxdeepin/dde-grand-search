@@ -39,6 +39,11 @@ public:
     ~ExhibitionWidget();
     void connectToController();
 
+public slots:
+    void onSelectNextItem();
+    void onSelectPreviousItem();
+    void onHandleItem();
+
 protected:
     void initUi();
     void initConnect();

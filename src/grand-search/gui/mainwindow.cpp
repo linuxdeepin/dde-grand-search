@@ -31,6 +31,7 @@
 #include <QTimer>
 #include <QVBoxLayout>
 #include <QScreen>
+#include <QKeyEvent>
 
 class MainWindowGlobal : public MainWindow {};
 Q_GLOBAL_STATIC(MainWindowGlobal, mainWindowGlobal)
@@ -141,6 +142,11 @@ void MainWindow::onApplicationStateChanged(const Qt::ApplicationState state)
     }
 }
 
+void MainWindow::onCloseWindow()
+{
+    this->close();
+}
+
 MainWindow *MainWindow::instance()
 {
     return mainWindowGlobal;
@@ -198,6 +204,11 @@ void MainWindow::initConnect()
 
     // 进程变为非激活状态时，退出
     connect(qApp, &QGuiApplication::applicationStateChanged, this, &MainWindow::onApplicationStateChanged);
+
+    connect(d_p->m_entranceWidget, &EntranceWidget::sigSelectPreviousItem, d_p->m_exhibitionWidget, &ExhibitionWidget::onSelectPreviousItem);
+    connect(d_p->m_entranceWidget, &EntranceWidget::sigSelectNextItem, d_p->m_exhibitionWidget, &ExhibitionWidget::onSelectNextItem);
+    connect(d_p->m_entranceWidget, &EntranceWidget::sigHandleItem, d_p->m_exhibitionWidget, &ExhibitionWidget::onHandleItem);
+    connect(d_p->m_entranceWidget, &EntranceWidget::sigCloseWindow, this, &MainWindow::onCloseWindow);
 }
 
 void MainWindow::activeMainWindow()

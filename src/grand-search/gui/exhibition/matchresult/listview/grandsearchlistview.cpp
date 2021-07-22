@@ -26,6 +26,7 @@
 #include <QDebug>
 #include <QFileInfo>
 #include <QPainter>
+#include <QMouseEvent>
 
 DCORE_USE_NAMESPACE
 
@@ -44,6 +45,7 @@ GrandSearchListview::GrandSearchListview(QWidget *parent)
     setMovement(QListView::Static);
     setLayoutMode(QListView::Batched);
     setBatchSize(2000);
+    setMouseTracking(true);
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
@@ -117,16 +119,6 @@ int GrandSearchListview::rowCount()
     return m_model->rowCount();
 }
 
-int GrandSearchListview::getIndexInt()const
-{
-    return m_CurrentIndex;
-}
-
-void GrandSearchListview::setCurrentIndexInt(int row)
-{
-    m_CurrentIndex = row;
-}
-
 int GrandSearchListview::getThemeType() const
 {
     return m_themeType;
@@ -150,14 +142,37 @@ void GrandSearchListview::onSetThemeType(int type)
 
 void GrandSearchListview::mouseMoveEvent(QMouseEvent *event)
 {
-    Q_UNUSED(event)
-    qDebug() << "GrandSearchListview::mouseMoveEvent";
+    QModelIndex index = indexAt(event->pos());
+    if (index.isValid()) {
+        if (this->currentIndex() != index) {
+            setCurrentIndex(index);
+
+            // 通知其它列表取消选中
+            emit sigSelectItemByMouse(this);
+
+            return;
+        }
+    }
+
+    return DListView::mouseMoveEvent(event);
 }
 
 bool GrandSearchListview::event(QEvent *event)
 {
     Q_UNUSED(event)
     return QListView::event(event);
+}
+
+bool GrandSearchListview::viewportEvent(QEvent *event)
+{
+    switch (event->type()) {
+    case QEvent::HoverMove :
+    case QEvent::HoverEnter :
+        // 禁用悬浮事件，否则需要对悬浮位置的背景做特殊绘制（默认会比选中的颜色偏亮）
+        return true;
+    default:break;
+    }
+    return DListView::viewportEvent(event);
 }
 
 QString GrandSearchListview::cacheDir()

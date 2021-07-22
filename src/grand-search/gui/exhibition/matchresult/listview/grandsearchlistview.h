@@ -46,8 +46,6 @@ public:
     void addRows(const MatchedItems &items);
 
     int rowCount();
-    int getIndexInt()const;
-    void setCurrentIndexInt(int row);
     int getThemeType() const;
 
     void clear();
@@ -55,9 +53,14 @@ public:
 public slots:
     void onItemClicked(const QModelIndex &index);
     void onSetThemeType(int type);
+
+signals:
+    void sigSelectItemByMouse(GrandSearchListview *listView);
+
 protected:
-    virtual void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    virtual bool event(QEvent *event)Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    bool event(QEvent *event) Q_DECL_OVERRIDE;
+    bool viewportEvent(QEvent *event) Q_DECL_OVERRIDE;
 
 private:
     QString cacheDir();
@@ -67,7 +70,6 @@ private:
     GrandSearchListDelegate     *m_delegate     = nullptr;
 
     int                         m_themeType     = 1;// 当前应用主题类型 1:浅色 2:深色 默认1:浅色
-    int                         m_CurrentIndex = -1;// 键盘上下移动选择时，记录当前选择的行索引，用于绘制选中的行
     QPixmap                     m_defaultIcon = QPixmap(":/icons/deepin/builtin/actions/deepin_file.svg");
 
     MatchedItems                m_matchedItems;

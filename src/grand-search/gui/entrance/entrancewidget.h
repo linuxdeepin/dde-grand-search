@@ -36,7 +36,8 @@ public:
     void connectToController();
 
 protected:
-    void paintEvent(QPaintEvent *event) override;
+    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+    bool eventFilter(QObject *watched, QEvent *event) Q_DECL_OVERRIDE;
 
 private:
     void initUI();
@@ -44,6 +45,10 @@ private:
 
 signals:
     void searchTextChanged(const QString &txt);
+    void sigSelectNextItem();
+    void sigSelectPreviousItem();
+    void sigHandleItem();
+    void sigCloseWindow();
 
 private:
     QScopedPointer<EntranceWidgetPrivate> d_p;
