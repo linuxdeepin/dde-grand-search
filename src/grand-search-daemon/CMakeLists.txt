@@ -74,6 +74,8 @@ set(SEARCHER
     searcher/extend/extendsearcher.h
     searcher/extend/extendsearcherprivate.h
     searcher/extend/extendsearcher.cpp
+    searcher/extend/extendworker.h
+    searcher/extend/extendworker.cpp
 )
 #后期需要添加到使用anything的情况下
 qt5_add_dbus_interface(ANYTHING_SRC /usr/share/dbus-1/interfaces/com.deepin.anything.xml anything_interface)
@@ -128,6 +130,26 @@ set(SEARCHER
 message("local test fsearch and deepin-anything")
 #end
 
+# 手动生成xml描述文件
+# qdbuscpp2xml -A grandsearchplugininterfacev1.h -o com.deepin.dde.grandsearch.searchplugin.xml
+set(PLUGIN_ABSTRACT_IFS
+    searchplugin/interface/abstract/grandsearchplugininterfacev1.h
+)
+
+# 插件通信接口
+set(SEARCHPLUGIN_IFS
+    searchplugin/interface/searchplugininterfacev1.h
+    searchplugin/interface/searchplugininterfacev1.cpp
+)
+
+# 插件通信协议
+set(SEARCHPLUGIN_PROT
+    searchplugin/convertors/abstractconvertor.h
+    searchplugin/convertors/abstractconvertor.cpp
+    searchplugin/convertors/convertorv1_0.h
+    searchplugin/convertors/convertorv1_0.cpp
+)
+
 set(SEARCHPLUGIN
     searchplugin/pluginmanager.h
     searchplugin/pluginmanagerprivate.h
@@ -138,12 +160,17 @@ set(SEARCHPLUGIN
     searchplugin/process/pluginprocess.cpp
     searchplugin/dataconvertor.h
     searchplugin/dataconvertor.cpp
-    searchplugin/convertors/abstractconvertor.h
+    searchplugin/pluginliaison.h
+    searchplugin/pluginliaisonprivate.h
+    searchplugin/pluginliaison.cpp
+    ${SEARCHPLUGIN_IFS}
+    ${SEARCHPLUGIN_PROT}
 )
 
 set(UTILS
     utils/searchpluginconf.h
     utils/searchplugininfo.h
+    utils/searchpluginprotocol.h
     utils/utiltools.h
     utils/utiltools.cpp
 )

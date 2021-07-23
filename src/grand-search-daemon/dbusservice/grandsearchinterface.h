@@ -46,7 +46,7 @@ public slots:
     Q_SCRIPTABLE void Terminate();
     Q_SCRIPTABLE QByteArray MatchedResults(const QString &session);
     Q_SCRIPTABLE QByteArray MatchedBuffer(const QString &session);
-    Q_SCRIPTABLE bool OpenWithPlugin(const QString &item);
+    Q_SCRIPTABLE bool OpenWithPlugin(const QString &searcher, const QString &item);
     Q_SCRIPTABLE bool Configure(const QVariantMap &);
     Q_SCRIPTABLE QVariantMap Configuration() const;
     Q_SCRIPTABLE bool SetFeedBackStrategy(const QVariantMap &);

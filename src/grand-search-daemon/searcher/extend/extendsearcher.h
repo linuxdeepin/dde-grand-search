@@ -38,7 +38,7 @@ public:
     bool isActive() const;
     bool activate();
     ProxyWorker *createWorker() const;
-    void action(const QString &action, const QString &item);
+    bool action(const QString &action, const QString &item);
 signals:
     void activateRequest(const QString &name, bool &ret);
 private:

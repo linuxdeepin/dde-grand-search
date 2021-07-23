@@ -18,23 +18,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#ifndef SEARCHPLUGINPROTOCOL_H
+#define SEARCHPLUGINPROTOCOL_H
 
-#ifndef SEARCHER_H
-#define SEARCHER_H
+//protocol v1.0
+#define PLUGININTERFACE_PROTOCOL_VERSION "ver"
+#define PLUGININTERFACE_PROTOCOL_MISSIONID "mID"
+#define PLUGININTERFACE_PROTOCOL_CONTENT "cont"
+#define PLUGININTERFACE_PROTOCOL_GROUP "group"
+#define PLUGININTERFACE_PROTOCOL_ITEMS "items"
+#define PLUGININTERFACE_PROTOCOL_ITEM "item"
+#define PLUGININTERFACE_PROTOCOL_NAME "name"
+#define PLUGININTERFACE_PROTOCOL_TYPE "type"
+#define PLUGININTERFACE_PROTOCOL_ICON "icon"
+#define PLUGININTERFACE_PROTOCOL_ACTION "action"
 
-#include <QObject>
+#define PLUGININTERFACE_PROTOCOL_ACTION_OPEN "openitem"
 
-class ProxyWorker;
-class Searcher : public QObject
-{
-    Q_OBJECT
-public:
-    explicit Searcher(QObject *parent = nullptr);
-    virtual QString name() const = 0;
-    virtual bool isActive() const = 0;
-    virtual bool activate();
-    virtual ProxyWorker *createWorker() const = 0;
-    virtual bool action(const QString &action, const QString &item) = 0;
-};
-
-#endif // SEARCHER_H
+#endif // SEARCHPLUGINPROTOCOL_H

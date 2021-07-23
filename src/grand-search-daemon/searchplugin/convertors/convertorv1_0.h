@@ -18,23 +18,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#ifndef CONVERTORV1_0_H
+#define CONVERTORV1_0_H
 
-#ifndef SEARCHER_H
-#define SEARCHER_H
+#include "abstractconvertor.h"
 
-#include <QObject>
-
-class ProxyWorker;
-class Searcher : public QObject
+class ConvertorV1_0 : public AbstractConvertor
 {
-    Q_OBJECT
 public:
-    explicit Searcher(QObject *parent = nullptr);
-    virtual QString name() const = 0;
-    virtual bool isActive() const = 0;
-    virtual bool activate();
-    virtual ProxyWorker *createWorker() const = 0;
-    virtual bool action(const QString &action, const QString &item) = 0;
+    explicit ConvertorV1_0();
+    ~ConvertorV1_0();
+    static AbstractConvertor *create();
+    QString version() const Q_DECL_OVERRIDE;
+    QHash<QString, ConvertInterface> interfaces() Q_DECL_OVERRIDE;
+    static int search(QJsonObject *json, void *info);
+    static int result(QJsonObject *json, void *info);
+    static int stop(QJsonObject *json, void *info);
+    static int action(QJsonObject *json, void *info);
 };
 
-#endif // SEARCHER_H
+#endif // CONVERTORV1_0_H

@@ -29,3 +29,13 @@ AbstractConvertor::~AbstractConvertor()
 {
 
 }
+
+QString AbstractConvertor::version() const
+{
+    return "";
+}
+
+QHash<QString, ConvertInterface> AbstractConvertor::interfaces()
+{
+    return {};
+}

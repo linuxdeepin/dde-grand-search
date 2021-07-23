@@ -29,6 +29,8 @@ class UtilTools
 {
 public:
     static bool splitCommand(const QString &cmd, QString &program, QStringList &args);
+    static QString getJsonString(QJsonObject *json, const QString &key);
+    static QJsonArray getJsonArray(QJsonObject *json, const QString &key);
 };
 
 }

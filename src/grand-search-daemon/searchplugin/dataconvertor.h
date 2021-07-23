@@ -21,17 +21,30 @@
 #ifndef DATACONVERTOR_H
 #define DATACONVERTOR_H
 
-#include <QObject>
+#include "convertors/abstractconvertor.h"
 
-class DataConvertor : public QObject
+#include <QtCore>
+
+typedef AbstractConvertor* (*CreateConvertor)();
+
+#define DataConvIns DataConvertor::instance()
+
+class DataConvertor
 {
-    Q_OBJECT
 public:
-    explicit DataConvertor(QObject *parent = nullptr);
+    static DataConvertor *instance();
+    void initConvetor();
+    bool isSupported(const QString &ver);
+    int convert(const QString &version, const QString &type, QJsonObject *json, void *info);
+    bool regist(const QString &ver, CreateConvertor creator);
+    void unRegist(CreateConvertor creator);
 
-signals:
-
-public slots:
+protected:
+    explicit DataConvertor();
+protected:
+    bool m_inited = false;
+    QHash<QString, CreateConvertor> m_convertors;
+    QReadWriteLock m_rwLock;
 };
 
 #endif // DATACONVERTOR_H

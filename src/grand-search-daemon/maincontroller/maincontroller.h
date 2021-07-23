@@ -38,6 +38,7 @@ public:
     QByteArray getResults() const;
     QByteArray readBuffer() const;
     bool isEmptyBuffer() const;
+    bool searcherAction(const QString &name, const QString &action, const QString &item);
 signals:
     void matched();
     void searchCompleted();

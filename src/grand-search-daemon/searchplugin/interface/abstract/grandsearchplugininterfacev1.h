@@ -18,23 +18,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-#ifndef SEARCHER_H
-#define SEARCHER_H
+#ifndef GRANDSEARCHPLUGININTERFACEV1_H
+#define GRANDSEARCHPLUGININTERFACEV1_H
 
 #include <QObject>
 
-class ProxyWorker;
-class Searcher : public QObject
+//! 扩展搜索插件需实现的dbus接口规范,该文件仅定义接口用于生成dbus接口描述的xml文件。
+//! 插件开发者可使用xml文件生成adaptor实现接口
+//! 插件调用者可使用xml文件生成interface调用
+
+namespace GrandSearch {
+namespace SearchPluginV1 {
+
+class GrandSearchPluginInterface : QObject
 {
     Q_OBJECT
-public:
-    explicit Searcher(QObject *parent = nullptr);
-    virtual QString name() const = 0;
-    virtual bool isActive() const = 0;
-    virtual bool activate();
-    virtual ProxyWorker *createWorker() const = 0;
-    virtual bool action(const QString &action, const QString &item) = 0;
+    Q_CLASSINFO("D-Bus Interface", "com.deepin.dde.GrandSearch.SearchPlugin")
+public slots:
+    QString Search(const QString &json);
+    QString Action(const QString &json);
+    bool Stop(const QString &json);
+private:
+    explicit GrandSearchPluginInterface(QObject *parent = nullptr);
 };
 
-#endif // SEARCHER_H
+}
+}
+
+#endif // GRANDSEARCHPLUGININTERFACEV1_H

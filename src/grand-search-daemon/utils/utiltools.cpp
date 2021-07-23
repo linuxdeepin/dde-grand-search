@@ -46,4 +46,37 @@ bool UtilTools::splitCommand(const QString &cmd, QString &program, QStringList &
     return true;
 }
 
+QString UtilTools::getJsonString(QJsonObject *json, const QString &key)
+{
+    QString ret;
+    if (!json || key.isEmpty())
+        return ret;
+
+    if (json->contains(key)) {
+        auto value = json->value(key);
+        if (value.isString()) {
+            ret = value.toString();
+        }
+    }
+
+    return ret;
+}
+
+QJsonArray UtilTools::getJsonArray(QJsonObject *json, const QString &key)
+{
+    QJsonArray ret;
+
+    if (!json || key.isEmpty())
+        return ret;
+
+    if (json->contains(key)) {
+        auto value = json->value(key);
+        if (value.isArray()) {
+            ret = value.toArray();
+        }
+    }
+
+    return ret;
+}
+
 }

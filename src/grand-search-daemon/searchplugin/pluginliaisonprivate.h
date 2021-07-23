@@ -18,23 +18,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#ifndef PLUGINLIAISONPRIVATE_H
+#define PLUGINLIAISONPRIVATE_H
 
-#ifndef SEARCHER_H
-#define SEARCHER_H
+#include "pluginliaison.h"
+#include "interface/searchplugininterfacev1.h"
 
-#include <QObject>
-
-class ProxyWorker;
-class Searcher : public QObject
+class PluginLiaisonPrivate : public QObject
 {
     Q_OBJECT
+    friend class PluginLiaison;
 public:
-    explicit Searcher(QObject *parent = nullptr);
-    virtual QString name() const = 0;
-    virtual bool isActive() const = 0;
-    virtual bool activate();
-    virtual ProxyWorker *createWorker() const = 0;
-    virtual bool action(const QString &action, const QString &item) = 0;
+    explicit PluginLiaisonPrivate(PluginLiaison *parent);
+    ~PluginLiaisonPrivate();
+    bool isVaild() const;
+    static void parseResult(const QString &json, PluginLiaisonPrivate *d);
+private slots:
+    void onSearchReplied();
+private:
+    PluginLiaison *q;
+    SearchPluginInterfaceV1 *m_inteface = nullptr;
+    QString m_ver;
+    QDBusPendingCallWatcher *m_replyWatcher = nullptr;
+    QFuture<void> m_parseThread;
+    QAtomicInteger<bool> m_searching = false;
 };
 
-#endif // SEARCHER_H
+#endif // PLUGINLIAISONPRIVATE_H

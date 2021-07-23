@@ -21,6 +21,8 @@
 
 #include "extendsearcher.h"
 #include "extendsearcherprivate.h"
+#include "extendworker.h"
+#include "searchplugin/pluginliaison.h"
 
 #include <QDBusConnectionInterface>
 
@@ -85,10 +87,25 @@ bool ExtendSearcher::activate()
 
 ProxyWorker *ExtendSearcher::createWorker() const
 {
+    ExtendWorker *worker = new ExtendWorker(name());
+    if (worker->setService(d->m_service, d->m_address, d->m_interface, d->m_version))
+        return worker;
+
+    qWarning() << "ExtendWorker: fial to set service";
     return nullptr;
 }
 
-void ExtendSearcher::action(const QString &action, const QString &item)
+bool ExtendSearcher::action(const QString &action, const QString &item)
 {
+    PluginLiaison cont;
+    if (cont.init(d->m_service, d->m_address, d->m_interface, d->m_version)) {
+        if (cont.action(action, item))
+            return true;
+        else
+            qWarning() << "action: invaild action:" << action;
+    } else {
+        qWarning() << "action: invaild searcher" << name();
+    }
 
+    return false;
 }

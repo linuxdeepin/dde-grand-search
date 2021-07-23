@@ -263,8 +263,9 @@ ProxyWorker *DesktopAppSearcher::createWorker() const
     return worker;
 }
 
-void DesktopAppSearcher::action(const QString &action, const QString &item)
+bool DesktopAppSearcher::action(const QString &action, const QString &item)
 {
     Q_UNUSED(item);
     qWarning() << "no such action:" << action << ".";
+    return false;
 }

@@ -20,6 +20,7 @@
  */
 #include "pluginmanager.h"
 #include "pluginmanagerprivate.h"
+#include "dataconvertor.h"
 
 #include <QStandardPaths>
 #include <QDebug>
@@ -72,7 +73,7 @@ void PluginManagerPrivate::prepareProcess()
                 if (plugin.priority  <= GrandSearch::SearchPluginInfo::Middle)
                     m_process->setWatched(plugin.name, true);
             } else {
-                qWarning() << "program error: " <<  plugin.name << plugin.exec << plugin.from;
+                qWarning() << "program error: " << plugin.name << plugin.exec << plugin.from;
             }
         }
     }
@@ -92,6 +93,9 @@ bool PluginManager::loadPlugin()
 
     //加入进程管理
     d->prepareProcess();
+
+    //初始化数据协议
+    DataConvertor::instance()->initConvetor();
 
     return ret;
 }

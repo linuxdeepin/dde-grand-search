@@ -35,12 +35,13 @@ class TaskCommanderPrivate : public QObject
 public:
     explicit TaskCommanderPrivate(TaskCommander *parent = nullptr);
     ~TaskCommanderPrivate();
-    void merge(GrandSearch::MatchedItemMap &addTo, const GrandSearch::MatchedItemMap &addFrom);
+    static void merge(GrandSearch::MatchedItemMap &addTo, const GrandSearch::MatchedItemMap &addFrom);
 private:
     static void working(ProxyWorker *);
 private slots:
     void onUnearthed(ProxyWorker *worker);
     void onFinished();
+    void onWorkFinished(ProxyWorker *worker);
 private:
     TaskCommander *q;
     volatile bool m_working = false;
@@ -58,6 +59,10 @@ private:
     QList<ProxyWorker *> m_syncWorkers;
     QFutureWatcher<void> m_asyncLine;
     QFutureWatcher<void> m_syncLine;
+
+    //未接收到停止信号的异步woker
+    QList<ProxyWorker *> m_workingWorkers;
+    bool m_finished = false;  //保证结束信号只发一次
 };
 
 #endif // TASKCOMMANDERPRIVATE_H

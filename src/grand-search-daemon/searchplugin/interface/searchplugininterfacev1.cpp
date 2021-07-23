@@ -19,22 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SEARCHER_H
-#define SEARCHER_H
+#include "searchplugininterfacev1.h"
 
-#include <QObject>
-
-class ProxyWorker;
-class Searcher : public QObject
+SearchPluginInterfaceV1::SearchPluginInterfaceV1(const QString &service, const QString &path, const char *interface,
+                                                 const QDBusConnection &connection, QObject *parent)
+    : QDBusAbstractInterface(service, path, interface, connection, parent)
 {
-    Q_OBJECT
-public:
-    explicit Searcher(QObject *parent = nullptr);
-    virtual QString name() const = 0;
-    virtual bool isActive() const = 0;
-    virtual bool activate();
-    virtual ProxyWorker *createWorker() const = 0;
-    virtual bool action(const QString &action, const QString &item) = 0;
-};
+}
 
-#endif // SEARCHER_H
+SearchPluginInterfaceV1::~SearchPluginInterfaceV1()
+{
+}
+

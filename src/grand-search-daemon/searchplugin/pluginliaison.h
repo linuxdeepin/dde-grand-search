@@ -18,35 +18,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef PROXYWORKER_H
-#define PROXYWORKER_H
+#ifndef PLUGINLIAISON_H
+#define PLUGINLIAISON_H
 
 #include "global/matcheditem.h"
 
 #include <QObject>
 
-//! 异步的Worker必须在析构函数中保证资源安全释放，且析构函数不能阻塞太久
-
-class ProxyWorker : public QObject
+class PluginLiaisonPrivate;
+class PluginLiaison : public QObject
 {
     Q_OBJECT
 public:
-    enum Status {Ready,Runing,Completed,Terminated};
-public:
-    explicit ProxyWorker(const QString &name, QObject *parent = nullptr);
-    QString name() const;
-    virtual void setContext(const QString &context) = 0;
-    virtual bool isAsync() const = 0;
-    virtual bool working(void *context) = 0;
-    virtual void terminate() = 0;
-    virtual Status status() = 0;
-    virtual bool hasItem() const = 0;
-    virtual GrandSearch::MatchedItemMap takeAll() = 0;
+    explicit PluginLiaison(QObject *parent = nullptr);
+    bool init(const QString &service, const QString &address,
+              const QString &interface, const QString &ver);
+    bool isVaild() const;
+    bool search(const QString &task, const QString &context);
+    bool stop(const QString &task);
+    bool action(const QString &type, const QString &item);
 signals:
-    void unearthed(ProxyWorker *worker);
-    void asyncFinished(ProxyWorker *worker); //异步搜索结束信号
-protected:
-    QString m_name;
+    void searchFinished(const GrandSearch::MatchedItemMap &ret);
+private:
+    PluginLiaisonPrivate *d;
 };
 
-#endif // PROXYWORKER_H
+#endif // PLUGINLIAISON_H

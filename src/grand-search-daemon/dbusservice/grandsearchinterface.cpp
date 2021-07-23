@@ -22,6 +22,7 @@
 #include "grandsearchinterface.h"
 #include "grandsearchinterfaceprivate.h"
 #include "maincontroller/maincontroller.h"
+#include "utils/searchpluginprotocol.h"
 
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
@@ -193,11 +194,10 @@ QByteArray GrandSearchInterface::MatchedBuffer(const QString &session)
     return ret;
 }
 
-bool GrandSearchInterface::OpenWithPlugin(const QString &item)
+bool GrandSearchInterface::OpenWithPlugin(const QString &searcher, const QString &item)
 {
     CHECKINVOKER(false);
-
-    return false;
+    return d->m_main->searcherAction(searcher, PLUGININTERFACE_PROTOCOL_ACTION_OPEN, item);
 }
 
 bool GrandSearchInterface::Configure(const QVariantMap &)

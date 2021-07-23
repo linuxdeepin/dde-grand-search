@@ -33,7 +33,7 @@ public:
     bool isActive() const Q_DECL_OVERRIDE;
     bool activate() Q_DECL_OVERRIDE;
     ProxyWorker *createWorker() const Q_DECL_OVERRIDE;
-    void action(const QString &action, const QString &item) Q_DECL_OVERRIDE;
+    bool action(const QString &action, const QString &item) Q_DECL_OVERRIDE;
 private:
     ComDeepinAnythingInterface *anythingInterface = nullptr;
 };

@@ -52,8 +52,9 @@ ProxyWorker *FileNameSearcher::createWorker() const
     return worker;
 }
 
-void FileNameSearcher::action(const QString &action, const QString &item)
+bool FileNameSearcher::action(const QString &action, const QString &item)
 {
-    Q_UNUSED(action)
     Q_UNUSED(item)
+    qWarning() << "no such action:" << action << ".";
+    return false;
 }

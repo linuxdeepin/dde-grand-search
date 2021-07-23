@@ -74,13 +74,28 @@ void TaskCommanderPrivate::onUnearthed(ProxyWorker *worker)
 
 void TaskCommanderPrivate::onFinished()
 {
+    qDebug() << __FUNCTION__ << m_workingWorkers.size() << m_finished << sender();
     //工作线程退出，若之前调用了deleteSelf那么在这里执行释放，否则发送结束信号
     if (m_asyncLine.isFinished() && m_syncLine.isFinished()) {
-        if (m_deleted)
-            this->deleteLater();
-        else
+        if (m_deleted) {
+            q->deleteLater();
+            disconnect(q, nullptr, nullptr, nullptr);
+        } else if (m_workingWorkers.isEmpty() && !m_finished) {
+            m_finished = true;
             emit q->finished();
+        }
     }
+}
+
+void TaskCommanderPrivate::onWorkFinished(ProxyWorker *worker)
+{
+    //检查
+    ProxyWorker *send = dynamic_cast<ProxyWorker *>(sender());
+    if (worker == nullptr || send != worker)
+        return;
+
+    m_workingWorkers.removeOne(worker);
+    onFinished();
 }
 
 TaskCommander::TaskCommander(const QString &content, QObject *parent)
@@ -122,7 +137,11 @@ bool TaskCommander::start()
                 if (!d->m_working )
                     return;
 
-                worker->working(&taskID);
+                if (worker->working(&taskID)) {
+                    //在主线程处理搜索结束
+                    d->connect(worker, &ProxyWorker::asyncFinished, d, &TaskCommanderPrivate::onWorkFinished ,Qt::QueuedConnection);
+                    d->m_workingWorkers.append(worker);
+                }
             }
         }));
         connect(&d->m_asyncLine, &QFutureWatcherBase::finished, d, &TaskCommanderPrivate::onFinished);

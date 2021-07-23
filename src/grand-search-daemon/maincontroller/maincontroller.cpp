@@ -155,3 +155,18 @@ bool MainController::isEmptyBuffer() const
 
     return true;
 }
+
+bool MainController::searcherAction(const QString &name, const QString &action, const QString &item)
+{
+    if (name.isEmpty() || action.isEmpty() || item.isEmpty()) {
+        qWarning() << "input is empty.";
+        return false;
+    }
+
+    if (auto searcher = d->m_searchers->searcher(name)) {
+        return searcher->action(action, item);
+    }
+
+    qWarning() << "no such search:" << name;
+    return false;
+}
