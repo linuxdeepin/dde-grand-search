@@ -29,7 +29,7 @@ class MatchWidgetPrivate
 public:
     explicit MatchWidgetPrivate(MatchWidget *parent = nullptr);
 
-    MatchWidget *q_p;
+    MatchWidget *q_p = nullptr;
 };
 
 #endif // MATCHWIDGET_P_H

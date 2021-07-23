@@ -70,21 +70,18 @@ GroupWidget::~GroupWidget()
 
 void GroupWidget::setGroupName(const QString &groupHash)
 {
-    if (nullptr == m_GroupLabel)
-        return;
+    Q_ASSERT(m_groupLabel);
 
-    QString groupName = GroupWidget::getGroupName(groupHash);
-    QString groupObjName = GroupWidget::getGroupObjName(groupHash);
+    const QString &groupName = GroupWidget::getGroupName(groupHash);
+    const QString &groupObjName = GroupWidget::getGroupObjName(groupHash);
 
-    m_GroupLabel->setObjectName(groupName);
-
-    if (m_GroupLabel)
-        m_GroupLabel->setText(groupName);
+    m_groupLabel->setObjectName(groupObjName);
+    m_groupLabel->setText(groupName);
 }
 
 void GroupWidget::appendMatchedItems(const MatchedItems &newItems)
 {
-    if (newItems.isEmpty())
+    if (Q_UNLIKELY(newItems.isEmpty()))
         return;
 
     // 结果列表未展开
@@ -105,7 +102,7 @@ void GroupWidget::appendMatchedItems(const MatchedItems &newItems)
                     m_firstFiveItems.push_back(m_cacheItems.takeFirst());
             }
 
-            m_ListView->setMatchedItems(m_firstFiveItems);
+            m_listView->setMatchedItems(m_firstFiveItems);
         }
 
         // 缓存中有数据，显示'查看更多'按钮
@@ -115,7 +112,7 @@ void GroupWidget::appendMatchedItems(const MatchedItems &newItems)
         // 结果列表已展开，已经显示的数据保持不变，仅对新增数据排序，然后追加到列表末尾
         MatchedItems& tempNewItems = const_cast<MatchedItems&>(newItems);
         Utils::sort(tempNewItems);
-        m_ListView->addRows(tempNewItems);
+        m_listView->addRows(tempNewItems);
     }
 
     layout();
@@ -123,49 +120,48 @@ void GroupWidget::appendMatchedItems(const MatchedItems &newItems)
 
 void GroupWidget::showHorLine(bool bShow)
 {
-    if (m_Line)
-        m_Line->setVisible(bShow);
+    Q_ASSERT(m_line);
+
+    m_line->setVisible(bShow);
 
     layout();
 }
 
 bool GroupWidget::isHorLineVisilbe()
 {
-    if (m_Line)
-        m_Line->isVisible();
+    Q_ASSERT(m_line);
+
+    m_line->isVisible();
 
     return false;
 }
 
 GrandSearchListview *GroupWidget::getListView()
 {
-    return m_ListView;
+    return m_listView;
 }
 
 int GroupWidget::itemCount()
 {
-    if (m_ListView)
-        return m_ListView->rowCount();
+    Q_ASSERT(m_listView);
 
-    return 0;
+    return m_listView->rowCount();
 }
 
 void GroupWidget::reLayout()
 {
-    if (nullptr == m_ListView)
-        return;
+    Q_ASSERT(m_listView);
+    Q_ASSERT(m_groupLabel);
+    Q_ASSERT(m_line);
 
-    m_ListView->setFixedHeight(m_ListView->rowCount() * ListItemHeight);
+    m_listView->setFixedHeight(m_listView->rowCount() * ListItemHeight);
 
     int nHeight = 0;
-    if (m_GroupLabel) {
-        nHeight += m_GroupLabel->height();
-    }
-    if (m_ListView) {
-        nHeight += m_ListView->height();
-    }
-    if (m_Line && !m_Line->isHidden()) {
-        nHeight += m_Line->height();
+    nHeight += m_groupLabel->height();
+    nHeight += m_listView->height();
+
+    if (!m_line->isHidden()) {
+        nHeight += m_line->height();
     }
 
     this->setFixedHeight(nHeight);
@@ -175,21 +171,22 @@ void GroupWidget::reLayout()
 
 void GroupWidget::clear()
 {
+    Q_ASSERT(m_listView);
+
     m_firstFiveItems.clear();
     m_restShowItems.clear();
     m_cacheItems.clear();
     m_bListExpanded = false;
 
-    m_ListView->clear();
+    m_listView->clear();
     setVisible(false);
 }
 
 QString GroupWidget::groupName()
 {
-    if (m_GroupLabel)
-        return m_GroupLabel->text();
+    Q_ASSERT(m_groupLabel);
 
-    return "";
+    return m_groupLabel->text();
 }
 
 QString GroupWidget::getGroupName(const QString &groupHash)
@@ -233,11 +230,11 @@ void GroupWidget::initUi()
     this->setLayout(m_vLayout);
 
     // 组名标签
-    m_GroupLabel = new DLabel(tr(""), this);
-    m_GroupLabel->setFixedHeight(GroupLabelHeight);
-    m_GroupLabel->setPalette(labelPalette);
-    m_GroupLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-    m_GroupLabel->setContentsMargins(0, 0, 0, 0);
+    m_groupLabel = new DLabel(tr(""), this);
+    m_groupLabel->setFixedHeight(GroupLabelHeight);
+    m_groupLabel->setPalette(labelPalette);
+    m_groupLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
+    m_groupLabel->setContentsMargins(0, 0, 0, 0);
     //DFontSizeManager::instance()->bind(m_GroupLabel, DFontSizeManager::T8, QFont::Normal);
 
     // 查看更多按钮
@@ -261,29 +258,31 @@ void GroupWidget::initUi()
     m_viewMoreButton->hide();
 
     // 组列表标题栏布局
-    m_HTitelLayout = new QHBoxLayout();
-    m_HTitelLayout->setContentsMargins(LayoutMagrinSize,0,0,0);
-    m_HTitelLayout->setSpacing(0);
-    m_HTitelLayout->addWidget(m_GroupLabel);
-    m_HTitelLayout->addSpacerItem(new QSpacerItem(SpacerWidth,SpacerHeight,QSizePolicy::Expanding, QSizePolicy::Minimum));
-    m_HTitelLayout->addWidget(m_viewMoreButton);
+    m_hTitelLayout = new QHBoxLayout();
+    m_hTitelLayout->setContentsMargins(LayoutMagrinSize,0,0,0);
+    m_hTitelLayout->setSpacing(0);
+    m_hTitelLayout->addWidget(m_groupLabel);
+    m_hTitelLayout->addSpacerItem(new QSpacerItem(SpacerWidth,SpacerHeight,QSizePolicy::Expanding, QSizePolicy::Minimum));
+    m_hTitelLayout->addWidget(m_viewMoreButton);
 
     // 组内结果列表
-    m_ListView = new GrandSearchListview(this);
+    m_listView = new GrandSearchListview(this);
 
     // 分割线
-    m_Line = new DHorizontalLine;
-    m_Line->setFrameShadow(DHorizontalLine::Raised);
-    m_Line->setLineWidth(1);
+    m_line = new DHorizontalLine;
+    m_line->setFrameShadow(DHorizontalLine::Raised);
+    m_line->setLineWidth(1);
 
     // 控件放置到主布局内
-    m_vLayout->addLayout(m_HTitelLayout);
-    m_vLayout->addWidget(m_ListView);
-    m_vLayout->addWidget(m_Line);
+    m_vLayout->addLayout(m_hTitelLayout);
+    m_vLayout->addWidget(m_listView);
+    m_vLayout->addWidget(m_line);
 }
 
 void GroupWidget::initConnect()
 {
+    Q_ASSERT(m_viewMoreButton);
+
     connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged,
             this, &GroupWidget::setThemeType);
 
@@ -322,18 +321,19 @@ void GroupWidget::setThemeType(int type)
 
 void GroupWidget::onMoreBtnClcked()
 {
+    Q_ASSERT(m_listView);
+    Q_ASSERT(m_viewMoreButton);
+
     // '查看更多'被点击，列表被展开
-    if (m_ListView) {
-        // 将缓存中的数据转移到剩余显示结果中
-        m_restShowItems << m_cacheItems;
-        Utils::sort(m_restShowItems);
+    // 将缓存中的数据转移到剩余显示结果中
+    m_restShowItems << m_cacheItems;
+    Utils::sort(m_restShowItems);
 
-        // 剩余显示结果追加显示到列表中
-        m_ListView->addRows(m_restShowItems);
+    // 剩余显示结果追加显示到列表中
+    m_listView->addRows(m_restShowItems);
 
-        // 清空缓存中数据
-        m_cacheItems.clear();
-    }
+    // 清空缓存中数据
+    m_cacheItems.clear();
 
     reLayout();
 

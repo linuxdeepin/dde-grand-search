@@ -82,12 +82,12 @@ private:
     QScopedPointer<GroupWidgetPrivate> d_p;
 
     QVBoxLayout *m_vLayout = nullptr;//主体垂直布局
-    QHBoxLayout *m_HTitelLayout = nullptr;//顶部标题水平布局
+    QHBoxLayout *m_hTitelLayout = nullptr;//顶部标题水平布局
 
-    DLabel *m_GroupLabel = nullptr;
+    DLabel *m_groupLabel = nullptr;
     DPushButton* m_viewMoreButton = nullptr;
-    GrandSearchListview *m_ListView = nullptr;
-    DHorizontalLine *m_Line = nullptr;
+    GrandSearchListview *m_listView = nullptr;
+    DHorizontalLine *m_line = nullptr;
 
     bool m_bListExpanded = false;                   // 结果列表是否已展开
     GrandSearch::MatchedItems m_firstFiveItems;     // 前5行正在显示的匹配结果

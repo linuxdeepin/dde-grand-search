@@ -43,8 +43,6 @@ ExhibitionWidget::ExhibitionWidget(QWidget *parent)
 {
     initUi();
     initConnect();
-
-    //test_search();
 }
 
 ExhibitionWidget::~ExhibitionWidget()
@@ -54,21 +52,29 @@ ExhibitionWidget::~ExhibitionWidget()
 
 void ExhibitionWidget::connectToController()
 {
+    Q_ASSERT(m_matchWidget);
+
     m_matchWidget->connectToController();
 }
 
 void ExhibitionWidget::onSelectNextItem()
 {
+    Q_ASSERT(m_matchWidget);
+
     m_matchWidget->selectNextItem();
 }
 
 void ExhibitionWidget::onSelectPreviousItem()
 {
+    Q_ASSERT(m_matchWidget);
+
     m_matchWidget->selectPreviousItem();
 }
 
 void ExhibitionWidget::onHandleItem()
 {
+    Q_ASSERT(m_matchWidget);
+
     m_matchWidget->handleItem();
 }
 

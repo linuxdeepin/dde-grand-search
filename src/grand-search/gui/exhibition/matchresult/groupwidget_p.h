@@ -29,7 +29,7 @@ class GroupWidgetPrivate
 public:
     explicit GroupWidgetPrivate(GroupWidget *parent = nullptr);
 
-    GroupWidget *q_p;
+    GroupWidget *q_p = nullptr;
 };
 
 #endif // GROUPWIDGET_P_H

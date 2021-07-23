@@ -70,12 +70,17 @@ MainWindow::~MainWindow()
 
 void MainWindow::connectToController()
 {
+    Q_ASSERT(d_p->m_entranceWidget);
+    Q_ASSERT(d_p->m_exhibitionWidget);
+
     d_p->m_entranceWidget->connectToController();
     d_p->m_exhibitionWidget->connectToController();
 }
 
 void MainWindow::showExhitionWidget(bool bShow)
 {
+    Q_ASSERT(d_p->m_exhibitionWidget);
+
     //已经显示/隐藏，就不再重复显示/隐藏
     if (d_p->m_exhibitionWidget && !d_p->m_exhibitionWidget->isHidden() == bShow)
         return;
@@ -85,16 +90,19 @@ void MainWindow::showExhitionWidget(bool bShow)
 
 void MainWindow::showSerachNoContent(bool bShow)
 {
-    if (d_p->m_searchNoContentWidget)
+    Q_ASSERT(d_p->m_entranceWidget);
+    Q_ASSERT(d_p->m_exhibitionWidget);
+
+    if (Q_LIKELY(d_p->m_searchNoContentWidget))
         d_p->m_searchNoContentWidget->setVisible(bShow);
 
     if (bShow) {
-        if (d_p->m_exhibitionWidget)
+        if (Q_LIKELY(d_p->m_exhibitionWidget))
             d_p->m_exhibitionWidget->setVisible(false);
     }
 }
 
-void MainWindow::onPrimaryScreenChanged(QScreen *screen)
+void MainWindow::onPrimaryScreenChanged(const QScreen *screen)
 {
     // 主窗口显示在主屏
     disconnect(this, SLOT(onGeometryChanged(const QRect &)));
@@ -193,6 +201,9 @@ void MainWindow::initUI()
 
 void MainWindow::initConnect()
 {
+    Q_ASSERT(d_p->m_entranceWidget);
+    Q_ASSERT(d_p->m_exhibitionWidget);
+
     // 通知查询控制模块发起新的搜索
     connect(d_p->m_entranceWidget, &EntranceWidget::searchTextChanged, this, &MainWindow::searchTextChanged);
 
@@ -219,12 +230,15 @@ void MainWindow::activeMainWindow()
 
 void MainWindow::updateMainWindowHeight()
 {
+    Q_ASSERT(d_p->m_exhibitionWidget);
+    Q_ASSERT(d_p->m_searchNoContentWidget);
+
     bool bExhibitionWidgetShow = false;
     bool bSearchNoContentWidgetShow = false;
 
-    if (d_p->m_exhibitionWidget)
+    if (Q_LIKELY(d_p->m_exhibitionWidget))
         bExhibitionWidgetShow = !d_p->m_exhibitionWidget->isHidden();
-    if (d_p->m_searchNoContentWidget)
+    if (Q_LIKELY(d_p->m_searchNoContentWidget))
         bSearchNoContentWidgetShow = !d_p->m_searchNoContentWidget->isHidden();
 
     if (bExhibitionWidgetShow || bSearchNoContentWidgetShow)

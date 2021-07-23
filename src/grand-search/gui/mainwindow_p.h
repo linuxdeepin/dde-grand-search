@@ -36,7 +36,7 @@ class MainWindowPrivate
 public:
     explicit MainWindowPrivate(MainWindow *parent);
 
-    MainWindow *q_p;
+    MainWindow *q_p = nullptr;
     EntranceWidget *m_entranceWidget = nullptr;
     ExhibitionWidget *m_exhibitionWidget = nullptr;
     Dtk::Widget::DLabel *m_searchNoContentWidget = nullptr;

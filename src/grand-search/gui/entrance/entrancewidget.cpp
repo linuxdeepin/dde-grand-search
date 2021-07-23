@@ -46,6 +46,7 @@ static const uint DelayReponseTime          = 50;       // 输入延迟搜索时
 static const uint EntraceWidgetWidth        = 740;      // 搜索界面宽度度
 static const uint EntraceWidgetHeight       = 48;       // 搜索界面高度
 static const uint WidgetMargins             = 10;       // 界面边距
+static const uint SearchMaxLength           = 512;      // 输入最大字符限制
 
 EntranceWidgetPrivate::EntranceWidgetPrivate(EntranceWidget *parent)
     : q_p(parent)
@@ -59,22 +60,30 @@ EntranceWidgetPrivate::EntranceWidgetPrivate(EntranceWidget *parent)
 
 void EntranceWidgetPrivate::delayChangeText()
 {
+    Q_ASSERT(m_delayChangeTimer);
+
     m_delayChangeTimer->start();
 }
 
 void EntranceWidgetPrivate::notifyTextChanged()
 {
+    Q_ASSERT(m_searchEdit);
+
     const QString &currentSearchText = m_searchEdit->text().trimmed();
     emit q_p->searchTextChanged(currentSearchText);
 }
 
 void EntranceWidgetPrivate::setLineEditFocus()
 {
+    Q_ASSERT(m_searchEdit);
+
     m_searchEdit->lineEdit()->setFocus();
 }
 
 void EntranceWidgetPrivate::onFocusObjectChanged(QObject *obj)
 {
+    Q_ASSERT(m_searchEdit);
+
     if (obj && obj != m_searchEdit->lineEdit()) {
         // 收到焦点改变信号后，必须等已有事件循环结束后，设置才能生效
         QTimer::singleShot(1, this, &EntranceWidgetPrivate::setLineEditFocus);
@@ -83,23 +92,25 @@ void EntranceWidgetPrivate::onFocusObjectChanged(QObject *obj)
 
 void EntranceWidgetPrivate::showMenu(const QPoint &pos)
 {
+    Q_ASSERT(m_lineEdit);
+
     QMenu *menu = new QMenu;
     QAction *action = nullptr;
 
-    action = menu->addAction(tr("&Cut"));
+    action = menu->addAction(tr("Cut"));
     action->setEnabled(m_lineEdit->hasSelectedText() && m_lineEdit->echoMode() == QLineEdit::Normal);
     connect(action, &QAction::triggered, m_lineEdit, &QLineEdit::cut);
 
-    action = menu->addAction(tr("&Copy"));
+    action = menu->addAction(tr("Copy"));
     action->setEnabled(m_lineEdit->hasSelectedText() && m_lineEdit->echoMode() == QLineEdit::Normal);
     connect(action, &QAction::triggered, m_lineEdit, &QLineEdit::copy);
 
-    action = menu->addAction(tr("&Paste"));
+    action = menu->addAction(tr("Paste"));
     action->setEnabled(!QGuiApplication::clipboard()->text().isEmpty());
     connect(action, &QAction::triggered, m_lineEdit, &QLineEdit::paste);
 
     menu->exec(pos);
-    menu->deleteLater();
+    delete menu;
 }
 
 EntranceWidget::EntranceWidget(QWidget *parent)
@@ -139,7 +150,7 @@ bool EntranceWidget::eventFilter(QObject *watched, QEvent *event)
 {
     if (watched == d_p->m_lineEdit && QEvent::KeyPress == event->type()) {
         QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
-        if (keyEvent) {
+        if (Q_LIKELY(keyEvent)) {
             int key = keyEvent->key();
             switch (key) {
             case Qt::Key_Up : {
@@ -165,7 +176,7 @@ bool EntranceWidget::eventFilter(QObject *watched, QEvent *event)
         }
     } else if (watched == d_p->m_lineEdit && QEvent::ContextMenu == event->type()) {
         QContextMenuEvent *contextMenuEvent = static_cast<QContextMenuEvent*>(event);
-        if (contextMenuEvent) {
+        if (Q_LIKELY(contextMenuEvent)) {
             d_p->showMenu(contextMenuEvent->globalPos());
             return true;
         }
@@ -177,6 +188,7 @@ void EntranceWidget::initUI()
 {
     d_p->m_searchEdit = new DSearchEdit(this);
     d_p->m_lineEdit = d_p->m_searchEdit->lineEdit();
+    d_p->m_lineEdit->setMaxLength(SearchMaxLength);
     d_p->m_lineEdit->installEventFilter(this);
 
     // 搜索框界面布局设置
@@ -217,6 +229,8 @@ void EntranceWidget::initUI()
 
 void EntranceWidget::initConnections()
 {
+    Q_ASSERT(d_p->m_searchEdit);
+
     // 输入改变时重置定时器，避免短时间内发起大量无效调用
     connect(d_p->m_searchEdit, &DSearchEdit::textChanged, d_p.data(), &EntranceWidgetPrivate::delayChangeText);
 

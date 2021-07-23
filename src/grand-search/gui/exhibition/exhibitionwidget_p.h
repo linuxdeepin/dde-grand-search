@@ -29,7 +29,7 @@ class ExhibitionWidgetPrivate
 public:
     explicit ExhibitionWidgetPrivate(ExhibitionWidget *parent = nullptr);
 
-    ExhibitionWidget *q_p;
+    ExhibitionWidget *q_p = nullptr;
 };
 
 #endif // EXHIBITIONWIDGET_P_H

@@ -45,7 +45,7 @@ public:
 
     void showMenu(const QPoint& pos);
 
-    EntranceWidget *q_p;
+    EntranceWidget *q_p = nullptr;
     Dtk::Widget::DSearchEdit *m_searchEdit = nullptr;   // 搜索输入框控件
     QLineEdit *m_lineEdit = nullptr;                    // 输入控件
     QHBoxLayout *m_mainLayout = nullptr;

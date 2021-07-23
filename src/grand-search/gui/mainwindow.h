@@ -41,7 +41,7 @@ public:
 
 private slots:
     // 主屏改变响应槽，移动已显示的主界面到主屏
-    void onPrimaryScreenChanged(QScreen *screen);
+    void onPrimaryScreenChanged(const QScreen *screen);
     // 主屏分辨率改变响应槽，调整显示的位置
     void onGeometryChanged(const QRect &geometry);
     // 根据是否发起搜索，调整展示界面是否显示

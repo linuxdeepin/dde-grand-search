@@ -108,6 +108,8 @@ void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
 
 void MatchWidget::clearMatchedData()
 {
+    Q_ASSERT(m_scrollAreaContent);
+
     m_vGroupWidgets.clear();
 
     // 清空并隐藏所有类目列表
@@ -117,7 +119,7 @@ void MatchWidget::clearMatchedData()
     }
 
     // 重置滚动区域内容部件高度
-    if (m_scrollAreaContent)
+    if (Q_LIKELY(m_scrollAreaContent))
         m_scrollAreaContent->setFixedHeight(0);
 
     layout();
@@ -158,7 +160,7 @@ void MatchWidget::selectNextItem()
             // 选择项是当前列表的最后一项，需要选择下一个列表的第一项
             if (i < m_vGroupWidgets.count() - 1) {
                 bool selected = selectFirstItem(++i);
-                if (selected) {
+                if (Q_LIKELY(selected)) {
                     // 切换成功后，需要将当前列表选择为空
                     listView->setCurrentIndex(QModelIndex());
                 } else {
@@ -194,7 +196,7 @@ void MatchWidget::selectPreviousItem()
             // 选择项是当前列表的第一项，需要选择上一个列表的最后一项
             if (i > 0) {
                 bool selected = selectLastItem(--i);
-                if (selected) {
+                if (Q_LIKELY(selected)) {
                     // 切换成功后，需要将当前列表选择为空
                     listView->setCurrentIndex(QModelIndex());
                 } else {
@@ -235,9 +237,9 @@ bool MatchWidget::selectFirstItem(int groupNumber)
         GrandSearchListview *listView = group->getListView();
         Q_ASSERT(listView);
 
-        if (listView->rowCount() > 0) {
+        if (Q_LIKELY(listView->rowCount() > 0)) {
             const QModelIndex &index = listView->model()->index(0, 0);
-            if (index.isValid()) {
+            if (Q_LIKELY(index.isValid())) {
                 qDebug() << "select item:" << group->groupName() << index.row();
                 listView->setCurrentIndex(index);
                 return true;
@@ -257,9 +259,9 @@ bool MatchWidget::selectLastItem(int groupNumber)
         GrandSearchListview *listView = group->getListView();
         Q_ASSERT(listView);
 
-        if (listView->rowCount() > 0) {
+        if (Q_LIKELY(listView->rowCount() > 0)) {
             const QModelIndex &index = listView->model()->index(listView->rowCount() - 1, 0);
-            if (index.isValid()) {
+            if (Q_LIKELY(index.isValid())) {
                 qDebug() << "select item:" << group->groupName() << index.row();
                 listView->setCurrentIndex(index);
                 return true;
@@ -281,11 +283,11 @@ bool MatchWidget::hasSelectItem()
 bool MatchWidget::hasSelectItem(int groupNumber)
 {
     GroupWidget *group = m_vGroupWidgets.at(groupNumber);
-    if (!group)
+    if (Q_UNLIKELY(!group))
         return false;
 
     GrandSearchListview *listView = group->getListView();
-    if (!listView)
+    if (Q_UNLIKELY(!listView))
         return false;
 
     const QModelIndex &index = listView->currentIndex();
@@ -327,13 +329,15 @@ void MatchWidget::initConnect()
 
 void MatchWidget::reLayout()
 {
+    Q_ASSERT(m_scrollAreaContent);
+
     this->show();
 
     // 计算匹配结果界面整体高度
     int nTotalHeight = 0;
     for (int i = 0; i < m_vGroupWidgets.size(); i++) {
         GroupWidget *groupWidget = m_vGroupWidgets[i];
-        if (groupWidget) {
+        if (Q_LIKELY(groupWidget)) {
 
             // 默认显示类目列表内分割横线
             groupWidget->showHorLine(true);
@@ -354,11 +358,11 @@ void MatchWidget::reLayout()
     }
 
     // 设置滚动区域内容部件整体高度
-    if (m_scrollAreaContent)
+    if (Q_LIKELY(m_scrollAreaContent))
         m_scrollAreaContent->setFixedHeight(nTotalHeight);
 
     // 打破当前布局，根据最新显示类目列表重新布局
-    if (m_vScrollLayout) {
+    if (Q_LIKELY(m_vScrollLayout)) {
         delete m_vScrollLayout;
         m_vScrollLayout = nullptr;
     }
@@ -368,7 +372,7 @@ void MatchWidget::reLayout()
     m_scrollAreaContent->setLayout(m_vScrollLayout);
 
     for (auto groupWidget : m_vGroupWidgets) {
-        if (groupWidget)
+        if (Q_LIKELY(groupWidget))
             m_vScrollLayout->addWidget(groupWidget, 0);
     }
 
@@ -377,7 +381,7 @@ void MatchWidget::reLayout()
 
 GroupWidget *MatchWidget::createGroupWidget(const QString &groupHash)
 {
-    if (groupHash.isEmpty())
+    if (Q_UNLIKELY(groupHash.isEmpty()))
         return nullptr;
 
     if (!m_groupWidgetMap[groupHash]) {
