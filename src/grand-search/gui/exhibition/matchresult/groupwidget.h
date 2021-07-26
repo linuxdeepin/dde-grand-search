@@ -58,6 +58,8 @@ public:
     bool isHorLineVisilbe();
     GrandSearchListview *getListView();
     int itemCount();
+    // 获取当前选中行在类目中的高度
+    int getCurSelectHeight();
     void reLayout();
     void clear();
 

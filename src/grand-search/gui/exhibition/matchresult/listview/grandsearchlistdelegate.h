@@ -24,13 +24,13 @@
 #include <DHiDPIHelper>
 
 #include <QScopedPointer>
-#include <QStyledItemDelegate>
+#include <DStyledItemDelegate>
 
-class GrandSearchListDelegate : public QStyledItemDelegate
+class GrandSearchListDelegate : public Dtk::Widget::DStyledItemDelegate
 {
     Q_OBJECT
 public:
-    explicit GrandSearchListDelegate(QWidget *parent = Q_NULLPTR);
+    explicit GrandSearchListDelegate(QAbstractItemView *parent = Q_NULLPTR);
     ~GrandSearchListDelegate() override;
 
 protected:
@@ -44,8 +44,6 @@ protected:
 
 private:
     void drawSelectState(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    void drawUpDownSelected(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    void drawSearchResultIcon(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void drawSearchResultText(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
 

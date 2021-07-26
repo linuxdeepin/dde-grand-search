@@ -148,6 +148,22 @@ int GroupWidget::itemCount()
     return m_listView->rowCount();
 }
 
+int GroupWidget::getCurSelectHeight()
+{
+    Q_ASSERT(m_listView);
+
+    int nHeight = 0;
+    if (m_listView->currentIndex().isValid()) {
+        nHeight += m_groupLabel->height();
+        nHeight += (m_listView->currentIndex().row()+1) * ListItemHeight;
+
+        if (!m_line->isHidden())
+            nHeight += m_line->height();
+    }
+
+    return nHeight;
+}
+
 void GroupWidget::reLayout()
 {
     Q_ASSERT(m_listView);

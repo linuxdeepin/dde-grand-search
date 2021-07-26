@@ -36,8 +36,10 @@
 #define ListIconMargin            6        // 列表图标边距距
 #define ListItemTextMaxWidth      251      // 文本元素最大显示宽度
 
-GrandSearchListDelegate::GrandSearchListDelegate(QWidget *parent)
-    : QStyledItemDelegate(parent)
+DWIDGET_USE_NAMESPACE
+
+GrandSearchListDelegate::GrandSearchListDelegate(QAbstractItemView *parent)
+    : DStyledItemDelegate(parent)
 {
 }
 
@@ -48,7 +50,7 @@ GrandSearchListDelegate::~GrandSearchListDelegate()
 
 void GrandSearchListDelegate::initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const
 {
-    QStyledItemDelegate::initStyleOption(option, index);
+    DStyledItemDelegate::initStyleOption(option, index);
 }
 
 bool GrandSearchListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
@@ -62,17 +64,13 @@ bool GrandSearchListDelegate::editorEvent(QEvent *event, QAbstractItemModel *mod
 
 void GrandSearchListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    QStyledItemDelegate::paint(painter, option, index);
+
     painter->setRenderHint(QPainter::Antialiasing);
     painter->setRenderHint(QPainter::HighQualityAntialiasing);
 
     // 绘制选中状态(UI设计图暂无选择外框线）
-//    drawSelectState(painter, option, index);
-
-    // 绘制选中的行(暂用默认背景色）
-//    drawUpDownSelected(painter, option, index);
-
-    // 绘制匹配结果图标
-    drawSearchResultIcon(painter, option, index);
+    drawSelectState(painter, option, index);
 
     // 绘制匹配结果文本
     drawSearchResultText(painter, option, index);
@@ -103,44 +101,6 @@ void GrandSearchListDelegate::drawSelectState(QPainter *painter, const QStyleOpt
         painter->restore();
     }
 
-}
-
-void GrandSearchListDelegate::drawUpDownSelected(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
-    Q_UNUSED(index);
-
-    const GrandSearchListview *listview = qobject_cast<const GrandSearchListview *>(option.widget);
-
-    if (listview && index.row() == listview->currentIndex().row()
-            && listview->model()->rowCount() >= 0) {
-        painter->save();
-        painter->setPen(Qt::NoPen);
-        QColor hovertColor(option.palette.highlight().color());
-
-        if (option.state & QStyle::State_Selected)
-            hovertColor.setAlphaF(0.2);
-        painter->setBrush(hovertColor);
-        QRect selecteColorRect = option.rect.adjusted(0, 0, 0, 0);
-        painter->drawRoundedRect(selecteColorRect, 5, 5);
-        painter->restore();
-    }
-}
-
-void GrandSearchListDelegate::drawSearchResultIcon(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
-    Q_UNUSED(option);
-
-    QPixmap image;
-    image = index.data(ICON_ROLE).value<QPixmap>();
-    painter->save();
-    QRect imageRect(ListItemSpace, index.row() * static_cast<int>(ListItemHeight) + ListIconMargin, ListIconSize, ListIconSize);
-
-    QPainterPath clipPath;
-    clipPath.addRoundedRect(imageRect, 5, 5);
-    painter->setClipPath(clipPath);
-
-    painter->drawPixmap(imageRect, image);
-    painter->restore();
 }
 
 void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const

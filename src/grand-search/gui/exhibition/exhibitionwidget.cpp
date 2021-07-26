@@ -59,6 +59,9 @@ void ExhibitionWidget::connectToController()
 
 void ExhibitionWidget::onSelectNextItem()
 {
+    if (this->isHidden())
+        return;
+
     Q_ASSERT(m_matchWidget);
 
     m_matchWidget->selectNextItem();
@@ -66,6 +69,9 @@ void ExhibitionWidget::onSelectNextItem()
 
 void ExhibitionWidget::onSelectPreviousItem()
 {
+    if (this->isHidden())
+        return;
+
     Q_ASSERT(m_matchWidget);
 
     m_matchWidget->selectPreviousItem();

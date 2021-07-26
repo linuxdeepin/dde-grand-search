@@ -30,6 +30,8 @@
 
 DCORE_USE_NAMESPACE
 
+#define ICON_SIZE 24
+
 GrandSearchListview::GrandSearchListview(QWidget *parent)
     : DListView(parent)
 {
@@ -90,7 +92,7 @@ void GrandSearchListview::addRow(const MatchedItem &item)
         QFileInfo file(imagesDirPath);
 
         if (file.exists()) {
-             iconVariantData.setValue(QImage(imagesDirPath));
+             iconVariantData.setValue(QIcon(imagesDirPath).pixmap(static_cast<int>(ICON_SIZE * qApp->devicePixelRatio()), static_cast<int>(ICON_SIZE * qApp->devicePixelRatio())));
         }
         else {
             iconVariantData.setValue(m_defaultIcon);
@@ -102,10 +104,10 @@ void GrandSearchListview::addRow(const MatchedItem &item)
         if (icon.isNull())
             iconVariantData.setValue(m_defaultIcon);
         else
-            iconVariantData.setValue(icon.pixmap(static_cast<int>(64 * qApp->devicePixelRatio()), static_cast<int>(64 * qApp->devicePixelRatio())));
+            iconVariantData.setValue(icon.pixmap(static_cast<int>(ICON_SIZE * qApp->devicePixelRatio()), static_cast<int>(ICON_SIZE * qApp->devicePixelRatio())));
     }
 
-    m_model->setData(index,iconVariantData, ICON_ROLE);
+    m_model->setData(index,iconVariantData, Qt::DecorationRole);
 }
 
 void GrandSearchListview::addRows(const MatchedItems &items)

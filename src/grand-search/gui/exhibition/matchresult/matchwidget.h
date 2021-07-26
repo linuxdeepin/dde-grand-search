@@ -63,6 +63,8 @@ private:
     bool hasSelectItem();
     bool hasSelectItem(int groupNumber);
 
+    void adjustScrollBar();
+
 protected:
     void initUi();
     void initConnect();

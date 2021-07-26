@@ -34,9 +34,13 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QPalette>
+#include <QScrollBar>
 
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
+
+#define GroupSpace 5
+#define ListItemHeight 36
 
 MatchWidgetPrivate::MatchWidgetPrivate(MatchWidget *parent)
     : q_p(parent)
@@ -140,6 +144,9 @@ void MatchWidget::onShowMore()
 
 void MatchWidget::selectNextItem()
 {
+    if (this->isHidden())
+        return;
+
     for (int i=0; i<m_vGroupWidgets.count(); ++i) {
 
         if (!hasSelectItem(i))
@@ -153,9 +160,9 @@ void MatchWidget::selectNextItem()
         int nextRow = index.row() + 1;
         const QModelIndex &nextIndex = listView->model()->index(nextRow, 0);
         if (nextIndex.isValid()) {
-            qDebug() << "select item:" << group->groupName() << nextIndex.row();
+            qDebug() << "select item:" << group->groupName() << nextIndex.row()/* << nextIndex.data(DATA_ROLE).value<MatchedItem>().name*/;
             listView->setCurrentIndex(nextIndex);
-            return;
+            break;
         } else {
             // 选择项是当前列表的最后一项，需要选择下一个列表的第一项
             if (i < m_vGroupWidgets.count() - 1) {
@@ -166,16 +173,21 @@ void MatchWidget::selectNextItem()
                 } else {
                     qWarning() << "select next failed";
                 }
-                return;
+                break;
             } else {
                 qInfo() << "it's the last one";
             }
         }
     }
+
+    adjustScrollBar();
 }
 
 void MatchWidget::selectPreviousItem()
 {
+    if (this->isHidden())
+        return;
+
     for (int i=0; i<m_vGroupWidgets.count(); ++i) {
 
         if (!hasSelectItem(i))
@@ -189,9 +201,9 @@ void MatchWidget::selectPreviousItem()
         int previousRow = index.row() - 1;
         const QModelIndex &previousIndex = listView->model()->index(previousRow, 0);
         if (previousIndex.isValid()) {
-            qDebug() << "select item:" << group->groupName() << previousIndex.row();
+            qDebug() << "select item:" << group->groupName() << previousIndex.row()/* << previousIndex.data(DATA_ROLE).value<MatchedItem>().name*/;
             listView->setCurrentIndex(previousIndex);
-            return;
+            break;
         } else {
             // 选择项是当前列表的第一项，需要选择上一个列表的最后一项
             if (i > 0) {
@@ -202,12 +214,14 @@ void MatchWidget::selectPreviousItem()
                 } else {
                     qWarning() << "select previous failed";
                 }
-                return;
+                break;
             } else {
                 qInfo() << "it's the first one";
             }
         }
     }
+
+    adjustScrollBar();
 }
 
 void MatchWidget::handleItem()
@@ -229,6 +243,9 @@ void MatchWidget::onSelectItemByMouse(const GrandSearchListview *listView)
 
 bool MatchWidget::selectFirstItem(int groupNumber)
 {
+    if (this->isHidden())
+        return false;
+
     for (int i=groupNumber; i<m_vGroupWidgets.count(); ++i) {
 
         GroupWidget *group = m_vGroupWidgets.at(i);
@@ -297,6 +314,59 @@ bool MatchWidget::hasSelectItem(int groupNumber)
     return false;
 }
 
+void MatchWidget::adjustScrollBar()
+{
+    int nCurSelHeight = 0;
+
+    //计算当前选中Item在contentWidget整体高度位置
+    for (auto group : m_vGroupWidgets) {
+        if (Q_UNLIKELY((!group)))
+            continue;
+
+        GrandSearchListview* listView = group->getListView();
+        if (Q_UNLIKELY(!listView))
+            continue;
+
+        if (!listView->currentIndex().isValid()) {
+            nCurSelHeight += group->height();
+        }
+        else {
+            if (nCurSelHeight != 0)
+                nCurSelHeight += GroupSpace;
+
+            nCurSelHeight += group->getCurSelectHeight();
+            break;
+        }
+    }
+
+    int nScrollAreaHeight = m_scrollArea->height();// 滚动区域高度
+    int nCurPosValue = m_scrollArea->verticalScrollBar()->value();//滚动条当前位置
+    int nCurHeight = nScrollAreaHeight + nCurPosValue;//滚动条当前可显示的内容高度
+
+    int nOffset = 0;// 记录需要滚动的偏移量
+    int nNewPosValue = 0;// 滚动条位置新值
+
+    // 选中行定位到当前滚动区域底部，逐个向下滚动
+    if (nCurSelHeight > nCurHeight) {
+        nOffset = nCurSelHeight - nCurHeight;
+        nNewPosValue = nCurPosValue + nOffset;
+        m_scrollArea->verticalScrollBar()->setValue(nNewPosValue);
+    }
+    // 选中行定位到当前滚动区域顶部，逐个向上滚动
+    else if (nCurSelHeight <= nCurPosValue + ListItemHeight) {
+        nOffset = nCurSelHeight - nCurPosValue;
+        nNewPosValue = nCurPosValue + nOffset - ListItemHeight;
+
+        if (nNewPosValue < ListItemHeight)
+            nNewPosValue = 0;
+        m_scrollArea->verticalScrollBar()->setValue(nNewPosValue);
+    }
+//    float fStep = m_scrollArea->verticalScrollBar()->singleStep();
+//    int nMin = m_scrollArea->verticalScrollBar()->minimum();
+//    int nMax = m_scrollArea->verticalScrollBar()->maximum();
+//    qDebug() << QString("nStep:%1 nMin:%2 nMax:%3 nCurPosValue:%4 nNewPosValue:%5").arg(fStep).arg(nMin).arg(nMax).arg(nCurPosValue).arg(nNewPosValue);
+}
+
 void MatchWidget::initUi()
 {
     m_vMainLayout = new QVBoxLayout(this);
@@ -353,7 +423,7 @@ void MatchWidget::reLayout()
 
             // 添加类目列表之间的间隙
             if (i != m_vGroupWidgets.size() - 1)
-                nTotalHeight += 5;
+                nTotalHeight += GroupSpace;
         }
     }
 
