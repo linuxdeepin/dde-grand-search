@@ -14,7 +14,8 @@ Build-Depends: debhelper (>= 9),
  cmake,
  deepin-anything-dev[i386 amd64],
  deepin-anything-server-dev[i386 amd64],
- dde-dock-dev
+ dde-dock-dev,
+ libglib2.0-dev
 Standards-Version: 3.9.8
 Homepage: http://www.deepin.org/
 

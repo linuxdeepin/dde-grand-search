@@ -21,7 +21,7 @@ set(PLUGIN_SEARCHER_DIR "${PLUGIN_DIR}/searcher")
 add_definitions(-DPLUGIN_SEARCHER_DIR="${PLUGIN_SEARCHER_DIR}")
 
 # 依赖包
-#find_package(PkgConfig REQUIRED)
+find_package(PkgConfig REQUIRED)
 find_package(DtkCore REQUIRED)
 #find_package(DtkCMake REQUIRED)
 find_package(Qt5 COMPONENTS
@@ -77,17 +77,16 @@ set(SEARCHER
     searcher/extend/extendworker.h
     searcher/extend/extendworker.cpp
 )
-#后期需要添加到使用anything的情况下
-qt5_add_dbus_interface(ANYTHING_SRC /usr/share/dbus-1/interfaces/com.deepin.anything.xml anything_interface)
 
-#未实现，编译不过
-if (0)
 #文件搜索
 if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm")
     message(${CMAKE_SYSTEM_PROCESSOR} ": using fsearch")
     ADD_DEFINITIONS(-DENABLE_FSEARCH)
+    FILE(GLOB 3RD_FSEARCH_SRC ${CMAKE_SOURCE_DIR}/3rdparty/fsearch/*)
+    pkg_check_modules(GLIB REQUIRED glib-2.0)
     set(SEARCHER
         ${SEARCHER}
+        ${3RD_FSEARCH_SRC}
         searcher/file/fssearcher.h
         searcher/file/fssearcher.cpp
         searcher/file/fsworker.h
@@ -96,6 +95,7 @@ if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHE
 else ()
     message(${CMAKE_SYSTEM_PROCESSOR} ": using deepin-anything.")
     ADD_DEFINITIONS(-DENABLE_DEEPINANYTHING)
+    qt5_add_dbus_interface(ANYTHING_SRC /usr/share/dbus-1/interfaces/com.deepin.anything.xml anything_interface)
     set(SEARCHER
         ${SEARCHER}
         ${ANYTHING_SRC}
@@ -106,29 +106,6 @@ else ()
         searcher/file/filenameworkerprivate.h
     )
 endif()
-#测试，发布前需删除以下内容
-ADD_DEFINITIONS(-DENABLE_FSEARCH)
-set(SEARCHER
-    ${SEARCHER}
-    searcher/file/fssearcher.h
-    searcher/file/fssearcher.cpp
-    searcher/file/fsworker.h
-    searcher/file/fsworker.cpp
-)
-endif()
-
-ADD_DEFINITIONS(-DENABLE_DEEPINANYTHING)
-set(SEARCHER
-    ${SEARCHER}
-    ${ANYTHING_SRC}
-    searcher/file/filenamesearcher.h
-    searcher/file/filenamesearcher.cpp
-    searcher/file/filenameworker.h
-    searcher/file/filenameworker.cpp
-    searcher/file/filenameworkerprivate.h
-)
-message("local test fsearch and deepin-anything")
-#end
 
 # 手动生成xml描述文件
 # qdbuscpp2xml -A grandsearchplugininterfacev1.h -o com.deepin.dde.grandsearch.searchplugin.xml
@@ -190,11 +167,14 @@ add_executable(${BIN_NAME} ${SRCS})
 
 target_include_directories(${BIN_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/3rdparty/fsearch
+    ${GLIB_INCLUDE_DIRS}
 )
 
 target_link_libraries(${BIN_NAME} PRIVATE
     ${Qt_LIBS}
     ${DtkCore_LIBRARIES}
+    ${GLIB_LIBRARIES}
 )
 
 # bin

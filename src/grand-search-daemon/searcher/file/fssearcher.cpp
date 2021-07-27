@@ -1,9 +1,9 @@
 /*
  * Copyright (C) 2021 Uniontech Software Technology Co., Ltd.
  *
- * Author:     zhangyu<zhangyub@uniontech.com>
+ * Author:     liuzhangjian<liuzhangjian@uniontech.com>
  *
- * Maintainer: zhangyu<zhangyub@uniontech.com>
+ * Maintainer: liuzhangjian<liuzhangjian@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,9 +22,46 @@
 #include "fsworker.h"
 #include "global/builtinsearch.h"
 
+#include <QtConcurrent>
+
+#define UPDATE_TIME_THRESHOLD 10*1000     // 索引更新阈值
+
 FsSearcher::FsSearcher(QObject *parent) : Searcher(parent)
 {
 
+}
+
+FsSearcher::~FsSearcher()
+{
+    if (m_isLoading) {
+        m_isLoading = false;
+
+        m_loadFuture.waitForFinished();
+    }
+
+    if (m_isUpdating)
+        m_updateFuture.waitForFinished();
+
+    if (m_app) {
+        if (m_app->db) {
+            db_save_locations(m_app->db);
+            db_clear(m_app->db);
+            db_free(m_app->db);
+        }
+
+        if (m_app->pool)
+            fsearch_thread_pool_free(m_app->pool);
+        config_free(m_app->config);
+        db_search_free(m_app->search);
+        g_mutex_clear(&m_app->mutex);
+        free(m_app);
+        m_app = nullptr;
+    }
+
+    if (m_databaseForUpdate) {
+        db_clear(m_databaseForUpdate);
+        db_free(m_databaseForUpdate);
+    }
 }
 
 QString FsSearcher::name() const
@@ -32,8 +69,89 @@ QString FsSearcher::name() const
     return GRANDSEARCH_CLASS_FILE_FSEARCH;
 }
 
+bool FsSearcher::isActive() const
+{
+    return m_isInited;
+}
+
+bool FsSearcher::activate()
+{
+    return false;
+}
+
 ProxyWorker *FsSearcher::createWorker() const
 {
+    if (!m_isInited)
+        return nullptr;
+
+    // 通过数据库时间戳来确定当前是否需要替换数据库
+    if ((m_databaseForUpdate->timestamp > m_app->db->timestamp) && !m_isUpdating)
+        qSwap(m_app->db, m_databaseForUpdate);
+
+    // 索引更新
+    if (m_updateTime.elapsed() > UPDATE_TIME_THRESHOLD && !m_isUpdating) {
+        m_isUpdating = true;
+        m_updateFuture = QtConcurrent::run(updateDataBase, const_cast<FsSearcher *>(this));
+    }
+
     auto worker = new FsWorker(name());
+    worker->setFsearchApp(m_app);
+
     return worker;
+}
+
+bool FsSearcher::action(const QString &action, const QString &item)
+{
+    Q_UNUSED(item)
+    qWarning() << "no such action:" << action << ".";
+    return false;
+}
+
+void FsSearcher::asyncInitDataBase()
+{
+    if (m_isInited || m_isLoading)
+        return;
+
+    m_isLoading = true;
+    m_loadFuture = QtConcurrent::run(loadDataBase, this);
+}
+
+void FsSearcher::loadDataBase(FsSearcher *fs)
+{
+    // 计时
+    fs->m_updateTime.start();
+
+    fs->m_app = static_cast<FsearchApplication *>(calloc(1, sizeof(FsearchApplication)));
+    fs->m_app->config = static_cast<FsearchConfig *>(calloc(1, sizeof(FsearchConfig)));
+    config_load_default(fs->m_app->config);
+    fs->m_app->search = nullptr;
+    fs->m_app->config->locations = nullptr;
+    g_mutex_init(&fs->m_app->mutex);
+
+    // 索引/home/user目录
+    QString searPath = QDir::homePath();
+    fs->m_app->config->locations = g_list_append(fs->m_app->config->locations, searPath.toLocal8Bit().data());
+    load_database(&fs->m_app->db, searPath.toLocal8Bit().data());
+    load_database(&fs->m_databaseForUpdate, searPath.toLocal8Bit().data());
+
+    fs->m_app->pool = fsearch_thread_pool_init();
+    fs->m_app->search = db_search_new(fsearch_application_get_thread_pool(fs->m_app));
+
+    fs->m_isInited = true;
+    fs->m_isLoading = false;
+    qInfo() << "load database complete,total items" << db_get_num_entries(fs->m_app->db) << "total spend" << fs->m_updateTime.elapsed();
+}
+
+void FsSearcher::updateDataBase(FsSearcher *fs)
+{
+    QTime time;
+    time.start();
+
+    fs->m_isUpdating = true;
+    QString searPath = QDir::homePath();
+    load_database(&fs->m_databaseForUpdate, searPath.toLocal8Bit().data());
+
+    qInfo() << "update database complete,total spend" << time.elapsed();
+    fs->m_isUpdating = false;
+    fs->m_updateTime.restart();
 }

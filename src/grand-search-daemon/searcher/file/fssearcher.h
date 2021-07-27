@@ -1,9 +1,9 @@
 /*
  * Copyright (C) 2021 Uniontech Software Technology Co., Ltd.
  *
- * Author:     zhangyu<zhangyub@uniontech.com>
+ * Author:     liuzhangjian<liuzhangjian@uniontech.com>
  *
- * Maintainer: zhangyu<zhangyub@uniontech.com>
+ * Maintainer: liuzhangjian<liuzhangjian@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +23,38 @@
 
 #include "searcher/searcher.h"
 
+extern "C" {
+#include "fsearch.h"
+}
+
+#include <QFuture>
+#include <QTime>
+
 class FsSearcher : public Searcher
 {
     Q_OBJECT
 public:
     explicit FsSearcher(QObject *parent = nullptr);
+    ~FsSearcher() Q_DECL_OVERRIDE;
     QString name() const Q_DECL_OVERRIDE;
     bool isActive() const Q_DECL_OVERRIDE;
     bool activate() Q_DECL_OVERRIDE;
     ProxyWorker *createWorker() const Q_DECL_OVERRIDE;
-    void action(const QString &action, const QString &item) Q_DECL_OVERRIDE;
+    bool action(const QString &action, const QString &item) Q_DECL_OVERRIDE;
+    void asyncInitDataBase();
+private:
+    static void loadDataBase(FsSearcher *fs);
+    static void updateDataBase(FsSearcher *fs);
+private:
+    bool m_isInited = false;
+    bool m_isLoading = false;
+    QFuture<void> m_loadFuture;
+
+    FsearchApplication *m_app = nullptr;
+    mutable Database *m_databaseForUpdate = nullptr;
+    mutable QTime m_updateTime;
+    mutable bool m_isUpdating = false;
+    mutable QFuture<void> m_updateFuture;
 };
 
 #endif // FSSEARCHER_H

@@ -43,6 +43,7 @@ void SearcherGroupPrivate::initBuiltin()
 #ifdef ENABLE_FSEARCH
     qInfo() << "create FsSearcher.";
     auto fSearcher = new FsSearcher(this);
+    fSearcher->asyncInitDataBase();
     m_builtin << fSearcher;
 #endif
 

@@ -1,9 +1,9 @@
 /*
  * Copyright (C) 2021 Uniontech Software Technology Co., Ltd.
  *
- * Author:     zhangyu<zhangyub@uniontech.com>
+ * Author:     liuzhangjian<liuzhangjian@uniontech.com>
  *
- * Maintainer: zhangyu<zhangyub@uniontech.com>
+ * Maintainer: liuzhangjian<liuzhangjian@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,14 +21,11 @@
 #include "filenamesearcher.h"
 #include "global/builtinsearch.h"
 #include "filenameworker.h"
-#include "anything_interface.h"
+
+#include <QDBusConnectionInterface>
 
 FileNameSearcher::FileNameSearcher(QObject *parent) : Searcher(parent)
 {
-    anythingInterface = new ComDeepinAnythingInterface("com.deepin.anything",
-                                                       "/com/deepin/anything",
-                                                       QDBusConnection::systemBus(),
-                                                       this);
 }
 
 QString FileNameSearcher::name() const
@@ -38,7 +35,10 @@ QString FileNameSearcher::name() const
 
 bool FileNameSearcher::isActive() const
 {
-    return anythingInterface->isValid();
+    QDBusConnectionInterface *cif = QDBusConnection::sessionBus().interface();
+    Q_ASSERT(cif);
+
+    return cif->isServiceRegistered("com.deepin.anything");
 }
 
 bool FileNameSearcher::activate()
