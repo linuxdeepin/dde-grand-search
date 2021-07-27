@@ -23,5 +23,6 @@ FILE(GLOB GLOBAL_SRC "./src/global/*.h" "./src/global/*.cpp")
 
 add_subdirectory(src/grand-search)
 add_subdirectory(src/grand-search-daemon)
+add_subdirectory(src/grand-search-dock-plugin)
 
 

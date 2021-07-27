@@ -138,12 +138,7 @@ void MainWindow::onApplicationStateChanged(const Qt::ApplicationState state)
 {
     if (Qt::ApplicationInactive == state) {
         qDebug() << "application state change to inactive,so i will exit.";
-#ifndef QT_DEBUG
         this->close();
-#else
-        qDebug() << "测试流程：需要点击主窗口来激活后才能输入，直接点击输入框子控件无效！正常流程会直接退出！";
-#endif
-
     } else if (Qt::ApplicationActive == state) {
         qDebug() << "application state change to active.";
         activeMainWindow();
