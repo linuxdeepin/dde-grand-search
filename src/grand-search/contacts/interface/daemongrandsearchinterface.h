@@ -100,10 +100,10 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QStringLiteral("MatchedResults"), argumentList);
     }
 
-    inline QDBusPendingReply<bool> OpenWithPlugin(const QString &item)
+    inline QDBusPendingReply<bool> OpenWithPlugin(const QString &searcher, const QString &item)
     {
         QList<QVariant> argumentList;
-        argumentList << QVariant::fromValue(item);
+        argumentList << QVariant::fromValue(searcher) << QVariant::fromValue(item);
         return asyncCallWithArgumentList(QStringLiteral("OpenWithPlugin"), argumentList);
     }
 

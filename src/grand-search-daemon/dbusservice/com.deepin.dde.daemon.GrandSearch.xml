@@ -24,6 +24,7 @@
     </method>
     <method name="OpenWithPlugin">
       <arg type="b" direction="out"/>
+      <arg name="searcher" type="s" direction="in"/>
       <arg name="item" type="s" direction="in"/>
     </method>
     <method name="Configure">
