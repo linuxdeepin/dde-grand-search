@@ -39,7 +39,7 @@ public:
     explicit DesktopAppSearcherPrivate(DesktopAppSearcher *parent);
     ~DesktopAppSearcherPrivate();
 public:
-    static QStringList desktopIndex(const DesktopEntryPointer &app, const QString &locale);
+    static QSet<QString> desktopIndex(const DesktopEntryPointer &app, const QString &locale);
     static QString desktopName(const DesktopEntryPointer &app, const QString &locale, bool generic);
     static QString splitLocaleName(const QString &locale);
 private:

@@ -150,6 +150,10 @@ set(UTILS
     utils/searchpluginprotocol.h
     utils/utiltools.h
     utils/utiltools.cpp
+    utils/chineseletterhelper.h
+    utils/chineseletterhelper.cpp
+    utils/chineseletterdict.h
+    utils/chineseletterdict.cpp
 )
 
 set(SRCS

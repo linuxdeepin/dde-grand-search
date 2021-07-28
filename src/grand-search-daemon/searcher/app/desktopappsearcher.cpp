@@ -23,6 +23,7 @@
 #include "desktopappsearcherprivate.h"
 #include "desktopappworker.h"
 #include "global/builtinsearch.h"
+#include "utils/chineseletterhelper.h"
 
 #include <QFileInfo>
 #include <QDebug>
@@ -124,9 +125,9 @@ QMap<QString, DesktopEntryPointer> DesktopAppSearcherPrivate::scanDesktopFile(co
     return entrys;
 }
 
-QStringList DesktopAppSearcherPrivate::desktopIndex(const DesktopEntryPointer &app, const QString &locale)
+QSet<QString> DesktopAppSearcherPrivate::desktopIndex(const DesktopEntryPointer &app, const QString &locale)
 {
-    QStringList idxs;
+    QSet<QString> idxs;
     if (app.isNull())
         return idxs;
 
@@ -155,12 +156,22 @@ QStringList DesktopAppSearcherPrivate::desktopIndex(const DesktopEntryPointer &a
         zhCNName = DesktopAppSearcherPrivate::desktopName(app, zhCN, useGeneric);
 
     if (!zhCNName.isEmpty()) {
-        if (!idxs.contains(zhCNName, Qt::CaseInsensitive))
-            idxs << zhCNName;
+        idxs << zhCNName;
 
-        //拼音
+        // 暂时只对全中文进行处理
+        static QRegExp reg("^[\u4e00-\u9fa5]*$");
+        if (reg.exactMatch(zhCNName)) {
+            //全拼以及拼音首字母
+            QSet<QString> firstPys;
+            QSet<QString> fullPys;
+            GrandSearch::ChineseLetterHelper::convertChineseLetter2Pinyin(zhCNName, firstPys, fullPys);
 
-        //拼音首字母
+            if (!fullPys.isEmpty())
+                idxs.unite(fullPys);
+
+            if (!firstPys.isEmpty())
+                idxs.unite(firstPys);
+        }
     }
 
     return idxs;
