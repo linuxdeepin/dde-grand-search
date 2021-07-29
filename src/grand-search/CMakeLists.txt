@@ -40,6 +40,11 @@ set(Qt_LIBS
     Qt5::DBus
 )
 
+# gio 打开功能需要依赖的库
+pkg_check_modules(GIO_LIB REQUIRED
+        gio-unix-2.0 glib-2.0
+        )
+
 # gui
 set(GUISRC
     gui/mainwindow_p.h
@@ -111,12 +116,14 @@ target_include_directories(${BIN_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${DtkWidget_INCLUDE_DIRS}
     ${DtkGUI_INCLUDE_DIRS}
+    ${GIO_LIB_INCLUDE_DIRS}
 )
 
 target_link_libraries(${BIN_NAME} PRIVATE
     ${Qt_LIBS}
     ${DtkWidget_LIBRARIES}
     ${DtkGUI_LIBRARIES}
+    ${GIO_LIB_LIBRARIES}
 )
 
 # Install settings

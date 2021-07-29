@@ -51,6 +51,8 @@ public:
     QHBoxLayout *m_mainLayout = nullptr;
 
     QTimer *m_delayChangeTimer = nullptr;               // 延迟发出搜索文本改变
+
+    QString m_appIconName;                              // 当前搜索框显示的默认打开应用图标名称
 };
 
 #endif // ENTRANCEWIDGET_P_H

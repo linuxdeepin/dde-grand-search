@@ -51,6 +51,10 @@ public slots:
 private slots:
     void onSelectItemByMouse(const GrandSearchListview *listView);
 
+signals:
+    void sigAppIconChanged(const QString &appIconName);
+    void sigCloseWindow();
+
 private:
     // 在显示列表中，选择指定组的第一个项
     // 组或组的视图为空，或组的视图中项为空，则查找下一个组
@@ -64,6 +68,8 @@ private:
     bool hasSelectItem(int groupNumber);
 
     void adjustScrollBar();
+
+    void updateEntranceAppIcon(const QModelIndex& index);
 
 protected:
     void initUi();

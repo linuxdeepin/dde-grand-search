@@ -31,7 +31,7 @@ class EntranceWidget : public Dtk::Widget::DWidget
     Q_OBJECT
 public:
     explicit EntranceWidget(QWidget *parent = nullptr);
-    ~EntranceWidget();
+    ~EntranceWidget() override;
 
     void connectToController();
 
@@ -42,6 +42,10 @@ protected:
 private:
     void initUI();
     void initConnections();
+
+public slots:
+    // 切换选择搜索结果时，应用图标发生改变
+    void onAppIconChanged(const QString &appIconName);
 
 signals:
     void searchTextChanged(const QString &txt);

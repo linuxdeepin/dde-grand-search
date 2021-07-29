@@ -55,7 +55,9 @@ public slots:
     void onSetThemeType(int type);
 
 signals:
+    void sigAppIconChanged(const QString &appIconName);
     void sigSelectItemByMouse(GrandSearchListview *listView);
+    void sigItemClicked();
 
 protected:
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;

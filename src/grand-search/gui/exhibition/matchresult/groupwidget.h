@@ -91,6 +91,8 @@ private:
     GrandSearchListview *m_listView = nullptr;
     DHorizontalLine *m_line = nullptr;
 
+    QString m_groupName;
+
     bool m_bListExpanded = false;                   // 结果列表是否已展开
     GrandSearch::MatchedItems m_firstFiveItems;     // 前5行正在显示的匹配结果
     GrandSearch::MatchedItems m_restShowItems;      // 剩余正在显示的匹配结果

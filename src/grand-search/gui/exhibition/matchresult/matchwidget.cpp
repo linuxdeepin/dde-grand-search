@@ -25,6 +25,7 @@
 #include "business/matchresult/matchcontroller.h"
 #include "business/query/querycontroller.h"
 #include "gui/mainwindow.h"
+#include "utils/utils.h"
 
 #include <DScrollArea>
 #include <DApplicationHelper>
@@ -162,6 +163,7 @@ void MatchWidget::selectNextItem()
         if (nextIndex.isValid()) {
             qDebug() << "select item:" << group->groupName() << nextIndex.row()/* << nextIndex.data(DATA_ROLE).value<MatchedItem>().name*/;
             listView->setCurrentIndex(nextIndex);
+            updateEntranceAppIcon(nextIndex);
             break;
         } else {
             // 选择项是当前列表的最后一项，需要选择下一个列表的第一项
@@ -170,6 +172,7 @@ void MatchWidget::selectNextItem()
                 if (Q_LIKELY(selected)) {
                     // 切换成功后，需要将当前列表选择为空
                     listView->setCurrentIndex(QModelIndex());
+                    updateEntranceAppIcon(QModelIndex());
                 } else {
                     qWarning() << "select next failed";
                 }
@@ -203,6 +206,7 @@ void MatchWidget::selectPreviousItem()
         if (previousIndex.isValid()) {
             qDebug() << "select item:" << group->groupName() << previousIndex.row()/* << previousIndex.data(DATA_ROLE).value<MatchedItem>().name*/;
             listView->setCurrentIndex(previousIndex);
+            updateEntranceAppIcon(previousIndex);
             break;
         } else {
             // 选择项是当前列表的第一项，需要选择上一个列表的最后一项
@@ -211,6 +215,7 @@ void MatchWidget::selectPreviousItem()
                 if (Q_LIKELY(selected)) {
                     // 切换成功后，需要将当前列表选择为空
                     listView->setCurrentIndex(QModelIndex());
+                    updateEntranceAppIcon(QModelIndex());
                 } else {
                     qWarning() << "select previous failed";
                 }
@@ -226,7 +231,16 @@ void MatchWidget::selectPreviousItem()
 
 void MatchWidget::handleItem()
 {
-    // todo handle item
+    for (int i = 0; i < m_vGroupWidgets.count(); ++i) {
+        if (hasSelectItem(i)) {
+            GrandSearchListview *listView = m_vGroupWidgets.at(i)->getListView();
+            Q_ASSERT(listView);
+            MatchedItem item = listView->currentIndex().data(DATA_ROLE).value<MatchedItem>();
+            Utils::openMatchedItem(item);
+            emit sigCloseWindow();
+            break;
+        }
+    }
 }
 
 void MatchWidget::onSelectItemByMouse(const GrandSearchListview *listView)
@@ -259,6 +273,7 @@ bool MatchWidget::selectFirstItem(int groupNumber)
             if (Q_LIKELY(index.isValid())) {
                 qDebug() << "select item:" << group->groupName() << index.row();
                 listView->setCurrentIndex(index);
+                updateEntranceAppIcon(index);
                 return true;
             }
         }
@@ -281,6 +296,7 @@ bool MatchWidget::selectLastItem(int groupNumber)
             if (Q_LIKELY(index.isValid())) {
                 qDebug() << "select item:" << group->groupName() << index.row();
                 listView->setCurrentIndex(index);
+                updateEntranceAppIcon(index);
                 return true;
             }
         }
@@ -364,7 +380,16 @@ void MatchWidget::adjustScrollBar()
 //    float fStep = m_scrollArea->verticalScrollBar()->singleStep();
 //    int nMin = m_scrollArea->verticalScrollBar()->minimum();
 //    int nMax = m_scrollArea->verticalScrollBar()->maximum();
-//    qDebug() << QString("nStep:%1 nMin:%2 nMax:%3 nCurPosValue:%4 nNewPosValue:%5").arg(fStep).arg(nMin).arg(nMax).arg(nCurPosValue).arg(nNewPosValue);
+    //    qDebug() << QString("nStep:%1 nMin:%2 nMax:%3 nCurPosValue:%4 nNewPosValue:%5").arg(fStep).arg(nMin).arg(nMax).arg(nCurPosValue).arg(nNewPosValue);
+}
+
+void MatchWidget::updateEntranceAppIcon(const QModelIndex &index)
+{
+    MatchedItem item;
+    if (index.isValid())
+        item = index.data(DATA_ROLE).value<MatchedItem>();
+
+    emit sigAppIconChanged(Utils::appIconName(item));
 }
 
 void MatchWidget::initUi()
@@ -460,7 +485,9 @@ GroupWidget *MatchWidget::createGroupWidget(const QString &groupHash)
 
         GrandSearchListview *listView = groupWidget->getListView();
         Q_ASSERT(listView);
+        connect(listView, &GrandSearchListview::sigAppIconChanged, this, &MatchWidget::sigAppIconChanged);
         connect(listView, &GrandSearchListview::sigSelectItemByMouse, this, &MatchWidget::onSelectItemByMouse);
+        connect(listView, &GrandSearchListview::sigItemClicked, this, &MatchWidget::sigCloseWindow);
 
         groupWidget->setGroupName(groupHash);
         m_groupWidgetMap[groupHash] = groupWidget;

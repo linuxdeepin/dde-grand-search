@@ -215,6 +215,9 @@ void MainWindow::initConnect()
     connect(d_p->m_entranceWidget, &EntranceWidget::sigSelectNextItem, d_p->m_exhibitionWidget, &ExhibitionWidget::onSelectNextItem);
     connect(d_p->m_entranceWidget, &EntranceWidget::sigHandleItem, d_p->m_exhibitionWidget, &ExhibitionWidget::onHandleItem);
     connect(d_p->m_entranceWidget, &EntranceWidget::sigCloseWindow, this, &MainWindow::onCloseWindow);
+
+    connect(d_p->m_exhibitionWidget, &ExhibitionWidget::sigAppIconChanged, d_p->m_entranceWidget, &EntranceWidget::onAppIconChanged);
+    connect(d_p->m_exhibitionWidget, &ExhibitionWidget::sigCloseWindow, this, &MainWindow::onCloseWindow);
 }
 
 void MainWindow::activeMainWindow()

@@ -237,3 +237,19 @@ void EntranceWidget::initConnections()
     // 焦点改变后，将焦点设置回输入框
     connect(qApp, &QGuiApplication::focusObjectChanged, d_p.data(), &EntranceWidgetPrivate::onFocusObjectChanged);
 }
+
+void EntranceWidget::onAppIconChanged(const QString &appIconName)
+{
+    if (appIconName.isEmpty() && !d_p->m_appIconName.isEmpty()) {
+        // 图标为空，则清空应用图标显示 TODO
+    }
+
+    if (appIconName == d_p->m_appIconName)
+        return;
+
+    //刷新应用图标显示 TODO
+
+    d_p->m_appIconName = appIconName;
+
+    qDebug() << QString("appIcon changed: appIconName:%1").arg(appIconName);
+}

@@ -65,7 +65,7 @@ GroupWidget::GroupWidget(QWidget *parent)
 
 GroupWidget::~GroupWidget()
 {
-
+    qDebug() << QString("groupWidget %1 destructed....").arg(m_groupName);
 }
 
 void GroupWidget::setGroupName(const QString &groupHash)
@@ -74,6 +74,8 @@ void GroupWidget::setGroupName(const QString &groupHash)
 
     const QString &groupName = GroupWidget::getGroupName(groupHash);
     const QString &groupObjName = GroupWidget::getGroupObjName(groupHash);
+
+    m_groupName = groupName;
 
     m_groupLabel->setObjectName(groupObjName);
     m_groupLabel->setText(groupName);

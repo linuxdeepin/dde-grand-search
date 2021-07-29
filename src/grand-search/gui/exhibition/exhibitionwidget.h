@@ -44,6 +44,10 @@ public slots:
     void onSelectPreviousItem();
     void onHandleItem();
 
+signals:
+    void sigAppIconChanged(const QString &appIconName);
+    void sigCloseWindow();
+
 protected:
     void initUi();
     void initConnect();

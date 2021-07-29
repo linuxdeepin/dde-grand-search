@@ -97,7 +97,10 @@ void ExhibitionWidget::initUi()
 
 void ExhibitionWidget::initConnect()
 {
+    Q_ASSERT(m_matchWidget);
 
+    connect(m_matchWidget, &MatchWidget::sigAppIconChanged, this, &ExhibitionWidget::sigAppIconChanged);
+    connect(m_matchWidget, &MatchWidget::sigCloseWindow, this, &ExhibitionWidget::sigCloseWindow);
 }
 
 void ExhibitionWidget::paintEvent(QPaintEvent *event)

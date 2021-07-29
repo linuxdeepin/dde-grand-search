@@ -19,6 +19,8 @@
 #include "grandsearchlistview.h"
 #include "grandsearchlistmodel.h"
 #include "grandsearchlistdelegate.h"
+#include "utils/utils.h"
+#include "global/matcheditem.h"
 
 #include <DGuiApplicationHelper>
 #include <DStandardPaths>
@@ -29,6 +31,7 @@
 #include <QMouseEvent>
 
 DCORE_USE_NAMESPACE
+using namespace GrandSearch;
 
 #define ICON_SIZE 24
 
@@ -134,6 +137,13 @@ void GrandSearchListview::clear()
 
 void GrandSearchListview::onItemClicked(const QModelIndex &index)
 {
+    if (!index.isValid())
+        return;
+
+    MatchedItem item = index.data(DATA_ROLE).value<MatchedItem>();
+    Utils::openMatchedItem(item);
+    emit sigItemClicked();
+
     qDebug() << QString("GrandSearchListView::onItemClicked item clicked r[%1] c[%2]").arg(index.row()).arg(index.column());
 }
 
@@ -148,6 +158,10 @@ void GrandSearchListview::mouseMoveEvent(QMouseEvent *event)
     if (index.isValid()) {
         if (this->currentIndex() != index) {
             setCurrentIndex(index);
+
+            // 通知搜索输入框更新应用图标
+            MatchedItem item = index.data(DATA_ROLE).value<MatchedItem>();
+            emit sigAppIconChanged(Utils::appIconName(item));
 
             // 通知其它列表取消选中
             emit sigSelectItemByMouse(this);
