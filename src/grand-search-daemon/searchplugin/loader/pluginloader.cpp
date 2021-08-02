@@ -20,6 +20,8 @@
  */
 #include "pluginloader.h"
 #include "utils/searchpluginconf.h"
+#include "global/builtinsearch.h"
+#include "searchplugin/dataconvertor.h"
 
 #include <QDir>
 #include <QSettings>
@@ -59,8 +61,21 @@ bool PluginLoader::load()
         for (const QFileInfo &entry : entrys) {
             GrandSearch::SearchPluginInfo info;
             if (readInfo(entry.absoluteFilePath(), info)) {
+                // 检查是否与内置的搜索项目冲突
+                DEF_BUILTISEARCH_NAMES;
+                if (predefBuiltinSearches.contains(info.name)) {
+                    qWarning() << "conflict with builtin search,plugin name" << path << info.name;
+                    continue;
+                }
+
                 if (m_plugins.contains(info.name)) {
                     qWarning() << "duplicate plugin name" << path << info.name;
+                    continue;
+                }
+
+                // 检查协议是否有效
+                if (!DataConvIns->isSupported(info.ifsVersion)) {
+                    qWarning() << "do not support this version,plugin name" << path << info.name;
                     continue;
                 }
 

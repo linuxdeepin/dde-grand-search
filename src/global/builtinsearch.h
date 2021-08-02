@@ -27,4 +27,12 @@
 #define GRANDSEARCH_CLASS_APP_DESKTOP "com.deepin.dde-grand-search.app-desktop"
 #define GRANDSEARCH_CLASS_SETTING_CONTROLCENTER "com.deepin.dde-grand-search.setting-controlcenter"
 
+#define DEF_BUILTISEARCH_NAMES  \
+static const QStringList predefBuiltinSearches { \
+GRANDSEARCH_CLASS_FILE_DEEPIN, \
+GRANDSEARCH_CLASS_FILE_FSEARCH, \
+GRANDSEARCH_CLASS_APP_DESKTOP, \
+GRANDSEARCH_CLASS_SETTING_CONTROLCENTER \
+}
+
 #endif // BUILTINSEARCH_H
