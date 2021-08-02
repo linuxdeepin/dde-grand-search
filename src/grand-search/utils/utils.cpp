@@ -233,13 +233,9 @@ QString Utils::getDefaultAppDesktopFileByMimeType(const QString &mimeType)
 
 bool Utils::isResultFromBuiltSearch(const MatchedItem &item)
 {
-    if (!item.searcher.isEmpty()) {
-        if (item.searcher == GRANDSEARCH_CLASS_FILE_DEEPIN
-                || item.searcher == GRANDSEARCH_CLASS_FILE_FSEARCH
-                || item.searcher == GRANDSEARCH_CLASS_APP_DESKTOP
-                || item.searcher == GRANDSEARCH_CLASS_SETTING_CONTROLCENTER
-                )
-            return true;
+    DEF_BUILTISEARCH_NAMES;
+    if (predefBuiltinSearches.contains(item.searcher)) {
+        return true;
     }
 
     return false;

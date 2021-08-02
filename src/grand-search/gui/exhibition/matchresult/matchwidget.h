@@ -93,9 +93,9 @@ private:
     QVBoxLayout *m_vScrollLayout = nullptr;             // 滚动区域内部部件整体布局
 
     QStringList m_groupHashShowOrder{                   // 依据产品需求，规定group哈希值对应类目列表显示顺序
-        GroupHash_App,
-        GroupHash_Folder,
-        GroupHash_File};
+        GRANDSEARCH_GROUP_APP,
+        GRANDSEARCH_GROUP_FOLDER,
+        GRANDSEARCH_GROUP_FILE};
 
     GroupWidgetMap m_groupWidgetMap;                    // 按group哈希值存放类目列表
     GroupWidgets m_vGroupWidgets;                       // 类目列表按显示顺序存放

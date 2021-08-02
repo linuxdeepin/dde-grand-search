@@ -22,6 +22,8 @@
 #include "matchcontroller_p.h"
 #include "matchcontroller.h"
 #include "../query/querycontroller.h"
+#include "gui/datadefine.h"
+
 #include "contacts/interface/daemongrandsearchinterface.h"
 
 using namespace GrandSearch;

@@ -211,11 +211,11 @@ QString GroupWidget::getGroupName(const QString &groupHash)
 {
     QString strName = groupHash;
 
-    if (GroupHash_App == groupHash)
+    if (GRANDSEARCH_GROUP_APP == groupHash)
         strName = GroupName_App;
-    else if (GroupHash_Folder == groupHash)
+    else if (GRANDSEARCH_GROUP_FOLDER == groupHash)
         strName = GroupName_Folder;
-    else if (GroupHash_File == groupHash)
+    else if (GRANDSEARCH_GROUP_FILE == groupHash)
         strName = GroupName_File;
 
     return strName;
@@ -225,11 +225,11 @@ QString GroupWidget::getGroupObjName(const QString &groupHash)
 {
     QString strObjName = groupHash;
 
-    if (GroupHash_App == groupHash)
+    if (GRANDSEARCH_GROUP_APP == groupHash)
         strObjName = GroupObjName_App;
-    else if (GroupHash_Folder == groupHash)
+    else if (GRANDSEARCH_GROUP_FOLDER == groupHash)
         strObjName = GroupObjName_Folder;
-    else if (GroupHash_File == groupHash)
+    else if (GRANDSEARCH_GROUP_FILE == groupHash)
         strObjName = GroupObjName_File;
 
     return strObjName;
@@ -256,7 +256,7 @@ void GroupWidget::initUi()
     //DFontSizeManager::instance()->bind(m_GroupLabel, DFontSizeManager::T8, QFont::Normal);
 
     // 查看更多按钮
-    m_viewMoreButton = new DPushButton(tr("view more"), this);
+    m_viewMoreButton = new DPushButton(tr("More"), this);
     m_viewMoreButton->setFixedSize(ViewMoreBtnWidth,ViewMoreBtnHeight);
     m_viewMoreButton->setFlat(true);
     //DFontSizeManager::instance()->bind(m_viewMoreButton, DFontSizeManager::T8, QFont::Normal);
@@ -341,6 +341,7 @@ void GroupWidget::onMoreBtnClcked()
 {
     Q_ASSERT(m_listView);
     Q_ASSERT(m_viewMoreButton);
+
 
     // '查看更多'被点击，列表被展开
     // 将缓存中的数据转移到剩余显示结果中

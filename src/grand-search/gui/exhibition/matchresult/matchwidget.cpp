@@ -75,9 +75,26 @@ void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
 {
     bool bNeedRelayout = false;
 
+    MatchedItemMap matchedItem = matchedData;
+
+    //Files数据分类，划分为文件和文件夹
+    if (matchedItem.find(GRANDSEARCH_GROUP_FILE) != matchedItem.end()) {
+        MatchedItems& fileItems = matchedItem[GRANDSEARCH_GROUP_FILE];
+        MatchedItems::iterator itFile = fileItems.begin();
+        while (itFile != fileItems.end()) {
+            if (itFile->type == "inode/directory") {
+                matchedItem[GRANDSEARCH_GROUP_FOLDER].push_back(*itFile);
+                itFile = fileItems.erase(itFile);
+            }
+            else {
+                ++itFile;
+            }
+        }
+    }
+
     // 数据处理
-    MatchedItemMap::ConstIterator itData = matchedData.begin();
-    while (itData != matchedData.end()) {
+    MatchedItemMap::ConstIterator itData = matchedItem.begin();
+    while (itData != matchedItem.end()) {
 
         QString groupHash = itData.key();
 

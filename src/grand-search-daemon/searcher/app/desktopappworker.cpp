@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "desktopappworker.h"
+#include "global/builtinsearch.h"
 
 DesktopAppWorker::DesktopAppWorker(const QString &name, QObject *parent) : ProxyWorker(name, parent)
 {
@@ -156,5 +157,5 @@ void DesktopAppWorker::setIndexTable(const QHash<QString, QList<QSharedPointer<G
 
 QString DesktopAppWorker::group() const
 {
-    return tr("Application");
+    return GRANDSEARCH_GROUP_APP;
 }

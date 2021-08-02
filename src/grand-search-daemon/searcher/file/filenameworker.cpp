@@ -21,6 +21,7 @@
 #include "filenameworker.h"
 #include "filenameworkerprivate.h"
 #include "anything_interface.h"
+#include "global/builtinsearch.h"
 
 #include <QStandardPaths>
 
@@ -280,5 +281,5 @@ GrandSearch::MatchedItemMap FileNameWorker::takeAll()
 
 QString FileNameWorker::group() const
 {
-    return tr("Files");
+    return GRANDSEARCH_GROUP_FILE;
 }

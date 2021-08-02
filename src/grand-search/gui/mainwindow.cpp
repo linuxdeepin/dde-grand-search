@@ -178,7 +178,7 @@ void MainWindow::initUI()
     d_p->m_exhibitionWidget->hide();
 
     // 未搜到内容界面
-    d_p->m_searchNoContentWidget = new DLabel(tr("no content found"),this);
+    d_p->m_searchNoContentWidget = new DLabel(tr("No search results"),this);
     d_p->m_searchNoContentWidget->setAlignment(Qt::AlignCenter);
     d_p->m_searchNoContentWidget->hide();
 

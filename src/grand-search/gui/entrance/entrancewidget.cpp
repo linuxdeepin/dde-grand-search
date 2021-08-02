@@ -27,9 +27,12 @@
 
 #include <DSearchEdit>
 #include <DStyle>
+#include <DLabel>
 
 #include <QLineEdit>
+#include <QPushButton>
 #include <QHBoxLayout>
+#include <QWidgetAction>
 #include <QAction>
 #include <QTimer>
 #include <QGuiApplication>
@@ -47,6 +50,9 @@ static const uint EntraceWidgetWidth        = 740;      // 搜索界面宽度度
 static const uint EntraceWidgetHeight       = 48;       // 搜索界面高度
 static const uint WidgetMargins             = 10;       // 界面边距
 static const uint SearchMaxLength           = 512;      // 输入最大字符限制
+
+static const uint LabelIconSize             = 26;       // 标签应用图标显示大小
+static const uint LabelSize                 = 32;       // 标签大小
 
 EntranceWidgetPrivate::EntranceWidgetPrivate(EntranceWidget *parent)
     : q_p(parent)
@@ -191,6 +197,13 @@ void EntranceWidget::initUI()
     d_p->m_lineEdit->setMaxLength(SearchMaxLength);
     d_p->m_lineEdit->installEventFilter(this);
 
+    d_p->m_appIconLabel = new DLabel(d_p->m_searchEdit);
+    d_p->m_appIconLabel->setFixedSize(LabelSize, LabelSize);
+
+    QWidgetAction* action = new QWidgetAction(d_p->m_lineEdit);
+    action->setDefaultWidget(d_p->m_appIconLabel);
+    d_p->m_lineEdit->addAction(action, QLineEdit::TrailingPosition);
+
     // 搜索框界面布局设置
     // 必须对搜索框控件的边距和间隔设置为0,否则其内含的LineEdit不满足大小显示要求
     d_p->m_searchEdit->layout()->setSpacing(0);
@@ -199,7 +212,7 @@ void EntranceWidget::initUI()
 
     // 搜索框提示信息设置
     d_p->m_searchEdit->setPlaceHolder(tr("Search"));
-    d_p->m_searchEdit->setPlaceholderText(tr("input your word"));
+    d_p->m_searchEdit->setPlaceholderText(tr("What would you like to search for?"));
 
     // 搜索界面布局设置
     d_p->m_mainLayout = new QHBoxLayout(this);
@@ -240,16 +253,14 @@ void EntranceWidget::initConnections()
 
 void EntranceWidget::onAppIconChanged(const QString &appIconName)
 {
-    if (appIconName.isEmpty() && !d_p->m_appIconName.isEmpty()) {
-        // 图标为空，则清空应用图标显示 TODO
-    }
-
     if (appIconName == d_p->m_appIconName)
         return;
 
-    //刷新应用图标显示 TODO
-
     d_p->m_appIconName = appIconName;
 
-    qDebug() << QString("appIcon changed: appIconName:%1").arg(appIconName);
+    //刷新应用图标显示
+    const int size = LabelIconSize;
+    const qreal ratio = devicePixelRatioF();
+    QIcon icon = QIcon::fromTheme(appIconName);
+    d_p->m_appIconLabel->setPixmap(icon.pixmap(int(size * ratio), int(size * ratio)));
 }

@@ -23,7 +23,8 @@
 #define GROUPWIDGET_H
 
 #include "../../datadefine.h"
-#include "../../../../global/matcheditem.h"
+#include "global/matcheditem.h"
+#include "global/builtinsearch.h"
 
 #include <DWidget>
 
@@ -50,7 +51,7 @@ class GroupWidget : public DWidget
     Q_OBJECT
 public:
     explicit GroupWidget(QWidget *parent = nullptr);
-    ~GroupWidget();
+    ~GroupWidget() override;
 
     void setGroupName(const QString &groupHash);
     void appendMatchedItems(const GrandSearch::MatchedItems &items);

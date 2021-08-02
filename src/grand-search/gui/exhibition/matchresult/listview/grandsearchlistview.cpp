@@ -86,6 +86,9 @@ void GrandSearchListview::addRow(const MatchedItem &item)
     searchMeta.setValue(item);
     m_model->setData(index, searchMeta, DATA_ROLE);
 
+    // 添加悬浮提示
+    m_model->setData(index, item.name, Qt::ToolTipRole);
+
     // 设置icon
     QVariant iconVariantData;
     QString imagesDirPath = item.icon;

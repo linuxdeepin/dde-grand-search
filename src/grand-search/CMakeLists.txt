@@ -109,9 +109,14 @@ set(UTILSSRC
 # 源文件
 set(SRCS
     main.cpp
+    ${GUISRC}
+    ${BUSINESSSRC}
+    ${CONTACTSSRC}
+    ${UTILSSRC}
 )
 
-add_executable(${BIN_NAME} ${SRCS} ${GUISRC} ${BUSINESSSRC} ${CONTACTSSRC} ${UTILSSRC})
+add_executable(${BIN_NAME} ${SRCS})
+
 target_include_directories(${BIN_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${DtkWidget_INCLUDE_DIRS}
@@ -133,6 +138,11 @@ endif ()
 
 # bin
 install(TARGETS ${BIN_NAME} DESTINATION bin)
+
+# ts
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/translations
+    DESTINATION share/${BIN_NAME}
+    FILES_MATCHING PATTERN "*.qm")
 
 # dbus
 install(FILES contacts/services/com.deepin.dde.GrandSearch.service DESTINATION share/dbus-1/services)
