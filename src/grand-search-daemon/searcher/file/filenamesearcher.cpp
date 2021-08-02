@@ -35,7 +35,7 @@ QString FileNameSearcher::name() const
 
 bool FileNameSearcher::isActive() const
 {
-    QDBusConnectionInterface *cif = QDBusConnection::sessionBus().interface();
+    QDBusConnectionInterface *cif = QDBusConnection::systemBus().interface();
     Q_ASSERT(cif);
 
     return cif->isServiceRegistered("com.deepin.anything");
