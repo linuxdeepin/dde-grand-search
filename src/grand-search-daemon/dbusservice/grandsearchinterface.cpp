@@ -42,8 +42,11 @@ GrandSearchInterfacePrivate::GrandSearchInterfacePrivate(GrandSearchInterface *p
     //允许调用dbus接口的可执行程序名单
     m_permit.insert("/usr/bin/dde-grand-search", true);
 
+#ifdef QT_DEBUG
     //for test
     m_permit.insert("/usr/bin/python3.7", true);
+#endif
+
 }
 
 GrandSearchInterfacePrivate::~GrandSearchInterfacePrivate()
@@ -143,8 +146,8 @@ bool GrandSearchInterface::Search(const QString &session, const QString &key)
 
     //会话ID检查，符合UUID宽度36。
     static int sessionLength = 36;
-    //关键词检查，最大长度不超过128（todo 待确定）
-    static int maxKeyLength = 128;
+    //关键词检查，最大长度不超过512
+    static int maxKeyLength = 512;
     if (session.size() != sessionLength || key.isEmpty() || key.size() > maxKeyLength) {
         return false;
     }

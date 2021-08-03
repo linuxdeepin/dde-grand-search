@@ -34,11 +34,13 @@ public:
     MainControllerPrivate(MainController *parent);
     ~MainControllerPrivate();
     void buildWorker(TaskCommander *task);
-
+private slots:
+    void dormancy();
 private:
     MainController *q;
     SearcherGroup *m_searchers = nullptr;
     TaskCommander *m_currentTask = nullptr;
+    QTimer m_dormancy;
 };
 
 

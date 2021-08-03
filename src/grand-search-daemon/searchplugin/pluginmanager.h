@@ -39,6 +39,7 @@ signals:
 
 public slots:
     bool activatePlugin(const QString &name);
+    void inactivate(const QString &name);
 private:
     PluginManagerPrivate *d;
 };

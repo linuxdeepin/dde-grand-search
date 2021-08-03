@@ -81,6 +81,8 @@ bool PluginLoader::load()
 
                 qInfo() << "add plugin info" << entry.fileName() << info.name;
                 m_plugins.insert(info.name, info);
+            } else {
+                qWarning() << "plugin info error:" << entry.absoluteFilePath();
             }
         }
     }

@@ -24,10 +24,17 @@
 
 #include <QDebug>
 
+//10分钟后进入休眠模式
+#define DORMANT_INTERVAL 10 * 60 * 1000
+
 MainControllerPrivate::MainControllerPrivate(MainController *parent)
     : QObject(parent)
     , q(parent)
 {
+    connect(&m_dormancy, &QTimer::timeout, this, &MainControllerPrivate::dormancy);
+    m_dormancy.setSingleShot(true);
+
+    m_dormancy.setInterval(DORMANT_INTERVAL);
 }
 
 MainControllerPrivate::~MainControllerPrivate()
@@ -55,6 +62,19 @@ void MainControllerPrivate::buildWorker(TaskCommander *task)
             }
         }
     }
+}
+
+void MainControllerPrivate::dormancy()
+{
+    if (m_currentTask && !m_currentTask->isFinished()) {
+        qInfo() << "task is not finished, restart dormancy.";
+        m_dormancy.start();
+        return;
+    }
+
+    qInfo() << "dormancy...";
+    if (m_searchers)
+        m_searchers->dormancy();
 }
 
 MainController::MainController(QObject *parent)
@@ -97,6 +117,9 @@ bool MainController::newSearch(const QString &key)
     d->buildWorker(task);
     if (task->start()) {
         d->m_currentTask = task;
+
+        //重新计时休眠
+        d->m_dormancy.start();
         return true;
     }
 

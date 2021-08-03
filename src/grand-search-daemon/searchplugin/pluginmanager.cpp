@@ -88,14 +88,14 @@ PluginManager::PluginManager(QObject *parent)
 
 bool PluginManager::loadPlugin()
 {
+    //初始化数据协议
+    DataConvertor::instance()->initConvetor();
+
     //读取插件目录下的conf
     bool ret = d->readConf();
 
     //加入进程管理
     d->prepareProcess();
-
-    //初始化数据协议
-    DataConvertor::instance()->initConvetor();
 
     return ret;
 }
@@ -127,4 +127,11 @@ bool PluginManager::activatePlugin(const QString &name)
 {
     Q_ASSERT(d->m_process);
     return d->m_process->startProgram(name);
+}
+
+void PluginManager::inactivate(const QString &name)
+{
+    Q_ASSERT(d->m_process);
+    d->m_process->terminate(name);
+    return;
 }

@@ -168,6 +168,7 @@ void TaskCommander::stop()
     }
 
     d->m_working = false;
+    d->m_finished = true;
 }
 
 GrandSearch::MatchedItemMap TaskCommander::getResults() const
@@ -218,5 +219,10 @@ void TaskCommander::deleteSelf()
         delete this;
     else
         d->m_deleted = true;
+}
+
+bool TaskCommander::isFinished() const
+{
+    return d->m_finished;
 }
 

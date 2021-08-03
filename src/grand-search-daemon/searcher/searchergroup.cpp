@@ -154,3 +154,17 @@ Searcher *SearcherGroup::searcher(const QString &name) const
         return nullptr;
 }
 
+void SearcherGroup::dormancy()
+{
+    if (d->m_pluginManager) {
+        QList<GrandSearch::SearchPluginInfo> plugins = d->m_pluginManager->plugins();
+        for (const GrandSearch::SearchPluginInfo &plugin : plugins) {
+            //停用低优先级的Auto类型插件
+            if (plugin.mode == GrandSearch::SearchPluginInfo::Auto
+                    && plugin.priority == GrandSearch::SearchPluginInfo::Low) {
+                d->m_pluginManager->inactivate(plugin.name);
+            }
+        }
+    }
+}
+

@@ -36,6 +36,7 @@ public:
     bool init();
     QList<Searcher *> searchers() const;
     Searcher *searcher(const QString &name) const;
+    void dormancy();
 signals:
 
 public slots:

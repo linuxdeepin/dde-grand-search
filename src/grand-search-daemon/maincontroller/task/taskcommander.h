@@ -43,6 +43,7 @@ public:
     bool isEmptyBuffer() const;
     bool join(ProxyWorker *);
     void deleteSelf();
+    bool isFinished() const;
 protected:
     ~TaskCommander();
 signals:
