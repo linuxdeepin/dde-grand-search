@@ -35,7 +35,7 @@ DCORE_USE_NAMESPACE
 DesktopAppSearcherPrivate::DesktopAppSearcherPrivate(DesktopAppSearcher *parent)
     : q(parent)
 {
-
+    m_fileWatcher = new QFileSystemWatcher({APPLICATION_DIR_PATH}, q);
 }
 
 DesktopAppSearcherPrivate::~DesktopAppSearcherPrivate()
@@ -45,6 +45,7 @@ DesktopAppSearcherPrivate::~DesktopAppSearcherPrivate()
 
         qDebug() << "wait finished.";
         m_creatingIndex.waitForFinished();
+        m_updatingIndex.waitForFinished();
         qDebug() << "DesktopAppSearcher finished.";
     }
 }
@@ -99,7 +100,17 @@ void DesktopAppSearcherPrivate::createIndex(DesktopAppSearcherPrivate *d)
     d->m_creating = false;
 
     qInfo() << "create index completed, spend" << time.elapsed() << "cout" << indexTable.size();
-    //todo 开启监视器监控变化
+}
+
+void DesktopAppSearcherPrivate::updateIndex(DesktopAppSearcherPrivate *d)
+{
+    while (d->m_needUpdateIndex) {
+        d->m_needUpdateIndex = false;
+        d->m_creating = true;
+
+        qInfo() << "update index...";
+        createIndex(d);
+    }
 }
 
 QMap<QString, DesktopEntryPointer> DesktopAppSearcherPrivate::scanDesktopFile(const QString &path, volatile bool &runing)
@@ -236,6 +247,7 @@ DesktopAppSearcher::DesktopAppSearcher(QObject *parent)
     : Searcher(parent)
     , d(new DesktopAppSearcherPrivate(this))
 {
+    connect(d->m_fileWatcher, &QFileSystemWatcher::directoryChanged, this, &DesktopAppSearcher::onDirectoryChanged);
 }
 
 void DesktopAppSearcher::asyncInit()
@@ -279,4 +291,18 @@ bool DesktopAppSearcher::action(const QString &action, const QString &item)
     Q_UNUSED(item);
     qWarning() << "no such action:" << action << ".";
     return false;
+}
+
+void DesktopAppSearcher::onDirectoryChanged(const QString &path)
+{
+    Q_UNUSED(path);
+
+    if (d->m_updatingIndex.isRunning()) {
+        d->m_needUpdateIndex = true;
+        d->m_creating = false;
+        return;
+    }
+
+    d->m_needUpdateIndex = true;
+    d->m_updatingIndex = QtConcurrent::run(DesktopAppSearcherPrivate::updateIndex, d);
 }

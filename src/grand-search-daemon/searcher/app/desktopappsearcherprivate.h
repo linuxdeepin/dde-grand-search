@@ -44,16 +44,21 @@ public:
     static QString splitLocaleName(const QString &locale);
 private:
     static void createIndex(DesktopAppSearcherPrivate *);
+    static void updateIndex(DesktopAppSearcherPrivate *);
     static QMap<QString, DesktopEntryPointer> scanDesktopFile(const QString &path, volatile bool &runing);
 private:
     DesktopAppSearcher *q;
     bool m_inited = false;
     volatile bool m_creating = false;
     QFuture<void> m_creatingIndex;
+    QFuture<void> m_updatingIndex;
 
     //索引表
     QReadWriteLock m_lock;
     QHash<QString, QList<DesktopAppPointer>> m_indexTable;
+
+    QFileSystemWatcher *m_fileWatcher = nullptr;
+    volatile bool m_needUpdateIndex = false;
 };
 
 #endif // DESKTOPAPPSEARCHERPRIVATE_H

@@ -37,6 +37,8 @@ public:
     bool activate() Q_DECL_OVERRIDE;
     ProxyWorker *createWorker() const Q_DECL_OVERRIDE;
     bool action(const QString &action, const QString &item) Q_DECL_OVERRIDE;
+private slots:
+    void onDirectoryChanged(const QString &path);
 private:
     DesktopAppSearcherPrivate *d;
 };
