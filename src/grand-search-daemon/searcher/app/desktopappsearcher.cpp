@@ -169,19 +169,15 @@ QSet<QString> DesktopAppSearcherPrivate::desktopIndex(const DesktopEntryPointer 
     if (!zhCNName.isEmpty()) {
         idxs << zhCNName;
 
-        // 暂时只对全中文进行处理
-        static QRegExp reg("^[\u4e00-\u9fa5]*$");
-        if (reg.exactMatch(zhCNName)) {
-            //全拼以及拼音首字母
-            QSet<QString> firstPys;
-            QSet<QString> fullPys;
-            GrandSearch::ChineseLetterHelper::convertChineseLetter2Pinyin(zhCNName, firstPys, fullPys);
-
+        //全拼以及拼音首字母
+        QString firstPys;
+        QString fullPys;
+        if (Ch2PyIns->convertChinese2Pinyin(zhCNName, firstPys, fullPys)) {
             if (!fullPys.isEmpty())
-                idxs.unite(fullPys);
+                idxs << fullPys;
 
             if (!firstPys.isEmpty())
-                idxs.unite(firstPys);
+                idxs << firstPys;
         }
     }
 

@@ -152,8 +152,6 @@ set(UTILS
     utils/utiltools.cpp
     utils/chineseletterhelper.h
     utils/chineseletterhelper.cpp
-    utils/chineseletterdict.h
-    utils/chineseletterdict.cpp
 )
 
 set(SRCS
@@ -166,8 +164,11 @@ set(SRCS
     ${SEARCHPLUGIN}
 )
 
+# 资源文件
+qt5_add_resources(QRC_FILES utils/dict.qrc)
+
 # 可执行程序
-add_executable(${BIN_NAME} ${SRCS})
+add_executable(${BIN_NAME} ${SRCS} ${QRC_FILES})
 
 target_include_directories(${BIN_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include

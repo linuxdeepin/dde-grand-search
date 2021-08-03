@@ -166,6 +166,7 @@ void TaskCommander::stop()
         Q_ASSERT(worker);
         worker->terminate();
     }
+    qDebug() << "worker stopped" << this->taskID();
 
     d->m_working = false;
     d->m_finished = true;

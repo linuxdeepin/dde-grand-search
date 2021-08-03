@@ -19,234 +19,101 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "chineseletterhelper.h"
-#include "chineseletterdict.h"
 
-#include <QStringList>
-#include <QVector>
-#include <QDebug>
+#include <QFile>
+#include <QTextStream>
 
 namespace GrandSearch {
 
-int ChineseLetterHelper::convertChineseLetter2Pinyin(const QString &inStr, QSet<QString> &outFirstPys, QSet<QString> &outFullPys)
+class ChineseLetterHelperGlobal : public ChineseLetterHelper {};
+Q_GLOBAL_STATIC(ChineseLetterHelperGlobal, chineseLetterHelperGlobal)
+
+ChineseLetterHelper *ChineseLetterHelper::instance()
 {
-    outFirstPys.clear();
-    outFullPys.clear();
-    if (inStr.isEmpty())
-        return -1;
-
-    // 获取每个字的所有读音
-    int wordNum = inStr.size();
-    QVector<QStringList> firstPys;
-    QVector<QStringList> fullPys;
-    for (int i = 0; i < wordNum; ++i) {
-        QStringList firstPy;
-        QStringList fullPy;
-        getPinyinByWord(inStr.at(i), firstPy, fullPy);
-
-        firstPys.push_back(firstPy);
-        fullPys.push_back(fullPy);
-    }
-
-    // 开始排列组合
-    QVector<int> nowIndexList;
-    QVector<int> maxIndexList;
-    int sumMaxIndex = 0;
-    for (int i = 0; i < wordNum; ++i) {
-        nowIndexList.push_back(0);
-        maxIndexList.push_back(fullPys[i].size() - 1);
-        sumMaxIndex += maxIndexList[i];
-    }
-
-    QString firstPy;
-    QString fullPy;
-    // 第一次组合（所有采用第一个）
-    bool isNeedCombination = sumMaxIndex > 0 ? true : false;
-    for (int i = 0; i < wordNum; ++i) {
-        firstPy += firstPys[i][0];
-        fullPy += fullPys[i][0];
-    }
-    outFirstPys << firstPy;
-    outFullPys << fullPy;
-
-    // 循环遍历
-    while (isNeedCombination) {
-        // 组合排列
-        bool isAlreadyRunOnce = false;
-        for (int i = 0; i < wordNum; ++i) {
-            if (isAlreadyRunOnce)
-                break;
-
-            if (maxIndexList[i] != 0) {
-                if (nowIndexList[i] < maxIndexList[i]) {
-                    isAlreadyRunOnce = true;
-                    nowIndexList[i]++;
-                } else if (nowIndexList[i] == maxIndexList[i]) {
-                    nowIndexList[i] = 0;
-                }
-            }
-        }
-
-        // 组合输出字符
-        firstPy.clear();
-        fullPy.clear();
-        for (int i = 0; i < wordNum; ++i) {
-            firstPy += firstPys[i][nowIndexList[i]];
-            fullPy += fullPys[i][nowIndexList[i]];
-        }
-        outFirstPys << firstPy;
-        outFullPys << fullPy;
-
-        bool canOut = true;
-        for (int i = 0; i < wordNum; ++i) {
-            if (nowIndexList[i] != maxIndexList[i]) {
-                canOut = false;
-                break;
-            }
-        }
-
-        if (canOut)
-            break;
-    }
-
-    return 0;
+    return chineseLetterHelperGlobal;
 }
 
-QString ChineseLetterHelper::convertChineseName2Pinyin(const QString &inStr, bool isLastName)
+ChineseLetterHelper::ChineseLetterHelper()
 {
-    QString outStr;
 
-    //姓氏
-    if (isLastName) {
-        //在百家姓中查找
-        auto *plnTable = ChineseLetterDict::getLastNameTable();
-        for (int i = 0; i < LASTNAME_TABLE_LENGTH; i++) {
-            if (inStr == plnTable[i].chinese) {
-                outStr = plnTable[i].pinyi;
-                break;
-            }
-        }
-    }
-
-    //直接汉字库查找
-    if (outStr.isEmpty()) {
-        for (int i = 0; i < inStr.size(); i++) {
-            outStr += getNoRepeatPinyinByWord(inStr[i]);
-        }
-    }
-
-    return outStr;
 }
 
-void ChineseLetterHelper::chineseNameSplit(const QString &inFullName, QString &outLastName, QString &outFirstName)
+bool ChineseLetterHelper::chinese2Pinyin(const QString &words, QString &result)
 {
-    //如果有非汉字字符，直接返回
-    for (int i = 0; i < inFullName.length(); i++) {
-        ushort uni = inFullName.at(i).unicode();
-        if (uni < 0x4E00 || uni > 0x9FA5) {
-            outLastName = "";
-            outFirstName = inFullName;
-            return;
+    int ok = false;
+    for (int i = 0; i < words.length(); ++i) {
+        const uint key = words.at(i).unicode();
+        auto found = m_dict.find(key);
+
+        if (found != m_dict.end()) {
+            result.append(found.value());
+            ok = true;
+        } else {
+            result.append(words.at(i));
         }
     }
 
-    //
-    outLastName = "";
-    outFirstName = "";
+    return ok;
+}
 
-    if (inFullName.isEmpty()) {
+void ChineseLetterHelper::initDict()
+{
+    if (m_inited)
         return;
-    } else if (inFullName.length() == 1) {
-        outFirstName = inFullName;
-    } else if (inFullName.length() == 2) {
-        outLastName = inFullName.at(0);
-        outFirstName = inFullName.at(1);
-    } else {
-        QString guessLastName = inFullName.mid(0, 2);
-        auto *pcsTable = ChineseLetterDict::getCompoundSurnameTable();
-        for (int i = 0; i < COMPOUNDSURNAME_TABLE_LENGTH; ++i) {
-            if (guessLastName == pcsTable[i]) {
-                outLastName = pcsTable[i];
-                outFirstName = inFullName.mid(2);
-                break;
-            }
-        }
 
-        if (outLastName.isEmpty()) {
-            if (inFullName.length() == 4) {
-                outLastName = inFullName.mid(0, 2);
-                outFirstName = inFullName.mid(2);
-            } else {
-                outLastName = inFullName.at(0);
-                outFirstName = inFullName.mid(1);
-            }
+    m_inited = true;
+
+    const QString dictPath = ":/misc/pinyin.dict";
+    const int maxWord = 25333;
+    QHash<uint, QString> dict;
+    dict.reserve(maxWord);
+
+    QFile file(dictPath);
+    if (!file.open(QIODevice::ReadOnly))
+        return;
+
+    QByteArray content = file.readAll();
+    file.close();
+
+    QTextStream stream(&content, QIODevice::ReadOnly);
+    while (!stream.atEnd()) {
+        const QString line = stream.readLine();
+        const QStringList items = line.split(QChar(':'));
+
+        if (items.size() == 2) {
+            dict.insert(static_cast<uint>(items[0].toInt(nullptr, 16)), items[1]);
         }
     }
+
+    m_dict = dict;
 }
 
-int ChineseLetterHelper::getPinyinByWord(const QString &inWord, QStringList &outFirstPy, QStringList &outFullPy)
+bool ChineseLetterHelper::convertChinese2Pinyin(const QString &inStr, QString &outFirstPy, QString &outFullPy)
 {
-    if (inWord.size() > 1)
-        return -1;
+    if (inStr.isEmpty())
+        return false;
 
-    outFullPy.clear();
-    outFirstPy.clear();
+    initDict();
 
-    ushort uni = inWord[0].unicode();
-    if (uni >= 0x4E00 && uni <= 0x9FA5) {
-        auto *pclTable = ChineseLetterDict::getChineseLetterTable();
-        for (int index = 0; index < CHINESELETTER_TABLE_LENGTH; ++index) {
-            if (pclTable[index].chinese.indexOf(uni, 0, Qt::CaseSensitive) != -1) {
-                outFirstPy.append(pclTable[index].firstPinyin);
-                outFullPy.append(pclTable[index].fullPinyin);
-            }
+    bool ok = false;
+    for (int i = 0; i < inStr.size(); ++i) {
+        const QString &cur = inStr.at(i);
+        QString py;
+        if (chinese2Pinyin(cur, py)) {
+            ok = true;
+
+            if (py.isEmpty())
+                continue;
+
+            outFirstPy.append(py.at(0));
+            outFullPy.append(py);
+        } else {
+            outFirstPy.append(cur);
+            outFullPy.append(cur);
         }
     }
 
-    if (outFirstPy.isEmpty())
-        outFirstPy.append(inWord);
-
-    if (outFullPy.isEmpty())
-        outFullPy.append(inWord);
-
-    return 0;
-}
-
-QString ChineseLetterHelper::getNoRepeatPinyinByWord(const QString &inWord)
-{
-    QString outPingyin;
-
-    if (inWord.size() > 1) {
-        return inWord;
-    }
-
-    //多音字里面查询
-    auto *pmtwTable = ChineseLetterDict::getMultiToneWordTable();
-    for (int i = 0; i < MULTITONEWORD_TABLE_LENGTH; ++i) {
-        if (inWord == pmtwTable[i].chinese) {
-            outPingyin = pmtwTable[i].pinyin;
-            break;
-        }
-    }
-
-    if (!outPingyin.isEmpty())
-        return outPingyin;
-
-    //全字库查找
-    ushort uni = inWord[0].unicode();
-    if (uni >= 0x4E00 && uni <= 0x9FA5) {
-        auto *pclTable = ChineseLetterDict::getChineseLetterTable();
-        for (int index = 0; index < CHINESELETTER_TABLE_LENGTH; ++index) {
-            if (pclTable[index].chinese.indexOf(uni, 0, Qt::CaseSensitive) != -1) {
-                outPingyin = pclTable[index].fullPinyin;
-                break;
-            }
-        }
-    }
-
-    if (outPingyin.isEmpty())
-        outPingyin = inWord;
-
-    return outPingyin;
+    return ok;
 }
 
 }

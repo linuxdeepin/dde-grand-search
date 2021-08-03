@@ -21,19 +21,25 @@
 #ifndef CHINESELETTERHELPER_H
 #define CHINESELETTERHELPER_H
 
+#include <QHash>
 #include <QObject>
+
+#define Ch2PyIns GrandSearch::ChineseLetterHelper::instance()
 
 namespace GrandSearch {
 
 class ChineseLetterHelper
 {
 public:
-    static int convertChineseLetter2Pinyin(const QString &inStr, QSet<QString> &outFirstPys, QSet<QString> &outFullPys);
-    static QString convertChineseName2Pinyin(const QString &inStr, bool isLastName);
-    static void chineseNameSplit(const QString &inFullName, QString &outLastName, QString &outFirstName);
+    static ChineseLetterHelper *instance();
+    bool convertChinese2Pinyin(const QString &inStr, QString &outFirstPy, QString &outFullPy);
+protected:
+    ChineseLetterHelper();
+    bool chinese2Pinyin(const QString &words, QString &result);
 private:
-    static int getPinyinByWord(const QString &inWord, QStringList &outFirstPy, QStringList &outFullPy);
-    static QString getNoRepeatPinyinByWord(const QString &inWord);
+    void initDict();
+    volatile bool m_inited = false;
+    QHash<uint, QString> m_dict;
 };
 
 }
