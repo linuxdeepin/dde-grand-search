@@ -1,15 +1,15 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_HK" version="2.1">
 <context>
     <name>EntranceWidget</name>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="214"/>
         <source>Search</source>
-        <translation>Search</translation>
+        <translation>搜索</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="215"/>
         <source>What would you like to search for?</source>
-        <translation>What would you like to search for?</translation>
+        <translation>搜索想要查找的內容</translation>
     </message>
 </context>
 <context>
@@ -17,17 +17,17 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="106"/>
         <source>Cut</source>
-        <translation>Cut</translation>
+        <translation>剪切</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="110"/>
         <source>Copy</source>
-        <translation>Copy</translation>
+        <translation>複製</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="114"/>
         <source>Paste</source>
-        <translation>Paste</translation>
+        <translation>黏貼</translation>
     </message>
 </context>
 <context>
@@ -35,7 +35,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="259"/>
         <source>More</source>
-        <translation>More</translation>
+        <translation>查看更多</translation>
     </message>
 </context>
 <context>
@@ -43,7 +43,7 @@
     <message>
         <location filename="../src/grand-search/gui/mainwindow.cpp" line="181"/>
         <source>No search results</source>
-        <translation>No search results</translation>
+        <translation>無搜索結果</translation>
     </message>
 </context>
 <context>
@@ -51,17 +51,17 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="34"/>
         <source>Applications</source>
-        <translation>Applications</translation>
+        <translation>應用</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="35"/>
         <source>Folders</source>
-        <translation>Folders</translation>
+        <translation>文件夾</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="36"/>
         <source>Files</source>
-        <translation>Files</translation>
+        <translation>文件</translation>
     </message>
 </context>
 </TS>

@@ -5,4 +5,4 @@ rm ./translations/*.ts
 
 lupdate ./src/grand-search -ts -no-obsolete translations/dde-grand-search.ts
 
-tx push -s -b m20
+#tx push -s -b m20
