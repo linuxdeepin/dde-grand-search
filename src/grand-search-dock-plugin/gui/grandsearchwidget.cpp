@@ -40,7 +40,7 @@ GrandSearchWidget::~GrandSearchWidget()
 
 void GrandSearchWidget::updateIcon()
 {
-    QString iconName = "global-search";
+    QString iconName = "grand-search";
 
     DGuiApplicationHelper::ColorType type = DGuiApplicationHelper::instance()->themeType();
     if (DGuiApplicationHelper::LightType == type) {

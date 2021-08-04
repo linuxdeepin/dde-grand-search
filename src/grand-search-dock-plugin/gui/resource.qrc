@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/global-search-dark.svg</file>
-        <file>icons/global-search-light.svg</file>
+        <file>icons/grand-search-dark.svg</file>
+        <file>icons/grand-search-light.svg</file>
     </qresource>
 </RCC>
