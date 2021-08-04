@@ -108,4 +108,7 @@ void
 config_build_dir(char *path, size_t len);
 
 void
+database_build_dir(char *path, size_t len);
+
+void
 config_free(FsearchConfig *config);

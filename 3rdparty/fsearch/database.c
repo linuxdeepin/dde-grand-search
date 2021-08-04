@@ -627,7 +627,8 @@ location_build_path (char *path, size_t path_len, const char *location_name)
 //    assert (path_checksum != NULL);
 
     gchar config_dir[PATH_MAX] = "";
-    config_build_dir (config_dir, sizeof (config_dir));
+//    config_build_dir (config_dir, sizeof (config_dir));
+    database_build_dir(config_dir, sizeof (config_dir));
 
     assert (0 <= snprintf (path, path_len, "%s/database", config_dir));
 //    g_free (path_checksum);

@@ -40,6 +40,17 @@ config_build_dir (char *path, size_t len)
     return;
 }
 
+void database_build_dir(char *path, size_t len)
+{
+    g_assert (path != NULL);
+    g_assert (len >= 0);
+
+    const gchar *cache_dir = g_get_user_cache_dir();
+    const gchar *app_name = g_get_application_name();
+    snprintf (path, len, "%s/%s/%s", cache_dir, app_name, config_folder_name);
+    return;
+}
+
 static void
 config_build_path (char *path, size_t len)
 {

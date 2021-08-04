@@ -128,6 +128,10 @@ void FsSearcher::loadDataBase(FsSearcher *fs)
     fs->m_app->config->locations = nullptr;
     g_mutex_init(&fs->m_app->mutex);
 
+    // 设置应用名，用于设置索引保存路径
+    const auto &appName = QCoreApplication::organizationName() + "/" + QCoreApplication::applicationName();
+    g_set_application_name(appName.toLocal8Bit().data());
+
     // 索引/home/user目录
     QString searPath = QDir::homePath();
     fs->m_app->config->locations = g_list_append(fs->m_app->config->locations, searPath.toLocal8Bit().data());
