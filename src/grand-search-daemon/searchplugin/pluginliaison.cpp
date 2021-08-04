@@ -54,13 +54,13 @@ bool PluginLiaisonPrivate::isVaild() const
 
 void PluginLiaisonPrivate::parseResult(const QString &json, PluginLiaisonPrivate *d)
 {
-    GrandSearch::MatchedItemMap ret;
+    QVariantList ret;
 
     QJsonParseError error;
     QJsonDocument doc = QJsonDocument::fromJson(json.toUtf8(), &error);
     if (error.error != QJsonParseError::NoError) {
         qWarning() << "search results: is not a json data.";
-        emit d->q->searchFinished(ret);
+        emit d->q->searchFinished({});
         return;
     }
 
@@ -73,9 +73,20 @@ void PluginLiaisonPrivate::parseResult(const QString &json, PluginLiaisonPrivate
     DataConvIns->convert(d->m_ver, PLUGININTERFACE_TYPE_RESULT, &root, &ret);
     qDebug() << "convert size" << json.size() << ret.size();
 
-    //修改状态，发送结果
-    if (d->m_searching.testAndSetRelease(true, false))
-        emit d->q->searchFinished(ret);
+    if (ret.size() == 2) {
+        auto id = ret.first().toString();
+        if (!id.isEmpty()) {
+            GrandSearch::MatchedItemMap items = ret.at(1).value<GrandSearch::MatchedItemMap>();
+            //修改状态，发送结果
+            if (d->m_searching.testAndSetRelease(true, false))
+                emit d->q->searchFinished(items);
+
+            return;
+        }
+    }
+
+    qWarning() << "error result" << d->m_inteface->service();
+    emit d->q->searchFinished({});
 }
 
 void PluginLiaisonPrivate::onSearchReplied()

@@ -178,6 +178,9 @@ void ExtendWorker::onWorkFinished(const GrandSearch::MatchedItemMap &ret)
     m_items = ret;
     lk.unlock();
 
+    if (!ret.isEmpty())
+        emit unearthed(this);
+
     qDebug() << name() << "work finished" << ret.size();
     //异步搜索结束
     emit asyncFinished(this);
