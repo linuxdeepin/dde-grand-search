@@ -103,6 +103,10 @@ void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
         if (!groupWidget)
             continue;
 
+        // 当文件(夹)总数超过100条记录时，不允许追加
+        if (!groupWidget->isAppendDataAllow())
+            continue;
+
         // 追加匹配数据到类目列表中
         groupWidget->appendMatchedItems(itData.value());
 
@@ -153,6 +157,7 @@ void MatchWidget::onSearchCompleted()
         return;
 
     MainWindow::instance()->showSerachNoContent(true);
+    MainWindow::instance()->showEntranceAppIcon(false);
 }
 
 void MatchWidget::onShowMore()

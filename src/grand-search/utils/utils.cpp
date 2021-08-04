@@ -147,11 +147,19 @@ QString Utils::appIconName(const MatchedItem &item)
     if (item.item.isEmpty())
         return strAppIconName;
 
+    // 搜索结果来自扩展插件，不显示应用图标
+    bool bFromBuiltSearch = isResultFromBuiltSearch(item);
+    if (!bFromBuiltSearch) {
+        return strAppIconName;
+    }
+
     QString defaultDesktopFile;
     if (QFileInfo(item.item).suffix() == "desktop") {
         defaultDesktopFile = item.item;
     } else {
-        QString mimetype = getFileMimetype(item.item);
+        QString mimetype = item.type;
+        if (mimetype.isEmpty())
+            mimetype = getFileMimetype(item.item);
         defaultDesktopFile = getDefaultAppDesktopFileByMimeType(mimetype);
     }
 
@@ -252,11 +260,7 @@ bool Utils::openMatchedItem(const MatchedItem &item)
         return true;
     }
 
-    return openFile(item.item);
-}
-
-bool Utils::openFile(const QString &filePath)
-{
+    QString filePath = item.item;
     if (filePath.isEmpty())
         return false;
 
@@ -268,7 +272,9 @@ bool Utils::openFile(const QString &filePath)
     }
 
     // 获取mimetype
-    QString mimetype = getFileMimetype(filePath);
+    QString mimetype = item.type;
+    if (mimetype.isEmpty())
+        mimetype = getFileMimetype(item.item);
 
     // 获取对应默认打开应用
     QString defaultDesktopFile = getDefaultAppDesktopFileByMimeType(mimetype);

@@ -34,6 +34,7 @@ DCORE_USE_NAMESPACE
 using namespace GrandSearch;
 
 #define ICON_SIZE 24
+#define ListItemTextMaxWidth      240      // 文本元素最大显示宽度
 
 GrandSearchListview::GrandSearchListview(QWidget *parent)
     : DListView(parent)
@@ -87,7 +88,11 @@ void GrandSearchListview::addRow(const MatchedItem &item)
     m_model->setData(index, searchMeta, DATA_ROLE);
 
     // 添加悬浮提示
-    m_model->setData(index, item.name, Qt::ToolTipRole);
+    QFontMetricsF fontWidth(DFontSizeManager::instance()->get(DFontSizeManager::T6));
+    QString mtext = fontWidth.elidedText(item.name, Qt::ElideRight, ListItemTextMaxWidth);
+    if (mtext != item.name) {
+        m_model->setData(index, item.name, Qt::ToolTipRole);
+    }
 
     // 设置icon
     QVariant iconVariantData;

@@ -102,6 +102,13 @@ void MainWindow::showSerachNoContent(bool bShow)
     }
 }
 
+void MainWindow::showEntranceAppIcon(bool bShow)
+{
+    Q_ASSERT(d_p->m_entranceWidget);
+
+    d_p->m_entranceWidget->showLabelAppIcon(bShow);
+}
+
 void MainWindow::onPrimaryScreenChanged(const QScreen *screen)
 {
     // 主窗口显示在主屏
@@ -127,6 +134,7 @@ void MainWindow::onSearchTextChanged(const QString &txt)
     showSerachNoContent(false);
     if (txt.isEmpty()) {
         showExhitionWidget(false);
+        showEntranceAppIcon(false);
     } else {
         showExhitionWidget(true);
     }

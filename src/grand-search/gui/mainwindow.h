@@ -39,6 +39,8 @@ public:
     void showExhitionWidget(bool bShow = true);
     void showSerachNoContent(bool bShow = true);
 
+    void showEntranceAppIcon(bool bShow = true);
+
 private slots:
     // 主屏改变响应槽，移动已显示的主界面到主屏
     void onPrimaryScreenChanged(const QScreen *screen);

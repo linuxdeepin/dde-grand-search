@@ -42,6 +42,7 @@ using namespace GrandSearch;
 #define LayoutMagrinSize          10       // 布局边距
 #define SpacerWidth               40       // 弹簧宽度
 #define SpacerHeight              20       // 弹簧高度
+#define MaxFileShowCount          100      // 文件(夹)最大显示数
 
 GroupWidgetPrivate::GroupWidgetPrivate(GroupWidget *parent)
     : q_p(parent)
@@ -107,6 +108,16 @@ void GroupWidget::appendMatchedItems(const MatchedItems &newItems)
             m_listView->setMatchedItems(m_firstFiveItems);
         }
 
+        // 若类目为文件或文件夹，当前结果结果数超过100个，仅保留前100个，保证结果展示数在100以内
+        if (m_groupName == GroupName_Folder
+         || m_groupName == GroupName_File) {
+            int nRemoveCount = m_cacheItems.size() + m_firstFiveItems.size() - MaxFileShowCount;
+            if (nRemoveCount > 0) {
+                for (int i = 0; i < nRemoveCount; i++)
+                    m_cacheItems.removeLast();
+            }
+
+        }
         // 缓存中有数据，显示'查看更多'按钮
         m_viewMoreButton->setVisible(!m_cacheItems.isEmpty());
     }
@@ -114,7 +125,16 @@ void GroupWidget::appendMatchedItems(const MatchedItems &newItems)
         // 结果列表已展开，已经显示的数据保持不变，仅对新增数据排序，然后追加到列表末尾
         MatchedItems& tempNewItems = const_cast<MatchedItems&>(newItems);
         Utils::sort(tempNewItems);
-        m_listView->addRows(tempNewItems);
+
+        // 若类目为文件或文件夹，保证结果数据在100以内
+        if (m_groupName == GroupName_Folder
+         || m_groupName == GroupName_File) {
+            for (int i = 0; i < tempNewItems.size() && m_listView->rowCount() < MaxFileShowCount; i++) {
+                m_listView->addRow(tempNewItems[i]);
+            }
+        } else {
+            m_listView->addRows(tempNewItems);
+        }
     }
 
     layout();
@@ -180,6 +200,10 @@ void GroupWidget::reLayout()
 
     if (!m_line->isHidden()) {
         nHeight += m_line->height();
+        nHeight += LayoutMagrinSize;
+        m_vContentLayout->setSpacing(10);
+    } else {
+        m_vContentLayout->setSpacing(0);
     }
 
     this->setFixedHeight(nHeight);
@@ -198,6 +222,17 @@ void GroupWidget::clear()
 
     m_listView->clear();
     setVisible(false);
+}
+
+bool GroupWidget::isAppendDataAllow()
+{
+    // 当文件(夹)总数超过100条记录时，不允许追加
+    if (m_groupName == GroupName_Folder
+     || m_groupName == GroupName_File) {
+        return itemCount() < MaxFileShowCount;
+    }
+
+    return true;
 }
 
 QString GroupWidget::groupName()
@@ -291,10 +326,16 @@ void GroupWidget::initUi()
     m_line->setFrameShadow(DHorizontalLine::Raised);
     m_line->setLineWidth(1);
 
-    // 控件放置到主布局内
+    // 列表和分割线放到内容布局内
+    m_vContentLayout = new QVBoxLayout();
+    m_vContentLayout->setMargin(0);
+    m_vContentLayout->setSpacing(0);
+    m_vContentLayout->addWidget(m_listView);
+    m_vContentLayout->addWidget(m_line);
+
+    // 标题栏布局和内容布局放到主布局内
     m_vLayout->addLayout(m_hTitelLayout);
-    m_vLayout->addWidget(m_listView);
-    m_vLayout->addWidget(m_line);
+    m_vLayout->addLayout(m_vContentLayout);
 }
 
 void GroupWidget::initConnect()

@@ -137,6 +137,13 @@ void EntranceWidget::connectToController()
 
 }
 
+void EntranceWidget::showLabelAppIcon(bool bVisile)
+{
+    Q_ASSERT(d_p->m_appIconLabel);
+
+    d_p->m_appIconLabel->setVisible(bVisile);
+}
+
 void EntranceWidget::paintEvent(QPaintEvent *event)
 {
     // 调试使用，最后发布时需删除todo 用于显示搜索入口界面背景色
@@ -253,6 +260,15 @@ void EntranceWidget::initConnections()
 
 void EntranceWidget::onAppIconChanged(const QString &appIconName)
 {
+    //app图标名称为空，隐藏appIcon显示
+    if (appIconName.isEmpty()) {
+        showLabelAppIcon(false);
+        d_p->m_appIconName = appIconName;
+        return;
+    }
+
+    showLabelAppIcon(true);
+
     if (appIconName == d_p->m_appIconName)
         return;
 

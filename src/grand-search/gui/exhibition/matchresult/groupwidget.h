@@ -64,6 +64,9 @@ public:
     void reLayout();
     void clear();
 
+    // 是否允许追加数据，当文件(夹)总数超过100条记录时，不允许追加
+    bool isAppendDataAllow();
+
     QString groupName();
     static QString getGroupName(const QString &groupHash);
     static QString getGroupObjName(const QString &groupHash);
@@ -84,11 +87,13 @@ signals:
 private:
     QScopedPointer<GroupWidgetPrivate> d_p;
 
-    QVBoxLayout *m_vLayout = nullptr;//主体垂直布局
-    QHBoxLayout *m_hTitelLayout = nullptr;//顶部标题水平布局
+    QVBoxLayout *m_vLayout = nullptr;// 主体垂直布局
+    QHBoxLayout *m_hTitelLayout = nullptr;// 顶部标题水平布局
 
     DLabel *m_groupLabel = nullptr;
     DPushButton* m_viewMoreButton = nullptr;
+
+    QVBoxLayout *m_vContentLayout = nullptr; // 内容垂直布局，用于限定列表和横线间距10个像素间隙
     GrandSearchListview *m_listView = nullptr;
     DHorizontalLine *m_line = nullptr;
 
