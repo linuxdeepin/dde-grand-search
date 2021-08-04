@@ -64,6 +64,9 @@ int main(int argc, char *argv[])
         return -1;
     }
 
+    // 加载翻译
+    app.loadTranslator();
+
     qDebug() << "starting" << app.applicationName() << app.applicationVersion() << getpid();
     MainWindow::instance()->show();
 

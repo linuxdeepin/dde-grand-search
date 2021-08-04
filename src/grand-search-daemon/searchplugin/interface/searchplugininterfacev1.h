@@ -41,7 +41,7 @@ public:
     ~SearchPluginInterfaceV1();
 
 public slots:
-    inline QDBusPendingReply<QString> Action(const QString &json)
+    inline QDBusPendingReply<bool> Action(const QString &json)
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(json);

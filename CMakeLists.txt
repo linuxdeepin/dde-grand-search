@@ -21,8 +21,15 @@ set(LIB_PLATFORM_DIR "/usr/lib/${CMAKE_LIBRARY_ARCHITECTURE}")
 #全局文件
 FILE(GLOB GLOBAL_SRC "./src/global/*.h" "./src/global/*.cpp")
 
+# 国际化
+if (NOT (${CMAKE_BUILD_TYPE} MATCHES "Debug"))
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast")
+
+    # generate qm
+    execute_process(COMMAND bash "translate_generation.sh"
+                    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+endif ()
+
 add_subdirectory(src/grand-search)
 add_subdirectory(src/grand-search-daemon)
 add_subdirectory(src/grand-search-dock-plugin)
-
-

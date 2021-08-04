@@ -6,7 +6,7 @@
       <arg name="json" type="s" direction="in"/>
     </method>
     <method name="Action">
-      <arg type="s" direction="out"/>
+      <arg type="b" direction="out"/>
       <arg name="json" type="s" direction="in"/>
     </method>
     <method name="Stop">

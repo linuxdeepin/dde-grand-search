@@ -66,9 +66,6 @@ int main(int argc, char *argv[])
         qInfo() << dateTime << "starting " << app.applicationName() << app.applicationVersion() << getpid();
     }
 
-    //todo
-    //加载翻译文件
-
     //服务接口
     GrandSearchInterface interface;
 

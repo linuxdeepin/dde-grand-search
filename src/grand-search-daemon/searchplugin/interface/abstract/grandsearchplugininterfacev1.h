@@ -36,7 +36,7 @@ class GrandSearchPluginInterface : QObject
     Q_CLASSINFO("D-Bus Interface", "com.deepin.dde.GrandSearch.SearchPlugin")
 public slots:
     QString Search(const QString &json);
-    QString Action(const QString &json);
+    bool Action(const QString &json);
     bool Stop(const QString &json);
 private:
     explicit GrandSearchPluginInterface(QObject *parent = nullptr);
