@@ -32,7 +32,8 @@ class PluginLiaison : public QObject
 public:
     explicit PluginLiaison(QObject *parent = nullptr);
     bool init(const QString &service, const QString &address,
-              const QString &interface, const QString &ver);
+              const QString &interface, const QString &ver,
+              const QString &pluginName);
     bool isVaild() const;
     bool search(const QString &task, const QString &context);
     bool stop(const QString &task);

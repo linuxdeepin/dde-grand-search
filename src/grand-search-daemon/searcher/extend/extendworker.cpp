@@ -46,7 +46,7 @@ bool ExtendWorker::setService(const QString &service, const QString &address, co
 
     //创建通信模块
     auto liaison = new PluginLiaison(this);
-    if (!liaison->init(service, address, interface, ver)) {
+    if (!liaison->init(service, address, interface, ver, name())) {
         qWarning() << "fail to create PluginLiaison: " << service << address << interface << ver;
         delete liaison;
         return false;

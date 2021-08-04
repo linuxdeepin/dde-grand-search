@@ -98,7 +98,7 @@ ProxyWorker *ExtendSearcher::createWorker() const
 bool ExtendSearcher::action(const QString &action, const QString &item)
 {
     PluginLiaison cont;
-    if (cont.init(d->m_service, d->m_address, d->m_interface, d->m_version)) {
+    if (cont.init(d->m_service, d->m_address, d->m_interface, d->m_version , d->m_name)) {
         if (cont.action(action, item))
             return true;
         else

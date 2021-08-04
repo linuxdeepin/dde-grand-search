@@ -42,6 +42,7 @@ private:
     QDBusPendingCallWatcher *m_replyWatcher = nullptr;
     QFuture<void> m_parseThread;
     QAtomicInteger<bool> m_searching = false;
+    QString m_pluginName;
 };
 
 #endif // PLUGINLIAISONPRIVATE_H

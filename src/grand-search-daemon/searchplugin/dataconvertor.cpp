@@ -48,9 +48,9 @@ bool DataConvertor::isSupported(const QString &ver)
     return m_convertors.contains(ver);
 }
 
-int DataConvertor::convert(const QString &version, const QString &type, QJsonObject *json, void *info)
+int DataConvertor::convert(const QString &version, const QString &type, void *in, void *out)
 {
-    if (version.isEmpty() || type.isEmpty() || json == nullptr || info == nullptr)
+    if (version.isEmpty() || type.isEmpty() || in == nullptr || out == nullptr)
         return -1;
 
     QReadLocker lk(&m_rwLock);
@@ -63,7 +63,7 @@ int DataConvertor::convert(const QString &version, const QString &type, QJsonObj
             auto func = ifs.value(type);
             Q_ASSERT(func);
 
-            return (*func)(json, info);
+            return (*func)(in, out);
         }
     }
 

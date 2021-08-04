@@ -31,10 +31,10 @@ public:
     static AbstractConvertor *create();
     QString version() const Q_DECL_OVERRIDE;
     QHash<QString, ConvertInterface> interfaces() Q_DECL_OVERRIDE;
-    static int search(QJsonObject *json, void *info);
-    static int result(QJsonObject *json, void *info);
-    static int stop(QJsonObject *json, void *info);
-    static int action(QJsonObject *json, void *info);
+    static int search(void *in, void *out);
+    static int result(void *in, void *out);
+    static int stop(void *in, void *out);
+    static int action(void *in, void *out);
 };
 
 #endif // CONVERTORV1_0_H

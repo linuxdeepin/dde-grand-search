@@ -36,6 +36,10 @@ PluginLiaisonPrivate::~PluginLiaisonPrivate()
 {
     qDebug() << "parse thread: waiting exit";
     m_parseThread.waitForFinished();
+    if (m_replyWatcher) {
+        delete m_replyWatcher;
+        m_replyWatcher = nullptr;
+    }
     qDebug() << "parse thread: exited.";
 }
 
@@ -68,9 +72,18 @@ void PluginLiaisonPrivate::parseResult(const QString &json, PluginLiaisonPrivate
     if (!d->m_searching.loadAcquire())
         return;
 
+    //输入
+    QVariantList in;
     QJsonObject root = doc.object();
+    {
+        in << d->m_pluginName;
+        QVariant var;
+        var.setValue(static_cast<void *>(&root));
+        in << var;
+    }
+
     //解析数据耗时
-    DataConvIns->convert(d->m_ver, PLUGININTERFACE_TYPE_RESULT, &root, &ret);
+    DataConvIns->convert(d->m_ver, PLUGININTERFACE_TYPE_RESULT, &in, &ret);
     qDebug() << "convert size" << json.size() << ret.size();
 
     if (ret.size() == 2) {
@@ -85,7 +98,7 @@ void PluginLiaisonPrivate::parseResult(const QString &json, PluginLiaisonPrivate
         }
     }
 
-    qWarning() << "error result" << d->m_inteface->service();
+    qWarning() << "error result from" << d->m_pluginName;
     emit d->q->searchFinished({});
 }
 
@@ -103,14 +116,14 @@ void PluginLiaisonPrivate::onSearchReplied()
 
     auto reply = m_replyWatcher->reply();
     if (m_replyWatcher->isError() || reply.arguments().size() < 1) {
-        qWarning() << reply.service() << reply.errorMessage();
+        qWarning() << m_pluginName << reply.errorMessage();
 
         //发送结束
         emit q->searchFinished({});
     } else if (m_searching.loadAcquire()) { //需要解析
         QString ret = reply.arguments().at(0).toString();
 
-        qDebug() << "get reply" << reply.service() << ret.size();
+        qDebug() << "get reply" << m_pluginName << ret.size();
         m_parseThread = QtConcurrent::run(PluginLiaisonPrivate::parseResult, ret, this);
     }
 }
@@ -122,11 +135,11 @@ PluginLiaison::PluginLiaison(QObject *parent)
 
 }
 
-bool PluginLiaison::init(const QString &service, const QString &address, const QString &interface, const QString &ver)
+bool PluginLiaison::init(const QString &service, const QString &address, const QString &interface, const QString &ver, const QString &pluginName)
 {
     if (Q_UNLIKELY(address.isEmpty()
             || service.isEmpty() || interface.isEmpty()
-            || ver.isEmpty()))
+            || ver.isEmpty() || pluginName.isEmpty()))
         return false;
 
     //检查版本
@@ -134,6 +147,7 @@ bool PluginLiaison::init(const QString &service, const QString &address, const Q
         return false;
 
     d->m_ver = ver;
+    d->m_pluginName = pluginName;
 
     auto stdStrng = interface.toStdString();
     d->m_inteface = new SearchPluginInterfaceV1(service, address, stdStrng.c_str(),

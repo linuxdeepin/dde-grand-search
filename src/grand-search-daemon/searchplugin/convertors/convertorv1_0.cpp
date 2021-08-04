@@ -62,12 +62,13 @@ QHash<QString, ConvertInterface> ConvertorV1_0::interfaces()
     return funcs;
 }
 
-int ConvertorV1_0::search(QJsonObject *json, void *info)
+int ConvertorV1_0::search(void *in, void *out)
 {
-    Q_ASSERT(json);
-    Q_ASSERT(info);
+    Q_ASSERT(in);
+    Q_ASSERT(out);
 
-    QStringList *args = static_cast<QStringList *>(info);
+    QJsonObject *json = static_cast<QJsonObject *>(in);
+    QStringList *args = static_cast<QStringList *>(out);
 
     //只包含三个参数
     if (Q_UNLIKELY(args->size() != 3))
@@ -94,10 +95,19 @@ int ConvertorV1_0::search(QJsonObject *json, void *info)
     return 0;
 }
 
-int ConvertorV1_0::result(QJsonObject *json, void *info)
+int ConvertorV1_0::result(void *in, void *out)
 {
-    Q_ASSERT(json);
-    Q_ASSERT(info);
+    Q_ASSERT(in);
+    Q_ASSERT(out);
+    QVariantList *varList = static_cast<QVariantList *>(in);
+    if (varList->size() != 2)
+        return -1;
+    QString plugin = varList->first().toString();
+
+    if (plugin.isEmpty())
+        return 1;
+
+    QJsonObject *json = static_cast<QJsonObject *>(varList->at(1).value<void *>());
 
     auto ver = GrandSearch::UtilTools::getJsonString(json, PLUGININTERFACE_PROTOCOL_VERSION);
     if (CURRENT_CONVERTOR_VERSION != ver)
@@ -150,6 +160,8 @@ int ConvertorV1_0::result(QJsonObject *json, void *info)
 
                     mItem.icon = GrandSearch::UtilTools::getJsonString(&item, PLUGININTERFACE_PROTOCOL_ICON);
 
+                    mItem.searcher = plugin;
+
                     aGroup.append(mItem);
 
                     count++;
@@ -165,19 +177,20 @@ int ConvertorV1_0::result(QJsonObject *json, void *info)
         }
     }
 
-    QVariantList *results = static_cast<QVariantList *>(info);
+    QVariantList *results = static_cast<QVariantList *>(out);
     results->append(QVariant::fromValue(missionID));
     results->append(QVariant::fromValue(mContents));
 
     return 0;
 }
 
-int ConvertorV1_0::stop(QJsonObject *json, void *info)
+int ConvertorV1_0::stop(void *in, void *out)
 {
-    Q_ASSERT(json);
-    Q_ASSERT(info);
+    Q_ASSERT(in);
+    Q_ASSERT(out);
 
-    QStringList *args = static_cast<QStringList *>(info);
+    QJsonObject *json = static_cast<QJsonObject *>(in);
+    QStringList *args = static_cast<QStringList *>(out);
 
     //只包含两个参数
     if (Q_UNLIKELY(args->size() != 2))
@@ -202,12 +215,13 @@ int ConvertorV1_0::stop(QJsonObject *json, void *info)
     return 0;
 }
 
-int ConvertorV1_0::action(QJsonObject *json, void *info)
+int ConvertorV1_0::action(void *in, void *out)
 {
-    Q_ASSERT(json);
-    Q_ASSERT(info);
+    Q_ASSERT(in);
+    Q_ASSERT(out);
 
-    QStringList *args = static_cast<QStringList *>(info);
+    QJsonObject *json = static_cast<QJsonObject *>(in);
+    QStringList *args = static_cast<QStringList *>(out);
 
     //只包含三个参数
     if (Q_UNLIKELY(args->size() != 3))

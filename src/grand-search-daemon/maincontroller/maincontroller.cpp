@@ -131,10 +131,12 @@ bool MainController::newSearch(const QString &key)
 void MainController::terminate()
 {
     qDebug() << __FUNCTION__;
-    //只停止任务，不释放
+    //停止任务
     if (d->m_currentTask) {
-        d->m_currentTask->stop();
         disconnect(d->m_currentTask, nullptr, this, nullptr);
+        d->m_currentTask->stop();
+        d->m_currentTask->deleteSelf();
+        d->m_currentTask = nullptr;
     }
 }
 

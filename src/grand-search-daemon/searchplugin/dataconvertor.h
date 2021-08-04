@@ -35,7 +35,7 @@ public:
     static DataConvertor *instance();
     void initConvetor();
     bool isSupported(const QString &ver);
-    int convert(const QString &version, const QString &type, QJsonObject *json, void *info);
+    int convert(const QString &version, const QString &type, void *in, void *out);
     bool regist(const QString &ver, CreateConvertor creator);
     void unRegist(CreateConvertor creator);
 

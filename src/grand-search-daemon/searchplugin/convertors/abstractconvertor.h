@@ -30,7 +30,7 @@
 #define PLUGININTERFACE_TYPE_STOP "stop"
 #define PLUGININTERFACE_TYPE_ACTION "action"
 
-typedef int (*ConvertInterface)(QJsonObject *, void *);
+typedef int (*ConvertInterface)(void *, void *);
 
 class AbstractConvertor
 {
