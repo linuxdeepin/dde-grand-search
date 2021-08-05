@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "fsworker.h"
+#include "utils/utiltools.h"
+#include "global/builtinsearch.h"
 
 #include <QWaitCondition>
 
@@ -64,7 +66,7 @@ bool FsWorker::working(void *context)
         db_search_update(m_app->search,
                          db_get_entries(db),
                          db_get_num_entries(db),
-                         MAX_SEARCH_NUM,
+                         UINT32_MAX,
                          FsearchFilter::FSEARCH_FILTER_NONE,
                          m_context.toStdString().c_str(),
                          m_app->config->hide_results_on_empty_search,
@@ -125,14 +127,12 @@ void FsWorker::setFsearchApp(FsearchApplication *app)
 
 QString FsWorker::group() const
 {
-    return tr("Files");
+    return GRANDSEARCH_GROUP_FILE;
 }
 
 void FsWorker::callbackReceiveResults(void *data, void *sender)
 {
     //计时
-    //    QTime time;
-    //    time.start();
     int lastEmit = 0;
 
     DatabaseSearchResult *result = static_cast<DatabaseSearchResult *>(data);
@@ -217,11 +217,12 @@ void FsWorker::callbackReceiveResults(void *data, void *sender)
 
 void FsWorker::appendSearchResult(const QString &fileName)
 {
-    QMimeType mimeType = m_mimeDB.mimeTypeForFile(fileName);
+    QFileInfo file(fileName);
+    QMimeType mimeType = GrandSearch::UtilTools::getMimeType(file);
 
     GrandSearch::MatchedItem item;
     item.item = fileName;
-    item.name = QFileInfo(fileName).fileName();
+    item.name = file.fileName();
     item.type = mimeType.name();
     item.icon = mimeType.iconName();
     item.searcher = name();

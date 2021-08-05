@@ -21,8 +21,31 @@
 #include "utiltools.h"
 
 #include <QStringList>
+#include <QMimeDatabase>
+#include <QFileInfo>
+
+class MimeDatabaseGlobal : public QMimeDatabase {};
+Q_GLOBAL_STATIC(MimeDatabaseGlobal, mimeDatabaseGlobal)
 
 namespace GrandSearch {
+
+static void wpsMimeSpecialist(const QFileInfo &file, QMimeType &type)
+{
+    //wps文件的特殊处理
+    static QStringList officeSuffixList {
+        "docx", "xlsx", "pptx", "doc", "ppt", "xls", "wps"
+    };
+    static QStringList wrongMimeTypeNames {
+        "application/x-ole-storage", "application/zip"
+    };
+
+    if (officeSuffixList.contains(file.suffix()) && wrongMimeTypeNames.contains(type.name())) {
+        QList<QMimeType> results = mimeDatabaseGlobal->mimeTypesForFileName(file.fileName());
+        if (!results.isEmpty()) {
+            type = results.first();
+        }
+    }
+}
 
 bool UtilTools::splitCommand(const QString &cmd, QString &program, QStringList &args)
 {
@@ -44,6 +67,19 @@ bool UtilTools::splitCommand(const QString &cmd, QString &program, QStringList &
     }
 
     return true;
+}
+
+QMimeType UtilTools::getMimeType(const QFileInfo &file)
+{
+    if (file.isDir())
+        return mimeDatabaseGlobal->mimeTypeForName(QLatin1String("inode/directory"));
+
+    QMimeType result = mimeDatabaseGlobal->mimeTypeForFile(file, QMimeDatabase::MatchDefault);
+
+    //wps特殊处理
+    wpsMimeSpecialist(file, result);
+
+    return result;
 }
 
 QString UtilTools::getJsonString(QJsonObject *json, const QString &key)

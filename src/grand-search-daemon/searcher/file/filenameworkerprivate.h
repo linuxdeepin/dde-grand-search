@@ -38,7 +38,6 @@ public:
     QAtomicInt m_status = ProxyWorker::Ready;
     QString m_searchPath;
     QString m_context;                  // 搜索关键字
-    QMimeDatabase m_mimeDB;
 
     mutable QMutex m_mutex;
     GrandSearch::MatchedItems m_items;  // 搜索结果

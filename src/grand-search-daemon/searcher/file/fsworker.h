@@ -48,7 +48,6 @@ private:
     FsearchApplication *m_app = nullptr;
     QAtomicInt m_status = Ready;
     QString m_context;
-    QMimeDatabase m_mimeDB;
 
     //搜索结果
     mutable QMutex m_mtx;

@@ -22,6 +22,7 @@
 #include "filenameworkerprivate.h"
 #include "anything_interface.h"
 #include "global/builtinsearch.h"
+#include "utils/utiltools.h"
 
 #include <QStandardPaths>
 
@@ -71,11 +72,12 @@ void FileNameWorkerPrivate::appendSearchResult(const QString &fileName)
 {
     Q_Q(FileNameWorker);
 
-    QMimeType mimeType = m_mimeDB.mimeTypeForFile(fileName);
+    QFileInfo file(fileName);
+    QMimeType mimeType = GrandSearch::UtilTools::getMimeType(file);
 
     GrandSearch::MatchedItem item;
     item.item = fileName;
-    item.name = QFileInfo(fileName).fileName();
+    item.name = file.fileName();
     item.type = mimeType.name();
     item.icon = mimeType.iconName();
     item.searcher = q->name();
