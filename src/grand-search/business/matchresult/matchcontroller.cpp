@@ -23,6 +23,7 @@
 #include "matchcontroller.h"
 #include "../query/querycontroller.h"
 #include "gui/datadefine.h"
+#include "global/builtinsearch.h"
 
 #include "contacts/interface/daemongrandsearchinterface.h"
 
@@ -66,6 +67,19 @@ void MatchControllerPrivate::onMatched(const QString &missonId)
 
     MatchedItemMap items;
     stream >> items;
+
+#if 0 //用于显示从后端收到的文件和目录数，最后发布时删除 TODO
+    int nFile = 0;
+    int nDir = 0;
+    if (items.find(GRANDSEARCH_GROUP_FILE) != items.end()) {
+        for (auto item : items[GRANDSEARCH_GROUP_FILE]) {
+            if (item.type == "inode/directory")
+                qDebug() <<QString("nDir:%1 name:%2").arg(++nDir).arg(item.name);
+            else
+                qDebug() <<QString("nFile:%1 name:%2").arg(++nFile).arg(item.name);
+        }
+    }
+#endif
 
     emit q_p->matchedResult(items);
 

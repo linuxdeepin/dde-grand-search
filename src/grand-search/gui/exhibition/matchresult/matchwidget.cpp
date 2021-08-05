@@ -40,7 +40,6 @@
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
 
-#define GroupSpace 5
 #define ListItemHeight 36
 
 MatchWidgetPrivate::MatchWidgetPrivate(MatchWidget *parent)
@@ -100,12 +99,16 @@ void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
 
         // 根据groupHash创建对应类目列表，若已存在，直接返回已有类目列表
         GroupWidget* groupWidget = createGroupWidget(groupHash);
-        if (!groupWidget)
+        if (!groupWidget) {
+            itData++;
             continue;
+        }
 
         // 当文件(夹)总数超过100条记录时，不允许追加
-        if (!groupWidget->isAppendDataAllow())
+        if (!groupWidget->isAppendDataAllow()) {
+            itData++;
             continue;
+        }
 
         // 追加匹配数据到类目列表中
         groupWidget->appendMatchedItems(itData.value());
@@ -369,9 +372,6 @@ void MatchWidget::adjustScrollBar()
             nCurSelHeight += group->height();
         }
         else {
-            if (nCurSelHeight != 0)
-                nCurSelHeight += GroupSpace;
-
             nCurSelHeight += group->getCurSelectHeight();
             break;
         }
@@ -386,8 +386,7 @@ void MatchWidget::adjustScrollBar()
 
     // 选中行定位到当前滚动区域底部，逐个向下滚动
     if (nCurSelHeight > nCurHeight) {
-        nOffset = nCurSelHeight - nCurHeight;
-        nNewPosValue = nCurPosValue + nOffset;
+        nNewPosValue = nCurSelHeight - nScrollAreaHeight + 2;
         m_scrollArea->verticalScrollBar()->setValue(nNewPosValue);
     }
     // 选中行定位到当前滚动区域顶部，逐个向上滚动
@@ -399,10 +398,10 @@ void MatchWidget::adjustScrollBar()
             nNewPosValue = 0;
         m_scrollArea->verticalScrollBar()->setValue(nNewPosValue);
     }
-//    float fStep = m_scrollArea->verticalScrollBar()->singleStep();
+
 //    int nMin = m_scrollArea->verticalScrollBar()->minimum();
 //    int nMax = m_scrollArea->verticalScrollBar()->maximum();
-    //    qDebug() << QString("nStep:%1 nMin:%2 nMax:%3 nCurPosValue:%4 nNewPosValue:%5").arg(fStep).arg(nMin).arg(nMax).arg(nCurPosValue).arg(nNewPosValue);
+//    qDebug() << QString("nMin:%1 nMax:%2 nCurSelHeight%3 nCurPosValue:%4 nNewPosValue:%5").arg(nMin).arg(nMax).arg(nCurSelHeight).arg(nCurPosValue).arg(nNewPosValue);
 }
 
 void MatchWidget::updateEntranceAppIcon(const QModelIndex &index)
@@ -467,10 +466,6 @@ void MatchWidget::reLayout()
             groupWidget->reLayout();
             int nHeight = groupWidget->height();
             nTotalHeight += nHeight;
-
-            // 添加类目列表之间的间隙
-            if (i != m_vGroupWidgets.size() - 1)
-                nTotalHeight += GroupSpace;
         }
     }
 

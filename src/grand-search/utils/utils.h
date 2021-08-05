@@ -49,8 +49,12 @@ public:
     static QString getDefaultAppDesktopFileByMimeType(const QString &mimeType);
     // 搜索结果是否来自内置搜索项
     static bool isResultFromBuiltSearch(const GrandSearch::MatchedItem &item);
-    // 打开搜索结果项，如应用/文件/文件夹等
+    // 打开搜索结果项，如扩展搜索项/应用/文件/浏览器等
     static bool openMatchedItem(const GrandSearch::MatchedItem &item);
+    // 打开扩展搜索项
+    static bool openExtendSearchMatchedItem(const GrandSearch::MatchedItem &item);
+    // 打开文件
+    static bool openFile(const GrandSearch::MatchedItem &item);
     // 启动应用，若filePaths不为空，则用该应用打开传入的文件, 否则，仅启动应用
     static bool launchApp(const QString& desktopFile, const QStringList &filePaths = {});
     // 使用Dbus启动应用

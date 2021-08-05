@@ -39,7 +39,7 @@ using namespace GrandSearch;
 GrandSearchListview::GrandSearchListview(QWidget *parent)
     : DListView(parent)
 {
-    m_model = new GrandSearchListModel(3, 3, this);
+    m_model = new GrandSearchListModel(0, 0, this);
     setModel(m_model);
     m_delegate = new GrandSearchListDelegate(this);
     setItemDelegate(m_delegate);

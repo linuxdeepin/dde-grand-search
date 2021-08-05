@@ -177,10 +177,7 @@ int GroupWidget::getCurSelectHeight()
     int nHeight = 0;
     if (m_listView->currentIndex().isValid()) {
         nHeight += m_groupLabel->height();
-        nHeight += (m_listView->currentIndex().row()+1) * ListItemHeight;
-
-        if (!m_line->isHidden())
-            nHeight += m_line->height();
+        nHeight += (m_listView->currentIndex().row() + 1) * ListItemHeight;
     }
 
     return nHeight;
@@ -288,13 +285,11 @@ void GroupWidget::initUi()
     m_groupLabel->setPalette(labelPalette);
     m_groupLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
     m_groupLabel->setContentsMargins(0, 0, 0, 0);
-    //DFontSizeManager::instance()->bind(m_GroupLabel, DFontSizeManager::T8, QFont::Normal);
 
     // 查看更多按钮
     m_viewMoreButton = new DPushButton(tr("More"), this);
     m_viewMoreButton->setFixedSize(ViewMoreBtnWidth,ViewMoreBtnHeight);
     m_viewMoreButton->setFlat(true);
-    //DFontSizeManager::instance()->bind(m_viewMoreButton, DFontSizeManager::T8, QFont::Normal);
 
     QPalette palette = m_viewMoreButton->palette();
     // 设置查看按钮文本颜色
@@ -307,7 +302,11 @@ void GroupWidget::initUi()
     palette.setBrush(QPalette::Active, QPalette::Dark, brush);
     palette.setBrush(QPalette::Active, QPalette::Mid, brush);
     m_viewMoreButton->setPalette(palette);
-    DFontSizeManager::instance()->bind(m_viewMoreButton, DFontSizeManager::T8, QFont::Normal);
+    //DFontSizeManager::instance()->bind(m_viewMoreButton, DFontSizeManager::T8, QFont::Normal);
+    QFont fontMoreBtn = m_viewMoreButton->font();
+    fontMoreBtn.setWeight(QFont::Normal);
+    fontMoreBtn = DFontSizeManager::instance()->get(DFontSizeManager::T8, fontMoreBtn);
+    m_viewMoreButton->setFont(fontMoreBtn);
     m_viewMoreButton->hide();
 
     // 组列表标题栏布局

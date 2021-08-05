@@ -142,7 +142,6 @@ bool Utils::startWithOtherLang(const QString &text)
 
 QString Utils::appIconName(const MatchedItem &item)
 {
-    // 获取搜索结果对应的默认打开应用图标
     QString strAppIconName;
     if (item.item.isEmpty())
         return strAppIconName;
@@ -153,23 +152,26 @@ QString Utils::appIconName(const MatchedItem &item)
         return strAppIconName;
     }
 
-    QString defaultDesktopFile;
-    if (QFileInfo(item.item).suffix() == "desktop") {
-        defaultDesktopFile = item.item;
+    // 搜索结果为应用，直接返回应用图标
+    if (item.searcher == GRANDSEARCH_CLASS_APP_DESKTOP) {
+        return item.icon;
     } else {
+    // 搜索结果为文件，查询该文件对应默认打开应用图标的名称
         QString mimetype = item.type;
         if (mimetype.isEmpty())
             mimetype = getFileMimetype(item.item);
-        defaultDesktopFile = getDefaultAppDesktopFileByMimeType(mimetype);
-    }
 
-    if (m_appIconNameMap.find(defaultDesktopFile) == m_appIconNameMap.end()) {
-        QSettings settings(defaultDesktopFile, QSettings::IniFormat);
-        settings.beginGroup("Desktop Entry");
-        strAppIconName = settings.value("Icon").toString();
-        m_appIconNameMap[defaultDesktopFile] = strAppIconName;
-    } else {
-        strAppIconName = m_appIconNameMap[defaultDesktopFile];
+        QString defaultDesktopFile = getDefaultAppDesktopFileByMimeType(mimetype);
+        if (m_appIconNameMap.find(defaultDesktopFile) == m_appIconNameMap.end()) {
+            QSettings settings(defaultDesktopFile, QSettings::IniFormat);
+            settings.beginGroup("Desktop Entry");
+            strAppIconName = settings.value("Icon").toString();
+            if (strAppIconName.isEmpty())
+                strAppIconName = "";
+            m_appIconNameMap[defaultDesktopFile] = strAppIconName;
+        } else {
+            strAppIconName = m_appIconNameMap[defaultDesktopFile];
+        }
     }
 
     return strAppIconName;
@@ -253,23 +255,41 @@ bool Utils::openMatchedItem(const MatchedItem &item)
 {
     bool bFromBuiltSearch = isResultFromBuiltSearch(item);
     if (!bFromBuiltSearch) {
-        // 搜索结果来自扩展插件，使用Dbus通知主控调用扩展插件打开接口打开搜索结果
-        DaemonGrandSearchInterface daemonDbus;
-        daemonDbus.OpenWithPlugin(item.searcher, item.item);
-
-        return true;
+        return openExtendSearchMatchedItem(item);
     }
 
     QString filePath = item.item;
     if (filePath.isEmpty())
         return false;
 
-    // 传入的文件为应用，直接启动应用
     bool result = false;
-    if (QFileInfo(filePath).suffix() == "desktop") {
+    // 传入的文件为应用，直接启动应用
+    if (item.searcher == GRANDSEARCH_CLASS_APP_DESKTOP) {
         result = Utils::launchApp(filePath);
-        return result;
+    } else {
+    // 打开文件
+        result = openFile(item);
     }
+
+    return result;
+}
+
+bool Utils::openExtendSearchMatchedItem(const MatchedItem &item)
+{
+    // 搜索结果来自扩展插件，使用Dbus通知主控调用扩展插件打开接口打开搜索结果
+    DaemonGrandSearchInterface daemonDbus;
+    daemonDbus.OpenWithPlugin(item.searcher, item.item);
+
+    return true;
+}
+
+bool Utils::openFile(const MatchedItem &item)
+{
+    QString filePath = item.item;
+    if (filePath.isEmpty())
+        return false;
+
+    bool result = false;
 
     // 获取mimetype
     QString mimetype = item.type;
