@@ -78,7 +78,7 @@ void DesktopAppSearcherPrivate::createIndex(DesktopAppSearcherPrivate *d)
         DesktopAppPointer info(new GrandSearch::MatchedItem());
         info->name = value->ddeDisplayName();
         info->item = app.key();
-        info->icon = value->stringValue("Icon");
+        info->icon = value->stringValue("Icon", "Desktop Entry", "application-x-desktop");//若没有图标，则使用默认"application-x-desktop"
         info->type = "application/x-desktop"; //此项写固定值，.desktop文件的mimetype为application/x-desktop
         info->searcher = d->q->name();
 

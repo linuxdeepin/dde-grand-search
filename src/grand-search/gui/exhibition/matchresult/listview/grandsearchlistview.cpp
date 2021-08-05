@@ -96,26 +96,25 @@ void GrandSearchListview::addRow(const MatchedItem &item)
 
     // 设置icon
     QVariant iconVariantData;
-    QString imagesDirPath = item.icon;
-    // 判断icon是路径还是图标名
-    bool isFilePath = imagesDirPath.contains('/');
-    if (isFilePath) {
-        QFileInfo file(imagesDirPath);
+    const QString &strIcon = item.icon;
+    if (!strIcon.isEmpty()) {
+        const int size = static_cast<int>(ICON_SIZE * qApp->devicePixelRatio());
+        const QSize iconSize(size, size);
 
-        if (file.exists()) {
-             iconVariantData.setValue(QIcon(imagesDirPath).pixmap(static_cast<int>(ICON_SIZE * qApp->devicePixelRatio()), static_cast<int>(ICON_SIZE * qApp->devicePixelRatio())));
+        // 判断icon是路径还是图标名
+        if (strIcon.contains('/')) {
+            QFileInfo file(strIcon);
+            if (file.exists())
+                iconVariantData.setValue(QIcon(strIcon).pixmap(iconSize));
+            else
+                iconVariantData.setValue(Utils::defaultIcon(item).pixmap(iconSize));
+        } else {
+            QIcon icon = QIcon::fromTheme(strIcon);
+            if (icon.isNull())
+                iconVariantData.setValue(Utils::defaultIcon(item).pixmap(iconSize));
+            else
+                iconVariantData.setValue(icon.pixmap(iconSize));
         }
-        else {
-            iconVariantData.setValue(m_defaultIcon);
-        }
-    }
-    else {
-        QIcon icon = QIcon::fromTheme(item.icon);
-
-        if (icon.isNull())
-            iconVariantData.setValue(m_defaultIcon);
-        else
-            iconVariantData.setValue(icon.pixmap(static_cast<int>(ICON_SIZE * qApp->devicePixelRatio()), static_cast<int>(ICON_SIZE * qApp->devicePixelRatio())));
     }
 
     m_model->setData(index,iconVariantData, Qt::DecorationRole);

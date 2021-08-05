@@ -35,6 +35,7 @@ extern "C" {
 #include <QDBusPendingCall>
 #include <QDBusReply>
 #include <QDateTime>
+#include <QIcon>
 
 using namespace GrandSearch;
 
@@ -399,4 +400,15 @@ bool Utils::launchAppByGio(const QString &desktopFile, const QStringList &filePa
     }
 
     return ok;
+}
+
+QIcon Utils::defaultIcon(const MatchedItem &item)
+{
+    if (item.searcher == GRANDSEARCH_CLASS_APP_DESKTOP)
+        return QIcon::fromTheme("application-x-desktop");
+    else if (item.searcher == GRANDSEARCH_CLASS_FILE_DEEPIN || item.searcher == GRANDSEARCH_CLASS_FILE_FSEARCH) {
+        return QIcon::fromTheme(m_mimeDb.mimeTypeForFile(item.item).genericIconName());
+    }
+
+    return QIcon();
 }

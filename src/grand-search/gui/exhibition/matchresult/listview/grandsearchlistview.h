@@ -72,8 +72,6 @@ private:
     GrandSearchListDelegate     *m_delegate     = nullptr;
 
     int                         m_themeType     = 1;// 当前应用主题类型 1:浅色 2:深色 默认1:浅色
-    QPixmap                     m_defaultIcon = QPixmap(":/icons/deepin/builtin/actions/deepin_file.svg");
-
     MatchedItems                m_matchedItems;
 };
 

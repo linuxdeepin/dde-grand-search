@@ -62,6 +62,8 @@ public:
     // 使用gio启动应用
     static bool launchAppByGio(const QString &desktopFile, const QStringList &filePaths = {});
 
+    static QIcon defaultIcon(const GrandSearch::MatchedItem &item);
+
 private:
     static QMap<QString, QString> m_appIconNameMap;// 存放应用desktop文件对应的图标名称，用于搜索框应用图标刷新
     static QMimeDatabase m_mimeDb;
