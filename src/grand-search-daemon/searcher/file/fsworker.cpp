@@ -189,6 +189,9 @@ void FsWorker::callbackReceiveResults(void *data, void *sender)
                 qDebug() << "unearthed, current spend:" << cur;
                 emit self->unearthed(self);
             }
+
+            if (self->m_resultFileCount > MAX_SEARCH_NUM && self->m_resultFolderCount > MAX_SEARCH_NUM)
+                break;
         }
     }
 
@@ -200,7 +203,9 @@ void FsWorker::callbackReceiveResults(void *data, void *sender)
         leave = self->m_items.count();
     }
 
-    qInfo() << "search completed, found items:" << num_results << "total spend:" << self->m_time.elapsed()
+    qInfo() << "search completed, found file items:" << self->m_resultFileCount
+            << "folder items:" << self->m_resultFolderCount
+            << "total spend:" << self->m_time.elapsed()
             << "current items" << leave;
 
     //发送数据
@@ -218,8 +223,14 @@ void FsWorker::callbackReceiveResults(void *data, void *sender)
 void FsWorker::appendSearchResult(const QString &fileName)
 {
     QFileInfo file(fileName);
-    QMimeType mimeType = GrandSearch::UtilTools::getMimeType(file);
+    if (file.isDir()) {
+        if (++m_resultFolderCount > MAX_SEARCH_NUM)
+            return;
+    } else if (++m_resultFileCount > MAX_SEARCH_NUM) {
+        return;
+    }
 
+    QMimeType mimeType = GrandSearch::UtilTools::getMimeType(file);
     GrandSearch::MatchedItem item;
     item.item = fileName;
     item.name = file.fileName();

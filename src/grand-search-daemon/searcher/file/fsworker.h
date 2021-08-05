@@ -52,6 +52,8 @@ private:
     //搜索结果
     mutable QMutex m_mtx;
     GrandSearch::MatchedItems m_items;
+    quint32 m_resultFileCount = 0;      // 搜索文件数
+    quint32 m_resultFolderCount = 0;    // 搜索文件夹数
 
     QWaitCondition m_waitCondition;
     QMutex m_conditionMtx;

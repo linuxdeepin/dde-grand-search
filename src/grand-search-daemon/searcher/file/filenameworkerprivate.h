@@ -38,6 +38,8 @@ public:
     QAtomicInt m_status = ProxyWorker::Ready;
     QString m_searchPath;
     QString m_context;                  // 搜索关键字
+    quint32 m_resultFileCount = 0;      // 搜索文件数
+    quint32 m_resultFolderCount = 0;    // 搜索文件夹数
 
     mutable QMutex m_mutex;
     GrandSearch::MatchedItems m_items;  // 搜索结果
