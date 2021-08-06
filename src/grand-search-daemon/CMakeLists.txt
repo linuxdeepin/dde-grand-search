@@ -38,6 +38,12 @@ set(Qt_LIBS
     Qt5::Concurrent
 )
 
+# 依赖库
+set(LINK_LIBS
+    ${Qt_LIBS}
+    ${DtkCore_LIBRARIES}
+)
+
 # 源文件
 set(DBUS
     dbusservice/grandsearchinterfaceprivate.h
@@ -79,7 +85,7 @@ set(SEARCHER
 )
 
 #文件搜索
-if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm")
+if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64")
     message(${CMAKE_SYSTEM_PROCESSOR} ": using fsearch")
     ADD_DEFINITIONS(-DENABLE_FSEARCH)
     FILE(GLOB 3RD_FSEARCH_SRC ${CMAKE_SOURCE_DIR}/3rdparty/fsearch/*)
@@ -91,6 +97,10 @@ if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHE
         searcher/file/fssearcher.cpp
         searcher/file/fsworker.h
         searcher/file/fsworker.cpp
+    )
+    set(LINK_LIBS
+        ${LINK_LIBS}
+        ${GLIB_LIBRARIES}
     )
 else ()
     message(${CMAKE_SYSTEM_PROCESSOR} ": using deepin-anything.")
@@ -177,9 +187,7 @@ target_include_directories(${BIN_NAME} PUBLIC
 )
 
 target_link_libraries(${BIN_NAME} PRIVATE
-    ${Qt_LIBS}
-    ${DtkCore_LIBRARIES}
-    ${GLIB_LIBRARIES}
+    ${LINK_LIBS}
 )
 
 # bin
