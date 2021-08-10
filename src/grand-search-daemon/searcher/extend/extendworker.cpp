@@ -71,8 +71,6 @@ bool ExtendWorker::isAsync() const
 
 bool ExtendWorker::working(void *context)
 {
-    Q_ASSERT(context);
-
     //准备状态切运行中，否则直接返回
     if (!m_status.testAndSetRelease(Ready, Runing))
         return false;

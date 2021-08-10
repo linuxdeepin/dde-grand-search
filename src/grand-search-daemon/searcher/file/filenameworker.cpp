@@ -27,6 +27,7 @@
 #include <QStandardPaths>
 
 #define MAX_SEARCH_NUM 100
+#define EMIT_INTERVAL 50
 
 FileNameWorkerPrivate::FileNameWorkerPrivate(FileNameWorker *qq)
     : q_ptr(qq)
@@ -100,11 +101,6 @@ bool FileNameWorkerPrivate::searchRecentFile()
 {
     Q_Q(FileNameWorker);
 
-    //计时
-    QTime time;
-    time.start();
-    int lastEmit = 0;
-
     // 搜索最近使用文件
     const auto &recentfiles = GrandSearch::UtilTools::getRecentlyUsedFiles();
     for (const auto &file : recentfiles) {
@@ -116,30 +112,18 @@ bool FileNameWorkerPrivate::searchRecentFile()
         if (info.fileName().contains(m_context, Qt::CaseInsensitive)) {
             appendSearchResult(file);
 
-            //50ms推送一次
-            int cur = time.elapsed();
-            if ((cur - lastEmit) > 50) {
-                lastEmit = cur;
-                qDebug() << "unearthed, current spend:" << cur;
-                emit q->unearthed(q);
-            }
+            //推送
+            tryNotify();
 
             if (m_resultFileCount > MAX_SEARCH_NUM && m_resultFolderCount > MAX_SEARCH_NUM)
                 break;
         }
     }
 
-    int leave = 0;
-    {
-        QMutexLocker lk(&m_mutex);
-        leave = m_items.count();
-    }
-    // 将最近使用文件的搜索结果推送
-    if (leave > 0)
-        emit q->unearthed(q);
+    int leave = itemCount();
     qInfo() << "recently-used search found file items:" << m_resultFileCount
             << "folder items:" << m_resultFolderCount
-            << "total spend:" << time.elapsed()
+            << "total spend:" << m_time.elapsed()
             << "current items" << leave;
 
     return true;
@@ -148,11 +132,6 @@ bool FileNameWorkerPrivate::searchRecentFile()
 bool FileNameWorkerPrivate::searchUserPath()
 {
     Q_Q(FileNameWorker);
-
-    //计时
-    QTime time;
-    time.start();
-    int lastEmit = 0;
 
     QFileInfoList fileInfoList = traverseDirAndFile(m_searchPath);
     // 先对user目录下进行搜索
@@ -167,30 +146,18 @@ bool FileNameWorkerPrivate::searchUserPath()
         if (info.fileName().contains(m_context, Qt::CaseInsensitive)) {
             appendSearchResult(info.absoluteFilePath());
 
-            //50ms推送一次
-            int cur = time.elapsed();
-            if ((cur - lastEmit) > 50) {
-                lastEmit = cur;
-                qDebug() << "unearthed, current spend:" << cur;
-                emit q->unearthed(q);
-            }
+            //推送
+            tryNotify();
 
             if (m_resultFileCount > MAX_SEARCH_NUM && m_resultFolderCount > MAX_SEARCH_NUM)
                 break;
         }
     }
 
-    int leave = 0;
-    {
-        QMutexLocker lk(&m_mutex);
-        leave = m_items.count();
-    }
-    // 将user目录下的搜索结果推送
-    if (leave > 0)
-        emit q->unearthed(q);
+    int leave = itemCount();
     qInfo() << "user path search found file items:" << m_resultFileCount
             << "folder items:" << m_resultFolderCount
-            << "total spend:" << time.elapsed()
+            << "total spend:" << m_time.elapsed()
             << "current items" << leave;
 
     return true;
@@ -199,11 +166,6 @@ bool FileNameWorkerPrivate::searchUserPath()
 bool FileNameWorkerPrivate::searchByAnything()
 {
     Q_Q(FileNameWorker);
-
-    //计时
-    QTime time;
-    time.start();
-    int lastEmit = 0;
 
     // 搜索
     quint32 searchStartOffset = 0;
@@ -239,35 +201,39 @@ bool FileNameWorkerPrivate::searchByAnything()
                 path = path.mid(5);
 
             appendSearchResult(path);
-            //50ms推送一次
-            int cur = time.elapsed();
-            if ((cur - lastEmit) > 50) {
-                lastEmit = cur;
-                qDebug() << "unearthed, current spend:" << cur;
-                emit q->unearthed(q);
-            }
+
+            //推送
+            tryNotify();
 
             if (m_resultFileCount > MAX_SEARCH_NUM && m_resultFolderCount > MAX_SEARCH_NUM)
                 break;
         }
     }
 
-    int leave = 0;
-    {
-        QMutexLocker lk(&m_mutex);
-        leave = m_items.count();
-    }
-
+    int leave = itemCount();
     qInfo() << "anything search completed, found file items:" << m_resultFileCount
             << "folder items:" << m_resultFolderCount
-            << "total spend:" << time.elapsed()
+            << "total spend:" << m_time.elapsed()
             << "current items" << leave;
 
-    //还有数据再发一次
-    if (leave > 0)
-        emit q->unearthed(q);
-
     return true;
+}
+
+void FileNameWorkerPrivate::tryNotify()
+{
+    Q_Q(FileNameWorker);
+    int cur = m_time.elapsed();
+    if (q->hasItem() && (cur - m_lastEmit) > EMIT_INTERVAL) {
+        m_lastEmit = cur;
+        qDebug() << "unearthed, current spend:" << cur;
+        emit q->unearthed(q);
+    }
+}
+
+int FileNameWorkerPrivate::itemCount() const
+{
+    QMutexLocker lk(&m_mutex);
+    return m_items.count();
 }
 
 FileNameWorker::FileNameWorker(const QString &name, QObject *parent)
@@ -294,6 +260,7 @@ bool FileNameWorker::isAsync() const
 bool FileNameWorker::working(void *context)
 {
     Q_D(FileNameWorker);
+    Q_UNUSED(context)
 
     //准备状态切运行中，否则直接返回
     if (!d->m_status.testAndSetRelease(Ready, Runing))
@@ -304,38 +271,46 @@ bool FileNameWorker::working(void *context)
         return false;
     }
 
+    d->m_time.start();
+
+    //检查home路径
+    bool useAnything = true;
     if (!d->m_anythingInterface->hasLFT(d->m_searchPath)) {
         // 有可能 anything 不支持/home目录，但是支持/data/home
         if (QFile("/data/home").exists()) {
             d->m_searchPath.prepend("/data");
             if (!d->m_anythingInterface->hasLFT(d->m_searchPath)) {
                 qWarning() << "Do not support quick search for " << d->m_searchPath;
-                d->m_status.storeRelease(Completed);
-                return false;
+                useAnything = false;
+            } else {
+                d->m_hasAddDataPrefix = true;
             }
-
-            d->m_hasAddDataPrefix = true;
         } else {
             qWarning() << "Data path is not exist!";
-            d->m_status.storeRelease(Completed);
-            return false;
+            useAnything = false;
         }
     }
 
-    Q_UNUSED(context)
     // 搜索最新使用文件
     if (!d->searchRecentFile())
-        return false;
+        return false; //中断
 
     // 搜索user目录下文件
     if (!d->searchUserPath())
-        return false;
+        return false; //中断
 
     // 使用anything搜索
-    if (!d->searchByAnything())
-        return false;
+    if (useAnything) {
+        if (!d->searchByAnything())
+            return false; //中断
+    }
 
-    d->m_status.storeRelease(Completed);
+    //检查是否还有数据
+    if (d->m_status.testAndSetRelease(Runing, Completed)) {
+        //发送数据
+        if (hasItem())
+            emit unearthed(this);
+    }
     return true;
 }
 
@@ -382,3 +357,4 @@ QString FileNameWorker::group() const
 {
     return GRANDSEARCH_GROUP_FILE;
 }
+

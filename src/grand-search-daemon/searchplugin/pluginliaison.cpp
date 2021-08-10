@@ -171,7 +171,7 @@ bool PluginLiaison::search(const QString &task, const QString &context)
     QStringList args{d->m_ver, task, context};
     QJsonDocument doc;
     QJsonObject root;
-    if (DataConvIns->convert(d->m_ver, PLUGININTERFACE_TYPE_SEARCH, &root, &args) != 0)
+    if (DataConvIns->convert(d->m_ver, PLUGININTERFACE_TYPE_SEARCH, &args, &root) != 0)
         return false;
 
     //搜索中则直接返回
@@ -211,7 +211,7 @@ bool PluginLiaison::stop(const QString &task)
             //转换成json数据
             QStringList args{d->m_ver, task};
             QJsonObject root;
-            if (DataConvIns->convert(d->m_ver, PLUGININTERFACE_TYPE_STOP, &root, &args) != 0)
+            if (DataConvIns->convert(d->m_ver, PLUGININTERFACE_TYPE_STOP, &args, &root) != 0)
                 return false;
 
             QJsonDocument doc;
@@ -231,7 +231,7 @@ bool PluginLiaison::action(const QString &type, const QString &item)
     //转换成json数据
     QStringList args{d->m_ver, type, item};
     QJsonObject root;
-    if (DataConvIns->convert(d->m_ver, PLUGININTERFACE_TYPE_ACTION, &root, &args) != 0)
+    if (DataConvIns->convert(d->m_ver, PLUGININTERFACE_TYPE_ACTION, &args, &root) != 0)
         return false;
 
     QJsonDocument doc;

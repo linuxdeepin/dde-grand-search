@@ -67,8 +67,8 @@ int ConvertorV1_0::search(void *in, void *out)
     Q_ASSERT(in);
     Q_ASSERT(out);
 
-    QJsonObject *json = static_cast<QJsonObject *>(in);
-    QStringList *args = static_cast<QStringList *>(out);
+    QJsonObject *json = static_cast<QJsonObject *>(out);
+    QStringList *args = static_cast<QStringList *>(in);
 
     //只包含三个参数
     if (Q_UNLIKELY(args->size() != 3))
@@ -189,8 +189,8 @@ int ConvertorV1_0::stop(void *in, void *out)
     Q_ASSERT(in);
     Q_ASSERT(out);
 
-    QJsonObject *json = static_cast<QJsonObject *>(in);
-    QStringList *args = static_cast<QStringList *>(out);
+    QJsonObject *json = static_cast<QJsonObject *>(out);
+    QStringList *args = static_cast<QStringList *>(in);
 
     //只包含两个参数
     if (Q_UNLIKELY(args->size() != 2))
@@ -220,8 +220,8 @@ int ConvertorV1_0::action(void *in, void *out)
     Q_ASSERT(in);
     Q_ASSERT(out);
 
-    QJsonObject *json = static_cast<QJsonObject *>(in);
-    QStringList *args = static_cast<QStringList *>(out);
+    QJsonObject *json = static_cast<QJsonObject *>(out);
+    QStringList *args = static_cast<QStringList *>(in);
 
     //只包含三个参数
     if (Q_UNLIKELY(args->size() != 3))

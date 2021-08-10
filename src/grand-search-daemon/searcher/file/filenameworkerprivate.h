@@ -37,6 +37,8 @@ public:
     bool searchUserPath();
     bool searchByAnything();
 
+    void tryNotify();
+    int itemCount() const;
 public:
     FileNameWorker *q_ptr = nullptr;
     QAtomicInt m_status = ProxyWorker::Ready;
@@ -51,6 +53,10 @@ public:
     QStringList m_searchDirList;
     QSet<QString> m_tmpSearchResults;     // 存储所有的搜索结果，用于去重
     bool m_hasAddDataPrefix = false;
+
+    //计时
+    QTime m_time;
+    int m_lastEmit = 0;
 
     Q_DECLARE_PUBLIC(FileNameWorker)
 };

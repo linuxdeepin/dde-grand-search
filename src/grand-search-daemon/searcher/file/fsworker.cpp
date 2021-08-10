@@ -25,6 +25,7 @@
 #include <QWaitCondition>
 
 #define MAX_SEARCH_NUM 100
+#define EMIT_INTERVAL 50
 
 FsWorker::FsWorker(const QString &name, QObject *parent) : ProxyWorker(name, parent)
 {
@@ -54,37 +55,21 @@ bool FsWorker::working(void *context)
         return true;
     }
 
+    m_time.start();
+
     // 搜索最近使用文件
     if (!searchRecentFile())
         return false;
 
-    db_search_results_clear(m_app->search);
-    Database *db = m_app->db;
-    if (!db_try_lock(db)) {
-        m_status.storeRelease(Completed);
-        return true;
-    }
+    if (!searchLocalFile())
+        return false;
 
-    if (m_app->search) {
-        m_time.start();
-        db_search_update(m_app->search,
-                         db_get_entries(db),
-                         db_get_num_entries(db),
-                         UINT32_MAX,
-                         FsearchFilter::FSEARCH_FILTER_NONE,
-                         m_context.toStdString().c_str(),
-                         m_app->config->hide_results_on_empty_search,
-                         m_app->config->match_case,
-                         m_app->config->enable_regex,
-                         m_app->config->auto_search_in_path,
-                         m_app->config->search_in_path);
-
-        m_conditionMtx.lock();
-        db_perform_search(m_app->search, callbackReceiveResults, m_app, this);
-        m_waitCondition.wait(&m_conditionMtx);
-        m_conditionMtx.unlock();
+    //检查是否还有数据
+    if (m_status.testAndSetRelease(Runing, Completed)) {
+        //发送数据
+        if (hasItem())
+            emit unearthed(this);
     }
-    db_unlock(db);
 
     return true;
 }
@@ -129,6 +114,23 @@ void FsWorker::setFsearchApp(FsearchApplication *app)
     m_app = app;
 }
 
+void FsWorker::tryNotify()
+{
+    //50ms推送一次
+    int cur = m_time.elapsed();
+    if (hasItem() && (cur - m_lastEmit) > EMIT_INTERVAL) {
+        m_lastEmit = cur;
+        qDebug() << "unearthed, current spend:" << cur;
+        emit unearthed(this);
+    }
+}
+
+int FsWorker::itemCount() const
+{
+    QMutexLocker lk(&m_mtx);
+    return m_items.count();
+}
+
 QString FsWorker::group() const
 {
     return GRANDSEARCH_GROUP_FILE;
@@ -136,15 +138,11 @@ QString FsWorker::group() const
 
 void FsWorker::callbackReceiveResults(void *data, void *sender)
 {
-    //计时
-    int lastEmit = 0;
-
     DatabaseSearchResult *result = static_cast<DatabaseSearchResult *>(data);
     FsWorker *self = static_cast<FsWorker *>(sender);
-    Q_ASSERT(result || self);
+    Q_ASSERT(result && self);
 
     if (self->m_app->search == nullptr) {
-        self->m_status.storeRelease(Completed);
         self->m_conditionMtx.lock();
         self->m_waitCondition.wakeAll();
         self->m_conditionMtx.unlock();
@@ -186,35 +184,20 @@ void FsWorker::callbackReceiveResults(void *data, void *sender)
             }
 
             self->appendSearchResult(fileName);
-            //50ms推送一次
-            int cur = self->m_time.elapsed();
-            if ((cur - lastEmit) > 50) {
-                lastEmit = cur;
-                qDebug() << "unearthed, current spend:" << cur;
-                emit self->unearthed(self);
-            }
+
+            //推送
+            self->tryNotify();
 
             if (self->m_resultFileCount > MAX_SEARCH_NUM && self->m_resultFolderCount > MAX_SEARCH_NUM)
                 break;
         }
     }
 
-    self->m_status.storeRelease(Completed);
-
-    int leave = 0;
-    {
-        QMutexLocker lk(&self->m_mtx);
-        leave = self->m_items.count();
-    }
-
+    int leave = self->itemCount();
     qInfo() << "search completed, found file items:" << self->m_resultFileCount
             << "folder items:" << self->m_resultFolderCount
             << "total spend:" << self->m_time.elapsed()
             << "current items" << leave;
-
-    //发送数据
-    if (leave > 0)
-        emit self->unearthed(self);
 
     free(result);
     result = nullptr;
@@ -252,11 +235,6 @@ void FsWorker::appendSearchResult(const QString &fileName)
 
 bool FsWorker::searchRecentFile()
 {
-    //计时
-    QTime time;
-    time.start();
-    int lastEmit = 0;
-
     // 搜索最近使用文件
     const auto &recentfiles = GrandSearch::UtilTools::getRecentlyUsedFiles();
     for (const auto &file : recentfiles) {
@@ -268,31 +246,49 @@ bool FsWorker::searchRecentFile()
         if (info.fileName().contains(m_context, Qt::CaseInsensitive)) {
             appendSearchResult(file);
 
-            //50ms推送一次
-            int cur = time.elapsed();
-            if ((cur - lastEmit) > 50) {
-                lastEmit = cur;
-                qDebug() << "unearthed, current spend:" << cur;
-                emit unearthed(this);
-            }
+            //推送
+            tryNotify();
 
             if (m_resultFileCount > MAX_SEARCH_NUM && m_resultFolderCount > MAX_SEARCH_NUM)
                 break;
         }
     }
 
-    int leave = 0;
-    {
-        QMutexLocker lk(&m_mtx);
-        leave = m_items.count();
-    }
-    // 将最近使用文件的搜索结果推送
-    if (leave > 0)
-        emit unearthed(this);
+    int leave = itemCount();
     qInfo() << "recently-used search found file items:" << m_resultFileCount
             << "folder items:" << m_resultFolderCount
-            << "total spend:" << time.elapsed()
+            << "total spend:" << m_time.elapsed()
             << "current items" << leave;
 
+    return true;
+}
+
+bool FsWorker::searchLocalFile()
+{
+    db_search_results_clear(m_app->search);
+    Database *db = m_app->db;
+    if (!db_try_lock(db)) {
+        return true;
+    }
+
+    if (m_app->search) {
+        db_search_update(m_app->search,
+                         db_get_entries(db),
+                         db_get_num_entries(db),
+                         UINT32_MAX,
+                         FsearchFilter::FSEARCH_FILTER_NONE,
+                         m_context.toStdString().c_str(),
+                         m_app->config->hide_results_on_empty_search,
+                         m_app->config->match_case,
+                         m_app->config->enable_regex,
+                         m_app->config->auto_search_in_path,
+                         m_app->config->search_in_path);
+
+        m_conditionMtx.lock();
+        db_perform_search(m_app->search, callbackReceiveResults, m_app, this);
+        m_waitCondition.wait(&m_conditionMtx);
+        m_conditionMtx.unlock();
+    }
+    db_unlock(db);
     return true;
 }

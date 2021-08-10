@@ -45,6 +45,9 @@ private:
     static void callbackReceiveResults(void *data, void *sender);
     void appendSearchResult(const QString &fileName);
     bool searchRecentFile();
+    bool searchLocalFile();
+    void tryNotify();
+    int itemCount() const;
 private:
     FsearchApplication *m_app = nullptr;
     QAtomicInt m_status = Ready;
@@ -60,7 +63,8 @@ private:
     QMutex m_conditionMtx;
     QSet<QString> m_tmpSearchResults;     // 存储所有的搜索结果，用于去重
 
-    QTime m_time;
+    QTime m_time;       //搜索计时
+    int m_lastEmit = 0;
 };
 
 #endif // FSWORKER_H
