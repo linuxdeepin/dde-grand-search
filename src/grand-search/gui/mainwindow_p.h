@@ -23,6 +23,8 @@
 
 #include "mainwindow.h"
 
+#include <DRegionMonitor>
+
 #include <QWidget>
 
 class EntranceWidget;
@@ -40,7 +42,11 @@ public:
     EntranceWidget *m_entranceWidget = nullptr;
     ExhibitionWidget *m_exhibitionWidget = nullptr;
     Dtk::Widget::DLabel *m_searchNoContentWidget = nullptr;
+    Dtk::Gui::DRegionMonitor *m_regionMonitor = nullptr;
     QVBoxLayout *m_mainLayout = nullptr;
+
+    bool m_showMenu = false;
+    QRect m_menuRect;           // 菜单显示区域，用于判断鼠标点击位置是否在菜单区域内
 };
 
 #endif // MAINWINDOW_P_H

@@ -55,6 +55,7 @@ signals:
     void sigSelectPreviousItem();
     void sigHandleItem();
     void sigCloseWindow();
+    void sigMenuVisiableChanged(bool isShow, const QRect &rect);
 
 private:
     QScopedPointer<EntranceWidgetPrivate> d_p;

@@ -78,6 +78,8 @@ void QueryControllerPrivate::onSearchTextChanged(const QString &txt)
 
 void QueryControllerPrivate::onTerminateSearch()
 {
+    if (m_missionId.isEmpty())
+        return;
     qDebug() << "m_daemonDbus->Terminate begin missionId:" << m_missionId;
     m_daemonDbus->Terminate();
     qDebug() << "m_daemonDbus->Terminate end   missionId:" << m_missionId;

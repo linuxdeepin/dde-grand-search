@@ -115,7 +115,10 @@ void EntranceWidgetPrivate::showMenu(const QPoint &pos)
     action->setEnabled(!QGuiApplication::clipboard()->text().isEmpty());
     connect(action, &QAction::triggered, m_lineEdit, &QLineEdit::paste);
 
+    QRect rect(pos, menu->sizeHint());
+    emit q_p->sigMenuVisiableChanged(true, rect);
     menu->exec(pos);
+    emit q_p->sigMenuVisiableChanged(false, QRect());
     delete menu;
 }
 

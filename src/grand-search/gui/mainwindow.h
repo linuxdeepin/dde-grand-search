@@ -59,6 +59,9 @@ private:
     void activeMainWindow();
     void updateMainWindowHeight();
 
+    void regionMousePress(const QPoint &p, const int flag);
+    void menuVisiableChanged(bool isShow, const QRect &rect);
+
 protected:
     explicit MainWindow(QWidget *parent = nullptr);
 

@@ -26,6 +26,7 @@
 
 #include <DApplication>
 #include <DLabel>
+#include <DRegionMonitor>
 
 #include <QDebug>
 #include <QTimer>
@@ -213,6 +214,9 @@ void MainWindow::initConnect()
     // 展开展示界面
     connect(d_p->m_entranceWidget, &EntranceWidget::searchTextChanged, this, &MainWindow::onSearchTextChanged);
 
+    // 右键菜单显示状态，必须直连，保证值能被及时更新
+    connect(d_p->m_entranceWidget, &EntranceWidget::sigMenuVisiableChanged, this, &MainWindow::menuVisiableChanged, Qt::DirectConnection);
+
     // 监控主屏改变信号，及时更新窗口位置
     connect(qApp, &QGuiApplication::primaryScreenChanged, this, &MainWindow::onPrimaryScreenChanged);
 
@@ -226,6 +230,13 @@ void MainWindow::initConnect()
 
     connect(d_p->m_exhibitionWidget, &ExhibitionWidget::sigAppIconChanged, d_p->m_entranceWidget, &EntranceWidget::onAppIconChanged);
     connect(d_p->m_exhibitionWidget, &ExhibitionWidget::sigCloseWindow, this, &MainWindow::onCloseWindow);
+
+    d_p->m_regionMonitor = new DRegionMonitor(this);
+    d_p->m_regionMonitor->setCoordinateType(DRegionMonitor::Original);
+    // 鼠标点击主界面之外的区域，退出进程
+    connect(d_p->m_regionMonitor, &DRegionMonitor::buttonPress, this, &MainWindow::regionMousePress);
+    if (!d_p->m_regionMonitor->registered())
+        d_p->m_regionMonitor->registerRegion();
 }
 
 void MainWindow::activeMainWindow()
@@ -253,6 +264,26 @@ void MainWindow::updateMainWindowHeight()
         this->setFixedSize(MainWindowWidth,MainWindowHeight);
 }
 
+void MainWindow::regionMousePress(const QPoint &p, const int flag)
+{
+    Q_UNUSED(flag)
+
+    // 点击位置在主界面之外则退出
+    if (!geometry().contains(p)) {
+        // 如果显示了右键菜单，且点击位置在右键菜单区域内，则不退出。
+        if (d_p->m_showMenu && d_p->m_menuRect.contains(p)) {
+            return;
+        }
+        close();
+    }
+}
+
+void MainWindow::menuVisiableChanged(bool isShow, const QRect &rect)
+{
+    d_p->m_showMenu = isShow;
+    d_p->m_menuRect = rect;
+}
+
 void MainWindow::showEvent(QShowEvent *event)
 {
     emit visibleChanged(true);
@@ -260,12 +291,19 @@ void MainWindow::showEvent(QShowEvent *event)
     // 已禁用窗口管理器，在窗口被显示后，需要激活该窗口
     QTimer::singleShot(1, this, &MainWindow::activeMainWindow);
 
+    if (!d_p->m_regionMonitor->registered())
+        d_p->m_regionMonitor->registerRegion();
+
     return DBlurEffectWidget::showEvent(event);
 }
 
 void MainWindow::hideEvent(QHideEvent *event)
 {
     emit visibleChanged(false);
+
+    if (d_p->m_regionMonitor->registered())
+        d_p->m_regionMonitor->unregisterRegion();
+
     return DBlurEffectWidget::hideEvent(event);
 }
 
