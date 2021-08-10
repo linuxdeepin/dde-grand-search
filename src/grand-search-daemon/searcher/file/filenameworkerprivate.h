@@ -33,6 +33,10 @@ public:
     bool sortFileName(const QFileInfo &info1, const QFileInfo &info2);
     void appendSearchResult(const QString &fileName);
 
+    bool searchRecentFile();
+    bool searchUserPath();
+    bool searchByAnything();
+
 public:
     FileNameWorker *q_ptr = nullptr;
     QAtomicInt m_status = ProxyWorker::Ready;
@@ -44,6 +48,9 @@ public:
     mutable QMutex m_mutex;
     GrandSearch::MatchedItems m_items;  // 搜索结果
     ComDeepinAnythingInterface *m_anythingInterface = nullptr;
+    QStringList m_searchDirList;
+    QSet<QString> m_tmpSearchResults;     // 存储所有的搜索结果，用于去重
+    bool m_hasAddDataPrefix = false;
 
     Q_DECLARE_PUBLIC(FileNameWorker)
 };

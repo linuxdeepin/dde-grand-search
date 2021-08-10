@@ -54,6 +54,10 @@ bool FsWorker::working(void *context)
         return true;
     }
 
+    // 搜索最近使用文件
+    if (!searchRecentFile())
+        return false;
+
     db_search_results_clear(m_app->search);
     Database *db = m_app->db;
     if (!db_try_lock(db)) {
@@ -222,6 +226,9 @@ void FsWorker::callbackReceiveResults(void *data, void *sender)
 
 void FsWorker::appendSearchResult(const QString &fileName)
 {
+    if (m_tmpSearchResults.contains(fileName))
+        return;
+
     QFileInfo file(fileName);
     if (file.isDir()) {
         if (++m_resultFolderCount > MAX_SEARCH_NUM)
@@ -230,6 +237,7 @@ void FsWorker::appendSearchResult(const QString &fileName)
         return;
     }
 
+    m_tmpSearchResults << fileName;
     QMimeType mimeType = GrandSearch::UtilTools::getMimeType(file);
     GrandSearch::MatchedItem item;
     item.item = fileName;
@@ -240,4 +248,51 @@ void FsWorker::appendSearchResult(const QString &fileName)
 
     QMutexLocker lk(&m_mtx);
     m_items << item;
+}
+
+bool FsWorker::searchRecentFile()
+{
+    //计时
+    QTime time;
+    time.start();
+    int lastEmit = 0;
+
+    // 搜索最近使用文件
+    const auto &recentfiles = GrandSearch::UtilTools::getRecentlyUsedFiles();
+    for (const auto &file : recentfiles) {
+        //中断
+        if (m_status.loadAcquire() != ProxyWorker::Runing)
+            return false;
+
+        QFileInfo info(file);
+        if (info.fileName().contains(m_context, Qt::CaseInsensitive)) {
+            appendSearchResult(file);
+
+            //50ms推送一次
+            int cur = time.elapsed();
+            if ((cur - lastEmit) > 50) {
+                lastEmit = cur;
+                qDebug() << "unearthed, current spend:" << cur;
+                emit unearthed(this);
+            }
+
+            if (m_resultFileCount > MAX_SEARCH_NUM && m_resultFolderCount > MAX_SEARCH_NUM)
+                break;
+        }
+    }
+
+    int leave = 0;
+    {
+        QMutexLocker lk(&m_mtx);
+        leave = m_items.count();
+    }
+    // 将最近使用文件的搜索结果推送
+    if (leave > 0)
+        emit unearthed(this);
+    qInfo() << "recently-used search found file items:" << m_resultFileCount
+            << "folder items:" << m_resultFolderCount
+            << "total spend:" << time.elapsed()
+            << "current items" << leave;
+
+    return true;
 }

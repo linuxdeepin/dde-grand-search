@@ -115,4 +115,28 @@ QJsonArray UtilTools::getJsonArray(QJsonObject *json, const QString &key)
     return ret;
 }
 
+QStringList UtilTools::getRecentlyUsedFiles()
+{
+    static QString recentlyPath = QDir::homePath().append("/.local/share/recently-used.xbel");
+    QFile file(recentlyPath);
+    if (!file.exists() || !file.open(QIODevice::ReadOnly))
+        return {};
+
+    QStringList recentFiles;
+    QXmlStreamReader reader(&file);
+    while (!reader.atEnd()) {
+        if (!reader.readNextStartElement() || reader.name() != "bookmark")
+            continue;
+
+        const QString &location = reader.attributes().value("href").toString();
+        QUrl url(location);
+        auto filePath = url.toLocalFile();
+        if (!filePath.contains(QRegExp("/\\.")) && QFile::exists(filePath))
+            recentFiles << filePath;
+    }
+
+    file.close();
+    return recentFiles;
+}
+
 }

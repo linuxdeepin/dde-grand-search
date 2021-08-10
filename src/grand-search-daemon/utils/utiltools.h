@@ -32,6 +32,7 @@ public:
     static QMimeType getMimeType(const QFileInfo &file);
     static QString getJsonString(QJsonObject *json, const QString &key);
     static QJsonArray getJsonArray(QJsonObject *json, const QString &key);
+    static QStringList getRecentlyUsedFiles();
 };
 
 }

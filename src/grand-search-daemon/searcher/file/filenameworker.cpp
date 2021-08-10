@@ -72,6 +72,9 @@ void FileNameWorkerPrivate::appendSearchResult(const QString &fileName)
 {
     Q_Q(FileNameWorker);
 
+    if (m_tmpSearchResults.contains(fileName))
+        return;
+
     QFileInfo file(fileName);
     if (file.isDir()) {
         if (++m_resultFolderCount > MAX_SEARCH_NUM)
@@ -80,6 +83,7 @@ void FileNameWorkerPrivate::appendSearchResult(const QString &fileName)
         return;
     }
 
+    m_tmpSearchResults << fileName;
     QMimeType mimeType = GrandSearch::UtilTools::getMimeType(file);
     GrandSearch::MatchedItem item;
     item.item = fileName;
@@ -90,6 +94,180 @@ void FileNameWorkerPrivate::appendSearchResult(const QString &fileName)
 
     QMutexLocker lk(&m_mutex);
     m_items << item;
+}
+
+bool FileNameWorkerPrivate::searchRecentFile()
+{
+    Q_Q(FileNameWorker);
+
+    //计时
+    QTime time;
+    time.start();
+    int lastEmit = 0;
+
+    // 搜索最近使用文件
+    const auto &recentfiles = GrandSearch::UtilTools::getRecentlyUsedFiles();
+    for (const auto &file : recentfiles) {
+        //中断
+        if (m_status.loadAcquire() != ProxyWorker::Runing)
+            return false;
+
+        QFileInfo info(file);
+        if (info.fileName().contains(m_context, Qt::CaseInsensitive)) {
+            appendSearchResult(file);
+
+            //50ms推送一次
+            int cur = time.elapsed();
+            if ((cur - lastEmit) > 50) {
+                lastEmit = cur;
+                qDebug() << "unearthed, current spend:" << cur;
+                emit q->unearthed(q);
+            }
+
+            if (m_resultFileCount > MAX_SEARCH_NUM && m_resultFolderCount > MAX_SEARCH_NUM)
+                break;
+        }
+    }
+
+    int leave = 0;
+    {
+        QMutexLocker lk(&m_mutex);
+        leave = m_items.count();
+    }
+    // 将最近使用文件的搜索结果推送
+    if (leave > 0)
+        emit q->unearthed(q);
+    qInfo() << "recently-used search found file items:" << m_resultFileCount
+            << "folder items:" << m_resultFolderCount
+            << "total spend:" << time.elapsed()
+            << "current items" << leave;
+
+    return true;
+}
+
+bool FileNameWorkerPrivate::searchUserPath()
+{
+    Q_Q(FileNameWorker);
+
+    //计时
+    QTime time;
+    time.start();
+    int lastEmit = 0;
+
+    QFileInfoList fileInfoList = traverseDirAndFile(m_searchPath);
+    // 先对user目录下进行搜索
+    for (const auto &info : fileInfoList) {
+        //中断
+        if (m_status.loadAcquire() != ProxyWorker::Runing)
+            return false;
+
+        if (info.isDir())
+            m_searchDirList << info.absoluteFilePath();
+
+        if (info.fileName().contains(m_context, Qt::CaseInsensitive)) {
+            appendSearchResult(info.absoluteFilePath());
+
+            //50ms推送一次
+            int cur = time.elapsed();
+            if ((cur - lastEmit) > 50) {
+                lastEmit = cur;
+                qDebug() << "unearthed, current spend:" << cur;
+                emit q->unearthed(q);
+            }
+
+            if (m_resultFileCount > MAX_SEARCH_NUM && m_resultFolderCount > MAX_SEARCH_NUM)
+                break;
+        }
+    }
+
+    int leave = 0;
+    {
+        QMutexLocker lk(&m_mutex);
+        leave = m_items.count();
+    }
+    // 将user目录下的搜索结果推送
+    if (leave > 0)
+        emit q->unearthed(q);
+    qInfo() << "user path search found file items:" << m_resultFileCount
+            << "folder items:" << m_resultFolderCount
+            << "total spend:" << time.elapsed()
+            << "current items" << leave;
+
+    return true;
+}
+
+bool FileNameWorkerPrivate::searchByAnything()
+{
+    Q_Q(FileNameWorker);
+
+    //计时
+    QTime time;
+    time.start();
+    int lastEmit = 0;
+
+    // 搜索
+    quint32 searchStartOffset = 0;
+    quint32 searchEndOffset = 0;
+    // 过滤系统隐藏文件
+    QRegExp hiddenFileFilter("^(?!.*/\\..*).+$");
+    while ((m_resultFileCount < MAX_SEARCH_NUM || m_resultFolderCount < MAX_SEARCH_NUM) && !m_searchDirList.isEmpty()) {
+        //中断
+        if (m_status.loadAcquire() != ProxyWorker::Runing)
+            return false;
+
+        const auto result = m_anythingInterface->search(100, 100, searchStartOffset,
+                                                           searchEndOffset, m_searchDirList.first(),
+                                                           m_context, false);
+        QStringList searchResults = result.argumentAt<0>();
+        searchResults = searchResults.filter(hiddenFileFilter);
+        searchStartOffset = result.argumentAt<1>();
+        searchEndOffset = result.argumentAt<2>();
+
+        // 当前目录已经搜索到了结尾
+        if (searchStartOffset >= searchEndOffset) {
+            searchStartOffset = searchEndOffset = 0;
+            m_searchDirList.removeAt(0);
+        }
+
+        for (auto &path : searchResults) {
+            //中断
+            if (m_status.loadAcquire() != ProxyWorker::Runing)
+                return false;
+
+            // 去除掉添加的data前缀
+            if (m_hasAddDataPrefix && path.startsWith("/data"))
+                path = path.mid(5);
+
+            appendSearchResult(path);
+            //50ms推送一次
+            int cur = time.elapsed();
+            if ((cur - lastEmit) > 50) {
+                lastEmit = cur;
+                qDebug() << "unearthed, current spend:" << cur;
+                emit q->unearthed(q);
+            }
+
+            if (m_resultFileCount > MAX_SEARCH_NUM && m_resultFolderCount > MAX_SEARCH_NUM)
+                break;
+        }
+    }
+
+    int leave = 0;
+    {
+        QMutexLocker lk(&m_mutex);
+        leave = m_items.count();
+    }
+
+    qInfo() << "anything search completed, found file items:" << m_resultFileCount
+            << "folder items:" << m_resultFolderCount
+            << "total spend:" << time.elapsed()
+            << "current items" << leave;
+
+    //还有数据再发一次
+    if (leave > 0)
+        emit q->unearthed(q);
+
+    return true;
 }
 
 FileNameWorker::FileNameWorker(const QString &name, QObject *parent)
@@ -135,6 +313,8 @@ bool FileNameWorker::working(void *context)
                 d->m_status.storeRelease(Completed);
                 return false;
             }
+
+            d->m_hasAddDataPrefix = true;
         } else {
             qWarning() << "Data path is not exist!";
             d->m_status.storeRelease(Completed);
@@ -143,111 +323,19 @@ bool FileNameWorker::working(void *context)
     }
 
     Q_UNUSED(context)
-    //计时
-    QTime time;
-    time.start();
-    int lastEmit = 0;
+    // 搜索最新使用文件
+    if (!d->searchRecentFile())
+        return false;
 
-    QFileInfoList fileInfoList = d->traverseDirAndFile(d->m_searchPath);
-    QStringList searchDirList;
-    // 先对user目录下进行搜索
-    for (const auto &info : fileInfoList) {
-        //中断
-        if (d->m_status.loadAcquire() != Runing)
-            return false;
+    // 搜索user目录下文件
+    if (!d->searchUserPath())
+        return false;
 
-        if (info.isDir())
-            searchDirList << info.absoluteFilePath();
-
-        if (info.fileName().contains(d->m_context, Qt::CaseInsensitive)) {
-            d->appendSearchResult(info.absoluteFilePath());
-
-            //50ms推送一次
-            int cur = time.elapsed();
-            if ((cur - lastEmit) > 50) {
-                lastEmit = cur;
-                qDebug() << "unearthed, current spend:" << cur;
-                emit unearthed(this);
-            }
-
-            if (d->m_resultFileCount > MAX_SEARCH_NUM && d->m_resultFolderCount > MAX_SEARCH_NUM)
-                break;
-        }
-    }
-
-    int leave = 0;
-    {
-        QMutexLocker lk(&d->m_mutex);
-        leave = d->m_items.count();
-    }
-    // 将user目录下的搜索结果推送
-    if (leave > 0)
-        emit unearthed(this);
-    qInfo() << "normal search found file items:" << d->m_resultFileCount
-            << "folder items:" << d->m_resultFolderCount
-            << "total spend:" << time.elapsed()
-            << "current items" << leave;
-    time.restart();
-
-    // 搜索
-    quint32 searchStartOffset = 0;
-    quint32 searchEndOffset = 0;
-    // 过滤系统隐藏文件
-    QRegExp hiddenFileFilter("^(?!.*/\\..*).+$");
-    while ((d->m_resultFileCount < MAX_SEARCH_NUM || d->m_resultFolderCount < MAX_SEARCH_NUM) && !searchDirList.isEmpty()) {
-        //中断
-        if (d->m_status.loadAcquire() != Runing)
-            return false;
-
-        const auto result = d->m_anythingInterface->search(100, 100, searchStartOffset,
-                                                           searchEndOffset, searchDirList.first(),
-                                                           d->m_context, false);
-        QStringList searchResults = result.argumentAt<0>();
-        searchResults = searchResults.filter(hiddenFileFilter);
-        searchStartOffset = result.argumentAt<1>();
-        searchEndOffset = result.argumentAt<2>();
-
-        // 当前目录已经搜索到了结尾
-        if (searchStartOffset >= searchEndOffset) {
-            searchStartOffset = searchEndOffset = 0;
-            searchDirList.removeAt(0);
-        }
-
-        for (const auto &path : searchResults) {
-            //中断
-            if (d->m_status.loadAcquire() != Runing)
-                return false;
-
-            d->appendSearchResult(path);
-            //50ms推送一次
-            int cur = time.elapsed();
-            if ((cur - lastEmit) > 50) {
-                lastEmit = cur;
-                qDebug() << "unearthed, current spend:" << cur;
-                emit unearthed(this);
-            }
-
-            if (d->m_resultFileCount > MAX_SEARCH_NUM && d->m_resultFolderCount > MAX_SEARCH_NUM)
-                break;
-        }
-    }
+    // 使用anything搜索
+    if (!d->searchByAnything())
+        return false;
 
     d->m_status.storeRelease(Completed);
-
-    {
-        QMutexLocker lk(&d->m_mutex);
-        leave = d->m_items.count();
-    }
-
-    qInfo() << "search completed, found file items:" << d->m_resultFileCount
-            << "folder items:" << d->m_resultFolderCount
-            << "total spend:" << time.elapsed()
-            << "current items" << leave;
-
-    //还有数据再发一次
-    if (leave > 0)
-        emit unearthed(this);
-
     return true;
 }
 
