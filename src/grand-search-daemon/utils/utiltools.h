@@ -33,6 +33,7 @@ public:
     static QString getJsonString(QJsonObject *json, const QString &key);
     static QJsonArray getJsonArray(QJsonObject *json, const QString &key);
     static QStringList getRecentlyUsedFiles();
+    static bool isHiddenFile(const QString &fileName, QHash<QString, QSet<QString> > &filters, const QString &pathPrefix = "/");
 };
 
 }

@@ -144,6 +144,12 @@ bool FileNameWorkerPrivate::searchUserPath()
             m_searchDirList << info.absoluteFilePath();
 
         if (info.fileName().contains(m_context, Qt::CaseInsensitive)) {
+            const auto &absoluteFilePath = info.absoluteFilePath();
+
+            // 过滤文管设置的隐藏文件
+            if (GrandSearch::UtilTools::isHiddenFile(absoluteFilePath, m_hiddenFilters, QDir::homePath()))
+                continue;
+
             appendSearchResult(info.absoluteFilePath());
 
             //推送
@@ -199,6 +205,10 @@ bool FileNameWorkerPrivate::searchByAnything()
             // 去除掉添加的data前缀
             if (m_hasAddDataPrefix && path.startsWith("/data"))
                 path = path.mid(5);
+
+            // 过滤文管设置的隐藏文件
+            if (GrandSearch::UtilTools::isHiddenFile(path, m_hiddenFilters, QDir::homePath()))
+                continue;
 
             appendSearchResult(path);
 

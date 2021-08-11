@@ -183,6 +183,10 @@ void FsWorker::callbackReceiveResults(void *data, void *sender)
                 }
             }
 
+            // 过滤文管设置的隐藏文件
+            if (GrandSearch::UtilTools::isHiddenFile(fileName, self->m_hiddenFilters, QDir::homePath()))
+                continue;
+
             self->appendSearchResult(fileName);
 
             //推送

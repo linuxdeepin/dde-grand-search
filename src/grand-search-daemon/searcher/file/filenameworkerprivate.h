@@ -53,6 +53,7 @@ public:
     QStringList m_searchDirList;
     QSet<QString> m_tmpSearchResults;     // 存储所有的搜索结果，用于去重
     bool m_hasAddDataPrefix = false;
+    QHash<QString, QSet<QString>> m_hiddenFilters;
 
     //计时
     QTime m_time;

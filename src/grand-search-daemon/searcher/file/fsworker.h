@@ -62,6 +62,7 @@ private:
     QWaitCondition m_waitCondition;
     QMutex m_conditionMtx;
     QSet<QString> m_tmpSearchResults;     // 存储所有的搜索结果，用于去重
+    QHash<QString, QSet<QString>> m_hiddenFilters;
 
     QTime m_time;       //搜索计时
     int m_lastEmit = 0;

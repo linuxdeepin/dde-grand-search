@@ -131,12 +131,49 @@ QStringList UtilTools::getRecentlyUsedFiles()
         const QString &location = reader.attributes().value("href").toString();
         QUrl url(location);
         auto filePath = url.toLocalFile();
-        if (!filePath.contains(QRegExp("/\\.")) && QFile::exists(filePath))
+        // 过滤保险箱文件
+        static auto vaultPath = QDir::homePath().append("/.local/share/applications/vault_unlocked");
+        if (!filePath.contains(vaultPath) && QFile::exists(filePath))
             recentFiles << filePath;
     }
 
     file.close();
     return recentFiles;
+}
+
+bool UtilTools::isHiddenFile(const QString &fileName, QHash<QString, QSet<QString>> &filters, const QString &pathPrefix)
+{
+    if (!fileName.startsWith(pathPrefix) || fileName == pathPrefix)
+            return false;
+
+        QFileInfo fileInfo(fileName);
+        const auto &fileParentPath = fileInfo.absolutePath();
+        const auto &hiddenFileConfig = fileParentPath + "/.hidden";
+
+        // 判断.hidden文件是否存在，不存在说明该路径下没有隐藏文件
+        if (!QFile::exists(hiddenFileConfig))
+            return isHiddenFile(fileParentPath, filters, pathPrefix);
+
+        if (filters[fileParentPath].isEmpty()) {
+            QFile file(hiddenFileConfig);
+            if (!file.open(QFile::ReadOnly))
+                return false;
+
+            // 判断.hidden文件中的内容是否为空，空则表示该路径下没有隐藏文件
+            if (file.isReadable() && file.size() > 0) {
+                QByteArray data = file.readAll();
+                file.close();
+
+                const auto &hiddenFiles = QSet<QString>::fromList(QString(data).split('\n', QString::SkipEmptyParts));
+                filters[fileParentPath] = hiddenFiles;
+            } else {
+                return isHiddenFile(fileParentPath, filters, pathPrefix);
+            }
+        }
+
+        return filters[fileParentPath].contains(fileInfo.fileName())
+               ? true
+               : isHiddenFile(fileParentPath, filters, pathPrefix);
 }
 
 }
