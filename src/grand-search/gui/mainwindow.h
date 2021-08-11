@@ -41,6 +41,9 @@ public:
 
     void showEntranceAppIcon(bool bShow = true);
 
+    // 获取有效区域，包含主界面和菜单区域
+    QRegion getValidRegion();
+
 private slots:
     // 主屏改变响应槽，移动已显示的主界面到主屏
     void onPrimaryScreenChanged(const QScreen *screen);
@@ -49,18 +52,12 @@ private slots:
     // 根据是否发起搜索，调整展示界面是否显示
     void onSearchTextChanged(const QString &txt);
 
-    void onApplicationStateChanged(const Qt::ApplicationState state);
-    void onCloseWindow();
-
 private:
     void initUI();
     void initConnect();
 
     void activeMainWindow();
     void updateMainWindowHeight();
-
-    void regionMousePress(const QPoint &p, const int flag);
-    void menuVisiableChanged(bool isShow, const QRect &rect);
 
 protected:
     explicit MainWindow(QWidget *parent = nullptr);

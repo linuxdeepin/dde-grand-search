@@ -36,6 +36,7 @@ public:
     void connectToController();
 
     void showLabelAppIcon(bool bVisile);
+    QRect getMenuRect() const;
 
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
@@ -55,7 +56,6 @@ signals:
     void sigSelectPreviousItem();
     void sigHandleItem();
     void sigCloseWindow();
-    void sigMenuVisiableChanged(bool isShow, const QRect &rect);
 
 private:
     QScopedPointer<EntranceWidgetPrivate> d_p;

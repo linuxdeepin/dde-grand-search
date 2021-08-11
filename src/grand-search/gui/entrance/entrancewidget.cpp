@@ -116,9 +116,9 @@ void EntranceWidgetPrivate::showMenu(const QPoint &pos)
     connect(action, &QAction::triggered, m_lineEdit, &QLineEdit::paste);
 
     QRect rect(pos, menu->sizeHint());
-    emit q_p->sigMenuVisiableChanged(true, rect);
+    m_menuRect = rect;
     menu->exec(pos);
-    emit q_p->sigMenuVisiableChanged(false, QRect());
+    m_menuRect = QRect();
     delete menu;
 }
 
@@ -147,19 +147,14 @@ void EntranceWidget::showLabelAppIcon(bool bVisile)
     d_p->m_appIconLabel->setVisible(bVisile);
 }
 
+QRect EntranceWidget::getMenuRect() const
+{
+    return d_p->m_menuRect;
+}
+
 void EntranceWidget::paintEvent(QPaintEvent *event)
 {
-    // 调试使用，最后发布时需删除todo 用于显示搜索入口界面背景色
-#ifdef SHOW_BACKCOLOR
-    Q_UNUSED(event);
-
-    QPainter painter(this);
-
-    painter.setBrush(Qt::darkCyan);
-    painter.drawRect(rect());
-#else
     DWidget::paintEvent(event);
-#endif
 }
 
 bool EntranceWidget::eventFilter(QObject *watched, QEvent *event)

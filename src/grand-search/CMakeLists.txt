@@ -45,11 +45,16 @@ pkg_check_modules(GIO_LIB REQUIRED
         gio-unix-2.0 glib-2.0
         )
 
+pkg_check_modules(DFrameworkDBus REQUIRED dframeworkdbus)
+
 # gui
 set(GUISRC
     gui/mainwindow_p.h
     gui/mainwindow.h
     gui/mainwindow.cpp
+    # 可见性/退出处理
+    gui/handlevisibility/handlevisibility.h
+    gui/handlevisibility/handlevisibility.cpp
     # 界面相关数据定义
     gui/datadefine.h
     # 入口界面
@@ -121,6 +126,7 @@ target_include_directories(${BIN_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${DtkWidget_INCLUDE_DIRS}
     ${DtkGUI_INCLUDE_DIRS}
+    ${DFrameworkDBus_INCLUDE_DIRS}
     ${GIO_LIB_INCLUDE_DIRS}
 )
 
@@ -128,6 +134,7 @@ target_link_libraries(${BIN_NAME} PRIVATE
     ${Qt_LIBS}
     ${DtkWidget_LIBRARIES}
     ${DtkGUI_LIBRARIES}
+    ${DFrameworkDBus_LIBRARIES}
     ${GIO_LIB_LIBRARIES}
 )
 

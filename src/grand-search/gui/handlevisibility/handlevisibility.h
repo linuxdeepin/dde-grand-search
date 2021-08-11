@@ -18,31 +18,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef MAINWINDOW_P_H
-#define MAINWINDOW_P_H
+#ifndef HANDLEVISIBILITY_H
+#define HANDLEVISIBILITY_H
 
-#include "mainwindow.h"
+#include <com_deepin_sessionmanager.h>
 
-#include <QWidget>
+#include <DRegionMonitor>
 
-class EntranceWidget;
-class ExhibitionWidget;
-class HandleVisibility;
-DWIDGET_BEGIN_NAMESPACE
-class DLabel;
-DWIDGET_END_NAMESPACE
-class QVBoxLayout;
-class MainWindowPrivate
+#include <QObject>
+
+class MainWindow;
+
+class HandleVisibility : public QObject
 {
+    Q_OBJECT
 public:
-    explicit MainWindowPrivate(MainWindow *parent);
+    explicit HandleVisibility(MainWindow *mainWindow, QObject *parent);
 
-    MainWindow *q_p = nullptr;
-    HandleVisibility *m_handleVisibility = nullptr;
-    EntranceWidget *m_entranceWidget = nullptr;
-    ExhibitionWidget *m_exhibitionWidget = nullptr;
-    Dtk::Widget::DLabel *m_searchNoContentWidget = nullptr;
-    QVBoxLayout *m_mainLayout = nullptr;
+public slots:
+    void onApplicationStateChanged(const Qt::ApplicationState state);
+    void onLockedChanged(const bool locked);
+    void onCloseWindow();
+
+    void registerRegion(const bool isRegister);
+    void regionMousePress(const QPoint &p, const int flag);
+
+private:
+    void init();
+private:
+    MainWindow *m_mainWindow = nullptr;
+    Dtk::Gui::DRegionMonitor *m_regionMonitor = nullptr;
+    com::deepin::SessionManager *m_sessionManagerInter = nullptr;
 };
 
-#endif // MAINWINDOW_P_H
+#endif // HANDLEVISIBILITY_H
