@@ -28,6 +28,7 @@
 #include <QTextBlock>
 #include <QAbstractTextDocumentLayout>
 #include <QApplication>
+#include <QToolTip>
 
 #define ListItemSpace             10       // 列表图标与文本间间距
 #define ListItemHeight            36       // 列表行高
@@ -81,6 +82,42 @@ QSize GrandSearchListDelegate::sizeHint(const QStyleOptionViewItem &option, cons
     Q_UNUSED(option)
     Q_UNUSED(index)
     return QSize(ListRowWidth, ListItemHeight);
+}
+
+static void hideTooltipImmediately()
+{
+    QWidgetList qwl = QApplication::topLevelWidgets();
+    for (QWidget *qw : qwl) {
+        if (QStringLiteral("QTipLabel") == qw->metaObject()->className()) {
+            qw->close();
+        }
+    }
+}
+
+bool GrandSearchListDelegate::helpEvent(QHelpEvent *event, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index)
+{
+    if (event->type() == QEvent::ToolTip) {
+        const QString tooltip = index.data(Qt::ToolTipRole).toString();
+
+        if (tooltip.isEmpty()) {
+            hideTooltipImmediately();
+        } else {
+            int tooltipsize = tooltip.size();
+            const int nlong = 32;
+            int lines = tooltipsize / nlong + 1;
+            QString strtooltip;
+            for (int i = 0; i < lines; ++i) {
+                strtooltip.append(tooltip.mid(i * nlong, nlong));
+                strtooltip.append("\n");
+            }
+            strtooltip.chop(1);
+            QToolTip::showText(event->globalPos(), strtooltip, view);
+        }
+
+        return true;
+    }
+
+    return DStyledItemDelegate::helpEvent(event, view, option, index);
 }
 
 void GrandSearchListDelegate::drawSelectState(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const

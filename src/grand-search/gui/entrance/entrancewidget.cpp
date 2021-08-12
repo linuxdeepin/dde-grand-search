@@ -274,7 +274,6 @@ void EntranceWidget::onAppIconChanged(const QString &appIconName)
 
     //刷新应用图标显示
     const int size = LabelIconSize;
-    const qreal ratio = devicePixelRatioF();
     QIcon icon = QIcon::fromTheme(appIconName);
-    d_p->m_appIconLabel->setPixmap(icon.pixmap(int(size * ratio), int(size * ratio)));
+    d_p->m_appIconLabel->setPixmap(icon.pixmap(int(size), int(size)));
 }

@@ -42,6 +42,8 @@ protected:
 
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
+    bool helpEvent(QHelpEvent *event, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index) override;
+
 private:
     void drawSelectState(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void drawSearchResultText(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;

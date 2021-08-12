@@ -98,7 +98,7 @@ void GrandSearchListview::addRow(const MatchedItem &item)
     QVariant iconVariantData;
     const QString &strIcon = item.icon;
     if (!strIcon.isEmpty()) {
-        const int size = static_cast<int>(ICON_SIZE * qApp->devicePixelRatio());
+        const int size = static_cast<int>(ICON_SIZE);
         const QSize iconSize(size, size);
 
         // 判断icon是路径还是图标名

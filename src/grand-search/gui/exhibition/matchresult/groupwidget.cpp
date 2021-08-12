@@ -270,8 +270,11 @@ QString GroupWidget::getGroupObjName(const QString &groupHash)
 void GroupWidget::initUi()
 {
     // 获取设置当前窗口文本颜色
+    QColor groupTextColor = QColor(0, 0, 0, static_cast<int>(255*0.6));
+    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
+        groupTextColor = QColor(255, 255, 255, static_cast<int>(255*0.6));
     QPalette labelPalette;
-    labelPalette.setColor(QPalette::WindowText, QColor(0,0,0, static_cast<int>(255*0.6)));
+    labelPalette.setColor(QPalette::WindowText, groupTextColor);
 
     // 组列表内控件沿垂直方向布局
     m_vLayout = new QVBoxLayout(this);
@@ -288,12 +291,15 @@ void GroupWidget::initUi()
 
     // 查看更多按钮
     m_viewMoreButton = new DPushButton(tr("More"), this);
-    m_viewMoreButton->setFixedSize(ViewMoreBtnWidth,ViewMoreBtnHeight);
+    m_viewMoreButton->setFixedSize(ViewMoreBtnWidth, ViewMoreBtnHeight);
     m_viewMoreButton->setFlat(true);
 
-    QPalette palette = m_viewMoreButton->palette();
     // 设置查看按钮文本颜色
-    palette.setColor(QPalette::ButtonText, QColor(0,0,0, static_cast<int>(255*0.4)));
+    QColor moreTextColor = QColor(0, 0, 0, static_cast<int>(255*0.4));
+    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
+        moreTextColor = QColor(255, 255, 255, static_cast<int>(255*0.4));
+    QPalette palette = m_viewMoreButton->palette();
+    palette.setColor(QPalette::ButtonText, moreTextColor);
     // 使'查看更多'按钮按下时，背景色变淡
     QBrush brush(QColor(0,0,0,0));
     palette.setBrush(QPalette::Active, QPalette::Button, brush);
