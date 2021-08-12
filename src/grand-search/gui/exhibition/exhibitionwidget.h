@@ -39,6 +39,8 @@ public:
     ~ExhibitionWidget();
     void connectToController();
 
+    void clearData();
+
 public slots:
     void onSelectNextItem();
     void onSelectPreviousItem();

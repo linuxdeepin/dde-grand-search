@@ -49,8 +49,10 @@ private slots:
     void onPrimaryScreenChanged(const QScreen *screen);
     // 主屏分辨率改变响应槽，调整显示的位置
     void onGeometryChanged(const QRect &geometry);
-    // 根据是否发起搜索，调整展示界面是否显示
-    void onSearchTextChanged(const QString &txt);
+    // 搜索文本为空，隐藏展示界面
+    void onHideExhitionWidget();
+    // 搜索任务id改变，重置展示界面
+    void onResetExhitionWidget(const QString &missionId);
 
 private:
     void initUI();

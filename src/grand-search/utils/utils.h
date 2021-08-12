@@ -36,6 +36,7 @@ public:
     static bool startWithHanzi(const QString &text);
     static bool startWithLatin(const QString &text);
     static bool startWithOtherLang(const QString &text);
+    static bool startWidthNum(const QString &text);
 
     // 获取搜索结果默认打开应用图标
     static QString appIconName(const GrandSearch::MatchedItem &item);

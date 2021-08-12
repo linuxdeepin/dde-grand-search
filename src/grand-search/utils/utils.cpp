@@ -21,6 +21,7 @@
 extern "C" {
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
+#include <ctype.h>
 }
 
 #include "utils.h"
@@ -57,11 +58,13 @@ QMap<QString, QString> Utils::m_appIconNameMap;
 QMimeDatabase Utils::m_mimeDb;
 bool Utils::sort(MatchedItems &list, Qt::SortOrder order/* = Qt::AscendingOrder*/)
 {
+    QTime time;
+    time.start();
     qSort(list.begin(), list.end(), [order](const MatchedItem node1, const MatchedItem node2) {
         return compareByString(node1.name, node2.name, order);
     });
 
-    qDebug() << QString("sort matchItems done.");
+    qDebug() << QString("sort matchItems done. cost [%1]ms").arg(time.elapsed());
     return true;
 }
 
@@ -71,12 +74,23 @@ bool Utils::compareByString(const QString &str1, const QString &str2, Qt::SortOr
 
     // 其他符号要排在最后
     if (startWithSymbol(str1)) {
-        if (!startWithSymbol(str2))
+        if (!startWithSymbol(str2)) {
             return order == Qt::DescendingOrder;
-    } else if (startWithSymbol(str2))
+        }
+    } else if (startWithSymbol(str2)) {
         return order != Qt::DescendingOrder;
+    }
 
-    // 其他语言显示排在次后
+    // 数字排在次次后
+    if (startWidthNum(str1)) {
+        if (!startWidthNum(str2)) {
+            return order == Qt::DescendingOrder;
+        }
+    } else if (startWidthNum(str2)) {
+        return order != Qt::DescendingOrder;
+    }
+
+    // 其他语言排在次后
     if (startWithOtherLang(str1)) {
         if (!startWithOtherLang(str2)) {
             return order == Qt::DescendingOrder;
@@ -85,7 +99,7 @@ bool Utils::compareByString(const QString &str1, const QString &str2, Qt::SortOr
         return order != Qt::DescendingOrder;
     }
 
-    // 英文显示排在第二
+    // 英文排在第二
     if (startWithLatin(str1)) {
         if (!startWithLatin(str2)) {
             return order == Qt::DescendingOrder;
@@ -111,9 +125,16 @@ bool Utils::startWithSymbol(const QString &text)
     if (text.isEmpty())
         return false;
 
-    //匹配字母、数字和中文开头的字符串
-    QRegExp regExp("^[a-zA-Z0-9\u4e00-\u9fa5].*$");
-    return !regExp.exactMatch(text);
+    bool bRet = false;
+    // 先匹配中文标点符号
+    QRegExp regExp("^[\u3002\uff1b\uff0c\uff1a\u201c\u201d\uff08\uff09\u3001\uff1f\u300a\u300b].*$");
+    bRet = regExp.exactMatch(text);
+
+    // 若不是中文标点符号，再判断是否为其他符号
+    if (!bRet)
+        bRet = ispunct(text.at(0).toLatin1());
+
+    return bRet;
 }
 
 bool Utils::startWithHanzi(const QString &text)
@@ -121,7 +142,11 @@ bool Utils::startWithHanzi(const QString &text)
     if (text.isEmpty())
         return false;
 
-    return text.at(0).script() == QChar::Script_Han;
+    // 匹配中文
+    QRegExp regExp("^[\u4e00-\u9fa5].*$");
+    bool bRet = regExp.exactMatch(text);
+
+    return bRet;
 }
 
 bool Utils::startWithLatin(const QString &text)
@@ -129,7 +154,11 @@ bool Utils::startWithLatin(const QString &text)
     if (text.isEmpty())
         return false;
 
-    return text.at(0).script() == QChar::Script_Latin;
+    // 匹配英文
+    QRegExp regExp("^[a-zA-Z].*$");
+    bool bRet = regExp.exactMatch(text);
+
+    return bRet;
 }
 
 bool Utils::startWithOtherLang(const QString &text)
@@ -137,8 +166,27 @@ bool Utils::startWithOtherLang(const QString &text)
     if (text.isEmpty())
         return false;
 
-    return text.at(0).script() != QChar::Script_Latin
-            && text.at(0).script() != QChar::Script_Han;
+    QChar::Script textScript = text.at(0).script();
+
+    bool bRet = textScript >= QChar::Script_Inherited
+            && textScript <= QChar::Script_ZanabazarSquare
+            && textScript != QChar::Script_Latin
+            && textScript != QChar::Script_Han;
+
+    //qDebug() <<QString("%1 is %2 otherLang").arg(text).arg(bRet ? "" : "not");
+    return bRet;
+}
+
+bool Utils::startWidthNum(const QString &text)
+{
+    if (text.isEmpty())
+        return false;
+
+    // 匹配数字
+    QRegExp regExp("^[0-9].*$");
+    bool bRet = regExp.exactMatch(text);
+
+    return bRet;
 }
 
 QString Utils::appIconName(const MatchedItem &item)

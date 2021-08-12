@@ -57,6 +57,10 @@ void QueryControllerPrivate::onSearchTextChanged(const QString &txt)
         qDebug() << "search terminate and missionId:" << m_missionId;
         m_searchText.clear();
         m_missionId.clear();
+
+        // 发出搜索文本为空信号
+        emit q_p->searchTextIsEmpty();
+
         return;
     }
 

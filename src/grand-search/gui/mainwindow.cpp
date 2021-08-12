@@ -24,6 +24,7 @@
 #include "exhibition/exhibitionwidget.h"
 #include "gui/datadefine.h"
 #include "gui/handlevisibility/handlevisibility.h"
+#include "business/query/querycontroller.h"
 
 #include <DApplication>
 #include <DLabel>
@@ -77,6 +78,9 @@ void MainWindow::connectToController()
 
     d_p->m_entranceWidget->connectToController();
     d_p->m_exhibitionWidget->connectToController();
+
+    connect(QueryController::instance(), &QueryController::searchTextIsEmpty, this, &MainWindow::onHideExhitionWidget);
+    connect(QueryController::instance(), &QueryController::missionIdChanged, this, &MainWindow::onResetExhitionWidget);
 }
 
 void MainWindow::showExhitionWidget(bool bShow)
@@ -140,18 +144,31 @@ void MainWindow::onGeometryChanged(const QRect &geometry)
     move(sWidth, sHeight);
 }
 
-void MainWindow::onSearchTextChanged(const QString &txt)
+void MainWindow::onHideExhitionWidget()
 {
-    // todo:后续流程优化，展示界面和无内容界面显隐控制应依赖搜索结果发出的信号
+    // 搜索文本为空，隐藏展示界面
     showSerachNoContent(false);
-    if (txt.isEmpty()) {
-        showExhitionWidget(false);
-        showEntranceAppIcon(false);
-    } else {
-        showExhitionWidget(true);
-    }
+    showExhitionWidget(false);
+    showEntranceAppIcon(false);
 
     updateMainWindowHeight();
+
+    Q_ASSERT(d_p->m_exhibitionWidget);
+    d_p->m_exhibitionWidget->clearData();
+}
+
+void MainWindow::onResetExhitionWidget(const QString &missionId)
+{
+    Q_UNUSED(missionId);
+
+    // 搜索任务id改变，重置展示界面
+    showSerachNoContent(false);
+    showExhitionWidget(true);
+
+    updateMainWindowHeight();
+
+    Q_ASSERT(d_p->m_exhibitionWidget);
+    d_p->m_exhibitionWidget->clearData();
 }
 
 MainWindow *MainWindow::instance()
@@ -205,9 +222,6 @@ void MainWindow::initConnect()
 
     // 通知查询控制模块发起新的搜索
     connect(d_p->m_entranceWidget, &EntranceWidget::searchTextChanged, this, &MainWindow::searchTextChanged);
-
-    // 展开展示界面
-    connect(d_p->m_entranceWidget, &EntranceWidget::searchTextChanged, this, &MainWindow::onSearchTextChanged);
 
     // 监控主屏改变信号，及时更新窗口位置
     connect(qApp, &QGuiApplication::primaryScreenChanged, this, &MainWindow::onPrimaryScreenChanged);

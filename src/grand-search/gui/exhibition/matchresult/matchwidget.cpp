@@ -23,7 +23,6 @@
 #include "matchwidget.h"
 #include "listview/grandsearchlistview.h"
 #include "business/matchresult/matchcontroller.h"
-#include "business/query/querycontroller.h"
 #include "gui/mainwindow.h"
 #include "utils/utils.h"
 
@@ -66,7 +65,6 @@ MatchWidget::~MatchWidget()
 void MatchWidget::connectToController()
 {
     connect(MatchController::instance(), &MatchController::matchedResult, this, &MatchWidget::appendMatchedData);
-    connect(QueryController::instance(), &QueryController::missionIdChanged, this, &MatchWidget::clearMatchedData);
     connect(MatchController::instance(), &MatchController::searchCompleted, this, &MatchWidget::onSearchCompleted);
 }
 
@@ -197,7 +195,6 @@ void MatchWidget::selectNextItem()
                 if (Q_LIKELY(selected)) {
                     // 切换成功后，需要将当前列表选择为空
                     listView->setCurrentIndex(QModelIndex());
-                    updateEntranceAppIcon(QModelIndex());
                 } else {
                     qWarning() << "select next failed";
                 }
@@ -240,7 +237,6 @@ void MatchWidget::selectPreviousItem()
                 if (Q_LIKELY(selected)) {
                     // 切换成功后，需要将当前列表选择为空
                     listView->setCurrentIndex(QModelIndex());
-                    updateEntranceAppIcon(QModelIndex());
                 } else {
                     qWarning() << "select previous failed";
                 }
