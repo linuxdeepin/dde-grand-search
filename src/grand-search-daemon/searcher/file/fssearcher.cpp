@@ -45,7 +45,8 @@ FsSearcher::~FsSearcher()
 
     if (m_app) {
         if (m_app->db) {
-            db_save_locations(m_app->db);
+            // 现目前重启/注销时，索引会保存失败将冲掉已有索引文件，因此暂时屏蔽
+//            db_save_locations(m_app->db);
             db_clear(m_app->db);
             db_free(m_app->db);
         }
