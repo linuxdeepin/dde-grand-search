@@ -19,6 +19,8 @@ set(SRCS
     ddegrandsearchdockplugin.cpp
     gui/grandsearchwidget.h
     gui/grandsearchwidget.cpp
+    contacts/interface/grandsearchinterface.h
+    contacts/interface/grandsearchinterface.cpp
     )
 
 # 指定资源文件

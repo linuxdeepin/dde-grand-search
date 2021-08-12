@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
     app.setApplicationName("dde-grand-search");
     app.setApplicationDisplayName("DDE Grand Search");
     app.setApplicationVersion(VERSION);
+    app.setAttribute(Qt::AA_UseHighDpiPixmaps);
 
     // 设置终端和文件记录日志
     const QString logFormat = "%{time}{yyyyMMdd.HH:mm:ss.zzz}[%{type:1}][%{function:-35} %{line:-4} %{threadid} ] %{message}\n";

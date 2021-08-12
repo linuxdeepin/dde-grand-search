@@ -51,6 +51,7 @@ bool GrandSearchService::IsVisible() const
 
 void GrandSearchService::SetVisible(const bool visible)
 {
+    // todo 二阶段：根据情况，可能需要设置为隐藏，而不能直接退出
     if (MainWindow::instance()->isVisible() == visible)
         return;
     if (!visible) {

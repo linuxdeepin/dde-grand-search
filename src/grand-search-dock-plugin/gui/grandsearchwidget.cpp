@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "grandsearchwidget.h"
+#include "contacts/interface/grandsearchinterface.h"
 
 #include "constants.h"
 #include <DGuiApplicationHelper>
@@ -30,6 +31,16 @@
 GrandSearchWidget::GrandSearchWidget(QWidget *parent)
     : QWidget(parent)
 {
+    m_grandSearchInterface = new GrandSearchInterface(this);
+    connect(m_grandSearchInterface, &GrandSearchInterface::VisibleChanged, this, &GrandSearchWidget::grandSearchVisibleChanged);
+
+    bool isRegistered = QDBusConnection::sessionBus().interface()->isServiceRegistered("com.deepin.dde.GrandSearch");
+    if (isRegistered) {
+        m_grandSearchVisible = m_grandSearchInterface->IsVisible();
+    } else {
+        m_grandSearchVisible = false;
+    }
+
     connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &GrandSearchWidget::updateIcon);
 }
 
@@ -58,6 +69,21 @@ void GrandSearchWidget::updateIcon()
     m_pixmap.setDevicePixelRatio(ratio);
 
     update();
+}
+
+QString GrandSearchWidget::itemCommand(const QString &itemKey)
+{
+    Q_UNUSED(itemKey)
+
+    m_grandSearchVisible = !m_grandSearchVisible;
+    m_grandSearchInterface->SetVisible(m_grandSearchVisible);
+
+    return QString();
+}
+
+void GrandSearchWidget::grandSearchVisibleChanged(bool vidible)
+{
+    m_grandSearchVisible = vidible;
 }
 
 void GrandSearchWidget::resizeEvent(QResizeEvent *e)
