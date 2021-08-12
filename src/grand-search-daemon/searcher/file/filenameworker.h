@@ -39,8 +39,6 @@ public:
     bool hasItem() const Q_DECL_OVERRIDE;
     GrandSearch::MatchedItemMap takeAll() Q_DECL_OVERRIDE;
 private:
-    QString group() const;
-private:
     QScopedPointer<FileNameWorkerPrivate> d_ptr;
     Q_DECLARE_PRIVATE(FileNameWorker)
 };

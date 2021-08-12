@@ -27,11 +27,12 @@
 class FileNameWorker;
 class FileNameWorkerPrivate
 {
+    enum Group {Normal = 0, Folder, Recent, GroupCount, GroupBegin = Normal};
 public:
     explicit FileNameWorkerPrivate(FileNameWorker *qq);
     QFileInfoList traverseDirAndFile(const QString &path);
     bool sortFileName(const QFileInfo &info1, const QFileInfo &info2);
-    void appendSearchResult(const QString &fileName);
+    bool appendSearchResult(const QString &fileName, Group group = Normal);
 
     bool searchRecentFile();
     bool searchUserPath();
@@ -39,6 +40,7 @@ public:
 
     void tryNotify();
     int itemCount() const;
+    QString groupKey(Group group) const;
 public:
     FileNameWorker *q_ptr = nullptr;
     QAtomicInt m_status = ProxyWorker::Ready;
@@ -48,7 +50,7 @@ public:
     quint32 m_resultFolderCount = 0;    // 搜索文件夹数
 
     mutable QMutex m_mutex;
-    GrandSearch::MatchedItems m_items;  // 搜索结果
+    GrandSearch::MatchedItems m_items[GroupCount];  // 文件搜索
     ComDeepinAnythingInterface *m_anythingInterface = nullptr;
     QStringList m_searchDirList;
     QSet<QString> m_tmpSearchResults;     // 存储所有的搜索结果，用于去重

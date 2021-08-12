@@ -29,6 +29,7 @@ extern "C" {
 
 class FsWorker : public ProxyWorker
 {
+    enum Group {Normal = 0, Folder, Recent, GroupCount, GroupBegin = Normal};
 public:
     explicit FsWorker(const QString &name, QObject *parent = nullptr);
 
@@ -41,13 +42,13 @@ public:
     GrandSearch::MatchedItemMap takeAll() Q_DECL_OVERRIDE;
     void setFsearchApp(FsearchApplication *app);
 private:
-    QString group() const;
     static void callbackReceiveResults(void *data, void *sender);
-    void appendSearchResult(const QString &fileName);
+    bool appendSearchResult(const QString &fileName, Group group = Normal);
     bool searchRecentFile();
     bool searchLocalFile();
     void tryNotify();
     int itemCount() const;
+    QString groupKey(Group group) const;
 private:
     FsearchApplication *m_app = nullptr;
     QAtomicInt m_status = Ready;
@@ -55,7 +56,7 @@ private:
 
     //搜索结果
     mutable QMutex m_mtx;
-    GrandSearch::MatchedItems m_items;
+    GrandSearch::MatchedItems m_items[GroupCount];  // 文件搜索
     quint32 m_resultFileCount = 0;      // 搜索文件数
     quint32 m_resultFolderCount = 0;    // 搜索文件夹数
 

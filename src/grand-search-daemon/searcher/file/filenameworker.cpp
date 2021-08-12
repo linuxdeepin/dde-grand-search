@@ -73,19 +73,24 @@ QFileInfoList FileNameWorkerPrivate::traverseDirAndFile(const QString &path)
     return result;
 }
 
-void FileNameWorkerPrivate::appendSearchResult(const QString &fileName)
+bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName, Group group)
 {
     Q_Q(FileNameWorker);
+    Q_ASSERT(group >= GroupBegin && group< GroupCount);
 
     if (m_tmpSearchResults.contains(fileName))
-        return;
+        return false;
 
+    //文件与文件夹分类
     QFileInfo file(fileName);
     if (file.isDir()) {
         if (++m_resultFolderCount > MAX_SEARCH_NUM)
-            return;
+            return false;
+
+        //修改分组为文件夹
+        group = Folder;
     } else if (++m_resultFileCount > MAX_SEARCH_NUM) {
-        return;
+        return false;
     }
 
     m_tmpSearchResults << fileName;
@@ -98,7 +103,9 @@ void FileNameWorkerPrivate::appendSearchResult(const QString &fileName)
     item.searcher = q->name();
 
     QMutexLocker lk(&m_mutex);
-    m_items << item;
+    m_items[group].append(item);
+
+    return true;
 }
 
 bool FileNameWorkerPrivate::searchRecentFile()
@@ -114,7 +121,7 @@ bool FileNameWorkerPrivate::searchRecentFile()
 
         QFileInfo info(file);
         if (info.fileName().contains(m_context, Qt::CaseInsensitive)) {
-            appendSearchResult(file);
+            appendSearchResult(file, Recent);
 
             //推送
             tryNotify();
@@ -247,7 +254,25 @@ void FileNameWorkerPrivate::tryNotify()
 int FileNameWorkerPrivate::itemCount() const
 {
     QMutexLocker lk(&m_mutex);
-    return m_items.count();
+
+    int count = 0;
+    for (int i = GroupBegin; i < GroupCount; ++i)
+        count += m_items[i].size();
+
+    return count;
+}
+
+QString FileNameWorkerPrivate::groupKey(FileNameWorkerPrivate::Group group) const
+{
+    switch (group) {
+    case Folder:
+        return GRANDSEARCH_GROUP_FOLDER;
+    case Recent:
+        return GRANDSEARCH_GROUP_RECENTFILE;
+    default:
+        break;
+    }
+    return GRANDSEARCH_GROUP_FILE;
 }
 
 FileNameWorker::FileNameWorker(const QString &name, QObject *parent)
@@ -347,28 +372,31 @@ bool FileNameWorker::hasItem() const
     Q_D(const FileNameWorker);
 
     QMutexLocker lk(&d->m_mutex);
-    return !d->m_items.isEmpty();
+    for (int i = FileNameWorkerPrivate::GroupBegin; i < FileNameWorkerPrivate::GroupCount; ++i)
+        if (!d->m_items[i].isEmpty())
+            return true;
+
+    return false;
 }
 
 GrandSearch::MatchedItemMap FileNameWorker::takeAll()
 {
     Q_D(FileNameWorker);
 
-    QMutexLocker lk(&d->m_mutex);
-    GrandSearch::MatchedItems items = std::move(d->m_items);
-
-    Q_ASSERT(d->m_items.isEmpty());
-    lk.unlock();
-
     //添加分组
     GrandSearch::MatchedItemMap ret;
-    ret.insert(group(), items);
+
+    QMutexLocker lk(&d->m_mutex);
+    for (int i = FileNameWorkerPrivate::GroupBegin; i < FileNameWorkerPrivate::GroupCount; ++i) {
+        if (!d->m_items[i].isEmpty()) {
+            GrandSearch::MatchedItems items = std::move(d->m_items[i]);
+            Q_ASSERT(d->m_items[i].isEmpty());
+            ret.insert(d->groupKey(static_cast<FileNameWorkerPrivate::Group>(i)), items);
+        }
+    }
+    lk.unlock();
 
     return ret;
 }
 
-QString FileNameWorker::group() const
-{
-    return GRANDSEARCH_GROUP_FILE;
-}
 
