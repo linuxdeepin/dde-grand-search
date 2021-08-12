@@ -42,6 +42,10 @@ FileNameWorkerPrivate::FileNameWorkerPrivate(FileNameWorker *qq)
                                                          QDBusConnection::systemBus(),
                                                          qq);
     m_anythingInterface->setTimeout(1000);
+
+    // 自动索引内置磁盘
+    if (!m_anythingInterface->autoIndexInternal())
+        m_anythingInterface->setAutoIndexInternal(true);
 }
 
 QFileInfoList FileNameWorkerPrivate::traverseDirAndFile(const QString &path)
