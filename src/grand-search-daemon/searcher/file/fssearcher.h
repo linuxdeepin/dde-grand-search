@@ -45,6 +45,7 @@ public:
 private:
     static void loadDataBase(FsSearcher *fs);
     static void updateDataBase(FsSearcher *fs);
+    void saveDataBase(Database *db);
 private:
     bool m_isInited = false;
     bool m_isLoading = false;
@@ -55,6 +56,9 @@ private:
     mutable QTime m_updateTime;
     mutable bool m_isUpdating = false;
     mutable QFuture<void> m_updateFuture;
+
+    QTime m_databaseSaveTime;   // 索引保存计时
+    int m_lastSaveTime = 0;
 };
 
 #endif // FSSEARCHER_H

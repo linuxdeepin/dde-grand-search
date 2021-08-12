@@ -24,7 +24,8 @@
 
 #include <QtConcurrent>
 
-#define UPDATE_TIME_THRESHOLD 10*1000     // 索引更新阈值
+#define UPDATE_TIME_THRESHOLD   10*1000     // 索引更新阈值
+#define DB_SAVE_INTERVAL        10*60*1000  // 索引存储时间
 
 FsSearcher::FsSearcher(QObject *parent) : Searcher(parent)
 {
@@ -143,6 +144,7 @@ void FsSearcher::loadDataBase(FsSearcher *fs)
 
     fs->m_isInited = true;
     fs->m_isLoading = false;
+    fs->m_databaseSaveTime.start();
     qInfo() << "load database complete,total items" << db_get_num_entries(fs->m_app->db) << "total spend" << fs->m_updateTime.elapsed();
 }
 
@@ -155,7 +157,18 @@ void FsSearcher::updateDataBase(FsSearcher *fs)
     QString searPath = QDir::homePath();
     load_database(&fs->m_databaseForUpdate, searPath.toLocal8Bit().data());
 
+    fs->saveDataBase(fs->m_databaseForUpdate);
     qInfo() << "update database complete,total spend" << time.elapsed();
     fs->m_isUpdating = false;
     fs->m_updateTime.restart();
+}
+
+void FsSearcher::saveDataBase(Database *db)
+{
+    int cur = m_databaseSaveTime.elapsed();
+    if (cur - m_lastSaveTime > DB_SAVE_INTERVAL) {
+        bool ret = db_save_locations(db);
+        qDebug() << "database has saved: " << ret;
+        m_lastSaveTime = cur;
+    }
 }
