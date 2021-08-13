@@ -22,9 +22,6 @@
 #include "entrancewidget.h"
 #include "gui/datadefine.h"
 
-//调试使用，最后发布时需删除todo
-#include "gui/exhibition/matchresult/groupwidget.h"
-
 #include <DSearchEdit>
 #include <DStyle>
 #include <DLabel>
@@ -77,6 +74,9 @@ void EntranceWidgetPrivate::notifyTextChanged()
 
     const QString &currentSearchText = m_searchEdit->text().trimmed();
     emit q_p->searchTextChanged(currentSearchText);
+
+    // 搜索内容改变后，清空图标显示
+    q_p->onAppIconChanged(QString());
 }
 
 void EntranceWidgetPrivate::setLineEditFocus()
@@ -142,7 +142,32 @@ void EntranceWidget::connectToController()
 
 void EntranceWidget::showLabelAppIcon(bool bVisile)
 {
+    Q_ASSERT(d_p->m_lineEdit);
     Q_ASSERT(d_p->m_appIconLabel);
+    Q_ASSERT(d_p->m_appIconAction);
+
+    if (bVisile == d_p->m_appIconLabel->isVisible())
+        return;
+
+    if (bVisile) {
+        d_p->m_lineEdit->addAction(d_p->m_appIconAction, QLineEdit::TrailingPosition);
+        /*!
+         * 设置appIconLabel为显示时，必须刷新显示输入框控件，否则在输入超长字符时，能看到清除按钮上显示残留的部分字符。
+         * 原因是：占位符appIconAction的宽度小于需要显示的appIconLabel宽度。
+         * 根本原因是：在主界面初始化完成后，QWidget::setVisible调用ensurePolished函数，最终在
+         * styleplugins/chameleon/chameleonStyle::polish调用了setProperty设置_d_dtk_lineeditActionWidth属性为-6。
+         * 在QLineEditPrivate::positionSideWidgets中（以及其他函数）调用sideWidgetParameters函数计算内嵌窗口时，返回的
+         * SideWidgetParameters参数中宽度比高度小，是一个矩形，导致显示图标出现两边截断显示。
+         * 1.如果没有该问题，可以直接使用appIconAction的接口setIcon设置图标，不需要使用appIconLabel。
+         * 2.如果直接使用appIconLabel而不使用QAction占位，则图标将和清楚按钮（action）重叠。
+         * 3.如果使用QWidgetAction接口setDefaultWidget设置appIconLabel后，再使用addAction添加，则布局能够正常。
+         *   但是QLineEdit计算输入显示范围时，不会考虑设置的appIconLabel窗口区域，导致超长输入时字符显示在清除按钮下方。
+         */
+        // 刷新输入框以及内嵌控件的显示
+        d_p->m_lineEdit->update();
+    } else {
+        d_p->m_lineEdit->removeAction(d_p->m_appIconAction);
+    }
 
     d_p->m_appIconLabel->setVisible(bVisile);
 }
@@ -205,9 +230,9 @@ void EntranceWidget::initUI()
     d_p->m_appIconLabel = new DLabel(d_p->m_searchEdit);
     d_p->m_appIconLabel->setFixedSize(LabelSize, LabelSize);
 
-    QWidgetAction* action = new QWidgetAction(d_p->m_lineEdit);
-    action->setDefaultWidget(d_p->m_appIconLabel);
-    d_p->m_lineEdit->addAction(action, QLineEdit::TrailingPosition);
+    d_p->m_appIconAction = new QAction(this);
+    d_p->m_lineEdit->addAction(d_p->m_appIconAction, QLineEdit::TrailingPosition);
+    d_p->m_searchEdit->setRightWidgets(QList<QWidget*>() << d_p->m_appIconLabel);
 
     // 搜索框界面布局设置
     // 必须对搜索框控件的边距和间隔设置为0,否则其内含的LineEdit不满足大小显示要求
@@ -227,22 +252,6 @@ void EntranceWidget::initUI()
     d_p->m_mainLayout->setMargin(WidgetMargins);
 
     this->setLayout(d_p->m_mainLayout);
-
-    // todo 搜索框图标与清除按钮定制
-//    QAction *leftaction = d_p->m_searchEdit->findChild<QAction *>("_d_search_leftAction");
-//    if (leftaction) {
-//        leftaction->setIcon(QIcon(":/icons/skin/icons/search_36px.svg"));
-//    }
-//    QAction *clearAction = d_p->m_searchEdit->findChild<QAction *>(QLatin1String("_q_qlineeditclearaction"));
-//    if (clearAction) {
-//        clearAction->setIcon(QIcon(":/icons/skin/icons/clear_36px.svg"));
-//    }
-
-//    d_p->m_searchEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-//    d_p->m_searchEdit->lineEdit()->setFixedSize(SEARCHEIT_WIDTH, SEARCHEIT_HEIGHT);
-//    this->setMouseTracking(true);
-//    DStyle::setFocusRectVisible(d_p->m_searchEdit->lineEdit(), true);
-//    setFocusPolicy(Qt::NoFocus);
 }
 
 void EntranceWidget::initConnections()
@@ -258,22 +267,24 @@ void EntranceWidget::initConnections()
 
 void EntranceWidget::onAppIconChanged(const QString &appIconName)
 {
-    //app图标名称为空，隐藏appIcon显示
+    // app图标名称为空，隐藏appIcon显示
     if (appIconName.isEmpty()) {
         showLabelAppIcon(false);
-        d_p->m_appIconName = appIconName;
+        d_p->m_appIconName.clear();
         return;
     }
 
-    showLabelAppIcon(true);
 
     if (appIconName == d_p->m_appIconName)
         return;
 
     d_p->m_appIconName = appIconName;
 
-    //刷新应用图标显示
+    // 更新应用图标
     const int size = LabelIconSize;
     QIcon icon = QIcon::fromTheme(appIconName);
     d_p->m_appIconLabel->setPixmap(icon.pixmap(int(size), int(size)));
+
+    // 图标更新完成后再刷新显示
+    showLabelAppIcon(true);
 }

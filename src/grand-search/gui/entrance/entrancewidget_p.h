@@ -52,6 +52,7 @@ public:
     Dtk::Widget::DSearchEdit *m_searchEdit = nullptr;   // 搜索输入框控件
     QLineEdit *m_lineEdit = nullptr;                    // 输入控件
     Dtk::Widget::DLabel *m_appIconLabel = nullptr;      // 应用图标显示label
+    QAction *m_appIconAction = nullptr;                 // 应用图标显示区域占位action
     QHBoxLayout *m_mainLayout = nullptr;
 
     QTimer *m_delayChangeTimer = nullptr;               // 延迟发出搜索文本改变
