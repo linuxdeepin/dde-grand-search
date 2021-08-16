@@ -31,6 +31,7 @@ DWIDGET_USE_NAMESPACE
 
 #define ICON_ROLE Qt::UserRole+1
 #define DATA_ROLE Qt::UserRole+2
+#define GROUP_ROLE Qt::UserRole+3
 
 class GrandSearchListModel;
 class GrandSearchListDelegate;
@@ -41,9 +42,19 @@ public:
     explicit GrandSearchListview(QWidget *parent = Q_NULLPTR);
     ~GrandSearchListview() override;
 
-    void setMatchedItems(const MatchedItems &items);
-    void addRow(const MatchedItem &item);
-    void addRows(const MatchedItems &items);
+    void setMatchedItems(const MatchedItems &items, const QString &group);
+    void addRow(const MatchedItem &item, const QString &group);
+    void addRows(const MatchedItems &items, const QString &group);
+    int insertRow(int nRow, const MatchedItem &item, const QString &group);
+    void insertRows(int nRow, const MatchedItems &items, const QString &group);
+    // 从给定行开始删除指定行数
+    void removeRows(int nRow, int nCount);
+
+    // 获取小组类型下所有匹配结果
+    MatchedItems groupItems(const QString& group);
+
+    // 获取指定小组类型下最后显示的行号
+    int lastShowRow(const QString &group);
 
     int rowCount();
     int getThemeType() const;
@@ -66,6 +77,7 @@ protected:
 
 private:
     QString cacheDir();
+    void setData(const QModelIndex& index, const MatchedItem &item, const QString &group);
 
 private:
     GrandSearchListModel        *m_model        = nullptr;

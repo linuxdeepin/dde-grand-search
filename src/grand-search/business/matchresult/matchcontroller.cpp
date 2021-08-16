@@ -58,7 +58,7 @@ void MatchControllerPrivate::onMatched(const QString &missonId)
     if (missonId != m_missonId || m_missonId.isEmpty())
         return;
 
-    //获取数据解析
+    // 获取数据解析
     qDebug() << QString("m_daemonDbus->MatchedBuffer begin missonId:%1").arg(m_missonId);
     QByteArray matchedBytes = m_daemonDbus->MatchedBuffer(m_missonId);
     qDebug() << QString("m_daemonDbus->MatchedBuffer end   missonId:%1").arg(m_missonId);
@@ -67,19 +67,6 @@ void MatchControllerPrivate::onMatched(const QString &missonId)
 
     MatchedItemMap items;
     stream >> items;
-
-#if 0 //用于显示从后端收到的文件和目录数，最后发布时删除 TODO
-    int nFile = 0;
-    int nDir = 0;
-    if (items.find(GRANDSEARCH_GROUP_FILE) != items.end()) {
-        for (auto item : items[GRANDSEARCH_GROUP_FILE]) {
-            if (item.type == "inode/directory")
-                qDebug() <<QString("nDir:%1 name:%2").arg(++nDir).arg(item.name);
-            else
-                qDebug() <<QString("nFile:%1 name:%2").arg(++nFile).arg(item.name);
-        }
-    }
-#endif
 
     emit q_p->matchedResult(items);
 

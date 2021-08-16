@@ -72,44 +72,25 @@ void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
 {
     bool bNeedRelayout = false;
 
-    MatchedItemMap matchedItem = matchedData;
-
-    //Files数据分类，划分为文件和文件夹
-    if (matchedItem.find(GRANDSEARCH_GROUP_FILE) != matchedItem.end()) {
-        MatchedItems& fileItems = matchedItem[GRANDSEARCH_GROUP_FILE];
-        MatchedItems::iterator itFile = fileItems.begin();
-        while (itFile != fileItems.end()) {
-            if (itFile->type == "inode/directory") {
-                matchedItem[GRANDSEARCH_GROUP_FOLDER].push_back(*itFile);
-                itFile = fileItems.erase(itFile);
-            }
-            else {
-                ++itFile;
-            }
-        }
-    }
-
     // 数据处理
-    MatchedItemMap::ConstIterator itData = matchedItem.begin();
-    while (itData != matchedItem.end()) {
+    MatchedItemMap::ConstIterator itData = matchedData.begin();
+    while (itData != matchedData.end()) {
 
-        QString groupHash = itData.key();
+        QString groupClassName = itData.key();
+
+        // 最近使用的文件归类到文件类目排头显示
+        if (groupClassName == GRANDSEARCH_GROUP_RECENTFILE)
+            groupClassName = GRANDSEARCH_GROUP_FILE;
 
         // 根据groupHash创建对应类目列表，若已存在，直接返回已有类目列表
-        GroupWidget* groupWidget = createGroupWidget(groupHash);
+        GroupWidget* groupWidget = createGroupWidget(groupClassName);
         if (!groupWidget) {
             itData++;
             continue;
         }
 
-        // 当文件(夹)总数超过100条记录时，不允许追加
-        if (!groupWidget->isAppendDataAllow()) {
-            itData++;
-            continue;
-        }
-
         // 追加匹配数据到类目列表中
-        groupWidget->appendMatchedItems(itData.value());
+        groupWidget->appendMatchedItems(itData.value(), itData.key());
 
         // 列表中有数据，显示类目列表
         groupWidget->setVisible(groupWidget->itemCount() > 0);
@@ -487,12 +468,12 @@ void MatchWidget::reLayout()
     layout();
 }
 
-GroupWidget *MatchWidget::createGroupWidget(const QString &groupHash)
+GroupWidget *MatchWidget::createGroupWidget(const QString &groupClassName)
 {
-    if (Q_UNLIKELY(groupHash.isEmpty()))
+    if (Q_UNLIKELY(groupClassName.isEmpty()))
         return nullptr;
 
-    if (!m_groupWidgetMap[groupHash]) {
+    if (!m_groupWidgetMap[groupClassName]) {
         GroupWidget* groupWidget = new GroupWidget(m_scrollAreaContent);
         connect(groupWidget, &GroupWidget::showMore, this, &MatchWidget::reLayout);
 
@@ -502,22 +483,22 @@ GroupWidget *MatchWidget::createGroupWidget(const QString &groupHash)
         connect(listView, &GrandSearchListview::sigSelectItemByMouse, this, &MatchWidget::onSelectItemByMouse);
         connect(listView, &GrandSearchListview::sigItemClicked, this, &MatchWidget::sigCloseWindow);
 
-        groupWidget->setGroupName(groupHash);
-        m_groupWidgetMap[groupHash] = groupWidget;
+        groupWidget->setGroupName(groupClassName);
+        m_groupWidgetMap[groupClassName] = groupWidget;
 
         return groupWidget;
     }
 
-    return m_groupWidgetMap[groupHash];
+    return m_groupWidgetMap[groupClassName];
 }
 
 void MatchWidget::sortVislibleGroupList()
 {
     // 1.优先在界面中显示应用、文件夹和文件类目，显示顺序为: 应用 > 文件夹 > 文件
     m_vGroupWidgets.clear();
-    for (auto groupHash : m_groupHashShowOrder) {
-        if (m_groupWidgetMap[groupHash] && !m_groupWidgetMap[groupHash]->isHidden())
-            m_vGroupWidgets.push_back(m_groupWidgetMap[groupHash]);
+    for (auto groupClassName : m_groupHashShowOrder) {
+        if (m_groupWidgetMap[groupClassName] && !m_groupWidgetMap[groupClassName]->isHidden())
+            m_vGroupWidgets.push_back(m_groupWidgetMap[groupClassName]);
     }
 
     // 2.其他类目追加在后面

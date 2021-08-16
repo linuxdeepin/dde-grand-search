@@ -42,7 +42,6 @@ using namespace GrandSearch;
 #define LayoutMagrinSize          10       // 布局边距
 #define SpacerWidth               40       // 弹簧宽度
 #define SpacerHeight              20       // 弹簧高度
-#define MaxFileShowCount          100      // 文件(夹)最大显示数
 
 GroupWidgetPrivate::GroupWidgetPrivate(GroupWidget *parent)
     : q_p(parent)
@@ -58,10 +57,10 @@ GroupWidget::GroupWidget(QWidget *parent)
     m_restShowItems.clear();
     m_cacheItems.clear();
 
+    m_cacheItemsRecentFile.clear();
+
     initUi();
     initConnect();
-
-    setThemeType(DGuiApplicationHelper::instance()->themeType());
 }
 
 GroupWidget::~GroupWidget()
@@ -69,74 +68,131 @@ GroupWidget::~GroupWidget()
     qDebug() << QString("groupWidget %1 destructed....").arg(m_groupName);
 }
 
-void GroupWidget::setGroupName(const QString &groupHash)
+void GroupWidget::setGroupName(const QString &groupClassName)
 {
     Q_ASSERT(m_groupLabel);
 
-    const QString &groupName = GroupWidget::getGroupName(groupHash);
-    const QString &groupObjName = GroupWidget::getGroupObjName(groupHash);
+    const QString &groupName = GroupWidget::getGroupName(groupClassName);
+    const QString &groupObjName = GroupWidget::getGroupObjName(groupClassName);
 
+    m_groupClassName = groupClassName;
     m_groupName = groupName;
 
     m_groupLabel->setObjectName(groupObjName);
     m_groupLabel->setText(groupName);
 }
 
-void GroupWidget::appendMatchedItems(const MatchedItems &newItems)
+void GroupWidget::appendMatchedItems(const MatchedItems &newItems, const QString& groupClassName)
 {
     if (Q_UNLIKELY(newItems.isEmpty()))
         return;
 
-    // 结果列表未展开
-    if (!m_bListExpanded) {
+    if (groupClassName == GRANDSEARCH_GROUP_RECENTFILE) {
+        // 结果列表未展开
+        if (!m_bListExpanded) {
 
-        // 新来的数据先放入缓存中
-        m_cacheItems << newItems;
+            // 新来数据先放入最近文件缓存中
+            m_cacheItemsRecentFile << newItems;
 
-        // 显示结果不足5个，连带新增数据一起重新排序
-        if (m_firstFiveItems.size() < GROUP_MAX_SHOW) {
+            // 显示不足5个，连带新增数据一起重排
+            if (m_firstFiveItems.size() < GROUP_MAX_SHOW || m_listView->lastShowRow(GRANDSEARCH_GROUP_RECENTFILE) == -1) {
 
-            m_cacheItems << m_firstFiveItems;
-            Utils::sort(m_cacheItems);
+                // 清空列表数据，将已显示数据还原到各自缓存中
+                m_firstFiveItems.clear();
+                m_cacheItemsRecentFile << m_listView->groupItems(GRANDSEARCH_GROUP_RECENTFILE);
+                m_cacheItems << m_listView->groupItems(m_groupClassName);
 
-            m_firstFiveItems.clear();
-            for (int i = 0; i < GROUP_MAX_SHOW; i++) {
-                if (!m_cacheItems.isEmpty())
-                    m_firstFiveItems.push_back(m_cacheItems.takeFirst());
+                // 拉通重排缓存中最近文件匹配结果
+                Utils::sort(m_cacheItemsRecentFile);
+                for (int i = 0; i < GROUP_MAX_SHOW; i++) {
+                    if (!m_cacheItemsRecentFile.isEmpty())
+                        m_firstFiveItems.push_back(m_cacheItemsRecentFile.takeFirst());
+                }
+                m_listView->setMatchedItems(m_firstFiveItems, GRANDSEARCH_GROUP_RECENTFILE);
+
+                // 最近文件不足5个，从一般缓存中取剩余数据补齐5个
+                if (m_firstFiveItems.size() < GROUP_MAX_SHOW) {
+                    Utils::sort(m_cacheItems);
+
+                    for (int i = m_firstFiveItems.size(); i < GROUP_MAX_SHOW; i++) {
+                        if (!m_cacheItems.isEmpty()) {
+                            MatchedItem item = m_cacheItems.takeFirst();
+                            m_firstFiveItems.push_back(item);
+
+                            m_listView->addRow(item, m_groupClassName);
+                        }
+                    }
+                }
             }
 
-            m_listView->setMatchedItems(m_firstFiveItems);
+            // 缓存中有数据，显示'查看更多'按钮
+            m_viewMoreButton->setVisible(!m_cacheItemsRecentFile.isEmpty() || !m_cacheItems.isEmpty());
         }
-
-        // 若类目为文件或文件夹，当前结果结果数超过100个，仅保留前100个，保证结果展示数在100以内
-        if (m_groupName == GroupName_Folder
-         || m_groupName == GroupName_File) {
-            int nRemoveCount = m_cacheItems.size() + m_firstFiveItems.size() - MaxFileShowCount;
-            if (nRemoveCount > 0) {
-                for (int i = 0; i < nRemoveCount; i++)
-                    m_cacheItems.removeLast();
-            }
-
+        else {
+            // 结果列表已展开
+            // 对新数据排序，并插入到已显示最近文件结果末尾
+            MatchedItems& tempNewItems = const_cast<MatchedItems&>(newItems);
+            Utils::sort(tempNewItems);
+            m_listView->insertRows(m_listView->lastShowRow(GRANDSEARCH_GROUP_RECENTFILE), tempNewItems, GRANDSEARCH_GROUP_RECENTFILE);
         }
-        // 缓存中有数据，显示'查看更多'按钮
-        m_viewMoreButton->setVisible(!m_cacheItems.isEmpty());
     }
     else {
-        // 结果列表已展开，已经显示的数据保持不变，仅对新增数据排序，然后追加到列表末尾
-        MatchedItems& tempNewItems = const_cast<MatchedItems&>(newItems);
-        Utils::sort(tempNewItems);
+        // 结果列表未展开
+        if (!m_bListExpanded) {
 
-        // 若类目为文件或文件夹，保证结果数据在100以内
-        if (m_groupName == GroupName_Folder
-         || m_groupName == GroupName_File) {
-            for (int i = 0; i < tempNewItems.size() && m_listView->rowCount() < MaxFileShowCount; i++) {
-                m_listView->addRow(tempNewItems[i]);
+            // 新来的数据先放入缓存中
+            m_cacheItems << newItems;
+
+            // 显示结果不足5个，连带新增数据一起重新排序
+            if (m_firstFiveItems.size() < GROUP_MAX_SHOW) {
+                //当前已有最近文件显示，则在最近文件最后一行之后补齐显示新来的数据
+                MatchedItems showedRecentFileItems = m_listView->groupItems(GRANDSEARCH_GROUP_RECENTFILE);
+                if (!showedRecentFileItems.isEmpty()) {
+                    m_cacheItems << m_listView->groupItems(m_groupClassName);
+                    Utils::sort(m_cacheItems);
+
+                    m_firstFiveItems.clear();
+
+                    // 先置顶显示最近文件匹配结果
+                    m_firstFiveItems << showedRecentFileItems;
+                    m_listView->setMatchedItems(m_firstFiveItems, GRANDSEARCH_GROUP_RECENTFILE);
+
+                    // 最近文件不足5个，从一般缓存中取剩余数据补齐5个
+                    if (m_firstFiveItems.size() < GROUP_MAX_SHOW) {
+                        for (int i = m_firstFiveItems.size(); i < GROUP_MAX_SHOW; i++) {
+                            if (!m_cacheItems.isEmpty()) {
+                                MatchedItem item = m_cacheItems.takeFirst();
+                                m_firstFiveItems.push_back(item);
+
+                                m_listView->addRow(item, m_groupClassName);
+                            }
+                        }
+                    }
+                }
+                else {
+                    m_cacheItems << m_firstFiveItems;
+                    Utils::sort(m_cacheItems);
+
+                    m_firstFiveItems.clear();
+                    for (int i = 0; i < GROUP_MAX_SHOW; i++) {
+                        if (!m_cacheItems.isEmpty())
+                            m_firstFiveItems.push_back(m_cacheItems.takeFirst());
+                    }
+
+                    m_listView->setMatchedItems(m_firstFiveItems, groupClassName);
+                }
             }
-        } else {
-            m_listView->addRows(tempNewItems);
+
+            // 缓存中有数据，显示'查看更多'按钮
+            m_viewMoreButton->setVisible(!m_cacheItems.isEmpty());
+        }
+        else {
+            // 结果列表已展开，已经显示的数据保持不变，仅对新增数据排序，然后追加到列表末尾
+            MatchedItems& tempNewItems = const_cast<MatchedItems&>(newItems);
+            Utils::sort(tempNewItems);
+            m_listView->addRows(tempNewItems, groupClassName);
         }
     }
-
     layout();
 }
 
@@ -215,21 +271,13 @@ void GroupWidget::clear()
     m_firstFiveItems.clear();
     m_restShowItems.clear();
     m_cacheItems.clear();
+
+    m_cacheItemsRecentFile.clear();
+
     m_bListExpanded = false;
 
     m_listView->clear();
     setVisible(false);
-}
-
-bool GroupWidget::isAppendDataAllow()
-{
-    // 当文件(夹)总数超过100条记录时，不允许追加
-    if (m_groupName == GroupName_Folder
-     || m_groupName == GroupName_File) {
-        return itemCount() < MaxFileShowCount;
-    }
-
-    return true;
 }
 
 QString GroupWidget::groupName()
@@ -239,29 +287,29 @@ QString GroupWidget::groupName()
     return m_groupLabel->text();
 }
 
-QString GroupWidget::getGroupName(const QString &groupHash)
+QString GroupWidget::getGroupName(const QString &groupClassName)
 {
-    QString strName = groupHash;
+    QString strName = groupClassName;
 
-    if (GRANDSEARCH_GROUP_APP == groupHash)
+    if (GRANDSEARCH_GROUP_APP == groupClassName)
         strName = GroupName_App;
-    else if (GRANDSEARCH_GROUP_FOLDER == groupHash)
+    else if (GRANDSEARCH_GROUP_FOLDER == groupClassName)
         strName = GroupName_Folder;
-    else if (GRANDSEARCH_GROUP_FILE == groupHash)
+    else if (GRANDSEARCH_GROUP_FILE == groupClassName)
         strName = GroupName_File;
 
     return strName;
 }
 
-QString GroupWidget::getGroupObjName(const QString &groupHash)
+QString GroupWidget::getGroupObjName(const QString &groupClassName)
 {
-    QString strObjName = groupHash;
+    QString strObjName = groupClassName;
 
-    if (GRANDSEARCH_GROUP_APP == groupHash)
+    if (GRANDSEARCH_GROUP_APP == groupClassName)
         strObjName = GroupObjName_App;
-    else if (GRANDSEARCH_GROUP_FOLDER == groupHash)
+    else if (GRANDSEARCH_GROUP_FOLDER == groupClassName)
         strObjName = GroupObjName_Folder;
-    else if (GRANDSEARCH_GROUP_FILE == groupHash)
+    else if (GRANDSEARCH_GROUP_FILE == groupClassName)
         strObjName = GroupObjName_File;
 
     return strObjName;
@@ -347,9 +395,6 @@ void GroupWidget::initConnect()
 {
     Q_ASSERT(m_viewMoreButton);
 
-    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged,
-            this, &GroupWidget::setThemeType);
-
     connect(m_viewMoreButton, &DPushButton::clicked, this, &GroupWidget::onMoreBtnClcked);
 }
 
@@ -368,34 +413,24 @@ void GroupWidget::paintEvent(QPaintEvent *event)
 #endif
 }
 
-void GroupWidget::setThemeType(int type)
-{
-    Q_UNUSED(type);
-
-    // 后续等待UI确认
-//    // 窗口主题切换，浅色到深色互切，列表内文本颜色要跟着改变
-//    QPalette labelPalette;
-//    if (type == 2) {
-//        labelPalette.setColor(QPalette::Text, QColor("#FFF0F5 "));
-//    } else {
-//        labelPalette.setColor(QPalette::Text, QColor("#414D68 "));
-//    }
-//    m_ListView->setPalette(labelPalette);
-}
-
 void GroupWidget::onMoreBtnClcked()
 {
     Q_ASSERT(m_listView);
     Q_ASSERT(m_viewMoreButton);
 
+    // 在已显示最近文件的最后一行，显示缓存中的最近文件匹配结果
+    if (!m_cacheItemsRecentFile.isEmpty()) {
+        Utils::sort(m_cacheItemsRecentFile);
+        m_listView->insertRows(m_listView->lastShowRow(GRANDSEARCH_GROUP_RECENTFILE) + 1, m_cacheItemsRecentFile, GRANDSEARCH_GROUP_RECENTFILE);
+        m_cacheItemsRecentFile.clear();
+    }
 
-    // '查看更多'被点击，列表被展开
     // 将缓存中的数据转移到剩余显示结果中
     m_restShowItems << m_cacheItems;
     Utils::sort(m_restShowItems);
 
     // 剩余显示结果追加显示到列表中
-    m_listView->addRows(m_restShowItems);
+    m_listView->addRows(m_restShowItems, m_groupClassName);
 
     // 清空缓存中数据
     m_cacheItems.clear();

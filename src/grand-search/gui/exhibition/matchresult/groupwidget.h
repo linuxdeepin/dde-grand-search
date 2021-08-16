@@ -53,8 +53,8 @@ public:
     explicit GroupWidget(QWidget *parent = nullptr);
     ~GroupWidget() override;
 
-    void setGroupName(const QString &groupHash);
-    void appendMatchedItems(const GrandSearch::MatchedItems &items);
+    void setGroupName(const QString &groupClassName);
+    void appendMatchedItems(const GrandSearch::MatchedItems &newItems, const QString& groupClassName);
     void showHorLine(bool bShow = true);
     bool isHorLineVisilbe();
     GrandSearchListview *getListView();
@@ -64,12 +64,9 @@ public:
     void reLayout();
     void clear();
 
-    // 是否允许追加数据，当文件(夹)总数超过100条记录时，不允许追加
-    bool isAppendDataAllow();
-
     QString groupName();
-    static QString getGroupName(const QString &groupHash);
-    static QString getGroupObjName(const QString &groupHash);
+    static QString getGroupName(const QString &groupClassName);
+    static QString getGroupObjName(const QString &groupClassName);
 
 protected:
     void initUi();
@@ -78,7 +75,6 @@ protected:
     void paintEvent(QPaintEvent *event) override;
 
 public slots:
-    void setThemeType(int type);
     void onMoreBtnClcked();
 
 signals:
@@ -97,12 +93,15 @@ private:
     GrandSearchListview *m_listView = nullptr;
     DHorizontalLine *m_line = nullptr;
 
-    QString m_groupName;
+    QString m_groupName;                            // 当前类目列表组名,对应类目显示名称
+    QString m_groupClassName;                            // 当前类目列表组名对应的类名
 
     bool m_bListExpanded = false;                   // 结果列表是否已展开
     GrandSearch::MatchedItems m_firstFiveItems;     // 前5行正在显示的匹配结果
     GrandSearch::MatchedItems m_restShowItems;      // 剩余正在显示的匹配结果
     GrandSearch::MatchedItems m_cacheItems;         // 缓存中的匹配结果
+
+    GrandSearch::MatchedItems m_cacheItemsRecentFile;     // 缓存中最近文件
 };
 
 typedef QMap<QString, GroupWidget *> GroupWidgetMap;

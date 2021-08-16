@@ -35,7 +35,7 @@
 #define ListIconSize              24       // 列表图标大小
 #define ListRowWidth              350      // 列表行宽
 #define ListIconMargin            6        // 列表图标边距距
-#define ListItemTextMaxWidth      240      // 文本元素最大显示宽度
+#define ListItemTextMaxWidth      (ListRowWidth - ListItemSpace * 2 - ListIconSize)     // 文本元素最大显示宽度
 
 DWIDGET_USE_NAMESPACE
 
@@ -171,8 +171,9 @@ void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QSty
     QString mtext;
     mtext = index.data(DATA_ROLE).value<MatchedItem>().name;
 
+    int listItemTextMaxWidth = option.rect.width() / 2 - ListItemSpace * 2 - ListIconSize;
     QFontMetricsF fontWidth(fontT6);
-    mtext = fontWidth.elidedText(mtext, Qt::ElideRight, ListItemTextMaxWidth);
+    mtext = fontWidth.elidedText(mtext, Qt::ElideRight, listItemTextMaxWidth);
     QStyleOptionViewItem viewOption(option);
     initStyleOption(&viewOption, index);
     if (option.state.testFlag(QStyle::State_HasFocus))
@@ -201,7 +202,7 @@ void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QSty
     // 动态计算边距，保证调整字体大小时绘制居中
     QAbstractTextDocumentLayout::PaintContext paintContext;
     int margin = static_cast<int>(((option.rect.height() - fontWidth.height()) / 2));
-    QRect textRect(ListItemSpace * 2 + ListIconSize, option.rect.y() + margin, ListItemTextMaxWidth, option.rect.height());
+    QRect textRect(ListItemSpace * 2 + ListIconSize, option.rect.y() + margin, listItemTextMaxWidth, option.rect.height());
     painter->save();
     painter->translate(textRect.topLeft());
     painter->setClipRect(textRect.translated(-textRect.topLeft()));

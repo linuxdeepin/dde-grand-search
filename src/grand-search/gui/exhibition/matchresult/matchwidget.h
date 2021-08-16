@@ -77,7 +77,7 @@ protected:
     void reLayout();
 
     // 动态创建类目列表，若对应类目已存在，则返回已有类目列表
-    GroupWidget *createGroupWidget(const QString &groupHash);
+    GroupWidget *createGroupWidget(const QString &groupClassName);
 
     // 对要显示的类目列表进行排序
     void sortVislibleGroupList();
@@ -97,7 +97,7 @@ private:
         GRANDSEARCH_GROUP_FOLDER,
         GRANDSEARCH_GROUP_FILE};
 
-    GroupWidgetMap m_groupWidgetMap;                    // 按group哈希值存放类目列表
+    GroupWidgetMap m_groupWidgetMap;                    // 按group类名存放类目列表
     GroupWidgets m_vGroupWidgets;                       // 类目列表按显示顺序存放
 };
 
