@@ -349,24 +349,12 @@ bool Utils::openFile(const MatchedItem &item)
     QString defaultDesktopFile = getDefaultAppDesktopFileByMimeType(mimetype);
     if (defaultDesktopFile.isEmpty()) {
         qDebug() << "no default application for" << filePath;
-    }
-
-    qDebug() << QString("defaultDesktopFile:%1").arg(defaultDesktopFile);
-
-    QStringList filePaths(filePath);
-    result =launchApp(defaultDesktopFile, filePaths);
-    if (result) {
-        // 加入到最近打开  因缺少DESKTOP类 用于获取appName和appExc
-        // 后续优化  TODO
-        ;
-    }
-
-    if (!result) {
-        QUrl url(filePath);
-        if (url.isValid()) {
-            qDebug() << "openUrl" << filePath;
-            return QDesktopServices::openUrl(url);
-        }
+        result = QProcess::startDetached(QString("dde-file-manager"), {QString("-o"), filePath});
+        qDebug() << "open file dialog" << result;
+    } else {
+        qDebug() << QString("defaultDesktopFile:%1").arg(defaultDesktopFile);
+        QStringList filePaths(filePath);
+        result = launchApp(defaultDesktopFile, filePaths);
     }
 
     return result;
