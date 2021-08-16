@@ -37,8 +37,7 @@ using namespace GrandSearch;
 #define GROUP_MAX_SHOW 5
 #define ListItemHeight            36       // 列表行高
 #define GroupLabelHeight          28       // 组标签高度
-#define ViewMoreBtnWidth          80       // 查看更多按钮宽度
-#define ViewMoreBtnHeight         17       // 查看更多按钮高度
+#define MoreBtnMaxHeight          25       // 查看更多按钮最大高度
 #define LayoutMagrinSize          10       // 布局边距
 #define SpacerWidth               40       // 弹簧宽度
 #define SpacerHeight              20       // 弹簧高度
@@ -339,7 +338,7 @@ void GroupWidget::initUi()
 
     // 查看更多按钮
     m_viewMoreButton = new DPushButton(tr("More"), this);
-    m_viewMoreButton->setFixedSize(ViewMoreBtnWidth, ViewMoreBtnHeight);
+    m_viewMoreButton->setMaximumHeight(MoreBtnMaxHeight);
     m_viewMoreButton->setFlat(true);
 
     // 设置查看按钮文本颜色
@@ -356,7 +355,7 @@ void GroupWidget::initUi()
     palette.setBrush(QPalette::Active, QPalette::Dark, brush);
     palette.setBrush(QPalette::Active, QPalette::Mid, brush);
     m_viewMoreButton->setPalette(palette);
-    //DFontSizeManager::instance()->bind(m_viewMoreButton, DFontSizeManager::T8, QFont::Normal);
+    DFontSizeManager::instance()->bind(m_viewMoreButton, DFontSizeManager::T8, QFont::Normal);
     QFont fontMoreBtn = m_viewMoreButton->font();
     fontMoreBtn.setWeight(QFont::Normal);
     fontMoreBtn = DFontSizeManager::instance()->get(DFontSizeManager::T8, fontMoreBtn);
