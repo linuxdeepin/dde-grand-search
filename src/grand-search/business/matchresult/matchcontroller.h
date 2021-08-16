@@ -31,11 +31,10 @@ class MatchController : public QObject
 {
     Q_OBJECT
 public:
-    static MatchController *instance();
+    explicit MatchController(QObject *parent = nullptr);
     ~MatchController();
 
-protected:
-    explicit MatchController(QObject *parent = nullptr);
+    void onMissionIdChanged(const QString &missionId);
 
 signals:
     void matchedResult(const GrandSearch::MatchedItemMap &);

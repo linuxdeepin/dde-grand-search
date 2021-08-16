@@ -69,7 +69,7 @@ set(CMAKE_INSTALL_PREFIX "/usr")
 
 # 设置执行 make install 时哪个目标应该被 install 到哪个位置
 # 插件.so在/usr/lib/dde-dock/plugins/下则显示在插件区域,在/usr/lib/dde-dock/plugins/system-tray/目录则显示在托盘区域
-install(TARGETS ${PLUGIN_NAME} LIBRARY DESTINATION lib/dde-dock/plugins/system-trays/)
+install(TARGETS ${PLUGIN_NAME} LIBRARY DESTINATION lib/dde-dock/plugins/)
 
 
 

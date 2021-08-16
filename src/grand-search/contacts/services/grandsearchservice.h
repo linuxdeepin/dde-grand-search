@@ -28,13 +28,14 @@
 #define GrandSearchViewServicePath          "/com/deepin/dde/GrandSearch"
 #define GrandSearchViewServiceInterface     "com.deepin.dde.GrandSearch"
 
+class MainWindow;
 class GrandSearchServicePrivate;
 class GrandSearchService : public QObject
 {
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", GrandSearchViewServiceInterface)
 public:
-    explicit GrandSearchService(QObject *parent = nullptr);
+    explicit GrandSearchService(MainWindow *mainWindow, QObject *parent = nullptr);
     ~GrandSearchService();
 
     Q_SCRIPTABLE bool IsVisible() const;

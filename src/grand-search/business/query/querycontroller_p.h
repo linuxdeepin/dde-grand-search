@@ -34,12 +34,6 @@ public:
     explicit QueryControllerPrivate(QueryController *parent = nullptr);
 
 public slots:
-    // 搜索文本发生变化，发起新的搜索请求
-    void onSearchTextChanged(const QString &txt);
-
-    // 前端主动终止搜索，调用接口通知后端
-    void onTerminateSearch();
-
     // 发起新的搜索后，在搜索完成或结束前，周期调用后端心跳接口
     void keepAlive();
 
@@ -47,7 +41,7 @@ public slots:
     void onSearchCompleted(const QString &missionId);
 
 public:
-    QueryController *q_p;
+    QueryController *q_p = nullptr;
     QString m_missionId;
     QString m_searchText;
     QTimer *m_keepAliveTimer = nullptr;

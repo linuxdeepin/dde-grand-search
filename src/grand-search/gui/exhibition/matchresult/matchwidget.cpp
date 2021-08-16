@@ -22,8 +22,6 @@
 #include "matchwidget_p.h"
 #include "matchwidget.h"
 #include "listview/grandsearchlistview.h"
-#include "business/matchresult/matchcontroller.h"
-#include "gui/mainwindow.h"
 #include "utils/utils.h"
 
 #include <DScrollArea>
@@ -60,12 +58,6 @@ MatchWidget::MatchWidget(QWidget *parent)
 MatchWidget::~MatchWidget()
 {
 
-}
-
-void MatchWidget::connectToController()
-{
-    connect(MatchController::instance(), &MatchController::matchedResult, this, &MatchWidget::appendMatchedData);
-    connect(MatchController::instance(), &MatchController::searchCompleted, this, &MatchWidget::onSearchCompleted);
 }
 
 void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
@@ -138,8 +130,7 @@ void MatchWidget::onSearchCompleted()
     if (!m_vGroupWidgets.isEmpty())
         return;
 
-    MainWindow::instance()->showSerachNoContent(true);
-    MainWindow::instance()->showEntranceAppIcon(false);
+    emit sigShowNoContent(true);
 }
 
 void MatchWidget::onShowMore()

@@ -69,14 +69,12 @@ int main(int argc, char *argv[])
     app.loadTranslator();
 
     qDebug() << "starting" << app.applicationName() << app.applicationVersion() << getpid();
-    MainWindow::instance()->show();
+    MainWindow mainWindow;
+    mainWindow.show();
 
-    QTimer::singleShot(0, MainWindow::instance(), [](){
-        QueryController::instance();
-        MatchController::instance();
-
+    QTimer::singleShot(0, &mainWindow, [&mainWindow](){
         // 界面初始化完成后，再处理与业务有关的连接
-        MainWindow::instance()->connectToController();
+        mainWindow.connectToController();
     });
 
     // 注册dbus服务
@@ -86,7 +84,7 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    GrandSearchService service;
+    GrandSearchService service(&mainWindow);
     Q_UNUSED(new GrandSearchServiceAdaptor(&service))
     if (!conn.registerService(GrandSearchViewServiceName)) {
         qWarning() << "registerService Failed:" << conn.lastError();

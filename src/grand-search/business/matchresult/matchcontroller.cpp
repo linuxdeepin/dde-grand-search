@@ -21,16 +21,12 @@
  */
 #include "matchcontroller_p.h"
 #include "matchcontroller.h"
-#include "../query/querycontroller.h"
 #include "gui/datadefine.h"
 #include "global/builtinsearch.h"
 
 #include "contacts/interface/daemongrandsearchinterface.h"
 
 using namespace GrandSearch;
-
-class MatchControllerGlobal : public MatchController {};
-Q_GLOBAL_STATIC(MatchControllerGlobal, matchControllerGlobal)
 
 MatchControllerPrivate::MatchControllerPrivate(MatchController *parent)
     : q_p(parent)
@@ -42,15 +38,8 @@ MatchControllerPrivate::MatchControllerPrivate(MatchController *parent)
 
 void MatchControllerPrivate::initConnect()
 {
-    connect(QueryController::instance(), &QueryController::missionIdChanged, this, &MatchControllerPrivate::onMissionIdChanged);
-
     connect(m_daemonDbus, &DaemonGrandSearchInterface::Matched, this, &MatchControllerPrivate::onMatched);
     connect(m_daemonDbus, &DaemonGrandSearchInterface::SearchCompleted, this, &MatchControllerPrivate::onSearchCompleted);
-}
-
-void MatchControllerPrivate::onMissionIdChanged(const QString &missionId)
-{
-    m_missonId = missionId;
 }
 
 void MatchControllerPrivate::onMatched(const QString &missonId)
@@ -96,8 +85,8 @@ MatchController::~MatchController()
 
 }
 
-MatchController *MatchController::instance()
+void MatchController::onMissionIdChanged(const QString &missionId)
 {
-    return matchControllerGlobal;
+    d_p->m_missonId = missionId;
 }
 

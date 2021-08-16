@@ -30,7 +30,7 @@ class MainWindow : public Dtk::Widget::DBlurEffectWidget
 {
     Q_OBJECT
 public:
-    static MainWindow *instance();
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() Q_DECL_OVERRIDE;
 
     // 必须在主界面显示后再调用该函数，处理业务相关流程
@@ -60,9 +60,6 @@ private:
 
     void activeMainWindow();
     void updateMainWindowHeight();
-
-protected:
-    explicit MainWindow(QWidget *parent = nullptr);
 
 protected:
     virtual void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;

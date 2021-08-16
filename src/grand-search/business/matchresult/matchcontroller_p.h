@@ -32,7 +32,6 @@ public:
     explicit MatchControllerPrivate(MatchController *parent = nullptr);
 
 public slots:
-    void onMissionIdChanged(const QString &missionId);
     void onMatched(const QString &missonId);
     void onSearchCompleted(const QString &session);
 
@@ -40,7 +39,7 @@ public:
     void initConnect();
 
 public:
-    MatchController *q_p;
+    MatchController *q_p = nullptr;
 
     QString m_missonId;
 

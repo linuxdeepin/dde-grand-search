@@ -25,6 +25,7 @@
 #include "gui/datadefine.h"
 #include "gui/handlevisibility/handlevisibility.h"
 #include "business/query/querycontroller.h"
+#include "business/matchresult/matchcontroller.h"
 
 #include <DApplication>
 #include <DLabel>
@@ -35,9 +36,6 @@
 #include <QVBoxLayout>
 #include <QScreen>
 #include <QKeyEvent>
-
-class MainWindowGlobal : public MainWindow {};
-Q_GLOBAL_STATIC(MainWindowGlobal, mainWindowGlobal)
 
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
@@ -75,12 +73,27 @@ void MainWindow::connectToController()
 {
     Q_ASSERT(d_p->m_entranceWidget);
     Q_ASSERT(d_p->m_exhibitionWidget);
+    Q_ASSERT(!d_p->m_queryController);
+    Q_ASSERT(!d_p->m_matchController);
 
-    d_p->m_entranceWidget->connectToController();
-    d_p->m_exhibitionWidget->connectToController();
+    d_p->m_queryController = new QueryController(this);
+    d_p->m_matchController = new MatchController(this);
 
-    connect(QueryController::instance(), &QueryController::searchTextIsEmpty, this, &MainWindow::onHideExhitionWidget);
-    connect(QueryController::instance(), &QueryController::missionIdChanged, this, &MainWindow::onResetExhitionWidget);
+    // 通知查询控制模块发起新的搜索
+    connect(d_p->m_entranceWidget, &EntranceWidget::searchTextChanged, d_p->m_queryController, &QueryController::onSearchTextChanged);
+
+    // 通知查询控制器停止搜索
+    connect(this, &MainWindow::terminateSearch, d_p->m_queryController, &QueryController::onTerminateSearch);
+
+    // 同步查询搜索任务ID
+    connect(d_p->m_queryController, &QueryController::missionIdChanged, d_p->m_matchController, &MatchController::onMissionIdChanged);
+
+    connect(d_p->m_queryController, &QueryController::searchTextIsEmpty, this, &MainWindow::onHideExhitionWidget);
+    connect(d_p->m_queryController, &QueryController::missionIdChanged, this, &MainWindow::onResetExhitionWidget);
+
+    // 匹配结果解析显示
+    connect(d_p->m_matchController, &MatchController::matchedResult, d_p->m_exhibitionWidget, &ExhibitionWidget::appendMatchedData);
+    connect(d_p->m_matchController, &MatchController::searchCompleted, d_p->m_exhibitionWidget, &ExhibitionWidget::onSearchCompleted);
 }
 
 void MainWindow::showExhitionWidget(bool bShow)
@@ -105,6 +118,8 @@ void MainWindow::showSerachNoContent(bool bShow)
     if (bShow) {
         if (Q_LIKELY(d_p->m_exhibitionWidget))
             d_p->m_exhibitionWidget->setVisible(false);
+        // 显示无搜索结果时，必定在搜索入口界面中不显示应用图标
+        showEntranceAppIcon(false);
     }
 }
 
@@ -171,11 +186,6 @@ void MainWindow::onResetExhitionWidget(const QString &missionId)
     d_p->m_exhibitionWidget->clearData();
 }
 
-MainWindow *MainWindow::instance()
-{
-    return mainWindowGlobal;
-}
-
 void MainWindow::initUI()
 {
     // 禁用窗口管理器并置顶
@@ -220,9 +230,6 @@ void MainWindow::initConnect()
     Q_ASSERT(d_p->m_entranceWidget);
     Q_ASSERT(d_p->m_exhibitionWidget);
 
-    // 通知查询控制模块发起新的搜索
-    connect(d_p->m_entranceWidget, &EntranceWidget::searchTextChanged, this, &MainWindow::searchTextChanged);
-
     // 监控主屏改变信号，及时更新窗口位置
     connect(qApp, &QGuiApplication::primaryScreenChanged, this, &MainWindow::onPrimaryScreenChanged);
 
@@ -232,6 +239,7 @@ void MainWindow::initConnect()
     connect(d_p->m_entranceWidget, &EntranceWidget::sigCloseWindow, d_p->m_handleVisibility, &HandleVisibility::onCloseWindow);
 
     connect(d_p->m_exhibitionWidget, &ExhibitionWidget::sigAppIconChanged, d_p->m_entranceWidget, &EntranceWidget::onAppIconChanged);
+    connect(d_p->m_exhibitionWidget, &ExhibitionWidget::sigShowNoContent, this, &MainWindow::showSerachNoContent);
     connect(d_p->m_exhibitionWidget, &ExhibitionWidget::sigCloseWindow, d_p->m_handleVisibility, &HandleVisibility::onCloseWindow);
 }
 

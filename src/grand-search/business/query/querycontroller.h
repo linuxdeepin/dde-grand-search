@@ -29,8 +29,14 @@ class QueryController : public QObject
 {
     Q_OBJECT
 public:
-    static QueryController *instance();
+    explicit QueryController(QObject *parent = nullptr);
     ~QueryController();
+
+    // 搜索文本发生变化，发起新的搜索请求
+    void onSearchTextChanged(const QString &txt);
+
+    // 前端主动终止搜索，调用接口通知后端
+    void onTerminateSearch();
 
     // 返回当前任务ID，如果没有执行中的任务，则返回空
     QString getMissionID() const;
@@ -42,9 +48,6 @@ signals:
 
     // 发出搜索文本为空信号
     void searchTextIsEmpty();
-
-protected:
-    explicit QueryController(QObject *parent = nullptr);
 
 private:
     QScopedPointer<QueryControllerPrivate> d_p;

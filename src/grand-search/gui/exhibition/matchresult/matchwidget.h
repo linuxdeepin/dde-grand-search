@@ -36,7 +36,6 @@ class MatchWidget : public Dtk::Widget::DWidget
 public:
     explicit MatchWidget(QWidget *parent = nullptr);
     ~MatchWidget();
-    void connectToController();
 
 public slots:
     void appendMatchedData(const GrandSearch::MatchedItemMap &matchedData);//追加显示匹配数据
@@ -53,6 +52,7 @@ private slots:
 
 signals:
     void sigAppIconChanged(const QString &appIconName);
+    void sigShowNoContent(bool noContent);
     void sigCloseWindow();
 
 private:

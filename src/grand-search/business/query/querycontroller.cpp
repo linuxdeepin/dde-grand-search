@@ -20,7 +20,6 @@
  */
 #include "querycontroller_p.h"
 #include "querycontroller.h"
-#include "gui/mainwindow.h"
 #include "contacts/interface/daemongrandsearchinterface.h"
 #include "gui/datadefine.h"
 
@@ -31,9 +30,6 @@ using namespace GrandSearch;
 
 static const uint KeepAliveTime             = 15000;    // 搜索过程中，调用后端心跳函数间隔时间
 
-class QueryControllerGlobal : public QueryController{};
-Q_GLOBAL_STATIC(QueryControllerGlobal, queryControllerGlobal)
-
 QueryControllerPrivate::QueryControllerPrivate(QueryController *parent)
     : q_p(parent)
 {
@@ -43,50 +39,6 @@ QueryControllerPrivate::QueryControllerPrivate(QueryController *parent)
     m_daemonDbus = new DaemonGrandSearchInterface(this);
 
     connect(m_keepAliveTimer, &QTimer::timeout, this, &QueryControllerPrivate::keepAlive);
-}
-
-void QueryControllerPrivate::onSearchTextChanged(const QString &txt)
-{
-    if (m_searchText == txt)
-        return;
-
-    m_keepAliveTimer->stop();
-
-    if (txt.isEmpty()) {
-        onTerminateSearch();
-        qDebug() << "search terminate and missionId:" << m_missionId;
-        m_searchText.clear();
-        m_missionId.clear();
-
-        // 发出搜索文本为空信号
-        emit q_p->searchTextIsEmpty();
-
-        return;
-    }
-
-    m_searchText = txt;
-
-    // 搜索文本改变，创建新的会话ID
-    m_missionId = QUuid::createUuid().toString(QUuid::WithoutBraces);
-    emit q_p->missionIdChanged(m_missionId);
-
-    qDebug() << QString("m_daemonDbus->Search begin missionId:%1").arg(m_missionId);
-    bool started = m_daemonDbus->Search(m_missionId, m_searchText);
-    qDebug() << QString("m_daemonDbus->Search end   missionId:%1").arg(m_missionId);
-    if (started) {
-        m_keepAliveTimer->start();
-    } else {
-        qWarning() << QString("search failed missionId:%1").arg(m_missionId);
-    }
-}
-
-void QueryControllerPrivate::onTerminateSearch()
-{
-    if (m_missionId.isEmpty())
-        return;
-    qDebug() << "m_daemonDbus->Terminate begin missionId:" << m_missionId;
-    m_daemonDbus->Terminate();
-    qDebug() << "m_daemonDbus->Terminate end   missionId:" << m_missionId;
 }
 
 void QueryControllerPrivate::keepAlive()
@@ -106,13 +58,56 @@ QueryController::QueryController(QObject *parent)
     : QObject(parent)
     , d_p(new QueryControllerPrivate(this))
 {
-    connect(MainWindow::instance(), &MainWindow::searchTextChanged, d_p.data(), &QueryControllerPrivate::onSearchTextChanged);
-    connect(MainWindow::instance(), &MainWindow::terminateSearch, d_p.data(), &QueryControllerPrivate::onTerminateSearch);
+
 }
 
 QueryController::~QueryController()
 {
 
+}
+
+void QueryController::onSearchTextChanged(const QString &txt)
+{
+    if (txt == d_p->m_searchText)
+        return;
+
+    d_p->m_keepAliveTimer->stop();
+
+    if (txt.isEmpty()) {
+        onTerminateSearch();
+        qDebug() << "search terminate and missionId:" << d_p->m_missionId;
+        d_p->m_searchText.clear();
+        d_p->m_missionId.clear();
+
+        // 发出搜索文本为空信号
+        emit searchTextIsEmpty();
+
+        return;
+    }
+
+    d_p->m_searchText = txt;
+
+    // 搜索文本改变，创建新的会话ID
+    d_p->m_missionId = QUuid::createUuid().toString(QUuid::WithoutBraces);
+    emit missionIdChanged(d_p->m_missionId);
+
+    qDebug() << QString("m_daemonDbus->Search begin missionId:%1").arg(d_p->m_missionId);
+    bool started = d_p->m_daemonDbus->Search(d_p->m_missionId, d_p->m_searchText);
+    qDebug() << QString("m_daemonDbus->Search end   missionId:%1").arg(d_p->m_missionId);
+    if (started) {
+        d_p->m_keepAliveTimer->start();
+    } else {
+        qWarning() << QString("search failed missionId:%1").arg(d_p->m_missionId);
+    }
+}
+
+void QueryController::onTerminateSearch()
+{
+    if (d_p->m_missionId.isEmpty())
+        return;
+    qDebug() << "m_daemonDbus->Terminate begin missionId:" << d_p->m_missionId;
+    d_p->m_daemonDbus->Terminate();
+    qDebug() << "m_daemonDbus->Terminate end   missionId:" << d_p->m_missionId;
 }
 
 QString QueryController::getMissionID() const
@@ -124,10 +119,3 @@ bool QueryController::isEmptySearchText() const
 {
     return d_p->m_searchText.isEmpty();
 }
-
-QueryController *QueryController::instance()
-{
-    return queryControllerGlobal;
-}
-
-

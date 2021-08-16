@@ -22,6 +22,8 @@
 #ifndef EXHIBITIONWIDGET_H
 #define EXHIBITIONWIDGET_H
 
+#include "global/matcheditem.h"
+
 #include <DWidget>
 
 #include <QScopedPointer>
@@ -37,7 +39,6 @@ class ExhibitionWidget : public Dtk::Widget::DWidget
 public:
     explicit ExhibitionWidget(QWidget *parent = nullptr);
     ~ExhibitionWidget();
-    void connectToController();
 
     void clearData();
 
@@ -46,8 +47,12 @@ public slots:
     void onSelectPreviousItem();
     void onHandleItem();
 
+    void appendMatchedData(const GrandSearch::MatchedItemMap &matchedData);//追加显示匹配数据
+    void onSearchCompleted();
+
 signals:
     void sigAppIconChanged(const QString &appIconName);
+    void sigShowNoContent(bool noContent);
     void sigCloseWindow();
 
 protected:

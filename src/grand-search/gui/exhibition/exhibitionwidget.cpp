@@ -50,13 +50,6 @@ ExhibitionWidget::~ExhibitionWidget()
 
 }
 
-void ExhibitionWidget::connectToController()
-{
-    Q_ASSERT(m_matchWidget);
-
-    m_matchWidget->connectToController();
-}
-
 void ExhibitionWidget::clearData()
 {
     Q_ASSERT(m_matchWidget);
@@ -94,6 +87,16 @@ void ExhibitionWidget::onHandleItem()
     m_matchWidget->handleItem();
 }
 
+void ExhibitionWidget::appendMatchedData(const MatchedItemMap &matchedData)
+{
+    m_matchWidget->appendMatchedData(matchedData);
+}
+
+void ExhibitionWidget::onSearchCompleted()
+{
+    m_matchWidget->onSearchCompleted();
+}
+
 void ExhibitionWidget::initUi()
 {
     m_hLayout = new QHBoxLayout(this);
@@ -110,6 +113,7 @@ void ExhibitionWidget::initConnect()
     Q_ASSERT(m_matchWidget);
 
     connect(m_matchWidget, &MatchWidget::sigAppIconChanged, this, &ExhibitionWidget::sigAppIconChanged);
+    connect(m_matchWidget, &MatchWidget::sigShowNoContent, this, &ExhibitionWidget::sigShowNoContent);
     connect(m_matchWidget, &MatchWidget::sigCloseWindow, this, &ExhibitionWidget::sigCloseWindow);
 }
 

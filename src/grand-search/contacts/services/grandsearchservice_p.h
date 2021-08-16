@@ -26,9 +26,10 @@
 class GrandSearchServicePrivate
 {
 public:
-    explicit GrandSearchServicePrivate(GrandSearchService *parent = nullptr);
+    explicit GrandSearchServicePrivate(MainWindow *mainWindow, GrandSearchService *parent = nullptr);
 
-    GrandSearchService *q_p;
+    GrandSearchService *q_p = nullptr;
+    MainWindow *m_mainWindow = nullptr;
 };
 
 #endif // GRANDSEARCHSERVICE_P_H

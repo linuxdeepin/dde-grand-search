@@ -24,17 +24,18 @@
 
 #include <QDebug>
 
-GrandSearchServicePrivate::GrandSearchServicePrivate(GrandSearchService *parent)
+GrandSearchServicePrivate::GrandSearchServicePrivate(MainWindow *mainWindow, GrandSearchService *parent)
     : q_p(parent)
+    , m_mainWindow(mainWindow)
 {
 
 }
 
-GrandSearchService::GrandSearchService(QObject *parent)
+GrandSearchService::GrandSearchService(MainWindow *mainWindow, QObject *parent)
     : QObject(parent)
-    , d_p(new GrandSearchServicePrivate(this))
+    , d_p(new GrandSearchServicePrivate(mainWindow, this))
 {
-    connect(MainWindow::instance(), &MainWindow::visibleChanged, this, &GrandSearchService::VisibleChanged);
+    connect(d_p->m_mainWindow, &MainWindow::visibleChanged, this, &GrandSearchService::VisibleChanged);
 }
 
 GrandSearchService::~GrandSearchService()
@@ -44,20 +45,24 @@ GrandSearchService::~GrandSearchService()
 
 bool GrandSearchService::IsVisible() const
 {
-    bool isvisble = MainWindow::instance()->isVisible();
+    Q_ASSERT(d_p->m_mainWindow);
+
+    bool isvisble = d_p->m_mainWindow->isVisible();
     qDebug() << "get by dbus and isvisible:" << isvisble;
     return isvisble;
 }
 
 void GrandSearchService::SetVisible(const bool visible)
 {
+    Q_ASSERT(d_p->m_mainWindow);
+
     // todo 二阶段：根据情况，可能需要设置为隐藏，而不能直接退出
-    if (MainWindow::instance()->isVisible() == visible)
+    if (d_p->m_mainWindow->isVisible() == visible)
         return;
     if (!visible) {
         qInfo() << "set visible is:" << visible <<",and exit it.";
-        MainWindow::instance()->close();
+        d_p->m_mainWindow->close();
     } else {
-        MainWindow::instance()->setVisible(visible);
+        d_p->m_mainWindow->setVisible(visible);
     }
 }

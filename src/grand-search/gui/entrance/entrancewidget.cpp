@@ -135,11 +135,6 @@ EntranceWidget::~EntranceWidget()
 
 }
 
-void EntranceWidget::connectToController()
-{
-
-}
-
 void EntranceWidget::showLabelAppIcon(bool bVisile)
 {
     Q_ASSERT(d_p->m_lineEdit);

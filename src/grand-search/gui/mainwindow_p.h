@@ -28,6 +28,8 @@
 class EntranceWidget;
 class ExhibitionWidget;
 class HandleVisibility;
+class QueryController;
+class MatchController;
 DWIDGET_BEGIN_NAMESPACE
 class DLabel;
 DWIDGET_END_NAMESPACE
@@ -43,6 +45,8 @@ public:
     ExhibitionWidget *m_exhibitionWidget = nullptr;
     Dtk::Widget::DLabel *m_searchNoContentWidget = nullptr;
     QVBoxLayout *m_mainLayout = nullptr;
+    QueryController *m_queryController = nullptr;
+    MatchController *m_matchController = nullptr;
 };
 
 #endif // MAINWINDOW_P_H
