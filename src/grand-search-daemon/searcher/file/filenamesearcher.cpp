@@ -22,7 +22,8 @@
 #include "global/builtinsearch.h"
 #include "filenameworker.h"
 
-#include <QDBusConnectionInterface>
+#include <QDBusInterface>
+#include <QDBusReply>
 
 FileNameSearcher::FileNameSearcher(QObject *parent) : Searcher(parent)
 {
@@ -35,10 +36,38 @@ QString FileNameSearcher::name() const
 
 bool FileNameSearcher::isActive() const
 {
-    QDBusConnectionInterface *cif = QDBusConnection::systemBus().interface();
-    Q_ASSERT(cif);
+    QDBusInterface interface("com.deepin.anything",
+                             "/com/deepin/anything",
+                             "com.deepin.anything",
+                             QDBusConnection::systemBus());
+    interface.setTimeout(500);
+    if (!interface.isValid()) {
+        qWarning() << QDBusConnection::systemBus().lastError().message();
+        return false;
+    }
 
-    return cif->isServiceRegistered("com.deepin.anything");
+    // fix bug 90645
+    // 如果allPath返回为空，则调用refresh刷新一次
+    static bool isAvailable = false;
+    if (!isAvailable) {
+        QDBusReply<QStringList> reply = interface.call("allPath");
+        if (reply.isValid()) {
+            auto paths = reply.value();
+            if (paths.isEmpty()) {
+                QDBusReply<QStringList> re = interface.call("refresh", QByteArray());
+                if (re.isValid()) {
+                    isAvailable = true;
+                    qInfo() << "refresh result:" << re.value();
+                } else {
+                    qWarning() << "refresh method called failed," << re.error().message();
+                }
+            }
+        } else {
+            qWarning() << "allPath method called failed," << reply.error().message();
+        }
+    }
+
+    return true;
 }
 
 bool FileNameSearcher::activate()
