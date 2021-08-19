@@ -98,13 +98,7 @@ bool MainController::newSearch(const QString &key)
         return false;
 
     //释放当前任务
-    if (d->m_currentTask) {
-        d->m_currentTask->stop();
-        disconnect(d->m_currentTask, nullptr, this, nullptr);
-
-        d->m_currentTask->deleteSelf();
-        d->m_currentTask = nullptr;
-    }
+    terminate();
 
     auto task = new TaskCommander(key);
     qInfo() << "new task:" << task << task->taskID();

@@ -20,7 +20,7 @@
  */
 #include "pluginliaison.h"
 #include "pluginliaisonprivate.h"
-#include "dataconvertor.h"
+#include "convertors/dataconvertor.h"
 
 #include <QDBusPendingCallWatcher>
 #include <QtConcurrent>

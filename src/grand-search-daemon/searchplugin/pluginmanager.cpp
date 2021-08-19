@@ -20,7 +20,7 @@
  */
 #include "pluginmanager.h"
 #include "pluginmanagerprivate.h"
-#include "dataconvertor.h"
+#include "convertors/dataconvertor.h"
 
 #include <QStandardPaths>
 #include <QDebug>

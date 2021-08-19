@@ -145,8 +145,8 @@ set(SEARCHPLUGIN
     searchplugin/loader/pluginloader.cpp
     searchplugin/process/pluginprocess.h
     searchplugin/process/pluginprocess.cpp
-    searchplugin/dataconvertor.h
-    searchplugin/dataconvertor.cpp
+    searchplugin/convertors/dataconvertor.h
+    searchplugin/convertors/dataconvertor.cpp
     searchplugin/pluginliaison.h
     searchplugin/pluginliaisonprivate.h
     searchplugin/pluginliaison.cpp

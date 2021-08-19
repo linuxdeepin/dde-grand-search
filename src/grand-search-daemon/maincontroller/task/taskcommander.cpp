@@ -134,7 +134,7 @@ bool TaskCommander::start()
         d->m_asyncLine.setFuture(QtConcurrent::run([this]() {
             QString taskID = d->m_id;
             for (auto worker : d->m_asyncWorkers) {
-                if (!d->m_working )
+                if (!d->m_working)
                     return;
 
                 if (worker->working(&taskID)) {

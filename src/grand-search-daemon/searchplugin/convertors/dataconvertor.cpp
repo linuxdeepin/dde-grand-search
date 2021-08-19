@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "dataconvertor.h"
-#include "convertors/convertorv1_0.h"
+#include "convertorv1_0.h"
 
 class DataConvertorGlobal : public DataConvertor {};
 Q_GLOBAL_STATIC(DataConvertorGlobal, dataConvertorGlobal)

@@ -21,7 +21,7 @@
 #include "pluginloader.h"
 #include "utils/searchpluginconf.h"
 #include "global/builtinsearch.h"
-#include "searchplugin/dataconvertor.h"
+#include "searchplugin/convertors/dataconvertor.h"
 
 #include <QDir>
 #include <QSettings>

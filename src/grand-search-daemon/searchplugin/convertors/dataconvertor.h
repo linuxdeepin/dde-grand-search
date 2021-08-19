@@ -21,7 +21,7 @@
 #ifndef DATACONVERTOR_H
 #define DATACONVERTOR_H
 
-#include "convertors/abstractconvertor.h"
+#include "abstractconvertor.h"
 
 #include <QtCore>
 
