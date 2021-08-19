@@ -49,7 +49,6 @@ class DCollator : public QCollator
 public:
     DCollator() : QCollator()
     {
-        setNumericMode(true);
         setCaseSensitivity(Qt::CaseInsensitive);
     }
 };
@@ -60,7 +59,7 @@ bool Utils::sort(MatchedItems &list, Qt::SortOrder order/* = Qt::AscendingOrder*
 {
     QTime time;
     time.start();
-    qSort(list.begin(), list.end(), [order](const MatchedItem node1, const MatchedItem node2) {
+    qSort(list.begin(), list.end(), [order](MatchedItem node1, MatchedItem node2) {
         return compareByString(node1.name, node2.name, order);
     });
 
@@ -68,9 +67,23 @@ bool Utils::sort(MatchedItems &list, Qt::SortOrder order/* = Qt::AscendingOrder*
     return true;
 }
 
-bool Utils::compareByString(const QString &str1, const QString &str2, Qt::SortOrder order)
+bool Utils::compareByString(QString &str1, QString &str2, Qt::SortOrder order)
 {
     thread_local static DCollator sortCollator;
+
+    // 先去掉前边重复的字符串
+    int nMinLength = qMin(str1.size(), str2.size());
+    int nMidIndex = -1;
+    for (int i = 0; i < nMinLength; i++) {
+        if (str1[i] != str2[i]) {
+            nMidIndex = i;
+            break;
+        }
+    }
+    if (nMidIndex > 0) {
+        str1=str1.mid(nMidIndex);
+        str2=str2.mid(nMidIndex);
+    }
 
     // 其他符号要排在最后
     if (startWithSymbol(str1)) {
@@ -128,7 +141,7 @@ bool Utils::startWithSymbol(const QString &text)
     bool bRet = false;
     // 先匹配中文标点符号
     QRegExp regExp("^[\u3002\uff1b\uff0c\uff1a\u201c\u201d\uff08\uff09\u3001\uff1f\u300a\u300b].*$");
-    bRet = regExp.exactMatch(text);
+    bRet = regExp.exactMatch(text.at(0));
 
     // 若不是中文标点符号，再判断是否为其他符号
     if (!bRet)
@@ -144,7 +157,7 @@ bool Utils::startWithHanzi(const QString &text)
 
     // 匹配中文
     QRegExp regExp("^[\u4e00-\u9fa5].*$");
-    bool bRet = regExp.exactMatch(text);
+    bool bRet = regExp.exactMatch(text.at(0));
 
     return bRet;
 }
@@ -156,7 +169,7 @@ bool Utils::startWithLatin(const QString &text)
 
     // 匹配英文
     QRegExp regExp("^[a-zA-Z].*$");
-    bool bRet = regExp.exactMatch(text);
+    bool bRet = regExp.exactMatch(text.at(0));
 
     return bRet;
 }
@@ -184,7 +197,7 @@ bool Utils::startWidthNum(const QString &text)
 
     // 匹配数字
     QRegExp regExp("^[0-9].*$");
-    bool bRet = regExp.exactMatch(text);
+    bool bRet = regExp.exactMatch(text.at(0));
 
     return bRet;
 }

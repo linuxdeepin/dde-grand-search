@@ -31,7 +31,7 @@ public:
     // 排序算法 用于搜索结果排序 规则为：中文 > 英文 > 其他语言 > 标点符号
     static bool sort(GrandSearch::MatchedItems &list, Qt::SortOrder order = Qt::AscendingOrder);
 
-    static bool compareByString(const QString &str1, const QString &str2, Qt::SortOrder order = Qt::AscendingOrder);
+    static bool compareByString(QString &str1, QString &str2, Qt::SortOrder order = Qt::AscendingOrder);
     static bool startWithSymbol(const QString &text);
     static bool startWithHanzi(const QString &text);
     static bool startWithLatin(const QString &text);
