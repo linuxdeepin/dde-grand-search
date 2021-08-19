@@ -48,9 +48,6 @@ public:
     // 返回插件的 widget
     QWidget *itemWidget(const QString &itemKey) override;
 
-    // 系统主题改变时，刷新图标
-    void refreshIcon(const QString &itemKey) override;
-
     // 返回插件是否允许被禁用
     bool pluginIsAllowDisable() override;
 

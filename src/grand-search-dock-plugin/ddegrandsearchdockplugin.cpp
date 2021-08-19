@@ -59,14 +59,6 @@ QWidget *DdeGrandSearchDockPlugin::itemWidget(const QString &itemKey)
     return m_searchWidget.data();
 }
 
-void DdeGrandSearchDockPlugin::refreshIcon(const QString &itemKey)
-{
-    Q_UNUSED(itemKey);
-    Q_ASSERT(m_searchWidget.data());
-
-    m_searchWidget->updateIcon();
-}
-
 bool DdeGrandSearchDockPlugin::pluginIsAllowDisable()
 {
     // 插件不允许禁用

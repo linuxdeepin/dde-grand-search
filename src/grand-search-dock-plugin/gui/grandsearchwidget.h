@@ -34,17 +34,24 @@ public:
     explicit GrandSearchWidget(QWidget *parent = nullptr);
     ~GrandSearchWidget() override;
 
-    void updateIcon();
     QString itemCommand(const QString &itemKey);
 
 private slots:
     void grandSearchVisibleChanged(bool vidible);
 
 protected:
-    void resizeEvent(QResizeEvent *e) override;
     void paintEvent(QPaintEvent *e) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void leaveEvent(QEvent *event) override;
 
 private:
+    const QPixmap loadSvg(const QString &fileName, const QSize &size) const;
+
+private:
+    bool m_hover = false;       // 鼠标是否悬浮
+    bool m_pressed = false;     // 鼠标是否按下
     QIcon m_icon;
     QPixmap m_pixmap;
     bool m_grandSearchVisible = false;
