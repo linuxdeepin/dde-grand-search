@@ -87,7 +87,7 @@ void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
         // 列表中有数据，显示类目列表
         groupWidget->setVisible(groupWidget->itemCount() > 0);
 
-        //有新增匹配结果，需要调整重新布局
+        // 有新增匹配结果，需要调整重新布局
         if (itData.value().size() > 0)
             bNeedRelayout = true;
 
@@ -150,7 +150,7 @@ void MatchWidget::selectNextItem()
 
         // 选择项在当前列表中
         GroupWidget *group = m_vGroupWidgets.at(i);
-        GrandSearchListview *listView = group->getListView();
+        GrandSearchListView *listView = group->getListView();
         const QModelIndex &index = listView->currentIndex();
 
         int nextRow = index.row() + 1;
@@ -158,7 +158,7 @@ void MatchWidget::selectNextItem()
         if (nextIndex.isValid()) {
             qDebug() << "select item:" << group->groupName() << nextIndex.row()/* << nextIndex.data(DATA_ROLE).value<MatchedItem>().name*/;
             listView->setCurrentIndex(nextIndex);
-            updateEntranceAppIcon(nextIndex);
+            updateCurrentAppIcon(nextIndex);
             break;
         } else {
             // 选择项是当前列表的最后一项，需要选择下一个列表的第一项
@@ -192,7 +192,7 @@ void MatchWidget::selectPreviousItem()
 
         // 选择项在当前列表中
         GroupWidget *group = m_vGroupWidgets.at(i);
-        GrandSearchListview *listView = group->getListView();
+        GrandSearchListView *listView = group->getListView();
         const QModelIndex &index = listView->currentIndex();
 
         int previousRow = index.row() - 1;
@@ -200,7 +200,7 @@ void MatchWidget::selectPreviousItem()
         if (previousIndex.isValid()) {
             qDebug() << "select item:" << group->groupName() << previousIndex.row()/* << previousIndex.data(DATA_ROLE).value<MatchedItem>().name*/;
             listView->setCurrentIndex(previousIndex);
-            updateEntranceAppIcon(previousIndex);
+            updateCurrentAppIcon(previousIndex);
             break;
         } else {
             // 选择项是当前列表的第一项，需要选择上一个列表的最后一项
@@ -226,7 +226,7 @@ void MatchWidget::handleItem()
 {
     for (int i = 0; i < m_vGroupWidgets.count(); ++i) {
         if (hasSelectItem(i)) {
-            GrandSearchListview *listView = m_vGroupWidgets.at(i)->getListView();
+            GrandSearchListView *listView = m_vGroupWidgets.at(i)->getListView();
             Q_ASSERT(listView);
             MatchedItem item = listView->currentIndex().data(DATA_ROLE).value<MatchedItem>();
             Utils::openMatchedItem(item);
@@ -236,11 +236,11 @@ void MatchWidget::handleItem()
     }
 }
 
-void MatchWidget::onSelectItemByMouse(const GrandSearchListview *listView)
+void MatchWidget::onSelectItemByMouse(const GrandSearchListView *listView)
 {
     for (int i=0; i<m_vGroupWidgets.count(); ++i) {
         if (hasSelectItem(i)) {
-            GrandSearchListview *tmpListView = m_vGroupWidgets.at(i)->getListView();
+            GrandSearchListView *tmpListView = m_vGroupWidgets.at(i)->getListView();
             Q_ASSERT(tmpListView);
             if (listView != tmpListView)
                 tmpListView->setCurrentIndex(QModelIndex());
@@ -258,7 +258,7 @@ bool MatchWidget::selectFirstItem(int groupNumber)
         GroupWidget *group = m_vGroupWidgets.at(i);
         Q_ASSERT(group);
 
-        GrandSearchListview *listView = group->getListView();
+        GrandSearchListView *listView = group->getListView();
         Q_ASSERT(listView);
 
         if (Q_LIKELY(listView->rowCount() > 0)) {
@@ -266,7 +266,7 @@ bool MatchWidget::selectFirstItem(int groupNumber)
             if (Q_LIKELY(index.isValid())) {
                 qDebug() << "select item:" << group->groupName() << index.row();
                 listView->setCurrentIndex(index);
-                updateEntranceAppIcon(index);
+                updateCurrentAppIcon(index);
                 return true;
             }
         }
@@ -281,7 +281,7 @@ bool MatchWidget::selectLastItem(int groupNumber)
         GroupWidget *group = m_vGroupWidgets.at(i);
         Q_ASSERT(group);
 
-        GrandSearchListview *listView = group->getListView();
+        GrandSearchListView *listView = group->getListView();
         Q_ASSERT(listView);
 
         if (Q_LIKELY(listView->rowCount() > 0)) {
@@ -289,7 +289,7 @@ bool MatchWidget::selectLastItem(int groupNumber)
             if (Q_LIKELY(index.isValid())) {
                 qDebug() << "select item:" << group->groupName() << index.row();
                 listView->setCurrentIndex(index);
-                updateEntranceAppIcon(index);
+                updateCurrentAppIcon(index);
                 return true;
             }
         }
@@ -312,7 +312,7 @@ bool MatchWidget::hasSelectItem(int groupNumber)
     if (Q_UNLIKELY(!group))
         return false;
 
-    GrandSearchListview *listView = group->getListView();
+    GrandSearchListView *listView = group->getListView();
     if (Q_UNLIKELY(!listView))
         return false;
 
@@ -332,7 +332,7 @@ void MatchWidget::adjustScrollBar()
         if (Q_UNLIKELY((!group)))
             continue;
 
-        GrandSearchListview* listView = group->getListView();
+        GrandSearchListView* listView = group->getListView();
         if (Q_UNLIKELY(!listView))
             continue;
 
@@ -372,7 +372,7 @@ void MatchWidget::adjustScrollBar()
 //    qDebug() << QString("nMin:%1 nMax:%2 nCurSelHeight%3 nCurPosValue:%4 nNewPosValue:%5").arg(nMin).arg(nMax).arg(nCurSelHeight).arg(nCurPosValue).arg(nNewPosValue);
 }
 
-void MatchWidget::updateEntranceAppIcon(const QModelIndex &index)
+void MatchWidget::updateCurrentAppIcon(const QModelIndex &index)
 {
     MatchedItem item;
     if (index.isValid())
@@ -468,11 +468,11 @@ GroupWidget *MatchWidget::createGroupWidget(const QString &groupClassName)
         GroupWidget* groupWidget = new GroupWidget(m_scrollAreaContent);
         connect(groupWidget, &GroupWidget::showMore, this, &MatchWidget::reLayout);
 
-        GrandSearchListview *listView = groupWidget->getListView();
+        GrandSearchListView *listView = groupWidget->getListView();
         Q_ASSERT(listView);
-        connect(listView, &GrandSearchListview::sigAppIconChanged, this, &MatchWidget::sigAppIconChanged);
-        connect(listView, &GrandSearchListview::sigSelectItemByMouse, this, &MatchWidget::onSelectItemByMouse);
-        connect(listView, &GrandSearchListview::sigItemClicked, this, &MatchWidget::sigCloseWindow);
+        connect(listView, &GrandSearchListView::sigAppIconChanged, this, &MatchWidget::sigAppIconChanged);
+        connect(listView, &GrandSearchListView::sigSelectItemByMouse, this, &MatchWidget::onSelectItemByMouse);
+        connect(listView, &GrandSearchListView::sigItemClicked, this, &MatchWidget::sigCloseWindow);
 
         groupWidget->setGroupName(groupClassName);
         m_groupWidgetMap[groupClassName] = groupWidget;
@@ -503,20 +503,9 @@ void MatchWidget::sortVislibleGroupList()
 
         itemWidget++;
     }
-
 }
 
 void MatchWidget::paintEvent(QPaintEvent *event)
 {
-// 调试使用，最后发布时需删除todo
-#ifdef SHOW_BACKCOLOR
-    Q_UNUSED(event);
-
-    QPainter painter(this);
-
-    painter.setBrush(Qt::blue);
-    painter.drawRect(rect());
-#else
     DWidget::paintEvent(event);
-#endif
 }

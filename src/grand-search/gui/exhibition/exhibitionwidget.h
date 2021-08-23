@@ -38,7 +38,7 @@ class ExhibitionWidget : public Dtk::Widget::DWidget
     Q_OBJECT
 public:
     explicit ExhibitionWidget(QWidget *parent = nullptr);
-    ~ExhibitionWidget();
+    ~ExhibitionWidget() override;
 
     void clearData();
 

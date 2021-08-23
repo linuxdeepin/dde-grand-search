@@ -37,10 +37,10 @@ public:
     QString itemCommand(const QString &itemKey);
 
 private slots:
-    void grandSearchVisibleChanged(bool vidible);
+    void grandSearchVisibleChanged(bool visible);
 
 protected:
-    void paintEvent(QPaintEvent *e) override;
+    void paintEvent(QPaintEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;

@@ -57,7 +57,7 @@ public:
     // 当插件的禁用状态被用户改变时此接口被调用
     void pluginStateSwitched() override;
 
-    // 返回鼠标左键点击插件主控件后要执行的命令数据
+    // 返回鼠标左键点击插件主控件后要执行的命令数据（鼠标释放时调用）
     const QString itemCommand(const QString &itemKey) override;
 
     // 返回插件主控件的排序位置

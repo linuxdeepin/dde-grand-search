@@ -36,7 +36,7 @@ using namespace GrandSearch;
 #define ICON_SIZE 24
 #define ListItemTextMaxWidth      240      // 文本元素最大显示宽度
 
-GrandSearchListview::GrandSearchListview(QWidget *parent)
+GrandSearchListView::GrandSearchListView(QWidget *parent)
     : DListView(parent)
 {
     m_model = new GrandSearchListModel(0, 0, this);
@@ -56,17 +56,17 @@ GrandSearchListview::GrandSearchListview(QWidget *parent)
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     connect(this, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onItemClicked(const QModelIndex &)));
-    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &GrandSearchListview::onSetThemeType);
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &GrandSearchListView::onSetThemeType);
 
     m_themeType = DGuiApplicationHelper::instance()->themeType();
 }
 
-GrandSearchListview::~GrandSearchListview()
+GrandSearchListView::~GrandSearchListView()
 {
 
 }
 
-void GrandSearchListview::setMatchedItems(const MatchedItems &items, const QString &group)
+void GrandSearchListView::setMatchedItems(const MatchedItems &items, const QString &group)
 {
     m_matchedItems = items;
     m_model->clear();
@@ -75,7 +75,7 @@ void GrandSearchListview::setMatchedItems(const MatchedItems &items, const QStri
     }
 }
 
-void GrandSearchListview::addRow(const MatchedItem &item, const QString &group)
+void GrandSearchListView::addRow(const MatchedItem &item, const QString &group)
 {
     QStandardItem *newItem = new QStandardItem;
     m_model->appendRow(newItem);
@@ -86,13 +86,13 @@ void GrandSearchListview::addRow(const MatchedItem &item, const QString &group)
     setData(index, item, group);
 }
 
-void GrandSearchListview::addRows(const MatchedItems &items, const QString &group)
+void GrandSearchListView::addRows(const MatchedItems &items, const QString &group)
 {
     for (auto item : items)
         addRow(item, group);
 }
 
-int GrandSearchListview::insertRow(int nRow, const MatchedItem &item, const QString &group)
+int GrandSearchListView::insertRow(int nRow, const MatchedItem &item, const QString &group)
 {
     if (nRow < 0 || nRow >= m_model->rowCount()) {
         addRow(item, group);
@@ -108,7 +108,7 @@ int GrandSearchListview::insertRow(int nRow, const MatchedItem &item, const QStr
     return nRow;
 }
 
-void GrandSearchListview::insertRows(int nRow, const MatchedItems &items, const QString &group)
+void GrandSearchListView::insertRows(int nRow, const MatchedItems &items, const QString &group)
 {
     if (nRow < 0 || nRow >= m_model->rowCount()) {
         addRows(items, group);
@@ -120,12 +120,12 @@ void GrandSearchListview::insertRows(int nRow, const MatchedItems &items, const 
     }
 }
 
-void GrandSearchListview::removeRows(int nRow, int nCount)
+void GrandSearchListView::removeRows(int nRow, int nCount)
 {
     m_model->removeRows(nRow, nCount);
 }
 
-MatchedItems GrandSearchListview::groupItems(const QString &group)
+MatchedItems GrandSearchListView::groupItems(const QString &group)
 {
     MatchedItems items;
     for (int i = 0; i < m_model->rowCount(); i++) {
@@ -137,7 +137,7 @@ MatchedItems GrandSearchListview::groupItems(const QString &group)
     return items;
 }
 
-int GrandSearchListview::lastShowRow(const QString &group)
+int GrandSearchListView::lastShowRow(const QString &group)
 {
     if (group.isEmpty())
         return -1;
@@ -154,23 +154,23 @@ int GrandSearchListview::lastShowRow(const QString &group)
     return nRow;
 }
 
-int GrandSearchListview::rowCount()
+int GrandSearchListView::rowCount()
 {
     return m_model->rowCount();
 }
 
-int GrandSearchListview::getThemeType() const
+int GrandSearchListView::getThemeType() const
 {
     return m_themeType;
 }
 
-void GrandSearchListview::clear()
+void GrandSearchListView::clear()
 {
     if (m_model)
         m_model->clear();
 }
 
-void GrandSearchListview::onItemClicked(const QModelIndex &index)
+void GrandSearchListView::onItemClicked(const QModelIndex &index)
 {
     if (!index.isValid())
         return;
@@ -182,12 +182,12 @@ void GrandSearchListview::onItemClicked(const QModelIndex &index)
     qDebug() << QString("GrandSearchListView::onItemClicked item clicked r[%1] c[%2]").arg(index.row()).arg(index.column());
 }
 
-void GrandSearchListview::onSetThemeType(int type)
+void GrandSearchListView::onSetThemeType(int type)
 {
     m_themeType = type;
 }
 
-void GrandSearchListview::mouseMoveEvent(QMouseEvent *event)
+void GrandSearchListView::mouseMoveEvent(QMouseEvent *event)
 {
     QModelIndex index = indexAt(event->pos());
     if (index.isValid()) {
@@ -208,13 +208,13 @@ void GrandSearchListview::mouseMoveEvent(QMouseEvent *event)
     return DListView::mouseMoveEvent(event);
 }
 
-bool GrandSearchListview::event(QEvent *event)
+bool GrandSearchListView::event(QEvent *event)
 {
     Q_UNUSED(event)
     return QListView::event(event);
 }
 
-bool GrandSearchListview::viewportEvent(QEvent *event)
+bool GrandSearchListView::viewportEvent(QEvent *event)
 {
     switch (event->type()) {
     case QEvent::HoverMove :
@@ -226,13 +226,13 @@ bool GrandSearchListview::viewportEvent(QEvent *event)
     return DListView::viewportEvent(event);
 }
 
-QString GrandSearchListview::cacheDir()
+QString GrandSearchListView::cacheDir()
 {
     auto userCachePath = DStandardPaths::standardLocations(QStandardPaths::CacheLocation).value(0);
     return userCachePath;
 }
 
-void GrandSearchListview::setData(const QModelIndex& index, const MatchedItem &item, const QString &group)
+void GrandSearchListView::setData(const QModelIndex& index, const MatchedItem &item, const QString &group)
 {
     if (!index.isValid())
         return;

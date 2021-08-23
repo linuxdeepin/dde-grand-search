@@ -90,7 +90,7 @@ void DdeGrandSearchDockPlugin::pluginStateSwitched()
 const QString DdeGrandSearchDockPlugin::itemCommand(const QString &itemKey)
 {
     if (GrandSearchPlugin == itemKey)
-        return QString("dbus-send --print-reply --dest=com.deepin.dde.GrandSearch /com/deepin/dde/GrandSearch com.deepin.dde.GrandSearch.SetVisible boolean:true");
+        return m_searchWidget->itemCommand(itemKey);
 
     return QString();
 }

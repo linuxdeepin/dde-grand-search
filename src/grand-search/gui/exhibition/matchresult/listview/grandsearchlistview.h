@@ -19,8 +19,8 @@
 #ifndef GRANDSEARCHLISTVIEW_H
 #define GRANDSEARCHLISTVIEW_H
 
-#include "../../../../../global/matcheditem.h"
-#include "../../../datadefine.h"
+#include "global/matcheditem.h"
+#include "gui/datadefine.h"
 using namespace GrandSearch;
 
 #include <DListView>
@@ -35,12 +35,12 @@ DWIDGET_USE_NAMESPACE
 
 class GrandSearchListModel;
 class GrandSearchListDelegate;
-class GrandSearchListview: public DListView
+class GrandSearchListView: public DListView
 {
     Q_OBJECT
 public:
-    explicit GrandSearchListview(QWidget *parent = Q_NULLPTR);
-    ~GrandSearchListview() override;
+    explicit GrandSearchListView(QWidget *parent = Q_NULLPTR);
+    ~GrandSearchListView() override;
 
     void setMatchedItems(const MatchedItems &items, const QString &group);
     void addRow(const MatchedItem &item, const QString &group);
@@ -67,7 +67,7 @@ public slots:
 
 signals:
     void sigAppIconChanged(const QString &appIconName);
-    void sigSelectItemByMouse(GrandSearchListview *listView);
+    void sigSelectItemByMouse(GrandSearchListView *listView);
     void sigItemClicked();
 
 protected:

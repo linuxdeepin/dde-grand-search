@@ -64,13 +64,14 @@ QString GrandSearchWidget::itemCommand(const QString &itemKey)
     return QString();
 }
 
-void GrandSearchWidget::grandSearchVisibleChanged(bool vidible)
+void GrandSearchWidget::grandSearchVisibleChanged(bool visible)
 {
-    m_grandSearchVisible = vidible;
+    m_grandSearchVisible = visible;
 }
 
-void GrandSearchWidget::paintEvent(QPaintEvent *e)
+void GrandSearchWidget::paintEvent(QPaintEvent *event)
 {
+    Q_UNUSED(event)
     /*!
      * 1.插件如果安装在插件区域即plugins目录下，需要插件自己绘制背景色，并根据鼠标移动、悬浮、点击的状态设置不同的透明度。
      *   否则图标将无背景，鼠标移动、悬浮、点击等无背景变色等效果。

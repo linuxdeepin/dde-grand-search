@@ -213,7 +213,7 @@ bool GroupWidget::isHorLineVisilbe()
     return false;
 }
 
-GrandSearchListview *GroupWidget::getListView()
+GrandSearchListView *GroupWidget::getListView()
 {
     return m_listView;
 }
@@ -371,7 +371,7 @@ void GroupWidget::initUi()
     m_hTitelLayout->addWidget(m_viewMoreButton);
 
     // 组内结果列表
-    m_listView = new GrandSearchListview(this);
+    m_listView = new GrandSearchListView(this);
 
     // 分割线
     m_line = new DHorizontalLine;
@@ -399,17 +399,7 @@ void GroupWidget::initConnect()
 
 void GroupWidget::paintEvent(QPaintEvent *event)
 {
-// 调试使用，最后发布时需删除todo
-#ifdef SHOW_BACKCOLOR
-    Q_UNUSED(event);
-
-    QPainter painter(this);
-
-    painter.setBrush(Qt::green);
-    painter.drawRect(rect());
-#else
     DWidget::paintEvent(event);
-#endif
 }
 
 void GroupWidget::onMoreBtnClcked()

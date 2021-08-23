@@ -33,7 +33,7 @@ public:
     explicit EntranceWidget(QWidget *parent = nullptr);
     ~EntranceWidget() override;
 
-    void showLabelAppIcon(bool bVisile);
+    void showLabelAppIcon(bool visible);
     QRect getMenuRect() const;
 
 protected:

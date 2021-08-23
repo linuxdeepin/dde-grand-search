@@ -119,17 +119,7 @@ void ExhibitionWidget::initConnect()
 
 void ExhibitionWidget::paintEvent(QPaintEvent *event)
 {
-// 调试使用，最后发布时需删除todo
-#ifdef SHOW_BACKCOLOR
-    Q_UNUSED(event);
-
-    QPainter painter(this);
-
-    painter.setBrush(Qt::yellow);
-    painter.drawRect(rect());
-#else
     DWidget::paintEvent(event);
-#endif
 }
 
 

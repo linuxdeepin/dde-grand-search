@@ -35,7 +35,7 @@ class MatchWidget : public Dtk::Widget::DWidget
     Q_OBJECT
 public:
     explicit MatchWidget(QWidget *parent = nullptr);
-    ~MatchWidget();
+    ~MatchWidget() override;
 
 public slots:
     void appendMatchedData(const GrandSearch::MatchedItemMap &matchedData);//追加显示匹配数据
@@ -48,7 +48,7 @@ public slots:
     void handleItem();
 
 private slots:
-    void onSelectItemByMouse(const GrandSearchListview *listView);
+    void onSelectItemByMouse(const GrandSearchListView *listView);
 
 signals:
     void sigAppIconChanged(const QString &appIconName);
@@ -69,7 +69,7 @@ private:
 
     void adjustScrollBar();
 
-    void updateEntranceAppIcon(const QModelIndex& index);
+    void updateCurrentAppIcon(const QModelIndex& index);
 
 protected:
     void initUi();

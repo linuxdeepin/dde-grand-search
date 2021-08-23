@@ -32,17 +32,13 @@
 
 
 class GroupWidgetPrivate;
-class GrandSearchListview;
+class GrandSearchListView;
 
 DWIDGET_BEGIN_NAMESPACE
 class DLabel;
 class DHorizontalLine;
 DWIDGET_END_NAMESPACE
 DWIDGET_USE_NAMESPACE
-
-//调试使用，最后发布时需删除todo
-//定义显示窗口背景色宏，若使用，可显示各个界面背景色，用于更好调整窗口布局和大小，该宏仅在dev阶段使用
-//#define SHOW_BACKCOLOR
 
 class QVBoxLayout;
 class QHBoxLayout;
@@ -57,7 +53,7 @@ public:
     void appendMatchedItems(const GrandSearch::MatchedItems &newItems, const QString& groupClassName);
     void showHorLine(bool bShow = true);
     bool isHorLineVisilbe();
-    GrandSearchListview *getListView();
+    GrandSearchListView *getListView();
     int itemCount();
     // 获取当前选中行在类目中的高度
     int getCurSelectHeight();
@@ -83,18 +79,18 @@ signals:
 private:
     QScopedPointer<GroupWidgetPrivate> d_p;
 
-    QVBoxLayout *m_vLayout = nullptr;// 主体垂直布局
-    QHBoxLayout *m_hTitelLayout = nullptr;// 顶部标题水平布局
+    QVBoxLayout *m_vLayout = nullptr;               // 主体垂直布局
+    QHBoxLayout *m_hTitelLayout = nullptr;          // 顶部标题水平布局
 
     DLabel *m_groupLabel = nullptr;
     DPushButton* m_viewMoreButton = nullptr;
 
-    QVBoxLayout *m_vContentLayout = nullptr; // 内容垂直布局，用于限定列表和横线间距10个像素间隙
-    GrandSearchListview *m_listView = nullptr;
+    QVBoxLayout *m_vContentLayout = nullptr;        // 内容垂直布局，用于限定列表和横线间距10个像素间隙
+    GrandSearchListView *m_listView = nullptr;
     DHorizontalLine *m_line = nullptr;
 
     QString m_groupName;                            // 当前类目列表组名,对应类目显示名称
-    QString m_groupClassName;                            // 当前类目列表组名对应的类名
+    QString m_groupClassName;                       // 当前类目列表组名对应的类名
 
     bool m_bListExpanded = false;                   // 结果列表是否已展开
     GrandSearch::MatchedItems m_firstFiveItems;     // 前5行正在显示的匹配结果

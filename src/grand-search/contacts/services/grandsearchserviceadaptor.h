@@ -54,7 +54,7 @@ class GrandSearchServiceAdaptor: public QDBusAbstractAdaptor
     Q_CLASSINFO("D-Bus Introspection", ""
 "  <interface name=\"com.deepin.dde.GrandSearch\">\n"
 "    <signal name=\"VisibleChanged\">\n"
-"      <arg direction=\"out\" type=\"b\" name=\"vidible\"/>\n"
+"      <arg direction=\"out\" type=\"b\" name=\"visible\"/>\n"
 "    </signal>\n"
 "    <method name=\"IsVisible\">\n"
 "      <arg direction=\"out\" type=\"b\"/>\n"
@@ -73,7 +73,7 @@ public Q_SLOTS: // METHODS
     bool IsVisible();
     void SetVisible(bool visible);
 Q_SIGNALS: // SIGNALS
-    void VisibleChanged(bool vidible);
+    void VisibleChanged(bool visible);
 };
 
 #endif

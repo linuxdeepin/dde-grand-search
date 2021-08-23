@@ -135,16 +135,16 @@ EntranceWidget::~EntranceWidget()
 
 }
 
-void EntranceWidget::showLabelAppIcon(bool bVisile)
+void EntranceWidget::showLabelAppIcon(bool visible)
 {
     Q_ASSERT(d_p->m_lineEdit);
     Q_ASSERT(d_p->m_appIconLabel);
     Q_ASSERT(d_p->m_appIconAction);
 
-    if (bVisile == d_p->m_appIconLabel->isVisible())
+    if (visible == d_p->m_appIconLabel->isVisible())
         return;
 
-    if (bVisile) {
+    if (visible) {
         d_p->m_lineEdit->addAction(d_p->m_appIconAction, QLineEdit::TrailingPosition);
         /*!
          * 设置appIconLabel为显示时，必须刷新显示输入框控件，否则在输入超长字符时，能看到清除按钮上显示残留的部分字符。
@@ -164,7 +164,7 @@ void EntranceWidget::showLabelAppIcon(bool bVisile)
         d_p->m_lineEdit->removeAction(d_p->m_appIconAction);
     }
 
-    d_p->m_appIconLabel->setVisible(bVisile);
+    d_p->m_appIconLabel->setVisible(visible);
 }
 
 QRect EntranceWidget::getMenuRect() const

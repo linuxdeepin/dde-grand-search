@@ -36,11 +36,6 @@ public:
     // 必须在主界面显示后再调用该函数，处理业务相关流程
     void connectToController();
 
-    void showExhitionWidget(bool bShow = true);
-    void showSerachNoContent(bool bShow = true);
-
-    void showEntranceAppIcon(bool bShow = true);
-
     // 获取有效区域，包含主界面和菜单区域
     QRegion getValidRegion();
 
@@ -60,6 +55,10 @@ private:
 
     void activeMainWindow();
     void updateMainWindowHeight();
+
+    void showExhitionWidget(bool bShow = true);
+    void showSerachNoContent(bool bShow = true);
+    void showEntranceAppIcon(bool bShow = true);
 
 protected:
     virtual void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;

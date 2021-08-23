@@ -105,6 +105,6 @@ void HandleVisibility::regionMousePress(const QPoint &p, const int flag)
         qDebug() << "click:" << p << "   validRegion:" << region << "   flag:" << flag;
         // todo 二阶段：根据情况，可能需要设置为隐藏，而不能直接退出
         // 延迟退出，便于dock插件响应时能正确获取当前状态
-        QTimer::singleShot(200, this, &HandleVisibility::onCloseWindow);
+        QTimer::singleShot(500, this, &HandleVisibility::onCloseWindow);
     }
 }

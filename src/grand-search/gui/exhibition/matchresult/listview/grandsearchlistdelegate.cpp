@@ -145,7 +145,7 @@ void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QSty
     QColor textColor;
     QColor lightColor;
 
-    const GrandSearchListview *listview = qobject_cast<const GrandSearchListview *>(option.widget);
+    const GrandSearchListView *listview = qobject_cast<const GrandSearchListView *>(option.widget);
 
     // 主题改变需要修改color
     if (listview->getThemeType() == 2) {

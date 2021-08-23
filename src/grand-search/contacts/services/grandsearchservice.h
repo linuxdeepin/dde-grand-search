@@ -42,7 +42,7 @@ public:
     Q_SCRIPTABLE void SetVisible(const bool visible);
 
 signals:
-    Q_SCRIPTABLE void VisibleChanged(const bool vidible);
+    Q_SCRIPTABLE void VisibleChanged(const bool visible);
 
 private:
     QScopedPointer<GrandSearchServicePrivate> d_p;
