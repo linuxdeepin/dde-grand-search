@@ -293,8 +293,10 @@ QString Utils::getDefaultAppDesktopFileByMimeType(const QString &mimeType)
 
     const char* desktop_id = g_app_info_get_id(defaultApp);
     GDesktopAppInfo* desktopAppInfo = g_desktop_app_info_new(desktop_id);
-    if(!desktopAppInfo)
+    if(!desktopAppInfo) {
+        g_object_unref(defaultApp);
         return "";
+    }
     QString desktopFile = g_desktop_app_info_get_filename(desktopAppInfo);
 
     g_object_unref(defaultApp);

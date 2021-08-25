@@ -221,9 +221,6 @@ void FsWorker::callbackReceiveResults(void *data, void *sender)
             << "total spend:" << self->m_time.elapsed()
             << "current items" << leave;
 
-    free(result);
-    result = nullptr;
-
     self->m_conditionMtx.lock();
     self->m_waitCondition.wakeAll();
     self->m_conditionMtx.unlock();

@@ -105,6 +105,13 @@ fsearch_search_thread (gpointer user_data)
             result->cb_data = query->callback_data;
             query->callback (result, query->sender);
             printf("+++++++++++++++++++++++++++++++++++++++++++query->callback\n");
+
+            //free
+            if (result->results)
+                g_ptr_array_free(result->results, TRUE);
+            free(result);
+            result = NULL;
+
             fsearch_query_free (query);
             g_mutex_lock (&search->query_mutex);
         }

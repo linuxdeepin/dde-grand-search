@@ -246,6 +246,12 @@ DesktopAppSearcher::DesktopAppSearcher(QObject *parent)
     connect(d->m_fileWatcher, &QFileSystemWatcher::directoryChanged, this, &DesktopAppSearcher::onDirectoryChanged);
 }
 
+DesktopAppSearcher::~DesktopAppSearcher()
+{
+    delete d;
+    d = nullptr;
+}
+
 void DesktopAppSearcher::asyncInit()
 {
     if (d->m_inited || d->m_creating)

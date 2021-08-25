@@ -157,6 +157,8 @@ fsearch_thread_pool_free (FsearchThreadPool *pool)
         thread = thread->next;
     }
     pool->num_threads = 0;
+    g_free(pool->threads);
+    pool->threads = NULL;
     g_free (pool);
     pool = NULL;
 }

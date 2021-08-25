@@ -39,7 +39,8 @@ bool PluginManagerPrivate::readConf()
 
         //默认路径
 #ifdef QT_DEBUG
-        const char *defaultPath = realpath("./", nullptr);
+        char path[PATH_MAX] = {0};
+        const char *defaultPath = realpath("./", path);
 #else
         auto defaultPath = PLUGIN_SEARCHER_DIR;
 #endif

@@ -495,6 +495,7 @@ db_location_build_tree (const char *dname, void (*callback)(const char *))
                                                     callback,
                                                     root,
                                                     spec);
+    config_free(config);
     g_timer_destroy (timer);
     if (res == WALK_OK) {
         return location;

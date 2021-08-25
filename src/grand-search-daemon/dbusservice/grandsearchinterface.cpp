@@ -41,12 +41,6 @@ GrandSearchInterfacePrivate::GrandSearchInterfacePrivate(GrandSearchInterface *p
 {
     //允许调用dbus接口的可执行程序名单
     m_permit.insert("/usr/bin/dde-grand-search", true);
-
-#ifdef QT_DEBUG
-    //for test
-    m_permit.insert("/usr/bin/python3.7", true);
-#endif
-
 }
 
 GrandSearchInterfacePrivate::~GrandSearchInterfacePrivate()

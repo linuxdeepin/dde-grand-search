@@ -31,6 +31,7 @@ class DesktopAppSearcher : public Searcher
     friend class DesktopAppSearcherPrivate;
 public:
     explicit DesktopAppSearcher(QObject *parent = nullptr);
+    ~DesktopAppSearcher();
     void asyncInit();
     QString name() const Q_DECL_OVERRIDE;
     bool isActive() const Q_DECL_OVERRIDE;
