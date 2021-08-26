@@ -42,8 +42,9 @@ set(Qt_LIBS
 
 # gio 打开功能需要依赖的库
 pkg_check_modules(GIO_LIB REQUIRED
-        gio-unix-2.0 glib-2.0
-        )
+        gio-unix-2.0
+        glib-2.0
+)
 
 pkg_check_modules(DFrameworkDBus REQUIRED dframeworkdbus)
 

@@ -23,6 +23,12 @@ find_package(Qt5 COMPONENTS
     DBus
 REQUIRED)
 
+pkg_check_modules(GIO_LIB REQUIRED
+        gio-unix-2.0
+        glib-2.0
+)
+pkg_check_modules(DFrameworkDBus REQUIRED dframeworkdbus)
+
 set(Qt_LIBS
     Qt5::Core
     Qt5::Gui
@@ -53,6 +59,8 @@ target_include_directories(${BIN_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${DtkWidget_INCLUDE_DIRS}
     ${DtkGUI_INCLUDE_DIRS}
+    ${DFrameworkDBus_INCLUDE_DIRS}
+    ${GIO_LIB_INCLUDE_DIRS}
 )
 
 target_link_libraries(${BIN_NAME} PRIVATE
@@ -61,6 +69,8 @@ target_link_libraries(${BIN_NAME} PRIVATE
     ${DtkGUI_LIBRARIES}
     ${GTEST_LIBRARIES}
     ${Qt5Test_LIBRARIES}
+    ${GIO_LIB_LIBRARIES}
+    ${DFrameworkDBus_LIBRARIES}
     -lpthread
 )
 

@@ -7,11 +7,21 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wl,--as-need -fPIE")
 
+# 应用库目录
+set(LIB_BASE_DIR "${LIB_PLATFORM_DIR}/${BIN_NAME}")
+
+# 插件目录
+set(PLUGIN_DIR "${LIB_BASE_DIR}/plugins")
+
+# 扩展搜索插件目录
+set(PLUGIN_SEARCHER_DIR "${PLUGIN_DIR}/searcher")
+add_definitions(-DPLUGIN_SEARCHER_DIR="${PLUGIN_SEARCHER_DIR}")
+
 # 定义可执行程序名称
 set(BIN_NAME ut-dde-grand-search-daemon)
 
 # 依赖包
-#find_package(PkgConfig REQUIRED)
+find_package(PkgConfig REQUIRED)
 find_package(DtkCore REQUIRED)
 #find_package(DtkCMake REQUIRED)
 find_package(Qt5 COMPONENTS
@@ -24,15 +34,21 @@ REQUIRED)
 set(PROJECT_DAEMONSRC_PATH "${PROJECT_SOURCE_PATH}/grand-search-daemon")
 include_directories(${PROJECT_DAEMONSRC_PATH})
 
+ADD_DEFINITIONS(-DENABLE_FSEARCH)
+FILE(GLOB 3RD_FSEARCH_SRC ${CMAKE_SOURCE_DIR}/../3rdparty/fsearch/*)
+pkg_check_modules(GLIB REQUIRED glib-2.0)
+
+ADD_DEFINITIONS(-DENABLE_DEEPINANYTHING)
+qt5_add_dbus_interface(ANYTHING_SRC /usr/share/dbus-1/interfaces/com.deepin.anything.xml anything_interface)
+
 # 项目工程文件
 FILE(GLOB_RECURSE PRO_SRC "${PROJECT_DAEMONSRC_PATH}/*/*.h" "${PROJECT_DAEMONSRC_PATH}/*/*.cpp")
 
 # 移除未编写的文件
 FILE(GLOB_RECURSE RM_SRC
-    "${PROJECT_DAEMONSRC_PATH}/searcher/extend/*"
-    "${PROJECT_DAEMONSRC_PATH}/searcher/file/*"
     "${PROJECT_DAEMONSRC_PATH}/searcher/fulltext/*"
     "${PROJECT_DAEMONSRC_PATH}/searcher/setting/*"
+    "${PROJECT_DAEMONSRC_PATH}/searchplugin/interface/abstract/*"
     )
 list(REMOVE_ITEM PRO_SRC ${RM_SRC})
 
@@ -52,6 +68,8 @@ set(SRCS
     ${PRO_SRC}
     ${UT_SRC}
     ${CPP_STUB_SRC}
+    ${ANYTHING_SRC}
+    ${3RD_FSEARCH_SRC}
 )
 
 # 可执行程序
@@ -59,6 +77,8 @@ add_executable(${BIN_NAME} ${SRCS})
 
 target_include_directories(${BIN_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/../3rdparty/fsearch
+    ${GLIB_INCLUDE_DIRS}
 )
 
 target_link_libraries(${BIN_NAME} PRIVATE
@@ -66,5 +86,6 @@ target_link_libraries(${BIN_NAME} PRIVATE
     ${DtkCore_LIBRARIES}
     ${GTEST_LIBRARIES}
     ${Qt5Test_LIBRARIES}
+    ${GLIB_LIBRARIES}
     -lpthread
 )

@@ -7,7 +7,7 @@ project(ut-dde-grand-search)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DQT_DEBUG")
 
 set(PROJECT_SOURCE_PATH "${CMAKE_SOURCE_DIR}/../src")
-set(PROJECT_3RDPARTY_PATH "${CMAKE_SOURCE_DIR}/../3rdparty")
+set(PROJECT_3RDPARTY_PATH "${CMAKE_SOURCE_DIR}/3rdparty")
 
 # 用于测试覆盖率的编译条件
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-inline -fno-access-control -O0 -fprofile-arcs -ftest-coverage -lgcov")
