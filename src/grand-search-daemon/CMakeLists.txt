@@ -193,3 +193,5 @@ target_link_libraries(${BIN_NAME} PRIVATE
 # bin
 install(TARGETS ${BIN_NAME} DESTINATION bin)
 
+# dbus
+install(FILES dbusservice/com.deepin.dde.daemon.GrandSearch.service DESTINATION share/dbus-1/services)
