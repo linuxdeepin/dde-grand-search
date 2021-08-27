@@ -194,4 +194,7 @@ target_link_libraries(${BIN_NAME} PRIVATE
 install(TARGETS ${BIN_NAME} DESTINATION bin)
 
 # dbus
-install(FILES dbusservice/com.deepin.dde.daemon.GrandSearch.service DESTINATION share/dbus-1/services)
+install(FILES data/com.deepin.dde.daemon.GrandSearch.service DESTINATION share/dbus-1/services)
+
+# autostart
+install(FILES data/dde-grand-search-daemon.desktop DESTINATION /etc/xdg/autostart)
