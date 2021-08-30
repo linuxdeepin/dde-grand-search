@@ -38,6 +38,9 @@ QueryControllerPrivate::QueryControllerPrivate(QueryController *parent)
 
     m_daemonDbus = new DaemonGrandSearchInterface(this);
 
+    // 前端启动时，通知后端停止可能的已有搜索任务，同时通过DBus调用保证后端已经启动
+    m_daemonDbus->Terminate();
+
     connect(m_keepAliveTimer, &QTimer::timeout, this, &QueryControllerPrivate::keepAlive);
 }
 
