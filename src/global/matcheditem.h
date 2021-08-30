@@ -32,6 +32,7 @@ struct MatchedItem {
     QString icon;   //界面显示的图标
     QString type;   //界面显示的类型
     QString searcher;   //出自的搜索项
+    QVariant extra;    //扩展信息，由各搜索结果补充的特殊属性
 };
 
 typedef QList<MatchedItem> MatchedItems;
@@ -40,13 +41,13 @@ typedef QMap<QString, MatchedItems> MatchedItemMap; //组-匹配项列表
 //序列化
 inline QDataStream &operator<<(QDataStream &stream, const GrandSearch::MatchedItem &in)
 {
-    stream << in.item << in.name << in.icon << in.type << in.searcher;
+    stream << in.item << in.name << in.icon << in.type << in.searcher << in.extra;
     return stream;
 }
 
 inline QDataStream &operator>>(QDataStream &stream, GrandSearch::MatchedItem &out)
 {
-    stream >> out.item >> out.name >> out.icon >> out.type >> out.searcher;
+    stream >> out.item >> out.name >> out.icon >> out.type >> out.searcher >> out.extra;
     return stream;
 }
 

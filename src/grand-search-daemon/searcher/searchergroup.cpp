@@ -52,7 +52,10 @@ void SearcherGroupPrivate::initBuiltin()
     appSearcher->asyncInit();
     m_builtin << appSearcher;
 
-    //todo 设置搜索，全文搜索
+    qInfo() << "create ControlCenterSearcher.";
+    auto settingSearcher = new ControlCenterSearcher(this);
+    settingSearcher->asyncInit();
+    m_builtin << settingSearcher;
 }
 
 bool SearcherGroupPrivate::addExtendSearcher(const GrandSearch::SearchPluginInfo &pluginInfo)

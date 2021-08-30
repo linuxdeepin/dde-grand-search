@@ -18,16 +18,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#ifndef CONTROLCENTERSEARCHERPRIVATE_H
+#define CONTROLCENTERSEARCHERPRIVATE_H
 
-#ifndef FULLTEXTSEARCHER_H
-#define FULLTEXTSEARCHER_H
+#include "controlcentersearcher.h"
+#include "global/matcheditem.h"
 
-#include "searcher/searcher.h"
+#include <QFuture>
+#include <QtConcurrent>
 
-class FullTextSearcher : public Searcher
+typedef QSharedPointer<GrandSearch::MatchedItem> SettingItemPointer;
+
+class ControlCenterSearcherPrivate
 {
+    friend class ControlCenterSearcher;
 public:
-    FullTextSearcher(QObject *parent = nullptr);
+    explicit ControlCenterSearcherPrivate(ControlCenterSearcher *parent);
+private:
+    static void createIndex(ControlCenterSearcherPrivate *);
+private:
+    ControlCenterSearcher *q;
+
+    bool m_inited = false;
+    volatile bool m_creating = false;
+    QFuture<void> m_creatingIndex;
+
+    //索引表
+    QReadWriteLock m_lock;
+    QHash<QString, QList<SettingItemPointer>> m_indexTable;
 };
 
-#endif // FULLTEXTSEARCHER_H
+#endif // CONTROLCENTERSEARCHERPRIVATE_H

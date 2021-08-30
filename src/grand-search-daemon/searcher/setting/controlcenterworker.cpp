@@ -18,28 +18,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "desktopappworker.h"
+#include "controlcenterworker.h"
 #include "global/builtinsearch.h"
+#include "utils/specialtools.h"
 
-DesktopAppWorker::DesktopAppWorker(const QString &name, QObject *parent) : ProxyWorker(name, parent)
+ControlCenterWorker::ControlCenterWorker(const QString &name, QObject *parent)
+    : ProxyWorker(name, parent)
 {
 
 }
 
-void DesktopAppWorker::setContext(const QString &context)
+void ControlCenterWorker::setContext(const QString &context)
 {
     if (context.isEmpty())
         qWarning() << "search key is empty.";
     m_context = context;
 }
 
-bool DesktopAppWorker::isAsync() const
+bool ControlCenterWorker::isAsync() const
 {
     //同步搜索，需分配线程资源
     return false;
 }
 
-bool DesktopAppWorker::working(void *context)
+bool ControlCenterWorker::working(void *context)
 {
     //准备状态切运行中，否则直接返回
     if (!m_status.testAndSetRelease(Ready, Runing))
@@ -114,23 +116,23 @@ bool DesktopAppWorker::working(void *context)
     return true;
 }
 
-void DesktopAppWorker::terminate()
+void ControlCenterWorker::terminate()
 {
     m_status.storeRelease(Terminated);
 }
 
-ProxyWorker::Status DesktopAppWorker::status()
+ProxyWorker::Status ControlCenterWorker::status()
 {
     return static_cast<ProxyWorker::Status>(m_status.loadAcquire());
 }
 
-bool DesktopAppWorker::hasItem() const
+bool ControlCenterWorker::hasItem() const
 {
     QMutexLocker lk(&m_mtx);
     return !m_items.isEmpty();
 }
 
-GrandSearch::MatchedItemMap DesktopAppWorker::takeAll()
+GrandSearch::MatchedItemMap ControlCenterWorker::takeAll()
 {
     QMutexLocker lk(&m_mtx);
     GrandSearch::MatchedItems items = std::move(m_items);
@@ -145,7 +147,7 @@ GrandSearch::MatchedItemMap DesktopAppWorker::takeAll()
     return ret;
 }
 
-void DesktopAppWorker::setIndexTable(const QHash<QString, QList<QSharedPointer<GrandSearch::MatchedItem> > > &table)
+void ControlCenterWorker::setIndexTable(const QHash<QString, QList<QSharedPointer<GrandSearch::MatchedItem> > > &table)
 {
     qDebug() << "index table count" << table.size();
     //搜索中不允许设置索引表, 已有数据后不允许更新
@@ -155,7 +157,7 @@ void DesktopAppWorker::setIndexTable(const QHash<QString, QList<QSharedPointer<G
     m_indexTable = table;
 }
 
-QString DesktopAppWorker::group() const
+QString ControlCenterWorker::group() const
 {
-    return GRANDSEARCH_GROUP_APP;
+    return GRANDSEARCH_GROUP_SETTING;
 }

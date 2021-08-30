@@ -73,10 +73,11 @@ set(SEARCHER
     searcher/app/desktopappsearcher.cpp
     searcher/app/desktopappworker.h
     searcher/app/desktopappworker.cpp
-#    searcher/setting/controlcentersearcher.h
-#    searcher/setting/controlcentersearcher.cpp
-#    searcher/fulltext/fulltextsearcher.h
-#    searcher/fulltext/fulltextsearcher.cpp
+    searcher/setting/controlcentersearcher.h
+    searcher/setting/controlcentersearcherprivate.h
+    searcher/setting/controlcentersearcher.cpp
+    searcher/setting/controlcenterworker.h
+    searcher/setting/controlcenterworker.cpp
     searcher/extend/extendsearcher.h
     searcher/extend/extendsearcherprivate.h
     searcher/extend/extendsearcher.cpp

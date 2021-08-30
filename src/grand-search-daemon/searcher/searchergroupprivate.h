@@ -25,6 +25,7 @@
 #include "searchplugin/pluginmanager.h"
 #include "app/desktopappsearcher.h"
 #include "extend/extendsearcher.h"
+#include "setting/controlcentersearcher.h"
 
 #ifdef ENABLE_DEEPINANYTHING
     #include "file/filenamesearcher.h"

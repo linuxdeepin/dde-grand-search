@@ -25,10 +25,22 @@
 
 #include "searcher/searcher.h"
 
+class ControlCenterSearcherPrivate;
 class ControlCenterSearcher : public Searcher
 {
+    Q_OBJECT
+    friend class ControlCenterSearcherPrivate;
 public:
-    ControlCenterSearcher(QObject *parent = nullptr);
+    explicit ControlCenterSearcher(QObject *parent = nullptr);
+    ~ControlCenterSearcher();
+    void asyncInit();
+    QString name() const Q_DECL_OVERRIDE;
+    bool isActive() const Q_DECL_OVERRIDE;
+    bool activate() Q_DECL_OVERRIDE;
+    ProxyWorker *createWorker() const Q_DECL_OVERRIDE;
+    bool action(const QString &action, const QString &item) Q_DECL_OVERRIDE;
+private:
+    ControlCenterSearcherPrivate *d;
 };
 
 #endif // CONTROLCENTERSEARCHER_H
