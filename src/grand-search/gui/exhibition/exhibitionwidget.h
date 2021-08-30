@@ -30,6 +30,7 @@
 
 class ExhibitionWidgetPrivate;
 class MatchWidget;
+class PreviewWidget;
 class QHBoxLayout;
 class QVBoxLayout;
 class QPushButton;
@@ -69,6 +70,7 @@ private:
     QPushButton *m_btnSearch = nullptr;
     QPushButton *m_btnClear = nullptr;
     MatchWidget *m_matchWidget = nullptr;
+    PreviewWidget *m_previewWidget = nullptr;
 };
 
 #endif // EXHIBITIONWIDGET_H

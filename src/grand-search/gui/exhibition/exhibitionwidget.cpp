@@ -22,6 +22,7 @@
 #include "exhibitionwidget_p.h"
 #include "exhibitionwidget.h"
 #include "matchresult/matchwidget.h"
+#include "preview/previewwidget.h"
 
 #include <QPalette>
 #include <QHBoxLayout>
@@ -100,12 +101,15 @@ void ExhibitionWidget::onSearchCompleted()
 void ExhibitionWidget::initUi()
 {
     m_hLayout = new QHBoxLayout(this);
-    m_hLayout->setContentsMargins(8, 0, 0, 8);
+    m_hLayout->setContentsMargins(8, 0, 8, 8);
     m_hLayout->setSpacing(0);
     this->setLayout(m_hLayout);
 
     m_matchWidget = new MatchWidget(this);
     m_hLayout->addWidget(m_matchWidget);
+
+    m_previewWidget = new PreviewWidget(this);
+    m_hLayout->addWidget(m_previewWidget);
 }
 
 void ExhibitionWidget::initConnect()
@@ -115,6 +119,7 @@ void ExhibitionWidget::initConnect()
     connect(m_matchWidget, &MatchWidget::sigAppIconChanged, this, &ExhibitionWidget::sigAppIconChanged);
     connect(m_matchWidget, &MatchWidget::sigShowNoContent, this, &ExhibitionWidget::sigShowNoContent);
     connect(m_matchWidget, &MatchWidget::sigCloseWindow, this, &ExhibitionWidget::sigCloseWindow);
+    connect(m_matchWidget, &MatchWidget::sigPreviewItem, m_previewWidget, &PreviewWidget::previewItem);
 }
 
 void ExhibitionWidget::paintEvent(QPaintEvent *event)

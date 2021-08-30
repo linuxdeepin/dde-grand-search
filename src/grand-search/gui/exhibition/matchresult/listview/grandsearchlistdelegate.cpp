@@ -35,7 +35,6 @@
 #define ListIconSize              24       // 列表图标大小
 #define ListRowWidth              350      // 列表行宽
 #define ListIconMargin            6        // 列表图标边距距
-#define ListItemTextMaxWidth      (ListRowWidth - ListItemSpace * 2 - ListIconSize)     // 文本元素最大显示宽度
 
 DWIDGET_USE_NAMESPACE
 
@@ -172,6 +171,9 @@ void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QSty
     mtext = index.data(DATA_ROLE).value<MatchedItem>().name;
 
     int listItemTextMaxWidth = option.rect.width() / 2 - ListItemSpace * 2 - ListIconSize;
+    //预览界面正在显示，结果列表截断显示宽度改为列表显示最大宽度
+    if (listItemTextMaxWidth < ListRowWidth / 2)
+        listItemTextMaxWidth = option.rect.width() - ListItemSpace * 2 -ListIconSize;
     QFontMetricsF fontWidth(fontT6);
     mtext = fontWidth.elidedText(mtext, Qt::ElideRight, listItemTextMaxWidth);
     QStyleOptionViewItem viewOption(option);

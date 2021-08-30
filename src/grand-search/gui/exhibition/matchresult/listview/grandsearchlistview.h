@@ -67,13 +67,11 @@ public slots:
 
 signals:
     void sigAppIconChanged(const QString &appIconName);
-    void sigSelectItemByMouse(GrandSearchListView *listView);
+    void sigSelectItemByMouse(const GrandSearch::MatchedItem &item);
     void sigItemClicked();
 
 protected:
-    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     bool event(QEvent *event) Q_DECL_OVERRIDE;
-    bool viewportEvent(QEvent *event) Q_DECL_OVERRIDE;
 
 private:
     QString cacheDir();

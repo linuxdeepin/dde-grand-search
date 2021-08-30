@@ -236,14 +236,24 @@ void MatchWidget::handleItem()
     }
 }
 
-void MatchWidget::onSelectItemByMouse(const GrandSearchListView *listView)
+void MatchWidget::onSelectItemByMouse(const MatchedItem &item)
 {
-    for (int i=0; i<m_vGroupWidgets.count(); ++i) {
-        if (hasSelectItem(i)) {
-            GrandSearchListView *tmpListView = m_vGroupWidgets.at(i)->getListView();
-            Q_ASSERT(tmpListView);
-            if (listView != tmpListView)
-                tmpListView->setCurrentIndex(QModelIndex());
+    // 通知搜索输入框更新应用图标
+    emit sigAppIconChanged(Utils::appIconName(item));
+
+    // 通知预览界面刷新预览内容
+    emit sigPreviewItem(item);
+
+    // 通知其他列表取消选中
+    GrandSearchListView* listView = qobject_cast<GrandSearchListView*>(sender());
+    if (listView) {
+        for (int i=0; i<m_vGroupWidgets.count(); ++i) {
+            if (hasSelectItem(i)) {
+                GrandSearchListView *tmpListView = m_vGroupWidgets.at(i)->getListView();
+                Q_ASSERT(tmpListView);
+                if (listView != tmpListView)
+                    tmpListView->setCurrentIndex(QModelIndex());
+            }
         }
     }
 }
@@ -379,6 +389,7 @@ void MatchWidget::updateCurrentAppIcon(const QModelIndex &index)
         item = index.data(DATA_ROLE).value<MatchedItem>();
 
     emit sigAppIconChanged(Utils::appIconName(item));
+    emit sigPreviewItem(item);
 }
 
 void MatchWidget::initUi()

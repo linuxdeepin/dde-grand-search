@@ -22,6 +22,7 @@
 
 #include <QString>
 #include <QObject>
+#include <QPluginLoader>
 
 namespace GrandSearch {
 
@@ -34,6 +35,34 @@ namespace GrandSearch {
 #define GroupName_App                QObject::tr("Applications")
 #define GroupName_Folder             QObject::tr("Folders")
 #define GroupName_File               QObject::tr("Files")
+
+
+//预览插件信息
+struct PreviewPluginInfo {
+    QString name;               // 预览插件名称
+    QString iid;                // 预览插件iid
+    QStringList mimeTypes;      // 插件支持的所有文件类型，mimeType
+    QString path;               // 插件*.so所在路径
+    QPluginLoader* pPlugin;     // 预览插件实例对象
+    bool bValid;                // 插件是否有效
+    QString version;            // 插件适配版本号
+
+    PreviewPluginInfo() {
+        reset();
+    }
+
+    void reset() {
+        name = "";
+        iid = "";
+        mimeTypes.clear();
+        path = "";
+        pPlugin = nullptr;
+        bValid = false;
+        version = "";
+    }
+};
+
+typedef QList<PreviewPluginInfo> PreviewPluginInfoList;
 
 };
 

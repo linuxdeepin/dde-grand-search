@@ -175,11 +175,21 @@ void GrandSearchListView::onItemClicked(const QModelIndex &index)
     if (!index.isValid())
         return;
 
-    MatchedItem item = index.data(DATA_ROLE).value<MatchedItem>();
-    Utils::openMatchedItem(item);
-    emit sigItemClicked();
+    if (this->currentIndex() != index) {
+        setCurrentIndex(index);
 
-    qDebug() << QString("GrandSearchListView::onItemClicked item clicked r[%1] c[%2]").arg(index.row()).arg(index.column());
+        MatchedItem item = index.data(DATA_ROLE).value<MatchedItem>();
+
+        // 通知匹配结果界面选择有改变
+        emit sigSelectItemByMouse(item);
+
+        return;
+    }
+    else {
+        MatchedItem item = index.data(DATA_ROLE).value<MatchedItem>();
+        Utils::openMatchedItem(item);
+        emit sigItemClicked();
+    }
 }
 
 void GrandSearchListView::onSetThemeType(int type)
@@ -187,43 +197,10 @@ void GrandSearchListView::onSetThemeType(int type)
     m_themeType = type;
 }
 
-void GrandSearchListView::mouseMoveEvent(QMouseEvent *event)
-{
-    QModelIndex index = indexAt(event->pos());
-    if (index.isValid()) {
-        if (this->currentIndex() != index) {
-            setCurrentIndex(index);
-
-            // 通知搜索输入框更新应用图标
-            MatchedItem item = index.data(DATA_ROLE).value<MatchedItem>();
-            emit sigAppIconChanged(Utils::appIconName(item));
-
-            // 通知其它列表取消选中
-            emit sigSelectItemByMouse(this);
-
-            return;
-        }
-    }
-
-    return DListView::mouseMoveEvent(event);
-}
-
 bool GrandSearchListView::event(QEvent *event)
 {
     Q_UNUSED(event)
     return QListView::event(event);
-}
-
-bool GrandSearchListView::viewportEvent(QEvent *event)
-{
-    switch (event->type()) {
-    case QEvent::HoverMove :
-    case QEvent::HoverEnter :
-        // 禁用悬浮事件，否则需要对悬浮位置的背景做特殊绘制（默认会比选中的颜色偏亮）
-        return true;
-    default:break;
-    }
-    return DListView::viewportEvent(event);
 }
 
 QString GrandSearchListView::cacheDir()

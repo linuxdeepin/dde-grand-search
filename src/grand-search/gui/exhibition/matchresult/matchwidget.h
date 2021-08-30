@@ -48,12 +48,14 @@ public slots:
     void handleItem();
 
 private slots:
-    void onSelectItemByMouse(const GrandSearchListView *listView);
+    void onSelectItemByMouse(const GrandSearch::MatchedItem &item);
 
 signals:
     void sigAppIconChanged(const QString &appIconName);
     void sigShowNoContent(bool noContent);
     void sigCloseWindow();
+
+    void sigPreviewItem(const GrandSearch::MatchedItem &item);
 
 private:
     // 在显示列表中，选择指定组的第一个项

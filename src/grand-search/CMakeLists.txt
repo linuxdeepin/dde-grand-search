@@ -79,6 +79,19 @@ set(GUISRC
     gui/exhibition/matchresult/listview/grandsearchlistmodel.cpp
     gui/exhibition/matchresult/listview/grandsearchlistview.h
     gui/exhibition/matchresult/listview/grandsearchlistview.cpp
+    # preview
+    gui/exhibition/preview/previewwidget_p.h
+    gui/exhibition/preview/previewwidget.h
+    gui/exhibition/preview/previewwidget.cpp
+    gui/exhibition/preview/previewplugin.h
+    gui/exhibition/preview/previewplugin.cpp
+    gui/exhibition/preview/previewplugininterface.h
+    gui/exhibition/preview/previewplugininterface.cpp
+    gui/exhibition/preview/previewpluginmanager.h
+    gui/exhibition/preview/previewpluginmanager.cpp
+    gui/exhibition/preview/generalpreviewplugin_p.h
+    gui/exhibition/preview/generalpreviewplugin.h
+    gui/exhibition/preview/generalpreviewplugin.cpp
     )
 
 # business
@@ -110,6 +123,7 @@ set(CONTACTSSRC
 set(UTILSSRC
     utils/utils.h
     utils/utils.cpp
+    utils/previewpluginconf.h
     )
 
 # 源文件
