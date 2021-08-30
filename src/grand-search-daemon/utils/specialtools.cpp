@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "utiltools.h"
+#include "specialtools.h"
 
 #include <QStringList>
 #include <QMimeDatabase>
@@ -47,7 +47,7 @@ static void wpsMimeSpecialist(const QFileInfo &file, QMimeType &type)
     }
 }
 
-bool UtilTools::splitCommand(const QString &cmd, QString &program, QStringList &args)
+bool SpecialTools::splitCommand(const QString &cmd, QString &program, QStringList &args)
 {
     if (cmd.isEmpty())
         return false;
@@ -69,7 +69,7 @@ bool UtilTools::splitCommand(const QString &cmd, QString &program, QStringList &
     return true;
 }
 
-QMimeType UtilTools::getMimeType(const QFileInfo &file)
+QMimeType SpecialTools::getMimeType(const QFileInfo &file)
 {
     if (file.isDir())
         return mimeDatabaseGlobal->mimeTypeForName(QLatin1String("inode/directory"));
@@ -82,7 +82,7 @@ QMimeType UtilTools::getMimeType(const QFileInfo &file)
     return result;
 }
 
-QString UtilTools::getJsonString(QJsonObject *json, const QString &key)
+QString SpecialTools::getJsonString(QJsonObject *json, const QString &key)
 {
     QString ret;
     if (!json || key.isEmpty())
@@ -98,7 +98,7 @@ QString UtilTools::getJsonString(QJsonObject *json, const QString &key)
     return ret;
 }
 
-QJsonArray UtilTools::getJsonArray(QJsonObject *json, const QString &key)
+QJsonArray SpecialTools::getJsonArray(QJsonObject *json, const QString &key)
 {
     QJsonArray ret;
 
@@ -115,7 +115,7 @@ QJsonArray UtilTools::getJsonArray(QJsonObject *json, const QString &key)
     return ret;
 }
 
-QStringList UtilTools::getRecentlyUsedFiles()
+QStringList SpecialTools::getRecentlyUsedFiles()
 {
     static QString recentlyPath = QDir::homePath().append("/.local/share/recently-used.xbel");
     QFile file(recentlyPath);
@@ -141,7 +141,7 @@ QStringList UtilTools::getRecentlyUsedFiles()
     return recentFiles;
 }
 
-bool UtilTools::isHiddenFile(const QString &fileName, QHash<QString, QSet<QString>> &filters, const QString &pathPrefix)
+bool SpecialTools::isHiddenFile(const QString &fileName, QHash<QString, QSet<QString>> &filters, const QString &pathPrefix)
 {
     if (!fileName.startsWith(pathPrefix) || fileName == pathPrefix)
         return false;

@@ -18,14 +18,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef UTILTOOLS_H
-#define UTILTOOLS_H
+#ifndef SPECIALTOOLS_H
+#define SPECIALTOOLS_H
 
 #include <QtCore>
 
 namespace GrandSearch {
 
-class UtilTools
+class SpecialTools
 {
 public:
     static bool splitCommand(const QString &cmd, QString &program, QStringList &args);
@@ -37,4 +37,4 @@ public:
 };
 
 }
-#endif // UTILTOOLS_H
+#endif // SPECIALTOOLS_H

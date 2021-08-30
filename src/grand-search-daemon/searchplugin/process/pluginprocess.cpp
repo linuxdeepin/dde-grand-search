@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "pluginprocess.h"
-#include "utils/utiltools.h"
+#include "utils/specialtools.h"
 
 #include <QProcess>
 #include <QTimerEvent>
@@ -45,7 +45,7 @@ bool PluginProcess::addProgram(const QString &name, const QString &path)
     QString exec;
     QStringList args;
     {
-        if (!GrandSearch::UtilTools::splitCommand(path, exec, args)) {
+        if (!GrandSearch::SpecialTools::splitCommand(path, exec, args)) {
             qWarning() << "error cmd:" << path;
             return false;
         }

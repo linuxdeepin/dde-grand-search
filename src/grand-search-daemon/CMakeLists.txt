@@ -158,8 +158,8 @@ set(UTILS
     utils/searchpluginconf.h
     utils/searchplugininfo.h
     utils/searchpluginprotocol.h
-    utils/utiltools.h
-    utils/utiltools.cpp
+    utils/specialtools.h
+    utils/specialtools.cpp
     utils/chineseletterhelper.h
     utils/chineseletterhelper.cpp
 )

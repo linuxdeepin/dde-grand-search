@@ -20,7 +20,7 @@
  */
 #include "convertorv1_0.h"
 #include "global/matcheditem.h"
-#include "utils/utiltools.h"
+#include "utils/specialtools.h"
 #include "utils/searchpluginprotocol.h"
 
 #include <QStringList>
@@ -109,17 +109,17 @@ int ConvertorV1_0::result(void *in, void *out)
 
     QJsonObject *json = static_cast<QJsonObject *>(varList->at(1).value<void *>());
 
-    auto ver = GrandSearch::UtilTools::getJsonString(json, PLUGININTERFACE_PROTOCOL_VERSION);
+    auto ver = GrandSearch::SpecialTools::getJsonString(json, PLUGININTERFACE_PROTOCOL_VERSION);
     if (CURRENT_CONVERTOR_VERSION != ver)
         return -1;
 
-    auto missionID = GrandSearch::UtilTools::getJsonString(json, PLUGININTERFACE_PROTOCOL_MISSIONID);
+    auto missionID = GrandSearch::SpecialTools::getJsonString(json, PLUGININTERFACE_PROTOCOL_MISSIONID);
     if (missionID.isEmpty())
         return 1;
 
     static int MaxItemCount = 100;
     int count = 0;
-    QJsonArray contents = GrandSearch::UtilTools::getJsonArray(json, PLUGININTERFACE_PROTOCOL_CONTENT);
+    QJsonArray contents = GrandSearch::SpecialTools::getJsonArray(json, PLUGININTERFACE_PROTOCOL_CONTENT);
     GrandSearch::MatchedItemMap mContents;
     for (const QJsonValue &groupValue : contents) {
 
@@ -130,11 +130,11 @@ int ConvertorV1_0::result(void *in, void *out)
         if (groupValue.isObject()) {
             auto group = groupValue.toObject();
 
-            QString groupName = GrandSearch::UtilTools::getJsonString(&group, PLUGININTERFACE_PROTOCOL_GROUP);
+            QString groupName = GrandSearch::SpecialTools::getJsonString(&group, PLUGININTERFACE_PROTOCOL_GROUP);
             if (groupName.isEmpty())
                 continue;
 
-            QJsonArray itemsValue = GrandSearch::UtilTools::getJsonArray(&group, PLUGININTERFACE_PROTOCOL_ITEMS);
+            QJsonArray itemsValue = GrandSearch::SpecialTools::getJsonArray(&group, PLUGININTERFACE_PROTOCOL_ITEMS);
             GrandSearch::MatchedItems aGroup;
 
             for (const QJsonValue &itemValue : itemsValue) {
@@ -146,19 +146,19 @@ int ConvertorV1_0::result(void *in, void *out)
                     auto item = itemValue.toObject();
 
                     GrandSearch::MatchedItem mItem;
-                    mItem.item = GrandSearch::UtilTools::getJsonString(&item, PLUGININTERFACE_PROTOCOL_ITEM);
+                    mItem.item = GrandSearch::SpecialTools::getJsonString(&item, PLUGININTERFACE_PROTOCOL_ITEM);
                     if (mItem.item.isEmpty())
                         continue;
 
-                    mItem.name = GrandSearch::UtilTools::getJsonString(&item, PLUGININTERFACE_PROTOCOL_NAME);
+                    mItem.name = GrandSearch::SpecialTools::getJsonString(&item, PLUGININTERFACE_PROTOCOL_NAME);
                     if (mItem.name.isEmpty())
                         continue;
 
-                    mItem.type = GrandSearch::UtilTools::getJsonString(&item, PLUGININTERFACE_PROTOCOL_TYPE);
+                    mItem.type = GrandSearch::SpecialTools::getJsonString(&item, PLUGININTERFACE_PROTOCOL_TYPE);
                     if (mItem.type.isEmpty())
                         continue;
 
-                    mItem.icon = GrandSearch::UtilTools::getJsonString(&item, PLUGININTERFACE_PROTOCOL_ICON);
+                    mItem.icon = GrandSearch::SpecialTools::getJsonString(&item, PLUGININTERFACE_PROTOCOL_ICON);
 
                     mItem.searcher = plugin;
 

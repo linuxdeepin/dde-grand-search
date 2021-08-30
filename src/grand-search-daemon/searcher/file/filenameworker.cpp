@@ -22,7 +22,7 @@
 #include "filenameworkerprivate.h"
 #include "anything_interface.h"
 #include "global/builtinsearch.h"
-#include "utils/utiltools.h"
+#include "utils/specialtools.h"
 
 #include <QStandardPaths>
 
@@ -94,7 +94,7 @@ bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName, Group gr
     }
 
     m_tmpSearchResults << fileName;
-    QMimeType mimeType = GrandSearch::UtilTools::getMimeType(file);
+    QMimeType mimeType = GrandSearch::SpecialTools::getMimeType(file);
     GrandSearch::MatchedItem item;
     item.item = fileName;
     item.name = file.fileName();
@@ -113,7 +113,7 @@ bool FileNameWorkerPrivate::searchRecentFile()
     Q_Q(FileNameWorker);
 
     // 搜索最近使用文件
-    const auto &recentfiles = GrandSearch::UtilTools::getRecentlyUsedFiles();
+    const auto &recentfiles = GrandSearch::SpecialTools::getRecentlyUsedFiles();
     for (const auto &file : recentfiles) {
         //中断
         if (m_status.loadAcquire() != ProxyWorker::Runing)
@@ -158,7 +158,7 @@ bool FileNameWorkerPrivate::searchUserPath()
             const auto &absoluteFilePath = info.absoluteFilePath();
 
             // 过滤文管设置的隐藏文件
-            if (GrandSearch::UtilTools::isHiddenFile(absoluteFilePath, m_hiddenFilters, QDir::homePath()))
+            if (GrandSearch::SpecialTools::isHiddenFile(absoluteFilePath, m_hiddenFilters, QDir::homePath()))
                 continue;
 
             appendSearchResult(info.absoluteFilePath());
@@ -218,7 +218,7 @@ bool FileNameWorkerPrivate::searchByAnything()
                 path = path.mid(5);
 
             // 过滤文管设置的隐藏文件
-            if (GrandSearch::UtilTools::isHiddenFile(path, m_hiddenFilters, QDir::homePath()))
+            if (GrandSearch::SpecialTools::isHiddenFile(path, m_hiddenFilters, QDir::homePath()))
                 continue;
 
             appendSearchResult(path);
