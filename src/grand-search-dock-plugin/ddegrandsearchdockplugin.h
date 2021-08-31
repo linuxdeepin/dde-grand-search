@@ -21,7 +21,7 @@
 #ifndef DDEGRANDSEARCHDOCKPLUGIN_H
 #define DDEGRANDSEARCHDOCKPLUGIN_H
 
-#include <dde-dock/pluginsiteminterface.h>
+#include <pluginsiteminterface.h>
 
 #include <QObject>
 #include <QScopedPointer>
