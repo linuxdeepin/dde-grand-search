@@ -60,6 +60,8 @@ void MainControllerPrivate::buildWorker(TaskCommander *task)
             if (auto worker = searcher->createWorker()) {
                 task->join(worker);
             }
+        } else {
+            qWarning() << searcher->name() << "is unenabled.";
         }
     }
 }

@@ -129,6 +129,7 @@ bool TaskCommander::start()
         return false;
 
     d->m_working = true;
+    bool isOn = false;
     //所有异步搜索项在一个线程中依次执行
     if (!d->m_asyncWorkers.isEmpty()) {
         d->m_asyncLine.setFuture(QtConcurrent::run([this]() {
@@ -145,12 +146,22 @@ bool TaskCommander::start()
             }
         }));
         connect(&d->m_asyncLine, &QFutureWatcherBase::finished, d, &TaskCommanderPrivate::onFinished);
+        isOn = true;
     }
 
     //所有同步搜索项在线程池中执行
     if (!d->m_syncWorkers.isEmpty()) {
         d->m_syncLine.setFuture(QtConcurrent::map(d->m_syncWorkers, TaskCommanderPrivate::working));
         connect(&d->m_syncLine, &QFutureWatcherBase::finished, d, &TaskCommanderPrivate::onFinished);
+        isOn = true;
+    }
+
+    //无工作对象，直接结束。
+    if (!isOn) {
+        d->m_working = false;
+        qWarning() << "no worker...";
+        //加入队列，在start函数返回后发送结束信号
+        QMetaObject::invokeMethod(this, "finished", Qt::QueuedConnection);
     }
 
     return true;

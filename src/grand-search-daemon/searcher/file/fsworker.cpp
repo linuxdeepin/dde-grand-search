@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "fsworker.h"
-#include "utils/utiltools.h"
+#include "utils/specialtools.h"
 #include "global/builtinsearch.h"
 
 #include <QWaitCondition>
@@ -202,7 +202,7 @@ void FsWorker::callbackReceiveResults(void *data, void *sender)
             }
 
             // 过滤文管设置的隐藏文件
-            if (GrandSearch::UtilTools::isHiddenFile(fileName, self->m_hiddenFilters, QDir::homePath()))
+            if (GrandSearch::SpecialTools::isHiddenFile(fileName, self->m_hiddenFilters, QDir::homePath()))
                 continue;
 
             self->appendSearchResult(fileName);
@@ -244,7 +244,7 @@ bool FsWorker::appendSearchResult(const QString &fileName, Group group)
     }
 
     m_tmpSearchResults << fileName;
-    QMimeType mimeType = GrandSearch::UtilTools::getMimeType(file);
+    QMimeType mimeType = GrandSearch::SpecialTools::getMimeType(file);
     GrandSearch::MatchedItem item;
     item.item = fileName;
     item.name = file.fileName();
@@ -261,7 +261,7 @@ bool FsWorker::appendSearchResult(const QString &fileName, Group group)
 bool FsWorker::searchRecentFile()
 {
     // 搜索最近使用文件
-    const auto &recentfiles = GrandSearch::UtilTools::getRecentlyUsedFiles();
+    const auto &recentfiles = GrandSearch::SpecialTools::getRecentlyUsedFiles();
     for (const auto &file : recentfiles) {
         //中断
         if (m_status.loadAcquire() != ProxyWorker::Runing)
