@@ -1,16 +1,27 @@
 ### dde-grand-search
 
-
+Deepin Grand Search is a basic search tool developed by Deepin Technology,featured with searching including a series of files,applications or documents, etc.
 
 ### Dependencies
-
 
 ### Build dependencies
 
 _The **master** branch is current development branch, build dependencies may changes without update README.md, refer to `./debian/control` for a working build depends list_
- 
-* pkg-config
 
+* pkg-config
+* qt5-qmake
+* qtbase5-dev
+* libdtkwidget-dev
+* libdtkcore-dev
+* libdtkgui-dev
+* libdtkcore5-bin
+* libdframeworkdbus-dev
+* qttools5-dev-tools
+* cmake
+* deepin-anything-dev[i386 amd64]
+* deepin-anything-server-dev[i386 amd64]
+* dde-dock-dev
+* libglib2.0-dev
 
 ## Installation
 
@@ -40,24 +51,33 @@ $ make
 $ sudo make install
 ```
 
-The executable binary file could be found at `/usr/bin/dde-grand-search`
+The executable binary file could be found at `/usr/bin/dde-grand-search` and `/usr/bin/dde-grand-search-daemon` 
 
 ## Usage
 
-Execute `dde-grand-search`
+Execute `dde-grand-search-daemon` and `dde-grand-search`
 
 ## Documentations
 
- 
+
 ## Getting help
 
-
+ - [Official Forum](https://bbs.deepin.org/)
+ - [Developer Center](https://github.com/linuxdeepin/developer-center)
+ - [Gitter](https://gitter.im/orgs/linuxdeepin/rooms)
+ - [IRC Channel](https://webchat.freenode.net/?channels=deepin)
+ - [Wiki](https://wiki.deepin.org/)
 
 ## Getting involved
 
 We encourage you to report issues and contribute changes
 
+ - [Contribution guide for developers](https://github.com/linuxdeepin/developer-center/wiki/Contribution-Guidelines-for-Developers-en) (English)
+ - [开发者代码贡献指南](https://github.com/linuxdeepin/developer-center/wiki/Contribution-Guidelines-for-Developers) (中文)
+ - [Translate for your language on Transifex](https://www.transifex.com/linuxdeepin/deepin-file-manager/)
+
 
 ## License
 
 dde-grand-search is licensed under [GPLv3](LICENSE)
+
