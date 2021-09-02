@@ -463,3 +463,26 @@ QIcon Utils::defaultIcon(const MatchedItem &item)
 
     return QIcon();
 }
+
+bool Utils::isLevelItem(const MatchedItem &item, int &level)
+{
+    if (QVariant::Hash == item.extra.type() && item.extra.toHash().keys().contains(GRANDSEARCH_PROPERTY_ITEM_LEVEL)) {
+        bool ok = false;
+        level = item.extra.toHash().value(GRANDSEARCH_PROPERTY_ITEM_LEVEL).toInt(&ok);
+        return ok;
+    }
+    return false;
+}
+
+bool Utils::isLevelGroup(const QString &searchGroupName)
+{
+    static const QStringList containLevelGroup{
+        GRANDSEARCH_GROUP_FILE_VIDEO
+      , GRANDSEARCH_GROUP_FILE_AUDIO
+      , GRANDSEARCH_GROUP_FILE_PICTURE
+      , GRANDSEARCH_GROUP_FILE_DOCUMNET
+      , GRANDSEARCH_GROUP_FILE
+    };
+
+    return containLevelGroup.contains(searchGroupName);
+}

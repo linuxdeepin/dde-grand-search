@@ -72,6 +72,8 @@ set(GUISRC
     gui/exhibition/matchresult/groupwidget_p.h
     gui/exhibition/matchresult/groupwidget.h
     gui/exhibition/matchresult/groupwidget.cpp
+    gui/exhibition/matchresult/levelitemgroupwidget.h
+    gui/exhibition/matchresult/levelitemgroupwidget.cpp
     # listView
     gui/exhibition/matchresult/listview/grandsearchlistdelegate.h
     gui/exhibition/matchresult/listview/grandsearchlistdelegate.cpp

@@ -22,7 +22,6 @@
 #ifndef GROUPWIDGET_H
 #define GROUPWIDGET_H
 
-#include "../../datadefine.h"
 #include "global/matcheditem.h"
 #include "global/builtinsearch.h"
 
@@ -49,8 +48,12 @@ public:
     explicit GroupWidget(QWidget *parent = nullptr);
     ~GroupWidget() override;
 
-    void setGroupName(const QString &groupClassName);
-    void appendMatchedItems(const GrandSearch::MatchedItems &newItems, const QString& groupClassName);
+    virtual void appendMatchedItems(const GrandSearch::MatchedItems &newItems, const QString& searchGroupName);
+    virtual void clear();
+
+    void setGroupName(const QString &groupName);
+    QString groupName();
+
     void showHorLine(bool bShow = true);
     bool isHorLineVisilbe();
     GrandSearchListView *getListView();
@@ -58,46 +61,40 @@ public:
     // 获取当前选中行在类目中的高度
     int getCurSelectHeight();
     void reLayout();
-    void clear();
 
-    QString groupName();
-    static QString getGroupName(const QString &groupClassName);
-    static QString getGroupObjName(const QString &groupClassName);
-
-protected:
-    void initUi();
-    void initConnect();
-
-    void paintEvent(QPaintEvent *event) override;
+    static QString convertDisplayName(const QString &searchGroupName);
 
 public slots:
-    void onMoreBtnClcked();
+    virtual void onMoreBtnClcked();
+
+protected:
+    void paintEvent(QPaintEvent *event) override;
+
+private:
+    void initUi();
+    void initConnect();
 
 signals:
     void showMore();
 
-private:
-    QScopedPointer<GroupWidgetPrivate> d_p;
-
-    QVBoxLayout *m_vLayout = nullptr;               // 主体垂直布局
-    QHBoxLayout *m_hTitelLayout = nullptr;          // 顶部标题水平布局
-
-    DLabel *m_groupLabel = nullptr;
-    DPushButton* m_viewMoreButton = nullptr;
-
-    QVBoxLayout *m_vContentLayout = nullptr;        // 内容垂直布局，用于限定列表和横线间距10个像素间隙
+protected:
     GrandSearchListView *m_listView = nullptr;
-    DHorizontalLine *m_line = nullptr;
-
-    QString m_groupName;                            // 当前类目列表组名,对应类目显示名称
-    QString m_groupClassName;                       // 当前类目列表组名对应的类名
+    DPushButton* m_viewMoreButton = nullptr;
 
     bool m_bListExpanded = false;                   // 结果列表是否已展开
     GrandSearch::MatchedItems m_firstFiveItems;     // 前5行正在显示的匹配结果
     GrandSearch::MatchedItems m_restShowItems;      // 剩余正在显示的匹配结果
     GrandSearch::MatchedItems m_cacheItems;         // 缓存中的匹配结果
 
-    GrandSearch::MatchedItems m_cacheItemsRecentFile;     // 缓存中最近文件
+private:
+    QScopedPointer<GroupWidgetPrivate> d_p;
+
+    QVBoxLayout *m_vLayout = nullptr;               // 主体垂直布局
+    QHBoxLayout *m_hTitelLayout = nullptr;          // 顶部标题水平布局
+    QVBoxLayout *m_vContentLayout = nullptr;        // 内容垂直布局，用于限定列表和横线间距10个像素间隙
+
+    DLabel *m_groupLabel = nullptr;
+    DHorizontalLine *m_line = nullptr;
 };
 
 typedef QMap<QString, GroupWidget *> GroupWidgetMap;

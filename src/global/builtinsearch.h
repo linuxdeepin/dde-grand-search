@@ -30,10 +30,23 @@
 
 #define GRANDSEARCH_GROUP_APP                "com.deepin.dde-grand-search.group.application"
 #define GRANDSEARCH_GROUP_SETTING            "com.deepin.dde-grand-search.group.setting-controlcenter"
-#define GRANDSEARCH_GROUP_FOLDER             "com.deepin.dde-grand-search.group.folder"
-#define GRANDSEARCH_GROUP_FILE               "com.deepin.dde-grand-search.group.files"
-#define GRANDSEARCH_GROUP_RECENTFILE         "com.deepin.dde-grand-search.group.files.recent"
 #define GRANDSEARCH_GROUP_WEB                "com.deepin.dde-grand-search.group.web"
+
+#define GRANDSEARCH_GROUP_FOLDER             "com.deepin.dde-grand-search.group.folder"
+
+#define GRANDSEARCH_GROUP_FILE               "com.deepin.dde-grand-search.group.files"
+#define GRANDSEARCH_GROUP_FILE_VIDEO         "com.deepin.dde-grand-search.group.files.video"
+#define GRANDSEARCH_GROUP_FILE_AUDIO         "com.deepin.dde-grand-search.group.files.audio"
+#define GRANDSEARCH_GROUP_FILE_PICTURE       "com.deepin.dde-grand-search.group.files.picture"
+#define GRANDSEARCH_GROUP_FILE_DOCUMNET      "com.deepin.dde-grand-search.group.files.document"
+
+#define GRANDSEARCH_GROUP_RECENTFILE         "com.deepin.dde-grand-search.group.files.recent"
+
+#define GRANDSEARCH_PROPERTY_ITEM_LEVEL      "itemLevel"
+
+#define GRANDSEARCH_PROPERTY_ITEM_LEVEL_FIRST   1
+#define GRANDSEARCH_PROPERTY_ITEM_LEVEL_SECOND  2
+#define GRANDSEARCH_PROPERTY_ITEM_LEVEL_THIRD   3
 
 #define DEF_BUILTISEARCH_NAMES  \
 static const QStringList predefBuiltinSearches { \

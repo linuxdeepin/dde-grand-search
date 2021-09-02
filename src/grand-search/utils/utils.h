@@ -65,6 +65,17 @@ public:
 
     static QIcon defaultIcon(const GrandSearch::MatchedItem &item);
 
+    /*!
+     * \brief isLevelItem 判断item是否属于分层项，并输出具体的层级
+     * \param item 待判断的搜索结果项
+     * \param level 输出参数，item所属的层级
+     * \return 项item是否属于分层项
+     */
+    static bool isLevelItem(const GrandSearch::MatchedItem &item, int &level);
+
+    // 返回该组是否包分层显示项
+    static bool isLevelGroup(const QString &searchGroupName);
+
 private:
     static QMap<QString, QString> m_appIconNameMap;// 存放应用desktop文件对应的图标名称，用于搜索框应用图标刷新
     static QMimeDatabase m_mimeDb;

@@ -23,6 +23,8 @@
 #include "matchwidget.h"
 #include "listview/grandsearchlistview.h"
 #include "utils/utils.h"
+#include "gui/datadefine.h"
+#include "levelitemgroupwidget.h"
 
 #include <DScrollArea>
 #include <DApplicationHelper>
@@ -49,6 +51,9 @@ MatchWidget::MatchWidget(QWidget *parent)
     : DWidget(parent)
     , d_p(new MatchWidgetPrivate(this))
 {
+    m_groupHashShowOrder << GRANDSEARCH_GROUP_APP << GRANDSEARCH_GROUP_SETTING << GRANDSEARCH_GROUP_FILE_VIDEO
+                         << GRANDSEARCH_GROUP_FILE_AUDIO << GRANDSEARCH_GROUP_FILE_PICTURE << GRANDSEARCH_GROUP_WEB
+                         << GRANDSEARCH_GROUP_FILE_DOCUMNET << GRANDSEARCH_GROUP_FOLDER << GRANDSEARCH_GROUP_FILE;
     initUi();
     initConnect();
 
@@ -68,14 +73,8 @@ void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
     MatchedItemMap::ConstIterator itData = matchedData.begin();
     while (itData != matchedData.end()) {
 
-        QString groupClassName = itData.key();
-
-        // 最近使用的文件归类到文件类目排头显示
-        if (groupClassName == GRANDSEARCH_GROUP_RECENTFILE)
-            groupClassName = GRANDSEARCH_GROUP_FILE;
-
         // 根据groupHash创建对应类目列表，若已存在，直接返回已有类目列表
-        GroupWidget* groupWidget = createGroupWidget(groupClassName);
+        GroupWidget* groupWidget = createGroupWidget(itData.key());
         if (!groupWidget) {
             itData++;
             continue;
@@ -470,13 +469,20 @@ void MatchWidget::reLayout()
     layout();
 }
 
-GroupWidget *MatchWidget::createGroupWidget(const QString &groupClassName)
+GroupWidget *MatchWidget::createGroupWidget(const QString &searchGroupName)
 {
-    if (Q_UNLIKELY(groupClassName.isEmpty()))
+    if (Q_UNLIKELY(searchGroupName.isEmpty()))
         return nullptr;
 
-    if (!m_groupWidgetMap[groupClassName]) {
-        GroupWidget* groupWidget = new GroupWidget(m_scrollAreaContent);
+    if (!m_groupWidgetMap[searchGroupName]) {
+
+        GroupWidget *groupWidget = nullptr;
+        if (Utils::isLevelGroup(searchGroupName)) {
+            groupWidget = new LevelItemGroupWidget(m_scrollAreaContent);
+        } else {
+            groupWidget = new GroupWidget(m_scrollAreaContent);
+        }
+
         connect(groupWidget, &GroupWidget::showMore, this, &MatchWidget::reLayout);
 
         GrandSearchListView *listView = groupWidget->getListView();
@@ -485,22 +491,23 @@ GroupWidget *MatchWidget::createGroupWidget(const QString &groupClassName)
         connect(listView, &GrandSearchListView::sigSelectItemByMouse, this, &MatchWidget::onSelectItemByMouse);
         connect(listView, &GrandSearchListView::sigItemClicked, this, &MatchWidget::sigCloseWindow);
 
-        groupWidget->setGroupName(groupClassName);
-        m_groupWidgetMap[groupClassName] = groupWidget;
+        const QString &groupName = GroupWidget::convertDisplayName(searchGroupName);
+        groupWidget->setGroupName(groupName);
+        m_groupWidgetMap[searchGroupName] = groupWidget;
 
         return groupWidget;
     }
 
-    return m_groupWidgetMap[groupClassName];
+    return m_groupWidgetMap[searchGroupName];
 }
 
 void MatchWidget::sortVislibleGroupList()
 {
-    // 1.优先在界面中显示应用、文件夹和文件类目，显示顺序为: 应用 > 文件夹 > 文件
+    // 1.优先在界面中显示: 应用 > 设置 > 音频 > 视频 > 图片 > WEB > 文档 >文件夹 > 文件
     m_vGroupWidgets.clear();
-    for (auto groupClassName : m_groupHashShowOrder) {
-        if (m_groupWidgetMap[groupClassName] && !m_groupWidgetMap[groupClassName]->isHidden())
-            m_vGroupWidgets.push_back(m_groupWidgetMap[groupClassName]);
+    for (auto searchGroupName : m_groupHashShowOrder) {
+        if (m_groupWidgetMap[searchGroupName] && !m_groupWidgetMap[searchGroupName]->isHidden())
+            m_vGroupWidgets.push_back(m_groupWidgetMap[searchGroupName]);
     }
 
     // 2.其他类目追加在后面

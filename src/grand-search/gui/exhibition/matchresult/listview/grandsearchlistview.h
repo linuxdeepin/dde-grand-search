@@ -31,7 +31,6 @@ DWIDGET_USE_NAMESPACE
 
 #define ICON_ROLE Qt::UserRole+1
 #define DATA_ROLE Qt::UserRole+2
-#define GROUP_ROLE Qt::UserRole+3
 
 class GrandSearchListModel;
 class GrandSearchListDelegate;
@@ -42,19 +41,18 @@ public:
     explicit GrandSearchListView(QWidget *parent = Q_NULLPTR);
     ~GrandSearchListView() override;
 
-    void setMatchedItems(const MatchedItems &items, const QString &group);
-    void addRow(const MatchedItem &item, const QString &group);
-    void addRows(const MatchedItems &items, const QString &group);
-    int insertRow(int nRow, const MatchedItem &item, const QString &group);
-    void insertRows(int nRow, const MatchedItems &items, const QString &group);
+    void setMatchedItems(const MatchedItems &items);
+    void addRow(const MatchedItem &item);
+    void addRow(const MatchedItem &item, const int level);
+    void addRows(const MatchedItems &items);
+    void addRows(const MatchedItems &items, const int level);
+    int insertRow(int nRow, const MatchedItem &item);
+    void insertRows(int nRow, const MatchedItems &items);
     // 从给定行开始删除指定行数
     void removeRows(int nRow, int nCount);
 
-    // 获取小组类型下所有匹配结果
-    MatchedItems groupItems(const QString& group);
-
-    // 获取指定小组类型下最后显示的行号
-    int lastShowRow(const QString &group);
+    // 对应level级别项的数量,默认返回所有层级项的总和
+    int levelItemCount(const int level = -1);
 
     int rowCount();
     int getThemeType() const;
@@ -75,7 +73,8 @@ protected:
 
 private:
     QString cacheDir();
-    void setData(const QModelIndex& index, const MatchedItem &item, const QString &group);
+    void setData(const QModelIndex& index, const MatchedItem &item);
+    int levelItemLastRow(const int level);
 
 private:
     GrandSearchListModel        *m_model        = nullptr;

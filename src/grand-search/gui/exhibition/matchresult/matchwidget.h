@@ -28,6 +28,7 @@
 
 #include <QScopedPointer>
 
+class GroupWidget;
 class MatchWidgetPrivate;
 class QVBoxLayout;
 class MatchWidget : public Dtk::Widget::DWidget
@@ -79,7 +80,7 @@ protected:
     void reLayout();
 
     // 动态创建类目列表，若对应类目已存在，则返回已有类目列表
-    GroupWidget *createGroupWidget(const QString &groupClassName);
+    GroupWidget *createGroupWidget(const QString &searchGroupName);
 
     // 对要显示的类目列表进行排序
     void sortVislibleGroupList();
@@ -94,10 +95,7 @@ private:
     DWidget *m_scrollAreaContent = nullptr;             // 滚动区域内容部件
     QVBoxLayout *m_vScrollLayout = nullptr;             // 滚动区域内部部件整体布局
 
-    QStringList m_groupHashShowOrder{                   // 依据产品需求，规定group哈希值对应类目列表显示顺序
-        GRANDSEARCH_GROUP_APP,
-        GRANDSEARCH_GROUP_FOLDER,
-        GRANDSEARCH_GROUP_FILE};
+    QStringList m_groupHashShowOrder;                   // 类目列表显示顺序
 
     GroupWidgetMap m_groupWidgetMap;                    // 按group类名存放类目列表
     GroupWidgets m_vGroupWidgets;                       // 类目列表按显示顺序存放

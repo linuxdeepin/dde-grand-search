@@ -27,15 +27,28 @@
 namespace GrandSearch {
 
 // 组-列表对象名
-#define GroupObjName_App             "Group_App"
-#define GroupObjName_Folder          "Group_Folder"
-#define GroupObjName_File            "Group_File"
+#define GroupObjName_App            "Group_App"
+#define GroupObjName_Set            "Group_Set"
+#define GroupObjName_Video          "Group_Video"
+#define GroupObjName_Audio          "Group_Audio"
+#define GroupObjName_Picture        "Group_Picture"
+#define GroupObjName_Web            "Group_Web"
+#define GroupObjName_Document       "Group_Document"
+#define GroupObjName_Folder         "Group_Folder"
+#define GroupObjName_File           "Group_File"
 
 // 组-中文词典翻译
-#define GroupName_App                QObject::tr("Applications")
-#define GroupName_Folder             QObject::tr("Folders")
-#define GroupName_File               QObject::tr("Files")
+#define GroupName_App               QObject::tr("Applications")
+#define GroupName_Set               QObject::tr("Set")
+#define GroupName_Video             QObject::tr("Video")
+#define GroupName_Audio             QObject::tr("Audio")
+#define GroupName_Picture           QObject::tr("Picture")
+#define GroupName_Web               QObject::tr("Web")
+#define GroupName_Document          QObject::tr("Document")
+#define GroupName_Folder            QObject::tr("Folders")
+#define GroupName_File              QObject::tr("Files")
 
+#define GROUP_MAX_SHOW              5   // 每组默认显示数量
 
 //预览插件信息
 struct PreviewPluginInfo {

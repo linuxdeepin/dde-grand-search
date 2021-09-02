@@ -21,6 +21,7 @@
 #include "grandsearchlistdelegate.h"
 #include "utils/utils.h"
 #include "global/matcheditem.h"
+#include "global/builtinsearch.h"
 
 #include <DGuiApplicationHelper>
 #include <DStandardPaths>
@@ -66,16 +67,16 @@ GrandSearchListView::~GrandSearchListView()
 
 }
 
-void GrandSearchListView::setMatchedItems(const MatchedItems &items, const QString &group)
+void GrandSearchListView::setMatchedItems(const MatchedItems &items)
 {
     m_matchedItems = items;
     m_model->clear();
     for (MatchedItem item : m_matchedItems) {
-        addRow(item, group);
+        addRow(item);
     }
 }
 
-void GrandSearchListView::addRow(const MatchedItem &item, const QString &group)
+void GrandSearchListView::addRow(const MatchedItem &item)
 {
     QStandardItem *newItem = new QStandardItem;
     m_model->appendRow(newItem);
@@ -83,19 +84,31 @@ void GrandSearchListView::addRow(const MatchedItem &item, const QString &group)
     auto row = m_model->rowCount() - 1;
     QModelIndex index = m_model->index(row, 0, QModelIndex());
 
-    setData(index, item, group);
+    setData(index, item);
 }
 
-void GrandSearchListView::addRows(const MatchedItems &items, const QString &group)
+void GrandSearchListView::addRow(const MatchedItem &item, const int level)
+{
+    int lastRow = levelItemLastRow(level);
+    insertRow(lastRow, item);
+}
+
+void GrandSearchListView::addRows(const MatchedItems &items)
 {
     for (auto item : items)
-        addRow(item, group);
+        addRow(item);
 }
 
-int GrandSearchListView::insertRow(int nRow, const MatchedItem &item, const QString &group)
+void GrandSearchListView::addRows(const MatchedItems &items, const int level)
+{
+    int lastRow = levelItemLastRow(level);
+    insertRows(lastRow, items);
+}
+
+int GrandSearchListView::insertRow(int nRow, const MatchedItem &item)
 {
     if (nRow < 0 || nRow >= m_model->rowCount()) {
-        addRow(item, group);
+        addRow(item);
         return m_model->rowCount() - 1;
     }
 
@@ -103,20 +116,20 @@ int GrandSearchListView::insertRow(int nRow, const MatchedItem &item, const QStr
     m_model->insertRow(nRow, newItem);
 
     QModelIndex index = m_model->index(nRow, 0, QModelIndex());
-    setData(index, item, group);
+    setData(index, item);
 
     return nRow;
 }
 
-void GrandSearchListView::insertRows(int nRow, const MatchedItems &items, const QString &group)
+void GrandSearchListView::insertRows(int nRow, const MatchedItems &items)
 {
     if (nRow < 0 || nRow >= m_model->rowCount()) {
-        addRows(items, group);
+        addRows(items);
         return;
     }
 
     for (int i = 0; i < items.size(); i++) {
-        insertRow(nRow,items[i], group);
+        insertRow(nRow,items[i]);
     }
 }
 
@@ -125,33 +138,20 @@ void GrandSearchListView::removeRows(int nRow, int nCount)
     m_model->removeRows(nRow, nCount);
 }
 
-MatchedItems GrandSearchListView::groupItems(const QString &group)
+int GrandSearchListView::levelItemCount(const int level)
 {
-    MatchedItems items;
-    for (int i = 0; i < m_model->rowCount(); i++) {
-        QString tempGroup = m_model->data(m_model->index(i, 0, QModelIndex()), GROUP_ROLE).toString();
-        if (tempGroup == group)
-            items.push_back(m_model->data(m_model->index(i, 0, QModelIndex()), DATA_ROLE).value<MatchedItem>());
-    }
-
-    return items;
-}
-
-int GrandSearchListView::lastShowRow(const QString &group)
-{
-    if (group.isEmpty())
-        return -1;
-
-    int nRow = -1;
-    for (int i = 0; i < m_model->rowCount(); i++) {
-        QString tempGroup = m_model->data(m_model->index(i, 0, QModelIndex()), GROUP_ROLE).toString();
-        if (tempGroup == group)
-            nRow = i;
-        else if (nRow != -1)
+    int count = 0;
+    for (int i = 0; i < m_model->rowCount(); ++i) {
+        auto item = m_model->data(m_model->index(i, 0, QModelIndex()), DATA_ROLE).value<MatchedItem>();
+        // 如果当前项不是分层项，则说明后续已经没有分层项
+        int tempLevel = -1;
+        if (!Utils::isLevelItem(item, tempLevel))
             break;
+        if (-1 == level || level == tempLevel)
+            count++;
     }
 
-    return nRow;
+    return count;
 }
 
 int GrandSearchListView::rowCount()
@@ -209,7 +209,7 @@ QString GrandSearchListView::cacheDir()
     return userCachePath;
 }
 
-void GrandSearchListView::setData(const QModelIndex& index, const MatchedItem &item, const QString &group)
+void GrandSearchListView::setData(const QModelIndex& index, const MatchedItem &item)
 {
     if (!index.isValid())
         return;
@@ -217,7 +217,6 @@ void GrandSearchListView::setData(const QModelIndex& index, const MatchedItem &i
     QVariant searchMeta;
     searchMeta.setValue(item);
     m_model->setData(index, searchMeta, DATA_ROLE);
-    m_model->setData(index, QVariant(group), GROUP_ROLE);
 
     // 添加悬浮提示
     QFontMetricsF fontWidth(DFontSizeManager::instance()->get(DFontSizeManager::T6));
@@ -250,4 +249,18 @@ void GrandSearchListView::setData(const QModelIndex& index, const MatchedItem &i
     }
 
     m_model->setData(index,iconVariantData, Qt::DecorationRole);
+}
+
+int GrandSearchListView::levelItemLastRow(const int level)
+{
+    int lastRow = 0;
+    if (level < 1) {
+        lastRow = m_model->rowCount();
+    } else {
+        for (int i = 1; i <= level; ++i) {
+            lastRow += levelItemCount(i);
+        }
+    }
+
+    return lastRow;
 }
