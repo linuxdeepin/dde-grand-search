@@ -26,12 +26,14 @@
 #define GRANDSEARCH_CLASS_FILE_FSEARCH "com.deepin.dde-grand-search.file-fsearch"
 #define GRANDSEARCH_CLASS_APP_DESKTOP "com.deepin.dde-grand-search.app-desktop"
 #define GRANDSEARCH_CLASS_SETTING_CONTROLCENTER "com.deepin.dde-grand-search.setting-controlcenter"
+#define GRANDSEARCH_CLASS_WEB_STATICTEXT "com.deepin.dde-grand-search.web-statictext"
 
 #define GRANDSEARCH_GROUP_APP                "com.deepin.dde-grand-search.group.application"
 #define GRANDSEARCH_GROUP_SETTING            "com.deepin.dde-grand-search.group.setting-controlcenter"
 #define GRANDSEARCH_GROUP_FOLDER             "com.deepin.dde-grand-search.group.folder"
 #define GRANDSEARCH_GROUP_FILE               "com.deepin.dde-grand-search.group.files"
 #define GRANDSEARCH_GROUP_RECENTFILE         "com.deepin.dde-grand-search.group.files.recent"
+#define GRANDSEARCH_GROUP_WEB                "com.deepin.dde-grand-search.group.web"
 
 #define DEF_BUILTISEARCH_NAMES  \
 static const QStringList predefBuiltinSearches { \

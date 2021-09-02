@@ -56,6 +56,11 @@ void SearcherGroupPrivate::initBuiltin()
     auto settingSearcher = new ControlCenterSearcher(this);
     settingSearcher->asyncInit();
     m_builtin << settingSearcher;
+
+    qInfo() << "create StaticTextEchoer.";
+    auto stWebSearcher = new StaticTextEchoer(this);
+    m_builtin << stWebSearcher;
+
 }
 
 bool SearcherGroupPrivate::addExtendSearcher(const GrandSearch::SearchPluginInfo &pluginInfo)

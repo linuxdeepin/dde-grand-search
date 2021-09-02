@@ -78,6 +78,10 @@ set(SEARCHER
     searcher/setting/controlcentersearcher.cpp
     searcher/setting/controlcenterworker.h
     searcher/setting/controlcenterworker.cpp
+    searcher/web/statictextechoer.h
+    searcher/web/statictextechoer.cpp
+    searcher/web/statictextworker.h
+    searcher/web/statictextworker.cpp
     searcher/extend/extendsearcher.h
     searcher/extend/extendsearcherprivate.h
     searcher/extend/extendsearcher.cpp
