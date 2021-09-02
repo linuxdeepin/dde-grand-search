@@ -110,8 +110,6 @@ bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName, Group gr
 
 bool FileNameWorkerPrivate::searchRecentFile()
 {
-    Q_Q(FileNameWorker);
-
     // 搜索最近使用文件
     const auto &recentfiles = GrandSearch::SpecialTools::getRecentlyUsedFiles();
     for (const auto &file : recentfiles) {
@@ -142,8 +140,6 @@ bool FileNameWorkerPrivate::searchRecentFile()
 
 bool FileNameWorkerPrivate::searchUserPath()
 {
-    Q_Q(FileNameWorker);
-
     QFileInfoList fileInfoList = traverseDirAndFile(m_searchPath);
     // 先对user目录下进行搜索
     for (const auto &info : fileInfoList) {
@@ -182,8 +178,6 @@ bool FileNameWorkerPrivate::searchUserPath()
 
 bool FileNameWorkerPrivate::searchByAnything()
 {
-    Q_Q(FileNameWorker);
-
     // 搜索
     quint32 searchStartOffset = 0;
     quint32 searchEndOffset = 0;
@@ -197,6 +191,16 @@ bool FileNameWorkerPrivate::searchByAnything()
         const auto result = m_anythingInterface->search(100, 100, searchStartOffset,
                                                            searchEndOffset, m_searchDirList.first(),
                                                            m_context, false);
+        // fix bug 93806
+        if (result.error().type() != QDBusError::NoError) {
+            qWarning() << "deepin-anything search failed:"
+                       << QDBusError::errorString(result.error().type())
+                       << result.error().message();
+            searchStartOffset = searchEndOffset = 0;
+            m_searchDirList.removeAt(0);
+            continue;
+        }
+
         QStringList searchResults = result.argumentAt<0>();
         searchResults = searchResults.filter(hiddenFileFilter);
         searchStartOffset = result.argumentAt<1>();
