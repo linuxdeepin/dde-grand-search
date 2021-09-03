@@ -36,6 +36,9 @@
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
 
+#define FIX_CONTENT_WIDTH       372
+#define FIX_CONTENT_HEIGHT      444
+
 PreviewWidgetPrivate::PreviewWidgetPrivate(PreviewWidget *parent)
     : q_p(parent)
 {
@@ -65,8 +68,6 @@ bool PreviewWidget::previewItem(const MatchedItem &item)
     }
 
     PreviewPlugin* preview = m_pluginManager.getPreviewPlugin(item);
-    // 插件界面根据新来搜索结果刷新预览内容
-    preview->previewItem(item);
 
     // 插件有变更， 更换新插件界面内容到主界面布局中
     if (preview != m_preview) {
@@ -75,11 +76,15 @@ bool PreviewWidget::previewItem(const MatchedItem &item)
         clearLayoutWidgets();
 
         // 更换新插件界面内容到主界面布局
-        m_vMainLayout->insertWidget(0, preview->contentWidget());
-        m_vMainLayout->insertWidget(1, preview->statusBarWidget());
+        preview->contentWidget()->setFixedSize(FIX_CONTENT_WIDTH, FIX_CONTENT_HEIGHT);
+        preview->contentWidget()->adjustSize();
 
+        m_vMainLayout->insertWidget(0, preview->contentWidget());
         m_preview = preview;
     }
+
+    // 插件界面根据新来搜索结果刷新预览内容
+    preview->previewItem(item);
 
     this->show();
 
@@ -91,7 +96,6 @@ void PreviewWidget::initUi()
     m_vMainLayout = new QVBoxLayout(this);
     m_vMainLayout->setContentsMargins(0, 0, 0, 0);
     m_vMainLayout->setSpacing(0);
-
 }
 
 void PreviewWidget::initConnect()
@@ -103,7 +107,6 @@ void PreviewWidget::clearLayoutWidgets()
 {
     if (m_preview) {
         m_vMainLayout->removeWidget(m_preview->contentWidget());
-        m_vMainLayout->removeWidget(m_preview->statusBarWidget());
     }
 }
 

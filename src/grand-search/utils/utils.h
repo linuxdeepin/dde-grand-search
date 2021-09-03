@@ -27,6 +27,26 @@
 class Utils
 {
 public:
+    // 根据文件size换算为KB\MB\GB\TB
+    static QString formatFileSize(qint64 num, bool withUnitVisible = true, int precision = 1, int forceUnit = -1, QStringList unitList = QStringList({" B", " KB", " MB", " GB", " TB"}));
+
+    // 日期格式
+    inline static QString dateTimeFormat()
+    {
+        return "yyyy/MM/dd HH:mm:ss";
+    }
+
+    /**
+     * @brief showAlertMessage 显示气泡提示信息
+     * @param globalPoint 气泡框展示的全局坐标
+     * @param backgroundColor 气泡框的背景色
+     * @param text 气泡框展示的文字
+     * @param duration  显示时间，默认3秒
+     */
+    static void showAlertMessage(QPoint globalPoint,
+                                 const QColor &backgroundColor,
+                                 const QString &text,
+                                 int duration = 3000);
 
     // 排序算法 用于搜索结果排序 规则为：中文 > 英文 > 其他语言 > 标点符号
     static bool sort(GrandSearch::MatchedItems &list, Qt::SortOrder order = Qt::AscendingOrder);

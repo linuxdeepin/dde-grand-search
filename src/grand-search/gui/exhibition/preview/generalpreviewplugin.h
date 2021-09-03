@@ -28,6 +28,7 @@
 #include <QObject>
 #include <QScopedPointer>
 
+class QFrame;
 class GeneralPreviewPluginPrivate;
 class GeneralPreviewPlugin : public PreviewPlugin
 {
@@ -44,6 +45,17 @@ public:
 
     // 返回预览插件自定义预览内容部件
     virtual QWidget *contentWidget() const override;
+
+private slots:
+    void onOpenClicked();
+    void onOpenpathClicked();
+    void onCopypathClicked();
+
+private:
+    void initConnect();
+
+    // 计算换行内容
+    QString lineFeed(const QString &text, int nWidth, const QFont &font, int nElidedRow = 2);
 
 private:
     QScopedPointer<GeneralPreviewPluginPrivate> d_p;

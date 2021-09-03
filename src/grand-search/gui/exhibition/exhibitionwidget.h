@@ -61,6 +61,8 @@ protected:
     void initConnect();
 
     void paintEvent(QPaintEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
+
 private:
     QScopedPointer<ExhibitionWidgetPrivate> d_p;
 

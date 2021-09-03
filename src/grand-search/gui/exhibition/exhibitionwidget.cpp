@@ -32,6 +32,8 @@
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
 
+#define MARGIN_SIZE 8
+
 ExhibitionWidgetPrivate::ExhibitionWidgetPrivate(ExhibitionWidget *parent)
     : q_p(parent)
 {
@@ -56,6 +58,7 @@ void ExhibitionWidget::clearData()
     Q_ASSERT(m_matchWidget);
 
     m_matchWidget->clearMatchedData();
+    m_previewWidget->hide();
 }
 
 void ExhibitionWidget::onSelectNextItem()
@@ -101,7 +104,7 @@ void ExhibitionWidget::onSearchCompleted()
 void ExhibitionWidget::initUi()
 {
     m_hLayout = new QHBoxLayout(this);
-    m_hLayout->setContentsMargins(8, 0, 8, 8);
+    m_hLayout->setContentsMargins(MARGIN_SIZE, 0, MARGIN_SIZE, MARGIN_SIZE);
     m_hLayout->setSpacing(0);
     this->setLayout(m_hLayout);
 
@@ -127,4 +130,13 @@ void ExhibitionWidget::paintEvent(QPaintEvent *event)
     DWidget::paintEvent(event);
 }
 
+void ExhibitionWidget::resizeEvent(QResizeEvent *event)
+{
+    Q_ASSERT(m_previewWidget);
 
+    // 限定预览界面固定宽度，为展示界面有限宽度的一半，避免预览界面布局乱跳
+    m_previewWidget->setFixedWidth((rect().width() - MARGIN_SIZE * 2) / 2);
+    //m_matchWidget->adjustSize();
+
+    DWidget::resizeEvent(event);
+}

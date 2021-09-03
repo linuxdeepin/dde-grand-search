@@ -29,6 +29,8 @@ extern "C" {
 #include "global/builtinsearch.h"
 #include "contacts/interface/daemongrandsearchinterface.h"
 
+#include <DArrowRectangle>
+
 #include <QCollator>
 #include <QFileInfo>
 #include <QDesktopServices>
@@ -37,7 +39,9 @@ extern "C" {
 #include <QDBusReply>
 #include <QDateTime>
 #include <QIcon>
+#include <QApplication>
 
+DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
 
 static const QString SessionManagerService = "com.deepin.SessionManager";
@@ -55,6 +59,91 @@ public:
 
 QMap<QString, QString> Utils::m_appIconNameMap;
 QMimeDatabase Utils::m_mimeDb;
+
+// 规范化浮点型字串，去掉小数点后多余的0
+QString normalizeDoubleString(const QString &str)
+{
+    int begin_pos = str.indexOf('.');
+
+    if (begin_pos < 0)
+        return str;
+
+    QString size = str;
+
+    while (size.count() - 1 > begin_pos) {
+        if (!size.endsWith('0'))
+            return size;
+
+        size = size.left(size.count() - 1);
+    }
+
+    return size.left(size.count() - 1);
+}
+
+QString Utils::formatFileSize(qint64 num, bool withUnitVisible, int precision, int forceUnit, QStringList unitList)
+{
+    if (num < 0) {
+        qWarning() << "Negative number passed to formatSize():" << num;
+        num = 0;
+
+        return QString::number(num);
+    }
+
+    bool isForceUnit = (forceUnit >= 0);
+
+    qreal fileSize(num);
+    QStringListIterator i(unitList);
+    QString unit = i.hasNext() ? i.next() : QStringLiteral(" B");
+
+    int index = 0;
+    while (i.hasNext()) {
+        if (fileSize < 1024 && !isForceUnit) {
+            break;
+        }
+
+        if (isForceUnit && index == forceUnit) {
+            break;
+        }
+
+        unit = i.next();
+        fileSize /= 1024;
+        index++;
+    }
+    QString unitString = withUnitVisible ? unit : QString();
+    return QString("%1%2").arg(normalizeDoubleString(QString::number(fileSize, 'f', precision)), unitString);
+}
+
+void Utils::showAlertMessage(QPoint globalPoint, const QColor &backgroundColor, const QString &text, int duration)
+{
+    QWidget* parent = nullptr;
+    if (!QApplication::topLevelWidgets().isEmpty())
+        parent = QApplication::topLevelWidgets().at(0);
+
+    static DArrowRectangle* tooltip = nullptr;
+    if (!tooltip && parent) {
+        tooltip = new DArrowRectangle(DArrowRectangle::ArrowBottom, nullptr);
+        tooltip->setObjectName("AlertTooltip");
+        QLabel *label = new QLabel(tooltip);
+        label->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+        label->setWordWrap(true);
+        label->setMaximumWidth(500);
+        tooltip->setContent(label);
+        tooltip->setBackgroundColor(backgroundColor);
+        tooltip->setArrowX(15);
+        tooltip->setArrowHeight(0);
+
+        label->setText(text);
+        label->adjustSize();
+
+        tooltip->show(static_cast<int>(globalPoint.x()),static_cast<int>(globalPoint.y()));
+
+        QTimer::singleShot(duration, parent, [=] {
+            delete tooltip;
+            tooltip = nullptr;
+        });
+    }
+}
+
 bool Utils::sort(MatchedItems &list, Qt::SortOrder order/* = Qt::AscendingOrder*/)
 {
     QTime time;
@@ -379,11 +468,9 @@ bool Utils::openFile(const MatchedItem &item)
     // 获取对应默认打开应用
     QString defaultDesktopFile = getDefaultAppDesktopFileByMimeType(mimetype);
     if (defaultDesktopFile.isEmpty()) {
-        qDebug() << "no default application for" << filePath;
         result = QProcess::startDetached(QString("dde-file-manager"), {QString("-o"), filePath});
         qDebug() << "open file dialog" << result;
     } else {
-        qDebug() << QString("defaultDesktopFile:%1").arg(defaultDesktopFile);
         QStringList filePaths(filePath);
         result = launchApp(defaultDesktopFile, filePaths);
     }
@@ -393,8 +480,6 @@ bool Utils::openFile(const MatchedItem &item)
 
 bool Utils::launchApp(const QString& desktopFile, const QStringList &filePaths)
 {
-    qDebug() << "launchApp " << desktopFile << filePaths;
-
     bool ok = launchAppByDBus(desktopFile, filePaths);
     if (!ok) {
         ok = launchAppByGio(desktopFile, filePaths);
@@ -405,8 +490,6 @@ bool Utils::launchApp(const QString& desktopFile, const QStringList &filePaths)
 
 bool Utils::launchAppByDBus(const QString &desktopFile, const QStringList &filePaths)
 {
-    qDebug() << "launchApp by Dbus:" << desktopFile << filePaths;
-
     QDBusInterface interface(SessionManagerService,
                              StartManagerPath,
                              StartManagerInterface,
@@ -428,14 +511,12 @@ bool Utils::launchAppByDBus(const QString &desktopFile, const QStringList &fileP
 bool Utils::launchAppByGio(const QString &desktopFile, const QStringList &filePaths)
 {
     // 使用gio接口启动应用
-    qDebug() << "launchApp by gio:" << desktopFile << filePaths;
-
     std::string stdDesktopFilePath = desktopFile.toStdString();
     const char *cDesktopPath = stdDesktopFilePath.data();
 
     GDesktopAppInfo *appInfo = g_desktop_app_info_new_from_filename(cDesktopPath);
     if (!appInfo) {
-        qDebug() << "Failed to open desktop file with gio: g_desktop_app_info_new_from_filename returns NULL. Check PATH maybe?";
+        //qDebug() << "Failed to open desktop file with gio: g_desktop_app_info_new_from_filename returns NULL. Check PATH maybe?";
         return false;
     }
 

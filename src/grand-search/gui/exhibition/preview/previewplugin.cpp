@@ -36,7 +36,7 @@ PreviewPlugin::~PreviewPlugin()
 
 bool PreviewPlugin::stopPreview() const
 {
-
+    return true;
 }
 
 QWidget *PreviewPlugin::statusBarWidget() const
