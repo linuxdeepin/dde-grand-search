@@ -28,7 +28,7 @@ namespace GrandSearch {
 
 // 组-列表对象名
 #define GroupObjName_App            "Group_App"
-#define GroupObjName_Set            "Group_Set"
+#define GroupObjName_Setting        "Group_Setting"
 #define GroupObjName_Video          "Group_Video"
 #define GroupObjName_Audio          "Group_Audio"
 #define GroupObjName_Picture        "Group_Picture"
@@ -39,14 +39,14 @@ namespace GrandSearch {
 
 // 组-中文词典翻译
 #define GroupName_App               QObject::tr("Applications")
-#define GroupName_Set               QObject::tr("Set")
+#define GroupName_Setting           QObject::tr("Setting")
 #define GroupName_Video             QObject::tr("Video")
 #define GroupName_Audio             QObject::tr("Audio")
 #define GroupName_Picture           QObject::tr("Picture")
-#define GroupName_Web               QObject::tr("Web")
 #define GroupName_Document          QObject::tr("Document")
 #define GroupName_Folder            QObject::tr("Folders")
 #define GroupName_File              QObject::tr("Files")
+#define GroupName_Web               QObject::tr("Web Search")
 
 #define GROUP_MAX_SHOW              5   // 每组默认显示数量
 

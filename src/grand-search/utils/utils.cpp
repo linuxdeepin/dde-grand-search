@@ -322,14 +322,15 @@ bool Utils::openMatchedItem(const MatchedItem &item)
         return openExtendSearchMatchedItem(item);
     }
 
-    QString filePath = item.item;
-    if (filePath.isEmpty())
+    if (item.item.isEmpty())
         return false;
 
     bool result = false;
     // 传入的文件为应用，直接启动应用
     if (item.searcher == GRANDSEARCH_CLASS_APP_DESKTOP) {
-        result = Utils::launchApp(filePath);
+        result = Utils::launchApp(item.item);
+    } else if (item.searcher == GRANDSEARCH_CLASS_WEB_STATICTEXT) { //跳转浏览器
+        result = Utils::openWithBrowser(item.item);
     } else {
     // 打开文件
         result = openFile(item);
@@ -451,6 +452,26 @@ bool Utils::launchAppByGio(const QString &desktopFile, const QStringList &filePa
     }
 
     return ok;
+}
+
+bool Utils::openWithBrowser(const QString &words)
+{
+    if (words.isEmpty())
+        return false;
+
+    static QString defaultUrl = "https://www.baidu.com/s?wd=%0&ie=UTF-8";
+    static QString mimetype = "x-scheme-handler/http";
+    QString url = defaultUrl.arg(words);
+
+    // 获取默认浏览器
+    QString defaultDesktopFile = getDefaultAppDesktopFileByMimeType(mimetype);
+    if (defaultDesktopFile.isEmpty()) {
+        qWarning() << "no browser to open url.";
+        return false;
+    }
+    //默认浏览器
+    qDebug() << "open with" << defaultDesktopFile;
+    return launchApp(defaultDesktopFile, {url});
 }
 
 QIcon Utils::defaultIcon(const MatchedItem &item)

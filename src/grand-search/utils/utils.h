@@ -62,6 +62,8 @@ public:
     static bool launchAppByDBus(const QString &desktopFile, const QStringList &filePaths = {});
     // 使用gio启动应用
     static bool launchAppByGio(const QString &desktopFile, const QStringList &filePaths = {});
+    // 跳转到浏览器
+    static bool openWithBrowser(const QString &words);
 
     static QIcon defaultIcon(const GrandSearch::MatchedItem &item);
 
