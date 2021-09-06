@@ -54,6 +54,8 @@ public:
     static bool openMatchedItem(const GrandSearch::MatchedItem &item);
     // 打开扩展搜索项
     static bool openExtendSearchMatchedItem(const GrandSearch::MatchedItem &item);
+    // 打开控制中心设置项
+    static bool openControlCenterMatchedItem(const GrandSearch::MatchedItem &item);
     // 打开文件
     static bool openFile(const GrandSearch::MatchedItem &item);
     // 启动应用，若filePaths不为空，则用该应用打开传入的文件, 否则，仅启动应用

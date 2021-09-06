@@ -326,13 +326,13 @@ bool Utils::openMatchedItem(const MatchedItem &item)
         return false;
 
     bool result = false;
-    // 传入的文件为应用，直接启动应用
-    if (item.searcher == GRANDSEARCH_CLASS_APP_DESKTOP) {
+    if (item.searcher == GRANDSEARCH_CLASS_APP_DESKTOP) {   // 启动应用
         result = Utils::launchApp(item.item);
-    } else if (item.searcher == GRANDSEARCH_CLASS_WEB_STATICTEXT) { //跳转浏览器
+    } else if (item.searcher == GRANDSEARCH_CLASS_WEB_STATICTEXT) { // 跳转浏览器
         result = Utils::openWithBrowser(item.item);
-    } else {
-    // 打开文件
+    } else if (item.searcher == GRANDSEARCH_CLASS_SETTING_CONTROLCENTER) {  // 打开控制中心
+        result = Utils::openControlCenterMatchedItem(item);
+    } else {    // 打开文件
         result = openFile(item);
     }
 
@@ -344,6 +344,21 @@ bool Utils::openExtendSearchMatchedItem(const MatchedItem &item)
     // 搜索结果来自扩展插件，使用Dbus通知主控调用扩展插件打开接口打开搜索结果
     DaemonGrandSearchInterface daemonDbus;
     daemonDbus.OpenWithPlugin(item.searcher, item.item);
+
+    return true;
+}
+
+bool Utils::openControlCenterMatchedItem(const MatchedItem &item)
+{
+    Q_UNUSED(item)
+    // TODO:根据后端组装的多级菜单方式进行解析
+    // 搜索结果来控制中心，使用Dbus调用控制中心接口实现打开
+    QDBusInterface interface("com.deepin.dde.ControlCenter","/com/deepin/dde/ControlCenter","com.deepin.dde.ControlCenter");
+    QDBusReply<bool> api = interface.call(QLatin1String("ShowModule"), QVariant::fromValue(QString("display")));
+    if (!api.isValid()) {
+        qDebug() << "Error:com.deepin.dde.ControlCenter interface call failed.";
+        return false;
+    }
 
     return true;
 }
