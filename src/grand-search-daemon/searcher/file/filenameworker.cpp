@@ -46,6 +46,10 @@ FileNameWorkerPrivate::FileNameWorkerPrivate(FileNameWorker *qq)
     // 自动索引内置磁盘
     if (!m_anythingInterface->autoIndexInternal())
         m_anythingInterface->setAutoIndexInternal(true);
+
+    for (int i = GroupBegin; i < GroupCount; ++i) {
+        m_resultCountHash[static_cast<Group>(i)] = 0;
+    }
 }
 
 QFileInfoList FileNameWorkerPrivate::traverseDirAndFile(const QString &path)
@@ -73,26 +77,20 @@ QFileInfoList FileNameWorkerPrivate::traverseDirAndFile(const QString &path)
     return result;
 }
 
-bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName, Group group)
+bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName, bool isRecentFile)
 {
     Q_Q(FileNameWorker);
-    Q_ASSERT(group >= GroupBegin && group< GroupCount);
 
     if (m_tmpSearchResults.contains(fileName))
         return false;
 
-    //文件与文件夹分类
-    QFileInfo file(fileName);
-    if (file.isDir()) {
-        if (++m_resultFolderCount > MAX_SEARCH_NUM)
-            return false;
+    auto group = getGroupByFileName(fileName);
+    Q_ASSERT(group >= GroupBegin && group< GroupCount);
 
-        //修改分组为文件夹
-        group = Folder;
-    } else if (++m_resultFileCount > MAX_SEARCH_NUM) {
+    if (++m_resultCountHash[group] > MAX_SEARCH_NUM)
         return false;
-    }
 
+    QFileInfo file(fileName);
     m_tmpSearchResults << fileName;
     QMimeType mimeType = GrandSearch::SpecialTools::getMimeType(file);
     GrandSearch::MatchedItem item;
@@ -102,8 +100,19 @@ bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName, Group gr
     item.icon = mimeType.iconName();
     item.searcher = q->name();
 
+    // 最近使用文件需要置顶显示
+    if (isRecentFile) {
+        QVariantHash showLevelHash({{GRANDSEARCH_PROPERTY_ITEM_LEVEL, GRANDSEARCH_PROPERTY_ITEM_LEVEL_FIRST}});
+        item.extra = QVariant::fromValue(showLevelHash);
+    }
+
     QMutexLocker lk(&m_mutex);
     m_items[group].append(item);
+    // 文档、音频、视频、图片需添加到文件组中
+    if (group != Folder && group != Normal && m_resultCountHash[Normal] <= MAX_SEARCH_NUM) {
+        m_items[Normal].append(item);
+        ++m_resultCountHash[Normal];
+    }
 
     return true;
 }
@@ -119,19 +128,18 @@ bool FileNameWorkerPrivate::searchRecentFile()
 
         QFileInfo info(file);
         if (info.fileName().contains(m_context, Qt::CaseInsensitive)) {
-            appendSearchResult(file, Recent);
+            appendSearchResult(file, true);
 
             //推送
             tryNotify();
 
-            if (m_resultFileCount > MAX_SEARCH_NUM && m_resultFolderCount > MAX_SEARCH_NUM)
+            if (isResultLimit())
                 break;
         }
     }
 
     int leave = itemCount();
-    qInfo() << "recently-used search found file items:" << m_resultFileCount
-            << "folder items:" << m_resultFolderCount
+    qInfo() << "recently-used search found items:" << m_resultCountHash
             << "total spend:" << m_time.elapsed()
             << "current items" << leave;
 
@@ -162,14 +170,13 @@ bool FileNameWorkerPrivate::searchUserPath()
             //推送
             tryNotify();
 
-            if (m_resultFileCount > MAX_SEARCH_NUM && m_resultFolderCount > MAX_SEARCH_NUM)
+            if (isResultLimit())
                 break;
         }
     }
 
     int leave = itemCount();
-    qInfo() << "user path search found file items:" << m_resultFileCount
-            << "folder items:" << m_resultFolderCount
+    qInfo() << "user path search found items:" << m_resultCountHash
             << "total spend:" << m_time.elapsed()
             << "current items" << leave;
 
@@ -183,7 +190,7 @@ bool FileNameWorkerPrivate::searchByAnything()
     quint32 searchEndOffset = 0;
     // 过滤系统隐藏文件
     QRegExp hiddenFileFilter("^(?!.*/\\..*).+$");
-    while ((m_resultFileCount < MAX_SEARCH_NUM || m_resultFolderCount < MAX_SEARCH_NUM) && !m_searchDirList.isEmpty()) {
+    while (!isResultLimit() && !m_searchDirList.isEmpty()) {
         //中断
         if (m_status.loadAcquire() != ProxyWorker::Runing)
             return false;
@@ -230,14 +237,13 @@ bool FileNameWorkerPrivate::searchByAnything()
             //推送
             tryNotify();
 
-            if (m_resultFileCount > MAX_SEARCH_NUM && m_resultFolderCount > MAX_SEARCH_NUM)
+            if (isResultLimit())
                 break;
         }
     }
 
     int leave = itemCount();
-    qInfo() << "anything search completed, found file items:" << m_resultFileCount
-            << "folder items:" << m_resultFolderCount
+    qInfo() << "anything search completed, found items:" << m_resultCountHash
             << "total spend:" << m_time.elapsed()
             << "current items" << leave;
 
@@ -271,12 +277,62 @@ QString FileNameWorkerPrivate::groupKey(FileNameWorkerPrivate::Group group) cons
     switch (group) {
     case Folder:
         return GRANDSEARCH_GROUP_FOLDER;
-    case Recent:
-        return GRANDSEARCH_GROUP_RECENTFILE;
+    case Picture:
+        return GRANDSEARCH_GROUP_FILE_PICTURE;
+    case Audio:
+        return GRANDSEARCH_GROUP_FILE_AUDIO;
+    case Video:
+        return GRANDSEARCH_GROUP_FILE_VIDEO;
+    case Document:
+        return GRANDSEARCH_GROUP_FILE_DOCUMNET;
     default:
         break;
     }
     return GRANDSEARCH_GROUP_FILE;
+}
+
+bool FileNameWorkerPrivate::isResultLimit()
+{
+    const auto &iter = std::find_if(m_resultCountHash.begin(), m_resultCountHash.end(), [](const int &num){
+        return num <= MAX_SEARCH_NUM;
+    });
+
+    return iter == m_resultCountHash.end();
+}
+
+FileNameWorkerPrivate::Group FileNameWorkerPrivate::getGroupByFileName(const QString &fileName)
+{
+    Group group = Normal;
+    QFileInfo fileInfo(fileName);
+
+    if (fileInfo.isDir()) {
+        group = Folder;
+    } else {
+        // 文档格式
+        static QRegExp docReg("^((pdf)|(txt)|(doc)|(docx)|(dot)|(dotx)|(ppt)|(pptx)|(pot)|(potx)"
+                              "|(xls)|(xlsx)|(xlt)|(xltx)|(wps)|(wpt)|(rtf)|(md)|(latex))$");
+        // 图片格式
+        static QRegExp pictureReg("^((jpg)|(jpeg)|(jpe)|(bmp)|(png)|(gif)|(svg)|(tif)|(tiff))$");
+        // 视频格式
+        static QRegExp videoReg("^((avi)|(mov)|(mp4)|(mp2)|(mpa)|(mpg)|(mpeg)|(qt)|(rm)|(rmvb)"
+                                "|(mkv)|(asx)|(asf)|(flv)|(3gp))$");
+        // 音频格式
+        static QRegExp musicReg("^((au)|(snd)|(mid)|(mp3)|(aif)|(aifc)|(aiff)|(m3u)|(ra)"
+                                "|(ram)|(wav)|(cda)|(wma)|(ape))$");
+        const auto &suffix = fileInfo.suffix();
+
+        if (docReg.exactMatch(suffix)) {
+            group = Document;
+        } else if (pictureReg.exactMatch(suffix)) {
+            group = Picture;
+        } else if (videoReg.exactMatch(suffix)) {
+            group = Video;
+        } else if (musicReg.exactMatch(suffix)) {
+            group = Audio;
+        }
+    }
+
+    return group;
 }
 
 FileNameWorker::FileNameWorker(const QString &name, QObject *parent)

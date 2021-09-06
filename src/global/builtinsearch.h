@@ -40,8 +40,6 @@
 #define GRANDSEARCH_GROUP_FILE_PICTURE       "com.deepin.dde-grand-search.group.files.picture"
 #define GRANDSEARCH_GROUP_FILE_DOCUMNET      "com.deepin.dde-grand-search.group.files.document"
 
-#define GRANDSEARCH_GROUP_RECENTFILE         "com.deepin.dde-grand-search.group.files.recent"
-
 #define GRANDSEARCH_PROPERTY_ITEM_LEVEL      "itemLevel"
 
 #define GRANDSEARCH_PROPERTY_ITEM_LEVEL_FIRST   1
