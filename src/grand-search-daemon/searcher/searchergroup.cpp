@@ -20,7 +20,7 @@
  */
 
 #include "searchergroup.h"
-#include "searchergroupprivate.h"
+#include "searchergroup_p.h"
 
 #include <QDebug>
 

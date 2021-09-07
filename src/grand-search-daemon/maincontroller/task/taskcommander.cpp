@@ -20,7 +20,7 @@
  */
 
 #include "taskcommander.h"
-#include "taskcommanderprivate.h"
+#include "taskcommander_p.h"
 
 #include <QDateTime>
 #include <QtConcurrent>

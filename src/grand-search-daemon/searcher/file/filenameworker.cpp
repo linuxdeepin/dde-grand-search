@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "filenameworker.h"
-#include "filenameworkerprivate.h"
+#include "filenameworker_p.h"
 #include "anything_interface.h"
 #include "global/builtinsearch.h"
 #include "utils/specialtools.h"

@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "pluginmanager.h"
-#include "pluginmanagerprivate.h"
+#include "pluginmanager_p.h"
 #include "convertors/dataconvertor.h"
 
 #include <QStandardPaths>

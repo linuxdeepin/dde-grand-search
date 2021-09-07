@@ -18,8 +18,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef TASKCOMMANDERPRIVATE_H
-#define TASKCOMMANDERPRIVATE_H
+#ifndef TASKCOMMANDER_P_H
+#define TASKCOMMANDER_P_H
 
 #include "taskcommander.h"
 #include "searcher/proxyworker.h"
@@ -65,4 +65,4 @@ private:
     bool m_finished = false;  //保证结束信号只发一次
 };
 
-#endif // TASKCOMMANDERPRIVATE_H
+#endif // TASKCOMMANDER_P_H

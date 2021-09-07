@@ -18,8 +18,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef DESKTOPAPPSEARCHERPRIVATE_H
-#define DESKTOPAPPSEARCHERPRIVATE_H
+#ifndef DESKTOPAPPSEARCHER_P_H
+#define DESKTOPAPPSEARCHER_P_H
 
 #include "desktopappsearcher.h"
 #include "global/matcheditem.h"
@@ -61,4 +61,4 @@ private:
     volatile bool m_needUpdateIndex = false;
 };
 
-#endif // DESKTOPAPPSEARCHERPRIVATE_H
+#endif // DESKTOPAPPSEARCHER_P_H

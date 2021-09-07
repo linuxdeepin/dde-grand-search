@@ -19,29 +19,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MAINCONTROLLERPRIVATE_H
-#define MAINCONTROLLERPRIVATE_H
+#ifndef GRANDSEARCHINTERFACE_P_H
+#define GRANDSEARCHINTERFACE_P_H
 
+#include "grandsearchinterface.h"
 #include "maincontroller/maincontroller.h"
-#include "searcher/searchergroup.h"
-#include "task/taskcommander.h"
 
-class MainControllerPrivate : public QObject
+#include <QTimer>
+#include <QDBusMessage>
+
+class GrandSearchInterfacePrivate : public QObject
 {
     Q_OBJECT
-    friend class MainController;
+    friend class GrandSearchInterface;
 public:
-    MainControllerPrivate(MainController *parent);
-    ~MainControllerPrivate();
-    void buildWorker(TaskCommander *task);
+    explicit GrandSearchInterfacePrivate(GrandSearchInterface *parent);
+    ~GrandSearchInterfacePrivate();
+
+    inline bool vaildSession(const QString &session) {
+        if (session.isEmpty())
+            return false;
+        return m_session == session;
+    }
+    bool isAccessable(const QDBusMessage &msg) const;
 private slots:
-    void dormancy();
+    void terminate();
+    void onMatched();
+    void onSearchCompleted();
 private:
-    MainController *q;
-    SearcherGroup *m_searchers = nullptr;
-    TaskCommander *m_currentTask = nullptr;
-    QTimer m_dormancy;
+    GrandSearchInterface *q;
+    MainController *m_main = nullptr;
+    QString m_session;
+    QTimer m_deadline;
+    QHash<QString, bool> m_permit;
 };
 
-
-#endif // MAINCONTROLLERPRIVATE_H
+#endif // GRANDSEARCHINTERFACE_P_H

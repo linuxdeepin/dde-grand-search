@@ -20,7 +20,7 @@
  */
 
 #include "desktopappsearcher.h"
-#include "desktopappsearcherprivate.h"
+#include "desktopappsearcher_p.h"
 #include "desktopappworker.h"
 #include "global/builtinsearch.h"
 #include "utils/chineseletterhelper.h"

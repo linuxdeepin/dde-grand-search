@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "pluginliaison.h"
-#include "pluginliaisonprivate.h"
+#include "pluginliaison_p.h"
 #include "convertors/dataconvertor.h"
 
 #include <QDBusPendingCallWatcher>

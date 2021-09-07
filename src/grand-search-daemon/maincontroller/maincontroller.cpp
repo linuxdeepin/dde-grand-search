@@ -20,7 +20,7 @@
  */
 
 #include "maincontroller.h"
-#include "maincontrollerprivate.h"
+#include "maincontroller_p.h"
 
 #include <QDebug>
 

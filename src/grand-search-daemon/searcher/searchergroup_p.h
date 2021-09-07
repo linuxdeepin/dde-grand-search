@@ -18,8 +18,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SEARCHERGROUPPRIVATE_H
-#define SEARCHERGROUPPRIVATE_H
+#ifndef SEARCHERGROUP_P_H
+#define SEARCHERGROUP_P_H
 
 #include "searchergroup.h"
 #include "searchplugin/pluginmanager.h"
@@ -56,4 +56,4 @@ private:
     PluginManager *m_pluginManager = nullptr;
 };
 
-#endif // SEARCHERGROUPPRIVATE_H
+#endif // SEARCHERGROUP_P_H

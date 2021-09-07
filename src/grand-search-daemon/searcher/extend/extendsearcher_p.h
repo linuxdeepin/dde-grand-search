@@ -18,8 +18,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef EXTENDSEARCHERPRIVATE_H
-#define EXTENDSEARCHERPRIVATE_H
+#ifndef EXTENDSEARCHER_P_H
+#define EXTENDSEARCHER_P_H
 
 #include "extendsearcher.h"
 
@@ -39,4 +39,4 @@ private:
     QString m_interface;  //dbus接口
 };
 
-#endif // EXTENDSEARCHERPRIVATE_H
+#endif // EXTENDSEARCHER_P_H

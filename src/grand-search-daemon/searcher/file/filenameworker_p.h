@@ -18,8 +18,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef FILENAMEWORKERPRIVATE_H
-#define FILENAMEWORKERPRIVATE_H
+#ifndef FILENAMEWORKER_P_H
+#define FILENAMEWORKER_P_H
 
 #include "anything_interface.h"
 #include "searcher/proxyworker.h"
@@ -66,4 +66,4 @@ public:
     Q_DECLARE_PUBLIC(FileNameWorker)
 };
 
-#endif // FILENAMEWORKERPRIVATE_H
+#endif // FILENAMEWORKER_P_H

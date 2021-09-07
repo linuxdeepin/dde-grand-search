@@ -18,8 +18,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef PLUGINMANAGERPRIVATE_H
-#define PLUGINMANAGERPRIVATE_H
+#ifndef PLUGINMANAGER_P_H
+#define PLUGINMANAGER_P_H
 
 #include "pluginmanager.h"
 #include "loader/pluginloader.h"
@@ -42,4 +42,4 @@ private:
     PluginProcess *m_process = nullptr;
 };
 
-#endif // PLUGINMANAGERPRIVATE_H
+#endif // PLUGINMANAGER_P_H

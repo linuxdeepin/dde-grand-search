@@ -20,7 +20,7 @@
  */
 
 #include "grandsearchinterface.h"
-#include "grandsearchinterfaceprivate.h"
+#include "grandsearchinterface_p.h"
 #include "maincontroller/maincontroller.h"
 #include "utils/searchpluginprotocol.h"
 

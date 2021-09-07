@@ -20,7 +20,7 @@
  */
 
 #include "extendsearcher.h"
-#include "extendsearcherprivate.h"
+#include "extendsearcher_p.h"
 #include "extendworker.h"
 #include "searchplugin/pluginliaison.h"
 

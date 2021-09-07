@@ -18,8 +18,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef PLUGINLIAISONPRIVATE_H
-#define PLUGINLIAISONPRIVATE_H
+#ifndef PLUGINLIAISON_P_H
+#define PLUGINLIAISON_P_H
 
 #include "pluginliaison.h"
 #include "interface/searchplugininterfacev1.h"
@@ -45,4 +45,4 @@ private:
     QString m_pluginName;
 };
 
-#endif // PLUGINLIAISONPRIVATE_H
+#endif // PLUGINLIAISON_P_H

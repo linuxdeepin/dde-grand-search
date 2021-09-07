@@ -46,30 +46,30 @@ set(LINK_LIBS
 
 # 源文件
 set(DBUS
-    dbusservice/grandsearchinterfaceprivate.h
+    dbusservice/grandsearchinterface_p.h
     dbusservice/grandsearchinterface.h
     dbusservice/grandsearchinterface.cpp
 )
 
 set(MAINCTRL
     maincontroller/maincontroller.h
-    maincontroller/maincontrollerprivate.h
+    maincontroller/maincontroller_p.h
     maincontroller/maincontroller.cpp
     maincontroller/task/taskcommander.h
     maincontroller/task/taskcommander.cpp
-    maincontroller/task/taskcommanderprivate.h
+    maincontroller/task/taskcommander_p.h
 )
 
 set(SEARCHER
     searcher/searchergroup.h
-    searcher/searchergroupprivate.h
+    searcher/searchergroup_p.h
     searcher/searchergroup.cpp
     searcher/searcher.h
     searcher/searcher.cpp
     searcher/proxyworker.h
     searcher/proxyworker.cpp
     searcher/app/desktopappsearcher.h
-    searcher/app/desktopappsearcherprivate.h
+    searcher/app/desktopappsearcher_p.h
     searcher/app/desktopappsearcher.cpp
     searcher/app/desktopappworker.h
     searcher/app/desktopappworker.cpp
@@ -83,7 +83,7 @@ set(SEARCHER
     searcher/web/statictextworker.h
     searcher/web/statictextworker.cpp
     searcher/extend/extendsearcher.h
-    searcher/extend/extendsearcherprivate.h
+    searcher/extend/extendsearcher_p.h
     searcher/extend/extendsearcher.cpp
     searcher/extend/extendworker.h
     searcher/extend/extendworker.cpp
@@ -118,7 +118,7 @@ else ()
         searcher/file/filenamesearcher.cpp
         searcher/file/filenameworker.h
         searcher/file/filenameworker.cpp
-        searcher/file/filenameworkerprivate.h
+        searcher/file/filenameworker_p.h
     )
 endif()
 
@@ -144,7 +144,7 @@ set(SEARCHPLUGIN_PROT
 
 set(SEARCHPLUGIN
     searchplugin/pluginmanager.h
-    searchplugin/pluginmanagerprivate.h
+    searchplugin/pluginmanager_p.h
     searchplugin/pluginmanager.cpp
     searchplugin/loader/pluginloader.h
     searchplugin/loader/pluginloader.cpp
@@ -153,7 +153,7 @@ set(SEARCHPLUGIN
     searchplugin/convertors/dataconvertor.h
     searchplugin/convertors/dataconvertor.cpp
     searchplugin/pluginliaison.h
-    searchplugin/pluginliaisonprivate.h
+    searchplugin/pluginliaison_p.h
     searchplugin/pluginliaison.cpp
     ${SEARCHPLUGIN_IFS}
     ${SEARCHPLUGIN_PROT}
