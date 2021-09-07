@@ -21,6 +21,7 @@
 
 #include "maincontroller.h"
 #include "maincontroller_p.h"
+#include "configuration/configer.h"
 
 #include <QDebug>
 
@@ -52,16 +53,24 @@ void MainControllerPrivate::buildWorker(TaskCommander *task)
     Q_ASSERT(m_searchers);
 
     auto searchers = m_searchers->searchers();
+
+    //搜索项是否启用
+    auto config = ConfigerIns->group(GRANDSEARCH_PREF_SEARCHERENABLED);
+    Q_ASSERT(config);
+
     for (auto searcher : searchers) {
         Q_ASSERT(searcher);
-        //判断搜索项是否激活，若未激活则先激活
-        qDebug() << "searcher create worker" << searcher->name();
-        if (searcher->isActive() || searcher->activate()) {
-            if (auto worker = searcher->createWorker()) {
-                task->join(worker);
+        // 判断搜索项是否启用
+        if (config->value(searcher->name(), true)) {
+            // 判断是否激活，若未激活则先激活
+            qDebug() << "searcher create worker" << searcher->name();
+            if (searcher->isActive() || searcher->activate()) {
+                if (auto worker = searcher->createWorker()) {
+                    task->join(worker);
+                }
+            } else {
+                qWarning() << searcher->name() << "is unenabled.";
             }
-        } else {
-            qWarning() << searcher->name() << "is unenabled.";
         }
     }
 }
@@ -90,7 +99,11 @@ bool MainController::init()
     Q_ASSERT(d->m_searchers == nullptr);
 
     d->m_searchers = new SearcherGroup(this);
-    return d->m_searchers->init();
+    if (!d->m_searchers->init())
+        return false;
+
+    //初始化配置模块
+    return ConfigerIns->init();
 }
 
 bool MainController::newSearch(const QString &key)

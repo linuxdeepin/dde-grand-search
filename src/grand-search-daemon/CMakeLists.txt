@@ -159,6 +159,15 @@ set(SEARCHPLUGIN
     ${SEARCHPLUGIN_PROT}
 )
 
+set(GDCONFIGURATION
+    configuration/configer.h
+    configuration/configer_p.h
+    configuration/configer.cpp
+    configuration/preferenceitem.h
+    configuration/userpreference.h
+    configuration/userpreference.cpp
+)
+
 set(UTILS
     utils/searchpluginconf.h
     utils/searchplugininfo.h
@@ -177,6 +186,7 @@ set(SRCS
     ${MAINCTRL}
     ${SEARCHER}
     ${SEARCHPLUGIN}
+    ${GDCONFIGURATION}
 )
 
 # 资源文件

@@ -66,10 +66,9 @@ bool StaticTextWorker::working(void *context)
     m_status.storeRelease(Completed);
 
     qDebug() << "echo text...";
-    //延迟100ms发送，防止该搜索项第一个推出数据而导致被默认选中
-    QTimer::singleShot(100, this, [this]() {
-        emit unearthed(this);
-    });
+    //不能使用QTimer延迟发送，会出现任务结束后再发信号，此时已经无效。
+    QThread::msleep(100);
+    emit unearthed(this);
 
     return true;
 }
