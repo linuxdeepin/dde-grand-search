@@ -101,10 +101,31 @@ void ExhibitionWidget::onSearchCompleted()
     m_matchWidget->onSearchCompleted();
 }
 
+void ExhibitionWidget::previewItem(const MatchedItem &item)
+{
+    Q_ASSERT(m_previewWidget);
+    Q_ASSERT(m_hLayout);
+
+    // 搜索类型为空，或web搜索、应用、设置等，不显示预览
+    if (item.searcher.isEmpty() || item.searcher == GRANDSEARCH_CLASS_APP_DESKTOP) {
+        m_previewWidget->hide();
+
+        // 不显示预览界面，右侧空隙需为0, 用来贴着主界面右侧显示滚动条区域
+        m_hLayout->setContentsMargins(MARGIN_SIZE, 0, 0, MARGIN_SIZE);
+        return;
+    }
+
+    // 显示预览界面，主界面右侧需要与左侧间隙相同
+    m_hLayout->setContentsMargins(MARGIN_SIZE, 0, MARGIN_SIZE, MARGIN_SIZE);
+
+    // 预览界面预览选择的匹配结果项
+    m_previewWidget->previewItem(item);
+}
+
 void ExhibitionWidget::initUi()
 {
     m_hLayout = new QHBoxLayout(this);
-    m_hLayout->setContentsMargins(MARGIN_SIZE, 0, MARGIN_SIZE, MARGIN_SIZE);
+    m_hLayout->setContentsMargins(MARGIN_SIZE, 0, 0, MARGIN_SIZE);
     m_hLayout->setSpacing(0);
     this->setLayout(m_hLayout);
 
@@ -122,7 +143,8 @@ void ExhibitionWidget::initConnect()
     connect(m_matchWidget, &MatchWidget::sigAppIconChanged, this, &ExhibitionWidget::sigAppIconChanged);
     connect(m_matchWidget, &MatchWidget::sigShowNoContent, this, &ExhibitionWidget::sigShowNoContent);
     connect(m_matchWidget, &MatchWidget::sigCloseWindow, this, &ExhibitionWidget::sigCloseWindow);
-    connect(m_matchWidget, &MatchWidget::sigPreviewItem, m_previewWidget, &PreviewWidget::previewItem);
+    //connect(m_matchWidget, &MatchWidget::sigPreviewItem, m_previewWidget, &PreviewWidget::previewItem);
+    connect(m_matchWidget, &MatchWidget::sigPreviewItem, this, &ExhibitionWidget::previewItem);
 }
 
 void ExhibitionWidget::paintEvent(QPaintEvent *event)

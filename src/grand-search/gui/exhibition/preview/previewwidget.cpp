@@ -61,12 +61,6 @@ PreviewWidget::~PreviewWidget()
 
 bool PreviewWidget::previewItem(const MatchedItem &item)
 {
-    // 搜索类型为空，或web搜索、应用、设置等，不显示预览
-    if (item.searcher.isEmpty() || item.searcher == GRANDSEARCH_CLASS_APP_DESKTOP) {
-        this->hide();
-        return false;
-    }
-
     PreviewPlugin* preview = m_pluginManager.getPreviewPlugin(item);
 
     // 插件有变更， 更换新插件界面内容到主界面布局中

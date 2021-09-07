@@ -50,6 +50,7 @@ public slots:
 
     void appendMatchedData(const GrandSearch::MatchedItemMap &matchedData);//追加显示匹配数据
     void onSearchCompleted();
+    void previewItem(const GrandSearch::MatchedItem &item);
 
 signals:
     void sigAppIconChanged(const QString &appIconName);
