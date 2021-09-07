@@ -199,6 +199,8 @@ bool FileNameWorkerPrivate::searchByAnything()
                                                            searchEndOffset, m_searchDirList.first(),
                                                            m_context, false);
         // fix bug 93806
+        // 直接判断errorType为NoError，需要先取值再判断
+        QStringList searchResults = result.argumentAt<0>();
         if (result.error().type() != QDBusError::NoError) {
             qWarning() << "deepin-anything search failed:"
                        << QDBusError::errorString(result.error().type())
@@ -208,7 +210,6 @@ bool FileNameWorkerPrivate::searchByAnything()
             continue;
         }
 
-        QStringList searchResults = result.argumentAt<0>();
         searchResults = searchResults.filter(hiddenFileFilter);
         searchStartOffset = result.argumentAt<1>();
         searchEndOffset = result.argumentAt<2>();
