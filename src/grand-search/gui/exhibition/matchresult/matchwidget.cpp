@@ -40,6 +40,7 @@ DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
 
 #define ListItemHeight 36
+#define ScrollBarToListRightSpace 2
 
 MatchWidgetPrivate::MatchWidgetPrivate(MatchWidget *parent)
     : q_p(parent)
@@ -526,4 +527,16 @@ void MatchWidget::sortVislibleGroupList()
 void MatchWidget::paintEvent(QPaintEvent *event)
 {
     DWidget::paintEvent(event);
+}
+
+void MatchWidget::resizeEvent(QResizeEvent *event)
+{
+    // 重写resizeEvent，手动设置类目列表宽度，保证匹配列表布局正常显示
+    for (GroupWidgetMap::Iterator it= m_groupWidgetMap.begin(); it!=m_groupWidgetMap.end(); ++it) {
+        if (it.value()) {
+            it.value()->setFixedWidth(rect().width() - ScrollBarToListRightSpace);// 滚动条与列表右侧需要有2px间隙
+        }
+    }
+
+    DWidget::resizeEvent(event);
 }

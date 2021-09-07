@@ -86,6 +86,7 @@ protected:
     void sortVislibleGroupList();
 
     void paintEvent(QPaintEvent *event) override;
+    void resizeEvent(QResizeEvent* event) override;
 
 private:
     QScopedPointer<MatchWidgetPrivate> d_p;
