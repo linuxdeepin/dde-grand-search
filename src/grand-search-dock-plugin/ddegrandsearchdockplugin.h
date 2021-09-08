@@ -66,6 +66,12 @@ public:
     // 重新设置主控件新的排序位置（用户拖动了插件控件后）
     void setSortKey(const QString &itemKey, const int order) override;
 
+    // 右键菜单
+    const QString itemContextMenu(const QString &itemKey) override;
+
+    // 菜单执行项
+    void invokedMenuItem(const QString &itemKey, const QString &menuId, const bool checked) override;
+
 private:
     QScopedPointer<GrandSearchWidget> m_searchWidget;
 };

@@ -23,12 +23,14 @@
 #include "environments.h"
 
 #include "gui/mainwindow.h"
+#include "gui/searchconfig/configwidget.h"
 #include "business/query/querycontroller.h"
 #include "business/matchresult/matchcontroller.h"
 #include "contacts/services/grandsearchservice.h"
 #include "contacts/services/grandsearchserviceadaptor.h"
 
 #include <DApplication>
+#include <DWidgetUtil>
 #include <DLog>
 
 #include <QDebug>
@@ -59,42 +61,78 @@ int main(int argc, char *argv[])
     DLogManager::registerConsoleAppender();
     DLogManager::registerFileAppender();
 
-    // 设置单例运行程序
-    if (!app.setSingleInstance("dde-grand-search")) {
-        qWarning() << "set single instance failed!I (pid:" << getpid() << ") will exit.";
-        return -1;
+    QCommandLineParser parser;
+
+    bool isSetting = false;
+
+    if (argc > 1) {
+        QCommandLineOption option_setting({"s", "setting"}, "Start grand search config.");
+
+        parser.addOption(option_setting);
+        parser.addHelpOption();
+
+        parser.process(app);
+        isSetting = parser.isSet(option_setting);
     }
+    // 根据要求，通过启动参数决定显示界面
+    if (isSetting) { // 设置界面
+        // 设置单例运行程序
+        if (!app.setSingleInstance("dde-grand-search-config")) {
+            qWarning() << "set single instance failed!I (pid:" << getpid() << ") will exit.";
+            return -1;
+        }
 
-    // 加载翻译
-    app.loadTranslator();
+        // 加载翻译
+        app.loadTranslator();
 
-    qDebug() << "starting" << app.applicationName() << app.applicationVersion() << getpid();
-    MainWindow mainWindow;
-    mainWindow.show();
+        qDebug() << "starting config:" << app.applicationName() << app.applicationVersion() << getpid();
 
-    QTimer::singleShot(0, &mainWindow, [&mainWindow](){
-        // 界面初始化完成后，再处理与业务有关的连接
-        mainWindow.connectToController();
-    });
+        ConfigWidget w;
+        w.show();
+        Dtk::Widget::moveToCenter(&w);
 
-    // 注册dbus服务
-    QDBusConnection conn = QDBusConnection::sessionBus();
-    if (!conn.isConnected()) {
-        qWarning() << "QDBusConnection is not connect.";
-        return -1;
+        // 重复启动时，激活已有窗口
+        QObject::connect(&app, &DApplication::newInstanceStarted, &w, &ConfigWidget::activateWindow);
+
+        return app.exec();
+    } else {    // 搜索界面
+        // 设置单例运行程序
+        if (!app.setSingleInstance("dde-grand-search")) {
+            qWarning() << "set single instance failed!I (pid:" << getpid() << ") will exit.";
+            return -1;
+        }
+
+        // 加载翻译
+        app.loadTranslator();
+
+        qDebug() << "starting search:" << app.applicationName() << app.applicationVersion() << getpid();
+        MainWindow mainWindow;
+        mainWindow.show();
+
+        QTimer::singleShot(0, &mainWindow, [&mainWindow](){
+            // 界面初始化完成后，再处理与业务有关的连接
+            mainWindow.connectToController();
+        });
+
+        // 注册dbus服务
+        QDBusConnection conn = QDBusConnection::sessionBus();
+        if (!conn.isConnected()) {
+            qWarning() << "QDBusConnection is not connect.";
+            return -1;
+        }
+
+        GrandSearchService service(&mainWindow);
+        Q_UNUSED(new GrandSearchServiceAdaptor(&service))
+        if (!conn.registerService(GrandSearchViewServiceName)) {
+            qWarning() << "registerService Failed:" << conn.lastError();
+            return -1;
+        }
+
+        if (!conn.registerObject(GrandSearchViewServicePath, &service)) {
+            qWarning() << "registerObject Failed:" << conn.lastError();
+            return -1;
+        }
+
+        return app.exec();
     }
-
-    GrandSearchService service(&mainWindow);
-    Q_UNUSED(new GrandSearchServiceAdaptor(&service))
-    if (!conn.registerService(GrandSearchViewServiceName)) {
-        qWarning() << "registerService Failed:" << conn.lastError();
-        return -1;
-    }
-
-    if (!conn.registerObject(GrandSearchViewServicePath, &service)) {
-        qWarning() << "registerObject Failed:" << conn.lastError();
-        return -1;
-    }
-
-    app.exec();
 }

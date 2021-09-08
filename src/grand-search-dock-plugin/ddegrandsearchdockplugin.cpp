@@ -21,7 +21,8 @@
 #include "ddegrandsearchdockplugin.h"
 #include "gui/grandsearchwidget.h"
 
-const QString GrandSearchPlugin = QStringLiteral("ddegrandsearch_dockplugin");
+#define GrandSearchPlugin "ddegrandsearch_dockplugin"
+#define MenuOpenSetting "menu_open_setting"
 
 DdeGrandSearchDockPlugin::DdeGrandSearchDockPlugin(QObject *parent)
     : QObject (parent)
@@ -105,5 +106,40 @@ void DdeGrandSearchDockPlugin::setSortKey(const QString &itemKey, const int orde
 {
     const QString key = QString("pos_%1_%2").arg(itemKey).arg(Dock::Efficient);
     m_proxyInter->saveValue(this, key, order);
+}
+
+const QString DdeGrandSearchDockPlugin::itemContextMenu(const QString &itemKey)
+{
+    if (itemKey != GrandSearchPlugin) {
+        return QString();
+    }
+
+    QList<QVariant> items;
+    items.reserve(1);
+
+    QMap<QString, QVariant> item;
+    item["itemId"] = MenuOpenSetting;
+    item["itemText"] = tr("search settings");
+    item["isActive"] = true;
+    items.push_back(item);
+
+    QMap<QString, QVariant> menu;
+    menu["items"] = items;
+    menu["checkableMenu"] = false;
+    menu["singleCheck"] = false;
+
+    return QJsonDocument::fromVariant(menu).toJson();
+}
+
+void DdeGrandSearchDockPlugin::invokedMenuItem(const QString &itemKey, const QString &menuId, const bool checked)
+{
+    Q_UNUSED(checked)
+
+    if (itemKey != GrandSearchPlugin)
+        return;
+
+    if (menuId == MenuOpenSetting) {
+        QProcess::startDetached("dde-grand-search", QStringList() << "--setting");
+    }
 }
 

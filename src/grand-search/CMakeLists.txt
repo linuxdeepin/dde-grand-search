@@ -94,6 +94,15 @@ set(GUISRC
     gui/exhibition/preview/generalpreviewplugin_p.h
     gui/exhibition/preview/generalpreviewplugin.h
     gui/exhibition/preview/generalpreviewplugin.cpp
+    # setting
+    gui/searchconfig/configwidget.cpp
+    gui/searchconfig/configwidget.h
+    gui/searchconfig/scopewidget.cpp
+    gui/searchconfig/scopewidget.h
+    gui/searchconfig/planwidget.cpp
+    gui/searchconfig/planwidget.h
+    gui/searchconfig/switchwidget/switchwidget.cpp
+    gui/searchconfig/switchwidget/switchwidget.h
     )
 
 # business
@@ -106,6 +115,9 @@ set(BUSINESSSRC
     business/matchresult/matchcontroller_p.h
     business/matchresult/matchcontroller.h
     business/matchresult/matchcontroller.cpp
+    # 配置读写
+    business/config/searchconfig.cpp
+    business/config/searchconfig.h
     )
 
 # contacts
@@ -131,13 +143,19 @@ set(UTILSSRC
 # 源文件
 set(SRCS
     main.cpp
+    ${GLOBAL_SRC}
     ${GUISRC}
     ${BUSINESSSRC}
     ${CONTACTSSRC}
     ${UTILSSRC}
 )
 
-add_executable(${BIN_NAME} ${SRCS})
+# 指定资源文件
+set(QRCS
+    gui/searchconfig/resource.qrc
+    )
+
+add_executable(${BIN_NAME} ${SRCS} ${QRCS})
 
 target_include_directories(${BIN_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include

@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/filesearch.svg</file>
+        <file>icons/foldersearch.svg</file>
+        <file>icons/documentsearch.svg</file>
+        <file>icons/appsearch.svg</file>
+        <file>icons/settingsearch.svg</file>
+        <file>icons/videosearch.svg</file>
+        <file>icons/audiosearch.svg</file>
+        <file>icons/picturesearch.svg</file>
+        <file>icons/websearch.svg</file>
+        <file>icons/experienceplan.svg</file>
+    </qresource>
+</RCC>

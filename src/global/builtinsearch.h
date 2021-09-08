@@ -21,13 +21,14 @@
 #ifndef BUILTINSEARCH_H
 #define BUILTINSEARCH_H
 
-//定义内置搜索项的名称
+// 定义内置搜索项的名称
 #define GRANDSEARCH_CLASS_FILE_DEEPIN "com.deepin.dde-grand-search.file-deepin"
 #define GRANDSEARCH_CLASS_FILE_FSEARCH "com.deepin.dde-grand-search.file-fsearch"
 #define GRANDSEARCH_CLASS_APP_DESKTOP "com.deepin.dde-grand-search.app-desktop"
 #define GRANDSEARCH_CLASS_SETTING_CONTROLCENTER "com.deepin.dde-grand-search.setting-controlcenter"
 #define GRANDSEARCH_CLASS_WEB_STATICTEXT "com.deepin.dde-grand-search.web-statictext"
 
+// 搜索项所属组
 #define GRANDSEARCH_GROUP_APP                "com.deepin.dde-grand-search.group.application"
 #define GRANDSEARCH_GROUP_SETTING            "com.deepin.dde-grand-search.group.setting-controlcenter"
 #define GRANDSEARCH_GROUP_WEB                "com.deepin.dde-grand-search.group.web"
@@ -40,8 +41,8 @@
 #define GRANDSEARCH_GROUP_FILE_PICTURE       "com.deepin.dde-grand-search.group.files.picture"
 #define GRANDSEARCH_GROUP_FILE_DOCUMNET      "com.deepin.dde-grand-search.group.files.document"
 
+// 搜索项在组内的显示等级
 #define GRANDSEARCH_PROPERTY_ITEM_LEVEL      "itemLevel"
-
 #define GRANDSEARCH_PROPERTY_ITEM_LEVEL_FIRST   1
 #define GRANDSEARCH_PROPERTY_ITEM_LEVEL_SECOND  2
 #define GRANDSEARCH_PROPERTY_ITEM_LEVEL_THIRD   3
