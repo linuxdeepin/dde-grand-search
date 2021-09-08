@@ -30,6 +30,8 @@ class FileNameWorkerPrivate
     enum Group {Normal = 0, Folder, Picture, Audio, Video, Document, GroupCount, GroupBegin = Normal};
 public:
     explicit FileNameWorkerPrivate(FileNameWorker *qq);
+    void initConfig();
+    void initAnything();
     QFileInfoList traverseDirAndFile(const QString &path);
     bool sortFileName(const QFileInfo &info1, const QFileInfo &info2);
     bool appendSearchResult(const QString &fileName, bool isRecentFile = false);

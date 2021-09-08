@@ -21,6 +21,7 @@
 #include "fsworker.h"
 #include "utils/specialtools.h"
 #include "global/builtinsearch.h"
+#include "configuration/configer.h"
 
 #include <QWaitCondition>
 
@@ -29,9 +30,7 @@
 
 FsWorker::FsWorker(const QString &name, QObject *parent) : ProxyWorker(name, parent)
 {
-    for (int i = GroupBegin; i < GroupCount; ++i) {
-        m_resultCountHash[static_cast<Group>(i)] = 0;
-    }
+    initConfig();
 }
 
 void FsWorker::setContext(const QString &context)
@@ -121,6 +120,29 @@ void FsWorker::setFsearchApp(FsearchApplication *app)
         return;
 
     m_app = app;
+}
+
+void FsWorker::initConfig()
+{
+    // 获取支持的搜索类目
+    auto config = Configer::instance()->group(GRANDSEARCH_CLASS_FILE_FSEARCH);
+    if (config->value(GRANDSEARCH_GROUP_FOLDER, false))
+        m_resultCountHash.insert(Folder, 0);
+
+    if (config->value(GRANDSEARCH_GROUP_FILE, false))
+        m_resultCountHash.insert(Normal, 0);
+
+    if (config->value(GRANDSEARCH_GROUP_FILE_VIDEO, false))
+        m_resultCountHash.insert(Video, 0);
+
+    if (config->value(GRANDSEARCH_GROUP_FILE_AUDIO, false))
+        m_resultCountHash.insert(Audio, 0);
+
+    if (config->value(GRANDSEARCH_GROUP_FILE_PICTURE, false))
+        m_resultCountHash.insert(Picture, 0);
+
+    if (config->value(GRANDSEARCH_GROUP_FILE_DOCUMNET, false))
+        m_resultCountHash.insert(Document, 0);
 }
 
 void FsWorker::tryNotify()
@@ -286,6 +308,19 @@ bool FsWorker::appendSearchResult(const QString &fileName, bool isRecentFile)
     auto group = getGroupByFileName(fileName);
     Q_ASSERT(group >= GroupBegin && group< GroupCount);
 
+    // 根据搜索类目配置判断是否需要进行添加
+    if (!m_resultCountHash.contains(group)) {
+        if (group == Folder) {
+            return false;
+        }
+
+        if (m_resultCountHash.contains(Normal)) {
+            group = Normal;
+        } else {
+            return false;
+        }
+    }
+
     if (++m_resultCountHash[group] > MAX_SEARCH_NUM)
         return false;
 
@@ -308,9 +343,11 @@ bool FsWorker::appendSearchResult(const QString &fileName, bool isRecentFile)
     QMutexLocker lk(&m_mtx);
     m_items[group].append(item);
     // 文档、音频、视频、图片需添加到文件组中
-    if (group != Folder && group != Normal && m_resultCountHash[Normal] <= MAX_SEARCH_NUM) {
-        m_items[Normal].append(item);
-        ++m_resultCountHash[Normal];
+    if (group != Normal && m_resultCountHash.contains(Normal)) {
+        if (group != Folder && m_resultCountHash[Normal] <= MAX_SEARCH_NUM) {
+            m_items[Normal].append(item);
+            ++m_resultCountHash[Normal];
+        }
     }
 
     return true;

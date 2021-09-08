@@ -23,6 +23,7 @@
 #include "anything_interface.h"
 #include "global/builtinsearch.h"
 #include "utils/specialtools.h"
+#include "configuration/configer.h"
 
 #include <QStandardPaths>
 
@@ -37,19 +38,46 @@ FileNameWorkerPrivate::FileNameWorkerPrivate(FileNameWorker *qq)
     if (!homePaths.isEmpty())
         m_searchPath = homePaths.first();
 
+    initAnything();
+    initConfig();
+}
+
+void FileNameWorkerPrivate::initConfig()
+{
+    // 获取支持的搜索类目
+    auto config = Configer::instance()->group(GRANDSEARCH_CLASS_FILE_DEEPIN);
+    if (config->value(GRANDSEARCH_GROUP_FOLDER, false))
+        m_resultCountHash.insert(Folder, 0);
+
+    if (config->value(GRANDSEARCH_GROUP_FILE, false))
+        m_resultCountHash.insert(Normal, 0);
+
+    if (config->value(GRANDSEARCH_GROUP_FILE_VIDEO, false))
+        m_resultCountHash.insert(Video, 0);
+
+    if (config->value(GRANDSEARCH_GROUP_FILE_AUDIO, false))
+        m_resultCountHash.insert(Audio, 0);
+
+    if (config->value(GRANDSEARCH_GROUP_FILE_PICTURE, false))
+        m_resultCountHash.insert(Picture, 0);
+
+    if (config->value(GRANDSEARCH_GROUP_FILE_DOCUMNET, false))
+        m_resultCountHash.insert(Document, 0);
+}
+
+void FileNameWorkerPrivate::initAnything()
+{
+    Q_Q(FileNameWorker);
+
     m_anythingInterface = new ComDeepinAnythingInterface("com.deepin.anything",
                                                          "/com/deepin/anything",
                                                          QDBusConnection::systemBus(),
-                                                         qq);
+                                                         q);
     m_anythingInterface->setTimeout(1000);
 
     // 自动索引内置磁盘
     if (!m_anythingInterface->autoIndexInternal())
         m_anythingInterface->setAutoIndexInternal(true);
-
-    for (int i = GroupBegin; i < GroupCount; ++i) {
-        m_resultCountHash[static_cast<Group>(i)] = 0;
-    }
 }
 
 QFileInfoList FileNameWorkerPrivate::traverseDirAndFile(const QString &path)
@@ -87,6 +115,19 @@ bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName, bool isR
     auto group = getGroupByFileName(fileName);
     Q_ASSERT(group >= GroupBegin && group< GroupCount);
 
+    // 根据搜索类目配置判断是否需要进行添加
+    if (!m_resultCountHash.contains(group)) {
+        if (group == Folder) {
+            return false;
+        }
+
+        if (m_resultCountHash.contains(Normal)) {
+            group = Normal;
+        } else {
+            return false;
+        }
+    }
+
     if (++m_resultCountHash[group] > MAX_SEARCH_NUM)
         return false;
 
@@ -109,9 +150,11 @@ bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName, bool isR
     QMutexLocker lk(&m_mutex);
     m_items[group].append(item);
     // 文档、音频、视频、图片需添加到文件组中
-    if (group != Folder && group != Normal && m_resultCountHash[Normal] <= MAX_SEARCH_NUM) {
-        m_items[Normal].append(item);
-        ++m_resultCountHash[Normal];
+    if (group != Normal && m_resultCountHash.contains(Normal)) {
+        if (group != Folder && m_resultCountHash[Normal] <= MAX_SEARCH_NUM) {
+            m_items[Normal].append(item);
+            ++m_resultCountHash[Normal];
+        }
     }
 
     return true;

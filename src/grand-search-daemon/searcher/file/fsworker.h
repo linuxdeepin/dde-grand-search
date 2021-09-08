@@ -42,6 +42,7 @@ public:
     GrandSearch::MatchedItemMap takeAll() Q_DECL_OVERRIDE;
     void setFsearchApp(FsearchApplication *app);
 private:
+    void initConfig();
     static void callbackReceiveResults(void *data, void *sender);
     bool appendSearchResult(const QString &fileName, bool isRecentFile = false);
     bool searchRecentFile();
