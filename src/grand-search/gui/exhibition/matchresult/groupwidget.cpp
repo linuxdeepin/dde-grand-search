@@ -279,8 +279,6 @@ void GroupWidget::initUi()
 
     // 分割线
     m_line = new DHorizontalLine;
-    m_line->setFrameShadow(DHorizontalLine::Raised);
-    m_line->setLineWidth(1);
 
     // 列表和分割线放到内容布局内
     m_vContentLayout = new QVBoxLayout();

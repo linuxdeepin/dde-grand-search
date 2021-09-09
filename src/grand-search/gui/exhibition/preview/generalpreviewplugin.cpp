@@ -29,11 +29,15 @@
 #include <QIcon>
 #include <QGuiApplication>
 #include <QClipboard>
+#include <QToolButton>
+#include <QPainter>
 
-#define ICON_SIZE               80
+#define ICON_SIZE               96
 #define HOR_MARGIN_SIZE         10
 #define LAYOUT_SPACING          15
 #define MARGIN_SIZE             15
+#define NAME_HEIGHT             25
+#define TOOLBTN_WIDTH           100
 
 DWIDGET_USE_NAMESPACE
 
@@ -54,197 +58,125 @@ NameLabel::NameLabel(const QString &text, QWidget *parent, Qt::WindowFlags f):
     QLabel(text, parent, f)
 {
     setObjectName("NameLabel");
-    QColor textColor = QColor(0, 0, 0, static_cast<int>(255 * 0.4));
+    setFixedHeight(NAME_HEIGHT);
+
+    QColor textColor = QColor(0, 0, 0, static_cast<int>(255 * 0.9));
     if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
-        textColor = QColor(255, 255, 255, static_cast<int>(255 * 0.4));
+        textColor = QColor(255, 255, 255, static_cast<int>(255 * 0.9));
     QPalette pa = palette();
     pa.setColor(QPalette::WindowText, textColor);
     setPalette(pa);
 
-    QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    sizePolicy.setHorizontalStretch(0);
-    sizePolicy.setVerticalStretch(0);
-    sizePolicy.setHeightForWidth(this->sizePolicy().hasHeightForWidth());
-    this->setSizePolicy(sizePolicy);
+    QFont font = DFontSizeManager::instance()->get(DFontSizeManager::T6);
+    font.setWeight(QFont::Medium);
 
-    setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
+    setAlignment(Qt::AlignBottom | Qt::AlignLeft);
 }
 
-SectionKeyLabel::SectionKeyLabel(const QString &text, QWidget *parent, Qt::WindowFlags f):
+SizeLabel::SizeLabel(const QString &text, QWidget *parent, Qt::WindowFlags f):
     QLabel(text, parent, f)
 {
-    setObjectName("SectionKeyLabel");
-    QFont font = DFontSizeManager::instance()->get(DFontSizeManager::T6, this->font());
-    setFont(font);
-
-    QColor textColor = QColor(0, 0, 0, static_cast<int>(255 * 0.6));
+    setObjectName("SizeLabel");
+    setFixedHeight(17);
+    QColor textColor = QColor(124, 124, 124, static_cast<int>(255 * 1));
     if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
-        textColor = QColor(255, 255, 255, static_cast<int>(255 * 0.6));
+        textColor = QColor(255, 255, 255, static_cast<int>(255 * 1));
     QPalette pa = palette();
     pa.setColor(QPalette::WindowText, textColor);
     setPalette(pa);
 
+    QFont font = DFontSizeManager::instance()->get(DFontSizeManager::T8);
+    font.setWeight(QFont::Normal);
+
     setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 }
 
-
-SectionValueLabel::SectionValueLabel(const QString &text, QWidget *parent, Qt::WindowFlags f):
-    QLabel(text, parent, f)
+IconButton::IconButton(QWidget *parent)
+    : QToolButton(parent)
 {
-    setObjectName("SectionValueLabel");
-    QFont font = DFontSizeManager::instance()->get(DFontSizeManager::T6, this->font());
-    setFont(font);
+    setFixedWidth(TOOLBTN_WIDTH);
+    setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 
-    QColor textColor = QColor(0, 0, 0, static_cast<int>(255 * 0.4));
+    QColor textColor = QColor(82, 106, 127, static_cast<int>(255 * 1));
     if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
-        textColor = QColor(255, 255, 255, static_cast<int>(255 * 0.4));
+        textColor = QColor(255, 255, 255, static_cast<int>(255 * 1));
     QPalette pa = palette();
-    pa.setColor(QPalette::WindowText, textColor);
+    pa.setColor(QPalette::ButtonText, textColor);
     setPalette(pa);
 
-    setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-    setWordWrap(true);
-}
 
-ActionLabel::ActionLabel(const QString &text, QWidget *parent, Qt::WindowFlags f) :
-    QLabel (text, parent, f)
-{
-    setObjectName("ActionLabel");
-    QFont font = DFontSizeManager::instance()->get(DFontSizeManager::T6, this->font());
+    QFont font = DFontSizeManager::instance()->get(DFontSizeManager::T8);
+    font.setWeight(QFont::Normal);
+    font.setFamily("SourceHanSansSC");
     setFont(font);
-
-    m_textColor = QColor(0, 0, 255, static_cast<int>(255*0.6));
-    m_textColor_clicked = QColor(0, 0, 255, static_cast<int>(255 * 1));
-    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType) {
-        m_textColor = QColor(255, 255, 255, static_cast<int>(255 * 0.6));
-        m_textColor_clicked = QColor(255, 255, 255, static_cast<int>(255 * 1));
-    }
-
-    QPalette labelPalette = palette();
-    labelPalette.setColor(QPalette::WindowText, m_textColor);
-    setPalette(labelPalette);
-
-    setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-
-    QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
-    sizePolicy.setHorizontalStretch(0);
-    sizePolicy.setVerticalStretch(0);
-    sizePolicy.setHeightForWidth(this->sizePolicy().hasHeightForWidth());
-    setSizePolicy(sizePolicy);
 }
 
-void ActionLabel::mousePressEvent(QMouseEvent *event)
+
+GeneralToolBar::GeneralToolBar(QWidget *parent)
+    : QWidget(parent)
 {
-    QPalette labelPalette = palette();
-    labelPalette.setColor(QPalette::WindowText, m_textColor_clicked);
-    setPalette(labelPalette);
-
-    QLabel::mousePressEvent(event);
+    initUi();
+    initConnect();
 }
 
-void ActionLabel::mouseReleaseEvent(QMouseEvent *event)
-{
-    QPalette labelPalette = palette();
-    labelPalette.setColor(QPalette::WindowText, m_textColor);
-    setPalette(labelPalette);
-
-    QLabel::mouseReleaseEvent(event);
-
-    emit sigLabelClicked();
-}
-
-void ActionLabel::enterEvent(QEvent *event)
-{
-    setCursor(Qt::PointingHandCursor);
-
-    QFont font = this->font();
-    font.setUnderline(true);
-    this->setFont(font);
-    repaint();
-
-    QLabel::enterEvent(event);
-}
-
-void ActionLabel::leaveEvent(QEvent *event)
-{
-    setCursor(Qt::ArrowCursor);
-
-    QFont font = this->font();
-    font.setUnderline(false);
-    this->setFont(font);
-    repaint();
-
-    QLabel::leaveEvent(event);
-}
-
-VBoxLayoutEx::VBoxLayoutEx(QWidget *parent):
-    QVBoxLayout(parent)
+GeneralToolBar::~GeneralToolBar()
 {
 
 }
 
-VBoxLayoutEx::~VBoxLayoutEx()
+void GeneralToolBar::onBtnClicked()
 {
-
-}
-
-void VBoxLayoutEx::addRow(QWidget *label, QWidget *field)
-{
-    m_vLabels.push_back(label);
-    m_vFields.push_back(field);
-
-    QHBoxLayout* hLayout = new QHBoxLayout;
-    hLayout->setContentsMargins(0,0,0,0);
-    hLayout->addWidget(label);
-    hLayout->addWidget(field);
-    hLayout->setStretch(0, 1);
-    hLayout->setStretch(1, 10);
-    m_vHLayout.push_back(hLayout);
-
-    this->addLayout(hLayout);
-}
-
-QWidget *VBoxLayoutEx::getRowLabel(int nRow)
-{
-    if (nRow >= 0 && nRow < m_vLabels.size())
-        return m_vLabels[nRow];
-
-    return nullptr;
-}
-
-QWidget *VBoxLayoutEx::getRowField(int nRow)
-{
-    if (nRow >= 0 && nRow < m_vFields.size())
-        return m_vFields[nRow];
-
-    return nullptr;
-}
-
-QHBoxLayout *VBoxLayoutEx::getRowLayout(int nRow)
-{
-    if (nRow >= 0 && nRow < m_vHLayout.size())
-        return m_vHLayout[nRow];
-
-    return nullptr;
-}
-
-void VBoxLayoutEx::showRow(int nRow, bool bShow)
-{
-    QWidget* label = getRowLabel(nRow);
-    QWidget* field = getRowField(nRow);
-    QHBoxLayout* hLayout = getRowLayout(nRow);
-
-    if (!label || !field || !hLayout)
+    QToolButton* pBtn = qobject_cast<QToolButton*>(sender());
+    if (!pBtn)
         return;
 
-    if (bShow) {
-        if (bShow == !label->isHidden())
-            insertLayout(nRow,hLayout);
-    } else
-        removeItem(hLayout);
+    if (pBtn == m_openBtn)
+        emit sigBtnClicked(Btn_Open);
+    else if(pBtn == m_openPathBtn)
+        emit sigBtnClicked(Btn_OpenPath);
+    else if(pBtn == m_copyPathBtn)
+        emit sigBtnClicked(Btn_CopyPath);
+}
 
-    label->setVisible(bShow);
-    field->setVisible(bShow);
+void GeneralToolBar::initUi()
+{
+    setFixedHeight(28);
+
+    m_hMainLayout = new QHBoxLayout(this);
+    m_hMainLayout->setContentsMargins(0, 0, 0, 0);
+    m_hMainLayout->setSpacing(0);
+
+    m_openBtn = new IconButton(this);
+    m_openBtn->setText(QObject::tr("Open"));
+    m_openBtn->setIcon(QIcon::fromTheme("deepin-defender"));
+
+    m_openPathBtn = new IconButton(this);
+    m_openPathBtn->setText(QObject::tr("Open path"));
+
+    m_copyPathBtn = new IconButton(this);
+    m_copyPathBtn->setText(QObject::tr("Copy path"));
+
+    m_vLine1 = new DVerticalLine(this);
+    m_vLine2 = new DVerticalLine(this);
+
+    m_hMainLayout->addWidget(m_openBtn);
+    m_hMainLayout->addWidget(m_vLine1);
+    m_hMainLayout->addWidget(m_openPathBtn);
+    m_hMainLayout->addWidget(m_vLine2);
+    m_hMainLayout->addWidget(m_copyPathBtn);
+
+    this->setLayout(m_hMainLayout);
+}
+
+void GeneralToolBar::initConnect()
+{
+    Q_ASSERT(m_openBtn);
+    Q_ASSERT(m_openPathBtn);
+    Q_ASSERT(m_copyPathBtn);
+
+    connect(m_openBtn, SIGNAL(clicked()), SLOT(onBtnClicked()));
+    connect(m_openPathBtn, SIGNAL(clicked()), SLOT(onBtnClicked()));
+    connect(m_copyPathBtn, SIGNAL(clicked()), SLOT(onBtnClicked()));
 }
 
 GeneralPreviewPluginPrivate::GeneralPreviewPluginPrivate(GeneralPreviewPlugin *parent)
@@ -256,59 +188,28 @@ GeneralPreviewPluginPrivate::GeneralPreviewPluginPrivate(GeneralPreviewPlugin *p
     m_iconLabel->setObjectName("IconLabel");
     m_iconLabel->setFixedSize(QSize(ICON_SIZE, ICON_SIZE));
     m_nameLabel = new NameLabel("", m_contentWidget);
+    m_sizeLabel = new SizeLabel("", m_contentWidget);
+
+    QVBoxLayout *vLayout = new QVBoxLayout();
+    vLayout->setContentsMargins(0, 0, 0, 0);
+    vLayout->setSpacing(0);
+    vLayout->addSpacerItem(new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding));
+    vLayout->addWidget(m_nameLabel);
+    vLayout->addWidget(m_sizeLabel);
+    vLayout->addSpacerItem(new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
     QHBoxLayout *hLayout = new QHBoxLayout();
     hLayout->setContentsMargins(HOR_MARGIN_SIZE - 3, MARGIN_SIZE, HOR_MARGIN_SIZE, MARGIN_SIZE);
-    hLayout->setSpacing(MARGIN_SIZE * 2);
+    hLayout->setSpacing(HOR_MARGIN_SIZE);
     hLayout->addWidget(m_iconLabel);
-    hLayout->addWidget(m_nameLabel);
-    hLayout->setStretch(0,1);
-    hLayout->setStretch(0,9);
-
-    // 基本信息
-    m_basicInfoLayout = new VBoxLayoutEx();
-    m_basicInfoLayout->setContentsMargins(HOR_MARGIN_SIZE, MARGIN_SIZE, HOR_MARGIN_SIZE, MARGIN_SIZE);
-    m_basicInfoLayout->setSpacing(LAYOUT_SPACING);
-
-    SectionKeyLabel *label = nullptr;
-    SectionValueLabel *value = nullptr;
-    for (int i = 0; i < RowCount; i++) {
-        label = new SectionKeyLabel(getBasicInfoLabelName(static_cast<BasicInfoRow>(i)));
-        value = new SectionValueLabel;
-        value->setWordWrap(false);
-        m_basicInfoLayout->addRow(label, value);
-    }
-    m_basicInfoLayout->showRow(ContainSize_Row, false);
+    hLayout->addLayout(vLayout);
 
     m_vMainLayout = new QVBoxLayout(m_contentWidget);
 
-    m_line1 = new DHorizontalLine;
-    m_line1->setFrameShadow(DHorizontalLine::Raised);
-    m_line1->setLineWidth(1);
-
-    m_line2 = new DHorizontalLine;
-    m_line2->setFrameShadow(DHorizontalLine::Raised);
-    m_line2->setLineWidth(1);
-
-    // 动作标签
-    m_openLabel = new ActionLabel(QObject::tr("Open"));
-    m_openPathLabel= new ActionLabel(QObject::tr("Open path"));
-    m_copyPathLabel = new ActionLabel(QObject::tr("Copy path"));
-    QVBoxLayout* actionLayout = new QVBoxLayout();
-    actionLayout->setContentsMargins(HOR_MARGIN_SIZE, MARGIN_SIZE, MARGIN_SIZE, 0);
-    actionLayout->setSpacing(LAYOUT_SPACING);
-    actionLayout->addWidget(m_openLabel);
-    actionLayout->addWidget(m_openPathLabel);
-    actionLayout->addWidget(m_copyPathLabel);
-
     m_vMainLayout->setContentsMargins(MARGIN_SIZE, 0, MARGIN_SIZE, MARGIN_SIZE);
     m_vMainLayout->addLayout(hLayout);
-    m_vMainLayout->addWidget(m_line1);
-    m_vMainLayout->addLayout(m_basicInfoLayout);
-    m_vMainLayout->addWidget(m_line2);
-    m_vMainLayout->addLayout(actionLayout);
-    m_vMainLayout->addSpacing(0);
-    m_vMainLayout->addStretch();
+
+    m_toolBar = new GeneralToolBar();
 }
 
 QString GeneralPreviewPluginPrivate::getBasicInfoLabelName(GeneralPreviewPluginPrivate::BasicInfoRow eRow)
@@ -317,10 +218,7 @@ QString GeneralPreviewPluginPrivate::getBasicInfoLabelName(GeneralPreviewPluginP
 
     switch (eRow) {
     case Location_Row:
-        name = QObject::tr("Location:");
-        break;
-    case Size_Row:
-        name = QObject::tr("Size:");
+        name = QObject::tr("Location");
         break;
     case ContainSize_Row:
         name = QObject::tr("Contains:");
@@ -333,19 +231,6 @@ QString GeneralPreviewPluginPrivate::getBasicInfoLabelName(GeneralPreviewPluginP
     }
 
     return name;
-}
-
-void GeneralPreviewPluginPrivate::setBasicInfo(const MatchedItem &item)
-{
-    Q_ASSERT(m_basicInfoLayout);
-
-    QFileInfo fi(item.item);
-
-    //m_basicInfoLayout->showRow(ContainSize_Row, fi.isDir());
-
-    SET_BASICINFO_VALUE_LABEL_TEXT(Location_Row, fi.absoluteFilePath());
-    SET_BASICINFO_VALUE_LABEL_TEXT(Size_Row, Utils::formatFileSize(fi.size()));
-    SET_BASICINFO_VALUE_LABEL_TEXT(TimeModified_Row, fi.lastModified().toString(Utils::dateTimeFormat()));
 }
 
 GeneralPreviewPlugin::GeneralPreviewPlugin(QObject *parent)
@@ -372,6 +257,7 @@ bool GeneralPreviewPlugin::previewItem(const MatchedItem &item)
 
     d_p->m_item = item;
 
+    // 设置图标
     QPixmap pixmap;
     const QSize iconSize(ICON_SIZE, ICON_SIZE);
     const QString &strIcon = item.icon;
@@ -393,16 +279,30 @@ bool GeneralPreviewPlugin::previewItem(const MatchedItem &item)
     } else {
         pixmap = Utils::defaultIcon(item).pixmap(iconSize);
     }
-
     d_p->m_iconLabel->setPixmap(pixmap);
 
-    // 计算换行内容
-    QString elidedText = lineFeed(item.name, d_p->m_nameLabel->width(), d_p->m_nameLabel->font());
+    // 设置名称，并计算换行内容
+    QString elidedText = lineFeed(item.name, d_p->m_nameLabel->width(), d_p->m_nameLabel->font(), 1);
     d_p->m_nameLabel->setText(elidedText);
     if (elidedText != item.name)
         d_p->m_nameLabel->setToolTip(item.name);
 
-    d_p->setBasicInfo(item);
+    QFileInfo fi(item.item);
+
+    // 获取文件(夹)大小
+    d_p->m_sizeLabel->setText(Utils::formatFileSize(fi.size()));
+
+    // 设置属性详情信息
+    d_p->m_detailInfos.clear();
+    DetailInfo info;
+
+    info.clear();
+    info[d_p->getBasicInfoLabelName(GeneralPreviewPluginPrivate::Location_Row)] = fi.absoluteFilePath();
+    d_p->m_detailInfos.push_back(info);
+
+    info.clear();
+    info[d_p->getBasicInfoLabelName(GeneralPreviewPluginPrivate::TimeModified_Row)] = fi.lastModified().toString(Utils::dateTimeFormat());
+    d_p->m_detailInfos.push_back(info);
 
     return true;
 }
@@ -417,9 +317,36 @@ QWidget *GeneralPreviewPlugin::contentWidget() const
     return d_p->m_contentWidget;
 }
 
+DetailInfoList GeneralPreviewPlugin::getAttributeDetailInfo() const
+{
+    return d_p->m_detailInfos;
+}
+
+QWidget *GeneralPreviewPlugin::toolBarWidget() const
+{
+    return d_p->m_toolBar;
+}
+
+void GeneralPreviewPlugin::initConnect()
+{
+    connect(d_p->m_toolBar, &GeneralToolBar::sigBtnClicked, this, &GeneralPreviewPlugin::onToolBtnClicked);
+}
+
+void GeneralPreviewPlugin::onToolBtnClicked(int nBtnId)
+{
+    if (nBtnId == GeneralToolBar::Btn_Open)
+        onOpenClicked();
+    else if (nBtnId == GeneralToolBar::Btn_OpenPath)
+        onOpenpathClicked();
+    else if (nBtnId == GeneralToolBar::Btn_CopyPath)
+        onCopypathClicked();
+}
+
 void GeneralPreviewPlugin::onOpenClicked()
 {
-    Utils::openFile(d_p->m_item);
+    MatchedItem item;
+    item.name = d_p->m_item.name;
+    Utils::openFile(item);
 }
 
 void GeneralPreviewPlugin::onOpenpathClicked()
@@ -430,7 +357,6 @@ void GeneralPreviewPlugin::onOpenpathClicked()
         item.icon = "inode-directory";
         item.item = fi.absolutePath();
         item.name = fi.dir().dirName();
-        item.searcher = GRANDSEARCH_CLASS_FILE_DEEPIN;
         item.type = "inode/directory";
 
         Utils::openFile(item);
@@ -449,17 +375,6 @@ void GeneralPreviewPlugin::onCopypathClicked()
     auto color = topWidget->palette().background().color();
 
     Utils::showAlertMessage(showPoint, color, QObject::tr("Path information has been copied to the clipboard."), 2000);
-}
-
-void GeneralPreviewPlugin::initConnect()
-{
-    Q_ASSERT(d_p->m_openLabel);
-    Q_ASSERT(d_p->m_openPathLabel);
-    Q_ASSERT(d_p->m_copyPathLabel);
-
-    connect(d_p->m_openLabel, &ActionLabel::sigLabelClicked, this, &GeneralPreviewPlugin::onOpenClicked);
-    connect(d_p->m_openPathLabel, &ActionLabel::sigLabelClicked, this, &GeneralPreviewPlugin::onOpenpathClicked);
-    connect(d_p->m_copyPathLabel, &ActionLabel::sigLabelClicked, this, &GeneralPreviewPlugin::onCopypathClicked);
 }
 
 QString GeneralPreviewPlugin::lineFeed(const QString &text, int nWidth, const QFont &font, int nElidedRow)

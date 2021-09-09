@@ -39,9 +39,9 @@ bool PreviewPlugin::stopPreview() const
     return true;
 }
 
-QWidget *PreviewPlugin::statusBarWidget() const
+DetailInfoList PreviewPlugin::getAttributeDetailInfo() const
 {
-    return nullptr;
+    return DetailInfoList();
 }
 
 QWidget *PreviewPlugin::toolBarWidget() const
@@ -49,12 +49,12 @@ QWidget *PreviewPlugin::toolBarWidget() const
     return nullptr;
 }
 
-bool PreviewPlugin::showStatusBar() const
-{
-    return false;
-}
-
 bool PreviewPlugin::showToolBar() const
 {
-    return false;
+    return true;
+}
+
+QRect PreviewPlugin::getValidClickRegion() const
+{
+    return QRect();
 }

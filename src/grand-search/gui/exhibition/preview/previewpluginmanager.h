@@ -49,8 +49,6 @@ private:
     QStringList m_paths;
     GrandSearch::PreviewPluginInfoList m_plugins;
     QString m_mainVersion;
-
-    PreviewPlugin* m_generalPreviewPlugin = nullptr;
 };
 
 #endif // PREVIEWPLUGINMANAGER_H

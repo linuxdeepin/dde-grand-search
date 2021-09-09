@@ -22,11 +22,15 @@
 #define GENERALPREVIEWPLUGIN_P_H
 
 #include "generalpreviewplugin.h"
+#include "detailinfowidget.h"
 
 #include <DHorizontalLine>
+#include <DWidget>
 
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QFormLayout>
+#include <QToolButton>
 
 class NameLabel: public QLabel
 {
@@ -36,75 +40,71 @@ public:
     explicit NameLabel(const QString &text = "", QWidget *parent = nullptr, Qt::WindowFlags f = {});
 };
 
-class SectionKeyLabel: public QLabel
+class SizeLabel: public QLabel
 {
     Q_OBJECT
 
 public:
-    explicit SectionKeyLabel(const QString &text = "", QWidget *parent = nullptr, Qt::WindowFlags f = {});
+    explicit SizeLabel(const QString &text = "", QWidget *parent = nullptr, Qt::WindowFlags f = {});
 };
 
-class SectionValueLabel: public QLabel
+class IconButton: public QToolButton
 {
     Q_OBJECT
 
 public:
-    explicit SectionValueLabel(const QString &text = "", QWidget *parent = nullptr, Qt::WindowFlags f = {});
+    explicit IconButton(QWidget *parent = nullptr);
 };
 
-class ActionLabel: public QLabel
+DWIDGET_BEGIN_NAMESPACE
+class DVerticalLine;
+DWIDGET_END_NAMESPACE
+class QHBoxLayout;
+class GeneralToolBar : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit ActionLabel(const QString &text = "", QWidget *parent = nullptr, Qt::WindowFlags f = {});
+    explicit GeneralToolBar(QWidget *parent = nullptr);
+    ~GeneralToolBar();
+
+    enum ToolBtnId{
+        Btn_Open,
+        Btn_OpenPath,
+        Btn_CopyPath,
+        Btn_Count
+    };
+
+private slots:
+    void onBtnClicked();
 
 signals:
-    void sigLabelClicked();
+    void sigBtnClicked(int nBtnId);
 
 private:
-    void mousePressEvent(QMouseEvent* event) override;
-    void mouseReleaseEvent(QMouseEvent* event) override;
-    void enterEvent(QEvent *event) override;
-    void leaveEvent(QEvent *event) override;
+    void initUi();
+    void initConnect();
 
 private:
-    QColor m_textColor;
-    QColor m_textColor_clicked;
-};
 
-//自定义水平布局 支持显示/隐藏指定行
-class QHBoxLayout;
-class VBoxLayoutEx : public QVBoxLayout
-{
-    Q_OBJECT
+    QHBoxLayout* m_hMainLayout;
 
-public:
-    explicit VBoxLayoutEx(QWidget *parent = nullptr);
-    ~VBoxLayoutEx();
+    IconButton* m_openBtn;
+    IconButton* m_openPathBtn;
+    IconButton* m_copyPathBtn;
 
-    void addRow(QWidget *label, QWidget *field);
-    QWidget* getRowLabel(int nRow);
-    QWidget* getRowField(int nRow);
-    QHBoxLayout* getRowLayout(int nRow);
-    void showRow(int nRow, bool bShow);
-
-private:
-    QList<QHBoxLayout*> m_vHLayout;
-    QList<QWidget*> m_vLabels;
-    QList<QWidget*> m_vFields;
+    Dtk::Widget::DVerticalLine* m_vLine1;
+    Dtk::Widget::DVerticalLine* m_vLine2;
 };
 
 DWIDGET_BEGIN_NAMESPACE
 class DHorizontalLine;
 DWIDGET_END_NAMESPACE
-class QVBoxLayout;
 class GeneralPreviewPluginPrivate
 {
 public:
     enum BasicInfoRow {
         Location_Row,
-        Size_Row,
         ContainSize_Row,
         TimeModified_Row,
         RowCount
@@ -113,11 +113,11 @@ public:
     explicit GeneralPreviewPluginPrivate(GeneralPreviewPlugin *parent = nullptr);
 
     QString getBasicInfoLabelName(BasicInfoRow eRow);
-    void setBasicInfo(const GrandSearch::MatchedItem &item);
 
     GeneralPreviewPlugin *q_p = nullptr;
 
     GrandSearch::MatchedItem m_item;
+    DetailInfoList m_detailInfos;
 
     QVBoxLayout *m_vMainLayout = nullptr;
     QPointer<QWidget> m_contentWidget = nullptr;
@@ -126,19 +126,12 @@ public:
     QLabel *m_iconLabel = nullptr;
     NameLabel *m_nameLabel = nullptr;
 
-    // 分割线1
-    Dtk::Widget::DHorizontalLine *m_line1 = nullptr;
+    // 大小
+    SizeLabel *m_sizeLabel = nullptr;
 
-    // 基本信息
-    VBoxLayoutEx* m_basicInfoLayout = nullptr;
+    // 工具栏按钮区 打开、打开路径、复制路径
+    GeneralToolBar* m_toolBar = nullptr;
 
-    // 分割线2
-    Dtk::Widget::DHorizontalLine *m_line2 = nullptr;
-
-    // 动作标签 打开、打开路径、复制路径
-    ActionLabel* m_openLabel = nullptr;
-    ActionLabel* m_openPathLabel = nullptr;
-    ActionLabel* m_copyPathLabel = nullptr;
 };
 
 #endif // UNKNOWNPREVIEWPLUGIN_P_H

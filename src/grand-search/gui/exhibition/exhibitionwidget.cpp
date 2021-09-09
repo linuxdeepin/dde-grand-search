@@ -24,6 +24,8 @@
 #include "matchresult/matchwidget.h"
 #include "preview/previewwidget.h"
 
+#include <DFrame>
+
 #include <QPalette>
 #include <QHBoxLayout>
 #include <QPainter>
@@ -131,6 +133,9 @@ void ExhibitionWidget::initUi()
 
     m_matchWidget = new MatchWidget(this);
     m_hLayout->addWidget(m_matchWidget);
+
+    DVerticalLine* vLine = new DVerticalLine(this);
+    m_hLayout->addWidget(vLine);
 
     m_previewWidget = new PreviewWidget(this);
     m_hLayout->addWidget(m_previewWidget);

@@ -94,6 +94,8 @@ set(GUISRC
     gui/exhibition/preview/generalpreviewplugin_p.h
     gui/exhibition/preview/generalpreviewplugin.h
     gui/exhibition/preview/generalpreviewplugin.cpp
+    gui/exhibition/preview/detailinfowidget.h
+    gui/exhibition/preview/detailinfowidget.cpp
     # setting
     gui/searchconfig/configwidget.cpp
     gui/searchconfig/configwidget.h

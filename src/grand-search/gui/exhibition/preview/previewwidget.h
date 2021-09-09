@@ -28,6 +28,8 @@
 
 class PreviewWidgetPrivate;
 class QVBoxLayout;
+class QSpacerItem;
+class DetailInfoWidget;
 class PreviewWidget : public Dtk::Widget::DWidget
 {
     Q_OBJECT
@@ -44,16 +46,22 @@ private:
     void reLayout();
     void clearLayoutWidgets();
 
-    void paintEvent(QPaintEvent *event) override;
-
 private:
     QScopedPointer<PreviewWidgetPrivate> d_p;
 
     QVBoxLayout *m_vMainLayout = nullptr;               // 预览界面主体布局
 
-    PreviewPlugin* m_preview = nullptr;
+    QSpacerItem* m_vSpaceItem = nullptr;       // 垂直弹簧，用于将工具栏置底显示
 
-    PreviewPluginManager m_pluginManager;
+    PreviewPlugin* m_preview = nullptr;        // 当前正在预览的插件界面
+
+    PreviewPlugin* m_generalPreview = nullptr; // 默认预览界面
+
+    DetailInfoWidget* m_detailInfoWidget = nullptr; // 属性详情部件
+
+private:
+    GrandSearch::MatchedItem m_item; //当前正在预览的匹配结果
+    PreviewPluginManager m_pluginManager; //预览插件管理对象
 };
 
 #endif // PREVIEWWIDGET_H

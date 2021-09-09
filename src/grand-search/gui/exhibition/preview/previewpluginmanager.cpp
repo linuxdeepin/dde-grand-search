@@ -29,15 +29,11 @@ using namespace GrandSearch;
 PreviewPluginManager::PreviewPluginManager()
     : QObject ()
 {
-    m_generalPreviewPlugin = new GeneralPreviewPlugin();
-
     readPluginConfig();
 }
 
 PreviewPluginManager::~PreviewPluginManager()
 {
-    delete m_generalPreviewPlugin;
-
     clearPluginInfo();
 }
 
@@ -74,9 +70,6 @@ PreviewPlugin *PreviewPluginManager::getPreviewPlugin(const GrandSearch::Matched
             }
         }
     }
-
-    if (nullptr == previewPlugin)
-        previewPlugin = m_generalPreviewPlugin;
 
     return previewPlugin;
 }

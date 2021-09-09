@@ -34,11 +34,11 @@ class GeneralPreviewPlugin : public PreviewPlugin
 {
     Q_OBJECT
 public:
-    explicit GeneralPreviewPlugin(QObject *parent = 0);
+    explicit GeneralPreviewPlugin(QObject *parent = nullptr);
     ~GeneralPreviewPlugin() override;
 
     // 预览指定的搜索结果项
-    virtual bool previewItem(const GrandSearch::MatchedItem &item) override;
+    virtual bool previewItem(const GrandSearch::MatchedItem &strJson) override;
 
     // 获取当前预览的搜索项
     virtual GrandSearch::MatchedItem item() const override;
@@ -46,7 +46,12 @@ public:
     // 返回预览插件自定义预览内容部件
     virtual QWidget *contentWidget() const override;
 
+    virtual DetailInfoList getAttributeDetailInfo() const override;
+
+    virtual QWidget *toolBarWidget() const override;
+
 private slots:
+    void onToolBtnClicked(int nBtnId);
     void onOpenClicked();
     void onOpenpathClicked();
     void onCopypathClicked();
