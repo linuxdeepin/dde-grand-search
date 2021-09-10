@@ -21,8 +21,13 @@
 #include "ddegrandsearchdockplugin.h"
 #include "gui/grandsearchwidget.h"
 
+#include <DApplication>
+
 #define GrandSearchPlugin "ddegrandsearch_dockplugin"
 #define MenuOpenSetting "menu_open_setting"
+#define GrandSearchApp "dde-grand-search"
+
+DWIDGET_USE_NAMESPACE
 
 DdeGrandSearchDockPlugin::DdeGrandSearchDockPlugin(QObject *parent)
     : QObject (parent)
@@ -43,6 +48,12 @@ const QString DdeGrandSearchDockPlugin::pluginName() const
 
 void DdeGrandSearchDockPlugin::init(PluginProxyInterface *proxyInter)
 {
+    // 加载翻译
+    QString appName = qApp->applicationName();
+    qApp->setApplicationName(GrandSearchApp);
+    qApp->loadTranslator();
+    qApp->setApplicationName(appName);
+
     m_proxyInter = proxyInter;
 
     if (m_searchWidget.isNull())

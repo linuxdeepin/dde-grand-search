@@ -26,6 +26,7 @@
 
 #include <DSwitchButton>
 #include <DScrollArea>
+#include <DTitlebar>
 
 #include <QLabel>
 #include <QPushButton>
@@ -50,6 +51,17 @@ ConfigWidget::~ConfigWidget()
 void ConfigWidget::initUI()
 {
     setFixedSize(MAINWINDOW_WIDTH, MAINWINDOW_HEIGHT);
+
+    // 禁用最小化按钮
+    setWindowFlag(Qt::WindowMinimizeButtonHint, false);
+
+    // 禁用默认菜单
+    this->titlebar()->setMenuVisible(false);
+
+    // TODO:设计师提供图标后更新
+    // 设置图标
+    QIcon tmpIcon = QIcon(QString(":/icons/%1.svg").arg("experienceplan"));
+    this->titlebar()->setIcon(tmpIcon);
 
     QWidget *mainWidget = new QWidget(this);
     setCentralWidget(mainWidget);
