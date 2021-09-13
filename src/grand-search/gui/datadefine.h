@@ -40,13 +40,13 @@ namespace GrandSearch {
 // 组-中文词典翻译
 #define GroupName_App               QObject::tr("Applications")
 #define GroupName_Setting           QObject::tr("Setting")
-#define GroupName_Video             QObject::tr("Video")
-#define GroupName_Audio             QObject::tr("Audio")
-#define GroupName_Picture           QObject::tr("Picture")
-#define GroupName_Document          QObject::tr("Document")
+#define GroupName_Video             QObject::tr("Videos")
+#define GroupName_Audio             QObject::tr("Music")
+#define GroupName_Picture           QObject::tr("Pictures")
+#define GroupName_Document          QObject::tr("Documents")
 #define GroupName_Folder            QObject::tr("Folders")
 #define GroupName_File              QObject::tr("Files")
-#define GroupName_Web               QObject::tr("Web Search")
+#define GroupName_Web               QObject::tr("Web")
 
 #define GROUP_MAX_SHOW              5   // 每组默认显示数量
 

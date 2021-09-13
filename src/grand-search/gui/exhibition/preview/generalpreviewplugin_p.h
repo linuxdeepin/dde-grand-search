@@ -105,7 +105,6 @@ class GeneralPreviewPluginPrivate
 public:
     enum BasicInfoRow {
         Location_Row,
-        ContainSize_Row,
         TimeModified_Row,
         RowCount
     };

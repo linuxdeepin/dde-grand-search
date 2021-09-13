@@ -57,11 +57,6 @@ SectionKeyLabel::SectionKeyLabel(const QString &text, QWidget *parent, Qt::Windo
     pa.setColor(QPalette::WindowText, textColor);
     m_label->setPalette(pa);
 
-    QFont font = DFontSizeManager::instance()->get(DFontSizeManager::T8);
-    font.setWeight(QFont::Normal);
-    font.setFamily("SourceHanSansSC");
-    m_label->setFont(font);
-
     m_label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 }
 
@@ -81,10 +76,6 @@ SectionValueLabel::SectionValueLabel(const QString &text, QWidget *parent, Qt::W
     setMaximumWidth(VALUELABEL_WIDTH);
 
     setObjectName("SectionValueLabel");
-    QFont font = DFontSizeManager::instance()->get(DFontSizeManager::T6, this->font());
-    font.setWeight(QFont::Medium);
-    font.setFamily("SourceHanSansSC");
-    setFont(font);
 
     QColor textColor = QColor(65, 77, 104, static_cast<int>(255 * 1));
     if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)

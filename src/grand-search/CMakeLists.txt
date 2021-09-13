@@ -155,6 +155,7 @@ set(SRCS
 # 指定资源文件
 set(QRCS
     gui/searchconfig/resource.qrc
+    gui/exhibition/preview/resource.qrc
     )
 
 add_executable(${BIN_NAME} ${SRCS} ${QRCS})

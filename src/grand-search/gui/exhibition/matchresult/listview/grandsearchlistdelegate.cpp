@@ -123,14 +123,13 @@ void GrandSearchListDelegate::drawSelectState(QPainter *painter, const QStyleOpt
 {
     Q_UNUSED(index);
 
+    if (option.state & QStyle::State_Selected)
+        return;
+
     if (option.state & QStyle::State_MouseOver) {
         painter->save();
         painter->setPen(Qt::NoPen);
-        QColor hovertColor(option.palette.highlight().color());
-
-        if (option.state & QStyle::State_Selected)
-            hovertColor.setAlphaF(0.2);
-
+        QColor hovertColor(Qt::lightGray);
         painter->setBrush(hovertColor);
         QRect selecteColorRect = option.rect.adjusted(0, 0, 0, 0);
         painter->drawRoundedRect(selecteColorRect, 5, 5);
@@ -158,8 +157,7 @@ void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QSty
     QColor selectColor = selectBrush.color();
     lightColor = selectColor;
 
-    if ((option.state & QStyle::State_MouseOver)
-            || (index.isValid() && index == listview->currentIndex())) {
+    if (index.isValid() && index == listview->currentIndex()) {
         textColor = QColor("#FFFFFF");
         lightColor = QColor("#FFFFFF");
     }

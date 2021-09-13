@@ -37,7 +37,7 @@ using namespace GrandSearch;
 ScopeWidget::ScopeWidget(QWidget *parent)
     : DWidget(parent)
 {
-    m_groupLabel = new QLabel(tr("搜索范围"), this);
+    m_groupLabel = new QLabel(tr("Search contents"), this);
     DFontSizeManager::instance()->bind(m_groupLabel, DFontSizeManager::T5, QFont::Bold);
 
     m_mainLayout = new QVBoxLayout(this);

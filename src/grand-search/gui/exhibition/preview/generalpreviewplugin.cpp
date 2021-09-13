@@ -85,9 +85,6 @@ SizeLabel::SizeLabel(const QString &text, QWidget *parent, Qt::WindowFlags f):
     pa.setColor(QPalette::WindowText, textColor);
     setPalette(pa);
 
-    QFont font = DFontSizeManager::instance()->get(DFontSizeManager::T8);
-    font.setWeight(QFont::Normal);
-
     setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 }
 
@@ -103,12 +100,6 @@ IconButton::IconButton(QWidget *parent)
     QPalette pa = palette();
     pa.setColor(QPalette::ButtonText, textColor);
     setPalette(pa);
-
-
-    QFont font = DFontSizeManager::instance()->get(DFontSizeManager::T8);
-    font.setWeight(QFont::Normal);
-    font.setFamily("SourceHanSansSC");
-    setFont(font);
 }
 
 
@@ -147,14 +138,16 @@ void GeneralToolBar::initUi()
     m_hMainLayout->setSpacing(0);
 
     m_openBtn = new IconButton(this);
-    m_openBtn->setText(QObject::tr("Open"));
-    m_openBtn->setIcon(QIcon::fromTheme("deepin-defender"));
+    m_openBtn->setText(tr("Open"));
+    m_openBtn->setIcon(QIcon(":/icons/open.svg"));
 
     m_openPathBtn = new IconButton(this);
-    m_openPathBtn->setText(QObject::tr("Open path"));
+    m_openPathBtn->setText(tr("Open Path"));
+    m_openPathBtn->setIcon(QIcon(":/icons/openpath.svg"));
 
     m_copyPathBtn = new IconButton(this);
-    m_copyPathBtn->setText(QObject::tr("Copy path"));
+    m_copyPathBtn->setText(tr("Copy Path"));
+    m_copyPathBtn->setIcon(QIcon(":/icons/copypath.svg"));
 
     m_vLine1 = new DVerticalLine(this);
     m_vLine2 = new DVerticalLine(this);
@@ -218,10 +211,7 @@ QString GeneralPreviewPluginPrivate::getBasicInfoLabelName(GeneralPreviewPluginP
 
     switch (eRow) {
     case Location_Row:
-        name = QObject::tr("Location");
-        break;
-    case ContainSize_Row:
-        name = QObject::tr("Contains:");
+        name = QObject::tr("Location:");
         break;
     case TimeModified_Row:
         name = QObject::tr("Time modified:");
@@ -372,9 +362,7 @@ void GeneralPreviewPlugin::onToolBtnClicked(int nBtnId)
 
 void GeneralPreviewPlugin::onOpenClicked()
 {
-    MatchedItem item;
-    item.name = d_p->m_item.name;
-    Utils::openFile(item);
+    Utils::openFile(d_p->m_item);
 }
 
 void GeneralPreviewPlugin::onOpenpathClicked()
@@ -398,11 +386,6 @@ void GeneralPreviewPlugin::onCopypathClicked()
 
     QClipboard *clipboard = QGuiApplication::clipboard();
     clipboard->setText(d_p->m_item.item);
-
-    auto showPoint = topWidget->mapToGlobal(QPoint(topWidget->width() / 2, topWidget->height() / 2 + 40));
-    auto color = topWidget->palette().background().color();
-
-    Utils::showAlertMessage(showPoint, color, QObject::tr("Path information has been copied to the clipboard."), 2000);
 }
 
 QString GeneralPreviewPlugin::lineFeed(const QString &text, int nWidth, const QFont &font, int nElidedRow)

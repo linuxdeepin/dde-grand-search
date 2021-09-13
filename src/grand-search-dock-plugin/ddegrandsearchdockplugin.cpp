@@ -130,7 +130,7 @@ const QString DdeGrandSearchDockPlugin::itemContextMenu(const QString &itemKey)
 
     QMap<QString, QVariant> item;
     item["itemId"] = MenuOpenSetting;
-    item["itemText"] = tr("search settings");
+    item["itemText"] = tr("Search settings");
     item["isActive"] = true;
     items.push_back(item);
 

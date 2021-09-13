@@ -234,7 +234,7 @@ void GroupWidget::initUi()
     this->setLayout(m_vLayout);
 
     // 组名标签
-    m_groupLabel = new DLabel(tr(""), this);
+    m_groupLabel = new DLabel("", this);
     m_groupLabel->setFixedHeight(GroupLabelHeight);
     m_groupLabel->setPalette(labelPalette);
     m_groupLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);

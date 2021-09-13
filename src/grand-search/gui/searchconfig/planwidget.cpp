@@ -35,7 +35,7 @@ using namespace GrandSearch;
 PlanWidget::PlanWidget(QWidget *parent)
     : DWidget(parent)
 {
-    m_groupLabel = new QLabel(tr("搜索体验计划"), this);
+    m_groupLabel = new QLabel(tr("Search experience program"), this);
     DFontSizeManager::instance()->bind(m_groupLabel, DFontSizeManager::T5, QFont::Bold);
 
     m_mainLayout = new QVBoxLayout(this);
@@ -43,7 +43,7 @@ PlanWidget::PlanWidget(QWidget *parent)
     m_mainLayout->setContentsMargins(0, 0, 0, 0);
     m_mainLayout->addWidget(m_groupLabel);
 
-    QString display = QObject::tr("加入搜索体验计划");
+    QString display = QObject::tr("Join search experience program");
     QString iconName("experienceplan");
     QIcon icon = QIcon(QString(":/icons/%1.svg").arg(iconName));
 
@@ -57,13 +57,16 @@ PlanWidget::PlanWidget(QWidget *parent)
     m_mainLayout->addWidget(switchWidget);
     switchWidget->setProperty(GRANDSEARCH_SEARCH_GROUP, GRANDSEARCH_PLAN_EXPERIENCE);
 
-    QString content = QObject::tr("开启搜索体验计划，视为您授权我们收集与您的设备、系统、文件图标、部分文件内容、文件属性"
-                                  "、应用软件及配置等信息，您可以关闭搜索体验计划，以拒绝我们对前述信息的搜集与使用。");
+    QString content = QObject::tr("Joining the search experience program means that "
+                                  "you grant and authorize us to collect the information of "
+                                  "your device and system, file icons, content and properties, "
+                                  "applications and their configurations. If you refuse our collection "
+                                  "and use of the aforementioned information, do not join the program.");
     m_contentLabel = new QLabel(content, this);
     m_contentLabel->setWordWrap(true);
 
-    QString tips = QObject::tr("了解对数据的管理与使用方式，请参考统信软件隐私政策"
-                               "（https://www.uniontech.com/agreenment/privacy-cn）。");
+    QString tips = QObject::tr("To know more about the management of your data, please refer to the UnionTech "
+                               "Software Privacy Policy (https://www.uniontech.com/agreement/privacy-en).");
     m_tipsLabel = new QLabel(tips, this);
     m_tipsLabel->setWordWrap(true);
 

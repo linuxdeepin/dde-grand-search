@@ -51,7 +51,7 @@ bool StaticTextWorker::working(void *context)
         return true;
     }
 
-    const static QString templateStr = tr("Search through browser \"%0\"");
+    const static QString templateStr = tr("Search for \"%0\"");
     GrandSearch::MatchedItem ret;
     ret.item = m_context;
     ret.name = templateStr.arg(m_context);
