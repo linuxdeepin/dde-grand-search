@@ -52,7 +52,7 @@ PreviewWidget::PreviewWidget(QWidget *parent)
     : DWidget(parent)
     , d_p(new PreviewWidgetPrivate(this))
 {
-    m_generalPreview = new GeneralPreviewPlugin();
+    m_generalPreview = QSharedPointer<PreviewPlugin>(new GeneralPreviewPlugin());
 
     initUi();
     initConnect();
@@ -62,15 +62,13 @@ PreviewWidget::~PreviewWidget()
 {
     // 解除当前预览插件界面与预览主界面父子窗口关系，所有预览插件界面统一由插件管理类析构函数释放
     clearLayoutWidgets();
-
-    delete m_generalPreview;
 }
 
 bool PreviewWidget::previewItem(const MatchedItem &item)
 {
     m_item = item;
 
-    PreviewPlugin* preview = m_pluginManager.getPreviewPlugin(item);
+    QSharedPointer<PreviewPlugin> preview = QSharedPointer<PreviewPlugin>(m_pluginManager.getPreviewPlugin(item));
 
     if (!preview)
         preview = m_generalPreview;
@@ -145,23 +143,27 @@ void PreviewWidget::initConnect()
 void PreviewWidget::clearLayoutWidgets()
 {
     if (m_preview) {
-        if (m_preview->contentWidget())
-            m_preview->contentWidget()->hide();
-        if (m_preview->toolBarWidget())
-            m_preview->toolBarWidget()->hide();
-        m_vMainLayout->removeWidget(m_preview->contentWidget());
-        m_vMainLayout->removeWidget(m_preview->toolBarWidget());
+        if (m_preview->contentWidget()) {
+            m_preview->contentWidget()->setParent(nullptr);
+            m_vMainLayout->removeWidget(m_preview->contentWidget());
+        }
+        if (m_preview->toolBarWidget()) {
+            m_preview->toolBarWidget()->setParent(nullptr);
+            m_vMainLayout->removeWidget(m_preview->toolBarWidget());
+        }
     }
 
     m_vMainLayout->removeWidget(m_detailInfoWidget);
     m_vMainLayout->removeItem(m_vSpaceItem);
 
     if (m_generalPreview) {
-        if (m_generalPreview->contentWidget())
-            m_generalPreview->contentWidget()->hide();
-        if (m_generalPreview->toolBarWidget())
-            m_generalPreview->toolBarWidget()->hide();
-        m_vMainLayout->removeWidget(m_generalPreview->contentWidget());
-        m_vMainLayout->removeWidget(m_generalPreview->toolBarWidget());
+        if (m_generalPreview->contentWidget()) {
+            m_generalPreview->contentWidget()->setParent(nullptr);
+            m_vMainLayout->removeWidget(m_generalPreview->contentWidget());
+        }
+        if (m_generalPreview->toolBarWidget()) {
+            m_generalPreview->toolBarWidget()->setParent(nullptr);
+            m_vMainLayout->removeWidget(m_generalPreview->toolBarWidget());
+        }
     }
 }

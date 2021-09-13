@@ -32,6 +32,7 @@ set(Qt_LIBS
     Qt5::Core
     Qt5::Gui
     Qt5::Widgets
+    Qt5::Concurrent
 )
 
 # 前端
@@ -42,5 +43,5 @@ include_directories(${CMAKE_SOURCE_DIR}/src/grand-search/gui/exhibition/preview)
 add_subdirectory(text-preview)
 #add_subdirectory(image-preview)
 #add_subdirectory(audio-preview)
-#add_subdirectory(pdf-preview)
+add_subdirectory(pdf-preview)
 #add_subdirectory(video-preview)

@@ -1,0 +1,61 @@
+/*
+ * Copyright (C) 2021 Uniontech Software Technology Co., Ltd.
+ *
+ * Author:     liuzhangjian<liuzhangjian@uniontech.com>
+ *
+ * Maintainer: liuzhangjian<liuzhangjian@uniontech.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#ifndef PDFVIEW_H
+#define PDFVIEW_H
+
+#include <QWidget>
+#include <QFuture>
+
+#include <poppler-qt5.h>
+
+class QLabel;
+class PDFView : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit PDFView(const QString &file, QWidget *parent = nullptr);
+    ~PDFView() Q_DECL_OVERRIDE;
+
+    void initDoc(const QString &file);
+    void initUI();
+    void initConnections();
+    void showFailedPage();
+public slots:
+    void onPageUpdated(QImage img);
+signals:
+    void pageUpdate(const QImage &img);
+
+protected:
+    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+
+private:
+    void syncLoadFirstPage();
+
+private:
+    QLabel *m_pageLabel = nullptr;
+    bool m_isBadDoc = false;
+    bool m_isLoadFinished = false;
+    QSharedPointer<Poppler::Document> m_doc;
+    QFuture<void> m_future;
+    QImage m_pageImg;
+};
+
+#endif // PDFVIEW_H
