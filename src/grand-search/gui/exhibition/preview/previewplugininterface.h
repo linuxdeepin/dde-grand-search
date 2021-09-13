@@ -22,23 +22,19 @@
 #ifndef PREVIEWPLUGINIFACE_H
 #define PREVIEWPLUGINIFACE_H
 
-#include "previewplugin.h"
-
 #include <QObject>
 
 namespace GrandSearch {
 #define FilePreviewInterface_iid "com.deepin.grandsearch.FilePreviewInterface.iid"
 
-class PreviewPluginInterface : public QObject
+class PreviewPlugin;
+class PreviewPluginInterface
 {
-    Q_OBJECT
-
 public:
-    explicit PreviewPluginInterface(QObject *parent = 0);
-
     virtual PreviewPlugin *create(const QString &mimetype) = 0;
 };
 
 }
 
+Q_DECLARE_INTERFACE(GrandSearch::PreviewPluginInterface, FilePreviewInterface_iid)
 #endif // PREVIEWPLUGINIFACE_H

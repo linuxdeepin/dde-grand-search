@@ -75,6 +75,15 @@ bool PreviewWidget::previewItem(const MatchedItem &item)
     if (!preview)
         preview = m_generalPreview;
 
+    // 插件界面根据新来搜索结果刷新预览内容
+    ItemInfo itemInfo;
+    itemInfo[PREVIEW_ITEMINFO_ITEM] = item.item;
+    itemInfo[PREVIEW_ITEMINFO_NAME] = item.name;
+    itemInfo[PREVIEW_ITEMINFO_ICON] = item.icon;
+    itemInfo[PREVIEW_ITEMINFO_TYPE] = item.type;
+    itemInfo[PREVIEW_ITEMINFO_SEARCHER] = item.searcher;
+    preview->previewItem(itemInfo);
+
     // 插件有变更， 更换新插件界面内容到主界面布局中
     if (preview != m_preview) {
 
@@ -82,17 +91,12 @@ bool PreviewWidget::previewItem(const MatchedItem &item)
         clearLayoutWidgets();
 
         // 1. 更换新插件界面内容部件到主界面布局
-        // 1.1 若插件未定制内容部件，则显示默认内容部件
-        QWidget* contentWidget = preview->contentWidget();
-        if (!contentWidget)
-            contentWidget = m_generalPreview->contentWidget();
-
-        if (contentWidget) {
+        if (QWidget* contentWidget = preview->contentWidget()) {
             contentWidget->setFixedWidth(CONTENT_WIDTH);
             contentWidget->adjustSize();
 
             m_vMainLayout->addWidget(contentWidget);
-            contentWidget->show();
+            contentWidget->setVisible(true);
         }
 
         // 2. 添加详情属性部件到预览界面
@@ -102,23 +106,18 @@ bool PreviewWidget::previewItem(const MatchedItem &item)
         m_vMainLayout->addSpacerItem(m_vSpaceItem);
 
         // 3. 更换新插件工具栏部件到主界面布局
-        // 3.1 若插件未定制工具栏部件，则显示默认工具栏部件
-        QWidget* toolBar = preview->toolBarWidget();
+        // 未定制工具栏，使用默认
+        QWidget *toolBar = preview->toolBarWidget();
         if (!toolBar)
             toolBar = m_generalPreview->toolBarWidget();
+        Q_ASSERT(toolBar);
 
-        if (toolBar) {
-            m_vMainLayout->addWidget(toolBar);
-
-            // 3.2 插件控制工具栏是否显示
-            toolBar->setVisible(preview->showToolBar());
-        }
+        m_vMainLayout->addWidget(toolBar);
+        // 3.2 插件控制工具栏是否显示
+        toolBar->setVisible(preview->showToolBar());
 
         m_preview = preview;
     }
-
-    // 插件界面根据新来搜索结果刷新预览内容
-    preview->previewItem(m_item);
 
     m_detailInfoWidget->setDetailInfo(preview->getAttributeDetailInfo());
 

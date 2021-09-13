@@ -82,7 +82,7 @@ public:
     explicit DetailInfoWidget(QWidget* parent = nullptr);
     ~DetailInfoWidget();
 
-    void setDetailInfo(const DetailInfoList &infos);
+    void setDetailInfo(const GrandSearch::DetailInfoList &infos);
     void setRowHeight(int nHeight);
 
 private:
@@ -94,7 +94,7 @@ protected:
 private:
     FormLayoutEx* m_formLayout;
 
-    DetailInfoList m_vInfos;
+    GrandSearch::DetailInfoList m_vInfos;
 
     int m_nRowHeight;
 };

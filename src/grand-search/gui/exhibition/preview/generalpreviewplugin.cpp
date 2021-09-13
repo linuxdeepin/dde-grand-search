@@ -234,7 +234,8 @@ QString GeneralPreviewPluginPrivate::getBasicInfoLabelName(GeneralPreviewPluginP
 }
 
 GeneralPreviewPlugin::GeneralPreviewPlugin(QObject *parent)
-    : PreviewPlugin(parent)
+    : QObject(parent)
+    , PreviewPlugin()
     , d_p(new GeneralPreviewPluginPrivate(this))
 {
     d_p->m_contentWidget->installEventFilter(this);
@@ -247,8 +248,15 @@ GeneralPreviewPlugin::~GeneralPreviewPlugin()
     d_p->m_contentWidget->deleteLater();
 }
 
-bool GeneralPreviewPlugin::previewItem(const MatchedItem &item)
+bool GeneralPreviewPlugin::previewItem(const GrandSearch::ItemInfo &info)
 {
+    GrandSearch::MatchedItem item;
+    item.item = info[PREVIEW_ITEMINFO_ITEM];
+    item.name = info[PREVIEW_ITEMINFO_NAME];
+    item.icon = info[PREVIEW_ITEMINFO_ICON];
+    item.type = info[PREVIEW_ITEMINFO_TYPE];
+    item.searcher = info[PREVIEW_ITEMINFO_SEARCHER];
+
     if (!item.item.isEmpty()
             && !item.name.isEmpty()
             && d_p->m_item.item == item.item
@@ -294,22 +302,32 @@ bool GeneralPreviewPlugin::previewItem(const MatchedItem &item)
 
     // 设置属性详情信息
     d_p->m_detailInfos.clear();
-    DetailInfo info;
+    DetailInfo detail = qMakePair(d_p->getBasicInfoLabelName(GeneralPreviewPluginPrivate::Location_Row),
+                                fi.absoluteFilePath());
+    d_p->m_detailInfos.push_back(detail);
 
-    info.clear();
-    info[d_p->getBasicInfoLabelName(GeneralPreviewPluginPrivate::Location_Row)] = fi.absoluteFilePath();
-    d_p->m_detailInfos.push_back(info);
-
-    info.clear();
-    info[d_p->getBasicInfoLabelName(GeneralPreviewPluginPrivate::TimeModified_Row)] = fi.lastModified().toString(Utils::dateTimeFormat());
-    d_p->m_detailInfos.push_back(info);
+    detail = qMakePair(d_p->getBasicInfoLabelName(GeneralPreviewPluginPrivate::TimeModified_Row),
+            fi.lastModified().toString(Utils::dateTimeFormat()));
+    d_p->m_detailInfos.push_back(detail);
 
     return true;
 }
 
-MatchedItem GeneralPreviewPlugin::item() const
+ItemInfo GeneralPreviewPlugin::item() const
 {
-    return d_p->m_item;
+    ItemInfo itemInfo;
+    itemInfo[PREVIEW_ITEMINFO_ITEM] = d_p->m_item.item;
+    itemInfo[PREVIEW_ITEMINFO_NAME] = d_p->m_item.name;
+    itemInfo[PREVIEW_ITEMINFO_ICON] = d_p->m_item.icon;
+    itemInfo[PREVIEW_ITEMINFO_TYPE] = d_p->m_item.type;
+    itemInfo[PREVIEW_ITEMINFO_SEARCHER] = d_p->m_item.searcher;
+
+    return itemInfo;
+}
+
+bool GeneralPreviewPlugin::stopPreview()
+{
+    return true;
 }
 
 QWidget *GeneralPreviewPlugin::contentWidget() const
@@ -325,6 +343,16 @@ DetailInfoList GeneralPreviewPlugin::getAttributeDetailInfo() const
 QWidget *GeneralPreviewPlugin::toolBarWidget() const
 {
     return d_p->m_toolBar;
+}
+
+bool GeneralPreviewPlugin::showToolBar() const
+{
+    return true;
+}
+
+QRect GeneralPreviewPlugin::getValidClickRegion() const
+{
+    return QRect();
 }
 
 void GeneralPreviewPlugin::initConnect()

@@ -24,14 +24,17 @@
 #include "gui/datadefine.h"
 #include "global/matcheditem.h"
 
+namespace GrandSearch {
 class PreviewPlugin;
+}
+
 class PreviewPluginManager : QObject
 {
 public:
     explicit PreviewPluginManager();
     ~PreviewPluginManager();
 
-    PreviewPlugin *getPreviewPlugin(const GrandSearch::MatchedItem& item);
+    GrandSearch::PreviewPlugin *getPreviewPlugin(const GrandSearch::MatchedItem& item);
 
 private:
     void clearPluginInfo();
@@ -40,7 +43,6 @@ private:
     bool readInfo(const QString &path, GrandSearch::PreviewPluginInfo &info);
 
     GrandSearch::PreviewPluginInfo *getPreviewPlugin(const QString &name);
-    GrandSearch::PreviewPluginInfo *getPreviewPluginInfoById(const QString &iid);
     void setPluginPath(const QStringList &dirPaths);
     // 插件版本是否向下兼容
     bool downwardCompatibility(const QString &version);

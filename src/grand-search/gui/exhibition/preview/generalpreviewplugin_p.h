@@ -117,7 +117,7 @@ public:
     GeneralPreviewPlugin *q_p = nullptr;
 
     GrandSearch::MatchedItem m_item;
-    DetailInfoList m_detailInfos;
+    GrandSearch::DetailInfoList m_detailInfos;
 
     QVBoxLayout *m_vMainLayout = nullptr;
     QPointer<QWidget> m_contentWidget = nullptr;

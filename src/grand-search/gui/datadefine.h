@@ -53,7 +53,6 @@ namespace GrandSearch {
 //预览插件信息
 struct PreviewPluginInfo {
     QString name;               // 预览插件名称
-    QString iid;                // 预览插件iid
     QStringList mimeTypes;      // 插件支持的所有文件类型，mimeType
     QString path;               // 插件*.so所在路径
     QPluginLoader* pPlugin;     // 预览插件实例对象
@@ -66,7 +65,6 @@ struct PreviewPluginInfo {
 
     void reset() {
         name = "";
-        iid = "";
         mimeTypes.clear();
         path = "";
         pPlugin = nullptr;

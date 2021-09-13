@@ -1,9 +1,9 @@
 /*
  * Copyright (C) 2021 Uniontech Software Technology Co., Ltd.
  *
- * Author:     houchengqiu<houchengqiu@uniontech.com>
+ * Author:     zhangyu<zhangyub@uniontech.com>
  *
- * Maintainer: houchengqiu<houchengqiu@uniontech.com>
+ * Maintainer: zhangyu<zhangyub@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef PREVIEWPLUGINCONF_H
-#define PREVIEWPLUGINCONF_H
+#include "textview.h"
 
-//预览插件配置文件conf
-#define PREVIEW_PLUGINIFACE_CONF_ROOT "Grand Search"
-#define PREVIEW_PLUGINIFACE_CONF_NAME "Name"
-#define PREVIEW_PLUGINIFACE_CONF_MIMETYPES "Mimetypes"
-#define PREVIEW_PLUGINIFACE_CONF_VALID "Valid"
-#define PREVIEW_PLUGINIFACE_CONF_PRIORITY "Priority"
-#define PREVIEW_PLUGINIFACE_CONF_VERSION "Version"
+#include <QTextBrowser>
+#include <QHBoxLayout>
 
-#endif // PREVIEWPLUGINCONF_H
+
+TextView::TextView(QWidget *parent) : QWidget(parent)
+{
+    auto layout = new QHBoxLayout(this);
+    this->setLayout(layout);
+    layout->setMargin(0);
+
+    view = new QTextBrowser(this);
+    layout->addWidget(view);
+}
+
+void TextView::setSource(const QString &path)
+{
+    view->setSource(QUrl::fromLocalFile(path));
+}

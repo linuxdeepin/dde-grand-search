@@ -22,39 +22,3 @@
 #include "utils/utils.h"
 
 using namespace GrandSearch;
-
-PreviewPlugin::PreviewPlugin(QObject *parent)
-    : QObject(parent)
-{
-
-}
-
-PreviewPlugin::~PreviewPlugin()
-{
-
-}
-
-bool PreviewPlugin::stopPreview() const
-{
-    return true;
-}
-
-DetailInfoList PreviewPlugin::getAttributeDetailInfo() const
-{
-    return DetailInfoList();
-}
-
-QWidget *PreviewPlugin::toolBarWidget() const
-{
-    return nullptr;
-}
-
-bool PreviewPlugin::showToolBar() const
-{
-    return true;
-}
-
-QRect PreviewPlugin::getValidClickRegion() const
-{
-    return QRect();
-}

@@ -50,11 +50,13 @@ PreviewPlugin *PreviewPluginManager::getPreviewPlugin(const GrandSearch::Matched
             if (!pluginInfo.bValid)
                 continue;
 
+            //需支持正则表达式 todo
             if (pluginInfo.mimeTypes.contains(mimeType)) {
                 if (nullptr == pluginInfo.pPlugin) {
                     // 加载预览插件
-                    QPluginLoader* loader = new QPluginLoader(pluginInfo.path, this);
+                    QPluginLoader *loader = new QPluginLoader(pluginInfo.path, this);
                     if (!loader->load()) {
+                        qWarning() << QString("load %0 error: %1").arg(pluginInfo.path).arg(loader->errorString());
                         loader->deleteLater();
                         continue;
                     }
@@ -63,8 +65,8 @@ PreviewPlugin *PreviewPluginManager::getPreviewPlugin(const GrandSearch::Matched
                 }
 
                 // 从预览插件创建或获取预览界面
-                QObject* pluginObject = pluginInfo.pPlugin->instance();
-                if (PreviewPluginInterface * pluginIFace = qobject_cast<PreviewPluginInterface*>(pluginObject))
+                QObject *pluginObject = pluginInfo.pPlugin->instance();
+                if (PreviewPluginInterface *pluginIFace = qobject_cast<PreviewPluginInterface*>(pluginObject))
                     previewPlugin = pluginIFace->create(mimeType);
                 break;
             }
@@ -87,8 +89,9 @@ void PreviewPluginManager::clearPluginInfo()
 bool PreviewPluginManager::readPluginConfig()
 {
     // 获取预览插件路径
-#ifndef QT_DEBUG
-    const char *defaultPath = realpath("./", nullptr);
+#ifdef QT_DEBUG
+    char path[PATH_MAX] = {0};
+    const char *defaultPath = realpath("./", path);
 #else
     auto defaultPath = PLUGIN_PREVIEW_DIR;
 #endif
@@ -151,18 +154,13 @@ bool PreviewPluginManager::readInfo(const QString &path, GrandSearch::PreviewPlu
         return false;
     }
 
-    // 插件iid
-    info.iid = conf.value(PREVIEW_PLUGINIFACE_CONF_IID, "").toString();
-    if (info.name.isEmpty() || getPreviewPluginInfoById(info.iid))
-        return false;
-
     // 插件版本号
     info.version = conf.value(PREVIEW_PLUGINIFACE_CONF_VERSION, "").toString();
     if (info.version.isEmpty())
         return false;
 
     // 支持预览的mimetype列表
-    info.mimeTypes = conf.value(PREVIEW_PLUGINIFACE_CONF_MIMETYPES, "").toString().split(',');
+    info.mimeTypes = conf.value(PREVIEW_PLUGINIFACE_CONF_MIMETYPES, "").toString().split(':');
     if (info.mimeTypes.isEmpty())
         return false;
 
@@ -171,7 +169,7 @@ bool PreviewPluginManager::readInfo(const QString &path, GrandSearch::PreviewPlu
 
     // 填入插件所属路径
     QFileInfo fi(path);
-    info.path = QDir::cleanPath(fi.path() + QLatin1Char('/') + "/lib" + fi.fileName() + ".so");
+    info.path = QDir::cleanPath(fi.path() + QLatin1Char('/') + "/lib" + fi.baseName() + ".so");
 
     return true;
 }
@@ -184,20 +182,6 @@ GrandSearch::PreviewPluginInfo *PreviewPluginManager::getPreviewPlugin(const QSt
     int nPluginCount = m_plugins.count();
     for (int i = 0; i < nPluginCount; i++) {
       if(m_plugins[i].name == name)
-          return &m_plugins[i];
-    }
-
-    return nullptr;
-}
-
-GrandSearch::PreviewPluginInfo *PreviewPluginManager::getPreviewPluginInfoById(const QString &iid)
-{
-    if (iid.isEmpty())
-        return nullptr;
-
-    int nPluginCount = m_plugins.count();
-    for (int i = 0; i < nPluginCount; i++) {
-      if(m_plugins[i].iid == iid)
           return &m_plugins[i];
     }
 

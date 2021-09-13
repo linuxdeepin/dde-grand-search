@@ -30,25 +30,20 @@
 
 class QFrame;
 class GeneralPreviewPluginPrivate;
-class GeneralPreviewPlugin : public PreviewPlugin
+class GeneralPreviewPlugin : public QObject, public GrandSearch::PreviewPlugin
 {
     Q_OBJECT
 public:
     explicit GeneralPreviewPlugin(QObject *parent = nullptr);
     ~GeneralPreviewPlugin() override;
-
-    // 预览指定的搜索结果项
-    virtual bool previewItem(const GrandSearch::MatchedItem &strJson) override;
-
-    // 获取当前预览的搜索项
-    virtual GrandSearch::MatchedItem item() const override;
-
-    // 返回预览插件自定义预览内容部件
+    virtual bool previewItem(const GrandSearch::ItemInfo &info) override;
+    virtual GrandSearch::ItemInfo item() const override;
+    bool stopPreview() override;
     virtual QWidget *contentWidget() const override;
-
-    virtual DetailInfoList getAttributeDetailInfo() const override;
-
+    virtual GrandSearch::DetailInfoList getAttributeDetailInfo() const override;
     virtual QWidget *toolBarWidget() const override;
+    bool showToolBar() const override;
+    QRect getValidClickRegion() const override;
 
 private slots:
     void onToolBtnClicked(int nBtnId);

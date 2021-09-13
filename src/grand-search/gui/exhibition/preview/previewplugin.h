@@ -21,28 +21,37 @@
 #ifndef PREVIEWPLUGINUI_H
 #define PREVIEWPLUGINUI_H
 
-#include "global/matcheditem.h"
-
 #include <QObject>
+#include <QHash>
+#include <QPair>
 
-typedef QHash<QString, QString> DetailInfo;
+namespace GrandSearch {
+
+typedef QPair<QString, QString> DetailInfo;
 typedef QList<DetailInfo> DetailInfoList;
 
-class PreviewPlugin : public QObject
+// 预览项目信息
+// ItemInfo key
+#define PREVIEW_ITEMINFO_ITEM "item"
+#define PREVIEW_ITEMINFO_NAME "name"
+#define PREVIEW_ITEMINFO_ICON "icon"
+#define PREVIEW_ITEMINFO_TYPE "type"
+#define PREVIEW_ITEMINFO_SEARCHER "searcher"
+typedef QHash<QString, QString> ItemInfo;
+
+class PreviewPlugin
 {
-    Q_OBJECT
 public:
-    explicit PreviewPlugin(QObject *parent = nullptr);
-    ~PreviewPlugin() override;
+    virtual ~PreviewPlugin(){}
 
     // 预览指定的搜索结果项
-    virtual bool previewItem(const GrandSearch::MatchedItem &item) = 0;
+    virtual bool previewItem(const ItemInfo &item) = 0;
 
     // 获取当前预览的搜索项
-    virtual GrandSearch::MatchedItem item() const = 0;
+    virtual ItemInfo item() const = 0;
 
     // 停止预览
-    virtual bool stopPreview() const;
+    virtual bool stopPreview() = 0;
 
     // 返回预览插件自定义预览内容部件
     virtual QWidget *contentWidget() const = 0;
@@ -52,27 +61,28 @@ public:
      * @state  若返回空，则不显示属性详部件
      * @return QWidget* 预览插件自定义工具栏
      */
-    virtual DetailInfoList getAttributeDetailInfo() const;
+    virtual DetailInfoList getAttributeDetailInfo() const = 0;
 
     /**
      * @brief  返回预览插件自定义工具栏
      * @state  若返回空，且showToolBar返回true，则预览主界面显示默认工具栏(即显示打开、打开路径、复制路径按钮)
      * @return QWidget* 预览插件自定义工具栏
      */
-    virtual QWidget *toolBarWidget() const; 
+    virtual QWidget *toolBarWidget() const = 0;
 
     /**
      * @brief  查询接口，供预览主界面调用
      * @return bool true: 预览主界面显示工具栏, false: 预览主界面不显示工具栏
      */
-    virtual bool showToolBar() const;
+    virtual bool showToolBar() const = 0;
 
     /**
      * @brief  返回预览界面有效点击区域(包括超出预览主界面外的菜单栏区域),
      *         搜索主界面通过该接口，能够正常管理主界面显隐逻辑
      * @return QRect 超出预览界面以外的可点击的区域
      */
-    virtual QRect getValidClickRegion() const;
+    virtual QRect getValidClickRegion() const = 0;
 };
 
+}
 #endif // PREVIEWPLUGINUI_H

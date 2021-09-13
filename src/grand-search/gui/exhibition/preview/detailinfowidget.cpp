@@ -211,11 +211,11 @@ DetailInfoWidget::~DetailInfoWidget()
 
 }
 
-void DetailInfoWidget::setDetailInfo(const DetailInfoList &infos)
+void DetailInfoWidget::setDetailInfo(const GrandSearch::DetailInfoList &infos)
 {
     m_vInfos = infos;
 
-    if (m_vInfos.empty()) {
+    if (m_vInfos.isEmpty()) {
         this->hide();
         return;
     }
@@ -245,9 +245,9 @@ void DetailInfoWidget::setDetailInfo(const DetailInfoList &infos)
             label = qobject_cast<SectionKeyLabel*>(m_formLayout->getRowLabel(i));
             value = qobject_cast<SectionValueLabel*>(m_formLayout->getRowField(i));
             if (label)
-                label->setText(m_vInfos[i].begin().key());
+                label->setText(m_vInfos[i].first);
             if (value) {
-                QString text = m_vInfos[i].begin().value();
+                QString text = m_vInfos[i].second;
                 QString t = this->fontMetrics().elidedText(text, Qt::ElideRight, value->width());
                 value->setText(t);
                 if (t != text)

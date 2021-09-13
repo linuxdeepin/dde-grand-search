@@ -19,15 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "previewplugininterface.h"
 
 namespace GrandSearch {
-
-PreviewPluginInterface::PreviewPluginInterface(QObject *parent)
-    : QObject(parent)
-{
-
-}
 
 }
