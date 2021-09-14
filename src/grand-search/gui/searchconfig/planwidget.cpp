@@ -23,6 +23,7 @@
 #include "global/builtinsearch.h"
 #include "global/searchconfigdefine.h"
 #include "switchwidget/switchwidget.h"
+#include "hyperlinklabel/hyperlinklabel.h"
 
 #include <DFontSizeManager>
 
@@ -65,10 +66,12 @@ PlanWidget::PlanWidget(QWidget *parent)
     m_contentLabel = new QLabel(content, this);
     m_contentLabel->setWordWrap(true);
 
-    QString tips = QObject::tr("To know more about the management of your data, please refer to the UnionTech "
-                               "Software Privacy Policy (https://www.uniontech.com/agreement/privacy-en).");
-    m_tipsLabel = new QLabel(tips, this);
-    m_tipsLabel->setWordWrap(true);
+    const QString leadintText = QObject::tr("To know more about the management of your data, "
+                                            "please refer to the UnionTech Software Privacy Policy (");
+    const QString hyperlink = QObject::tr("https://www.uniontech.com/agreement/privacy-en");
+    const QString endText = QObject::tr(").");
+
+    m_tipsLabel = new HyperlinkLabel(leadintText, hyperlink, endText, this);
 
     m_mainLayout->addWidget(m_contentLabel);
     m_mainLayout->addWidget(m_tipsLabel);

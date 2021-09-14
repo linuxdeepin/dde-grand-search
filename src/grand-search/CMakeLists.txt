@@ -105,6 +105,8 @@ set(GUISRC
     gui/searchconfig/planwidget.h
     gui/searchconfig/switchwidget/switchwidget.cpp
     gui/searchconfig/switchwidget/switchwidget.h
+    gui/searchconfig/hyperlinklabel/hyperlinklabel.cpp
+    gui/searchconfig/hyperlinklabel/hyperlinklabel.h
     )
 
 # business
