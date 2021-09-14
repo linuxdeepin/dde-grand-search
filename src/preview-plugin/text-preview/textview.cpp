@@ -26,19 +26,16 @@
 #include <QTimer>
 #include <QPainter>
 
-void PlainTextEdit::paintEvent(QPaintEvent *event)
+void PlainTextEdit::mouseMoveEvent(QMouseEvent *e)
 {
-    auto view = viewport();
-    QPainter painter(view);
-    painter.setRenderHint(QPainter::Antialiasing);
-    //文本框的背景
-    painter.setBrush(view->palette().color(view->backgroundRole()));
-    painter.setPen(Qt::NoPen);
+    //解决鼠标按住向下滑动，当超出本控件区域后会触发scrollbar滚动
+    //屏蔽该事件，不再激活autoScrollTimer
+    if (e->source() == Qt::MouseEventNotSynthesized) {
+        e->accept();
+        return;
+    }
 
-    //画圆角背景
-    painter.drawRoundedRect(view->rect(), 8, 8);
-
-    QPlainTextEdit::paintEvent(event);
+    QPlainTextEdit::mouseMoveEvent(e);
 }
 
 QString TextView::toUnicode(const QByteArray &data)
@@ -61,6 +58,23 @@ QString TextView::toUnicode(const QByteArray &data)
     return QString::fromLocal8Bit(data);
 }
 
+void TextView::paintEvent(QPaintEvent *event)
+{
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
+    //文本框的背景
+    auto view = m_browser->viewport();
+    painter.setBrush(view->palette().color(view->backgroundRole()));
+    painter.setPen(Qt::NoPen);
+
+    //画圆角背景,背景大小为去除左边距10的区域
+    auto r = rect();
+    r.setLeft(10);
+    painter.drawRoundedRect(r, 8, 8);
+
+    QWidget::paintEvent(event);
+}
+
 
 TextView::TextView(QWidget *parent) : QWidget(parent)
 {
@@ -74,6 +88,7 @@ TextView::TextView(QWidget *parent) : QWidget(parent)
 
     //文本界面不绘制背景，自绘圆角背景
     m_browser->viewport()->setAutoFillBackground(false);
+    m_browser->setFrameShape(QFrame::NoFrame);
 
     //无滚动
     m_browser->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -89,11 +104,12 @@ TextView::TextView(QWidget *parent) : QWidget(parent)
     m_browser->setFocusPolicy(Qt::NoFocus);
 
     //样式
-    //左边距
-    layout->setContentsMargins(10,0,0,0);
-    //文本内容边距
+    //文本内容上边距是10,左右边距是20,通过DocumentMargin设置10的边距
+    //再通过layout增加左右边距各10，来达到上边距与左右边距不一样的效果
     m_browser->document()->setDocumentMargin(10);
-    m_browser->setFrameShape(QFrame::NoFrame);
+    //左边距文本背景与中线10,加上文本内容边距10;补充文本边距10
+    //因此在绘制圆角背景时为只去除左边距离中线10的区域
+    layout->setContentsMargins(10 + 10, 0, 0 + 10, 0);
 
     layout->addWidget(m_browser);
 }

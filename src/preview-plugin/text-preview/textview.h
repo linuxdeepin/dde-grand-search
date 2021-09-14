@@ -31,7 +31,7 @@ class PlainTextEdit : public QPlainTextEdit
 public:
     using QPlainTextEdit::QPlainTextEdit;
 protected:
-    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
 };
 
 class TextView : public QWidget
@@ -41,6 +41,8 @@ public:
     explicit TextView(QWidget *parent = nullptr);
     void setSource(const QString &path);
     static QString toUnicode(const QByteArray &data);
+protected:
+    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 private:
      PlainTextEdit* m_browser = nullptr;
 };

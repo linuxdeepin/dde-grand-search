@@ -87,5 +87,5 @@ QRect TextPreviewPlugin::getValidClickRegion() const
 
 GrandSearch::DetailInfoList TextPreviewPlugin::getAttributeDetailInfo() const
 {
-    return {};;
+    return {};
 }
