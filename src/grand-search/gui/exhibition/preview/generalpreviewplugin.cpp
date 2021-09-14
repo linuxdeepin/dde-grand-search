@@ -34,10 +34,11 @@
 
 #define ICON_SIZE               96
 #define HOR_MARGIN_SIZE         10
-#define LAYOUT_SPACING          15
 #define MARGIN_SIZE             15
 #define NAME_HEIGHT             25
 #define TOOLBTN_WIDTH           100
+#define TOOLBAR_HEIGHT          36
+#define TOOLBAR_BOTTOM_MARGIN   10
 
 DWIDGET_USE_NAMESPACE
 
@@ -131,10 +132,11 @@ void GeneralToolBar::onBtnClicked()
 
 void GeneralToolBar::initUi()
 {
-    setFixedHeight(28);
+    setFixedHeight(TOOLBAR_HEIGHT + TOOLBAR_BOTTOM_MARGIN); //高36 + 下边距10
 
     m_hMainLayout = new QHBoxLayout(this);
-    m_hMainLayout->setContentsMargins(0, 0, 0, 0);
+    //下边距10
+    m_hMainLayout->setContentsMargins(0, 0, 0, TOOLBAR_BOTTOM_MARGIN);
     m_hMainLayout->setSpacing(0);
 
     m_openBtn = new IconButton(this);

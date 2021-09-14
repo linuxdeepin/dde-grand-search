@@ -34,7 +34,7 @@
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
 
-#define MARGIN_SIZE 8
+#define MARGIN_SIZE 10
 
 ExhibitionWidgetPrivate::ExhibitionWidgetPrivate(ExhibitionWidget *parent)
     : q_p(parent)

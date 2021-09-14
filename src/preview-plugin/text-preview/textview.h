@@ -23,18 +23,26 @@
 
 #include <QWidget>
 
-class QTextBrowser;
+#include <QPlainTextEdit>
+
+class PlainTextEdit : public QPlainTextEdit
+{
+    Q_OBJECT
+public:
+    using QPlainTextEdit::QPlainTextEdit;
+protected:
+    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+};
+
 class TextView : public QWidget
 {
     Q_OBJECT
 public:
     explicit TextView(QWidget *parent = nullptr);
     void setSource(const QString &path);
-signals:
-
-public slots:
+    static QString toUnicode(const QByteArray &data);
 private:
-    QTextBrowser *view;
+     PlainTextEdit* m_browser = nullptr;
 };
 
 #endif // TEXTVIEW_H

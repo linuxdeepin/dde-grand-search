@@ -46,11 +46,6 @@ bool TextPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
     if (!fileInfo.isReadable())
         return false;
 
-    m_detailInfo.clear();
-    m_detailInfo.append(qMakePair(QString("size"), QString::number(fileInfo.size())));
-    m_detailInfo.append(qMakePair(QString("modify time"), fileInfo.lastModified().toString()));
-    m_detailInfo.append(qMakePair(QString("path"), fileInfo.absoluteFilePath()));
-
     if (!m_view)
         m_view = new TextView();
 
@@ -92,5 +87,5 @@ QRect TextPreviewPlugin::getValidClickRegion() const
 
 GrandSearch::DetailInfoList TextPreviewPlugin::getAttributeDetailInfo() const
 {
-    return {};//m_detailInfo;
+    return {};;
 }

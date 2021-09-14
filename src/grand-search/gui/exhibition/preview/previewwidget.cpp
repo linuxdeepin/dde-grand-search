@@ -127,7 +127,8 @@ bool PreviewWidget::previewItem(const MatchedItem &item)
 void PreviewWidget::initUi()
 {
     m_vMainLayout = new QVBoxLayout(this);
-    m_vMainLayout->setContentsMargins(0, 0, 0, 8);
+    //不设置边距，由预览界面控制边距
+    m_vMainLayout->setContentsMargins(0, 0, 0, 0);
     m_vMainLayout->setSpacing(0);
 
     m_detailInfoWidget = new DetailInfoWidget(this);
