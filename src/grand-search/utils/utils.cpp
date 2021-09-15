@@ -30,6 +30,7 @@ extern "C" {
 #include "contacts/interface/daemongrandsearchinterface.h"
 
 #include <DArrowRectangle>
+#include <DDesktopEntry>
 
 #include <QCollator>
 #include <QFileInfo>
@@ -41,6 +42,7 @@ extern "C" {
 #include <QIcon>
 #include <QApplication>
 
+DCORE_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
 
@@ -306,6 +308,13 @@ QString Utils::appIconName(const MatchedItem &item)
     // 搜索结果为应用，直接返回应用图标
     if (item.searcher == GRANDSEARCH_CLASS_APP_DESKTOP) {
         return item.icon;
+    } else if (item.searcher == GRANDSEARCH_CLASS_WEB_STATICTEXT) {
+        //默认浏览器图标
+        auto defaultDesktopFile = defaultBrowser();
+        if (!defaultDesktopFile.isEmpty()) {
+            DDesktopEntry entry(defaultDesktopFile);
+            strAppIconName = entry.stringValue("Icon");
+        }
     } else {
     // 搜索结果为文件，查询该文件对应默认打开应用图标的名称
         QString mimetype = item.type;
@@ -314,11 +323,8 @@ QString Utils::appIconName(const MatchedItem &item)
 
         QString defaultDesktopFile = getDefaultAppDesktopFileByMimeType(mimetype);
         if (m_appIconNameMap.find(defaultDesktopFile) == m_appIconNameMap.end()) {
-            QSettings settings(defaultDesktopFile, QSettings::IniFormat);
-            settings.beginGroup("Desktop Entry");
-            strAppIconName = settings.value("Icon").toString();
-            if (strAppIconName.isEmpty())
-                strAppIconName = "";
+            DDesktopEntry entry(defaultDesktopFile);
+            QString strAppIconName = entry.stringValue("Icon");
             m_appIconNameMap[defaultDesktopFile] = strAppIconName;
         } else {
             strAppIconName = m_appIconNameMap[defaultDesktopFile];
@@ -556,11 +562,10 @@ bool Utils::openWithBrowser(const QString &words)
         return false;
 
     static QString defaultUrl = "https://www.baidu.com/s?wd=%0&ie=UTF-8";
-    static QString mimetype = "x-scheme-handler/http";
     QString url = defaultUrl.arg(words);
 
     // 获取默认浏览器
-    QString defaultDesktopFile = getDefaultAppDesktopFileByMimeType(mimetype);
+    QString defaultDesktopFile = defaultBrowser();
     if (defaultDesktopFile.isEmpty()) {
         qWarning() << "no browser to open url.";
         return false;
@@ -576,9 +581,23 @@ QIcon Utils::defaultIcon(const MatchedItem &item)
         return QIcon::fromTheme("application-x-desktop");
     else if (item.searcher == GRANDSEARCH_CLASS_FILE_DEEPIN || item.searcher == GRANDSEARCH_CLASS_FILE_FSEARCH) {
         return QIcon::fromTheme(m_mimeDb.mimeTypeForFile(item.item).genericIconName());
+    } else if (item.searcher == GRANDSEARCH_CLASS_WEB_STATICTEXT) {
+        // 使用默认浏览器的图标
+        QString iconName = appIconName(item);
+        if (QFile::exists(iconName))
+            return QIcon(iconName);
+        else
+            return QIcon::fromTheme(iconName, QIcon::fromTheme("application-x-desktop"));
     }
 
     return QIcon();
+}
+
+QString Utils::defaultBrowser()
+{
+    static QString mimetype = "x-scheme-handler/http";
+    QString defaultDesktopFile = getDefaultAppDesktopFileByMimeType(mimetype);
+    return defaultDesktopFile;
 }
 
 bool Utils::isLevelItem(const MatchedItem &item, int &level)

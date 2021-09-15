@@ -51,11 +51,12 @@ bool StaticTextWorker::working(void *context)
         return true;
     }
 
-    const static QString templateStr = tr("Search for \"%0\"");
+    const static QString templateStr = "Search for \"%0\"";
     GrandSearch::MatchedItem ret;
     ret.item = m_context;
-    ret.name = templateStr.arg(m_context);
+    ret.name = templateStr.arg(m_context); //由前端做国际化预览处理
     ret.type = "application/x-dde-grand-search-web-statictext";
+    ret.icon = ret.type; //给一个无效的图标名，由前端寻找默认浏览器图标
     ret.searcher = name();
 
     {

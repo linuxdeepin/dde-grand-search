@@ -86,9 +86,11 @@ public:
     static bool launchAppByGio(const QString &desktopFile, const QStringList &filePaths = {});
     // 跳转到浏览器
     static bool openWithBrowser(const QString &words);
-
+    //列表左边图标
     static QIcon defaultIcon(const GrandSearch::MatchedItem &item);
 
+    // 默认浏览器的desktop文件
+    static QString defaultBrowser();
     /*!
      * \brief isLevelItem 判断item是否属于分层项，并输出具体的层级
      * \param item 待判断的搜索结果项
