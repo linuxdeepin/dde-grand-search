@@ -18,30 +18,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef TEXTPREVIEWPLUGIN_H
-#define TEXTPREVIEWPLUGIN_H
+#ifndef VIDEOVIEW_H
+#define VIDEOVIEW_H
 
-#include <previewplugin.h>
+#include <DLabel>
 
-class PropertyLabel;
-class TextView;
-class TextPreviewPlugin : public QObject, public GrandSearch::PreviewPlugin
+#include <QWidget>
+
+DWIDGET_USE_NAMESPACE
+
+class ThumbnailLabel : public QWidget
 {
     Q_OBJECT
 public:
-    explicit TextPreviewPlugin(QObject *parent = 0);
-    ~TextPreviewPlugin() Q_DECL_OVERRIDE;
-    bool previewItem(const GrandSearch::ItemInfo &item) Q_DECL_OVERRIDE;
-    GrandSearch::ItemInfo item() const Q_DECL_OVERRIDE;
-    QWidget *contentWidget() const Q_DECL_OVERRIDE;
-    bool stopPreview() Q_DECL_OVERRIDE;
-    QWidget *toolBarWidget() const Q_DECL_OVERRIDE;
-    bool showToolBar() const Q_DECL_OVERRIDE;
-    GrandSearch::DetailInfoList getAttributeDetailInfo() const Q_DECL_OVERRIDE;
-protected:
-    GrandSearch::ItemInfo m_item;
-    TextView *m_view = nullptr;
-    GrandSearch::DetailInfoList m_detailInfo;
+    explicit ThumbnailLabel(QWidget* parent = nullptr);
+    void setPixmap(const QPixmap &pixmap);
+private:
+    QPixmap m_pixmap;
+    QLabel *m_picLabel = nullptr;
 };
 
-#endif // TEXTPREVIEWPLUGIN_H
+class VideoView : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit VideoView(QWidget *parent = nullptr);
+    void initUI();
+    void setTitle(const QString &title);
+    void setThumbnail(const QPixmap &pixmap);
+    static QSize maxThumbnailSize();
+signals:
+
+public slots:
+protected:
+    DLabel *m_title = nullptr;
+    ThumbnailLabel *m_picFrame= nullptr;
+};
+
+#endif // VIDEOVIEW_H

@@ -39,6 +39,7 @@ class TextView : public QWidget
     Q_OBJECT
 public:
     explicit TextView(QWidget *parent = nullptr);
+    void initUI();
     void setSource(const QString &path);
     static QString toUnicode(const QByteArray &data);
 protected:

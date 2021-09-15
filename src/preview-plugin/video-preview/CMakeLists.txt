@@ -1,10 +1,20 @@
 project(video-preview)
 
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
 # 定义插件名称
 set(LIB_NAME video-preview-plugin)
 
-set(SRCS
+pkg_check_modules(Avformat REQUIRED libavformat)
+pkg_check_modules(Ffm REQUIRED libffmpegthumbnailer)
 
+set(SRCS
+    videopreviewinterface.h
+    videopreviewinterface.cpp
+    videopreviewplugin.h
+    videopreviewplugin.cpp
+    videoview.h
+    videoview.cpp
 )
 
 add_library(${LIB_NAME} SHARED ${SRCS})
@@ -12,12 +22,16 @@ add_library(${LIB_NAME} SHARED ${SRCS})
 target_include_directories(${LIB_NAME} PUBLIC
     ${DtkWidget_INCLUDE_DIRS}
     ${DtkGUI_INCLUDE_DIRS}
+    ${Avformat_INCLUDE_DIRS}
+    ${Ffm_INCLUDE_DIRS}
 )
 
 target_link_libraries(${LIB_NAME} PRIVATE
     ${Qt_LIBS}
     ${DtkWidget_LIBRARIES}
     ${DtkGUI_LIBRARIES}
+    ${Avformat_LIBRARIES}
+    ${Ffm_LIBRARIES}
 )
 
 # bin

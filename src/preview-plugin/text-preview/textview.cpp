@@ -78,6 +78,10 @@ void TextView::paintEvent(QPaintEvent *event)
 
 TextView::TextView(QWidget *parent) : QWidget(parent)
 {
+}
+
+void TextView::initUI()
+{
     auto layout = new QHBoxLayout(this);
     this->setLayout(layout);
 

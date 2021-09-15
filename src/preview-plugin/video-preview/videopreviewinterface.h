@@ -1,9 +1,9 @@
 /*
  * Copyright (C) 2021 Uniontech Software Technology Co., Ltd.
  *
- * Author:     houchengqiu<houchengqiu@uniontech.com>
+ * Author:     zhangyu<zhangyub@uniontech.com>
  *
- * Maintainer: houchengqiu<houchengqiu@uniontech.com>
+ * Maintainer: zhangyu<zhangyub@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,10 +17,20 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
+#ifndef VIDEOPREVIEWINTERFACE_H
+#define VIDEOPREVIEWINTERFACE_H
 
-#include "previewplugininterface.h"
+#include <previewplugininterface.h>
 
-namespace GrandSearch {
+class VideoPreviewInterface : public QObject, public GrandSearch::PreviewPluginInterface
+{
+    Q_OBJECT
+    Q_INTERFACES(GrandSearch::PreviewPluginInterface)
+    Q_PLUGIN_METADATA(IID FilePreviewInterface_iid)
+public:
+    explicit VideoPreviewInterface(QObject *parent = nullptr);
+    virtual GrandSearch::PreviewPlugin *create(const QString &mimetype);
+};
 
-}
+#endif // VIDEOPREVIEWINTERFACE_H

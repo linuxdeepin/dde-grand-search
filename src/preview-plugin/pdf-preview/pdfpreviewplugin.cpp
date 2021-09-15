@@ -82,8 +82,3 @@ bool PDFPreviewPlugin::showToolBar() const
 {
     return true;
 }
-
-QRect PDFPreviewPlugin::getValidClickRegion() const
-{
-    return {};
-}

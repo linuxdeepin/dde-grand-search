@@ -342,11 +342,6 @@ bool GeneralPreviewPlugin::showToolBar() const
     return true;
 }
 
-QRect GeneralPreviewPlugin::getValidClickRegion() const
-{
-    return QRect();
-}
-
 void GeneralPreviewPlugin::initConnect()
 {
     connect(d_p->m_toolBar, &GeneralToolBar::sigBtnClicked, this, &GeneralPreviewPlugin::onToolBtnClicked);

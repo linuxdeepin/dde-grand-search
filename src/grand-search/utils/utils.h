@@ -33,7 +33,7 @@ public:
     // 日期格式
     inline static QString dateTimeFormat()
     {
-        return "yyyy/MM/dd HH:mm:ss";
+        return "yyyy/MM/dd HH:mm";
     }
 
     /**

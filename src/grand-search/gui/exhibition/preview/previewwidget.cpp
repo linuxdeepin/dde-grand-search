@@ -134,6 +134,8 @@ void PreviewWidget::initUi()
     m_detailInfoWidget = new DetailInfoWidget(this);
 
     m_vSpaceItem = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+    setFixedWidth(CONTENT_WIDTH);
 }
 
 void PreviewWidget::initConnect()
@@ -144,10 +146,12 @@ void PreviewWidget::initConnect()
 void PreviewWidget::clearLayoutWidgets()
 {
     if (m_preview) {
+        m_preview->stopPreview();
         if (m_preview->contentWidget()) {
             m_preview->contentWidget()->setParent(nullptr);
             m_vMainLayout->removeWidget(m_preview->contentWidget());
         }
+
         if (m_preview->toolBarWidget()) {
             m_preview->toolBarWidget()->setParent(nullptr);
             m_vMainLayout->removeWidget(m_preview->toolBarWidget());

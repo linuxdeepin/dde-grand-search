@@ -86,9 +86,7 @@ set(GUISRC
     gui/exhibition/preview/previewwidget.h
     gui/exhibition/preview/previewwidget.cpp
     gui/exhibition/preview/previewplugin.h
-    gui/exhibition/preview/previewplugin.cpp
     gui/exhibition/preview/previewplugininterface.h
-    gui/exhibition/preview/previewplugininterface.cpp
     gui/exhibition/preview/previewpluginmanager.h
     gui/exhibition/preview/previewpluginmanager.cpp
     gui/exhibition/preview/generalpreviewplugin_p.h

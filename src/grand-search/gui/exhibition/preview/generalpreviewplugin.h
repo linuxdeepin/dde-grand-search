@@ -43,7 +43,6 @@ public:
     virtual GrandSearch::DetailInfoList getAttributeDetailInfo() const override;
     virtual QWidget *toolBarWidget() const override;
     bool showToolBar() const override;
-    QRect getValidClickRegion() const override;
 
 private slots:
     void onToolBtnClicked(int nBtnId);

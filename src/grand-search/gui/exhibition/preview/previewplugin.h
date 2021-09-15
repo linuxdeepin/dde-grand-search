@@ -75,13 +75,6 @@ public:
      * @return bool true: 预览主界面显示工具栏, false: 预览主界面不显示工具栏
      */
     virtual bool showToolBar() const = 0;
-
-    /**
-     * @brief  返回预览界面有效点击区域(包括超出预览主界面外的菜单栏区域),
-     *         搜索主界面通过该接口，能够正常管理主界面显隐逻辑
-     * @return QRect 超出预览界面以外的可点击的区域
-     */
-    virtual QRect getValidClickRegion() const = 0;
 };
 
 }

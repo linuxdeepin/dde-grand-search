@@ -42,16 +42,13 @@ bool TextPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
     if (path.isEmpty())
         return false;
 
-    QFileInfo fileInfo(path);
-    if (!fileInfo.isReadable())
-        return false;
-
-    if (!m_view)
+    m_item = item;
+    if (!m_view) {
         m_view = new TextView();
+        m_view->initUI();
+    }
 
     m_view->setSource(path);
-    m_item = item;
-
     return true;
 }
 
@@ -80,10 +77,6 @@ bool TextPreviewPlugin::showToolBar() const
     return true;
 }
 
-QRect TextPreviewPlugin::getValidClickRegion() const
-{
-    return QRect();
-}
 
 GrandSearch::DetailInfoList TextPreviewPlugin::getAttributeDetailInfo() const
 {

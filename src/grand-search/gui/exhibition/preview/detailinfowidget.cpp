@@ -304,7 +304,7 @@ void DetailInfoWidget::paintEvent(QPaintEvent *event)
     else {
         for (int i = 0; i < nRowCount; i++) {
             QRect rtRow = m_formLayout->getRowRect(i);
-            qDebug() << "DetailInfoWidget::paintEvent i:" << i << "rowRect: " << rtRow;
+            //qDebug() << "DetailInfoWidget::paintEvent i:" << i << "rowRect: " << rtRow;
 
             // 若只有一个，就绘制一个圆角矩形
             if (i == 0) {

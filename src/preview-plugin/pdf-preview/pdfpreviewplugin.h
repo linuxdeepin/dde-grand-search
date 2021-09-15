@@ -38,7 +38,6 @@ public:
     GrandSearch::DetailInfoList getAttributeDetailInfo() const Q_DECL_OVERRIDE;
     QWidget *toolBarWidget() const Q_DECL_OVERRIDE;
     bool showToolBar() const Q_DECL_OVERRIDE;
-    QRect getValidClickRegion() const Q_DECL_OVERRIDE;
 private:
     GrandSearch::ItemInfo m_item;
     PDFView *m_pdfView = nullptr;

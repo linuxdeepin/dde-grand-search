@@ -17,7 +17,12 @@ Build-Depends: debhelper (>= 9),
  deepin-anything-server-dev[i386 amd64],
  dde-dock-dev,
  libglib2.0-dev,
- libpoppler-qt5-dev
+ libpoppler-qt5-dev,
+ libffmpegthumbnailer-dev,
+ libavformat-dev,
+ libavcodec-dev,
+ libtag1-dev,
+ libicu-dev
 Standards-Version: 3.9.8
 Homepage: http://www.deepin.org/
 
@@ -29,6 +34,11 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
  dde-daemon (>=5.12.0.31),
  libdframeworkdbus2 (>=5.4.6),
  startdde (>=5.6.0.34),
- libpoppler-qt5-1
+ libpoppler-qt5-1,
+ libavformat58(>= 7:4.1),
+ libavutil56(>= 7:4.0),
+ libavcodec58(>= 7:4.0),
+ libffmpegthumbnailer4v5,
+ libtag1v5
 Description: deepin desktop-environment - search module
  Search module of deepin desktop-environment

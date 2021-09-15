@@ -18,19 +18,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef TEXTPREVIEWPLUGIN_H
-#define TEXTPREVIEWPLUGIN_H
+#ifndef VIDEOPREVIEWPLUGIN_H
+#define VIDEOPREVIEWPLUGIN_H
 
 #include <previewplugin.h>
 
-class PropertyLabel;
-class TextView;
-class TextPreviewPlugin : public QObject, public GrandSearch::PreviewPlugin
+#include <QFuture>
+
+class VideoView;
+class VideoPreviewPlugin : public QObject, public GrandSearch::PreviewPlugin
 {
     Q_OBJECT
 public:
-    explicit TextPreviewPlugin(QObject *parent = 0);
-    ~TextPreviewPlugin() Q_DECL_OVERRIDE;
+    explicit VideoPreviewPlugin(QObject *parent = nullptr);
+    ~VideoPreviewPlugin() Q_DECL_OVERRIDE;
     bool previewItem(const GrandSearch::ItemInfo &item) Q_DECL_OVERRIDE;
     GrandSearch::ItemInfo item() const Q_DECL_OVERRIDE;
     QWidget *contentWidget() const Q_DECL_OVERRIDE;
@@ -38,10 +39,18 @@ public:
     QWidget *toolBarWidget() const Q_DECL_OVERRIDE;
     bool showToolBar() const Q_DECL_OVERRIDE;
     GrandSearch::DetailInfoList getAttributeDetailInfo() const Q_DECL_OVERRIDE;
+protected slots:
+    void updateInfo(const QVariantHash &);
+protected:
+    static void decode(const QString &file, VideoPreviewPlugin *self);
+    static QPixmap scaleAndRound(const QImage &img, const QSize &size);
+    static QString durationString(qint64 seconds);
 protected:
     GrandSearch::ItemInfo m_item;
-    TextView *m_view = nullptr;
-    GrandSearch::DetailInfoList m_detailInfo;
+    GrandSearch::DetailInfoList m_infos;
+    VideoView *m_view = nullptr;
+    QFuture<void> m_future;
+    volatile bool m_decoding = false;
 };
 
-#endif // TEXTPREVIEWPLUGIN_H
+#endif // VIDEOPREVIEWPLUGIN_H
