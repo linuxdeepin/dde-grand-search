@@ -26,7 +26,7 @@
 #include <QPainter>
 #include <QLabel>
 
-#define PAGE_MAX_HEIGHT 408
+#define PAGE_MAX_HEIGHT 386
 
 PDFView::PDFView(const QString &file, QWidget *parent)
     :QWidget (parent)
@@ -53,49 +53,57 @@ void PDFView::initDoc(const QString &file)
 
 void PDFView::initUI()
 {
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setContentsMargins(10, 0, 0, 0);
+    layout->setSpacing(0);
+    setLayout(layout);
+    this->setFixedHeight(PAGE_MAX_HEIGHT);
+    m_pageLabel = new QLabel(this);
+    // 居中显示
+    layout->addStretch();
+    layout->addWidget(m_pageLabel);
+    layout->addStretch();
+
     if (m_isBadDoc) {
         showFailedPage();
         return;
     }
-
-    setContentsMargins(0, 0, 0, 0);
-    m_pageLabel = new QLabel(this);
-    QVBoxLayout *layout = new QVBoxLayout(this);
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->setSpacing(0);
-    layout->addWidget(m_pageLabel);
-
-    setLayout(layout);
     syncLoadFirstPage();
 }
 
 void PDFView::initConnections()
 {
     connect(this, &PDFView::pageUpdate, this, &PDFView::onPageUpdated);
+    connect(this, &PDFView::parseFailed, this, &PDFView::showFailedPage);
 }
 
 void PDFView::showFailedPage()
 {
-    QVBoxLayout *layout = new QVBoxLayout(this);
-    QLabel *failedLabel = new QLabel(this);
-    failedLabel->setText(tr("Cannot preview this file!"));
-
-    layout->addStretch();
-    layout->addWidget(failedLabel, 0, Qt::AlignHCenter);
-    layout->addStretch();
-    setLayout(layout);
+    // TODO 显示预览失败
+    m_pageLabel->setText("Cannot preview this file!");
 }
 
 void PDFView::onPageUpdated(QImage img)
 {
+    auto pixmap = QPixmap::fromImage(img);
     // 缩放
-    img = img.scaledToWidth(m_pageLabel->width(), Qt::SmoothTransformation);
-    QImage page(m_pageLabel->width(), std::min(img.height(), PAGE_MAX_HEIGHT), QImage::Format_ARGB32_Premultiplied);
-    page.fill(Qt::white);
-    QPainter p(&page);
-    p.drawImage(0, 0, img);
+    pixmap = pixmap.scaledToWidth(m_pageLabel->width(), Qt::SmoothTransformation);
 
-    m_pageLabel->setPixmap(QPixmap::fromImage(page));
+    QPixmap destImage (m_pageLabel->width(), std::min(pixmap.height(), PAGE_MAX_HEIGHT));
+    destImage.fill(Qt::transparent);
+    QPainter painter(&destImage);
+    // 抗锯齿
+    painter.setRenderHints(QPainter::Antialiasing, true);
+    // 图片平滑处理
+    painter.setRenderHints(QPainter::SmoothPixmapTransform, true);
+    // 将图片裁剪为圆角
+    QPainterPath path;
+    QRect rect(0, 0, destImage.width(), destImage.height());
+    path.addRoundedRect(rect, 8, 8);
+    painter.setClipPath(path);
+    painter.drawPixmap(0, 0, destImage.width(), destImage.height(), pixmap);
+
+    m_pageLabel->setPixmap(destImage);
 }
 
 void PDFView::resizeEvent(QResizeEvent *event)
@@ -110,8 +118,10 @@ void PDFView::syncLoadFirstPage()
 {
     m_future = QtConcurrent::run([=]{
        QSharedPointer<Poppler::Page> page = QSharedPointer<Poppler::Page>(m_doc->page(0));
-       if (!page)
+       if (!page) {
+           emit parseFailed();
            return;
+       }
 
        // 渲染抗锯齿
        m_doc->setRenderHint(Poppler::Document::Antialiasing, true);

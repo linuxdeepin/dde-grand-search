@@ -37,18 +37,16 @@ public:
     void initDoc(const QString &file);
     void initUI();
     void initConnections();
-    void showFailedPage();
 public slots:
     void onPageUpdated(QImage img);
+    void showFailedPage();
 signals:
     void pageUpdate(const QImage &img);
-
+    void parseFailed();
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
-
 private:
     void syncLoadFirstPage();
-
 private:
     QLabel *m_pageLabel = nullptr;
     bool m_isBadDoc = false;
