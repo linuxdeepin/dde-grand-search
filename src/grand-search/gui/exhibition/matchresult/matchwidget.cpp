@@ -81,14 +81,31 @@ void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
             continue;
         }
 
-        // 追加匹配数据到类目列表中
-        groupWidget->appendMatchedItems(itData.value(), itData.key());
+        // 网络搜索项时，对显示内容进行翻译处理
+        if (itData.key() == GRANDSEARCH_GROUP_WEB) {
+
+            MatchedItems webItems;
+            for (auto val : itData.value()) {
+                QString showItem = QObject::tr("Search for \"%1\"").arg(val.item);
+                val.name = showItem;
+                webItems.append(val);
+            }
+
+            // 追加匹配数据到类目列表中
+            groupWidget->appendMatchedItems(webItems, itData.key());
+
+            bNeedRelayout = true;
+
+        } else {
+            // 追加匹配数据到类目列表中
+            groupWidget->appendMatchedItems(itData.value(), itData.key());
+        }
 
         // 列表中有数据，显示类目列表
         groupWidget->setVisible(groupWidget->itemCount() > 0);
 
         // 有新增匹配结果，需要调整重新布局
-        if (itData.value().size() > 0)
+        if (!bNeedRelayout && itData.value().size() > 0)
             bNeedRelayout = true;
 
         itData++;
@@ -156,9 +173,8 @@ void MatchWidget::selectNextItem()
         int nextRow = index.row() + 1;
         const QModelIndex &nextIndex = listView->model()->index(nextRow, 0);
         if (nextIndex.isValid()) {
-            qDebug() << "select item:" << group->groupName() << nextIndex.row()/* << nextIndex.data(DATA_ROLE).value<MatchedItem>().name*/;
             listView->setCurrentIndex(nextIndex);
-            updateCurrentAppIcon(nextIndex);
+            currentIndexChanged(group->searchGroupName(), nextIndex);
             break;
         } else {
             // 选择项是当前列表的最后一项，需要选择下一个列表的第一项
@@ -198,9 +214,8 @@ void MatchWidget::selectPreviousItem()
         int previousRow = index.row() - 1;
         const QModelIndex &previousIndex = listView->model()->index(previousRow, 0);
         if (previousIndex.isValid()) {
-            qDebug() << "select item:" << group->groupName() << previousIndex.row()/* << previousIndex.data(DATA_ROLE).value<MatchedItem>().name*/;
             listView->setCurrentIndex(previousIndex);
-            updateCurrentAppIcon(previousIndex);
+            currentIndexChanged(group->searchGroupName(), previousIndex);
             break;
         } else {
             // 选择项是当前列表的第一项，需要选择上一个列表的最后一项
@@ -238,11 +253,7 @@ void MatchWidget::handleItem()
 
 void MatchWidget::onSelectItemByMouse(const MatchedItem &item)
 {
-    // 通知搜索输入框更新应用图标
-    emit sigAppIconChanged(Utils::appIconName(item));
-
-    // 通知预览界面刷新预览内容
-    emit sigPreviewItem(item);
+    QString searchGroupName;
 
     // 通知其他列表取消选中
     GrandSearchListView* listView = qobject_cast<GrandSearchListView*>(sender());
@@ -253,9 +264,13 @@ void MatchWidget::onSelectItemByMouse(const MatchedItem &item)
                 Q_ASSERT(tmpListView);
                 if (listView != tmpListView)
                     tmpListView->setCurrentIndex(QModelIndex());
+                else
+                    searchGroupName = m_vGroupWidgets.at(i)->searchGroupName();
             }
         }
     }
+    // 通知当前选择项改变
+    emit sigCurrentItemChanged(searchGroupName, item);
 }
 
 bool MatchWidget::selectFirstItem(int groupNumber)
@@ -274,9 +289,8 @@ bool MatchWidget::selectFirstItem(int groupNumber)
         if (Q_LIKELY(listView->rowCount() > 0)) {
             const QModelIndex &index = listView->model()->index(0, 0);
             if (Q_LIKELY(index.isValid())) {
-                qDebug() << "select item:" << group->groupName() << index.row();
                 listView->setCurrentIndex(index);
-                updateCurrentAppIcon(index);
+                currentIndexChanged(group->searchGroupName(), index);
                 return true;
             }
         }
@@ -297,9 +311,8 @@ bool MatchWidget::selectLastItem(int groupNumber)
         if (Q_LIKELY(listView->rowCount() > 0)) {
             const QModelIndex &index = listView->model()->index(listView->rowCount() - 1, 0);
             if (Q_LIKELY(index.isValid())) {
-                qDebug() << "select item:" << group->groupName() << index.row();
                 listView->setCurrentIndex(index);
-                updateCurrentAppIcon(index);
+                currentIndexChanged(group->searchGroupName(), index);
                 return true;
             }
         }
@@ -382,14 +395,13 @@ void MatchWidget::adjustScrollBar()
 //    qDebug() << QString("nMin:%1 nMax:%2 nCurSelHeight%3 nCurPosValue:%4 nNewPosValue:%5").arg(nMin).arg(nMax).arg(nCurSelHeight).arg(nCurPosValue).arg(nNewPosValue);
 }
 
-void MatchWidget::updateCurrentAppIcon(const QModelIndex &index)
+void MatchWidget::currentIndexChanged(const QString &searchGroupName, const QModelIndex &index)
 {
     MatchedItem item;
     if (index.isValid())
         item = index.data(DATA_ROLE).value<MatchedItem>();
 
-    emit sigAppIconChanged(Utils::appIconName(item));
-    emit sigPreviewItem(item);
+    emit sigCurrentItemChanged(searchGroupName, item);
 }
 
 void MatchWidget::initUi()
@@ -488,9 +500,10 @@ GroupWidget *MatchWidget::createGroupWidget(const QString &searchGroupName)
 
         GrandSearchListView *listView = groupWidget->getListView();
         Q_ASSERT(listView);
-        connect(listView, &GrandSearchListView::sigAppIconChanged, this, &MatchWidget::sigAppIconChanged);
-        connect(listView, &GrandSearchListView::sigSelectItemByMouse, this, &MatchWidget::onSelectItemByMouse);
+        connect(listView, &GrandSearchListView::sigCurrentItemChanged, this, &MatchWidget::onSelectItemByMouse);
         connect(listView, &GrandSearchListView::sigItemClicked, this, &MatchWidget::sigCloseWindow);
+
+        groupWidget->setSearchGroupName(searchGroupName);
 
         const QString &groupName = GroupWidget::convertDisplayName(searchGroupName);
         groupWidget->setGroupName(groupName);

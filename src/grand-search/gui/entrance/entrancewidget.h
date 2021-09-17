@@ -21,6 +21,8 @@
 #ifndef ENTRANCEWIDGET_H
 #define ENTRANCEWIDGET_H
 
+#include "global/matcheditem.h"
+
 #include <DWidget>
 
 #include <QScopedPointer>
@@ -44,7 +46,7 @@ private:
 
 public slots:
     // 切换选择搜索结果时，应用图标发生改变
-    void onAppIconChanged(const QString &appIconName);
+    void onAppIconChanged(const QString &searchGroupName, const GrandSearch::MatchedItem &item);
 
 signals:
     void searchTextChanged(const QString &txt);

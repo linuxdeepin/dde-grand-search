@@ -51,8 +51,11 @@ public:
     virtual void appendMatchedItems(const GrandSearch::MatchedItems &newItems, const QString& searchGroupName);
     virtual void clear();
 
+    void setSearchGroupName(const QString &searchGroupName);
+    QString searchGroupName() const;
+
     void setGroupName(const QString &groupName);
-    QString groupName();
+    QString groupName() const;
 
     void showHorLine(bool bShow = true);
     bool isHorLineVisilbe();
@@ -85,6 +88,8 @@ protected:
     GrandSearch::MatchedItems m_firstFiveItems;     // 前5行正在显示的匹配结果
     GrandSearch::MatchedItems m_restShowItems;      // 剩余正在显示的匹配结果
     GrandSearch::MatchedItems m_cacheItems;         // 缓存中的匹配结果
+
+    QString m_searchGroupName;                      // 所属类目
 
 private:
     QScopedPointer<GroupWidgetPrivate> d_p;

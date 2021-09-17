@@ -36,31 +36,17 @@
 #define ICON_SIZE               96
 #define HOR_MARGIN_SIZE         10
 #define MARGIN_SIZE             15
-#define NAME_HEIGHT             25
-#define TOOLBTN_WIDTH           100
-#define TOOLBAR_HEIGHT          36
-#define TOOLBAR_BOTTOM_MARGIN   10
+#define NAME_WIDTH              239
 
 DWIDGET_USE_NAMESPACE
 
 using namespace GrandSearch;
 
-#define GET_BASICINFO_VALUE_LABEL(ROW, LABEL) SectionValueLabel* LABEL = qobject_cast<SectionValueLabel*>(m_basicInfoLayout->getRowField(ROW)); \
-                                           Q_ASSERT(LABEL);
-
-#define SET_BASICINFO_VALUE_LABEL_TEXT(ROW, TEXT) { \
-                                                    GET_BASICINFO_VALUE_LABEL(ROW, LABEL) \
-                                                    QString t = LABEL->fontMetrics().elidedText(TEXT, Qt::ElideMiddle, LABEL->width());\
-                                                    LABEL->setText(t); \
-                                                    if (t != TEXT) \
-                                                        LABEL->setToolTip(TEXT); \
-                                                  }
-
 NameLabel::NameLabel(const QString &text, QWidget *parent, Qt::WindowFlags f):
     QLabel(text, parent, f)
 {
     setObjectName("NameLabel");
-    setFixedHeight(NAME_HEIGHT);
+    setFixedWidth(NAME_WIDTH);
 
     QColor textColor = QColor(0, 0, 0, static_cast<int>(255 * 0.9));
     if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
@@ -79,7 +65,7 @@ SizeLabel::SizeLabel(const QString &text, QWidget *parent, Qt::WindowFlags f):
     QLabel(text, parent, f)
 {
     setObjectName("SizeLabel");
-    setFixedHeight(17);
+    setFixedWidth(NAME_WIDTH);
     QColor textColor = QColor(124, 124, 124, static_cast<int>(255 * 1));
     if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
         textColor = QColor(255, 255, 255, static_cast<int>(255 * 1));
@@ -88,91 +74,6 @@ SizeLabel::SizeLabel(const QString &text, QWidget *parent, Qt::WindowFlags f):
     setPalette(pa);
 
     setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-}
-
-IconButton::IconButton(QWidget *parent)
-    : QToolButton(parent)
-{
-    setFixedWidth(TOOLBTN_WIDTH);
-    setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-
-    QColor textColor = QColor(82, 106, 127, static_cast<int>(255 * 1));
-    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
-        textColor = QColor(255, 255, 255, static_cast<int>(255 * 1));
-    QPalette pa = palette();
-    pa.setColor(QPalette::ButtonText, textColor);
-    setPalette(pa);
-}
-
-
-GeneralToolBar::GeneralToolBar(QWidget *parent)
-    : QWidget(parent)
-{
-    initUi();
-    initConnect();
-}
-
-GeneralToolBar::~GeneralToolBar()
-{
-
-}
-
-void GeneralToolBar::onBtnClicked()
-{
-    QToolButton* pBtn = qobject_cast<QToolButton*>(sender());
-    if (!pBtn)
-        return;
-
-    if (pBtn == m_openBtn)
-        emit sigBtnClicked(Btn_Open);
-    else if(pBtn == m_openPathBtn)
-        emit sigBtnClicked(Btn_OpenPath);
-    else if(pBtn == m_copyPathBtn)
-        emit sigBtnClicked(Btn_CopyPath);
-}
-
-void GeneralToolBar::initUi()
-{
-    setFixedHeight(TOOLBAR_HEIGHT + TOOLBAR_BOTTOM_MARGIN); //高36 + 下边距10
-
-    m_hMainLayout = new QHBoxLayout(this);
-    //下边距10
-    m_hMainLayout->setContentsMargins(0, 0, 0, TOOLBAR_BOTTOM_MARGIN);
-    m_hMainLayout->setSpacing(0);
-
-    m_openBtn = new IconButton(this);
-    m_openBtn->setText(tr("Open"));
-    m_openBtn->setIcon(QIcon(":/icons/open.svg"));
-
-    m_openPathBtn = new IconButton(this);
-    m_openPathBtn->setText(tr("Open Path"));
-    m_openPathBtn->setIcon(QIcon(":/icons/openpath.svg"));
-
-    m_copyPathBtn = new IconButton(this);
-    m_copyPathBtn->setText(tr("Copy Path"));
-    m_copyPathBtn->setIcon(QIcon(":/icons/copypath.svg"));
-
-    m_vLine1 = new DVerticalLine(this);
-    m_vLine2 = new DVerticalLine(this);
-
-    m_hMainLayout->addWidget(m_openBtn);
-    m_hMainLayout->addWidget(m_vLine1);
-    m_hMainLayout->addWidget(m_openPathBtn);
-    m_hMainLayout->addWidget(m_vLine2);
-    m_hMainLayout->addWidget(m_copyPathBtn);
-
-    this->setLayout(m_hMainLayout);
-}
-
-void GeneralToolBar::initConnect()
-{
-    Q_ASSERT(m_openBtn);
-    Q_ASSERT(m_openPathBtn);
-    Q_ASSERT(m_copyPathBtn);
-
-    connect(m_openBtn, SIGNAL(clicked()), SLOT(onBtnClicked()));
-    connect(m_openPathBtn, SIGNAL(clicked()), SLOT(onBtnClicked()));
-    connect(m_copyPathBtn, SIGNAL(clicked()), SLOT(onBtnClicked()));
 }
 
 GeneralPreviewPluginPrivate::GeneralPreviewPluginPrivate(GeneralPreviewPlugin *parent)
@@ -204,8 +105,11 @@ GeneralPreviewPluginPrivate::GeneralPreviewPluginPrivate(GeneralPreviewPlugin *p
 
     m_vMainLayout->setContentsMargins(MARGIN_SIZE, 0, MARGIN_SIZE, MARGIN_SIZE);
     m_vMainLayout->addLayout(hLayout);
+}
 
-    m_toolBar = new GeneralToolBar();
+GeneralPreviewPluginPrivate::~GeneralPreviewPluginPrivate()
+{
+    m_contentWidget->deleteLater();
 }
 
 QString GeneralPreviewPluginPrivate::getBasicInfoLabelName(GeneralPreviewPluginPrivate::BasicInfoRow eRow)
@@ -231,14 +135,12 @@ GeneralPreviewPlugin::GeneralPreviewPlugin(QObject *parent)
     , PreviewPlugin()
     , d_p(new GeneralPreviewPluginPrivate(this))
 {
-    d_p->m_contentWidget->installEventFilter(this);
-    initConnect();
+
 }
 
 GeneralPreviewPlugin::~GeneralPreviewPlugin()
 {
-    Q_ASSERT(d_p->m_contentWidget);
-    d_p->m_contentWidget->deleteLater();
+
 }
 
 bool GeneralPreviewPlugin::previewItem(const GrandSearch::ItemInfo &info)
@@ -335,55 +237,12 @@ DetailInfoList GeneralPreviewPlugin::getAttributeDetailInfo() const
 
 QWidget *GeneralPreviewPlugin::toolBarWidget() const
 {
-    return d_p->m_toolBar;
+    return nullptr;
 }
 
 bool GeneralPreviewPlugin::showToolBar() const
 {
     return true;
-}
-
-void GeneralPreviewPlugin::initConnect()
-{
-    connect(d_p->m_toolBar, &GeneralToolBar::sigBtnClicked, this, &GeneralPreviewPlugin::onToolBtnClicked);
-}
-
-void GeneralPreviewPlugin::onToolBtnClicked(int nBtnId)
-{
-    if (nBtnId == GeneralToolBar::Btn_Open)
-        onOpenClicked();
-    else if (nBtnId == GeneralToolBar::Btn_OpenPath)
-        onOpenpathClicked();
-    else if (nBtnId == GeneralToolBar::Btn_CopyPath)
-        onCopypathClicked();
-}
-
-void GeneralPreviewPlugin::onOpenClicked()
-{
-    Utils::openFile(d_p->m_item);
-}
-
-void GeneralPreviewPlugin::onOpenpathClicked()
-{
-    QFileInfo fi(d_p->m_item.item);
-    if (fi.exists()) {
-        MatchedItem item = d_p->m_item;
-        item.icon = "inode-directory";
-        item.item = fi.absolutePath();
-        item.name = fi.dir().dirName();
-        item.type = "inode/directory";
-
-        Utils::openFile(item);
-    }
-}
-
-void GeneralPreviewPlugin::onCopypathClicked()
-{
-    QWidget* topWidget = contentWidget()->topLevelWidget();
-    Q_ASSERT(topWidget);
-
-    QClipboard *clipboard = QGuiApplication::clipboard();
-    clipboard->setText(d_p->m_item.item);
 }
 
 QString GeneralPreviewPlugin::lineFeed(const QString &text, int nWidth, const QFont &font, int nElidedRow)
@@ -399,7 +258,7 @@ QString GeneralPreviewPlugin::lineFeed(const QString &text, int nWidth, const QF
             if (fm.width(strText.left(i)) > nWidth * nIndex) {
                 nIndex++;
                 if (nIndex > nElidedRow) {
-                    strText = fm.elidedText(strText, Qt::ElideRight, nWidth * nElidedRow);
+                    strText = fm.elidedText(strText, Qt::ElideMiddle, nWidth * nElidedRow);
                     break;
                 }
                 strText.insert(i - 1, "\n");

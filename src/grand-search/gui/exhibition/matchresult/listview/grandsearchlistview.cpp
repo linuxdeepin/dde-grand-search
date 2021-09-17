@@ -180,8 +180,8 @@ void GrandSearchListView::onItemClicked(const QModelIndex &index)
 
         MatchedItem item = index.data(DATA_ROLE).value<MatchedItem>();
 
-        // 通知匹配结果界面选择有改变
-        emit sigSelectItemByMouse(item);
+        // 通知选择已经改变
+        emit sigCurrentItemChanged(item);
 
         return;
     }

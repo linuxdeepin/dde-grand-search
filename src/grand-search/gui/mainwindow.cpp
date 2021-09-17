@@ -228,7 +228,7 @@ void MainWindow::initConnect()
     connect(d_p->m_entranceWidget, &EntranceWidget::sigHandleItem, d_p->m_exhibitionWidget, &ExhibitionWidget::onHandleItem);
     connect(d_p->m_entranceWidget, &EntranceWidget::sigCloseWindow, d_p->m_handleVisibility, &HandleVisibility::onCloseWindow);
 
-    connect(d_p->m_exhibitionWidget, &ExhibitionWidget::sigAppIconChanged, d_p->m_entranceWidget, &EntranceWidget::onAppIconChanged);
+    connect(d_p->m_exhibitionWidget, &ExhibitionWidget::sigCurrentItemChanged, d_p->m_entranceWidget, &EntranceWidget::onAppIconChanged);
     connect(d_p->m_exhibitionWidget, &ExhibitionWidget::sigShowNoContent, this, &MainWindow::showSerachNoContent);
     connect(d_p->m_exhibitionWidget, &ExhibitionWidget::sigCloseWindow, d_p->m_handleVisibility, &HandleVisibility::onCloseWindow);
 }

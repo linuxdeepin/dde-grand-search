@@ -194,7 +194,17 @@ void GroupWidget::clear()
     setVisible(false);
 }
 
-QString GroupWidget::groupName()
+void GroupWidget::setSearchGroupName(const QString &searchGroupName)
+{
+    m_searchGroupName = searchGroupName;
+}
+
+QString GroupWidget::searchGroupName() const
+{
+    return m_searchGroupName;
+}
+
+QString GroupWidget::groupName() const
 {
     Q_ASSERT(m_groupLabel);
 

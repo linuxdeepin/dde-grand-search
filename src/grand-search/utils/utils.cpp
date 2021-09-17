@@ -271,7 +271,7 @@ QString Utils::appIconName(const MatchedItem &item)
         QString defaultDesktopFile = getDefaultAppDesktopFileByMimeType(mimetype);
         if (m_appIconNameMap.find(defaultDesktopFile) == m_appIconNameMap.end()) {
             DDesktopEntry entry(defaultDesktopFile);
-            QString strAppIconName = entry.stringValue("Icon");
+            strAppIconName = entry.stringValue("Icon");
             m_appIconNameMap[defaultDesktopFile] = strAppIconName;
         } else {
             strAppIconName = m_appIconNameMap[defaultDesktopFile];
@@ -568,4 +568,18 @@ bool Utils::isLevelGroup(const QString &searchGroupName)
     };
 
     return containLevelGroup.contains(searchGroupName);
+}
+
+bool Utils::canPreview(const QString &searchGroupName)
+{
+    static const QStringList containPreviewGroup{
+        GRANDSEARCH_GROUP_FOLDER
+      , GRANDSEARCH_GROUP_FILE
+      , GRANDSEARCH_GROUP_FILE_VIDEO
+      , GRANDSEARCH_GROUP_FILE_AUDIO
+      , GRANDSEARCH_GROUP_FILE_PICTURE
+      , GRANDSEARCH_GROUP_FILE_DOCUMNET
+    };
+
+    return containPreviewGroup.contains(searchGroupName);
 }

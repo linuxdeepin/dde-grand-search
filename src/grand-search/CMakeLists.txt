@@ -82,7 +82,6 @@ set(GUISRC
     gui/exhibition/matchresult/listview/grandsearchlistview.h
     gui/exhibition/matchresult/listview/grandsearchlistview.cpp
     # preview
-    gui/exhibition/preview/previewwidget_p.h
     gui/exhibition/preview/previewwidget.h
     gui/exhibition/preview/previewwidget.cpp
     gui/exhibition/preview/previewplugin.h
@@ -94,6 +93,8 @@ set(GUISRC
     gui/exhibition/preview/generalpreviewplugin.cpp
     gui/exhibition/preview/detailinfowidget.h
     gui/exhibition/preview/detailinfowidget.cpp
+    gui/exhibition/preview/generalwidget/generaltoolbar.h
+    gui/exhibition/preview/generalwidget/generaltoolbar.cpp
     # setting
     gui/searchconfig/configwidget.cpp
     gui/searchconfig/configwidget.h

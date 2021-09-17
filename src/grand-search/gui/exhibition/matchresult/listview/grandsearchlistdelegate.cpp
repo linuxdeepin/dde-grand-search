@@ -129,10 +129,10 @@ void GrandSearchListDelegate::drawSelectState(QPainter *painter, const QStyleOpt
     if (option.state & QStyle::State_MouseOver) {
         painter->save();
         painter->setPen(Qt::NoPen);
-        QColor hovertColor(Qt::lightGray);
+        QColor hovertColor(0, 0, 0, int(255*0.05));
         painter->setBrush(hovertColor);
         QRect selecteColorRect = option.rect.adjusted(0, 0, 0, 0);
-        painter->drawRoundedRect(selecteColorRect, 5, 5);
+        painter->drawRoundedRect(selecteColorRect, 8, 8);
         painter->restore();
     }
 

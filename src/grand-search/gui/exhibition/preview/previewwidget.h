@@ -26,7 +26,7 @@
 
 #include <QScopedPointer>
 
-class PreviewWidgetPrivate;
+class GeneralToolBar;;
 class QVBoxLayout;
 class QSpacerItem;
 class DetailInfoWidget;
@@ -46,18 +46,20 @@ private:
     void reLayout();
     void clearLayoutWidgets();
 
+    void onOpenClicked();
+    void onOpenpathClicked();
+    void onCopypathClicked();
 private:
-    QScopedPointer<PreviewWidgetPrivate> d_p;
-
     QVBoxLayout *m_vMainLayout = nullptr;               // 预览界面主体布局
 
     QSpacerItem* m_vSpaceItem = nullptr;       // 垂直弹簧，用于将工具栏置底显示
 
     QSharedPointer<GrandSearch::PreviewPlugin> m_preview = nullptr;        // 当前正在预览的插件界面
 
-    QSharedPointer<GrandSearch::PreviewPlugin> m_generalPreview = nullptr; // 默认预览界面
+    QSharedPointer<GrandSearch::PreviewPlugin> m_generalPreview = nullptr; // 默认预览插件界面
 
-    DetailInfoWidget* m_detailInfoWidget = nullptr; // 属性详情部件
+    DetailInfoWidget* m_detailInfoWidget = nullptr; // 通用属性详情部件
+    GeneralToolBar *m_generalToolBar = nullptr;     // 通用工具栏部件
 
 private:
     GrandSearch::MatchedItem m_item; //当前正在预览的匹配结果

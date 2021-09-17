@@ -35,7 +35,6 @@
 class NameLabel: public QLabel
 {
     Q_OBJECT
-
 public:
     explicit NameLabel(const QString &text = "", QWidget *parent = nullptr, Qt::WindowFlags f = {});
 };
@@ -43,58 +42,8 @@ public:
 class SizeLabel: public QLabel
 {
     Q_OBJECT
-
 public:
     explicit SizeLabel(const QString &text = "", QWidget *parent = nullptr, Qt::WindowFlags f = {});
-};
-
-class IconButton: public QToolButton
-{
-    Q_OBJECT
-
-public:
-    explicit IconButton(QWidget *parent = nullptr);
-};
-
-DWIDGET_BEGIN_NAMESPACE
-class DVerticalLine;
-DWIDGET_END_NAMESPACE
-class QHBoxLayout;
-class GeneralToolBar : public QWidget
-{
-    Q_OBJECT
-
-public:
-    explicit GeneralToolBar(QWidget *parent = nullptr);
-    ~GeneralToolBar();
-
-    enum ToolBtnId{
-        Btn_Open,
-        Btn_OpenPath,
-        Btn_CopyPath,
-        Btn_Count
-    };
-
-private slots:
-    void onBtnClicked();
-
-signals:
-    void sigBtnClicked(int nBtnId);
-
-private:
-    void initUi();
-    void initConnect();
-
-private:
-
-    QHBoxLayout* m_hMainLayout;
-
-    IconButton* m_openBtn;
-    IconButton* m_openPathBtn;
-    IconButton* m_copyPathBtn;
-
-    Dtk::Widget::DVerticalLine* m_vLine1;
-    Dtk::Widget::DVerticalLine* m_vLine2;
 };
 
 DWIDGET_BEGIN_NAMESPACE
@@ -110,6 +59,7 @@ public:
     };
 
     explicit GeneralPreviewPluginPrivate(GeneralPreviewPlugin *parent = nullptr);
+    ~GeneralPreviewPluginPrivate();
 
     QString getBasicInfoLabelName(BasicInfoRow eRow);
 
@@ -127,10 +77,6 @@ public:
 
     // 大小
     SizeLabel *m_sizeLabel = nullptr;
-
-    // 工具栏按钮区 打开、打开路径、复制路径
-    GeneralToolBar* m_toolBar = nullptr;
-
 };
 
 #endif // UNKNOWNPREVIEWPLUGIN_P_H

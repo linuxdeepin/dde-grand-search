@@ -32,7 +32,7 @@ struct MatchedItem {
     QString icon;   //界面显示的图标
     QString type;   //界面显示的类型
     QString searcher;   //出自的搜索项
-    QVariant extra;    //扩展信息，由各搜索结果补充的特殊属性
+    QVariant extra;    //扩展信息，由各搜索结果补充的特殊属性QVariantHash
 };
 
 typedef QList<MatchedItem> MatchedItems;

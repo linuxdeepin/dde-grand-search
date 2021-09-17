@@ -18,11 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "previewwidget_p.h"
 #include "previewwidget.h"
 #include "utils/utils.h"
 #include "generalpreviewplugin.h"
 #include "detailinfowidget.h"
+#include "generalwidget/generaltoolbar.h"
 
 #include <DScrollArea>
 #include <DApplicationHelper>
@@ -42,15 +42,8 @@ using namespace GrandSearch;
 
 #define CONTENT_WIDTH           372
 
-PreviewWidgetPrivate::PreviewWidgetPrivate(PreviewWidget *parent)
-    : q_p(parent)
-{
-
-}
-
 PreviewWidget::PreviewWidget(QWidget *parent)
     : DWidget(parent)
-    , d_p(new PreviewWidgetPrivate(this))
 {
     m_generalPreview = QSharedPointer<PreviewPlugin>(new GeneralPreviewPlugin());
 
@@ -103,16 +96,14 @@ bool PreviewWidget::previewItem(const MatchedItem &item)
         // 3. 添加垂直弹簧条，将工具栏部件置底到底部显示
         m_vMainLayout->addSpacerItem(m_vSpaceItem);
 
-        // 3. 更换新插件工具栏部件到主界面布局
-        // 未定制工具栏，使用默认
-        QWidget *toolBar = preview->toolBarWidget();
-        if (!toolBar)
-            toolBar = m_generalPreview->toolBarWidget();
-        Q_ASSERT(toolBar);
-
-        m_vMainLayout->addWidget(toolBar);
-        // 3.2 插件控制工具栏是否显示
-        toolBar->setVisible(preview->showToolBar());
+        if (preview->showToolBar()) {
+            // 未定制工具栏，使用通用工具栏
+            QWidget *toolBar = preview->toolBarWidget();
+            if (!toolBar)
+                toolBar = m_generalToolBar;
+            Q_ASSERT(toolBar);
+            m_vMainLayout->addWidget(toolBar);
+        }
 
         m_preview = preview;
     }
@@ -132,6 +123,7 @@ void PreviewWidget::initUi()
     m_vMainLayout->setSpacing(0);
 
     m_detailInfoWidget = new DetailInfoWidget(this);
+    m_generalToolBar = new GeneralToolBar(this);
 
     m_vSpaceItem = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -140,7 +132,9 @@ void PreviewWidget::initUi()
 
 void PreviewWidget::initConnect()
 {
-
+    connect(m_generalToolBar, &GeneralToolBar::sigOpenClicked, this, &PreviewWidget::onOpenClicked);
+    connect(m_generalToolBar, &GeneralToolBar::sigOpenPathClicked, this, &PreviewWidget::onOpenpathClicked);
+    connect(m_generalToolBar, &GeneralToolBar::sigCopyPathClicked, this, &PreviewWidget::onCopypathClicked);
 }
 
 void PreviewWidget::clearLayoutWidgets()
@@ -171,4 +165,29 @@ void PreviewWidget::clearLayoutWidgets()
             m_vMainLayout->removeWidget(m_generalPreview->toolBarWidget());
         }
     }
+}
+
+void PreviewWidget::onOpenClicked()
+{
+    Utils::openFile(m_item);
+}
+
+void PreviewWidget::onOpenpathClicked()
+{
+    QFileInfo fi(m_item.item);
+    if (fi.exists()) {
+        MatchedItem item = m_item;
+        item.icon = "inode-directory";
+        item.item = fi.absolutePath();
+        item.name = fi.dir().dirName();
+        item.type = "inode/directory";
+
+        Utils::openFile(item);
+    }
+}
+
+void PreviewWidget::onCopypathClicked()
+{
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    clipboard->setText(m_item.item);
 }

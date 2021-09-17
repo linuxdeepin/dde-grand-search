@@ -21,6 +21,7 @@
 #include "entrancewidget_p.h"
 #include "entrancewidget.h"
 #include "gui/datadefine.h"
+#include "utils/utils.h"
 
 #include <DSearchEdit>
 #include <DStyle>
@@ -76,7 +77,8 @@ void EntranceWidgetPrivate::notifyTextChanged()
     emit q_p->searchTextChanged(currentSearchText);
 
     // 搜索内容改变后，清空图标显示
-    q_p->onAppIconChanged(QString());
+    GrandSearch::MatchedItem item;
+    q_p->onAppIconChanged(QString(), item);
 }
 
 void EntranceWidgetPrivate::setLineEditFocus()
@@ -252,8 +254,11 @@ void EntranceWidget::initConnections()
     connect(qApp, &QGuiApplication::focusObjectChanged, d_p.data(), &EntranceWidgetPrivate::onFocusObjectChanged);
 }
 
-void EntranceWidget::onAppIconChanged(const QString &appIconName)
+void EntranceWidget::onAppIconChanged(const QString &searchGroupName, const GrandSearch::MatchedItem &item)
 {
+    Q_UNUSED(searchGroupName)
+
+    const QString appIconName = Utils::appIconName(item);
     // app图标名称为空，隐藏appIcon显示
     if (appIconName.isEmpty()) {
         showLabelAppIcon(false);

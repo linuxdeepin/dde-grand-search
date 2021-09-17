@@ -64,8 +64,7 @@ public slots:
     void onSetThemeType(int type);
 
 signals:
-    void sigAppIconChanged(const QString &appIconName);
-    void sigSelectItemByMouse(const GrandSearch::MatchedItem &item);
+    void sigCurrentItemChanged(const GrandSearch::MatchedItem &item);
     void sigItemClicked();
 
 protected:

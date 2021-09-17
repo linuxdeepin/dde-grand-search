@@ -44,15 +44,7 @@ public:
     virtual QWidget *toolBarWidget() const override;
     bool showToolBar() const override;
 
-private slots:
-    void onToolBtnClicked(int nBtnId);
-    void onOpenClicked();
-    void onOpenpathClicked();
-    void onCopypathClicked();
-
 private:
-    void initConnect();
-
     // 计算换行内容
     QString lineFeed(const QString &text, int nWidth, const QFont &font, int nElidedRow = 2);
 

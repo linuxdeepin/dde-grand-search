@@ -52,11 +52,9 @@ private slots:
     void onSelectItemByMouse(const GrandSearch::MatchedItem &item);
 
 signals:
-    void sigAppIconChanged(const QString &appIconName);
+    void sigCurrentItemChanged(const QString &searchGroupName, const GrandSearch::MatchedItem &item);
     void sigShowNoContent(bool noContent);
     void sigCloseWindow();
-
-    void sigPreviewItem(const GrandSearch::MatchedItem &item);
 
 private:
     // 在显示列表中，选择指定组的第一个项
@@ -72,7 +70,7 @@ private:
 
     void adjustScrollBar();
 
-    void updateCurrentAppIcon(const QModelIndex& index);
+    void currentIndexChanged(const QString &searchGroupName, const QModelIndex& index);
 
 protected:
     void initUi();
