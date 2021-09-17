@@ -115,10 +115,7 @@ void EntranceWidgetPrivate::showMenu(const QPoint &pos)
     action->setEnabled(!QGuiApplication::clipboard()->text().isEmpty());
     connect(action, &QAction::triggered, m_lineEdit, &QLineEdit::paste);
 
-    QRect rect(pos, menu->sizeHint());
-    m_menuRect = rect;
     menu->exec(pos);
-    m_menuRect = QRect();
     delete menu;
 }
 
@@ -165,11 +162,6 @@ void EntranceWidget::showLabelAppIcon(bool visible)
     }
 
     d_p->m_appIconLabel->setVisible(visible);
-}
-
-QRect EntranceWidget::getMenuRect() const
-{
-    return d_p->m_menuRect;
 }
 
 void EntranceWidget::paintEvent(QPaintEvent *event)

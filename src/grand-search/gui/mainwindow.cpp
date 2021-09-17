@@ -130,16 +130,6 @@ void MainWindow::showEntranceAppIcon(bool bShow)
     d_p->m_entranceWidget->showLabelAppIcon(bShow);
 }
 
-QRegion MainWindow::getValidRegion()
-{
-    Q_ASSERT(d_p->m_entranceWidget);
-
-    QRegion region(geometry());
-    QRect menuRect = d_p->m_entranceWidget->getMenuRect();
-    region = region.united(menuRect);
-    return region;
-}
-
 void MainWindow::onPrimaryScreenChanged(const QScreen *screen)
 {
     // 主窗口显示在主屏

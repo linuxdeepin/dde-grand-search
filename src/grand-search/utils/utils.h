@@ -27,15 +27,6 @@
 class Utils
 {
 public:
-    // 根据文件size换算为KB\MB\GB\TB
-    static QString formatFileSize(qint64 num, bool withUnitVisible = true, int precision = 1, int forceUnit = -1, QStringList unitList = QStringList({" B", " KB", " MB", " GB", " TB"}));
-
-    // 日期格式
-    inline static QString dateTimeFormat()
-    {
-        return "yyyy/MM/dd HH:mm";
-    }
-
     /**
      * @brief showAlertMessage 显示气泡提示信息
      * @param globalPoint 气泡框展示的全局坐标

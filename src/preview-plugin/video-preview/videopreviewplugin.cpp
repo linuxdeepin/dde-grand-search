@@ -20,7 +20,7 @@
  */
 #include "videopreviewplugin.h"
 #include "videoview.h"
-#include "grand-search/utils/utils.h"
+#include "global/commontools.h"
 
 #include <QFileInfo>
 #include <QDateTime>
@@ -82,7 +82,7 @@ bool VideoPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
     m_infos.append(DetailInfo(kLabelSize, QString::number(fileInfo.size())));
     m_infos.append(DetailInfo(kLabelDuration, QString("--")));
     m_infos.append(DetailInfo(kLabelLocation, fileInfo.absolutePath()));
-    m_infos.append(DetailInfo(kLabelTime, fileInfo.lastModified().toString(Utils::dateTimeFormat())));
+    m_infos.append(DetailInfo(kLabelTime, fileInfo.lastModified().toString(GrandSearch::CommonTools::dateTimeFormat())));
 
     if (!m_view) {
         m_view = new VideoView();

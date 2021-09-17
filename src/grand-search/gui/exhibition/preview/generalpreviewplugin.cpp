@@ -21,6 +21,7 @@
 #include "generalpreviewplugin_p.h"
 #include "generalpreviewplugin.h"
 #include "utils/utils.h"
+#include "global/commontools.h"
 
 #include <DFontSizeManager>
 #include <DMessageBox>
@@ -49,7 +50,7 @@ using namespace GrandSearch;
 
 #define SET_BASICINFO_VALUE_LABEL_TEXT(ROW, TEXT) { \
                                                     GET_BASICINFO_VALUE_LABEL(ROW, LABEL) \
-                                                    QString t = LABEL->fontMetrics().elidedText(TEXT, Qt::ElideRight, LABEL->width());\
+                                                    QString t = LABEL->fontMetrics().elidedText(TEXT, Qt::ElideMiddle, LABEL->width());\
                                                     LABEL->setText(t); \
                                                     if (t != TEXT) \
                                                         LABEL->setToolTip(TEXT); \
@@ -290,7 +291,7 @@ bool GeneralPreviewPlugin::previewItem(const GrandSearch::ItemInfo &info)
     QFileInfo fi(item.item);
 
     // 获取文件(夹)大小
-    d_p->m_sizeLabel->setText(Utils::formatFileSize(fi.size()));
+    d_p->m_sizeLabel->setText(CommonTools::formatFileSize(fi.size()));
 
     // 设置属性详情信息
     d_p->m_detailInfos.clear();
@@ -299,7 +300,7 @@ bool GeneralPreviewPlugin::previewItem(const GrandSearch::ItemInfo &info)
     d_p->m_detailInfos.push_back(detail);
 
     detail = qMakePair(d_p->getBasicInfoLabelName(GeneralPreviewPluginPrivate::TimeModified_Row),
-            fi.lastModified().toString(Utils::dateTimeFormat()));
+            fi.lastModified().toString(CommonTools::dateTimeFormat()));
     d_p->m_detailInfos.push_back(detail);
 
     return true;

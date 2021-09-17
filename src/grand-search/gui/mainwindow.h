@@ -36,9 +36,6 @@ public:
     // 必须在主界面显示后再调用该函数，处理业务相关流程
     void connectToController();
 
-    // 获取有效区域，包含主界面和菜单区域
-    QRegion getValidRegion();
-
 private slots:
     // 主屏改变响应槽，移动已显示的主界面到主屏
     void onPrimaryScreenChanged(const QScreen *screen);

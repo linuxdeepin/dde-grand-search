@@ -34,8 +34,6 @@ public:
     ~EntranceWidget() override;
 
     void showLabelAppIcon(bool visible);
-    QRect getMenuRect() const;
-
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
     bool eventFilter(QObject *watched, QEvent *event) Q_DECL_OVERRIDE;

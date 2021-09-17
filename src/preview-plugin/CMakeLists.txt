@@ -41,7 +41,7 @@ set(FRONTEND_NAME dde-grand-search)
 include_directories(${CMAKE_SOURCE_DIR}/src/grand-search/gui/exhibition/preview)
 
 add_subdirectory(text-preview)
-#add_subdirectory(image-preview)
+add_subdirectory(image-preview)
 #add_subdirectory(audio-preview)
 add_subdirectory(pdf-preview)
 add_subdirectory(video-preview)

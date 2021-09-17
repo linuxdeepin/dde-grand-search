@@ -60,7 +60,7 @@ void ConfigWidget::initUI()
 
     // TODO:设计师提供图标后更新
     // 设置图标
-    QIcon tmpIcon = QIcon(QString(":/icons/%1.svg").arg("experienceplan"));
+    QIcon tmpIcon = QIcon(QString(":/icons/%1.svg").arg("dde-grand-search-setting"));
     this->titlebar()->setIcon(tmpIcon);
 
     QWidget *mainWidget = new QWidget(this);

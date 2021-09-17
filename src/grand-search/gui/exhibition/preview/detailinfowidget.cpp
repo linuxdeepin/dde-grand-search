@@ -87,7 +87,7 @@ SectionValueLabel::SectionValueLabel(const QString &text, QWidget *parent, Qt::W
     setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
     setWordWrap(true);
 
-    QString t = this->fontMetrics().elidedText(text, Qt::ElideRight, VALUELABEL_WIDTH);
+    QString t = this->fontMetrics().elidedText(text, Qt::ElideMiddle, VALUELABEL_WIDTH);
     this->setText(t);
     if (t != text)
         this->setToolTip(text);
@@ -239,7 +239,7 @@ void DetailInfoWidget::setDetailInfo(const GrandSearch::DetailInfoList &infos)
                 label->setText(m_vInfos[i].first);
             if (value) {
                 QString text = m_vInfos[i].second;
-                QString t = this->fontMetrics().elidedText(text, Qt::ElideRight, value->width());
+                QString t = this->fontMetrics().elidedText(text, Qt::ElideMiddle, value->width());
                 value->setText(t);
                 if (t != text)
                     value->setToolTip(text);

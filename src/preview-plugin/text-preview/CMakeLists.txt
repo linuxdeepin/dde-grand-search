@@ -27,3 +27,6 @@ target_link_libraries(${LIB_NAME} PRIVATE
 
 # bin
 install(TARGETS ${LIB_NAME} DESTINATION ${PLUGIN_PREVIEW_DIR})
+
+# conf
+install(FILES text-preview-plugin.conf DESTINATION ${PLUGIN_PREVIEW_DIR})

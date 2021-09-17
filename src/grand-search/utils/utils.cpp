@@ -62,59 +62,6 @@ public:
 QMap<QString, QString> Utils::m_appIconNameMap;
 QMimeDatabase Utils::m_mimeDb;
 
-// 规范化浮点型字串，去掉小数点后多余的0
-QString normalizeDoubleString(const QString &str)
-{
-    int begin_pos = str.indexOf('.');
-
-    if (begin_pos < 0)
-        return str;
-
-    QString size = str;
-
-    while (size.count() - 1 > begin_pos) {
-        if (!size.endsWith('0'))
-            return size;
-
-        size = size.left(size.count() - 1);
-    }
-
-    return size.left(size.count() - 1);
-}
-
-QString Utils::formatFileSize(qint64 num, bool withUnitVisible, int precision, int forceUnit, QStringList unitList)
-{
-    if (num < 0) {
-        qWarning() << "Negative number passed to formatSize():" << num;
-        num = 0;
-
-        return QString::number(num);
-    }
-
-    bool isForceUnit = (forceUnit >= 0);
-
-    qreal fileSize(num);
-    QStringListIterator i(unitList);
-    QString unit = i.hasNext() ? i.next() : QStringLiteral(" B");
-
-    int index = 0;
-    while (i.hasNext()) {
-        if (fileSize < 1024 && !isForceUnit) {
-            break;
-        }
-
-        if (isForceUnit && index == forceUnit) {
-            break;
-        }
-
-        unit = i.next();
-        fileSize /= 1024;
-        index++;
-    }
-    QString unitString = withUnitVisible ? unit : QString();
-    return QString("%1%2").arg(normalizeDoubleString(QString::number(fileSize, 'f', precision)), unitString);
-}
-
 void Utils::showAlertMessage(QPoint globalPoint, const QColor &backgroundColor, const QString &text, int duration)
 {
     QWidget* parent = nullptr;

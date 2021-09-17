@@ -10,5 +10,6 @@
         <file>icons/picturesearch.svg</file>
         <file>icons/websearch.svg</file>
         <file>icons/experienceplan.svg</file>
+        <file>icons/dde-grand-search-setting.svg</file>
     </qresource>
 </RCC>
