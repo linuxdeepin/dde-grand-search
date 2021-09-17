@@ -32,6 +32,7 @@ class VideoPreviewPlugin : public QObject, public GrandSearch::PreviewPlugin
 public:
     explicit VideoPreviewPlugin(QObject *parent = nullptr);
     ~VideoPreviewPlugin() Q_DECL_OVERRIDE;
+    void init(QObject *proxyInter) Q_DECL_OVERRIDE;
     bool previewItem(const GrandSearch::ItemInfo &item) Q_DECL_OVERRIDE;
     GrandSearch::ItemInfo item() const Q_DECL_OVERRIDE;
     QWidget *contentWidget() const Q_DECL_OVERRIDE;
@@ -40,16 +41,16 @@ public:
     bool showToolBar() const Q_DECL_OVERRIDE;
     GrandSearch::DetailInfoList getAttributeDetailInfo() const Q_DECL_OVERRIDE;
 protected slots:
-    void updateInfo(const QVariantHash &);
+    void updateInfo(const QVariantHash &, bool needUpdate);
 protected:
-    static void decode(const QString &file, VideoPreviewPlugin *self);
+    static QVariantHash decode(const QString &file, VideoPreviewPlugin *self, bool updateBySignal);
     static QPixmap scaleAndRound(const QImage &img, const QSize &size);
-    static QString durationString(qint64 seconds);
 protected:
     GrandSearch::ItemInfo m_item;
     GrandSearch::DetailInfoList m_infos;
     VideoView *m_view = nullptr;
-    QFuture<void> m_future;
+    QObject *m_proxy = nullptr;
+    QFuture<QVariantHash> m_future;
     volatile bool m_decoding = false;
 };
 

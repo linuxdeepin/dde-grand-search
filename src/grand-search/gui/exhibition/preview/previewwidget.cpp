@@ -18,11 +18,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include "previewwidget.h"
 #include "utils/utils.h"
 #include "generalpreviewplugin.h"
 #include "detailinfowidget.h"
 #include "generalwidget/generaltoolbar.h"
+#include "pluginproxy.h"
 
 #include <DScrollArea>
 #include <DApplicationHelper>
@@ -44,8 +46,10 @@ using namespace GrandSearch;
 
 PreviewWidget::PreviewWidget(QWidget *parent)
     : DWidget(parent)
+    , m_proxy(new PluginProxy(this))
 {
     m_generalPreview = QSharedPointer<PreviewPlugin>(new GeneralPreviewPlugin());
+    m_generalPreview->init(m_proxy);
 
     initUi();
     initConnect();
@@ -65,6 +69,8 @@ bool PreviewWidget::previewItem(const MatchedItem &item)
 
     if (!preview)
         preview = m_generalPreview;
+    else
+        preview->init(m_proxy);
 
     // 插件界面根据新来搜索结果刷新预览内容
     ItemInfo itemInfo;

@@ -95,6 +95,9 @@ set(GUISRC
     gui/exhibition/preview/detailinfowidget.cpp
     gui/exhibition/preview/generalwidget/generaltoolbar.h
     gui/exhibition/preview/generalwidget/generaltoolbar.cpp
+    gui/exhibition/preview/pluginproxy.h
+    gui/exhibition/preview/pluginproxy.cpp
+    gui/exhibition/preview/previewproxyinterface.h
     # setting
     gui/searchconfig/configwidget.cpp
     gui/searchconfig/configwidget.h

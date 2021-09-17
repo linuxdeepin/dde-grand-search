@@ -36,6 +36,11 @@ PDFPreviewPlugin::~PDFPreviewPlugin()
         m_pdfView->deleteLater();
 }
 
+void PDFPreviewPlugin::init(QObject *proxyInter)
+{
+    Q_UNUSED(proxyInter)
+}
+
 bool PDFPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
 {
     const QString path = item.value(PREVIEW_ITEMINFO_ITEM);

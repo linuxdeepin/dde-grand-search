@@ -36,6 +36,16 @@ TextPreviewPlugin::~TextPreviewPlugin()
     delete m_view;
 }
 
+void TextPreviewPlugin::init(QObject *proxyInter)
+{
+    Q_UNUSED(proxyInter)
+
+    if (!m_view) {
+        m_view = new TextView();
+        m_view->initUI();
+    }
+}
+
 bool TextPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
 {
     const QString path = item.value(PREVIEW_ITEMINFO_ITEM);
@@ -43,11 +53,6 @@ bool TextPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
         return false;
 
     m_item = item;
-    if (!m_view) {
-        m_view = new TextView();
-        m_view->initUI();
-    }
-
     m_view->setSource(path);
     return true;
 }

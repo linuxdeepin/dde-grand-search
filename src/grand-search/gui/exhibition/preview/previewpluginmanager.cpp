@@ -51,7 +51,7 @@ PreviewPlugin *PreviewPluginManager::getPreviewPlugin(const GrandSearch::Matched
                 continue;
 
             //需支持正则表达式 todo
-            if (pluginInfo.mimeTypes.contains(mimeType)) {
+            if (isMimeTypeMatch(mimeType, pluginInfo.mimeTypes)) {
                 if (nullptr == pluginInfo.pPlugin) {
                     // 加载预览插件
                     QPluginLoader *loader = new QPluginLoader(pluginInfo.path, this);
@@ -74,6 +74,26 @@ PreviewPlugin *PreviewPluginManager::getPreviewPlugin(const GrandSearch::Matched
     }
 
     return previewPlugin;
+}
+
+bool PreviewPluginManager::isMimeTypeMatch(const QString &mimetype, const QStringList &supportMimeTypes)
+{
+    bool match = false;
+    for (const QString &mt : supportMimeTypes) {
+        if (mimetype.compare(mt, Qt::CaseInsensitive) == 0) {
+            match = true;
+            break;
+        }
+
+        int starPos = mt.indexOf("*");
+        if (starPos > 0 && mimetype.size() > starPos) {
+            if (mt.left(starPos).compare(mimetype.left(starPos)) == 0) {
+                match = true;
+                break;
+            }
+        }
+    }
+    return match;
 }
 
 void PreviewPluginManager::clearPluginInfo()

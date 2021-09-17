@@ -143,6 +143,11 @@ GeneralPreviewPlugin::~GeneralPreviewPlugin()
 
 }
 
+void GeneralPreviewPlugin::init(QObject *proxyInter)
+{
+    Q_UNUSED(proxyInter)
+}
+
 bool GeneralPreviewPlugin::previewItem(const GrandSearch::ItemInfo &info)
 {
     GrandSearch::MatchedItem item;

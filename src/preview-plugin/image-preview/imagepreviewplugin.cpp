@@ -38,6 +38,11 @@ ImagePreviewPlugin::~ImagePreviewPlugin()
         m_imageView->deleteLater();
 }
 
+void ImagePreviewPlugin::init(QObject *proxyInter)
+{
+    Q_UNUSED(proxyInter)
+}
+
 bool ImagePreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
 {
     const QString path = item.value(PREVIEW_ITEMINFO_ITEM);

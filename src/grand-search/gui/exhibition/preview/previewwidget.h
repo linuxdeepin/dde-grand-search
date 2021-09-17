@@ -30,9 +30,11 @@ class GeneralToolBar;;
 class QVBoxLayout;
 class QSpacerItem;
 class DetailInfoWidget;
+class PluginProxy;
 class PreviewWidget : public Dtk::Widget::DWidget
 {
     Q_OBJECT
+    friend class PluginProxy;
 public:
     explicit PreviewWidget(QWidget *parent = nullptr);
     ~PreviewWidget() override;
@@ -60,6 +62,8 @@ private:
 
     DetailInfoWidget* m_detailInfoWidget = nullptr; // 通用属性详情部件
     GeneralToolBar *m_generalToolBar = nullptr;     // 通用工具栏部件
+    PluginProxy *m_proxy = nullptr; //用于预览插件回调预览框架的接口
+
 
 private:
     GrandSearch::MatchedItem m_item; //当前正在预览的匹配结果

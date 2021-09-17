@@ -35,7 +35,7 @@ public:
     ~PreviewPluginManager();
 
     GrandSearch::PreviewPlugin *getPreviewPlugin(const GrandSearch::MatchedItem& item);
-
+    static bool isMimeTypeMatch(const QString &mimetype, const QStringList &supportMimeTypes);
 private:
     void clearPluginInfo();
     bool readPluginConfig();

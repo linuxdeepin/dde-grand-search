@@ -30,7 +30,7 @@ class ImagePreviewPlugin : public QObject, public GrandSearch::PreviewPlugin
 public:
     explicit ImagePreviewPlugin(QObject *parent = nullptr);
     ~ImagePreviewPlugin() Q_DECL_OVERRIDE;
-
+    void init(QObject *proxyInter) Q_DECL_OVERRIDE;
     bool previewItem(const GrandSearch::ItemInfo &item) Q_DECL_OVERRIDE;
     GrandSearch::ItemInfo item() const Q_DECL_OVERRIDE;
     QWidget *contentWidget() const Q_DECL_OVERRIDE;

@@ -36,6 +36,7 @@ class GeneralPreviewPlugin : public QObject, public GrandSearch::PreviewPlugin
 public:
     explicit GeneralPreviewPlugin(QObject *parent = nullptr);
     ~GeneralPreviewPlugin() override;
+    void init(QObject *proxyInter) Q_DECL_OVERRIDE;
     virtual bool previewItem(const GrandSearch::ItemInfo &info) override;
     virtual GrandSearch::ItemInfo item() const override;
     bool stopPreview() override;

@@ -15,7 +15,6 @@ set(SRCS
     audiofileinfo.cpp
     audioview.h
     audioview.cpp
-    ${GLOBAL_SRC}
 )
 
 add_library(${LIB_NAME} SHARED ${SRCS})

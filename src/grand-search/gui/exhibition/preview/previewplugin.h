@@ -21,6 +21,8 @@
 #ifndef PREVIEWPLUGINUI_H
 #define PREVIEWPLUGINUI_H
 
+#include "previewproxyinterface.h"
+
 #include <QObject>
 #include <QHash>
 #include <QPair>
@@ -43,6 +45,9 @@ class PreviewPlugin
 {
 public:
     virtual ~PreviewPlugin(){}
+
+    // 插件初始化函数
+    virtual void init(QObject *proxyInter) = 0;
 
     // 预览指定的搜索结果项
     virtual bool previewItem(const ItemInfo &item) = 0;

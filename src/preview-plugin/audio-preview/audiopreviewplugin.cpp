@@ -46,14 +46,19 @@ AudioPreviewPlugin::~AudioPreviewPlugin()
         m_audioView->deleteLater();
 }
 
+void AudioPreviewPlugin::init(QObject *proxyInter)
+{
+    Q_UNUSED(proxyInter)
+    if (!m_audioView)
+        m_audioView = new AudioView();
+}
+
 bool AudioPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
 {
     const QString path = item.value(PREVIEW_ITEMINFO_ITEM);
     if (path.isEmpty())
         return false;
 
-    if (!m_audioView)
-        m_audioView = new AudioView();
     m_audioView->setItemInfo(item);
 
     AudioFileInfo afi;
@@ -70,9 +75,9 @@ bool AudioPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
         avformat_open_input(&avFmormat, path.toStdString().c_str(), nullptr, nullptr);
         if (avFmormat) {
             avformat_find_stream_info(avFmormat, nullptr);
-            auto dura = avFmormat->duration / 1000;
-            if (dura > 0)
-                amd.duration = AudioFileInfo::durationString(dura);
+            qint64 dura = avFmormat->duration / (qint64)AV_TIME_BASE;
+            if (dura >= 0)
+                amd.duration = GrandSearch::CommonTools::durationString(dura);
         }
         avformat_close_input(&avFmormat);
         avformat_free_context(avFmormat);

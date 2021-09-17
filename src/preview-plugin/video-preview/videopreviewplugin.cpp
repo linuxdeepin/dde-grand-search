@@ -62,6 +62,16 @@ VideoPreviewPlugin::~VideoPreviewPlugin()
         stopPreview();
         m_future.waitForFinished();
     }
+    delete m_view;
+}
+
+void VideoPreviewPlugin::init(QObject *proxyInter)
+{
+    m_proxy = proxyInter;
+    if (!m_view) {
+        m_view = new VideoView();
+        m_view->initUI();
+    }
 }
 
 bool VideoPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
@@ -72,25 +82,33 @@ bool VideoPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
 
     //开启线程解析
     m_decoding = true;
-    m_future = QtConcurrent::run(&VideoPreviewPlugin::decode, path, this);
+#ifdef PREVIEW_ASYNC_DECODE
+    m_future = QtConcurrent::run(&VideoPreviewPlugin::decode, path, this, true);
+#else
+    m_future = QtConcurrent::run(&VideoPreviewPlugin::decode, path, this, false);
+#endif
 
     //初始化静态属性
     QFileInfo fileInfo(path);
     m_infos.clear();
     m_infos.append(DetailInfo(kLabelDimension, QString("--")));
     m_infos.append(DetailInfo(kLabelType, fileInfo.suffix().toUpper()));
-    m_infos.append(DetailInfo(kLabelSize, QString::number(fileInfo.size())));
+    m_infos.append(DetailInfo(kLabelSize, GrandSearch::CommonTools::formatFileSize(fileInfo.size())));
     m_infos.append(DetailInfo(kLabelDuration, QString("--")));
     m_infos.append(DetailInfo(kLabelLocation, fileInfo.absolutePath()));
-    m_infos.append(DetailInfo(kLabelTime, fileInfo.lastModified().toString(GrandSearch::CommonTools::dateTimeFormat())));
-
-    if (!m_view) {
-        m_view = new VideoView();
-        m_view->initUI();
+    {
+        auto lt = fileInfo.lastModified().toString(GrandSearch::CommonTools::dateTimeFormat());
+        m_infos.append(DetailInfo(kLabelTime, lt.isEmpty() ? QString("--") : lt));
     }
 
     m_view->setTitle(fileInfo.fileName());
     m_item = item;
+
+#ifndef PREVIEW_ASYNC_DECODE
+    //同步更新，防止闪烁。若解析时间过长再调整为异步
+    m_future.waitForFinished();
+    updateInfo(m_future.result(), false);
+#endif
     return true;
 }
 
@@ -125,7 +143,7 @@ GrandSearch::DetailInfoList VideoPreviewPlugin::getAttributeDetailInfo() const
     return m_infos;
 }
 
-void VideoPreviewPlugin::updateInfo(const QVariantHash &hash)
+void VideoPreviewPlugin::updateInfo(const QVariantHash &hash, bool needUpdate)
 {
     bool updateDetail = false;
     if (hash.contains(kLabelDimension)) {
@@ -140,7 +158,7 @@ void VideoPreviewPlugin::updateInfo(const QVariantHash &hash)
         auto duration = hash.value(kLabelDuration).value<qint64>();
         auto org = m_infos.takeAt(kDurationIndex);
         Q_ASSERT(org.first == kLabelDuration);
-        m_infos.insert(kDurationIndex, DetailInfo(kLabelDuration, durationString(duration)));
+        m_infos.insert(kDurationIndex, DetailInfo(kLabelDuration, GrandSearch::CommonTools::durationString(duration)));
         updateDetail = true;
     }
 
@@ -149,12 +167,15 @@ void VideoPreviewPlugin::updateInfo(const QVariantHash &hash)
         m_view->repaint();
     }
 
+    //使用代理更新详情
+    if (needUpdate && updateDetail && m_proxy)
+        requestUpdateDetailInfo(m_proxy, this);
 }
 
-void VideoPreviewPlugin::decode(const QString &file, VideoPreviewPlugin *self)
+QVariantHash VideoPreviewPlugin::decode(const QString &file, VideoPreviewPlugin *self, bool updateBySignal)
 {
     if (!self || !self->m_decoding)
-        return;
+        return {};
 
     QVariantHash info;
 
@@ -181,7 +202,7 @@ void VideoPreviewPlugin::decode(const QString &file, VideoPreviewPlugin *self)
 
     //检查一次是否停止
     if (!self->m_decoding)
-        return;
+        return {};
 
     //时长大于0才获取预览图
     if (duration > 0) {
@@ -210,11 +231,15 @@ void VideoPreviewPlugin::decode(const QString &file, VideoPreviewPlugin *self)
 
     //检查一次是否中断
     if (!self->m_decoding)
-        return;
+        return {};
 
     self->m_decoding = false;
-    QMetaObject::invokeMethod(self, "updateInfo", Qt::QueuedConnection, Q_ARG(QVariantHash, info));
-    return;
+    if (updateBySignal)
+        QMetaObject::invokeMethod(self, "updateInfo", Qt::QueuedConnection
+                                  , Q_ARG(QVariantHash, info)
+                                  , Q_ARG(bool, true));
+
+    return info;
 }
 
 QPixmap VideoPreviewPlugin::scaleAndRound(const QImage &img, const QSize &size)
@@ -242,18 +267,3 @@ QPixmap VideoPreviewPlugin::scaleAndRound(const QImage &img, const QSize &size)
 
     return destImage;
 }
-
-QString VideoPreviewPlugin::durationString(qint64 seconds)
-{
-    int hour = static_cast<int>(seconds / 3600);
-
-    QString mmStr = QString("%1").arg(seconds % 3600 / 60, 2, 10, QLatin1Char('0'));
-    QString ssStr = QString("%1").arg(seconds % 60, 2, 10, QLatin1Char('0'));
-
-    if (hour > 0) {
-        return QString("%1:%2:%3").arg(hour).arg(mmStr).arg(ssStr);
-    } else {
-        return QString("%1:%2").arg(mmStr).arg(ssStr);
-    }
-}
-

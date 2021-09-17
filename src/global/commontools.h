@@ -93,6 +93,20 @@ inline QString dateTimeFormat()
     return "yyyy/MM/dd HH:mm";
 }
 
+inline QString durationString(qint64 seconds)
+{
+    int hour = static_cast<int>(seconds / 3600);
+
+    QString mmStr = QString("%1").arg(seconds % 3600 / 60, 2, 10, QLatin1Char('0'));
+    QString ssStr = QString("%1").arg(seconds % 60, 2, 10, QLatin1Char('0'));
+
+    if (hour > 0) {
+        return QString("%1:%2:%3").arg(hour).arg(mmStr).arg(ssStr);
+    } else {
+        return QString("%1:%2").arg(mmStr).arg(ssStr);
+    }
+}
+
 }   // end CommonTools
 
 }   // end GrandSearch

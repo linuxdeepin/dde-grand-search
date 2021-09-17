@@ -1,9 +1,9 @@
 /*
  * Copyright (C) 2021 Uniontech Software Technology Co., Ltd.
  *
- * Author:     liuzhangjian<liuzhangjian@uniontech.com>
+ * Author:     zhangyu<zhangyub@uniontech.com>
  *
- * Maintainer: liuzhangjian<liuzhangjian@uniontech.com>
+ * Maintainer: zhangyu<zhangyub@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,32 +18,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef AUDIOINFO_H
-#define AUDIOINFO_H
+#include "pluginproxy.h"
+#include "detailinfowidget.h"
 
-#include <QMap>
+#include <QDebug>
 
-class AudioFileInfo
+PluginProxy::PluginProxy(PreviewWidget *parent)
+    : QObject(parent)
+    , q(parent)
 {
-public:
-    struct AudioMetaData {
-        QString title;
-        QString artist;
-        QString album;
-        QString codec;
-        QString duration;
-    };
 
-    AudioFileInfo();
-    AudioMetaData openAudioFile(const QString &file);
+}
 
-private:
-    void characterEncodingTransform(AudioMetaData &meta, void *obj);
-    QList<QByteArray> detectEncodings(const QByteArray &rawData);
-    bool isChinese(const QChar &c);
+void PluginProxy::updateDetailInfo(GrandSearch::PreviewPlugin *plugin)
+{
+    if (plugin == nullptr || plugin != q->m_preview) {
+        qWarning() << "updateDetailInfo: invaild plugin.";
+        return;
+    }
 
-private:
-    QMap<QString, QByteArray> m_localeCodeMap;  // 区域与编码
-};
+    if (thread() != qApp->thread()) {
+        qWarning() << __FUNCTION__ << "could not be called in other thread.";
+        return;
+    }
 
-#endif // AUDIOINFO_H
+    q->m_detailInfoWidget->setDetailInfo(plugin->getAttributeDetailInfo());
+}
