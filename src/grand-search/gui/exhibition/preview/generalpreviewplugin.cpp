@@ -122,7 +122,10 @@ GeneralPreviewPlugin::GeneralPreviewPlugin(QObject *parent)
 
 GeneralPreviewPlugin::~GeneralPreviewPlugin()
 {
-
+    if (d_p->m_sizeWorker) {
+        d_p->m_sizeWorker->stop();
+        d_p->m_sizeWorker->deleteLater();
+    }
 }
 
 void GeneralPreviewPlugin::init(QObject *proxyInter)
@@ -180,7 +183,20 @@ bool GeneralPreviewPlugin::previewItem(const GrandSearch::ItemInfo &info)
     QFileInfo fi(item.item);
 
     // 获取文件(夹)大小
-    d_p->m_sizeLabel->setText(CommonTools::formatFileSize(fi.size()));
+    if (fi.isDir()) {
+        if (!d_p->m_sizeWorker) {
+            d_p->m_sizeWorker = new FileStatisticsThread(this);
+            connect(d_p->m_sizeWorker, &FileStatisticsThread::dataNotify, this, &GeneralPreviewPlugin::updateFolderSize);
+        } else if (d_p->m_sizeWorker->isRunning()) {
+            d_p->m_sizeWorker->stop();
+            d_p->m_sizeWorker->wait();
+        }
+
+        d_p->m_sizeLabel->setText(CommonTools::formatFileSize(0));
+        d_p->m_sizeWorker->start(item.item);
+    } else {
+        d_p->m_sizeLabel->setText(CommonTools::formatFileSize(fi.size()));
+    }
 
     // 设置属性详情信息
     d_p->m_detailInfos.clear();
@@ -254,4 +270,9 @@ QString GeneralPreviewPlugin::lineFeed(const QString &text, int nWidth, const QF
     }
 
     return strText;
+}
+
+void GeneralPreviewPlugin::updateFolderSize(qint64 size)
+{
+    d_p->m_sizeLabel->setText(CommonTools::formatFileSize(size));
 }

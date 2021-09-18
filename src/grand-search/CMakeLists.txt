@@ -144,6 +144,8 @@ set(UTILSSRC
     utils/utils.h
     utils/utils.cpp
     utils/previewpluginconf.h
+    utils/filestatisticsthread.h
+    utils/filestatisticsthread.cpp
     )
 
 # 源文件

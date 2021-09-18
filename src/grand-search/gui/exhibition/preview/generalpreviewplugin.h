@@ -48,7 +48,8 @@ public:
 private:
     // 计算换行内容
     QString lineFeed(const QString &text, int nWidth, const QFont &font, int nElidedRow = 2);
-
+private slots:
+    void updateFolderSize(qint64 size);
 private:
     QScopedPointer<GeneralPreviewPluginPrivate> d_p;
 };

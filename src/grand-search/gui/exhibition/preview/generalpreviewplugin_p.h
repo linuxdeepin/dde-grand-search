@@ -23,6 +23,7 @@
 
 #include "generalpreviewplugin.h"
 #include "detailinfowidget.h"
+#include "utils/filestatisticsthread.h"
 
 #include <DHorizontalLine>
 #include <DWidget>
@@ -53,7 +54,7 @@ class GeneralPreviewPluginPrivate
 {
 public:
     explicit GeneralPreviewPluginPrivate(GeneralPreviewPlugin *parent = nullptr);
-    ~GeneralPreviewPluginPrivate();
+    ~GeneralPreviewPluginPrivate();    
 
     GeneralPreviewPlugin *q_p = nullptr;
 
@@ -69,6 +70,7 @@ public:
 
     // 大小
     SizeLabel *m_sizeLabel = nullptr;
+    FileStatisticsThread *m_sizeWorker = nullptr;
 };
 
 #endif // UNKNOWNPREVIEWPLUGIN_P_H
