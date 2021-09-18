@@ -52,16 +52,8 @@ DWIDGET_END_NAMESPACE
 class GeneralPreviewPluginPrivate
 {
 public:
-    enum BasicInfoRow {
-        Location_Row,
-        TimeModified_Row,
-        RowCount
-    };
-
     explicit GeneralPreviewPluginPrivate(GeneralPreviewPlugin *parent = nullptr);
     ~GeneralPreviewPluginPrivate();
-
-    QString getBasicInfoLabelName(BasicInfoRow eRow);
 
     GeneralPreviewPlugin *q_p = nullptr;
 

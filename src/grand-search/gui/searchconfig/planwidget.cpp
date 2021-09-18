@@ -44,7 +44,7 @@ PlanWidget::PlanWidget(QWidget *parent)
     m_mainLayout->setContentsMargins(0, 0, 0, 0);
     m_mainLayout->addWidget(m_groupLabel);
 
-    QString display = QObject::tr("Join search experience program");
+    QString display = tr("Join search experience program");
     QString iconName("experienceplan");
     QIcon icon = QIcon(QString(":/icons/%1.svg").arg(iconName));
 
@@ -58,18 +58,18 @@ PlanWidget::PlanWidget(QWidget *parent)
     m_mainLayout->addWidget(switchWidget);
     switchWidget->setProperty(GRANDSEARCH_SEARCH_GROUP, GRANDSEARCH_PLAN_EXPERIENCE);
 
-    QString content = QObject::tr("Joining the search experience program means that "
-                                  "you grant and authorize us to collect the information of "
-                                  "your device and system, file icons, content and properties, "
-                                  "applications and their configurations. If you refuse our collection "
-                                  "and use of the aforementioned information, do not join the program.");
+    QString content = tr("Joining the search experience program means that "
+                         "you grant and authorize us to collect the information of "
+                         "your device and system, file icons, content and properties, "
+                         "applications and their configurations. If you refuse our collection "
+                         "and use of the aforementioned information, do not join the program.");
     m_contentLabel = new QLabel(content, this);
     m_contentLabel->setWordWrap(true);
 
-    const QString leadintText = QObject::tr("To know more about the management of your data, "
+    const QString leadintText = tr("To know more about the management of your data, "
                                             "please refer to the UnionTech Software Privacy Policy (");
-    const QString hyperlink = QObject::tr("https://www.uniontech.com/agreement/privacy-en");
-    const QString endText = QObject::tr(").");
+    const QString hyperlink = tr("https://www.uniontech.com/agreement/privacy-en");
+    const QString endText = tr(").");
 
     m_tipsLabel = new HyperlinkLabel(leadintText, hyperlink, endText, this);
 

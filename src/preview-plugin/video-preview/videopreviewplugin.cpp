@@ -37,7 +37,7 @@ namespace  {
 static const QString kLabelDimension = QObject::tr("Dimension:");
 static const QString kLabelType = QObject::tr("Type:");
 static const QString kLabelSize = QObject::tr("Size:");
-static const QString kLabelDuration = QObject::tr("Duration");
+static const QString kLabelDuration = QObject::tr("Duration:");
 static const QString kLabelLocation = QObject::tr("Location:");
 static const QString kLabelTime = QObject::tr("Time modified:");
 

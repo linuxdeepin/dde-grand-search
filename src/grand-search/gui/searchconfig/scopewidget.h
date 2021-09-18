@@ -33,6 +33,7 @@ class SwitchWidget;
 
 class ScopeWidget : public Dtk::Widget::DWidget
 {
+    Q_OBJECT
 public:
     explicit ScopeWidget(QWidget *parent = nullptr);
     ~ScopeWidget();

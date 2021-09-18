@@ -39,7 +39,7 @@ namespace GrandSearch {
 
 // 组-中文词典翻译
 #define GroupName_App               QObject::tr("Applications")
-#define GroupName_Setting           QObject::tr("Setting")
+#define GroupName_Setting           QObject::tr("Settings")
 #define GroupName_Video             QObject::tr("Videos")
 #define GroupName_Audio             QObject::tr("Music")
 #define GroupName_Picture           QObject::tr("Pictures")

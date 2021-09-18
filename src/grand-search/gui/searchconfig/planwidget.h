@@ -33,6 +33,7 @@ class SwitchWidget;
 
 class PlanWidget : public Dtk::Widget::DWidget
 {
+    Q_OBJECT
 public:
     explicit PlanWidget(QWidget *parent = nullptr);
     ~PlanWidget();

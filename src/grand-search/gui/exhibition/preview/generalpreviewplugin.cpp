@@ -112,24 +112,6 @@ GeneralPreviewPluginPrivate::~GeneralPreviewPluginPrivate()
     m_contentWidget->deleteLater();
 }
 
-QString GeneralPreviewPluginPrivate::getBasicInfoLabelName(GeneralPreviewPluginPrivate::BasicInfoRow eRow)
-{
-    QString name = "";
-
-    switch (eRow) {
-    case Location_Row:
-        name = QObject::tr("Location:");
-        break;
-    case TimeModified_Row:
-        name = QObject::tr("Time modified:");
-        break;
-    default:
-        break;
-    }
-
-    return name;
-}
-
 GeneralPreviewPlugin::GeneralPreviewPlugin(QObject *parent)
     : QObject(parent)
     , PreviewPlugin()
@@ -202,11 +184,11 @@ bool GeneralPreviewPlugin::previewItem(const GrandSearch::ItemInfo &info)
 
     // 设置属性详情信息
     d_p->m_detailInfos.clear();
-    DetailInfo detail = qMakePair(d_p->getBasicInfoLabelName(GeneralPreviewPluginPrivate::Location_Row),
+    DetailInfo detail = qMakePair(tr("Location:"),
                                 fi.absoluteFilePath());
     d_p->m_detailInfos.push_back(detail);
 
-    detail = qMakePair(d_p->getBasicInfoLabelName(GeneralPreviewPluginPrivate::TimeModified_Row),
+    detail = qMakePair(tr("Time modified:"),
             fi.lastModified().toString(CommonTools::dateTimeFormat()));
     d_p->m_detailInfos.push_back(detail);
 
