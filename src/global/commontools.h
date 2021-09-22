@@ -26,6 +26,8 @@
 #include <QPoint>
 #include <QColor>
 #include <QtDebug>
+#include <QImage>
+#include <QPainter>
 
 namespace GrandSearch {
 
@@ -105,6 +107,24 @@ inline QString durationString(qint64 seconds)
     } else {
         return QString("%1:%2").arg(mmStr).arg(ssStr);
     }
+}
+
+inline QImage creatErrorImage(const QSize &imgSize, const QImage &errorImg)
+{
+    QImage img(imgSize, QImage::Format_ARGB32_Premultiplied);
+    img.fill(Qt::white);
+
+    QPainter painter(&img);
+    painter.setCompositionMode(QPainter::CompositionMode_Source);
+    painter.drawImage(0, 0, img);
+
+    // errorImg居中
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    painter.drawImage((img.width() - errorImg.width())/2,
+                      (img.height() - errorImg.height())/2, errorImg);
+    painter.end();
+
+    return img;
 }
 
 }   // end CommonTools

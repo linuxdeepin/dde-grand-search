@@ -50,10 +50,6 @@ bool ImagePreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
     if (path.isEmpty())
         return false;
 
-    QFileInfo fileInfo(path);
-    if (!fileInfo.isReadable())
-        return false;
-
     const QString type = item.value(PREVIEW_ITEMINFO_TYPE);
     if (!m_imageView)
         m_imageView = new ImageView(path, type);
@@ -65,6 +61,8 @@ bool ImagePreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
         dimensionStr = QString("%1*%2").arg(dimension.width()).arg(dimension.height());
     auto fileDimension = qMakePair<QString, QString>("Dimension:", dimensionStr);
     m_detailInfos.push_back(fileDimension);
+
+    QFileInfo fileInfo(path);
 
     // 类型
     auto suffix = fileInfo.suffix();

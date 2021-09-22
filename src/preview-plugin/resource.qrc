@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/damaged.svg</file>
+    </qresource>
+</RCC>

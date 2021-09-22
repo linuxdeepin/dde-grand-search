@@ -35,6 +35,10 @@ set(Qt_LIBS
     Qt5::Concurrent
 )
 
+set(QRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/resource.qrc
+)
+
 # 前端
 set(FRONTEND_NAME dde-grand-search)
 

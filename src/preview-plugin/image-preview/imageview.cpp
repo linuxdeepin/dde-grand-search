@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "imageview.h"
+#include "global/commontools.h"
 
 #include <QDebug>
 #include <QtConcurrent>
@@ -67,11 +68,6 @@ bool ImageView::stopPreview()
 
 void ImageView::initUI()
 {
-    if (!canPreview()) {
-        showErrorPage();
-        return;
-    }
-
     m_imageLabel = new QLabel(this);
     m_imageLabel->setFixedSize(IMAGEWIDTH, IMAGEHEIGHT);
     m_imageLabel->setAlignment(Qt::AlignCenter);
@@ -106,6 +102,11 @@ void ImageView::initUI()
 
     this->setLayout(m_mainLayout);
 
+    if (!canPreview()) {
+        showErrorPage();
+        return;
+    }
+
     loadImage();
 }
 
@@ -137,6 +138,12 @@ bool ImageView::canPreview()
 
 void ImageView::loadImage()
 {
+    QFileInfo fileInfo(m_imageFile);
+    if (!fileInfo.isReadable()) {
+        showErrorPage();
+        return;
+    }
+
     if (m_formats == QByteArrayLiteral("gif")) {
         m_isMovie = true;
         m_movie = new QMovie(this);
@@ -210,10 +217,11 @@ void ImageView::onMovieFrameChanged(int frameNumber)
 void ImageView::showErrorPage()
 {
     m_imageLabel->setFixedSize(192, 108);
+    QImage errorImg(":/icons/damaged.svg");
+    errorImg = errorImg.scaled(46, 46);
+    errorImg = GrandSearch::CommonTools::creatErrorImage({192, 108}, errorImg);
 
-    QPixmap errorPixmap(":/icons/errorImage.svg");
-    errorPixmap = errorPixmap.scaled(46, 46);
-
+    auto errorPixmap = getRoundPixmap(QPixmap::fromImage(errorImg));
     m_imageLabel->setPixmap(errorPixmap);
 }
 
