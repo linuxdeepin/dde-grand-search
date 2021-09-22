@@ -25,6 +25,7 @@
 #include <QtConcurrent>
 #include <QPainter>
 #include <QLabel>
+#include <QPainterPath>
 
 #define PAGE_MAX_HEIGHT 386
 

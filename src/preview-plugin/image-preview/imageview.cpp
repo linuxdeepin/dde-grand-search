@@ -27,6 +27,7 @@
 #include <QHBoxLayout>
 #include <QImageReader>
 #include <QBitmap>
+#include <QPainterPath>
 
 #include <DLabel>
 

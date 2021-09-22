@@ -25,6 +25,7 @@
 #include <QFileInfo>
 #include <QDateTime>
 #include <QtConcurrent>
+#include <QPainterPath>
 
 #ifdef __cplusplus
 extern "C" {

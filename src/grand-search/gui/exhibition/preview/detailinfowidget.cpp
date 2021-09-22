@@ -24,6 +24,7 @@
 #include <DGuiApplicationHelper>
 
 #include <QPainter>
+#include <QPainterPath>
 
 #define DETAILINFO_ROW_HEIGHT   36
 #define KEYLABEL_WIDTH          110
