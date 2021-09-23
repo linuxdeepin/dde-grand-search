@@ -311,7 +311,7 @@ QVariantHash VideoPreviewPlugin::decode(const QString &file, VideoPreviewPlugin 
         } else {
             // 预览失败
             qWarning() << "thumbnailer create image error";
-            QImage errorImg(":/icons/damaged.svg");
+            QImage errorImg(":/icons/image_damaged.svg");
             errorImg = errorImg.scaled(46, 46);
             auto img = GrandSearch::CommonTools::creatErrorImage({192, 108}, errorImg);
             QPixmap pixmap = VideoPreviewPlugin::scaleAndRound(img, maxSize);
@@ -321,7 +321,7 @@ QVariantHash VideoPreviewPlugin::decode(const QString &file, VideoPreviewPlugin 
         video_thumbnailer_destroy(thumbnailer);
     } else {
         // 预览失败
-        QImage errorImg(":/icons/damaged.svg");
+        QImage errorImg(":/icons/image_damaged.svg");
         errorImg = errorImg.scaled(46, 46);
         auto img = GrandSearch::CommonTools::creatErrorImage({192, 108}, errorImg);
         QPixmap pixmap = VideoPreviewPlugin::scaleAndRound(img, VideoView::maxThumbnailSize());

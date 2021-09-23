@@ -219,7 +219,7 @@ void ImageView::onMovieFrameChanged(int frameNumber)
 void ImageView::showErrorPage()
 {
     m_imageLabel->setFixedSize(192, 108);
-    QImage errorImg(":/icons/damaged.svg");
+    QImage errorImg(":/icons/image_damaged.svg");
     errorImg = errorImg.scaled(46, 46);
     errorImg = GrandSearch::CommonTools::creatErrorImage({192, 108}, errorImg);
 

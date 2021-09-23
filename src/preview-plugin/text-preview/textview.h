@@ -25,6 +25,8 @@
 
 #include <QPlainTextEdit>
 
+class QLabel;
+class QStackedWidget;
 class PlainTextEdit : public QPlainTextEdit
 {
     Q_OBJECT
@@ -42,10 +44,13 @@ public:
     void initUI();
     void setSource(const QString &path);
     static QString toUnicode(const QByteArray &data);
+    void showErrorPage();
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 private:
      PlainTextEdit* m_browser = nullptr;
+     QLabel *m_errLabel = nullptr;
+     QStackedWidget *m_stackedWidget = nullptr;
 };
 
 #endif // TEXTVIEW_H

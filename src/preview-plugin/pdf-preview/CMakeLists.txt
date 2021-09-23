@@ -15,7 +15,7 @@ set(SRCS
     pdfview.cpp
 )
 
-add_library(${LIB_NAME} SHARED ${SRCS})
+add_library(${LIB_NAME} SHARED ${SRCS} ${QRCS})
 
 target_include_directories(${LIB_NAME} PUBLIC
     ${DtkWidget_INCLUDE_DIRS}

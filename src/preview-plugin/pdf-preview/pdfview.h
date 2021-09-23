@@ -37,14 +37,13 @@ public:
     void initDoc(const QString &file);
     void initUI();
     void initConnections();
+    QPixmap scaleAndRound(const QImage &img);
 public slots:
     void onPageUpdated(QImage img);
-    void showFailedPage();
+    void showErrorPage();
 signals:
     void pageUpdate(const QImage &img);
     void parseFailed();
-protected:
-    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 private:
     void syncLoadFirstPage();
 private:

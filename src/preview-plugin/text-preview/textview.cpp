@@ -19,12 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "textview.h"
+#include "global/commontools.h"
 
 #include <QHBoxLayout>
+#include <QStackedWidget>
 #include <QScrollBar>
 #include <QTextCodec>
 #include <QTimer>
 #include <QPainter>
+#include <QLabel>
 
 void PlainTextEdit::mouseMoveEvent(QMouseEvent *e)
 {
@@ -58,6 +61,17 @@ QString TextView::toUnicode(const QByteArray &data)
     return QString::fromLocal8Bit(data);
 }
 
+void TextView::showErrorPage()
+{
+    m_stackedWidget->setCurrentWidget(m_errLabel);
+
+    QImage errImg(":/icons/file_damaged.svg");
+    errImg = errImg.scaled(70, 70);
+    errImg = GrandSearch::CommonTools::creatErrorImage({360, 386}, errImg);
+
+    m_errLabel->setPixmap(QPixmap::fromImage(errImg));
+}
+
 void TextView::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
@@ -88,6 +102,9 @@ void TextView::initUI()
     layout->setSpacing(0);
     this->setMinimumHeight(386);
 
+    m_errLabel = new QLabel(this);
+    m_stackedWidget = new QStackedWidget(this);
+
     m_browser = new PlainTextEdit(this);
 
     //文本界面不绘制背景，自绘圆角背景
@@ -115,7 +132,10 @@ void TextView::initUI()
     //因此在绘制圆角背景时为只去除左边距离中线10的区域
     layout->setContentsMargins(10 + 10, 0, 0 + 10, 0);
 
-    layout->addWidget(m_browser);
+    m_stackedWidget->addWidget(m_browser);
+    m_stackedWidget->addWidget(m_errLabel);
+    m_stackedWidget->setCurrentWidget(m_browser);
+    layout->addWidget(m_stackedWidget);
 }
 
 void TextView::setSource(const QString &path)
@@ -124,7 +144,10 @@ void TextView::setSource(const QString &path)
 
     QFile file(path);
     if (file.open(QFile::ReadOnly)) {
+        m_stackedWidget->setCurrentWidget(m_browser);
         auto datas = file.read(2048);
         m_browser->setPlainText(toUnicode(datas));
+    } else {
+        showErrorPage();
     }
 }

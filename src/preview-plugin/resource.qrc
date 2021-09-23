@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/damaged.svg</file>
+        <file>icons/image_damaged.svg</file>
+        <file>icons/file_damaged.svg</file>
     </qresource>
 </RCC>

@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "pdfview.h"
+#include "global/commontools.h"
 
 #include <QDebug>
 #include <QVBoxLayout>
@@ -27,7 +28,7 @@
 #include <QLabel>
 #include <QPainterPath>
 
-#define PAGE_MAX_HEIGHT 386
+#define PAGE_FIXED_SIZE   QSize(360, 386)
 
 PDFView::PDFView(const QString &file, QWidget *parent)
     :QWidget (parent)
@@ -54,11 +55,12 @@ void PDFView::initDoc(const QString &file)
 
 void PDFView::initUI()
 {
+    this->setFixedSize(PAGE_FIXED_SIZE);
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setContentsMargins(10, 0, 0, 0);
     layout->setSpacing(0);
     setLayout(layout);
-    this->setFixedHeight(PAGE_MAX_HEIGHT);
+
     m_pageLabel = new QLabel(this);
     // 居中显示
     layout->addStretch();
@@ -66,7 +68,7 @@ void PDFView::initUI()
     layout->addStretch();
 
     if (m_isBadDoc) {
-        showFailedPage();
+        showErrorPage();
         return;
     }
     syncLoadFirstPage();
@@ -75,22 +77,16 @@ void PDFView::initUI()
 void PDFView::initConnections()
 {
     connect(this, &PDFView::pageUpdate, this, &PDFView::onPageUpdated);
-    connect(this, &PDFView::parseFailed, this, &PDFView::showFailedPage);
+    connect(this, &PDFView::parseFailed, this, &PDFView::showErrorPage);
 }
 
-void PDFView::showFailedPage()
-{
-    // TODO 显示预览失败
-    m_pageLabel->setText("Cannot preview this file!");
-}
-
-void PDFView::onPageUpdated(QImage img)
+QPixmap PDFView::scaleAndRound(const QImage &img)
 {
     auto pixmap = QPixmap::fromImage(img);
     // 缩放
     pixmap = pixmap.scaledToWidth(m_pageLabel->width(), Qt::SmoothTransformation);
 
-    QPixmap destImage (m_pageLabel->width(), std::min(pixmap.height(), PAGE_MAX_HEIGHT));
+    QPixmap destImage (m_pageLabel->width(), std::min(pixmap.height(), PAGE_FIXED_SIZE.height()));
     destImage.fill(Qt::transparent);
     QPainter painter(&destImage);
     // 抗锯齿
@@ -104,15 +100,24 @@ void PDFView::onPageUpdated(QImage img)
     painter.setClipPath(path);
     painter.drawPixmap(0, 0, destImage.width(), destImage.height(), pixmap);
 
-    m_pageLabel->setPixmap(destImage);
+    return destImage;
 }
 
-void PDFView::resizeEvent(QResizeEvent *event)
+void PDFView::showErrorPage()
 {
-    QWidget::resizeEvent(event);
+    m_pageLabel->setFixedSize(PAGE_FIXED_SIZE);
+    QImage errImg(":/icons/file_damaged.svg");
+    errImg = errImg.scaled(70, 70);
+    errImg = GrandSearch::CommonTools::creatErrorImage(PAGE_FIXED_SIZE, errImg);
 
-    if (m_pageLabel && !m_pageImg.isNull())
-        onPageUpdated(m_pageImg);
+    auto errPixmap = scaleAndRound(errImg);
+    m_pageLabel->setPixmap(errPixmap);
+}
+
+void PDFView::onPageUpdated(QImage img)
+{
+    auto pixmap = scaleAndRound(img);
+    m_pageLabel->setPixmap(pixmap);
 }
 
 void PDFView::syncLoadFirstPage()
@@ -129,7 +134,6 @@ void PDFView::syncLoadFirstPage()
        m_doc->setRenderHint(Poppler::Document::TextAntialiasing, true);
        QImage img = page->renderToImage(200, 200);
 
-       m_pageImg = img;
        emit pageUpdate(img);
        m_isLoadFinished = true;
     });

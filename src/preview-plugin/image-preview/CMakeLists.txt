@@ -10,7 +10,6 @@ set(SRCS
     imagepreviewplugin.cpp
     imageview.h
     imageview.cpp
-    ${GLOBAL_SRC}
 )
 
 add_library(${LIB_NAME} SHARED ${SRCS} ${QRCS})
