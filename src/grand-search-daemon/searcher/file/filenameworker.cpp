@@ -359,7 +359,7 @@ FileNameWorkerPrivate::Group FileNameWorkerPrivate::getGroupByFileName(const QSt
         static QRegExp pictureReg("^((jpg)|(jpeg)|(jpe)|(bmp)|(png)|(gif)|(svg)|(tif)|(tiff))$");
         // 视频格式
         static QRegExp videoReg("^((avi)|(mov)|(mp4)|(mp2)|(mpa)|(mpg)|(mpeg)|(qt)|(rm)|(rmvb)"
-                                "|(mkv)|(asx)|(asf)|(flv)|(3gp))$");
+                                "|(mkv)|(asx)|(asf)|(flv)|(3gp)|(mpe))$");
         // 音频格式
         static QRegExp musicReg("^((au)|(snd)|(mid)|(mp3)|(aif)|(aifc)|(aiff)|(m3u)|(ra)"
                                 "|(ram)|(wav)|(cda)|(wma)|(ape))$");
