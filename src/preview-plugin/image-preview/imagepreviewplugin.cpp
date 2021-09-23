@@ -25,6 +25,8 @@
 #include <QFileInfo>
 #include <QDateTime>
 
+using namespace GrandSearch;
+
 ImagePreviewPlugin::ImagePreviewPlugin(QObject *parent)
     : QObject (parent)
     , GrandSearch::PreviewPlugin()
@@ -59,29 +61,74 @@ bool ImagePreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
     QString dimensionStr("--");
     if (dimension.isValid())
         dimensionStr = QString("%1*%2").arg(dimension.width()).arg(dimension.height());
-    auto fileDimension = qMakePair<QString, QString>("Dimension:", dimensionStr);
-    m_detailInfos.push_back(fileDimension);
+
+    DetailTagInfo tagInfos;
+    tagInfos.insert(DetailInfoProperty::Text, QVariant(tr("Dimension:")));
+    tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
+
+    DetailContentInfo contentInfos;
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(dimensionStr));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideMiddle));
+
+    DetailInfo detailInfo = qMakePair(tagInfos, contentInfos);
+    m_detailInfos.push_back(detailInfo);
 
     QFileInfo fileInfo(path);
 
     // 类型
     auto suffix = fileInfo.suffix();
-    auto fileType = qMakePair<QString, QString>("Type:", suffix.isEmpty() ? "--" : suffix.toUpper());
-    m_detailInfos.push_back(fileType);
+
+    tagInfos.clear();
+    tagInfos.insert(DetailInfoProperty::Text, QVariant(tr("Type:")));
+    tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
+
+    contentInfos.clear();
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(suffix.isEmpty() ? "--" : suffix.toUpper()));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
+
+    detailInfo = qMakePair(tagInfos, contentInfos);
+    m_detailInfos.push_back(detailInfo);
 
     // 大小
     auto size = fileInfo.size();
     auto fileSize = qMakePair<QString, QString>("Size:", GrandSearch::CommonTools::formatFileSize(size));
-    m_detailInfos.push_back(fileSize);
+
+    tagInfos.clear();
+    tagInfos.insert(DetailInfoProperty::Text, QVariant(tr("Size:")));
+    tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
+
+    contentInfos.clear();
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(GrandSearch::CommonTools::formatFileSize(size)));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
+
+    detailInfo = qMakePair(tagInfos, contentInfos);
+    m_detailInfos.push_back(detailInfo);
 
     // 位置
-    auto location = qMakePair<QString, QString>("Location:", fileInfo.absoluteFilePath());
-    m_detailInfos.push_back(location);
+    tagInfos.clear();
+    tagInfos.insert(DetailInfoProperty::Text, QVariant(tr("Location:")));
+    tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
+
+    contentInfos.clear();
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(fileInfo.absoluteFilePath()));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
+
+    detailInfo = qMakePair(tagInfos, contentInfos);
+    m_detailInfos.push_back(detailInfo);
 
     // 修改时间
     auto time = fileInfo.lastModified();
-    auto timeModified = qMakePair<QString, QString>("Time modified:", time.toString(GrandSearch::CommonTools::dateTimeFormat()));
-    m_detailInfos.push_back(timeModified);
+
+    tagInfos.clear();
+    tagInfos.insert(DetailInfoProperty::Text, QVariant(tr("Time modified:")));
+    tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
+
+    contentInfos.clear();
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(time.toString(GrandSearch::CommonTools::dateTimeFormat())));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
+
+    detailInfo = qMakePair(tagInfos, contentInfos);
+    m_detailInfos.push_back(detailInfo);
 
     m_item = item;
     return true;

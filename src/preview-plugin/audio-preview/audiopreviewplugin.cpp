@@ -33,6 +33,8 @@ extern "C"
 #include <libavformat/avformat.h>
 }
 
+using namespace GrandSearch;
+
 AudioPreviewPlugin::AudioPreviewPlugin(QObject *parent)
     : QObject (parent)
     , GrandSearch::PreviewPlugin()
@@ -63,12 +65,31 @@ bool AudioPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
 
     AudioFileInfo afi;
     AudioFileInfo::AudioMetaData amd = afi.openAudioFile(path);
-    // 歌手
-    auto artist = qMakePair<QString, QString>(tr("Artist:"), amd.artist.isEmpty() ? "--" : amd.artist);
-    m_detailInfos.push_back(artist);
-    // 专辑
-    auto album = qMakePair<QString, QString>(tr("Album:"), amd.album.isEmpty() ? "--" : amd.album);
-    m_detailInfos.push_back(album);
+
+    // 歌手 尾部截断
+    DetailTagInfo tagInfos;
+    tagInfos.insert(DetailInfoProperty::Text, QVariant(tr("Artist:")));
+    tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
+
+    DetailContentInfo contentInfos;
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(amd.artist.isEmpty() ? "--" : amd.artist));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
+
+    DetailInfo detailInfo = qMakePair(tagInfos, contentInfos);
+    m_detailInfos.push_back(detailInfo);
+
+    // 专辑 尾部截断
+    tagInfos.clear();
+    tagInfos.insert(DetailInfoProperty::Text, QVariant(tr("Album:")));
+    tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
+
+    contentInfos.clear();
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(amd.album.isEmpty() ? "--" : amd.album));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
+
+    detailInfo = qMakePair(tagInfos, contentInfos);
+    m_detailInfos.push_back(detailInfo);
+
     // 时长
     if (amd.duration.isEmpty()) {
         AVFormatContext *avFmormat = avformat_alloc_context();
@@ -82,20 +103,58 @@ bool AudioPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
         avformat_close_input(&avFmormat);
         avformat_free_context(avFmormat);
     }
-    auto duration = qMakePair<QString, QString>(tr("Duration:"), amd.duration.isEmpty() ? "--" : amd.duration);
-    m_detailInfos.push_back(duration);
+
+    tagInfos.clear();
+    tagInfos.insert(DetailInfoProperty::Text, QVariant(tr("Duration:")));
+    tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
+
+    contentInfos.clear();
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(amd.duration.isEmpty() ? "--" : amd.duration));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideMiddle));
+
+    detailInfo = qMakePair(tagInfos, contentInfos);
+    m_detailInfos.push_back(detailInfo);
+
     // 类型
     QFileInfo fileInfo(path);
     auto suffix = fileInfo.suffix();
-    auto fileType = qMakePair<QString, QString>(tr("Type:"), suffix.isEmpty() ? "--" : suffix);
-    m_detailInfos.push_back(fileType);
+
+    tagInfos.clear();
+    tagInfos.insert(DetailInfoProperty::Text, QVariant(tr("Type:")));
+    tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
+
+    contentInfos.clear();
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(suffix.isEmpty() ? "--" : suffix));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideMiddle));
+
+    detailInfo = qMakePair(tagInfos, contentInfos);
+    m_detailInfos.push_back(detailInfo);
+
     // 位置
-    auto location = qMakePair<QString, QString>(tr("Location:"), fileInfo.absoluteFilePath());
-    m_detailInfos.push_back(location);
+    tagInfos.clear();
+    tagInfos.insert(DetailInfoProperty::Text, QVariant(tr("Location:")));
+    tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
+
+    contentInfos.clear();
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(fileInfo.absoluteFilePath()));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideMiddle));
+
+    detailInfo = qMakePair(tagInfos, contentInfos);
+    m_detailInfos.push_back(detailInfo);
+
     // 修改时间
     auto time = fileInfo.lastModified();
-    auto timeModified = qMakePair<QString, QString>(tr("Time modified:"), time.toString(GrandSearch::CommonTools::dateTimeFormat()));
-    m_detailInfos.push_back(timeModified);
+
+    tagInfos.clear();
+    tagInfos.insert(DetailInfoProperty::Text, QVariant(tr("Time modified:")));
+    tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
+
+    contentInfos.clear();
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(time.toString(GrandSearch::CommonTools::dateTimeFormat())));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideMiddle));
+
+    detailInfo = qMakePair(tagInfos, contentInfos);
+    m_detailInfos.push_back(detailInfo);
 
     m_item = item;
     return true;

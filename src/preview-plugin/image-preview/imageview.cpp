@@ -68,6 +68,8 @@ bool ImageView::stopPreview()
 
 void ImageView::initUI()
 {
+    setFixedHeight(150);
+
     m_imageLabel = new QLabel(this);
     m_imageLabel->setFixedSize(IMAGEWIDTH, IMAGEHEIGHT);
     m_imageLabel->setAlignment(Qt::AlignCenter);

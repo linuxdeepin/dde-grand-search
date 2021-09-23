@@ -1,9 +1,9 @@
 /*
  * Copyright (C) 2021 Uniontech Software Technology Co., Ltd.
  *
- * Author:     zhangyu<zhangyub@uniontech.com>
+ * Author:     wangchunlin<wangchunlin@uniontech.com>
  *
- * Maintainer: zhangyu<zhangyub@uniontech.com>
+ * Maintainer: wangchunlin<wangchunlin@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,29 +18,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "pluginproxy.h"
-#include "generalwidget/detailwidget.h"
+#ifndef DETAILWIDGET_H
+#define DETAILWIDGET_H
 
-#include <QDebug>
+#include "../previewplugin.h"
 
-PluginProxy::PluginProxy(PreviewWidget *parent)
-    : QObject(parent)
-    , q(parent)
+#include <DWidget>
+
+#include <QVBoxLayout>
+#include <QScrollArea>
+
+class DetailItem;
+
+class DetailWidget : public Dtk::Widget::DWidget
 {
+    Q_OBJECT
+public:
+    explicit DetailWidget(QWidget *parent = nullptr);
 
-}
+    void setDetailInfoList(const GrandSearch::DetailInfoList &list);
 
-void PluginProxy::updateDetailInfo(GrandSearch::PreviewPlugin *plugin)
-{
-    if (plugin == nullptr || plugin != q->m_preview) {
-        qWarning() << "updateDetailInfo: invaild plugin.";
-        return;
-    }
+private:
+    QList<DetailItem *> m_detailItems;
 
-    if (thread() != qApp->thread()) {
-        qWarning() << __FUNCTION__ << "could not be called in other thread.";
-        return;
-    }
+    QVBoxLayout *m_mainLayout = nullptr;
 
-    q->m_detailInfoWidget->setDetailInfoList(plugin->getAttributeDetailInfo());
-}
+    bool m_alignment = false;
+};
+
+#endif // DETAILWIDGET_H

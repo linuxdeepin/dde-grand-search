@@ -92,15 +92,80 @@ bool VideoPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
     //初始化静态属性
     QFileInfo fileInfo(path);
     m_infos.clear();
-    m_infos.append(DetailInfo(kLabelDimension, QString("--")));
-    m_infos.append(DetailInfo(kLabelType, fileInfo.suffix().toUpper()));
-    m_infos.append(DetailInfo(kLabelSize, GrandSearch::CommonTools::formatFileSize(fileInfo.size())));
-    m_infos.append(DetailInfo(kLabelDuration, QString("--")));
-    m_infos.append(DetailInfo(kLabelLocation, fileInfo.absolutePath()));
-    {
-        auto lt = fileInfo.lastModified().toString(GrandSearch::CommonTools::dateTimeFormat());
-        m_infos.append(DetailInfo(kLabelTime, lt.isEmpty() ? QString("--") : lt));
-    }
+
+    // 尺寸
+    DetailTagInfo tagInfos;
+    tagInfos.insert(DetailInfoProperty::Text, QVariant(kLabelDimension));
+    tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
+
+    DetailContentInfo contentInfos;
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(QString("--")));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
+
+    DetailInfo detailInfo = qMakePair(tagInfos, contentInfos);
+    m_infos.push_back(detailInfo);
+
+    // 类型
+    tagInfos.clear();
+    tagInfos.insert(DetailInfoProperty::Text, QVariant(kLabelType));
+    tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
+
+    contentInfos.clear();
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(fileInfo.suffix().toUpper()));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
+
+    detailInfo = qMakePair(tagInfos, contentInfos);
+    m_infos.push_back(detailInfo);
+
+    // 大小
+    tagInfos.clear();
+    tagInfos.insert(DetailInfoProperty::Text, QVariant(kLabelSize));
+    tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
+
+    contentInfos.clear();
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(GrandSearch::CommonTools::formatFileSize(fileInfo.size())));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
+
+    detailInfo = qMakePair(tagInfos, contentInfos);
+    m_infos.push_back(detailInfo);
+
+    // 时长
+    tagInfos.clear();
+    tagInfos.insert(DetailInfoProperty::Text, QVariant(kLabelDuration));
+    tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
+
+    contentInfos.clear();
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(QString("--")));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
+
+    detailInfo = qMakePair(tagInfos, contentInfos);
+    m_infos.push_back(detailInfo);
+
+    // 位置
+    tagInfos.clear();
+    tagInfos.insert(DetailInfoProperty::Text, QVariant(kLabelLocation));
+    tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
+
+    contentInfos.clear();
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(fileInfo.absolutePath()));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
+
+    detailInfo = qMakePair(tagInfos, contentInfos);
+    m_infos.push_back(detailInfo);
+
+    // 修改时间
+    auto lt = fileInfo.lastModified().toString(GrandSearch::CommonTools::dateTimeFormat());
+
+    tagInfos.clear();
+    tagInfos.insert(DetailInfoProperty::Text, QVariant(kLabelTime));
+    tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
+
+    contentInfos.clear();
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(lt.isEmpty() ? QString("--") : lt));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
+
+    detailInfo = qMakePair(tagInfos, contentInfos);
+    m_infos.push_back(detailInfo);
 
     m_view->setTitle(fileInfo.fileName());
     m_item = item;
@@ -150,16 +215,36 @@ void VideoPreviewPlugin::updateInfo(const QVariantHash &hash, bool needUpdate)
     if (hash.contains(kLabelDimension)) {
         QSize size = hash.value(kLabelDimension).toSize();
         auto org = m_infos.takeAt(kDimensionIndex);
-        Q_ASSERT(org.first == kLabelDimension);
-        m_infos.prepend(DetailInfo(kLabelDimension, QString("%0*%1").arg(size.width()).arg(size.height())));
+        Q_ASSERT(org.first.value(DetailInfoProperty::Text).toString() == kLabelDimension);
+
+        DetailTagInfo tagInfos;
+        tagInfos.insert(DetailInfoProperty::Text, QVariant(kLabelDimension));
+        tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
+
+        DetailContentInfo contentInfos;
+        contentInfos.insert(DetailInfoProperty::Text, QVariant(QString("%0*%1").arg(size.width()).arg(size.height())));
+        contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
+
+        DetailInfo detailInfo = qMakePair(tagInfos, contentInfos);
+        m_infos.prepend(detailInfo);
         updateDetail = true;
     }
 
     if (hash.contains(kLabelDuration) && m_view) {
         auto duration = hash.value(kLabelDuration).value<qint64>();
         auto org = m_infos.takeAt(kDurationIndex);
-        Q_ASSERT(org.first == kLabelDuration);
-        m_infos.insert(kDurationIndex, DetailInfo(kLabelDuration, GrandSearch::CommonTools::durationString(duration)));
+        Q_ASSERT(org.first.value(DetailInfoProperty::Text).toString() == kLabelDuration);
+
+        DetailTagInfo tagInfos;
+        tagInfos.insert(DetailInfoProperty::Text, QVariant(kLabelDuration));
+        tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
+
+        DetailContentInfo contentInfos;
+        contentInfos.insert(DetailInfoProperty::Text, QVariant(GrandSearch::CommonTools::durationString(duration)));
+        contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
+
+        DetailInfo detailInfo = qMakePair(tagInfos, contentInfos);
+        m_infos.insert(kDurationIndex, detailInfo);
         updateDetail = true;
     }
 

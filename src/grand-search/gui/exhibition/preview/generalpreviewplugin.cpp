@@ -200,13 +200,28 @@ bool GeneralPreviewPlugin::previewItem(const GrandSearch::ItemInfo &info)
 
     // 设置属性详情信息
     d_p->m_detailInfos.clear();
-    DetailInfo detail = qMakePair(tr("Location:"),
-                                fi.absoluteFilePath());
-    d_p->m_detailInfos.push_back(detail);
 
-    detail = qMakePair(tr("Time modified:"),
-            fi.lastModified().toString(CommonTools::dateTimeFormat()));
-    d_p->m_detailInfos.push_back(detail);
+    DetailTagInfo tagInfos;
+    tagInfos.insert(DetailInfoProperty::Text, QVariant(tr("Location:")));
+    tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
+
+    DetailContentInfo contentInfos;
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(fi.absoluteFilePath()));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideMiddle));
+
+    DetailInfo detailInfo = qMakePair(tagInfos, contentInfos);
+    d_p->m_detailInfos.push_back(detailInfo);
+
+    tagInfos.clear();
+    tagInfos.insert(DetailInfoProperty::Text, QVariant(tr("Time modified:")));
+    tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
+
+    contentInfos.clear();
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(fi.lastModified().toString(CommonTools::dateTimeFormat())));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideMiddle));
+
+    detailInfo = qMakePair(tagInfos, contentInfos);
+    d_p->m_detailInfos.push_back(detailInfo);
 
     return true;
 }

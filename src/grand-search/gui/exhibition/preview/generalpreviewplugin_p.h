@@ -22,7 +22,6 @@
 #define GENERALPREVIEWPLUGIN_P_H
 
 #include "generalpreviewplugin.h"
-#include "detailinfowidget.h"
 #include "utils/filestatisticsthread.h"
 
 #include <DHorizontalLine>

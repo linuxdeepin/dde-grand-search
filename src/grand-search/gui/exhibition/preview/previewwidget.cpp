@@ -22,7 +22,7 @@
 #include "previewwidget.h"
 #include "utils/utils.h"
 #include "generalpreviewplugin.h"
-#include "detailinfowidget.h"
+#include "generalwidget/detailwidget.h"
 #include "generalwidget/generaltoolbar.h"
 #include "pluginproxy.h"
 
@@ -114,7 +114,7 @@ bool PreviewWidget::previewItem(const MatchedItem &item)
         m_preview = preview;
     }
 
-    m_detailInfoWidget->setDetailInfo(preview->getAttributeDetailInfo());
+    m_detailInfoWidget->setDetailInfoList(preview->getAttributeDetailInfo());
 
     this->show();
 
@@ -128,7 +128,7 @@ void PreviewWidget::initUi()
     m_vMainLayout->setContentsMargins(0, 0, 0, 0);
     m_vMainLayout->setSpacing(0);
 
-    m_detailInfoWidget = new DetailInfoWidget(this);
+    m_detailInfoWidget = new DetailWidget(this);
     m_generalToolBar = new GeneralToolBar(this);
 
     m_vSpaceItem = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);

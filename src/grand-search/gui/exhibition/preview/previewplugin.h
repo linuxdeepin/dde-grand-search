@@ -29,8 +29,17 @@
 
 namespace GrandSearch {
 
-typedef QPair<QString, QString> DetailInfo;
+enum DetailInfoProperty{
+    Text = 0,           // QString
+    ElideMode,          // Qt::TextElideMode
+};
+
+typedef QHash<DetailInfoProperty, QVariant> DetailTagInfo;
+typedef QHash<DetailInfoProperty, QVariant> DetailContentInfo;
+
+typedef QPair<DetailTagInfo, DetailContentInfo> DetailInfo;
 typedef QList<DetailInfo> DetailInfoList;
+
 
 // 预览项目信息
 // ItemInfo key

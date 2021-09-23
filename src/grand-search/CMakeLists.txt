@@ -91,10 +91,12 @@ set(GUISRC
     gui/exhibition/preview/generalpreviewplugin_p.h
     gui/exhibition/preview/generalpreviewplugin.h
     gui/exhibition/preview/generalpreviewplugin.cpp
-    gui/exhibition/preview/detailinfowidget.h
-    gui/exhibition/preview/detailinfowidget.cpp
     gui/exhibition/preview/generalwidget/generaltoolbar.h
     gui/exhibition/preview/generalwidget/generaltoolbar.cpp
+    gui/exhibition/preview/generalwidget/detailitem.h
+    gui/exhibition/preview/generalwidget/detailitem.cpp
+    gui/exhibition/preview/generalwidget/detailwidget.h
+    gui/exhibition/preview/generalwidget/detailwidget.cpp
     gui/exhibition/preview/pluginproxy.h
     gui/exhibition/preview/pluginproxy.cpp
     gui/exhibition/preview/previewproxyinterface.h
