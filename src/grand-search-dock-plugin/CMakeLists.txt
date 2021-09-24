@@ -38,6 +38,7 @@ find_package(PkgConfig REQUIRED)
 
 # 加载需要的库
 pkg_check_modules(DdeDockInterface REQUIRED dde-dock)
+pkg_check_modules(QGSettings REQUIRED gsettings-qt)
 
 # 编译目标
 add_library(${PLUGIN_NAME} SHARED ${SRCS} ${QRCS})
@@ -53,6 +54,7 @@ target_include_directories(${PLUGIN_NAME} PUBLIC
     ${Qt5Widgets_INCLUDE_DIRS}
     ${DtkWidget_INCLUDE_DIRS}
     ${DdeDockInterface_INCLUDE_DIRS}
+    ${QGSettings_INCLUDE_DIRS}
 )
 
 # 设置目标要使用的链接库
@@ -62,6 +64,7 @@ target_link_libraries(${PLUGIN_NAME} PRIVATE
     ${Qt5Widgets_LIBRARIES}
     ${DtkWidget_LIBRARIES}
     ${DdeDockInterface_LIBRARIES}
+    ${QGSettings_LIBRARIES}
 )
 
 # 设置安装路径的前缀(默认为"/usr/local")
@@ -71,5 +74,7 @@ set(CMAKE_INSTALL_PREFIX "/usr")
 # 插件.so在/usr/lib/dde-dock/plugins/下则显示在插件区域,在/usr/lib/dde-dock/plugins/system-tray/目录则显示在托盘区域
 install(TARGETS ${PLUGIN_NAME} LIBRARY DESTINATION lib/dde-dock/plugins/)
 
+# gsettings
+install(FILES gschema/com.deepin.dde.dock.module.grand-search.gschema.xml DESTINATION share/glib-2.0/schemas)
 
 

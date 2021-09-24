@@ -27,6 +27,7 @@
 #include <QScopedPointer>
 
 class GrandSearchWidget;
+class QGSettings;
 class DdeGrandSearchDockPlugin : public QObject, PluginsItemInterface
 {
     Q_OBJECT
@@ -72,8 +73,12 @@ public:
     // 菜单执行项
     void invokedMenuItem(const QString &itemKey, const QString &menuId, const bool checked) override;
 
+private slots:
+    void onGsettingsChanged(const QString &key);
+
 private:
     QScopedPointer<GrandSearchWidget> m_searchWidget;
+    QScopedPointer<QGSettings> m_gsettings;
 };
 
 #endif // DDEGRANDSEARCHDOCKPLUGIN_H

@@ -22,7 +22,8 @@ Build-Depends: debhelper (>= 9),
  libavformat-dev,
  libavcodec-dev,
  libtag1-dev,
- libicu-dev
+ libicu-dev,
+ libgsettings-qt-dev
 Standards-Version: 3.9.8
 Homepage: http://www.deepin.org/
 

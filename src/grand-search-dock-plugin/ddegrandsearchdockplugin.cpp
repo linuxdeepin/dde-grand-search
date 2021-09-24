@@ -23,9 +23,15 @@
 
 #include <DApplication>
 
-#define GrandSearchPlugin "ddegrandsearch_dockplugin"
+#include <QGSettings>
+
+#define GrandSearchPlugin "grand-search"
 #define MenuOpenSetting "menu_open_setting"
 #define GrandSearchApp "dde-grand-search"
+
+#define SchemaId    "com.deepin.dde.dock.module.grand-search"
+#define SchemaPath  "/com/deepin/dde/dock/module/grand-search/"
+#define SchemaKeyMenuEnable "menuEnable"
 
 DWIDGET_USE_NAMESPACE
 
@@ -63,6 +69,10 @@ void DdeGrandSearchDockPlugin::init(PluginProxyInterface *proxyInter)
     if (!pluginIsDisable()) {
         m_proxyInter->itemAdded(this, pluginName());
     }
+
+    m_gsettings.reset(new QGSettings(SchemaId, SchemaPath));
+
+    connect(m_gsettings.data(), &QGSettings::changed, this, &DdeGrandSearchDockPlugin::onGsettingsChanged);
 }
 
 QWidget *DdeGrandSearchDockPlugin::itemWidget(const QString &itemKey)
@@ -151,6 +161,17 @@ void DdeGrandSearchDockPlugin::invokedMenuItem(const QString &itemKey, const QSt
 
     if (menuId == MenuOpenSetting) {
         QProcess::startDetached("dde-grand-search", QStringList() << "--setting");
+    }
+}
+
+void DdeGrandSearchDockPlugin::onGsettingsChanged(const QString &key)
+{
+    Q_ASSERT(m_gsettings);
+
+    qDebug() << "gsettings changed,and key:" << key << "    value:" << m_gsettings->get(key);
+    if (key == SchemaKeyMenuEnable) {
+        bool enable = m_gsettings->get(key).toBool();
+        qInfo() << "The status of whether the grand search right-click menu is enabled changes to:" << enable;
     }
 }
 
