@@ -354,15 +354,15 @@ FileNameWorkerPrivate::Group FileNameWorkerPrivate::getGroupByFileName(const QSt
     } else {
         // 文档格式
         static QRegExp docReg("^((pdf)|(txt)|(doc)|(docx)|(dot)|(dotx)|(ppt)|(pptx)|(pot)|(potx)"
-                              "|(xls)|(xlsx)|(xlt)|(xltx)|(wps)|(wpt)|(rtf)|(md)|(latex))$");
+                              "|(xls)|(xlsx)|(xlt)|(xltx)|(wps)|(wpt)|(rtf)|(md)|(latex))$", Qt::CaseInsensitive);
         // 图片格式
-        static QRegExp pictureReg("^((jpg)|(jpeg)|(jpe)|(bmp)|(png)|(gif)|(svg)|(tif)|(tiff))$");
+        static QRegExp pictureReg("^((jpg)|(jpeg)|(jpe)|(bmp)|(png)|(gif)|(svg)|(tif)|(tiff))$", Qt::CaseInsensitive);
         // 视频格式
         static QRegExp videoReg("^((avi)|(mov)|(mp4)|(mp2)|(mpa)|(mpg)|(mpeg)|(qt)|(rm)|(rmvb)"
-                                "|(mkv)|(asx)|(asf)|(flv)|(3gp)|(mpe))$");
+                                "|(mkv)|(asx)|(asf)|(flv)|(3gp)|(mpe))$", Qt::CaseInsensitive);
         // 音频格式
         static QRegExp musicReg("^((au)|(snd)|(mid)|(mp3)|(aif)|(aifc)|(aiff)|(m3u)|(ra)"
-                                "|(ram)|(wav)|(cda)|(wma)|(ape))$");
+                                "|(ram)|(wav)|(cda)|(wma)|(ape))$", Qt::CaseInsensitive);
         const auto &suffix = fileInfo.suffix();
 
         if (docReg.exactMatch(suffix)) {
