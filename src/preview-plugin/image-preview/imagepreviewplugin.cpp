@@ -48,11 +48,8 @@ void ImagePreviewPlugin::init(QObject *proxyInter)
 bool ImagePreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
 {
     const QString path = item.value(PREVIEW_ITEMINFO_ITEM);
-
-    if (path.isEmpty())
-        return false;
-
     const QString type = item.value(PREVIEW_ITEMINFO_TYPE);
+
     if (!m_imageView)
         m_imageView = new ImageView();
 
@@ -148,7 +145,9 @@ QWidget *ImagePreviewPlugin::contentWidget() const
 
 bool ImagePreviewPlugin::stopPreview()
 {
-    return m_imageView->stopPreview();
+    if (m_imageView)
+        m_imageView->stopPreview();
+    return true;
 }
 
 GrandSearch::DetailInfoList ImagePreviewPlugin::getAttributeDetailInfo() const
