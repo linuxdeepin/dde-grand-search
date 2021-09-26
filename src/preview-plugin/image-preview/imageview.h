@@ -35,18 +35,18 @@ class ImageView : public Dtk::Widget::DWidget
 {
     Q_OBJECT
 public:
-    explicit ImageView(const QString &file, const QString &type, QWidget *parent = nullptr);
+    explicit ImageView(QWidget *parent = nullptr);
     ~ImageView() Q_DECL_OVERRIDE;
 
     QSize sourceSize();
     bool stopPreview();
 
+    void loadImage(const QString &file, const QString &type);
 private:
     void initUI();
     void initConnect();
 
     bool canPreview();
-    void loadImage();
 
     QPixmap getRoundPixmap(const QPixmap &pixmap);
 

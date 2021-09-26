@@ -48,7 +48,7 @@ PlanWidget::PlanWidget(QWidget *parent)
     QString iconName("experienceplan");
     QIcon icon = QIcon(QString(":/icons/%1.svg").arg(iconName));
 
-    bool enable = SearchConfig::instance()->getConfig(GRANDSEARCH_PLAN_GROUP, GRANDSEARCH_PLAN_EXPERIENCE, true).toBool();
+    bool enable = SearchConfig::instance()->getConfig(GRANDSEARCH_PLAN_GROUP, GRANDSEARCH_PLAN_EXPERIENCE, false).toBool();
     SwitchWidget *switchWidget = new SwitchWidget(this);
     switchWidget->setFixedSize(SWITCHWIDGETWIDTH, SWITCHWIDGETHEIGHT);
     switchWidget->setEnableBackground(true);

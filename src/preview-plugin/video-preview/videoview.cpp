@@ -66,8 +66,13 @@ void VideoView::initUI()
 
 void VideoView::setTitle(const QString &title)
 {
-    if (m_title)
+    if (m_title) {
         m_title->setText(title);
+        QFontMetrics fontMetrics(m_title->font());
+        int textWidth = fontMetrics.size(Qt::TextSingleLine, title).width();
+        if (textWidth >= m_title->width())
+            m_title->setToolTip(title);
+    }
 }
 
 void VideoView::setThumbnail(const QPixmap &pixmap)

@@ -21,6 +21,8 @@
 #include "imageview.h"
 #include "global/commontools.h"
 
+#include <DLabel>
+
 #include <QDebug>
 #include <QtConcurrent>
 #include <QPainter>
@@ -29,8 +31,7 @@
 #include <QImageReader>
 #include <QBitmap>
 #include <QPainterPath>
-
-#include <DLabel>
+#include <QFontMetrics>
 
 #define IMAGEWIDTH      310
 #define IMAGEHEIGHT     110
@@ -38,10 +39,8 @@
 
 DWIDGET_USE_NAMESPACE
 
-ImageView::ImageView(const QString &file, const QString &type, QWidget *parent)
+ImageView::ImageView(QWidget *parent)
     :DWidget (parent)
-    , m_imageFile(file)
-    , m_formats(type.toLocal8Bit())
 {
     initUI();
     initConnect();
@@ -66,82 +65,23 @@ bool ImageView::stopPreview()
     return true;
 }
 
-void ImageView::initUI()
+void ImageView::loadImage(const QString &file, const QString &type)
 {
-    setFixedHeight(150);
+    m_imageFile = file;
+    m_formats = type.toLocal8Bit();
 
-    m_imageLabel = new QLabel(this);
-    m_imageLabel->setFixedSize(IMAGEWIDTH, IMAGEHEIGHT);
-    m_imageLabel->setAlignment(Qt::AlignCenter);
-
-    m_titleLabel = new DLabel(this);
-    m_titleLabel->setFixedWidth(IMAGEWIDTH);
-    m_titleLabel->setAlignment(Qt::AlignCenter);
-
-    // 名称加粗显示
-    auto titleFont = m_titleLabel->font();
-    titleFont.setWeight(QFont::Bold);
-    m_titleLabel->setFont(titleFont);
-
-    // 名称超长时省略中间部分
+    // 名称超长时省略中间部分,并增加提示
     QFileInfo fileInfo(m_imageFile);
     QString name = fileInfo.fileName();
     m_titleLabel->setElideMode(Qt::ElideMiddle);
     m_titleLabel->setText(name);
 
-    QHBoxLayout *imageLayout = new QHBoxLayout;
-    imageLayout->addWidget(m_imageLabel);
+    QFontMetrics fontMetrics(m_titleLabel->font());
+    int textWidth = fontMetrics.size(Qt::TextSingleLine, name).width();
+    if (textWidth >= m_titleLabel->width())
+        m_titleLabel->setToolTip(name);
 
-    QHBoxLayout *titleLayout = new QHBoxLayout;
-    titleLayout->addWidget(m_titleLabel);
-
-    m_mainLayout = new QVBoxLayout(this);
-    m_mainLayout->setContentsMargins(10, 10, 10, 10);
-    m_mainLayout->setSpacing(8);
-
-    m_mainLayout->addLayout(imageLayout);
-    m_mainLayout->addLayout(titleLayout);
-
-    this->setLayout(m_mainLayout);
-
-    if (!canPreview()) {
-        showErrorPage();
-        return;
-    }
-
-    loadImage();
-}
-
-void ImageView::initConnect()
-{
-
-}
-
-bool ImageView::canPreview()
-{
-    QByteArray f = QImageReader::imageFormat(m_imageFile);
-
-    if (f.isEmpty()) {
-        QMimeDatabase mimeDatabase;
-        const QMimeType &mt = mimeDatabase.mimeTypeForFile(m_imageFile, QMimeDatabase::MatchContent);
-
-        f = mt.preferredSuffix().toLatin1();
-
-        if (f.isEmpty()) {
-            m_formats.clear();
-            return false;
-        }
-    }
-
-    m_formats = f;
-
-    return QImageReader::supportedImageFormats().contains(f);
-}
-
-void ImageView::loadImage()
-{
-    QFileInfo fileInfo(m_imageFile);
-    if (!fileInfo.isReadable()) {
+    if (!fileInfo.isReadable() || !canPreview()) {
         showErrorPage();
         return;
     }
@@ -183,6 +123,66 @@ void ImageView::loadImage()
         QPixmap roundPixmap = getRoundPixmap(QPixmap::fromImage(m_image).scaled(w, h));
         m_imageLabel->setPixmap(roundPixmap);
     }
+
+}
+
+void ImageView::initUI()
+{
+    setFixedHeight(150);
+
+    m_imageLabel = new QLabel(this);
+    m_imageLabel->setFixedSize(IMAGEWIDTH, IMAGEHEIGHT);
+    m_imageLabel->setAlignment(Qt::AlignCenter);
+
+    m_titleLabel = new DLabel(this);
+    m_titleLabel->setFixedWidth(IMAGEWIDTH);
+    m_titleLabel->setAlignment(Qt::AlignCenter);
+
+    // 名称加粗显示
+    auto titleFont = m_titleLabel->font();
+    titleFont.setWeight(QFont::Bold);
+    m_titleLabel->setFont(titleFont);
+
+    QHBoxLayout *imageLayout = new QHBoxLayout;
+    imageLayout->addWidget(m_imageLabel);
+
+    QHBoxLayout *titleLayout = new QHBoxLayout;
+    titleLayout->addWidget(m_titleLabel);
+
+    m_mainLayout = new QVBoxLayout(this);
+    m_mainLayout->setContentsMargins(10, 10, 10, 10);
+    m_mainLayout->setSpacing(8);
+
+    m_mainLayout->addLayout(imageLayout);
+    m_mainLayout->addLayout(titleLayout);
+
+    this->setLayout(m_mainLayout);
+}
+
+void ImageView::initConnect()
+{
+
+}
+
+bool ImageView::canPreview()
+{
+    QByteArray f = QImageReader::imageFormat(m_imageFile);
+
+    if (f.isEmpty()) {
+        QMimeDatabase mimeDatabase;
+        const QMimeType &mt = mimeDatabase.mimeTypeForFile(m_imageFile, QMimeDatabase::MatchContent);
+
+        f = mt.preferredSuffix().toLatin1();
+
+        if (f.isEmpty()) {
+            m_formats.clear();
+            return false;
+        }
+    }
+
+    m_formats = f;
+
+    return QImageReader::supportedImageFormats().contains(f);
 }
 
 QPixmap ImageView::getRoundPixmap(const QPixmap &pixmap)

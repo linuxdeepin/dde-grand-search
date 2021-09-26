@@ -54,7 +54,9 @@ bool ImagePreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
 
     const QString type = item.value(PREVIEW_ITEMINFO_TYPE);
     if (!m_imageView)
-        m_imageView = new ImageView(path, type);
+        m_imageView = new ImageView();
+
+    m_imageView->loadImage(path, type);
 
     // 尺寸
     auto dimension = m_imageView->sourceSize();
