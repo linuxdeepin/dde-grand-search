@@ -118,9 +118,9 @@ void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
     if (bNeedRelayout)
         reLayout();
 
-    // 确保有结果被选中
-    if (!hasSelectItem())
-        selectFirstItem();
+    // 确保选中当前结果中的第一个
+    clearSelectItem();
+    selectFirstItem();
 }
 
 void MatchWidget::clearMatchedData()
@@ -130,7 +130,7 @@ void MatchWidget::clearMatchedData()
     m_vGroupWidgets.clear();
 
     // 清空并隐藏所有类目列表
-    for (GroupWidgetMap::Iterator it= m_groupWidgetMap.begin(); it!=m_groupWidgetMap.end(); ++it) {
+    for (GroupWidgetMap::Iterator it = m_groupWidgetMap.begin(); it != m_groupWidgetMap.end(); ++it) {
         if (it.value())
             it.value()->clear();
     }
@@ -160,7 +160,7 @@ void MatchWidget::selectNextItem()
     if (this->isHidden())
         return;
 
-    for (int i=0; i<m_vGroupWidgets.count(); ++i) {
+    for (int i = 0; i < m_vGroupWidgets.count(); ++i) {
 
         if (!hasSelectItem(i))
             continue;
@@ -201,7 +201,7 @@ void MatchWidget::selectPreviousItem()
     if (this->isHidden())
         return;
 
-    for (int i=0; i<m_vGroupWidgets.count(); ++i) {
+    for (int i = 0; i < m_vGroupWidgets.count(); ++i) {
 
         if (!hasSelectItem(i))
             continue;
@@ -258,7 +258,7 @@ void MatchWidget::onSelectItemByMouse(const MatchedItem &item)
     // 通知其他列表取消选中
     GrandSearchListView* listView = qobject_cast<GrandSearchListView*>(sender());
     if (listView) {
-        for (int i=0; i<m_vGroupWidgets.count(); ++i) {
+        for (int i = 0; i < m_vGroupWidgets.count(); ++i) {
             if (hasSelectItem(i)) {
                 GrandSearchListView *tmpListView = m_vGroupWidgets.at(i)->getListView();
                 Q_ASSERT(tmpListView);
@@ -278,7 +278,7 @@ bool MatchWidget::selectFirstItem(int groupNumber)
     if (this->isHidden())
         return false;
 
-    for (int i=groupNumber; i<m_vGroupWidgets.count(); ++i) {
+    for (int i = groupNumber; i < m_vGroupWidgets.count(); ++i) {
 
         GroupWidget *group = m_vGroupWidgets.at(i);
         Q_ASSERT(group);
@@ -300,7 +300,7 @@ bool MatchWidget::selectFirstItem(int groupNumber)
 
 bool MatchWidget::selectLastItem(int groupNumber)
 {
-    for (int i=groupNumber; i<m_vGroupWidgets.count(); --i) {
+    for (int i = groupNumber; i < m_vGroupWidgets.count(); --i) {
 
         GroupWidget *group = m_vGroupWidgets.at(i);
         Q_ASSERT(group);
@@ -322,7 +322,7 @@ bool MatchWidget::selectLastItem(int groupNumber)
 
 bool MatchWidget::hasSelectItem()
 {
-    for (int i=0; i<m_vGroupWidgets.count(); ++i) {
+    for (int i = 0; i < m_vGroupWidgets.count(); ++i) {
         if (hasSelectItem(i))
             return true;
     }
@@ -344,6 +344,27 @@ bool MatchWidget::hasSelectItem(int groupNumber)
         return true;
 
     return false;
+}
+
+void MatchWidget::clearSelectItem()
+{
+    bool selectChanged = false;
+
+    for (int i = 0; i < m_vGroupWidgets.count(); ++i) {
+        if (hasSelectItem(i)) {
+            GrandSearchListView *tmpListView = m_vGroupWidgets.at(i)->getListView();
+            Q_ASSERT(tmpListView);
+
+            tmpListView->setCurrentIndex(QModelIndex());
+            selectChanged = true;
+        }
+    }
+
+    if (selectChanged) {
+        // 通知当前选择项改变
+        MatchedItem item;
+        emit sigCurrentItemChanged(QString(), item);
+    }
 }
 
 void MatchWidget::adjustScrollBar()
@@ -545,7 +566,7 @@ void MatchWidget::paintEvent(QPaintEvent *event)
 void MatchWidget::resizeEvent(QResizeEvent *event)
 {
     // 重写resizeEvent，手动设置类目列表宽度，保证匹配列表布局正常显示
-    for (GroupWidgetMap::Iterator it= m_groupWidgetMap.begin(); it!=m_groupWidgetMap.end(); ++it) {
+    for (GroupWidgetMap::Iterator it = m_groupWidgetMap.begin(); it !=m_groupWidgetMap.end(); ++it) {
         if (it.value()) {
             it.value()->setFixedWidth(rect().width() - ScrollBarToListRightSpace);// 滚动条与列表右侧需要有2px间隙
         }

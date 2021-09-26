@@ -68,6 +68,8 @@ private:
     bool hasSelectItem();
     bool hasSelectItem(int groupNumber);
 
+    void clearSelectItem();
+
     void adjustScrollBar();
 
     void currentIndexChanged(const QString &searchGroupName, const QModelIndex& index);
