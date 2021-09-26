@@ -149,11 +149,13 @@ void PreviewWidget::clearLayoutWidgets()
         m_preview->stopPreview();
         if (m_preview->contentWidget()) {
             m_preview->contentWidget()->setParent(nullptr);
+            m_preview->contentWidget()->hide();
             m_vMainLayout->removeWidget(m_preview->contentWidget());
         }
 
         if (m_preview->toolBarWidget()) {
             m_preview->toolBarWidget()->setParent(nullptr);
+            m_preview->toolBarWidget()->hide();
             m_vMainLayout->removeWidget(m_preview->toolBarWidget());
         }
     }
@@ -164,10 +166,12 @@ void PreviewWidget::clearLayoutWidgets()
     if (m_generalPreview) {
         if (m_generalPreview->contentWidget()) {
             m_generalPreview->contentWidget()->setParent(nullptr);
+            m_generalPreview->contentWidget()->hide();
             m_vMainLayout->removeWidget(m_generalPreview->contentWidget());
         }
         if (m_generalPreview->toolBarWidget()) {
             m_generalPreview->toolBarWidget()->setParent(nullptr);
+            m_generalPreview->toolBarWidget()->hide();
             m_vMainLayout->removeWidget(m_generalPreview->toolBarWidget());
         }
     }
