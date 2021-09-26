@@ -29,7 +29,7 @@
 #include <QMimeDatabase>
 
 #define ICON_SIZE               96
-#define NAME_WIDTH              240
+#define NAME_WIDTH              239
 #define HOR_MARGIN_SIZE         10
 #define MARGIN_SIZE             15
 
@@ -102,7 +102,7 @@ void AudioView::setItemInfo(const GrandSearch::ItemInfo &item)
     m_iconLabel->setPixmap(pixmap);
 
     // 设置名称，并计算换行内容
-    QString elidedText = lineFeed(item[PREVIEW_ITEMINFO_NAME], m_nameLabel->width(), m_nameLabel->font(), 1);
+    QString elidedText = GrandSearch::CommonTools::lineFeed(item[PREVIEW_ITEMINFO_NAME], m_nameLabel->width(), m_nameLabel->font(), 2);
     m_nameLabel->setText(elidedText);
     if (elidedText != item[PREVIEW_ITEMINFO_NAME])
         m_nameLabel->setToolTip(item[PREVIEW_ITEMINFO_NAME]);
@@ -138,30 +138,6 @@ void AudioView::initUI()
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(MARGIN_SIZE, 0, MARGIN_SIZE, MARGIN_SIZE);
     mainLayout->addLayout(hLayout);
-}
-
-QString AudioView::lineFeed(const QString &text, int nWidth, const QFont &font, int nElidedRow)
-{
-    if (nElidedRow < 0)
-        nElidedRow = 2;
-
-    QString strText = text;
-    int nIndex = 1;
-    QFontMetrics fm(font);
-    if (!strText.isEmpty()) {
-        for (int i = 1; i < strText.size() + 1; i++) {
-            if (fm.width(strText.left(i)) > nWidth * nIndex) {
-                nIndex++;
-                if (nIndex > nElidedRow) {
-                    strText = fm.elidedText(strText, Qt::ElideRight, nWidth * nElidedRow);
-                    break;
-                }
-                strText.insert(i - 1, "\n");
-            }
-        }
-    }
-
-    return strText;
 }
 
 QIcon AudioView::defaultIcon(const QString &fileName)

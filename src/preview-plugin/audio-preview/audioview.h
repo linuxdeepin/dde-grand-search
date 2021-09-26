@@ -48,7 +48,6 @@ public:
 private:
     void initUI();
     QIcon defaultIcon(const QString &fileName);
-    QString lineFeed(const QString &text, int nWidth, const QFont &font, int nElidedRow);
 private:
     QLabel *m_iconLabel = nullptr;
     NameLabel *m_nameLabel = nullptr;

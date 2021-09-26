@@ -127,6 +127,42 @@ inline QImage creatErrorImage(const QSize &imgSize, const QImage &errorImg)
     return img;
 }
 
+// 计算换行内容
+inline QString lineFeed(const QString &text, int nWidth, const QFont &font, int nElidedRow = 2)
+{
+    if (nElidedRow < 0)
+        nElidedRow = 2;
+
+    QString strText = text;
+    QStringList strListLine;
+    QFontMetrics fm(font);
+    // 一行就直接中间截断显示
+    if (1 == nElidedRow)
+        return fm.elidedText(text, Qt::ElideMiddle, nWidth);
+
+    if (!strText.isEmpty()) {
+        for (int i = 0; i < strText.size(); i++) {
+            if (fm.width(strText.left(i)) >= nWidth) {
+                if (strListLine.size() + 1 == nElidedRow)
+                    break;
+
+                strListLine.append(strText.left(i - 1));
+                strText = strText.right(strText.size() - i + 1);
+                i = 0;
+            }
+        }
+    }
+
+    // 多行时，对最后一行字符左侧省略
+    if (!strListLine.isEmpty()) {
+        strText = fm.elidedText(strText, Qt::ElideLeft, nWidth);
+        strListLine.append(strText);
+        strText = strListLine.join('\n');
+    }
+
+    return strText;
+}
+
 }   // end CommonTools
 
 }   // end GrandSearch

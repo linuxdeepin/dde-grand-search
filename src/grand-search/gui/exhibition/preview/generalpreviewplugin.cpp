@@ -175,7 +175,7 @@ bool GeneralPreviewPlugin::previewItem(const GrandSearch::ItemInfo &info)
     d_p->m_iconLabel->setPixmap(pixmap);
 
     // 设置名称，并计算换行内容
-    QString elidedText = lineFeed(item.name, d_p->m_nameLabel->width(), d_p->m_nameLabel->font(), 1);
+    QString elidedText = GrandSearch::CommonTools::lineFeed(item.name, d_p->m_nameLabel->width(), d_p->m_nameLabel->font(), 2);
     d_p->m_nameLabel->setText(elidedText);
     if (elidedText != item.name)
         d_p->m_nameLabel->setToolTip(item.name);
@@ -261,30 +261,6 @@ QWidget *GeneralPreviewPlugin::toolBarWidget() const
 bool GeneralPreviewPlugin::showToolBar() const
 {
     return true;
-}
-
-QString GeneralPreviewPlugin::lineFeed(const QString &text, int nWidth, const QFont &font, int nElidedRow)
-{
-    if (nElidedRow < 0)
-        nElidedRow = 2;
-
-    QString strText = text;
-    int nIndex = 1;
-    QFontMetrics fm(font);
-    if (!strText.isEmpty()) {
-        for (int i = 1; i < strText.size() + 1; i++) {
-            if (fm.width(strText.left(i)) > nWidth * nIndex) {
-                nIndex++;
-                if (nIndex > nElidedRow) {
-                    strText = fm.elidedText(strText, Qt::ElideMiddle, nWidth * nElidedRow);
-                    break;
-                }
-                strText.insert(i - 1, "\n");
-            }
-        }
-    }
-
-    return strText;
 }
 
 void GeneralPreviewPlugin::updateFolderSize(qint64 size)
