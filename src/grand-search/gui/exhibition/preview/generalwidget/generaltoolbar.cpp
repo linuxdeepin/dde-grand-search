@@ -23,12 +23,17 @@
 #include <DPushButton>
 #include <DVerticalLine>
 #include <DGuiApplicationHelper>
+#include <DFontSizeManager>
 
 #include <QHBoxLayout>
 #include <QGuiApplication>
 
-#define TOOLBTN_WIDTH           100
+#define TOOLBTN_WIDTH_NARROW    80
+#define TOOLBTN_WIDTH_WIDE      108
+#define TOOLBTN_MAX_PIXELSIZE   18
 #define TOOLBAR_HEIGHT          36
+#define TOOLBAR_LEFT_MARGIN     30
+#define TOOLBAR_RIGHT_MARGIN    30
 #define TOOLBAR_BOTTOM_MARGIN   10
 
 DWIDGET_USE_NAMESPACE
@@ -37,7 +42,6 @@ DGUI_USE_NAMESPACE
 IconButton::IconButton(QWidget *parent)
     : QToolButton(parent)
 {
-    setFixedWidth(TOOLBTN_WIDTH);
     setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 
     QColor textColor = QColor(82, 106, 127, static_cast<int>(255 * 1));
@@ -46,6 +50,16 @@ IconButton::IconButton(QWidget *parent)
     QPalette pa = palette();
     pa.setColor(QPalette::ButtonText, textColor);
     setPalette(pa);
+
+    DFontSizeManager::instance()->bind(this, DFontSizeManager::T6);
+
+    if (this->font().pixelSize() < TOOLBTN_MAX_PIXELSIZE) {
+        setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+        setIconSize(QSize(18, 18));
+    } else {
+        setToolButtonStyle(Qt::ToolButtonIconOnly);
+        setIconSize(size());
+    }
 }
 
 GeneralToolBar::GeneralToolBar(QWidget *parent)
@@ -61,20 +75,23 @@ void GeneralToolBar::initUi()
 
     m_hMainLayout = new QHBoxLayout(this);
     //下边距10
-    m_hMainLayout->setContentsMargins(0, 0, 0, TOOLBAR_BOTTOM_MARGIN);
+    m_hMainLayout->setContentsMargins(TOOLBAR_LEFT_MARGIN, 0, TOOLBAR_RIGHT_MARGIN, TOOLBAR_BOTTOM_MARGIN);
     m_hMainLayout->setSpacing(0);
 
     m_openBtn = new IconButton(this);
     m_openBtn->setText(tr("Open"));
     m_openBtn->setIcon(QIcon(":/icons/open.svg"));
+    m_openBtn->setFixedWidth(TOOLBTN_WIDTH_NARROW);
 
     m_openPathBtn = new IconButton(this);
     m_openPathBtn->setText(tr("Open Path"));
     m_openPathBtn->setIcon(QIcon(":/icons/openpath.svg"));
+    m_openPathBtn->setFixedWidth(TOOLBTN_WIDTH_WIDE);
 
     m_copyPathBtn = new IconButton(this);
     m_copyPathBtn->setText(tr("Copy Path"));
     m_copyPathBtn->setIcon(QIcon(":/icons/copypath.svg"));
+    m_openPathBtn->setFixedWidth(TOOLBTN_WIDTH_WIDE);
 
     m_vLine1 = new DVerticalLine(this);
     m_vLine2 = new DVerticalLine(this);
