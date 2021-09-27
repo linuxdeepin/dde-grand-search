@@ -130,6 +130,14 @@ void MainWindow::showEntranceAppIcon(bool bShow)
     d_p->m_entranceWidget->showLabelAppIcon(bShow);
 }
 
+void MainWindow::onFocusObjectChanged(QObject *obj)
+{
+    // 焦点回到主窗口时，将焦点设置到输入框中(焦点改变到了预览相关的窗口中则不做处理)
+    if (obj && obj == this && d_p->m_entranceWidget) {
+        d_p->m_entranceWidget->setFocus();
+    }
+}
+
 void MainWindow::onPrimaryScreenChanged(const QScreen *screen)
 {
     // 主窗口显示在主屏
@@ -180,7 +188,6 @@ void MainWindow::initUI()
 {
     // 禁用窗口管理器并置顶
     setWindowFlags(Qt::BypassWindowManagerHint | Qt::WindowStaysOnTopHint);
-    setFocusPolicy(Qt::NoFocus);
 
     // 控制界面大小和位置
     setFixedSize(MainWindowWidth, MainWindowHeight);
@@ -231,6 +238,8 @@ void MainWindow::initConnect()
     connect(d_p->m_exhibitionWidget, &ExhibitionWidget::sigCurrentItemChanged, d_p->m_entranceWidget, &EntranceWidget::onAppIconChanged);
     connect(d_p->m_exhibitionWidget, &ExhibitionWidget::sigShowNoContent, this, &MainWindow::showSerachNoContent);
     connect(d_p->m_exhibitionWidget, &ExhibitionWidget::sigCloseWindow, d_p->m_handleVisibility, &HandleVisibility::onCloseWindow);
+
+    connect(qApp, &QGuiApplication::focusObjectChanged, this, &MainWindow::onFocusObjectChanged);
 }
 
 void MainWindow::activeMainWindow()

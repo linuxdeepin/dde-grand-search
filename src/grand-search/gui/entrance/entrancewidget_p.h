@@ -42,9 +42,6 @@ public:
 
     void delayChangeText();
     void notifyTextChanged();
-    void setLineEditFocus();
-
-    void onFocusObjectChanged(QObject *obj);
 
     void showMenu(const QPoint& pos);
 

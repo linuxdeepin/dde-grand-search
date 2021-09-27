@@ -81,23 +81,6 @@ void EntranceWidgetPrivate::notifyTextChanged()
     q_p->onAppIconChanged(QString(), item);
 }
 
-void EntranceWidgetPrivate::setLineEditFocus()
-{
-    Q_ASSERT(m_searchEdit);
-
-    m_searchEdit->lineEdit()->setFocus();
-}
-
-void EntranceWidgetPrivate::onFocusObjectChanged(QObject *obj)
-{
-    Q_ASSERT(m_searchEdit);
-
-    if (obj && obj != m_searchEdit->lineEdit()) {
-        // 收到焦点改变信号后，必须等已有事件循环结束后，设置才能生效
-        QTimer::singleShot(1, this, &EntranceWidgetPrivate::setLineEditFocus);
-    }
-}
-
 void EntranceWidgetPrivate::showMenu(const QPoint &pos)
 {
     Q_ASSERT(m_lineEdit);
@@ -166,6 +149,16 @@ void EntranceWidget::showLabelAppIcon(bool visible)
     d_p->m_appIconLabel->setVisible(visible);
 }
 
+bool EntranceWidget::event(QEvent *event)
+{
+    if (event->type() == QEvent::FocusIn) {
+        d_p->m_lineEdit->setFocus();
+        return true;
+    }
+
+    return DWidget::event(event);
+}
+
 void EntranceWidget::paintEvent(QPaintEvent *event)
 {
     DWidget::paintEvent(event);
@@ -205,6 +198,11 @@ bool EntranceWidget::eventFilter(QObject *watched, QEvent *event)
             d_p->showMenu(contextMenuEvent->globalPos());
             return true;
         }
+    } else if (watched == d_p->m_searchEdit && QEvent::FocusIn == event->type()) {
+        if (Q_LIKELY(d_p->m_lineEdit)) {
+            d_p->m_lineEdit->setFocus();
+            return true;
+        }
     }
     return DWidget::eventFilter(watched, event);
 }
@@ -212,6 +210,8 @@ bool EntranceWidget::eventFilter(QObject *watched, QEvent *event)
 void EntranceWidget::initUI()
 {
     d_p->m_searchEdit = new DSearchEdit(this);
+    d_p->m_searchEdit->installEventFilter(this);
+
     d_p->m_lineEdit = d_p->m_searchEdit->lineEdit();
     d_p->m_lineEdit->setMaxLength(SearchMaxLength);
     d_p->m_lineEdit->installEventFilter(this);
@@ -249,9 +249,6 @@ void EntranceWidget::initConnections()
 
     // 输入改变时重置定时器，避免短时间内发起大量无效调用
     connect(d_p->m_searchEdit, &DSearchEdit::textChanged, d_p.data(), &EntranceWidgetPrivate::delayChangeText);
-
-    // 焦点改变后，将焦点设置回输入框
-    connect(qApp, &QGuiApplication::focusObjectChanged, d_p.data(), &EntranceWidgetPrivate::onFocusObjectChanged);
 }
 
 void EntranceWidget::onAppIconChanged(const QString &searchGroupName, const GrandSearch::MatchedItem &item)

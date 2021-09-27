@@ -37,6 +37,7 @@ public:
 
     void showLabelAppIcon(bool visible);
 protected:
+    bool event(QEvent *event) Q_DECL_OVERRIDE;
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
     bool eventFilter(QObject *watched, QEvent *event) Q_DECL_OVERRIDE;
 

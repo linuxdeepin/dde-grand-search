@@ -57,6 +57,8 @@ private:
     void showSerachNoContent(bool bShow = true);
     void showEntranceAppIcon(bool bShow = true);
 
+    void onFocusObjectChanged(QObject *obj);
+
 protected:
     virtual void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     virtual void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;

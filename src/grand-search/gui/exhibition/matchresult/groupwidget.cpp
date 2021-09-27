@@ -286,6 +286,7 @@ void GroupWidget::initUi()
 
     // 组内结果列表
     m_listView = new GrandSearchListView(this);
+    m_listView->setFocusPolicy(Qt::NoFocus);
 
     // 分割线
     m_line = new DHorizontalLine;

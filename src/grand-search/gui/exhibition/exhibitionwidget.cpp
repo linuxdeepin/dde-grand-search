@@ -133,6 +133,7 @@ void ExhibitionWidget::initUi()
     this->setLayout(m_hLayout);
 
     m_matchWidget = new MatchWidget(this);
+    m_matchWidget->setFocusPolicy(Qt::NoFocus);
     m_hLayout->addWidget(m_matchWidget);
 
     DVerticalLine* vLine = new DVerticalLine(this);

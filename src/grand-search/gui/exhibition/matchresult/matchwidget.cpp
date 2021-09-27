@@ -118,9 +118,11 @@ void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
     if (bNeedRelayout)
         reLayout();
 
-    // 确保选中当前结果中的第一个
-    clearSelectItem();
-    selectFirstItem();
+    // 用户未手动切换选中项时，确保选中当前结果中的第一个
+    if (!m_customSelected) {
+        clearSelectItem();
+        selectFirstItem();
+    }
 }
 
 void MatchWidget::clearMatchedData()
@@ -140,6 +142,8 @@ void MatchWidget::clearMatchedData()
         m_scrollAreaContent->setFixedHeight(0);
 
     layout();
+
+    m_customSelected = false;
 }
 
 void MatchWidget::onSearchCompleted()
@@ -174,6 +178,7 @@ void MatchWidget::selectNextItem()
         const QModelIndex &nextIndex = listView->model()->index(nextRow, 0);
         if (nextIndex.isValid()) {
             listView->setCurrentIndex(nextIndex);
+            m_customSelected = true;
             currentIndexChanged(group->searchGroupName(), nextIndex);
             break;
         } else {
@@ -183,6 +188,7 @@ void MatchWidget::selectNextItem()
                 if (Q_LIKELY(selected)) {
                     // 切换成功后，需要将当前列表选择为空
                     listView->setCurrentIndex(QModelIndex());
+                    m_customSelected = true;
                 } else {
                     qWarning() << "select next failed";
                 }
@@ -215,6 +221,7 @@ void MatchWidget::selectPreviousItem()
         const QModelIndex &previousIndex = listView->model()->index(previousRow, 0);
         if (previousIndex.isValid()) {
             listView->setCurrentIndex(previousIndex);
+            m_customSelected = true;
             currentIndexChanged(group->searchGroupName(), previousIndex);
             break;
         } else {
@@ -224,6 +231,7 @@ void MatchWidget::selectPreviousItem()
                 if (Q_LIKELY(selected)) {
                     // 切换成功后，需要将当前列表选择为空
                     listView->setCurrentIndex(QModelIndex());
+                    m_customSelected = true;
                 } else {
                     qWarning() << "select previous failed";
                 }
@@ -262,10 +270,12 @@ void MatchWidget::onSelectItemByMouse(const MatchedItem &item)
             if (hasSelectItem(i)) {
                 GrandSearchListView *tmpListView = m_vGroupWidgets.at(i)->getListView();
                 Q_ASSERT(tmpListView);
-                if (listView != tmpListView)
+                if (listView != tmpListView) {
                     tmpListView->setCurrentIndex(QModelIndex());
-                else
+                } else {
                     searchGroupName = m_vGroupWidgets.at(i)->searchGroupName();
+                    m_customSelected = true;
+                }
             }
         }
     }
@@ -431,9 +441,11 @@ void MatchWidget::initUi()
     m_vMainLayout->setContentsMargins(0, 0, 0, 0);
     m_vMainLayout->setSpacing(0);
     m_scrollArea = new DScrollArea(this);
+    m_scrollArea->setFocusPolicy(Qt::NoFocus);
     m_scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_scrollArea->setWidgetResizable(true);
     m_scrollAreaContent = new DWidget();
+    m_scrollAreaContent->setFocusPolicy(Qt::NoFocus);
     m_scrollArea->setWidget(m_scrollAreaContent);
 
     QPalette palette = m_scrollArea->palette();
@@ -516,6 +528,7 @@ GroupWidget *MatchWidget::createGroupWidget(const QString &searchGroupName)
         } else {
             groupWidget = new GroupWidget(m_scrollAreaContent);
         }
+        groupWidget->setFocusPolicy(Qt::NoFocus);
 
         connect(groupWidget, &GroupWidget::showMore, this, &MatchWidget::reLayout);
 

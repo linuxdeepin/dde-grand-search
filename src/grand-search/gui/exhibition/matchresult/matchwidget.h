@@ -100,6 +100,8 @@ private:
 
     GroupWidgetMap m_groupWidgetMap;                    // 按group类名存放类目列表
     GroupWidgets m_vGroupWidgets;                       // 类目列表按显示顺序存放
+
+    bool m_customSelected = false;                      // 记录用户是否手动选中
 };
 
 #endif // MATCHWIDGET_H
