@@ -270,15 +270,17 @@ QVariantHash VideoPreviewPlugin::decode(const QString &file, VideoPreviewPlugin 
     qint64 duration = 0;
     auto stdStr = file.toStdString();
     if (avformat_open_input(&avCtx, stdStr.c_str(), nullptr , nullptr) == 0) {
-        int videoRet = av_find_best_stream(avCtx, AVMEDIA_TYPE_VIDEO, -1, -1, nullptr, 0);
-        if (videoRet >= 0) {
-            AVStream *videoStream = avCtx->streams[videoRet];
-            AVCodecParameters *codecpar = videoStream->codecpar;
-            duration = avCtx->duration / (qint64)AV_TIME_BASE;
-            info.insert(kLabelDuration, QVariant::fromValue(duration));
-            info.insert(kLabelDimension, QSize(codecpar->width, codecpar->height));
-        } else {
-            qWarning() << "VideoPreviewPlugin: find stream error" << videoRet;
+        if (avformat_find_stream_info(avCtx, nullptr) >= 0) {
+            int videoRet = av_find_best_stream(avCtx, AVMEDIA_TYPE_VIDEO, -1, -1, nullptr, 0);
+            if (videoRet >= 0) {
+                AVStream *videoStream = avCtx->streams[videoRet];
+                AVCodecParameters *codecpar = videoStream->codecpar;
+                duration = avCtx->duration / (qint64)AV_TIME_BASE;
+                info.insert(kLabelDuration, QVariant::fromValue(duration));
+                info.insert(kLabelDimension, QSize(codecpar->width, codecpar->height));
+            } else {
+                qWarning() << "VideoPreviewPlugin: find stream error" << videoRet;
+            }
         }
 
         avformat_close_input(&avCtx);
