@@ -18,6 +18,7 @@
  */
 #include "grandsearchlistdelegate.h"
 #include "grandsearchlistview.h"
+#include "global/builtinsearch.h"
 
 #include <QDebug>
 #include <QPainter>
@@ -165,15 +166,22 @@ void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QSty
     // 设置字体
     QFont fontT6 = DFontSizeManager::instance()->get(DFontSizeManager::T6);
 
-    QString mtext;
-    mtext = index.data(DATA_ROLE).value<MatchedItem>().name;
+    const QString &name = index.data(DATA_ROLE).value<MatchedItem>().name;
+    const QString &searcher = index.data(DATA_ROLE).value<MatchedItem>().searcher;
 
     int listItemTextMaxWidth = option.rect.width() / 2 - ListItemSpace * 2 - ListIconSize;
     //预览界面正在显示，结果列表截断显示宽度改为列表显示最大宽度
     if (listItemTextMaxWidth < ListRowWidth / 2)
         listItemTextMaxWidth = option.rect.width() - ListItemSpace * 2 -ListIconSize;
-    QFontMetricsF fontWidth(fontT6);
-    mtext = fontWidth.elidedText(mtext, Qt::ElideRight, listItemTextMaxWidth);
+    QFontMetrics fontMetrics(fontT6);
+    QString mtext = fontMetrics.elidedText(name, Qt::ElideRight, listItemTextMaxWidth);
+    if (mtext != name && GRANDSEARCH_CLASS_WEB_STATICTEXT == searcher) {
+        // 如果存在截断显示，且该项属于web搜索，则截断时需要保留尾部的双引号
+        static const int markWidth = fontMetrics.size(Qt::TextSingleLine, "\"").width();
+        mtext = fontMetrics.elidedText(name.left(name.count() - 1), Qt::ElideRight, listItemTextMaxWidth - markWidth);
+        mtext.append("\"");
+    }
+
     QStyleOptionViewItem viewOption(option);
     initStyleOption(&viewOption, index);
     if (option.state.testFlag(QStyle::State_HasFocus))
@@ -201,7 +209,7 @@ void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QSty
 
     // 动态计算边距，保证调整字体大小时绘制居中
     QAbstractTextDocumentLayout::PaintContext paintContext;
-    int margin = static_cast<int>(((option.rect.height() - fontWidth.height()) / 2));
+    int margin = static_cast<int>(((option.rect.height() - fontMetrics.height()) / 2));
     QRect textRect(ListItemSpace * 2 + ListIconSize, option.rect.y() + margin, listItemTextMaxWidth, option.rect.height());
     painter->save();
     painter->translate(textRect.topLeft());
