@@ -110,7 +110,7 @@ bool AudioPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
 
     contentInfos.clear();
     contentInfos.insert(DetailInfoProperty::Text, QVariant(amd.duration.isEmpty() ? "--" : amd.duration));
-    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideMiddle));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
 
     detailInfo = qMakePair(tagInfos, contentInfos);
     m_detailInfos.push_back(detailInfo);
@@ -125,7 +125,7 @@ bool AudioPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
 
     contentInfos.clear();
     contentInfos.insert(DetailInfoProperty::Text, QVariant(suffix.isEmpty() ? "--" : suffix));
-    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideMiddle));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
 
     detailInfo = qMakePair(tagInfos, contentInfos);
     m_detailInfos.push_back(detailInfo);

@@ -148,7 +148,7 @@ bool VideoPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
 
     contentInfos.clear();
     contentInfos.insert(DetailInfoProperty::Text, QVariant(fileInfo.absolutePath()));
-    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideMiddle));
 
     detailInfo = qMakePair(tagInfos, contentInfos);
     m_infos.push_back(detailInfo);
