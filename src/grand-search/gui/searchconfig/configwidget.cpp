@@ -52,8 +52,8 @@ void ConfigWidget::initUI()
 {
     setFixedSize(MAINWINDOW_WIDTH, MAINWINDOW_HEIGHT);
 
-    // 禁用最小化按钮
-    setWindowFlag(Qt::WindowMinimizeButtonHint, false);
+    // 禁用最小、最大化按钮
+    setWindowFlag(Qt::WindowMinMaxButtonsHint, false);
 
     // 禁用默认菜单
     this->titlebar()->setMenuVisible(false);
