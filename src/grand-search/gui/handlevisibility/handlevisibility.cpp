@@ -99,7 +99,7 @@ void HandleVisibility::regionMousePress(const QPoint &p, const int flag)
     Q_UNUSED(flag)
 
     for (auto w : qApp->topLevelWidgets()) {
-        if (w->geometry().contains(p)) {
+        if (w->isVisible() && w->geometry().contains(p)) {
             return;
         }
     }
