@@ -59,10 +59,7 @@ VideoPreviewPlugin::VideoPreviewPlugin(QObject *parent)
 
 VideoPreviewPlugin::~VideoPreviewPlugin()
 {
-    if (!m_future.isFinished()) {
-        stopPreview();
-        m_future.waitForFinished();
-    }
+    stopPreview();
     delete m_view;
 }
 
@@ -74,7 +71,7 @@ void VideoPreviewPlugin::init(QObject *proxyInter)
         m_view->initUI();
     }
 }
-
+#define PREVIEW_ASYNC_DECODE
 bool VideoPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
 {
     const QString path = item.value(PREVIEW_ITEMINFO_ITEM);
@@ -82,11 +79,13 @@ bool VideoPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
         return false;
 
     //开启线程解析
-    m_decoding = true;
 #ifdef PREVIEW_ASYNC_DECODE
-    m_future = QtConcurrent::run(&VideoPreviewPlugin::decode, path, this, true);
+    m_decode.reset(new DecodeBridge);
+    m_decode->decoding = true;
+    QtConcurrent::run(&DecodeBridge::decode, m_decode, path);
+    connect(m_decode.get(), &DecodeBridge::sigUpdateInfo, this, &VideoPreviewPlugin::updateInfo);
 #else
-    m_future = QtConcurrent::run(&VideoPreviewPlugin::decode, path, this, false);
+    QFuture<QVariantHash> future = QtConcurrent::run(&DecodeBridge::decode, nullptr, path);
 #endif
 
     //初始化静态属性
@@ -172,8 +171,8 @@ bool VideoPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
 
 #ifndef PREVIEW_ASYNC_DECODE
     //同步更新，防止闪烁。若解析时间过长再调整为异步
-    m_future.waitForFinished();
-    updateInfo(m_future.result(), false);
+    future.waitForFinished();
+    updateInfo(future.result(), false);
 #endif
     return true;
 }
@@ -190,7 +189,8 @@ QWidget *VideoPreviewPlugin::contentWidget() const
 
 bool VideoPreviewPlugin::stopPreview()
 {
-    m_decoding = false;
+    if (!m_decode.isNull())
+        m_decode->decoding = false;
     return true;
 }
 
@@ -258,9 +258,9 @@ void VideoPreviewPlugin::updateInfo(const QVariantHash &hash, bool needUpdate)
         requestUpdateDetailInfo(m_proxy, this);
 }
 
-QVariantHash VideoPreviewPlugin::decode(const QString &file, VideoPreviewPlugin *self, bool updateBySignal)
+QVariantHash DecodeBridge::decode(QSharedPointer<DecodeBridge> self, const QString &file)
 {
-    if (!self || !self->m_decoding)
+    if (!self.isNull() && !self->decoding)
         return {};
 
     QVariantHash info;
@@ -289,7 +289,7 @@ QVariantHash VideoPreviewPlugin::decode(const QString &file, VideoPreviewPlugin 
     }
 
     //检查一次是否停止
-    if (!self->m_decoding)
+    if (!self.isNull() && !self->decoding)
         return {};
 
     //时长大于0才获取预览图
@@ -308,7 +308,7 @@ QVariantHash VideoPreviewPlugin::decode(const QString &file, VideoPreviewPlugin 
             QImage img = QImage::fromData(imageData->image_data_ptr,
                                           static_cast<int>(imageData->image_data_size), "png");
             //缩放与圆角处理
-            QPixmap pixmap = VideoPreviewPlugin::scaleAndRound(img, maxSize);
+            QPixmap pixmap = DecodeBridge::scaleAndRound(img, maxSize);
             info.insert(kKeyThumbnailer, QVariant::fromValue(pixmap));
         } else {
             // 预览失败
@@ -316,7 +316,7 @@ QVariantHash VideoPreviewPlugin::decode(const QString &file, VideoPreviewPlugin 
             QImage errorImg(":/icons/image_damaged.svg");
             errorImg = errorImg.scaled(46, 46);
             auto img = GrandSearch::CommonTools::creatErrorImage({192, 108}, errorImg);
-            QPixmap pixmap = VideoPreviewPlugin::scaleAndRound(img, maxSize);
+            QPixmap pixmap = DecodeBridge::scaleAndRound(img, maxSize);
             info.insert(kKeyThumbnailer, QVariant::fromValue(pixmap));
         }
         video_thumbnailer_destroy_image_data(imageData);
@@ -326,24 +326,23 @@ QVariantHash VideoPreviewPlugin::decode(const QString &file, VideoPreviewPlugin 
         QImage errorImg(":/icons/image_damaged.svg");
         errorImg = errorImg.scaled(46, 46);
         auto img = GrandSearch::CommonTools::creatErrorImage({192, 108}, errorImg);
-        QPixmap pixmap = VideoPreviewPlugin::scaleAndRound(img, VideoView::maxThumbnailSize());
+        QPixmap pixmap = DecodeBridge::scaleAndRound(img, VideoView::maxThumbnailSize());
         info.insert(kKeyThumbnailer, QVariant::fromValue(pixmap));
     }
 
     //检查一次是否中断
-    if (!self->m_decoding)
+    if (!self.isNull() && !self->decoding)
         return {};
 
-    self->m_decoding = false;
-    if (updateBySignal)
-        QMetaObject::invokeMethod(self, "updateInfo", Qt::QueuedConnection
-                                  , Q_ARG(QVariantHash, info)
-                                  , Q_ARG(bool, true));
+    if (!self.isNull()) {
+        self->decoding = false;
+        emit self->sigUpdateInfo(info, true);
+    }
 
     return info;
 }
 
-QPixmap VideoPreviewPlugin::scaleAndRound(const QImage &img, const QSize &size)
+QPixmap DecodeBridge::scaleAndRound(const QImage &img, const QSize &size)
 {
     auto pixmap = QPixmap::fromImage(img);
     // 缩放
@@ -367,4 +366,12 @@ QPixmap VideoPreviewPlugin::scaleAndRound(const QImage &img, const QSize &size)
     }
 
     return destImage;
+}
+
+DecodeBridge::DecodeBridge() : QObject()
+{
+}
+
+DecodeBridge::~DecodeBridge()
+{
 }

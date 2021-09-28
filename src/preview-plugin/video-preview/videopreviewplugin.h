@@ -25,6 +25,20 @@
 
 #include <QFuture>
 
+class DecodeBridge : public QObject
+{
+    Q_OBJECT
+public:
+    DecodeBridge();
+    ~DecodeBridge();
+    static QVariantHash decode(QSharedPointer<DecodeBridge> self, const QString &file);
+    static QPixmap scaleAndRound(const QImage &img, const QSize &size);
+signals:
+    void sigUpdateInfo(const QVariantHash &, bool needUpdate);
+public:
+    volatile bool decoding = false;
+};
+
 class VideoView;
 class VideoPreviewPlugin : public QObject, public GrandSearch::PreviewPlugin
 {
@@ -43,15 +57,11 @@ public:
 protected slots:
     void updateInfo(const QVariantHash &, bool needUpdate);
 protected:
-    static QVariantHash decode(const QString &file, VideoPreviewPlugin *self, bool updateBySignal);
-    static QPixmap scaleAndRound(const QImage &img, const QSize &size);
-protected:
     GrandSearch::ItemInfo m_item;
     GrandSearch::DetailInfoList m_infos;
     VideoView *m_view = nullptr;
     QObject *m_proxy = nullptr;
-    QFuture<QVariantHash> m_future;
-    volatile bool m_decoding = false;
+    QSharedPointer<DecodeBridge> m_decode;
 };
 
 #endif // VIDEOPREVIEWPLUGIN_H
