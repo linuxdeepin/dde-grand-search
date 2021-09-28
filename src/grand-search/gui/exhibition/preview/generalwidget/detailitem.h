@@ -30,6 +30,8 @@
 
 #include <DLabel>
 
+class ReplicableLabel;
+
 class DetailItem : public QWidget
 {
     Q_OBJECT
@@ -64,7 +66,7 @@ protected:
     int m_radius = 0;
 
     Dtk::Widget::DLabel *m_tagLabel = nullptr;
-    Dtk::Widget::DLabel *m_contentLabel = nullptr;
+    ReplicableLabel *m_contentLabel = nullptr;
 
     QHBoxLayout *m_mainLayout = nullptr;
 

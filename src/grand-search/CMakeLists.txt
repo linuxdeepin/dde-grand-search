@@ -93,6 +93,8 @@ set(GUISRC
     gui/exhibition/preview/generalpreviewplugin.cpp
     gui/exhibition/preview/generalwidget/generaltoolbar.h
     gui/exhibition/preview/generalwidget/generaltoolbar.cpp
+    gui/exhibition/preview/generalwidget/replicablelabel.h
+    gui/exhibition/preview/generalwidget/replicablelabel.cpp
     gui/exhibition/preview/generalwidget/detailitem.h
     gui/exhibition/preview/generalwidget/detailitem.cpp
     gui/exhibition/preview/generalwidget/detailwidget.h

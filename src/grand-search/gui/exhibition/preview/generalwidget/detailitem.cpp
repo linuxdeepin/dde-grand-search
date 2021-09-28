@@ -19,6 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "detailitem.h"
+#include "replicablelabel.h"
+
+#include <DLineEdit>
 
 #include <QPainter>
 #include <QPainterPath>
@@ -40,14 +43,13 @@ DetailItem::DetailItem(QWidget *parent)
     m_tagLabel = new DLabel(this);
     m_tagLabel->setAlignment(Qt::AlignLeft);
 
-    m_contentLabel = new DLabel(this);
+    m_contentLabel = new ReplicableLabel(this);
     m_contentLabel->setAlignment(Qt::AlignLeft);
 
     m_mainLayout = new QHBoxLayout(this);
 
     m_mainLayout->addWidget(m_tagLabel);
     m_mainLayout->addWidget(m_contentLabel);
-    m_mainLayout->addStretch();
 }
 
 DetailItem::~DetailItem()
