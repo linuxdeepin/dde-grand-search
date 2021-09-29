@@ -177,9 +177,11 @@ void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QSty
     QString mtext = fontMetrics.elidedText(name, Qt::ElideRight, listItemTextMaxWidth);
     if (mtext != name && GRANDSEARCH_CLASS_WEB_STATICTEXT == searcher) {
         // 如果存在截断显示，且该项属于web搜索，则截断时需要保留尾部的双引号
-        static const int markWidth = fontMetrics.size(Qt::TextSingleLine, "\"").width();
+        // 根据文档工程师给出的翻译规范，双引号会被翻译，需要使用翻译后的字符计算宽度
+        static const QString markStr = name.right(1);
+        static const int markWidth = fontMetrics.size(Qt::TextSingleLine, markStr).width();
         mtext = fontMetrics.elidedText(name.left(name.count() - 1), Qt::ElideRight, listItemTextMaxWidth - markWidth);
-        mtext.append("\"");
+        mtext.append(markStr);
     }
 
     QStyleOptionViewItem viewOption(option);

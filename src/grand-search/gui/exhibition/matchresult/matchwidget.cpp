@@ -86,7 +86,7 @@ void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
 
             MatchedItems webItems;
             for (auto val : itData.value()) {
-                QString showItem = tr("Search for ") + QString("\"%1\"").arg(val.item);
+                QString showItem = tr("Search for \"%1\"").arg(val.item);
                 val.name = showItem;
                 webItems.append(val);
             }

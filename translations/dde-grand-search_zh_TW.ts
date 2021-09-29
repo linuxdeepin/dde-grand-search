@@ -2,32 +2,32 @@
 <context>
     <name>AudioPreviewPlugin</name>
     <message>
-        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="67"/>
+        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="71"/>
         <source>Artist:</source>
         <translation>演唱者：</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="70"/>
+        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="83"/>
         <source>Album:</source>
         <translation>專輯名稱：</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="85"/>
+        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="108"/>
         <source>Duration:</source>
         <translation>影片長度：</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="90"/>
+        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="123"/>
         <source>Type:</source>
         <translation>類型：</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="93"/>
+        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="135"/>
         <source>Location:</source>
         <translation>位置：</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="97"/>
+        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="149"/>
         <source>Time modified:</source>
         <translation>修改時間：</translation>
     </message>
@@ -35,7 +35,7 @@
 <context>
     <name>DdeGrandSearchDockPlugin</name>
     <message>
-        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="133"/>
+        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="143"/>
         <source>Search settings</source>
         <translation>搜尋設定</translation>
     </message>
@@ -56,17 +56,17 @@
 <context>
     <name>EntranceWidgetPrivate</name>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="108"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="91"/>
         <source>Cut</source>
         <translation>剪下</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="112"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="95"/>
         <source>Copy</source>
         <translation>複製</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="116"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="99"/>
         <source>Paste</source>
         <translation>貼上</translation>
     </message>
@@ -74,12 +74,12 @@
 <context>
     <name>GeneralPreviewPlugin</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="187"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="205"/>
         <source>Location:</source>
         <translation>位置：</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="191"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="216"/>
         <source>Time modified:</source>
         <translation>修改時間：</translation>
     </message>
@@ -87,17 +87,17 @@
 <context>
     <name>GeneralToolBar</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="68"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="82"/>
         <source>Open</source>
         <translation>開啟</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="72"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="87"/>
         <source>Open Path</source>
         <translation>打開路徑</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="76"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="92"/>
         <source>Copy Path</source>
         <translation>複製路徑</translation>
     </message>
@@ -111,9 +111,37 @@
     </message>
 </context>
 <context>
+    <name>ImagePreviewPlugin</name>
+    <message>
+        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="65"/>
+        <source>Dimension:</source>
+        <translation>尺寸：</translation>
+    </message>
+    <message>
+        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="81"/>
+        <source>Type:</source>
+        <translation>類型：</translation>
+    </message>
+    <message>
+        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="96"/>
+        <source>Size:</source>
+        <translation>大小：</translation>
+    </message>
+    <message>
+        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="108"/>
+        <source>Location:</source>
+        <translation>位置：</translation>
+    </message>
+    <message>
+        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="122"/>
+        <source>Time modified:</source>
+        <translation>修改時間：</translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/grand-search/gui/mainwindow.cpp" line="202"/>
+        <location filename="../src/grand-search/gui/mainwindow.cpp" line="209"/>
         <source>No search results</source>
         <translation>無搜尋結果</translation>
     </message>
@@ -207,32 +235,32 @@
         <translation>Web搜尋</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="37"/>
+        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="38"/>
         <source>Dimension:</source>
         <translation>尺寸：</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="38"/>
+        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="39"/>
         <source>Type:</source>
         <translation>類型：</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="39"/>
+        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="40"/>
         <source>Size:</source>
         <translation>大小：</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="40"/>
+        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="41"/>
         <source>Duration:</source>
         <translation>影片長度：</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="41"/>
+        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="42"/>
         <source>Location:</source>
         <translation>位置：</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="42"/>
+        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="43"/>
         <source>Time modified:</source>
         <translation>修改時間：</translation>
     </message>
