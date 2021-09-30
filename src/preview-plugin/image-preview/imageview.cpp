@@ -111,6 +111,9 @@ void ImageView::loadImage(const QString &file, const QString &type)
     qreal wZoom = qreal(IMAGEWIDTH) / showSize.width();
     qreal hZoom = qreal(IMAGEHEIGHT) / showSize.height();
     qreal zoom = wZoom > hZoom ? hZoom : wZoom;
+    // 原始尺寸小于缩略图区域尺寸，不做拉伸
+    if (zoom > 1)
+        zoom = 1;
     int w = int(showSize.width() * zoom);
     int h = int(showSize.height() * zoom);
     m_imageLabel->setFixedSize(w, h);
@@ -150,8 +153,8 @@ void ImageView::initUI()
     titleLayout->addWidget(m_titleLabel);
 
     m_mainLayout = new QVBoxLayout(this);
-    m_mainLayout->setContentsMargins(10, 10, 10, 10);
-    m_mainLayout->setSpacing(8);
+    m_mainLayout->setContentsMargins(35, 12, 35, 0);
+    m_mainLayout->setSpacing(0);
 
     m_mainLayout->addLayout(imageLayout);
     m_mainLayout->addLayout(titleLayout);

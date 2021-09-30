@@ -41,13 +41,14 @@ DetailItem::DetailItem(QWidget *parent)
     m_radius = 8;
 
     m_tagLabel = new DLabel(this);
-    m_tagLabel->setAlignment(Qt::AlignLeft);
+    m_tagLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
     m_contentLabel = new ReplicableLabel(this);
     m_contentLabel->setAlignment(Qt::AlignLeft);
 
     m_mainLayout = new QHBoxLayout(this);
 
+    m_mainLayout->setSpacing(2);
     m_mainLayout->addWidget(m_tagLabel);
     m_mainLayout->addWidget(m_contentLabel);
 }
