@@ -197,29 +197,29 @@ bool GrandSearchInterface::OpenWithPlugin(const QString &searcher, const QString
     return d->m_main->searcherAction(searcher, PLUGININTERFACE_PROTOCOL_ACTION_OPEN, item);
 }
 
-bool GrandSearchInterface::Configure(const QVariantMap &)
-{
-    CHECKINVOKER(false);
+//bool GrandSearchInterface::Configure(const QVariantMap &)
+//{
+//    CHECKINVOKER(false);
 
-    return false;
-}
+//    return false;
+//}
 
-QVariantMap GrandSearchInterface::Configuration() const
-{
-    return QVariantMap();
-}
+//QVariantMap GrandSearchInterface::Configuration() const
+//{
+//    return QVariantMap();
+//}
 
-bool GrandSearchInterface::SetFeedBackStrategy(const QVariantMap &)
-{
-    CHECKINVOKER(false);
+//bool GrandSearchInterface::SetFeedBackStrategy(const QVariantMap &)
+//{
+//    CHECKINVOKER(false);
 
-    return false;
-}
+//    return false;
+//}
 
-QVariantMap GrandSearchInterface::FeedBackStrategy() const
-{
-    return QVariantMap();
-}
+//QVariantMap GrandSearchInterface::FeedBackStrategy() const
+//{
+//    return QVariantMap();
+//}
 
 bool GrandSearchInterface::KeepAlive(const QString &session)
 {

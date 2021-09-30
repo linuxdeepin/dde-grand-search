@@ -73,11 +73,6 @@ set(SEARCHER
     searcher/app/desktopappsearcher.cpp
     searcher/app/desktopappworker.h
     searcher/app/desktopappworker.cpp
-    searcher/setting/controlcentersearcher.h
-    searcher/setting/controlcentersearcherprivate.h
-    searcher/setting/controlcentersearcher.cpp
-    searcher/setting/controlcenterworker.h
-    searcher/setting/controlcenterworker.cpp
     searcher/web/statictextechoer.h
     searcher/web/statictextechoer.cpp
     searcher/web/statictextworker.h

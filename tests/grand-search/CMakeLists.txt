@@ -8,7 +8,17 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wl,--as-need -fPIE")
 
 # 定义可执行程序名称
-set(BIN_NAME ut-dde-grand-search)
+set(BIN_NAME test-dde-grand-search)
+
+# 应用库目录
+set(LIB_BASE_DIR "${LIB_PLATFORM_DIR}/${BIN_NAME}")
+
+# 插件目录
+set(PLUGIN_BASE_DIR "${LIB_BASE_DIR}/plugins")
+
+# 预览插件目录
+set(PLUGIN_PREVIEW_DIR "${PLUGIN_BASE_DIR}/preview")
+add_definitions(-DPLUGIN_PREVIEW_DIR="${PLUGIN_PREVIEW_DIR}")
 
 # 依赖包
 find_package(PkgConfig REQUIRED)

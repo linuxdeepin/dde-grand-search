@@ -18,7 +18,7 @@ set(PLUGIN_SEARCHER_DIR "${PLUGIN_DIR}/searcher")
 add_definitions(-DPLUGIN_SEARCHER_DIR="${PLUGIN_SEARCHER_DIR}")
 
 # 定义可执行程序名称
-set(BIN_NAME ut-dde-grand-search-daemon)
+set(BIN_NAME test-dde-grand-search-daemon)
 
 # 依赖包
 find_package(PkgConfig REQUIRED)

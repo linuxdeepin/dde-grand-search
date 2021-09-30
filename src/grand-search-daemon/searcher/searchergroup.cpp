@@ -52,10 +52,11 @@ void SearcherGroupPrivate::initBuiltin()
     appSearcher->asyncInit();
     m_builtin << appSearcher;
 
-    qInfo() << "create ControlCenterSearcher.";
-    auto settingSearcher = new ControlCenterSearcher(this);
-    settingSearcher->asyncInit();
-    m_builtin << settingSearcher;
+// 无需实现，交由插件实现
+//    qInfo() << "create ControlCenterSearcher.";
+//    auto settingSearcher = new ControlCenterSearcher(this);
+//    settingSearcher->asyncInit();
+//    m_builtin << settingSearcher;
 
     qInfo() << "create StaticTextEchoer.";
     auto stWebSearcher = new StaticTextEchoer(this);

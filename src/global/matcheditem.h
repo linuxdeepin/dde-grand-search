@@ -33,6 +33,12 @@ struct MatchedItem {
     QString type;   //界面显示的类型
     QString searcher;   //出自的搜索项
     QVariant extra;    //扩展信息，由各搜索结果补充的特殊属性QVariantHash
+
+    bool operator == (const MatchedItem &other) {
+        return item == other.item && name == other.name
+                && icon == other.icon && type == other.type
+                && searcher == other.searcher && extra == other.extra;
+    }
 };
 
 typedef QList<MatchedItem> MatchedItems;
