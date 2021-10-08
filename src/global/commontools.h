@@ -141,7 +141,7 @@ inline QString lineFeed(const QString &text, int nWidth, const QFont &font, int 
         return fm.elidedText(text, Qt::ElideMiddle, nWidth);
 
     if (!strText.isEmpty()) {
-        for (int i = 0; i < strText.size(); i++) {
+        for (int i = 1; i <= strText.size(); i++) {
             if (fm.width(strText.left(i)) >= nWidth) {
                 if (strListLine.size() + 1 == nElidedRow)
                     break;
