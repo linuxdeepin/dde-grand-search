@@ -24,7 +24,4 @@ if [ "$PIDS" != "" ]; then
         kill -9 $PIDS
         sleep 1
     fi
-    #重启
-    echo "restart dde-grand-search-daemon."
-    dbus-send --session --print-reply --type=method_call --dest=com.deepin.dde.daemon.GrandSearch /com/deepin/dde/daemon/GrandSearch com.deepin.dde.daemon.GrandSearch.KeepAlive string:''
 fi
