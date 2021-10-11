@@ -122,31 +122,11 @@ void EntranceWidget::showLabelAppIcon(bool visible)
     Q_ASSERT(d_p->m_lineEdit);
     Q_ASSERT(d_p->m_appIconLabel);
     Q_ASSERT(d_p->m_appIconAction);
-
     if (visible == d_p->m_appIconLabel->isVisible())
         return;
-
-    if (visible) {
-        d_p->m_lineEdit->addAction(d_p->m_appIconAction, QLineEdit::TrailingPosition);
-        /*!
-         * 设置appIconLabel为显示时，必须刷新显示输入框控件，否则在输入超长字符时，能看到清除按钮上显示残留的部分字符。
-         * 原因是：占位符appIconAction的宽度小于需要显示的appIconLabel宽度。
-         * 根本原因是：在主界面初始化完成后，QWidget::setVisible调用ensurePolished函数，最终在
-         * styleplugins/chameleon/chameleonStyle::polish调用了setProperty设置_d_dtk_lineeditActionWidth属性为-6。
-         * 在QLineEditPrivate::positionSideWidgets中（以及其他函数）调用sideWidgetParameters函数计算内嵌窗口时，返回的
-         * SideWidgetParameters参数中宽度比高度小，是一个矩形，导致显示图标出现两边截断显示。
-         * 1.如果没有该问题，可以直接使用appIconAction的接口setIcon设置图标，不需要使用appIconLabel。
-         * 2.如果直接使用appIconLabel而不使用QAction占位，则图标将和清楚按钮（action）重叠。
-         * 3.如果使用QWidgetAction接口setDefaultWidget设置appIconLabel后，再使用addAction添加，则布局能够正常。
-         *   但是QLineEdit计算输入显示范围时，不会考虑设置的appIconLabel窗口区域，导致超长输入时字符显示在清除按钮下方。
-         */
-        // 刷新输入框以及内嵌控件的显示
-        d_p->m_lineEdit->update();
-    } else {
-        d_p->m_lineEdit->removeAction(d_p->m_appIconAction);
-    }
-
+    d_p->m_appIconAction->setVisible(visible);
     d_p->m_appIconLabel->setVisible(visible);
+    d_p->m_lineEdit->update();
 }
 
 bool EntranceWidget::event(QEvent *event)
