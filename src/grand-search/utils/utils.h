@@ -96,6 +96,9 @@ public:
     // 返回该组是否支持预览
     static bool canPreview(const QString &searchGroupName);
 
+    // 根据当前主题返回合适的图标后缀（-light or -dark）
+    static QString iconThemeSuffix();
+
 private:
     static QMap<QString, QString> m_appIconNameMap;// 存放应用desktop文件对应的图标名称，用于搜索框应用图标刷新
     static QMimeDatabase m_mimeDb;

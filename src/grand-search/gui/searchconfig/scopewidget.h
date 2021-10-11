@@ -42,10 +42,16 @@ private slots:
     void onSwitchStateChanged(const bool checked);
 
 private:
+    void updateIcons();
+
+private:
     QVBoxLayout *m_mainLayout = nullptr;
     QLabel *m_groupLabel = nullptr;
 
     QHash<QString, QString> m_groupName;        // <searchGroupName, displayGroupName>
+    QList<GrandSearch::SwitchWidget*> m_switchWidgets;
+
+    QStringList m_displayIcons;                 // 显示图标
 };
 
 #endif // SCOPEWIDGET_H

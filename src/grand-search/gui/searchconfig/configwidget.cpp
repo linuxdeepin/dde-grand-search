@@ -58,7 +58,6 @@ void ConfigWidget::initUI()
     // 禁用默认菜单
     this->titlebar()->setMenuVisible(false);
 
-    // TODO:设计师提供图标后更新
     // 设置图标
     QIcon tmpIcon = QIcon(QString(":/icons/%1.svg").arg("dde-grand-search-setting"));
     this->titlebar()->setIcon(tmpIcon);

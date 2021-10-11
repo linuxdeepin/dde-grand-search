@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "generaltoolbar.h"
+#include "utils/utils.h"
 
 #include <DPushButton>
 #include <DVerticalLine>
@@ -78,19 +79,21 @@ void GeneralToolBar::initUi()
     m_hMainLayout->setContentsMargins(TOOLBAR_LEFT_MARGIN, 0, TOOLBAR_RIGHT_MARGIN, TOOLBAR_BOTTOM_MARGIN);
     m_hMainLayout->setSpacing(0);
 
+    QString suffix = Utils::iconThemeSuffix();
+
     m_openBtn = new IconButton(this);
     m_openBtn->setText(tr("Open"));
-    m_openBtn->setIcon(QIcon(":/icons/open.svg"));
+    m_openBtn->setIcon(QIcon(QString(":/icons/open%1.svg").arg(suffix)));
     m_openBtn->setFixedWidth(TOOLBTN_WIDTH_NARROW);
 
     m_openPathBtn = new IconButton(this);
     m_openPathBtn->setText(tr("Open Path"));
-    m_openPathBtn->setIcon(QIcon(":/icons/openpath.svg"));
+    m_openPathBtn->setIcon(QIcon(QString(":/icons/openpath%1.svg").arg(suffix)));
     m_openPathBtn->setFixedWidth(TOOLBTN_WIDTH_WIDE);
 
     m_copyPathBtn = new IconButton(this);
     m_copyPathBtn->setText(tr("Copy Path"));
-    m_copyPathBtn->setIcon(QIcon(":/icons/copypath.svg"));
+    m_copyPathBtn->setIcon(QIcon(QString(":/icons/copypath%1.svg").arg(suffix)));
     m_openPathBtn->setFixedWidth(TOOLBTN_WIDTH_WIDE);
 
     m_vLine1 = new DVerticalLine(this);

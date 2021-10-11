@@ -31,6 +31,7 @@ extern "C" {
 
 #include <DArrowRectangle>
 #include <DDesktopEntry>
+#include <DGuiApplicationHelper>
 
 #include <QCollator>
 #include <QFileInfo>
@@ -44,6 +45,7 @@ extern "C" {
 
 DCORE_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
+DGUI_USE_NAMESPACE
 using namespace GrandSearch;
 
 static const QString SessionManagerService = "com.deepin.SessionManager";
@@ -582,4 +584,11 @@ bool Utils::canPreview(const QString &searchGroupName)
     };
 
     return containPreviewGroup.contains(searchGroupName);
+}
+
+QString Utils::iconThemeSuffix()
+{
+    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
+        return QString("-light");
+    return QString("-dark");
 }

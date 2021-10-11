@@ -24,8 +24,10 @@
 #include "business/config/searchconfig.h"
 #include "switchwidget/switchwidget.h"
 #include "gui/datadefine.h"
+#include "utils/utils.h"
 
 #include <DFontSizeManager>
+#include <DGuiApplicationHelper>
 
 #include <QLabel>
 #include <QFont>
@@ -62,36 +64,36 @@ ScopeWidget::ScopeWidget(QWidget *parent)
                  << GRANDSEARCH_GROUP_APP /*<< GRANDSEARCH_GROUP_SETTING*/ << GRANDSEARCH_GROUP_FILE_VIDEO      //  需求：设置延期
                  << GRANDSEARCH_GROUP_FILE_AUDIO << GRANDSEARCH_GROUP_FILE_PICTURE << GRANDSEARCH_GROUP_WEB;
 
-    QStringList displayIcons{"filesearch", "foldersearch", "documentsearch", "appsearch"/*, "settingsearch"*/
+    m_displayIcons = QStringList{"filesearch", "foldersearch", "documentsearch", "appsearch"/*, "settingsearch"*/
                              , "videosearch", "audiosearch", "picturesearch", "websearch"};
 
-    Q_ASSERT(displayOrder.count() == displayIcons.count());
+    Q_ASSERT(displayOrder.count() == m_displayIcons.count());
 
     for (int i = 0; i < displayOrder.count(); ++i) {
         const QString &serachGroupy = displayOrder.at(i);
-        const QString &iconName = displayIcons.at(i);
-        QIcon icon = QIcon(QString(":/icons/%1.svg").arg(iconName));
-
         bool enable = SearchConfig::instance()->getConfig(GRANDSEARCH_SEARCH_GROUP, serachGroupy, true).toBool();
         SwitchWidget *switchWidget = new SwitchWidget(this);
         switchWidget->setFixedSize(SWITCHWIDGETWIDTH, SWITCHWIDGETHEIGHT);
         switchWidget->setEnableBackground(true);
-        switchWidget->setIcon(icon, QSize(SWITCHWIDGETICONSIZE, SWITCHWIDGETICONSIZE));
         switchWidget->setTitle(m_groupName.value(serachGroupy));
         switchWidget->setChecked(enable);
         switchWidget->setProperty(GRANDSEARCH_SEARCH_GROUP, serachGroupy);
 
         m_mainLayout->addWidget(switchWidget);
+        m_switchWidgets.append(switchWidget);
 
         connect(switchWidget, &SwitchWidget::checkedChanged, this, &ScopeWidget::onSwitchStateChanged);
     }
 
     setLayout(m_mainLayout);
+    updateIcons();
+
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &ScopeWidget::updateIcons);
 }
 
 ScopeWidget::~ScopeWidget()
 {
-
+    m_switchWidgets.clear();
 }
 
 void ScopeWidget::onSwitchStateChanged(const bool checked)
@@ -103,4 +105,23 @@ void ScopeWidget::onSwitchStateChanged(const bool checked)
         QString group = switchWidget->property(GRANDSEARCH_SEARCH_GROUP).toString();
         SearchConfig::instance()->setConfig(GRANDSEARCH_SEARCH_GROUP, group, checked);
     }
+}
+
+void ScopeWidget::updateIcons()
+{
+    Q_ASSERT(m_switchWidgets.count() == m_displayIcons.count());
+
+    QString suffix = Utils::iconThemeSuffix();
+
+    for (int i = 0; i < m_switchWidgets.count(); ++i) {
+
+        QString iconName = m_displayIcons.at(i);
+        QIcon icon = QIcon(QString(":/icons/%1%2.svg").arg(iconName).arg(suffix));
+
+        auto switchWidget = m_switchWidgets.at(i);
+        Q_ASSERT(switchWidget);
+
+        switchWidget->setIcon(icon, QSize(SWITCHWIDGETICONSIZE, SWITCHWIDGETICONSIZE));
+    }
+    update();
 }

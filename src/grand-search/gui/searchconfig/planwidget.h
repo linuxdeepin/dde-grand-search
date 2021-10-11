@@ -42,12 +42,18 @@ private slots:
     void onSwitchStateChanged(const bool checked);
 
 private:
+    void updateIcons();
+
+private:
     QVBoxLayout *m_mainLayout = nullptr;
     QLabel *m_groupLabel = nullptr;
     QLabel *m_contentLabel = nullptr;
     QLabel *m_tipsLabel = nullptr;
 
     QHash<QString, QString> m_groupName;        // <searchGroupName, displayGroupName>
+    GrandSearch::SwitchWidget* m_switchWidget;
+
+    QString m_displayIcon;                      // 显示图标
 };
 
 #endif // PLANWIDGET_H

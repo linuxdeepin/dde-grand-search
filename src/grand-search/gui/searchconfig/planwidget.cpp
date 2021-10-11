@@ -24,8 +24,10 @@
 #include "global/searchconfigdefine.h"
 #include "switchwidget/switchwidget.h"
 #include "hyperlinklabel/hyperlinklabel.h"
+#include "utils/utils.h"
 
 #include <DFontSizeManager>
+#include <DGuiApplicationHelper>
 
 #include <QLabel>
 #include <QVBoxLayout>
@@ -45,18 +47,16 @@ PlanWidget::PlanWidget(QWidget *parent)
     m_mainLayout->addWidget(m_groupLabel);
 
     QString display = tr("Join search experience program");
-    QString iconName("experienceplan");
-    QIcon icon = QIcon(QString(":/icons/%1.svg").arg(iconName));
+    m_displayIcon = "experienceplan";
 
     bool enable = SearchConfig::instance()->getConfig(GRANDSEARCH_PLAN_GROUP, GRANDSEARCH_PLAN_EXPERIENCE, false).toBool();
-    SwitchWidget *switchWidget = new SwitchWidget(this);
-    switchWidget->setFixedSize(SWITCHWIDGETWIDTH, SWITCHWIDGETHEIGHT);
-    switchWidget->setEnableBackground(true);
-    switchWidget->setIcon(icon, QSize(SWITCHWIDGETICONSIZE, SWITCHWIDGETICONSIZE));
-    switchWidget->setTitle(display);
-    switchWidget->setChecked(enable);
-    m_mainLayout->addWidget(switchWidget);
-    switchWidget->setProperty(GRANDSEARCH_SEARCH_GROUP, GRANDSEARCH_PLAN_EXPERIENCE);
+    m_switchWidget = new SwitchWidget(this);
+    m_switchWidget->setFixedSize(SWITCHWIDGETWIDTH, SWITCHWIDGETHEIGHT);
+    m_switchWidget->setEnableBackground(true);
+    m_switchWidget->setTitle(display);
+    m_switchWidget->setChecked(enable);
+    m_mainLayout->addWidget(m_switchWidget);
+    m_switchWidget->setProperty(GRANDSEARCH_SEARCH_GROUP, GRANDSEARCH_PLAN_EXPERIENCE);
 
     QString content = tr("Joining the search experience program means that "
                          "you grant and authorize us to collect the information of "
@@ -76,7 +76,10 @@ PlanWidget::PlanWidget(QWidget *parent)
     m_mainLayout->addWidget(m_contentLabel);
     m_mainLayout->addWidget(m_tipsLabel);
 
-    connect(switchWidget, &SwitchWidget::checkedChanged, this, &PlanWidget::onSwitchStateChanged);
+    updateIcons();
+
+    connect(m_switchWidget, &SwitchWidget::checkedChanged, this, &PlanWidget::onSwitchStateChanged);
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &PlanWidget::updateIcons);
 }
 
 PlanWidget::~PlanWidget()
@@ -92,4 +95,13 @@ void PlanWidget::onSwitchStateChanged(const bool checked)
     if (switchWidget) {
         SearchConfig::instance()->setConfig(GRANDSEARCH_PLAN_GROUP, GRANDSEARCH_PLAN_EXPERIENCE, checked);
     }
+}
+
+void PlanWidget::updateIcons()
+{
+    QString suffix = Utils::iconThemeSuffix();
+    QIcon icon = QIcon(QString(":/icons/%1%2.svg").arg(m_displayIcon).arg(suffix));
+    m_switchWidget->setIcon(icon, QSize(SWITCHWIDGETICONSIZE, SWITCHWIDGETICONSIZE));
+
+    update();
 }
