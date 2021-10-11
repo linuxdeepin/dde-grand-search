@@ -161,25 +161,18 @@ TEST(TaskCommanderTest, ut_deleteSelf)
 TEST(TaskCommanderTest, ut_deleteSelf_1)
 {
     TaskCommander *tc = new TaskCommander("test");
-
-    QMutex mtx;
-    mtx.lock();
-
-    QMutex mtx2;
-    mtx2.lock();
-    tc->d->m_asyncLine.setFuture(QtConcurrent::run([&mtx, &mtx2]() {mtx2.unlock();mtx.lock();}));
+    bool exit = false;
+    tc->d->m_asyncLine.setFuture(QtConcurrent::run([&exit]() { while (!exit) {
+            QThread::msleep(1);
+        }}));
     ASSERT_FALSE(tc->d->m_asyncLine.isFinished());
     ASSERT_TRUE(tc->d->m_syncLine.isFinished());
     ASSERT_FALSE(tc->d->m_deleted);
 
-    //等待线程启动
-    mtx2.lock();
-
     tc->deleteSelf();
-
-    //退出线程
-    mtx.unlock();
+    exit = true;
     ASSERT_TRUE(tc->d->m_deleted);
+    tc->d->m_asyncLine.waitForFinished();
     EXPECT_NO_FATAL_FAILURE(delete tc);
 }
 
