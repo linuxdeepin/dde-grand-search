@@ -26,6 +26,8 @@
 #include <DSearchEdit>
 #include <DStyle>
 #include <DLabel>
+#include <DFontSizeManager>
+#include <DGuiApplicationHelper>
 
 #include <QLineEdit>
 #include <QPushButton>
@@ -105,7 +107,7 @@ void EntranceWidgetPrivate::showMenu(const QPoint &pos)
 }
 
 EntranceWidget::EntranceWidget(QWidget *parent)
-    : DWidget(parent)
+    : QFrame(parent)
     , d_p(new EntranceWidgetPrivate(this))
 {
     initUI();
@@ -136,12 +138,12 @@ bool EntranceWidget::event(QEvent *event)
         return true;
     }
 
-    return DWidget::event(event);
+    return QFrame::event(event);
 }
 
 void EntranceWidget::paintEvent(QPaintEvent *event)
 {
-    DWidget::paintEvent(event);
+    QFrame::paintEvent(event);
 }
 
 bool EntranceWidget::eventFilter(QObject *watched, QEvent *event)
@@ -184,7 +186,7 @@ bool EntranceWidget::eventFilter(QObject *watched, QEvent *event)
             return true;
         }
     }
-    return DWidget::eventFilter(watched, event);
+    return QFrame::eventFilter(watched, event);
 }
 
 void EntranceWidget::initUI()
@@ -195,6 +197,23 @@ void EntranceWidget::initUI()
     d_p->m_lineEdit = d_p->m_searchEdit->lineEdit();
     d_p->m_lineEdit->setMaxLength(SearchMaxLength);
     d_p->m_lineEdit->installEventFilter(this);
+
+    QFont lineFont = d_p->m_lineEdit->font();
+    lineFont = DFontSizeManager::instance()->get(DFontSizeManager::T4, lineFont);
+    d_p->m_lineEdit->setFont(lineFont);
+
+    QPalette palette;
+    QColor colorButton(255, 255, 255, int(0.15 * 255));
+    QColor colorText(0, 0, 0);
+    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
+        colorText = QColor(255, 255, 255);
+
+    palette.setColor(QPalette::Button, colorButton);
+    palette.setColor(QPalette::Text, colorText);
+    palette.setColor(QPalette::ButtonText, colorText);
+
+    d_p->m_searchEdit->lineEdit()->setPalette(palette);
+    DStyle::setFocusRectVisible(d_p->m_searchEdit->lineEdit(), true);
 
     d_p->m_appIconLabel = new DLabel(d_p->m_searchEdit);
     d_p->m_appIconLabel->setFixedSize(LabelSize, LabelSize);

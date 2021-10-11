@@ -23,12 +23,11 @@
 
 #include "global/matcheditem.h"
 
-#include <DWidget>
-
+#include <QFrame>
 #include <QScopedPointer>
 
 class EntranceWidgetPrivate;
-class EntranceWidget : public Dtk::Widget::DWidget
+class EntranceWidget : public QFrame
 {
     Q_OBJECT
 public:

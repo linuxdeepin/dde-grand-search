@@ -20,13 +20,23 @@
  */
 #include "replicablelabel.h"
 
+#include <DGuiApplicationHelper>
+#include <DStyle>
+
 #include <QMouseEvent>
 #include <QResizeEvent>
+
+DGUI_USE_NAMESPACE
+DWIDGET_USE_NAMESPACE
 
 ReplicableLabel::ReplicableLabel(QWidget *parent)
     : QLineEdit(parent)
 {
-    this->setStyleSheet("QLineEdit{background:transparent;border-width:0;border-style:outset;}");
+    QPalette palette;
+    QColor colorButton(0, 0, 0, 0);
+    palette.setColor(QPalette::Button, colorButton);
+    this->setPalette(palette);
+    DStyle::setFocusRectVisible(this, false);
 
     setReadOnly(true);
     setContextMenuPolicy(Qt::NoContextMenu);

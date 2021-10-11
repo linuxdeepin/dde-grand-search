@@ -24,6 +24,8 @@
 #include "QObject"
 #include "entrancewidget.h"
 
+#include <DWidget>
+
 DWIDGET_BEGIN_NAMESPACE
 class DSearchEdit;
 class DLabel;
