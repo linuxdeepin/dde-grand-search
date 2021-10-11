@@ -48,15 +48,10 @@ NameLabel::NameLabel(const QString &text, QWidget *parent, Qt::WindowFlags f):
     setObjectName("NameLabel");
     setFixedWidth(NAME_WIDTH);
 
-    QColor textColor = QColor(0, 0, 0, static_cast<int>(255 * 0.9));
-    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
-        textColor = QColor(255, 255, 255, static_cast<int>(255 * 0.9));
-    QPalette pa = palette();
-    pa.setColor(QPalette::WindowText, textColor);
-    setPalette(pa);
-
-    QFont font = DFontSizeManager::instance()->get(DFontSizeManager::T6);
-    font.setWeight(QFont::Medium);
+    QFont titleFont = this->font();
+    titleFont.setWeight(QFont::Medium);
+    titleFont = DFontSizeManager::instance()->get(DFontSizeManager::T5, titleFont);
+    this->setFont(titleFont);
 
     setAlignment(Qt::AlignBottom | Qt::AlignLeft);
 }
@@ -66,9 +61,9 @@ SizeLabel::SizeLabel(const QString &text, QWidget *parent, Qt::WindowFlags f):
 {
     setObjectName("SizeLabel");
     setFixedWidth(NAME_WIDTH);
-    QColor textColor = QColor(124, 124, 124, static_cast<int>(255 * 1));
+    QColor textColor = QColor(0, 0, 0, static_cast<int>(255 * 0.4));
     if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
-        textColor = QColor(255, 255, 255, static_cast<int>(255 * 1));
+        textColor = QColor(255, 255, 255, static_cast<int>(255 * 0.4));
     QPalette pa = palette();
     pa.setColor(QPalette::WindowText, textColor);
     setPalette(pa);

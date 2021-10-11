@@ -22,6 +22,7 @@
 #include "global/commontools.h"
 
 #include <DLabel>
+#include <DFontSizeManager>
 
 #include <QDebug>
 #include <QtConcurrent>
@@ -141,9 +142,9 @@ void ImageView::initUI()
     m_titleLabel->setFixedWidth(IMAGEWIDTH);
     m_titleLabel->setAlignment(Qt::AlignCenter);
 
-    // 名称加粗显示
-    auto titleFont = m_titleLabel->font();
-    titleFont.setWeight(QFont::Bold);
+    QFont titleFont = m_titleLabel->font();
+    titleFont.setWeight(QFont::Medium);
+    titleFont = DFontSizeManager::instance()->get(DFontSizeManager::T5, titleFont);
     m_titleLabel->setFont(titleFont);
 
     QHBoxLayout *imageLayout = new QHBoxLayout;

@@ -20,6 +20,8 @@
  */
 #include "videoview.h"
 
+#include <DFontSizeManager>
+
 #include <QVBoxLayout>
 #include <QFileInfo>
 #include <QPainter>
@@ -56,9 +58,9 @@ void VideoView::initUI()
     m_title->setElideMode(Qt::ElideMiddle);
     m_title->setMargin(0);
 
-    //名称加粗显示
-    auto titleFont = m_title->font();
-    titleFont.setWeight(QFont::Bold);
+    QFont titleFont = m_title->font();
+    titleFont.setWeight(QFont::Medium);
+    titleFont = DFontSizeManager::instance()->get(DFontSizeManager::T5, titleFont);
     m_title->setFont(titleFont);
 
     lay->addWidget(m_title);

@@ -59,6 +59,8 @@ public:
 protected:
     void paintEvent(QPaintEvent *event);
 
+private:
+    QColor getTagColor();
 protected:
     bool m_topRound = false;
     bool m_bottomRound = false;

@@ -22,6 +22,7 @@
 #include "replicablelabel.h"
 
 #include <DLineEdit>
+#include <DGuiApplicationHelper>
 
 #include <QPainter>
 #include <QPainterPath>
@@ -42,6 +43,11 @@ DetailItem::DetailItem(QWidget *parent)
 
     m_tagLabel = new DLabel(this);
     m_tagLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+
+    QColor textColor = getTagColor();
+    QPalette pa = m_tagLabel->palette();
+    pa.setColor(QPalette::WindowText, textColor);
+    m_tagLabel->setPalette(pa);
 
     m_contentLabel = new ReplicableLabel(this);
     m_contentLabel->setAlignment(Qt::AlignLeft);
@@ -185,4 +191,15 @@ void DetailItem::paintEvent(QPaintEvent *event)
     p.drawPath(path);
 
     return QWidget::paintEvent(event);
+}
+
+QColor DetailItem::getTagColor()
+{
+    static  QColor textColor;
+    if (!textColor.isValid()) {
+        textColor = QColor(82, 106, 127);
+        if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
+            textColor = QColor(109, 124, 136);
+    }
+    return textColor;
 }
