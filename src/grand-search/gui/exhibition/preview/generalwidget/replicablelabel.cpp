@@ -32,11 +32,7 @@ DWIDGET_USE_NAMESPACE
 ReplicableLabel::ReplicableLabel(QWidget *parent)
     : QLineEdit(parent)
 {
-    QPalette palette;
-    QColor colorButton(0, 0, 0, 0);
-    palette.setColor(QPalette::Button, colorButton);
-    this->setPalette(palette);
-    DStyle::setFocusRectVisible(this, false);
+    this->setStyleSheet("QLineEdit{background:transparent;border-width:0;border-style:outset;}");
 
     setReadOnly(true);
     setContextMenuPolicy(Qt::NoContextMenu);
