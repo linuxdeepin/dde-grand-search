@@ -48,7 +48,7 @@ public:
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 private:
-     PlainTextEdit* m_browser = nullptr;
+     PlainTextEdit *m_browser = nullptr;
      QLabel *m_errLabel = nullptr;
      QStackedWidget *m_stackedWidget = nullptr;
 };

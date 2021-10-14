@@ -63,28 +63,46 @@ QString TextView::toUnicode(const QByteArray &data)
 
 void TextView::showErrorPage()
 {
+    //重设边距
+    layout()->setContentsMargins(10, 0, 0, 0);
     m_stackedWidget->setCurrentWidget(m_errLabel);
 
+    static int width = 360;
+    static int height = 386;
     QImage errImg(":/icons/file_damaged.svg");
     errImg = errImg.scaled(70, 70);
-    errImg = GrandSearch::CommonTools::creatErrorImage({360, 386}, errImg);
+    errImg = GrandSearch::CommonTools::creatErrorImage({width, height}, errImg);
 
-    m_errLabel->setPixmap(QPixmap::fromImage(errImg));
+    QPixmap roundPixmap(width, height);
+    roundPixmap.fill(Qt::transparent);
+    QPainter painter(&roundPixmap);
+    painter.setRenderHints(QPainter::Antialiasing, true);           // 抗锯齿
+    painter.setRenderHints(QPainter::SmoothPixmapTransform, true);  // 平滑
+
+    QPainterPath path;
+    QRect rect(0, 0, width, height);
+    path.addRoundedRect(rect, 8, 8);            // 圆角
+    painter.setClipPath(path);
+    painter.drawPixmap(0, 0, width, height, QPixmap::fromImage(errImg));
+
+    m_errLabel->setPixmap(roundPixmap);
 }
 
 void TextView::paintEvent(QPaintEvent *event)
 {
-    QPainter painter(this);
-    painter.setRenderHint(QPainter::Antialiasing);
-    //文本框的背景
-    auto view = m_browser->viewport();
-    painter.setBrush(view->palette().color(view->backgroundRole()));
-    painter.setPen(Qt::NoPen);
+    if (m_stackedWidget->currentWidget() == m_browser) {
+        QPainter painter(this);
+        painter.setRenderHint(QPainter::Antialiasing);
+        //文本框的背景
+        auto view = m_browser->viewport();
+        painter.setBrush(view->palette().color(view->backgroundRole()));
+        painter.setPen(Qt::NoPen);
 
-    //画圆角背景,背景大小为去除左边距10的区域
-    auto r = rect();
-    r.setLeft(10);
-    painter.drawRoundedRect(r, 8, 8);
+        //画圆角背景,背景大小为去除左边距10的区域
+        auto r = rect();
+        r.setLeft(10);
+        painter.drawRoundedRect(r, 8, 8);
+    }
 
     QWidget::paintEvent(event);
 }
@@ -104,6 +122,7 @@ void TextView::initUI()
 
     m_errLabel = new QLabel(this);
     m_stackedWidget = new QStackedWidget(this);
+    m_stackedWidget->setContentsMargins(0, 0, 0, 0);
 
     m_browser = new PlainTextEdit(this);
 
@@ -144,6 +163,8 @@ void TextView::setSource(const QString &path)
 
     QFile file(path);
     if (file.open(QFile::ReadOnly)) {
+        //恢复边距
+        layout()->setContentsMargins(10 + 10, 0, 0 + 10, 0);
         m_stackedWidget->setCurrentWidget(m_browser);
         auto datas = file.read(2048);
         m_browser->setPlainText(toUnicode(datas));
