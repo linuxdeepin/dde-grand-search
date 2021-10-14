@@ -61,6 +61,7 @@ protected:
 
 private:
     QColor getTagColor();
+    QColor getContentColor();
 protected:
     bool m_topRound = false;
     bool m_bottomRound = false;

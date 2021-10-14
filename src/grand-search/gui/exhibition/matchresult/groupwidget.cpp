@@ -250,6 +250,11 @@ void GroupWidget::initUi()
     m_groupLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
     m_groupLabel->setContentsMargins(0, 0, 0, 0);
 
+    QFont groupLabelFont = m_groupLabel->font();
+    groupLabelFont.setWeight(QFont::Normal);
+    groupLabelFont = DFontSizeManager::instance()->get(DFontSizeManager::T8, groupLabelFont);
+    m_groupLabel->setFont(groupLabelFont);
+
     // 查看更多按钮
     m_viewMoreButton = new DPushButton(tr("More"), this);
     m_viewMoreButton->setMaximumHeight(MoreBtnMaxHeight);

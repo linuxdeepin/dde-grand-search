@@ -23,6 +23,7 @@
 
 #include <DLineEdit>
 #include <DGuiApplicationHelper>
+#include <DFontSizeManager>
 
 #include <QPainter>
 #include <QPainterPath>
@@ -35,6 +36,8 @@ using namespace GrandSearch;
 DetailItem::DetailItem(QWidget *parent)
     : QWidget(parent)
 {
+    setFixedSize(360, 36);
+
     m_backgroundColor = QColor(0, 0, 0, int(255*0.05));
 
     setContentsMargins(20, 0, 10, 0);
@@ -44,6 +47,10 @@ DetailItem::DetailItem(QWidget *parent)
     m_tagLabel = new DLabel(this);
     m_tagLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
+    QFont tagFont = m_tagLabel->font();
+    tagFont = DFontSizeManager::instance()->get(DFontSizeManager::T8, tagFont);
+    m_tagLabel->setFont(tagFont);
+
     QColor textColor = getTagColor();
     QPalette pa = m_tagLabel->palette();
     pa.setColor(QPalette::WindowText, textColor);
@@ -52,9 +59,18 @@ DetailItem::DetailItem(QWidget *parent)
     m_contentLabel = new ReplicableLabel(this);
     m_contentLabel->setAlignment(Qt::AlignLeft);
 
+    QFont contectFont = m_contentLabel->font();
+    contectFont = DFontSizeManager::instance()->get(DFontSizeManager::T8, contectFont);
+    m_contentLabel->setFont(contectFont);
+
+    textColor = getContentColor();
+    pa = m_contentLabel->palette();
+    pa.setColor(QPalette::Text, textColor);
+    m_contentLabel->setPalette(pa);
+
     m_mainLayout = new QHBoxLayout(this);
 
-    m_mainLayout->setSpacing(2);
+    m_mainLayout->setSpacing(10);
     m_mainLayout->addWidget(m_tagLabel);
     m_mainLayout->addWidget(m_contentLabel);
 }
@@ -195,11 +211,22 @@ void DetailItem::paintEvent(QPaintEvent *event)
 
 QColor DetailItem::getTagColor()
 {
-    static  QColor textColor;
-    if (!textColor.isValid()) {
-        textColor = QColor(82, 106, 127);
+    static  QColor tagTextColor;
+    if (!tagTextColor.isValid()) {
+        tagTextColor = QColor(0, 0, 0, int(255*0.7));
         if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
-            textColor = QColor(109, 124, 136);
+            tagTextColor = QColor(255, 255, 255, int(255*0.7));
     }
-    return textColor;
+    return tagTextColor;
+}
+
+QColor DetailItem::getContentColor()
+{
+    static  QColor contentTextColor;
+    if (!contentTextColor.isValid()) {
+        contentTextColor = QColor(0, 0, 0, int(255*0.9));
+        if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
+            contentTextColor = QColor(255, 255, 255, int(255*0.9));
+    }
+    return contentTextColor;
 }

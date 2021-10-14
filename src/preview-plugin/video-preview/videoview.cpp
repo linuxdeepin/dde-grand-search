@@ -21,6 +21,7 @@
 #include "videoview.h"
 
 #include <DFontSizeManager>
+#include <DGuiApplicationHelper>
 
 #include <QVBoxLayout>
 #include <QFileInfo>
@@ -62,6 +63,13 @@ void VideoView::initUI()
     titleFont.setWeight(QFont::Medium);
     titleFont = DFontSizeManager::instance()->get(DFontSizeManager::T5, titleFont);
     m_title->setFont(titleFont);
+
+    QColor textColor(0, 0, 0, int(255 * 0.9));
+    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
+        textColor = QColor(255, 255, 255, int(255 * 0.9));
+    QPalette pa = m_title->palette();
+    pa.setColor(QPalette::WindowText, textColor);
+    m_title->setPalette(pa);
 
     lay->addWidget(m_title);
 }

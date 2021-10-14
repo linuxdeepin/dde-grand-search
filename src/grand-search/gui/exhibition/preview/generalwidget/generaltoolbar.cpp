@@ -45,9 +45,9 @@ IconButton::IconButton(QWidget *parent)
 {
     setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 
-    QColor textColor = QColor(82, 106, 127, static_cast<int>(255 * 1));
+    QColor textColor(0, 0, 0, int(255 * 0.9));
     if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
-        textColor = QColor(255, 255, 255, static_cast<int>(255 * 1));
+        textColor = QColor(255, 255, 255, int(255 * 0.9));
     QPalette pa = palette();
     pa.setColor(QPalette::ButtonText, textColor);
     setPalette(pa);
@@ -97,7 +97,9 @@ void GeneralToolBar::initUi()
     m_openPathBtn->setFixedWidth(TOOLBTN_WIDTH_WIDE);
 
     m_vLine1 = new DVerticalLine(this);
+    m_vLine1->setFixedHeight(30);
     m_vLine2 = new DVerticalLine(this);
+    m_vLine1->setFixedHeight(30);
 
     m_hMainLayout->addWidget(m_openBtn);
     m_hMainLayout->addWidget(m_vLine1);

@@ -23,6 +23,7 @@
 
 #include <DLabel>
 #include <DFontSizeManager>
+#include <DGuiApplicationHelper>
 
 #include <QDebug>
 #include <QtConcurrent>
@@ -147,6 +148,13 @@ void ImageView::initUI()
     titleFont = DFontSizeManager::instance()->get(DFontSizeManager::T5, titleFont);
     m_titleLabel->setFont(titleFont);
 
+    QColor textColor(0, 0, 0, int(255 * 0.9));
+    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
+        textColor = QColor(255, 255, 255, int(255 * 0.9));
+    QPalette pa = m_titleLabel->palette();
+    pa.setColor(QPalette::WindowText, textColor);
+    m_titleLabel->setPalette(pa);
+
     QHBoxLayout *imageLayout = new QHBoxLayout;
     imageLayout->addWidget(m_imageLabel);
 
@@ -157,7 +165,9 @@ void ImageView::initUI()
     m_mainLayout->setContentsMargins(35, 12, 35, 0);
     m_mainLayout->setSpacing(0);
 
+    m_mainLayout->addStretch();
     m_mainLayout->addLayout(imageLayout);
+    m_mainLayout->addStretch();
     m_mainLayout->addLayout(titleLayout);
 
     this->setLayout(m_mainLayout);
