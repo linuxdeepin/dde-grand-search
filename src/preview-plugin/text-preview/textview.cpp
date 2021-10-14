@@ -27,6 +27,7 @@
 #include <QTextCodec>
 #include <QTimer>
 #include <QPainter>
+#include <QPainterPath>
 #include <QLabel>
 
 void PlainTextEdit::mouseMoveEvent(QMouseEvent *e)
