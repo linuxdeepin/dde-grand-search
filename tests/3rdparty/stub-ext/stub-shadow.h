@@ -81,9 +81,9 @@ template <class Obj, typename Ret, typename... Args>
 struct LamdaCaller<Ret (Obj::*)(Args...) const>
 {
     template<class Lamda, typename ...OrgArgs>
-    static Ret call(LamdaWrapper<Lamda> *wrapper, OrgArgs... args)
+    static Ret call(LamdaWrapper<Lamda> *wrapper, OrgArgs&&... args)
     {
-        return wrapper->_func(args...);
+        return wrapper->_func(std::forward<OrgArgs>(args)...);
     }
 };
 
@@ -91,7 +91,7 @@ template <class Obj, typename Ret>
 struct LamdaCaller<Ret (Obj::*)() const>
 {
     template<class Lamda, typename ...OrgArgs>
-    static Ret call(LamdaWrapper<Lamda> *wrapper, OrgArgs... args)
+    static Ret call(LamdaWrapper<Lamda> *wrapper, OrgArgs&&... args)
     {
         return wrapper->_func();
     }

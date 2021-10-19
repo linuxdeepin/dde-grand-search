@@ -38,7 +38,7 @@ void DataConvertor::initConvetor()
     //注册1.0版本
     {
         ConvertorV1_0 v1;
-        regist(v1.version(), ConvertorV1_0::create);
+        regist(v1.version(), &ConvertorV1_0::create);
     }
 }
 
