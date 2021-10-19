@@ -25,12 +25,12 @@
 #define GRANDSEARCH_CLASS_FILE_DEEPIN "com.deepin.dde-grand-search.file-deepin"
 #define GRANDSEARCH_CLASS_FILE_FSEARCH "com.deepin.dde-grand-search.file-fsearch"
 #define GRANDSEARCH_CLASS_APP_DESKTOP "com.deepin.dde-grand-search.app-desktop"
-#define GRANDSEARCH_CLASS_SETTING_CONTROLCENTER "com.deepin.dde-grand-search.setting-controlcenter"
+#define GRANDSEARCH_CLASS_SETTING_CONTROLCENTER "com.deepin.dde-grand-search.dde-control-center-setting"
 #define GRANDSEARCH_CLASS_WEB_STATICTEXT "com.deepin.dde-grand-search.web-statictext"
 
 // 搜索项所属组
 #define GRANDSEARCH_GROUP_APP                "com.deepin.dde-grand-search.group.application"
-#define GRANDSEARCH_GROUP_SETTING            "com.deepin.dde-grand-search.group.setting-controlcenter"
+#define GRANDSEARCH_GROUP_SETTING            "com.deepin.dde-grand-search.group.dde-control-center-setting"
 #define GRANDSEARCH_GROUP_WEB                "com.deepin.dde-grand-search.group.web"
 
 #define GRANDSEARCH_GROUP_FOLDER             "com.deepin.dde-grand-search.group.folder"
@@ -52,7 +52,6 @@ static const QStringList predefBuiltinSearches { \
 GRANDSEARCH_CLASS_FILE_DEEPIN, \
 GRANDSEARCH_CLASS_FILE_FSEARCH, \
 GRANDSEARCH_CLASS_APP_DESKTOP, \
-GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, \
 GRANDSEARCH_CLASS_WEB_STATICTEXT \
 }
 

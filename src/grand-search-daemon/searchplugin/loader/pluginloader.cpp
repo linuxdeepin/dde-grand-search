@@ -126,8 +126,14 @@ bool PluginLoader::readInfo(const QString &path, GrandSearch::SearchPluginInfo &
         return false;
 
     //运行方式
-    info.mode = conf.value(PLUGININTERFACE_CONF_MODE, "").toString().toLower() == PLUGININTERFACE_CONF_MODE_AUTO ?
-                    GrandSearch::SearchPluginInfo::Mode::Auto : GrandSearch::SearchPluginInfo::Mode::Manual;
+    {
+        info.mode = GrandSearch::SearchPluginInfo::Mode::Manual;
+        QString mode = conf.value(PLUGININTERFACE_CONF_MODE, "").toString().toLower();
+        if (mode == PLUGININTERFACE_CONF_MODE_AUTO)
+            info.mode = GrandSearch::SearchPluginInfo::Mode::Auto;
+        else if (mode == PLUGININTERFACE_CONF_MODE_TRIGGER)
+            info.mode = GrandSearch::SearchPluginInfo::Mode::Trigger;
+    }
 
     if (info.mode == GrandSearch::SearchPluginInfo::Mode::Auto) {
         //优先级

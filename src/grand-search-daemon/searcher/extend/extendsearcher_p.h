@@ -32,8 +32,7 @@ public:
 private:
     QString m_name;
     QString m_version;
-    bool m_activatable = false;
-
+    ExtendSearcher::Activatable m_activatable = ExtendSearcher::Inactivatable;
     QString m_service;    //dbus服务
     QString m_address;    //dbus地址
     QString m_interface;  //dbus接口

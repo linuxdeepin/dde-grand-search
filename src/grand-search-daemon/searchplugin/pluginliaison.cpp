@@ -29,7 +29,8 @@ PluginLiaisonPrivate::PluginLiaisonPrivate(PluginLiaison *parent)
     : QObject(parent)
     , q(parent)
 {
-
+    QDBusConnection::sessionBus().connect("org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus",
+                                          "NameOwnerChanged", this, SLOT(onServiceStarted(QString, QString, QString)));
 }
 
 PluginLiaisonPrivate::~PluginLiaisonPrivate()
@@ -128,6 +129,20 @@ void PluginLiaisonPrivate::onSearchReplied()
     }
 }
 
+void PluginLiaisonPrivate::onServiceStarted(QString name, QString oldOwner, QString newOwner)
+{
+    Q_UNUSED(oldOwner);
+    Q_UNUSED(newOwner);
+    auto con = QDBusConnection::sessionBus();
+    if (m_inteface) {
+        if (name == m_inteface->service() && con.interface()->isServiceRegistered(name)) {
+            con.disconnect("org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus",
+                           "NameOwnerChanged", this, nullptr);
+            emit q->ready();
+        }
+    }
+}
+
 PluginLiaison::PluginLiaison(QObject *parent)
     : QObject(parent)
     , d(new PluginLiaisonPrivate(this))
@@ -149,11 +164,11 @@ bool PluginLiaison::init(const QString &service, const QString &address, const Q
     d->m_ver = ver;
     d->m_pluginName = pluginName;
 
-    auto stdStrng = interface.toStdString();
-    d->m_inteface = new SearchPluginInterfaceV1(service, address, stdStrng.c_str(),
+    auto stdString = interface.toStdString();
+    d->m_inteface = new SearchPluginInterfaceV1(service, address, stdString.c_str(),
                                                 QDBusConnection::sessionBus(), this);
-    //插件搜索超时暂定为30s，todo后续根据实际调整
-    d->m_inteface->setTimeout(30 * 1000);
+    //插件搜索超时暂定为25s
+    d->m_inteface->setTimeout(25 * 1000);
     return true;
 }
 

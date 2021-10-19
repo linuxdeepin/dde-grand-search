@@ -84,10 +84,12 @@ bool SearcherGroupPrivate::addExtendSearcher(const GrandSearch::SearchPluginInfo
 
     //自动启动的插件设置为可激活
     if (pluginInfo.mode == GrandSearch::SearchPluginInfo::Auto) {
-        extend->setActivatable(true);
+        extend->setActivatable(ExtendSearcher::InnerActivation);
 
         //激活操作,必须直连
         connect(extend, &ExtendSearcher::activateRequest, this, &SearcherGroupPrivate::onActivatePlugin, Qt::DirectConnection);
+    } else if (pluginInfo.mode == GrandSearch::SearchPluginInfo::Trigger) { //dbus触发启动
+        extend->setActivatable(ExtendSearcher::Trigger);
     }
 
     m_extend << extend;

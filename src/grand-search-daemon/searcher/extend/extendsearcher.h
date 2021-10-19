@@ -30,10 +30,11 @@ class ExtendSearcher : public Searcher
     Q_OBJECT
     friend class ExtendSearcherPrivate;
 public:
+    enum Activatable{Inactivatable, InnerActivation, Trigger};
     explicit ExtendSearcher(const QString &name, QObject *parent = nullptr);
     void setService(const QString &service, const QString &address,
                     const QString &interface, const QString &ver);
-    void setActivatable(bool);
+    void setActivatable(Activatable);
     QString name() const;
     bool isActive() const;
     bool activate();

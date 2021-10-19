@@ -25,6 +25,7 @@
 #include "searchplugin/pluginliaison.h"
 
 #include <QDBusConnectionInterface>
+#include <QDBusInterface>
 
 ExtendSearcherPrivate::ExtendSearcherPrivate(ExtendSearcher *parent)
     : QObject(parent)
@@ -52,7 +53,7 @@ void ExtendSearcher::setService(const QString &service, const QString &address, 
     d->m_version = ver;
 }
 
-void ExtendSearcher::setActivatable(bool act)
+void ExtendSearcher::setActivatable(Activatable act)
 {
     d->m_activatable = act;
 }
@@ -75,11 +76,17 @@ bool ExtendSearcher::isActive() const
 
 bool ExtendSearcher::activate()
 {
-    //受管理的插件才支持激活操作
-    if (d->m_activatable) {
+    //受管理的插件通过进程激活
+    if (d->m_activatable == InnerActivation) {
         bool ret = false;
         emit activateRequest(name(), ret);
         return ret;
+    } else if (d->m_activatable == Trigger) {
+        // 激活DBus服务
+        auto msg = QDBusMessage::createMethodCall(d->m_service, d->m_address,
+                                                  "org.freedesktop.DBus.Peer", "Ping");
+        QDBusConnection::sessionBus().asyncCall(msg, 5);
+        return true;
     }
 
     return false;

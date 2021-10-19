@@ -35,6 +35,7 @@ public:
     static void parseResult(const QString &json, PluginLiaisonPrivate *d);
 private slots:
     void onSearchReplied();
+    void onServiceStarted(QString name, QString oldOwner, QString newOwner);
 private:
     PluginLiaison *q;
     SearchPluginInterfaceV1 *m_inteface = nullptr;

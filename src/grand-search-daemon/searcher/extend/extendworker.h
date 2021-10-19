@@ -38,19 +38,20 @@ public:
     Status status() Q_DECL_OVERRIDE;
     bool hasItem() const Q_DECL_OVERRIDE;
     GrandSearch::MatchedItemMap takeAll() Q_DECL_OVERRIDE;
-protected:
-    void delayWork();
 protected slots:
     void tryWorking();
     void onWorkFinished(const GrandSearch::MatchedItemMap &ret);
+private:
+    enum CallState{NotCall, WaitCall, Called};
 private:
     QAtomicInt m_status = Ready;
     QString m_context;
     QString m_taskID;
 
     PluginLiaison *m_liaison = nullptr;
-    QTimer m_delayTimer;
-    int m_retryCount = 0;
+    QMutex m_callMtx;
+    volatile CallState m_callSerach = NotCall;
+    QTimer m_timeout;
 
     //搜索结果
     mutable QMutex m_mtx;

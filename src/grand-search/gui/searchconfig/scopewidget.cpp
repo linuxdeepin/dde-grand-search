@@ -61,10 +61,10 @@ ScopeWidget::ScopeWidget(QWidget *parent)
 
     QStringList displayOrder;
     displayOrder << GRANDSEARCH_GROUP_FILE << GRANDSEARCH_GROUP_FOLDER << GRANDSEARCH_GROUP_FILE_DOCUMNET
-                 << GRANDSEARCH_GROUP_APP /*<< GRANDSEARCH_GROUP_SETTING*/ << GRANDSEARCH_GROUP_FILE_VIDEO      //  需求：设置延期
+                 << GRANDSEARCH_GROUP_APP << GRANDSEARCH_GROUP_SETTING << GRANDSEARCH_GROUP_FILE_VIDEO
                  << GRANDSEARCH_GROUP_FILE_AUDIO << GRANDSEARCH_GROUP_FILE_PICTURE << GRANDSEARCH_GROUP_WEB;
 
-    m_displayIcons = QStringList{"filesearch", "foldersearch", "documentsearch", "appsearch"/*, "settingsearch"*/
+    m_displayIcons = QStringList{"filesearch", "foldersearch", "documentsearch", "appsearch", "settingsearch"
                              , "videosearch", "audiosearch", "picturesearch", "websearch"};
 
     Q_ASSERT(displayOrder.count() == m_displayIcons.count());

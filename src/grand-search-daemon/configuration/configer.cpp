@@ -152,6 +152,12 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
     #endif
     }
 
+    //设置是否启用设置搜索项
+    {
+        bool on = set->value(GRANDSEARCH_GROUP_SETTING, true).toBool();
+        searcherConfig->setValue(GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, on);
+    }
+
     //设置是否启用应用搜索项
     {
         bool on = set->value(GRANDSEARCH_GROUP_APP, true).toBool();

@@ -27,7 +27,7 @@ namespace GrandSearch {
 
 struct SearchPluginInfo
 {
-    enum Mode {Auto, Manual};   //运行模式，auto为由本程序控制启动，Manual为由外部控制
+    enum Mode {Auto, Manual, Trigger};   //运行模式，auto为由本程序控制启动，Manual为由外部控制，Trigger为通过DBus激活。
     enum Priority {High = 0, Middle, Low};  //优先级
 
     QString name;       //插件名，推荐使用com.company.app.xxxx 的格式

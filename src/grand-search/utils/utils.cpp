@@ -248,11 +248,9 @@ QString Utils::appIconName(const MatchedItem &item)
     if (item.item.isEmpty())
         return strAppIconName;
 
-    // 搜索结果来自扩展插件，不显示应用图标
-    bool bFromBuiltSearch = isResultFromBuiltSearch(item);
-    if (!bFromBuiltSearch) {
+    // 搜索结果是否支持显示app,扩展插件不支持,如需特殊处理的放isShowAppIcon函数.
+    if (!isShowAppIcon(item))
         return strAppIconName;
-    }
 
     // 搜索结果为应用，直接返回应用图标
     if (item.searcher == GRANDSEARCH_CLASS_APP_DESKTOP) {
@@ -264,6 +262,17 @@ QString Utils::appIconName(const MatchedItem &item)
             DDesktopEntry entry(defaultDesktopFile);
             strAppIconName = entry.stringValue("Icon");
         }
+    } else if (item.searcher == GRANDSEARCH_CLASS_SETTING_CONTROLCENTER) {
+        auto defaultDesktopFile = "/usr/share/applications/dde-control-center.desktop";
+        if (QFile::exists(defaultDesktopFile)) {
+            DDesktopEntry entry(defaultDesktopFile);
+            strAppIconName = entry.stringValue("Icon");
+        } else {
+            qWarning() << defaultDesktopFile << "lost.";
+        }
+
+        if (strAppIconName.isEmpty())
+            strAppIconName = "preferences-system";
     } else {
     // 搜索结果为文件，查询该文件对应默认打开应用图标的名称
         QString mimetype = item.type;
@@ -281,6 +290,15 @@ QString Utils::appIconName(const MatchedItem &item)
     }
 
     return strAppIconName;
+}
+
+bool Utils::isShowAppIcon(const MatchedItem &item)
+{
+    //特殊搜索项
+    static QHash<QString, bool> extendSearcher = {
+        {GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, true}
+    };
+    return isResultFromBuiltSearch(item) || extendSearcher.value(item.searcher, false);
 }
 
 QString Utils::getFileMimetype(const QString &filePath)
@@ -374,8 +392,6 @@ bool Utils::openMatchedItem(const MatchedItem &item)
         result = Utils::launchApp(item.item);
     } else if (item.searcher == GRANDSEARCH_CLASS_WEB_STATICTEXT) { // 跳转浏览器
         result = Utils::openWithBrowser(item.item);
-    } else if (item.searcher == GRANDSEARCH_CLASS_SETTING_CONTROLCENTER) {  // 打开控制中心
-        result = Utils::openControlCenterMatchedItem(item);
     } else {    // 打开文件
         result = openFile(item);
     }
@@ -388,21 +404,6 @@ bool Utils::openExtendSearchMatchedItem(const MatchedItem &item)
     // 搜索结果来自扩展插件，使用Dbus通知主控调用扩展插件打开接口打开搜索结果
     DaemonGrandSearchInterface daemonDbus;
     daemonDbus.OpenWithPlugin(item.searcher, item.item);
-
-    return true;
-}
-
-bool Utils::openControlCenterMatchedItem(const MatchedItem &item)
-{
-    Q_UNUSED(item)
-    // TODO:根据后端组装的多级菜单方式进行解析
-    // 搜索结果来控制中心，使用Dbus调用控制中心接口实现打开
-    QDBusInterface interface("com.deepin.dde.ControlCenter","/com/deepin/dde/ControlCenter","com.deepin.dde.ControlCenter");
-    QDBusReply<bool> api = interface.call(QLatin1String("ShowModule"), QVariant::fromValue(QString("display")));
-    if (!api.isValid()) {
-        qDebug() << "Error:com.deepin.dde.ControlCenter interface call failed.";
-        return false;
-    }
 
     return true;
 }

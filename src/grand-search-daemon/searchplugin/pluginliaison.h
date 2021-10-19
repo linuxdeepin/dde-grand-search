@@ -40,6 +40,7 @@ public:
     bool action(const QString &type, const QString &item);
 signals:
     void searchFinished(const GrandSearch::MatchedItemMap &ret);
+    void ready();
 private:
     PluginLiaisonPrivate *d;
 };

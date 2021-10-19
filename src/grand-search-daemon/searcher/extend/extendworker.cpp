@@ -25,8 +25,12 @@
 ExtendWorker::ExtendWorker(const QString &name, QObject *parent)
     : ProxyWorker(name, parent)
 {
-    m_delayTimer.setSingleShot(true);
-    connect(&m_delayTimer, &QTimer::timeout, this, &ExtendWorker::tryWorking);
+    m_timeout.setInterval(25 * 1000);
+    m_timeout.setSingleShot(true);
+    connect(&m_timeout, &QTimer::timeout, this, [this](){
+        qDebug() << m_name << "working time out.";
+        onWorkFinished({});
+    });
 }
 
 ExtendWorker::~ExtendWorker()
@@ -56,6 +60,8 @@ bool ExtendWorker::setService(const QString &service, const QString &address, co
 
     //插件返回数据解析完毕，使用队列切入主线程，信号会来自子线程，也会来自主线程
     connect(m_liaison, &PluginLiaison::searchFinished, this, &ExtendWorker::onWorkFinished,Qt::QueuedConnection);
+    //dbus服务就绪尝试调用,在working函数中,可能服务还未启动,因此需在服务启动后再次尝试调用
+    connect(m_liaison, &PluginLiaison::ready, this, &ExtendWorker::tryWorking, Qt::QueuedConnection);
     return true;
 }
 
@@ -82,24 +88,34 @@ bool ExtendWorker::working(void *context)
     }
 
     m_taskID = id;
-    //直接调用接口
+
+    //服务是否可用
+    QMutexLocker lk(&m_callMtx);
     if (m_liaison->isVaild()) {
+        m_callSerach = Called;
+        lk.unlock();
+
+        //直接调用
+        qDebug() << m_name << "working, search.";
         if (m_liaison->search(m_taskID, m_context)) {
             return true;
         } else {
             m_status.storeRelease(Completed);
             return false;
         }
-    } else {
-        delayWork();
     }
 
+    //等待服务启动后再调用
+    qDebug() << m_name << "working, wait starting.";
+    m_callSerach = WaitCall;
+
+    //主线程中启动超时
+    QMetaObject::invokeMethod(&m_timeout, "start", Qt::QueuedConnection);
     return true;
 }
 
 void ExtendWorker::terminate()
 {
-    m_delayTimer.stop();
     m_status.storeRelease(Terminated);
 
     if (m_liaison)
@@ -128,50 +144,33 @@ GrandSearch::MatchedItemMap ExtendWorker::takeAll()
     return items;
 }
 
-void ExtendWorker::delayWork()
-{
-    m_delayTimer.stop();
-    m_retryCount++;
-
-    //尝试大于3次，放弃
-    if (m_retryCount > 3) {
-        m_status.storeRelease(Completed);
-
-        //发送结束
-        emit asyncFinished(this);
-        return;
-    }
-
-    //重试间隔
-    static int RetryInterval[] = {1, 2000, 5000, 10000, INT32_MAX};
-
-    //回到主线程开启定时器
-    QMetaObject::invokeMethod(&m_delayTimer, "start",
-                              Qt::QueuedConnection, Q_ARG(int, RetryInterval[m_retryCount]));
-}
-
 void ExtendWorker::tryWorking()
 {
-    //! 由timer触发，在主线程执行
-    //插件接口是否有效
-    if (m_liaison->isVaild()) {
-        //有效直接调用
-        if (!m_liaison->search(m_taskID, m_context)) {
-            //发起搜索失败
-            m_status.storeRelease(Completed);
+    Q_ASSERT(m_liaison);
 
-            //发送结束信号
-            emit asyncFinished(this);
-            return;
-        }
-    } else {
-        //无效，再次等待
-        delayWork();
+    //! 由dbus服务启动信号触发，在主线程执行
+    QMutexLocker lk(&m_callMtx);
+    if (m_callSerach != WaitCall) {
+        qDebug() << m_name << "service started, but called.";
+        return;
+    }
+    m_callSerach = Called;
+    m_timeout.stop();
+    lk.unlock();
+
+    qInfo() << m_name << "service started, search.";
+    if (!m_liaison->search(m_taskID, m_context)) {
+        //发起搜索失败
+        m_status.storeRelease(Completed);
+
+        //发送结束信号
+        emit asyncFinished(this);
     }
 }
 
 void ExtendWorker::onWorkFinished(const GrandSearch::MatchedItemMap &ret)
 {
+    m_status.storeRelease(Completed);
     QMutexLocker lk(&m_mtx);
     m_items = ret;
     lk.unlock();
