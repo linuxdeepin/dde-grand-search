@@ -42,15 +42,15 @@ void MatchControllerPrivate::initConnect()
     connect(m_daemonDbus, &DaemonGrandSearchInterface::SearchCompleted, this, &MatchControllerPrivate::onSearchCompleted);
 }
 
-void MatchControllerPrivate::onMatched(const QString &missonId)
+void MatchControllerPrivate::onMatched(const QString &missionId)
 {
-    if (missonId != m_missonId || m_missonId.isEmpty())
+    if (missionId != m_missionId || m_missionId.isEmpty())
         return;
 
     // 获取数据解析
-    qDebug() << QString("m_daemonDbus->MatchedBuffer begin missonId:%1").arg(m_missonId);
-    QByteArray matchedBytes = m_daemonDbus->MatchedBuffer(m_missonId);
-    qDebug() << QString("m_daemonDbus->MatchedBuffer end   missonId:%1").arg(m_missonId);
+    qDebug() << QString("m_daemonDbus->MatchedBuffer begin missionId:%1").arg(m_missionId);
+    QByteArray matchedBytes = m_daemonDbus->MatchedBuffer(m_missionId);
+    qDebug() << QString("m_daemonDbus->MatchedBuffer end   missionId:%1").arg(m_missionId);
 
     QDataStream stream(&matchedBytes, QIODevice::ReadOnly);
 
@@ -62,9 +62,9 @@ void MatchControllerPrivate::onMatched(const QString &missonId)
     qDebug() << QString("matched %1 groups.").arg(items.size());
 }
 
-void MatchControllerPrivate::onSearchCompleted(const QString &session)
+void MatchControllerPrivate::onSearchCompleted(const QString &missionId)
 {
-    if (session != m_missonId || m_missonId.isEmpty())
+    if (missionId != m_missionId || m_missionId.isEmpty())
         return;
 
     //通知界面刷新，若界面有数据不做处理，否则就刷新
@@ -87,6 +87,6 @@ MatchController::~MatchController()
 
 void MatchController::onMissionIdChanged(const QString &missionId)
 {
-    d_p->m_missonId = missionId;
+    d_p->m_missionId = missionId;
 }
 

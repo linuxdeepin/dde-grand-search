@@ -32,8 +32,8 @@ public:
     explicit MatchControllerPrivate(MatchController *parent = nullptr);
 
 public slots:
-    void onMatched(const QString &missonId);
-    void onSearchCompleted(const QString &session);
+    void onMatched(const QString &missionId);
+    void onSearchCompleted(const QString &missionId);
 
 public:
     void initConnect();
@@ -41,7 +41,7 @@ public:
 public:
     MatchController *q_p = nullptr;
 
-    QString m_missonId;
+    QString m_missionId;
 
     DaemonGrandSearchInterface *m_daemonDbus = nullptr;
 };
