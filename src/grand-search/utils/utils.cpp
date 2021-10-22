@@ -421,13 +421,16 @@ bool Utils::openFile(const MatchedItem &item)
     if (mimetype.isEmpty())
         mimetype = getFileMimetype(item.item);
 
+    // fix bug98384 社区版在打开特殊字符名称的文件夹时，丢失路径导致打开主目录
+    QString fileUrlString = QUrl::fromLocalFile(filePath).toString();
+
     // 获取对应默认打开应用
     QString defaultDesktopFile = getDefaultAppDesktopFileByMimeType(mimetype);
     if (defaultDesktopFile.isEmpty()) {
-        result = QProcess::startDetached(QString("dde-file-manager"), {QString("-o"), filePath});
+        result = QProcess::startDetached(QString("dde-file-manager"), {QString("-o"), fileUrlString});
         qDebug() << "open file dialog" << result;
     } else {
-        QStringList filePaths(filePath);
+        QStringList filePaths(fileUrlString);
         result = launchApp(defaultDesktopFile, filePaths);
     }
 

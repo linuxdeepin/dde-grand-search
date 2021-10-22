@@ -61,6 +61,7 @@ void ConfigWidget::initUI()
     // 设置图标
     QIcon tmpIcon = QIcon(QString(":/icons/%1.svg").arg("dde-grand-search-setting"));
     this->titlebar()->setIcon(tmpIcon);
+    setWindowIcon(tmpIcon);
 
     QWidget *mainWidget = new QWidget(this);
     setCentralWidget(mainWidget);
