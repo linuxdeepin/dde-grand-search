@@ -43,6 +43,7 @@ private slots:
 
 private:
     void updateIcons();
+    bool isValid(const QString &item);
 
 private:
     QVBoxLayout *m_mainLayout = nullptr;

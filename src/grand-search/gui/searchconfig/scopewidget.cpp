@@ -31,6 +31,8 @@
 
 #include <QLabel>
 #include <QFont>
+#include <QDir>
+#include <QSettings>
 #include <QVBoxLayout>
 
 DWIDGET_USE_NAMESPACE
@@ -66,6 +68,13 @@ ScopeWidget::ScopeWidget(QWidget *parent)
 
     m_displayIcons = QStringList{"filesearch", "foldersearch", "documentsearch", "appsearch", "settingsearch"
                              , "videosearch", "audiosearch", "picturesearch", "websearch"};
+
+    // 如果控制中心提供的设置搜索插件不存在，则从配置界面删除
+    if (!isValid(GRANDSEARCH_CLASS_SETTING_CONTROLCENTER)) {
+        m_groupName.remove(GRANDSEARCH_GROUP_SETTING);
+        displayOrder.removeOne(GRANDSEARCH_GROUP_SETTING);
+        m_displayIcons.removeOne("settingsearch");
+    }
 
     Q_ASSERT(displayOrder.count() == m_displayIcons.count());
 
@@ -124,4 +133,32 @@ void ScopeWidget::updateIcons()
         switchWidget->setIcon(icon, QSize(SWITCHWIDGETICONSIZE, SWITCHWIDGETICONSIZE));
     }
     update();
+}
+
+bool ScopeWidget::isValid(const QString &item)
+{
+    if (item.isEmpty())
+        return false;
+
+    //默认路径
+#ifdef QT_DEBUG
+    char path[PATH_MAX] = {0};
+    const char *defaultPath = realpath("../grand-search-daemon/", path);
+#else
+    auto defaultPath = PLUGIN_SEARCHER_DIR;
+#endif
+    static_assert(std::is_same<decltype(defaultPath), const char *>::value, "PLUGIN_SEARCHER_DIR is not a string.");
+
+    QDir dir(defaultPath);
+
+    auto entrys = dir.entryInfoList({"*.conf"}, QDir::Files, QDir::Name);
+    for (const QFileInfo &entry : entrys) {
+        QSettings conf(entry.absoluteFilePath(), QSettings::IniFormat);
+        //插件名称
+        QString name = conf.value("Grand Search/Name", "").toString();
+        if (item == name)
+            return true;
+    }
+
+    return false;
 }
