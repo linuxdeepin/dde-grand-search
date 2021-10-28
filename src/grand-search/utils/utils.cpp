@@ -515,7 +515,9 @@ bool Utils::openWithBrowser(const QString &words)
         return false;
 
     static QString defaultUrl = "https://www.baidu.com/s?wd=%0&ie=UTF-8";
-    QString url = defaultUrl.arg(words);
+
+    QString encodeString(QUrl::toPercentEncoding(words));
+    QString url = defaultUrl.arg(QString(encodeString));
 
     // 获取默认浏览器
     QString defaultDesktopFile = defaultBrowser();
