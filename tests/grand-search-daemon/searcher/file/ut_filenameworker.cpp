@@ -144,13 +144,16 @@ TEST_F(FileNameWorkerTest, ut_status)
     EXPECT_EQ(status, ProxyWorker::Ready);
 }
 
-TEST_F(FileNameWorkerTest, ut_hasItem)
+TEST_F(FileNameWorkerTest, ut_hasItem_0)
 {
     stub_ext::StubExt st;
     st.set_lamda(&GrandSearch::MatchedItems::isEmpty, [](){ return false; });
     EXPECT_TRUE(worker->hasItem());
+}
 
-    st.clear();
+TEST_F(FileNameWorkerTest, ut_hasItem_1)
+{
+    stub_ext::StubExt st;
     st.set_lamda(&GrandSearch::MatchedItems::isEmpty, [](){ return true; });
     EXPECT_FALSE(worker->hasItem());
 }
