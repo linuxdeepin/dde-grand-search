@@ -98,6 +98,7 @@ ProxyWorker *ExtendSearcher::createWorker() const
     if (worker->setService(d->m_service, d->m_address, d->m_interface, d->m_version))
         return worker;
 
+    delete worker;
     qWarning() << "ExtendWorker: fial to set service";
     return nullptr;
 }
