@@ -78,8 +78,8 @@ void GroupWidget::appendMatchedItems(const MatchedItems &newItems, const QString
     if (Q_UNLIKELY(newItems.isEmpty()))
         return;
 
-    // 结果列表未展开
-    if (!m_bListExpanded) {
+    // 结果列表允许折叠并且未展开
+    if (!m_onlyDisplayAll && !m_bListExpanded) {
 
         // 新来数据先放入缓存中
         m_cacheItems << newItems;
@@ -197,6 +197,8 @@ void GroupWidget::clear()
 void GroupWidget::setSearchGroupName(const QString &searchGroupName)
 {
     m_searchGroupName = searchGroupName;
+
+    m_onlyDisplayAll = Utils::isOnlyDisplayAll(searchGroupName);
 }
 
 QString GroupWidget::searchGroupName() const
