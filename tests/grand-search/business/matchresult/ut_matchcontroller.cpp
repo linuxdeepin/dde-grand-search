@@ -23,6 +23,8 @@
 
 #include <gtest/gtest.h>
 
+#include <QSignalSpy>
+
 #define private public
 #define protected public
 #include "business/matchresult/matchcontroller.h"
@@ -100,20 +102,19 @@ TEST(MatchControllerPrivate, initConnect)
 
 TEST(MatchControllerPrivate, onMatched)
 {
-    bool reciveSig = false;
     MatchController matchController;
-    QObject::connect(&matchController, &MatchController::matchedResult, qApp, [&](){
-        reciveSig = true;
-    });
 
+    QSignalSpy spy(&matchController, &MatchController::matchedResult);
+
+    EXPECT_EQ(spy.count(), 0);
     matchController.d_p->m_missionId.clear();
     matchController.d_p->onMatched(QString());
-    EXPECT_FALSE(reciveSig);
+    EXPECT_EQ(spy.count(), 0);
 
     QString missionId("testId");
     matchController.d_p->m_missionId = missionId;
     matchController.d_p->onMatched(missionId);
-    EXPECT_TRUE(reciveSig);
+    EXPECT_EQ(spy.count(), 1);
 }
 
 TEST(MatchControllerPrivate, onSearchCompleted)
