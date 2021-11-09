@@ -3,7 +3,8 @@
  *
  * Author:     zhangyu<zhangyub@uniontech.com>
  *
- * Maintainer: zhangyu<zhangyub@uniontech.com>
+ * Maintainer: wangchunlin<wangchunlin@uniontech.com>
+ *             zhangyu<zhangyub@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,28 +20,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <gtest/gtest.h>
+#include <sanitizer/asan_interface.h>
 
-#ifndef CONTROLCENTERSEARCHER_H
-#define CONTROLCENTERSEARCHER_H
+#include <QApplication>
 
-#include "searcher/searcher.h"
+#include <unistd.h>
 
-class ControlCenterSearcherPrivate;
-class ControlCenterSearcher : public Searcher
+static void noMessageHandler(QtMsgType type, const QMessageLogContext &context,
+                                   const QString &message)
 {
-    Q_OBJECT
-    friend class ControlCenterSearcherPrivate;
-public:
-    explicit ControlCenterSearcher(QObject *parent = nullptr);
-    ~ControlCenterSearcher();
-    void asyncInit();
-    QString name() const Q_DECL_OVERRIDE;
-    bool isActive() const Q_DECL_OVERRIDE;
-    bool activate() Q_DECL_OVERRIDE;
-    ProxyWorker *createWorker() const Q_DECL_OVERRIDE;
-    bool action(const QString &action, const QString &item) Q_DECL_OVERRIDE;
-private:
-    ControlCenterSearcherPrivate *d;
-};
+    return;
+}
 
-#endif // CONTROLCENTERSEARCHER_H
+int main(int argc, char *argv[])
+{
+    QApplication app(argc, argv);
+
+    testing::InitGoogleTest(&argc,argv);
+
+    //不打印应用的输出日志
+    qInstallMessageHandler(noMessageHandler);
+
+    int ret = RUN_ALL_TESTS();
+
+    // must be here
+    __sanitizer_set_report_path("../../asan_dde-grand-search.log");
+    return ret;
+}

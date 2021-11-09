@@ -5,6 +5,7 @@ set(LIB_NAME audio-preview-plugin)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(TAGLIB REQUIRED taglib)
 pkg_check_modules(AVFORMAT REQUIRED libavformat)
+pkg_check_modules(ICU REQUIRED icu-i18n)
 
 set(SRCS
     audiopreviewinterface.h
@@ -32,6 +33,7 @@ target_link_libraries(${LIB_NAME} PRIVATE
     ${DtkGUI_LIBRARIES}
     ${TAGLIB_LIBRARIES}
     ${AVFORMAT_LIBRARIES}
+    ${ICU_LIBRARIES}
 )
 
 # bin

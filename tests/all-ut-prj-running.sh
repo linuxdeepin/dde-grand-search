@@ -19,6 +19,7 @@ UT_PRJ_TYPE=${3}
 UT_TYPE_ALL="all"
 UT_TYPE_GRAND_SEARCH="dde-grand-search"
 UT_TYPE_GRAND_SEARCH_DAEMON="dde-grand-search-daemon"
+UT_TYPE_PREVIEW_PLUGIN="preview-plugin"
 
 REBUILD_PRJ=${4}
 REBUILD_TYPE_YES="yes"
@@ -48,7 +49,7 @@ cmake -DCMAKE_BUILD_TYPE=Debug $TESTS_FOLDER
 make -j$CPU_NUMBER
 
 
-# 2. 运行ut-dde-grand-search工程
+# 2. 运行ut-grand-search工程
 if [ "$UT_PRJ_TYPE" = "$UT_TYPE_ALL" ] || [ "$UT_PRJ_TYPE" = "$UT_TYPE_GRAND_SEARCH" ] ; then
         echo $UT_TYPE_GRAND_SEARCH "test case is running"
 
@@ -62,7 +63,7 @@ if [ "$UT_PRJ_TYPE" = "$UT_TYPE_ALL" ] || [ "$UT_PRJ_TYPE" = "$UT_TYPE_GRAND_SEA
         check_ut_result $? $UT_TYPE_GRAND_SEARCH
 fi
 
-# 3. 运行ut-dde-grand-search-daemon工程
+# 3. 运行ut-grand-search-daemon工程
 if [ "$UT_PRJ_TYPE" = "$UT_TYPE_ALL" ] || [ "$UT_PRJ_TYPE" = "$UT_TYPE_GRAND_SEARCH_DAEMON" ] ; then
         echo $UT_TYPE_GRAND_SEARCH_DAEMON "test case is running"
 
@@ -74,6 +75,20 @@ if [ "$UT_PRJ_TYPE" = "$UT_TYPE_ALL" ] || [ "$UT_PRJ_TYPE" = "$UT_TYPE_GRAND_SEA
 	# report的文件夹，报告后缀名，编译路径，可执行程序名，正向解析设置，逆向解析设置
 	./../../../tests/ut-target-running.sh $BUILD_DIR dde-grand-search-daemon $DIR_TEST_GRAND_SEARCH_DAEMON test-dde-grand-search-daemon "$extract_path_grand_search_daemon" "$remove_path_grand_search_daemon" $SHOW_REPORT
         check_ut_result $? $UT_TYPE_GRAND_SEARCH_DAEMON
+fi
+
+# 4. 运行ut-preview-plugin工程
+if [ "$UT_PRJ_TYPE" = "$UT_TYPE_ALL" ] || [ "$UT_PRJ_TYPE" = "$UT_TYPE_PREVIEW_PLUGIN" ] ; then
+        echo $UT_TYPE_PREVIEW_PLUGIN "test case is running"
+
+	DIR_TEST_PREVIEW_PLUGIN=$UT_TESTS_FOLDER/preview-plugin
+	cd $DIR_TEST_PREVIEW_PLUGIN
+
+	extract_path_preview_plugin="*/src/preview-plugin/*"
+    remove_path_preview_plugin="*/tests/* */3rdParty/* */build-ut/* *moc_* *interface"
+	# report的文件夹，报告后缀名，编译路径，可执行程序名，正向解析设置，逆向解析设置
+	./../../../tests/ut-target-running.sh $BUILD_DIR preview-plugin $DIR_TEST_PREVIEW_PLUGIN test-preview-plugin "$extract_path_preview_plugin" "$remove_path_preview_plugin" $SHOW_REPORT
+        check_ut_result $? $UT_TYPE_PREVIEW_PLUGIN
 fi
 
 echo "end dde-grand-search all UT cases"

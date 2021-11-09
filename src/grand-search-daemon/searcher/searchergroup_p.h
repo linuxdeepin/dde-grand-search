@@ -25,7 +25,6 @@
 #include "searchplugin/pluginmanager.h"
 #include "app/desktopappsearcher.h"
 #include "extend/extendsearcher.h"
-#include "setting/controlcentersearcher.h"
 #include "web/statictextechoer.h"
 
 #ifdef ENABLE_DEEPINANYTHING

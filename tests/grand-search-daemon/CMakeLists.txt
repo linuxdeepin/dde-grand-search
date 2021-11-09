@@ -46,8 +46,6 @@ FILE(GLOB_RECURSE PRO_SRC "${PROJECT_DAEMONSRC_PATH}/*/*.h" "${PROJECT_DAEMONSRC
 
 # 移除未编写的文件
 FILE(GLOB_RECURSE RM_SRC
-    "${PROJECT_DAEMONSRC_PATH}/searcher/fulltext/*"
-    "${PROJECT_DAEMONSRC_PATH}/searcher/setting/*"
     "${PROJECT_DAEMONSRC_PATH}/searchplugin/interface/abstract/*"
     )
 list(REMOVE_ITEM PRO_SRC ${RM_SRC})

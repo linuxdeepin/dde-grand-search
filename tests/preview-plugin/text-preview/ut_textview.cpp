@@ -18,34 +18,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef CONTROLCENTERSEARCHERPRIVATE_H
-#define CONTROLCENTERSEARCHERPRIVATE_H
 
-#include "controlcentersearcher.h"
-#include "global/matcheditem.h"
+#include "text-preview/textview.h"
 
-#include <QFuture>
-#include <QtConcurrent>
+#include <stubext.h>
 
-typedef QSharedPointer<GrandSearch::MatchedItem> SettingItemPointer;
+#include <gtest/gtest.h>
 
-class ControlCenterSearcherPrivate
+TEST(TextView, ut_initUI)
 {
-    friend class ControlCenterSearcher;
-public:
-    explicit ControlCenterSearcherPrivate(ControlCenterSearcher *parent);
-private:
-    static void createIndex(ControlCenterSearcherPrivate *);
-private:
-    ControlCenterSearcher *q;
+    TextView tv;
+    EXPECT_EQ(tv.layout(), nullptr);
+    EXPECT_EQ(tv.m_errLabel, nullptr);
+    EXPECT_EQ(tv.m_stackedWidget, nullptr);
+    EXPECT_EQ(tv.m_browser, nullptr);
 
-    bool m_inited = false;
-    volatile bool m_creating = false;
-    QFuture<void> m_creatingIndex;
-
-    //索引表
-    QReadWriteLock m_lock;
-    QHash<QString, QList<SettingItemPointer>> m_indexTable;
-};
-
-#endif // CONTROLCENTERSEARCHERPRIVATE_H
+    tv.initUI();
+    ASSERT_NE(tv.layout(), nullptr);
+    ASSERT_NE(tv.m_errLabel, nullptr);
+    ASSERT_NE(tv.m_stackedWidget, nullptr);
+    ASSERT_NE(tv.m_browser, nullptr);
+}
