@@ -125,9 +125,7 @@ bool GroupWidget::isHorLineVisilbe()
 {
     Q_ASSERT(m_line);
 
-    m_line->isVisible();
-
-    return false;
+    return  m_line->isVisible();
 }
 
 GrandSearchListView *GroupWidget::getListView()

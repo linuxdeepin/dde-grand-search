@@ -1,0 +1,287 @@
+/*
+ * Copyright (C) 2021 Uniontech Software Technology Co., Ltd.
+ *
+ * Author:     wangchunlin<wangchunlin@uniontech.com>
+ *
+ * Maintainer: wangchunlin<wangchunlin@uniontech.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "gui/exhibition/matchresult/groupwidget.h"
+#include "gui/exhibition/matchresult/listview/grandsearchlistview.h"
+#include "global/matcheditem.h"
+#include "utils/utils.h"
+
+#include "stubext.h"
+
+#include <gtest/gtest.h>
+
+#include <DLabel>
+#include <DHorizontalLine>
+
+#include <QPaintEvent>
+#include <QEvent>
+#include <QWidget>
+#include <QVBoxLayout>
+
+using namespace testing;
+using namespace GrandSearch;
+DWIDGET_USE_NAMESPACE
+
+TEST(GroupWidgettTest, constructor)
+{
+    GroupWidget *w = new GroupWidget;
+
+    ASSERT_TRUE(w);
+    ASSERT_TRUE(w->d_p);
+    ASSERT_TRUE(w->m_listView);
+    ASSERT_TRUE(w->m_viewMoreButton);
+
+    delete w;
+}
+
+TEST(GroupWidgettTest, appendMatchedItems)
+{
+    GroupWidget w;
+
+    stub_ext::StubExt stu;
+
+    bool ut_call_setMatchedItems = false;
+    stu.set_lamda(ADDR(GrandSearchListView, setMatchedItems), [&](){
+        ut_call_setMatchedItems = true;
+    });
+
+    bool ut_call_addRows = false;
+    stu.set_lamda((void(GrandSearchListView::*)(const MatchedItems&))ADDR(GrandSearchListView, addRows), [&](){
+        ut_call_addRows = true;
+    });
+
+    // 1.测试空数据
+    QString searchGroupName(GRANDSEARCH_GROUP_FOLDER);
+    MatchedItem item;
+    MatchedItems items;
+    w.appendMatchedItems(items, searchGroupName);
+    EXPECT_FALSE(ut_call_setMatchedItems);
+    EXPECT_FALSE(ut_call_addRows);
+
+    // 2.测试折叠添加
+    ut_call_setMatchedItems = false;
+    ut_call_addRows = false;
+
+    w.m_onlyDisplayAll = false;
+    w.m_bListExpanded = false;
+
+    items << item << item << item;
+    w.appendMatchedItems(items, searchGroupName);
+
+    EXPECT_TRUE(ut_call_setMatchedItems);
+    EXPECT_FALSE(ut_call_addRows);
+
+    // 3.测试全量添加
+    ut_call_setMatchedItems = false;
+    ut_call_addRows = false;
+
+    w.m_onlyDisplayAll = true;
+    w.m_bListExpanded = true;
+
+    w.appendMatchedItems(items, searchGroupName);
+
+    EXPECT_FALSE(ut_call_setMatchedItems);
+    EXPECT_TRUE(ut_call_addRows);
+}
+
+TEST(GroupWidgettTest, clear)
+{
+    GroupWidget w;
+
+    w.clear();
+    EXPECT_TRUE(w.m_firstFiveItems.isEmpty());
+    EXPECT_TRUE(w.m_restShowItems.isEmpty());
+    EXPECT_TRUE(w.m_cacheItems.isEmpty());
+}
+
+TEST(GroupWidgettTest, setSearchGroupName)
+{
+    GroupWidget w;
+
+    QString searchGroupName;
+    w.setSearchGroupName(searchGroupName);
+    EXPECT_EQ(w.m_searchGroupName, searchGroupName);
+
+    searchGroupName = QString("Test");
+    w.setSearchGroupName(searchGroupName);
+    EXPECT_EQ(w.m_searchGroupName, searchGroupName);
+}
+
+TEST(GroupWidgettTest, searchGroupName)
+{
+    GroupWidget w;
+
+    QString searchGroupName("Test1");
+    w.m_searchGroupName = searchGroupName;
+    QString value = w.searchGroupName();
+    EXPECT_EQ(value, searchGroupName);
+
+    searchGroupName = "Test2";
+    w.m_searchGroupName = searchGroupName;
+    value = w.searchGroupName();
+    EXPECT_EQ(value, searchGroupName);
+}
+
+TEST(GroupWidgettTest, setGroupName)
+{
+    GroupWidget w;
+
+    QString groupName;
+    w.setGroupName(groupName);
+    QString textValue = w.m_groupLabel->text();
+    EXPECT_EQ(textValue, groupName);
+
+    groupName = QString("Test");
+    w.setGroupName(groupName);
+    textValue = w.m_groupLabel->text();
+    EXPECT_EQ(textValue, groupName);
+}
+
+TEST(GroupWidgettTest, groupName)
+{
+    GroupWidget w;
+
+    QString groupName("Test1");
+    w.m_groupLabel->setText(groupName);
+    QString value = w.groupName();
+    EXPECT_EQ(value, groupName);
+
+    groupName = "Test2";
+    w.m_groupLabel->setText(groupName);
+    value = w.groupName();
+    EXPECT_EQ(value, groupName);
+}
+
+TEST(GroupWidgettTest, showHorLine)
+{
+    GroupWidget w;
+
+    w.showHorLine(false);
+    bool result = w.m_line->isVisible();
+    EXPECT_FALSE(result);
+}
+
+TEST(GroupWidgettTest, isHorLineVisilbe)
+{
+    GroupWidget w;
+
+    bool result = w.isHorLineVisilbe();
+    bool actual = w.m_line->isVisible();
+    EXPECT_EQ(result, actual);
+}
+
+TEST(GroupWidgettTest, getListView)
+{
+    GroupWidget w;
+
+    EXPECT_EQ(w.getListView(), w.m_listView);
+}
+
+TEST(GroupWidgettTest, itemCount)
+{
+    GroupWidget w;
+
+    int actual = w.itemCount();
+    int expect = w.m_listView->rowCount();
+    EXPECT_EQ(actual, expect);
+}
+TEST(GroupWidgettTest, getCurSelectHeight)
+{
+    GroupWidget w;
+
+    int actual = w.getCurSelectHeight();
+    int expect = 0;
+    EXPECT_EQ(actual, expect);
+
+    QString searchGroupName(GRANDSEARCH_GROUP_FOLDER);
+    MatchedItem item;
+    MatchedItems items{item, item, item, item};
+    w.appendMatchedItems(items, searchGroupName);
+
+    int itemCount = w.m_listView->rowCount();
+    ASSERT_GT(itemCount, 0);
+
+    auto index = w.m_listView->model()->index(0, 0);
+    ASSERT_TRUE(index.isValid());
+
+    w.m_listView->setCurrentIndex(index);
+
+    actual = w.getCurSelectHeight();
+    EXPECT_GT(actual, expect);
+}
+TEST(GroupWidgettTest, reLayout)
+{
+    GroupWidget w;
+
+    stub_ext::StubExt stu;
+
+    bool ut_hide = false;
+    stu.set_lamda(ADDR(QWidget, isHidden), [&](){
+        return ut_hide;
+    });
+
+    w.reLayout();
+    EXPECT_EQ(w.m_vContentLayout->spacing(), 10);
+
+    ut_hide = true;
+    w.reLayout();
+    EXPECT_EQ(w.m_vContentLayout->spacing(), 0);
+}
+
+TEST(GroupWidgettTest, convertDisplayName)
+{
+    GroupWidget w;
+
+    QString actual = w.convertDisplayName(GRANDSEARCH_GROUP_APP);
+    QString expect = GroupName_App;
+    EXPECT_EQ(actual, expect);
+
+    QString testOther("TestOtherName");
+    actual = w.convertDisplayName(testOther);
+    EXPECT_EQ(actual, testOther);
+}
+
+TEST(GroupWidgettTest, onMoreBtnClcked)
+{
+    GroupWidget w;
+
+    w.onMoreBtnClcked();
+    EXPECT_TRUE(w.m_cacheItems.isEmpty());
+    EXPECT_TRUE(w.m_bListExpanded);
+}
+
+TEST(GroupWidgettTest, paintEvent)
+{
+    GroupWidget w;
+
+    stub_ext::StubExt stu;
+
+    bool ut_call = false;
+    typedef void (*fptr)(QWidget*,QPaintEvent*);
+    fptr ut_paintEvent = (fptr)(&QWidget::paintEvent);
+    stu.set_lamda(ut_paintEvent, [&](){
+        ut_call = true;
+    });
+
+    QPaintEvent event(QRect(0, 0, 100, 100));
+    w.paintEvent(&event);
+    EXPECT_TRUE(ut_call);
+}

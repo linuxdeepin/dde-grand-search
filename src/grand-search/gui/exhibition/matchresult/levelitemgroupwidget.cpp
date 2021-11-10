@@ -133,7 +133,8 @@ void LevelItemGroupWidget::takeItemFromLevelCache()
 
             if (items.isEmpty()) {
                 // 如果该层的数据项为空，则移除该层,并继续取下一层的数据
-                m_levelCacheItems.remove(m_levelCacheItems.firstKey());
+                int key = m_levelCacheItems.firstKey();
+                m_levelCacheItems.remove(key);
                 continue;
             }
 
@@ -143,7 +144,8 @@ void LevelItemGroupWidget::takeItemFromLevelCache()
 
                 if (items.isEmpty()) {
                     // 如果该层的数据项已经取完，则移除该层,并继续取下一层的数据
-                    m_levelCacheItems.remove(m_levelCacheItems.firstKey());
+                    int key = m_levelCacheItems.firstKey();
+                    m_levelCacheItems.remove(key);
                     break;
                 }
             }
