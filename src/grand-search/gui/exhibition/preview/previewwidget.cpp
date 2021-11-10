@@ -59,6 +59,10 @@ PreviewWidget::~PreviewWidget()
 {
     // 解除当前预览插件界面与预览主界面父子窗口关系，所有预览插件界面统一由插件管理类析构函数释放
     clearLayoutWidgets();
+    if (m_vSpaceItem) {
+        delete m_vSpaceItem;
+        m_vSpaceItem = nullptr;
+    }
 }
 
 bool PreviewWidget::previewItem(const MatchedItem &item)
