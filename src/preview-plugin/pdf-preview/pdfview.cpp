@@ -126,6 +126,7 @@ void PDFView::syncLoadFirstPage()
        QSharedPointer<Poppler::Page> page = QSharedPointer<Poppler::Page>(m_doc->page(0));
        if (!page) {
            emit parseFailed();
+           m_isLoadFinished = true;
            return;
        }
 

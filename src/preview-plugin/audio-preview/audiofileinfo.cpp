@@ -39,13 +39,12 @@ AudioFileInfo::AudioFileInfo()
 AudioFileInfo::AudioMetaData AudioFileInfo::openAudioFile(const QString &file)
 {
     TagLib::FileRef f(file.toLocal8Bit());
-    TagLib::Tag *tag = f.tag();
-
     if (!f.file()) {
         qWarning() << "TagLib: open file failed:" << file;
         return {};
     }
 
+    TagLib::Tag *tag = f.tag();
     if (!tag) {
         qWarning() << "TagLib: no tag for media file" << file;
         return {};
