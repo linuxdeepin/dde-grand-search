@@ -126,6 +126,7 @@ GeneralPreviewPlugin::~GeneralPreviewPlugin()
 {
     if (d_p->m_sizeWorker) {
         d_p->m_sizeWorker->stop();
+        d_p->m_sizeWorker->wait();
         d_p->m_sizeWorker->deleteLater();
     }
 }
