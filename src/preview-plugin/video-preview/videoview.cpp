@@ -82,6 +82,8 @@ void VideoView::setTitle(const QString &title)
         int textWidth = fontMetrics.size(Qt::TextSingleLine, title).width();
         if (textWidth >= m_title->width())
             m_title->setToolTip(title);
+        else
+            m_title->setToolTip("");
     }
 }
 

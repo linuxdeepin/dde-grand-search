@@ -102,6 +102,26 @@ TEST(MatchControllerPrivate, initConnect)
 
 TEST(MatchControllerPrivate, onMatched)
 {
+    stub_ext::StubExt stu;
+    stu.set_lamda(&DaemonGrandSearchInterface::MatchedBuffer, [](){
+        QByteArray byte;
+//        QDataStream stream(&byte, QIODevice::WriteOnly);
+
+//        GrandSearch::MatchedItemMap items;
+//        {
+//            GrandSearch::MatchedItem item;
+//            item.name = "test";
+//            item.searcher = "search";
+//            item.icon = "icon";
+//            items.insert("group", {item});
+//        }
+//        stream << items;
+
+        QDBusMessage msg;
+        QDBusPendingReply<QByteArray> reply = msg.createReply(QVariant::fromValue(byte));
+        return reply;
+    });
+
     MatchController matchController;
 
     QSignalSpy spy(&matchController, &MatchController::matchedResult);
