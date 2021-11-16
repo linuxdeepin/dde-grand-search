@@ -180,7 +180,7 @@ bool PreviewPluginManager::readInfo(const QString &path, GrandSearch::PreviewPlu
         return false;
 
     // 支持预览的mimetype列表
-    info.mimeTypes = conf.value(PREVIEW_PLUGINIFACE_CONF_MIMETYPES, "").toString().split(':');
+    info.mimeTypes = conf.value(PREVIEW_PLUGINIFACE_CONF_MIMETYPES, "").toString().split(':', QString::SkipEmptyParts);
     if (info.mimeTypes.isEmpty())
         return false;
 
