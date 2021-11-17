@@ -58,6 +58,9 @@ TEST(GeneralPreviewPluginTest, constructor)
     plugin->d_p->m_sizeWorker = new FileStatisticsThread;
     ASSERT_TRUE(plugin->d_p->m_sizeWorker);
 
+    delete plugin->d_p->m_sizeWorker;
+    plugin->d_p->m_sizeWorker = nullptr;
+
     delete plugin;
 }
 

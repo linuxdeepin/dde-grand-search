@@ -51,9 +51,6 @@ TEST(PreviewWidgetTest, previewItem)
 
     stub_ext::StubExt stu;
 
-//    stub.set((int(A::*)(int))ADDR(A,foo), foo_stub_int);
-//        stub.set((int(A::*)(double))ADDR(A,foo), foo_stub_double);
-
     PreviewPlugin *ut_previewPlugin = nullptr;
     stu.set_lamda((PreviewPlugin*(PreviewPluginManager::*)(const MatchedItem &))ADDR(PreviewPluginManager, getPreviewPlugin), [&](){
         return ut_previewPlugin;
@@ -69,8 +66,6 @@ TEST(PreviewWidgetTest, previewItem)
 TEST(PreviewWidgetTest, clearLayoutWidgets)
 {
     PreviewWidget w;
-
-    GeneralPreviewPlugin *gPlugin = new GeneralPreviewPlugin;
 
     w.m_preview = w.m_generalPreview;
 

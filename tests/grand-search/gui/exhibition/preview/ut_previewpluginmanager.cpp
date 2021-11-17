@@ -161,8 +161,8 @@ TEST(PreviewPluginManagerTest, loadConfig)
     QFileInfoList fis;
     fis.append(QFileInfo("/home/null"));
 
-    auto entryInfoList = (QFileInfoList (QDir::*)(const QStringList &, QDir::Filters, QDir::SortFlags) const)(&QDir::entryInfoList);
-    stu.set_lamda(entryInfoList, [&](){
+    auto ut_entryInfoList = (QFileInfoList (QDir::*)(const QStringList &, QDir::Filters, QDir::SortFlags) const)(&QDir::entryInfoList);
+    stu.set_lamda(ut_entryInfoList, [&](){
         return fis;
     });
 
@@ -224,8 +224,8 @@ TEST(PreviewPluginManagerTest, readInfo)
     conf.insert(PREVIEW_PLUGINIFACE_CONF_NAME, "testName");
 
     PreviewPluginInfo *ut_info = new PreviewPluginInfo;
-    auto entryInfoList = (PreviewPluginInfo*(PreviewPluginManager::*)(const QString &))(&PreviewPluginManager::getPreviewPlugin);
-    stu.set_lamda(entryInfoList, [&](){
+    auto ut_getPreviewPlugin = (PreviewPluginInfo*(PreviewPluginManager::*)(const QString &))(&PreviewPluginManager::getPreviewPlugin);
+    stu.set_lamda(ut_getPreviewPlugin, [&](){
         return ut_info;
     });
 
