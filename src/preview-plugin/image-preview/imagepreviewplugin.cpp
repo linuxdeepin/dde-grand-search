@@ -36,8 +36,10 @@ ImagePreviewPlugin::ImagePreviewPlugin(QObject *parent)
 
 ImagePreviewPlugin::~ImagePreviewPlugin()
 {
-    if (m_imageView)
+    if (m_imageView) {
         m_imageView->deleteLater();
+        m_imageView = nullptr;
+    }
 }
 
 void ImagePreviewPlugin::init(QObject *proxyInter)
