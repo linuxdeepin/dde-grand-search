@@ -38,6 +38,8 @@ UserPreferencePointer UserPreference::group(const QString &group) const
 
 void UserPreference::setValue(const QString &name, const QVariant &var)
 {
+    if (name.isEmpty())
+        return;
     QWriteLocker lk(&m_rwLock);
     m_datas.insert(name, var);
 }

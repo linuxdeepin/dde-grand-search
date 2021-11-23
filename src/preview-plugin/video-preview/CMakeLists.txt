@@ -1,7 +1,5 @@
 project(video-preview)
 
-set(CMAKE_VERBOSE_MAKEFILE ON)
-
 # 定义插件名称
 set(LIB_NAME video-preview-plugin)
 

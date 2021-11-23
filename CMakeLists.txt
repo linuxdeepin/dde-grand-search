@@ -1,6 +1,9 @@
 # 定义需要的cmake版本
 cmake_minimum_required(VERSION 3.10)
 
+# 显示编译过程
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
 # 设置工程名字
 project(dde-grand-search)
 
@@ -10,6 +13,13 @@ if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 endif ()
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DQT_DEBUG")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wl,--as-need")
+
+#安全加固
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstack-protector-all -z now")
+if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -z noexecstack -z relro")
+endif()
 
 configure_file(${CMAKE_SOURCE_DIR}/src/environments.h.in ${CMAKE_SOURCE_DIR}/src/environments.h @ONLY)
 
