@@ -1,4 +1,6 @@
 #!/bin/bash
+export DISPLAY=":0"
+export QT_QPA_PLATFORM=
 
 #get --help
 for argcommand in $*
