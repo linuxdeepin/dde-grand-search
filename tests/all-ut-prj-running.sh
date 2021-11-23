@@ -20,6 +20,7 @@ UT_TYPE_ALL="all"
 UT_TYPE_GRAND_SEARCH="dde-grand-search"
 UT_TYPE_GRAND_SEARCH_DAEMON="dde-grand-search-daemon"
 UT_TYPE_PREVIEW_PLUGIN="preview-plugin"
+UT_TYPE_GRAND_SEARCH_DOCK_PLUGIN="dde-grand-search-dock-plugin"
 
 REBUILD_PRJ=${4}
 REBUILD_TYPE_YES="yes"
@@ -89,6 +90,20 @@ if [ "$UT_PRJ_TYPE" = "$UT_TYPE_ALL" ] || [ "$UT_PRJ_TYPE" = "$UT_TYPE_PREVIEW_P
 	# report的文件夹，报告后缀名，编译路径，可执行程序名，正向解析设置，逆向解析设置
 	./../../../tests/ut-target-running.sh $BUILD_DIR preview-plugin $DIR_TEST_PREVIEW_PLUGIN test-preview-plugin "$extract_path_preview_plugin" "$remove_path_preview_plugin" $SHOW_REPORT
         check_ut_result $? $UT_TYPE_PREVIEW_PLUGIN
+fi
+
+# 5. 运行ut-grand-search-dock-plugin工程
+if [ "$UT_PRJ_TYPE" = "$UT_TYPE_ALL" ] || [ "$UT_PRJ_TYPE" = "$UT_TYPE_GRAND_SEARCH_DOCK_PLUGIN" ] ; then
+        echo $UT_TYPE_GRAND_SEARCH_DOCK_PLUGIN "test case is running"
+
+	DIR_TEST_GRAND_SEARCH_DOCK_PLUGIN=$UT_TESTS_FOLDER/grand-search-dock-plugin
+	cd $DIR_TEST_GRAND_SEARCH_DOCK_PLUGIN
+
+	extract_path_grand_search_dock_plugin="*/src/grand-search-dock-plugin/*"
+    remove_path_grand_search_dock_plugin="*/tests/* */3rdParty/* */build-ut/* *moc_*"
+	# report的文件夹，报告后缀名，编译路径，可执行程序名，正向解析设置，逆向解析设置
+	./../../../tests/ut-target-running.sh $BUILD_DIR grand-search-dock-plugin $DIR_TEST_GRAND_SEARCH_DOCK_PLUGIN test-dde-grand-search-dock-plugin "$extract_path_grand_search_dock_plugin" "$remove_path_grand_search_dock_plugin" $SHOW_REPORT
+        check_ut_result $? $UT_TYPE_GRAND_SEARCH_DOCK_PLUGIN
 fi
 
 echo "end dde-grand-search all UT cases"

@@ -36,4 +36,5 @@ include_directories(${PROJECT_SOURCE_PATH})
 add_subdirectory(grand-search)
 add_subdirectory(grand-search-daemon)
 add_subdirectory(preview-plugin)
+add_subdirectory(grand-search-dock-plugin)
 
