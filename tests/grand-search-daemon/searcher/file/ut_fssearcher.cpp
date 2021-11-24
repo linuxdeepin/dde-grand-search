@@ -109,15 +109,31 @@ TEST(FsSearcherTest, ut_asyncInitDataBase_1)
 TEST(FsSearcherTest, ut_loadDataBase)
 {
     stub_ext::StubExt st;
-    st.set_lamda(load_database, [](Database **db, const char *){
+    Database *createDB = nullptr;
+    st.set_lamda(load_database, [&createDB](Database **db, const char *){
         *db = db_new();
+        createDB = *db;
         return nullptr;
     });
     st.set_lamda(db_get_num_entries, [](){ return 0; });
     st.set_lamda(fsearch_thread_pool_init, [](){ return nullptr; });
+    QString threadName;
+    GThreadFunc threadFunc;
+    gpointer threadData;
+    st.set_lamda(g_thread_new, [&threadName, &threadFunc, &threadData](const gchar *name, GThreadFunc func, gpointer data){
+        GThread *th = nullptr;
+        threadName = name;
+        threadFunc = func;
+        threadData = data;
+        return th;
+    });
 
     FsSearcher fs;
     EXPECT_NO_FATAL_FAILURE(fs.loadDataBase(&fs));
+    EXPECT_NE(createDB, nullptr);
+    EXPECT_EQ(threadName, QString("fsearch_search_thread"));
+    EXPECT_NE(threadFunc, nullptr);
+    EXPECT_NE(threadData, nullptr);
 }
 
 TEST(FsSearcherTest, ut_updateDataBase)
