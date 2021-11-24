@@ -804,7 +804,7 @@ TEST(UtilsTest, defaultIcon)
     item.searcher = GRANDSEARCH_CLASS_APP_DESKTOP;
 
     QIcon result = Utils::defaultIcon(item);
-    EXPECT_FALSE(result.isNull());
+    EXPECT_EQ(result.name(), QIcon::fromTheme("application-x-desktop").name());
 
     item.searcher = GRANDSEARCH_CLASS_FILE_DEEPIN;
     result = Utils::defaultIcon(item);
@@ -820,7 +820,7 @@ TEST(UtilsTest, defaultIcon)
     });
 
     result = Utils::defaultIcon(item);
-    EXPECT_FALSE(result.isNull());
+    EXPECT_EQ(result.name(), QIcon::fromTheme("application-x-desktop").name());
 
     item.searcher = "testSearcher";
     result = Utils::defaultIcon(item);

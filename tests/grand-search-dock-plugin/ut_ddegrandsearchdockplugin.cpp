@@ -28,6 +28,7 @@
 #include <gtest/gtest.h>
 
 #include <DApplication>
+#include <QGSettings>
 
 using namespace testing;
 DWIDGET_USE_NAMESPACE
@@ -69,7 +70,11 @@ TEST_F(TestDdeGrandSearchDockPlugin, pluginName)
 
 TEST_F(TestDdeGrandSearchDockPlugin, init)
 {
-    EXPECT_TRUE(plugin->m_gsettings.data());
+    EXPECT_NE(plugin->m_searchWidget.get(), nullptr);
+    if (QGSettings::isSchemaInstalled("com.deepin.dde.dock.module.grand-search"))
+        EXPECT_NE(plugin->m_gsettings.get(), nullptr);
+    else
+        EXPECT_EQ(plugin->m_gsettings.get(), nullptr);
 }
 
 TEST_F(TestDdeGrandSearchDockPlugin, itemWidget)
@@ -171,5 +176,6 @@ TEST_F(TestDdeGrandSearchDockPlugin, invokedMenuItem)
 TEST_F(TestDdeGrandSearchDockPlugin, onGsettingsChanged)
 {
     QString testKey("menuEnable");
-    EXPECT_NO_FATAL_FAILURE(plugin->onGsettingsChanged(testKey));
+    if (plugin->m_gsettings.get())
+        EXPECT_NO_FATAL_FAILURE(plugin->onGsettingsChanged(testKey));
 }

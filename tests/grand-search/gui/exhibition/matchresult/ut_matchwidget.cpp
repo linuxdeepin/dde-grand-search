@@ -580,6 +580,7 @@ TEST(MatchWidgetTest, adjustScrollBar)
     w.clearSelectItem();
     w.selectLastItem(1);
 
+#ifndef Q_PROCESSOR_MIPS
     stu.set_lamda(&QScrollArea::height, [&](){
         return 0;
     });
@@ -590,9 +591,9 @@ TEST(MatchWidgetTest, adjustScrollBar)
     w.adjustScrollBar();
     stu.reset(&QScrollArea::height);
     stu.reset(&QAbstractSlider::value);
-
     updateValue = w.m_scrollArea->verticalScrollBar()->value();
     EXPECT_NE(oriValue, updateValue);
+#endif
 }
 
 TEST(MatchWidgetTest, currentIndexChanged)

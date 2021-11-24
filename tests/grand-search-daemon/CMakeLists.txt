@@ -38,8 +38,15 @@ ADD_DEFINITIONS(-DENABLE_FSEARCH)
 FILE(GLOB 3RD_FSEARCH_SRC ${CMAKE_SOURCE_DIR}/../3rdparty/fsearch/*)
 pkg_check_modules(GLIB REQUIRED glib-2.0)
 
-ADD_DEFINITIONS(-DENABLE_DEEPINANYTHING)
-qt5_add_dbus_interface(ANYTHING_SRC /usr/share/dbus-1/interfaces/com.deepin.anything.xml anything_interface)
+if (NOT (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "sw"))
+    ADD_DEFINITIONS(-DENABLE_DEEPINANYTHING)
+    qt5_add_dbus_interface(ANYTHING_SRC /usr/share/dbus-1/interfaces/com.deepin.anything.xml anything_interface)
+else()
+    # 移除不支持的文件
+    FILE(GLOB_RECURSE RM_DASRC
+        "${PROJECT_DAEMONSRC_PATH}/searcher/file/filename*"
+        )
+endif()
 
 # 项目工程文件
 FILE(GLOB_RECURSE PRO_SRC "${PROJECT_DAEMONSRC_PATH}/*/*.h" "${PROJECT_DAEMONSRC_PATH}/*/*.cpp")
@@ -48,7 +55,7 @@ FILE(GLOB_RECURSE PRO_SRC "${PROJECT_DAEMONSRC_PATH}/*/*.h" "${PROJECT_DAEMONSRC
 FILE(GLOB_RECURSE RM_SRC
     "${PROJECT_DAEMONSRC_PATH}/searchplugin/interface/abstract/*"
     )
-list(REMOVE_ITEM PRO_SRC ${RM_SRC})
+list(REMOVE_ITEM PRO_SRC ${RM_SRC} ${RM_DASRC})
 
 #单元测试文件
 FILE(GLOB_RECURSE UT_SRC "./*/*.cpp")

@@ -70,9 +70,12 @@ void DdeGrandSearchDockPlugin::init(PluginProxyInterface *proxyInter)
         m_proxyInter->itemAdded(this, pluginName());
     }
 
-    m_gsettings.reset(new QGSettings(SchemaId, SchemaPath));
-
-    connect(m_gsettings.data(), &QGSettings::changed, this, &DdeGrandSearchDockPlugin::onGsettingsChanged);
+    if (QGSettings::isSchemaInstalled(SchemaId)) {
+        m_gsettings.reset(new QGSettings(SchemaId, SchemaPath));
+        connect(m_gsettings.data(), &QGSettings::changed, this, &DdeGrandSearchDockPlugin::onGsettingsChanged);
+    } else {
+        qWarning() << "no such schema id" << SchemaId;
+    }
 }
 
 QWidget *DdeGrandSearchDockPlugin::itemWidget(const QString &itemKey)

@@ -10,9 +10,11 @@ set(PROJECT_SOURCE_PATH "${CMAKE_SOURCE_DIR}/../src")
 set(PROJECT_3RDPARTY_PATH "${CMAKE_SOURCE_DIR}/3rdparty")
 
 # 内存泄漏
-set(CMAKE_CXX_FLAGS "-fsanitize=undefined,address,leak -fno-omit-frame-pointer")
-set(CMAKE_C_FLAGS "-fsanitize=undefined,address,leak -fno-omit-frame-pointer")
-set(CMAKE_Ｌ_FLAGS "-fsanitize=undefined,address,leak -fno-omit-frame-pointer")
+if (NOT ("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "mips"))
+    ADD_DEFINITIONS(-DENABLE_SANITIZER)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=undefined,address,leak -fno-omit-frame-pointer")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=undefined,address,leak -fno-omit-frame-pointer")
+endif()
 
 # 用于测试覆盖率的编译条件
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-inline -fno-access-control -O0 -fprofile-arcs -ftest-coverage -lgcov")

@@ -21,7 +21,10 @@
  */
 
 #include <gtest/gtest.h>
+
+#ifdef ENABLE_SANITIZER
 #include <sanitizer/asan_interface.h>
+#endif
 
 #include <QApplication>
 
@@ -45,6 +48,8 @@ int main(int argc, char *argv[])
     int ret = RUN_ALL_TESTS();
 
     // must be here
+#ifdef ENABLE_SANITIZER
     __sanitizer_set_report_path("../../asan_dde-grand-search.log");
+#endif
     return ret;
 }

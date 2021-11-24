@@ -36,7 +36,11 @@ TEST(UserPreference, ut_initDefault)
 
     ASSERT_NE(conf.d->m_root.get(), nullptr);
     EXPECT_NE(conf.d->m_root->group(GRANDSEARCH_PREF_SEARCHERENABLED).get(), nullptr);
+#ifdef ENABLE_DEEPINANYTHING
     EXPECT_NE(conf.d->m_root->group(GRANDSEARCH_CLASS_FILE_DEEPIN).get(), nullptr);
+#else
+    EXPECT_EQ(conf.d->m_root->group(GRANDSEARCH_CLASS_FILE_DEEPIN).get(), nullptr);
+#endif
     EXPECT_NE(conf.d->m_root->group(GRANDSEARCH_CLASS_FILE_FSEARCH).get(), nullptr);
 }
 
@@ -68,7 +72,6 @@ TEST(UserPreference, ut_init)
 
     EXPECT_TRUE(conf.init());
     EXPECT_NE(conf.d->m_watcher, nullptr);
-    EXPECT_NE(conf.d->m_watcher, watcher);
     EXPECT_FALSE(conf.d->m_configPath.isEmpty());
     EXPECT_TRUE(init);
     EXPECT_TRUE(load);
@@ -90,7 +93,11 @@ TEST(UserPreference, ut_group)
 TEST(ConfigerPrivate, ut_defaultSearcher)
 {
     auto up = ConfigerPrivate::defaultSearcher();
+#ifdef ENABLE_DEEPINANYTHING
     EXPECT_TRUE(up->value(GRANDSEARCH_CLASS_FILE_DEEPIN, false));
+#else
+    EXPECT_FALSE(up->value(GRANDSEARCH_CLASS_FILE_DEEPIN, false));
+#endif
     EXPECT_TRUE(up->value(GRANDSEARCH_CLASS_FILE_FSEARCH, false));
     EXPECT_TRUE(up->value(GRANDSEARCH_CLASS_APP_DESKTOP, false));
     EXPECT_TRUE(up->value(GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, false));

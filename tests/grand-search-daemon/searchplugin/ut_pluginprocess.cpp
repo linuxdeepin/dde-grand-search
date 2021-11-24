@@ -28,7 +28,7 @@
 #include <QTest>
 #include <QProcess>
 
-TEST(PluginLiaison, ut_addProgram)
+TEST(PluginProcess, ut_addProgram)
 {
     PluginProcess pp;
     EXPECT_TRUE(pp.addProgram("test", "/usr/bin/test -t test"));
@@ -58,7 +58,7 @@ TEST(PluginLiaison, ut_addProgram)
     EXPECT_TRUE(stachanged);
 }
 
-TEST(PluginLiaison, ut_setWatched)
+TEST(PluginProcess, ut_setWatched)
 {
     PluginProcess pp;
     pp.setWatched("test", true);
@@ -68,7 +68,7 @@ TEST(PluginLiaison, ut_setWatched)
     EXPECT_FALSE(pp.m_watch.contains("test"));
 }
 
-TEST(PluginLiaison, ut_clear)
+TEST(PluginProcess, ut_clear)
 {
     PluginProcess pp;
     pp.addProgram("test", "/usr/bin/test -t test");
@@ -84,7 +84,7 @@ TEST(PluginLiaison, ut_clear)
     EXPECT_TRUE(pp.m_programs.isEmpty());
 }
 
-TEST(PluginLiaison, ut_timerEvent)
+TEST(PluginProcess, ut_timerEvent)
 {
     QTimerEvent e(-1);
     stub_ext::StubExt st;
@@ -109,7 +109,7 @@ TEST(PluginLiaison, ut_timerEvent)
     EXPECT_EQ(p2, &pcs);
 }
 
-TEST(PluginLiaison, ut_startProgram)
+TEST(PluginProcess, ut_startProgram)
 {
     PluginProcess pp;
     pp.addProgram("test", "/usr/bin/test -t test");
@@ -136,20 +136,32 @@ TEST(PluginLiaison, ut_startProgram)
     }
 }
 
-TEST(PluginLiaison, ut_terminate)
+TEST(PluginProcess, ut_terminate)
 {
     PluginProcess pp;
     pp.addProgram("test", "/usr/bin/test -t test");
 
-    bool terminate = false;
     stub_ext::StubExt st;
-    st.set_lamda(&QProcess::terminate, [&terminate]() {
-        terminate = true;
+    QProcess::ProcessState sta = QProcess::Running;
+    st.set_lamda(&QProcess::state, [&sta]() {
+        return sta;
     });
 
-    QProcess::ProcessState state = QProcess::Running;
-    st.set_lamda(&QProcess::state, [&state]() {
-        return state;
+    bool bTerminate = false;
+    st.set_lamda(&QProcess::terminate, [&bTerminate]() {
+        bTerminate = true;
+    });
+
+    bool killed = false;
+    bool finished = true;
+    int waitMeces = 0;
+    st.set_lamda(&QProcess::waitForFinished, [&finished, &waitMeces](QProcess *, int msecs) {
+        waitMeces = msecs;
+        return finished;
+    });
+
+    st.set_lamda(&QProcess::kill, [&killed, &finished]() {
+        killed = true;
     });
 
     QProcess *pcs = nullptr;
@@ -160,30 +172,52 @@ TEST(PluginLiaison, ut_terminate)
     pp.m_restartCount.insert(pp.m_processes.value("test"), 1);
 
     pp.terminate("test2");
-    EXPECT_FALSE(terminate);
+    EXPECT_FALSE(bTerminate);
+    EXPECT_FALSE(killed);
+    EXPECT_EQ(waitMeces, 0);
     EXPECT_EQ(pp.m_restartCount.value(pp.m_processes.value("test")), 1);
     EXPECT_EQ(pcs, nullptr);
 
-    state = QProcess::NotRunning;
+    sta = QProcess::NotRunning;
     pcs = nullptr;
-    terminate = false;
+    bTerminate = false;
+    killed = false;
+    waitMeces = 0;
     pp.m_restartCount.insert(pp.m_processes.value("test"), 2);
     pp.terminate("test");
-    EXPECT_FALSE(terminate);
+    EXPECT_FALSE(bTerminate);
+    EXPECT_FALSE(killed);
+    EXPECT_EQ(waitMeces, 0);
     EXPECT_EQ(pp.m_restartCount.value(pp.m_processes.value("test")), 2);
     EXPECT_EQ(pcs, nullptr);
 
-    state = QProcess::Running;
+#if defined(Q_PROCESSOR_X86)
+    finished = true;
+    sta = QProcess::Running;
     pcs = nullptr;
-    terminate = false;
+    bTerminate = false;
+    killed = false;
+    waitMeces = 0;
     pp.m_restartCount.insert(pp.m_processes.value("test"), 3);
     pp.terminate("test");
-    EXPECT_TRUE(terminate);
+    EXPECT_TRUE(bTerminate);
+    EXPECT_FALSE(killed);
+    EXPECT_EQ(waitMeces, 1000);
     EXPECT_TRUE(pp.m_restartCount.isEmpty());
     EXPECT_EQ(pcs, pp.m_processes.value("test"));
+
+    bTerminate = false;
+    killed = false;
+    waitMeces = 0;
+    finished = false;
+    pp.terminate("test");
+    EXPECT_TRUE(bTerminate);
+    EXPECT_TRUE(killed);
+    EXPECT_EQ(waitMeces, 1000);
+#endif
 }
 
-TEST(PluginLiaison, ut_processStateChanged_queue)
+TEST(PluginProcess, ut_processStateChanged_queue)
 {
     PluginProcess pp;
     pp.addProgram("test", "/usr/bin/test -t test");
@@ -203,13 +237,13 @@ TEST(PluginLiaison, ut_processStateChanged_queue)
     EXPECT_TRUE(called);
 }
 
-TEST(PluginLiaison, ut_processStateChanged)
+TEST(PluginProcess, ut_processStateChanged)
 {
     PluginProcess pp;
     pp.addProgram("test", "/usr/bin/test -t test");
     stub_ext::StubExt st;
     QProcess::ProcessState state = QProcess::Running;
-    bool called;
+    bool called = false;
     st.set_lamda(&QProcess::state, [&state, &called]() {
         called = true;
         return state;
@@ -228,7 +262,7 @@ TEST(PluginLiaison, ut_processStateChanged)
 
     auto p = pp.m_processes.value("test");
     emit p->stateChanged(QProcess::Running, QProcess::QPrivateSignal());
-    QTest::qWaitFor([&called](){return called;}, 30);
+    QTest::qWaitFor([&called](){return called;}, 300);
     EXPECT_TRUE(called);
     EXPECT_EQ(pcs, p);
     EXPECT_TRUE(name.isEmpty());
@@ -238,7 +272,7 @@ TEST(PluginLiaison, ut_processStateChanged)
     called = false;
     state = QProcess::NotRunning;
     emit p->stateChanged(QProcess::Running, QProcess::QPrivateSignal());
-    QTest::qWaitFor([&called](){return called;}, 30);
+    QTest::qWaitFor([&called](){return called;}, 300);
     EXPECT_TRUE(called);
     EXPECT_EQ(pcs, nullptr);
     EXPECT_TRUE(name.isEmpty());
@@ -248,13 +282,13 @@ TEST(PluginLiaison, ut_processStateChanged)
     called = false;
     pp.m_watch.insert("test", true);
     emit p->stateChanged(QProcess::Running, QProcess::QPrivateSignal());
-    QTest::qWaitFor([&called](){return called;}, 30);
+    QTest::qWaitFor([&called](){return called;}, 300);
     EXPECT_TRUE(called);
     EXPECT_EQ(pcs, nullptr);
     EXPECT_EQ(name, QString("test"));
 }
 
-TEST(PluginLiaison, ut_removeChecklist)
+TEST(PluginProcess, ut_removeChecklist)
 {
     PluginProcess pp;
     stub_ext::StubExt st;
@@ -280,7 +314,7 @@ TEST(PluginLiaison, ut_removeChecklist)
     EXPECT_TRUE(pp.m_checklist.isEmpty());
 }
 
-TEST(PluginLiaison, ut_addChecklist)
+TEST(PluginProcess, ut_addChecklist)
 {
     PluginProcess pp;
     QProcess pcs;
@@ -296,7 +330,7 @@ TEST(PluginLiaison, ut_addChecklist)
     ASSERT_GT(id, 0);
 }
 
-TEST(PluginLiaison, ut_checkStability)
+TEST(PluginProcess, ut_checkStability)
 {
     PluginProcess pp;
     QProcess pcs;
