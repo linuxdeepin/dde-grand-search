@@ -279,15 +279,15 @@ TEST(GrandSearchListViewTest, clear)
     EXPECT_EQ(w.m_model->rowCount(), 0);
 }
 
-TEST(GrandSearchListViewTest, onItemClicked)
+TEST(GrandSearchListViewTest, mousePressEvent)
 {
     GrandSearchListView w;
 
     QSignalSpy spyItemChanged(&w, &GrandSearchListView::sigCurrentItemChanged);
     QSignalSpy spyItemClicked(&w, &GrandSearchListView::sigItemClicked);
 
-    QModelIndex index;
-    w.onItemClicked(index);
+    QMouseEvent event1(QEvent::MouseButtonPress, QPointF(0, 0), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+    w.mousePressEvent(&event1);
     EXPECT_EQ(spyItemChanged.count(), 0);
     EXPECT_EQ(spyItemClicked.count(), 0);
 
@@ -296,7 +296,7 @@ TEST(GrandSearchListViewTest, onItemClicked)
     MatchedItems items{item, item};
 
     w.setMatchedItems(items);
-    index = w.model()->index(0, 0);
+    QModelIndex index = w.model()->index(0, 0);
     w.setCurrentIndex(index);
 
     stub_ext::StubExt stu;
@@ -307,13 +307,26 @@ TEST(GrandSearchListViewTest, onItemClicked)
     });
 
     index = w.model()->index(1, 0);
-    w.onItemClicked(index);
+    stu.set_lamda(VADDR(GrandSearchListView, indexAt), [&](){
+        return index;
+    });
+
+    w.mousePressEvent(&event1);
     EXPECT_EQ(spyItemChanged.count(), 1);
     EXPECT_EQ(spyItemClicked.count(), 0);
 
-    w.onItemClicked(index);
+    w.mousePressEvent(&event1);
     EXPECT_EQ(spyItemChanged.count(), 1);
     EXPECT_EQ(spyItemClicked.count(), 1);
+
+    QMouseEvent event2(QEvent::MouseButtonPress, QPointF(0, 0), Qt::LeftButton, Qt::NoButton, Qt::ControlModifier);
+    stu.set_lamda(&Utils::openMatchedItemWithCtrl, [](){
+        return true;
+    });
+
+    w.mousePressEvent(&event2);
+    EXPECT_EQ(spyItemChanged.count(), 1);
+    EXPECT_EQ(spyItemClicked.count(), 2);
 }
 
 TEST(GrandSearchListViewTest, onSetThemeType)

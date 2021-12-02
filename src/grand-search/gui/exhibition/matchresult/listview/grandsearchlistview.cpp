@@ -56,7 +56,6 @@ GrandSearchListView::GrandSearchListView(QWidget *parent)
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    connect(this, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onItemClicked(const QModelIndex &)));
     connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &GrandSearchListView::onSetThemeType);
 
     m_themeType = DGuiApplicationHelper::instance()->themeType();
@@ -170,28 +169,6 @@ void GrandSearchListView::clear()
         m_model->clear();
 }
 
-void GrandSearchListView::onItemClicked(const QModelIndex &index)
-{
-    if (!index.isValid())
-        return;
-
-    if (this->currentIndex() != index) {
-        setCurrentIndex(index);
-
-        MatchedItem item = index.data(DATA_ROLE).value<MatchedItem>();
-
-        // 通知选择已经改变
-        emit sigCurrentItemChanged(item);
-
-        return;
-    }
-    else {
-        MatchedItem item = index.data(DATA_ROLE).value<MatchedItem>();
-        Utils::openMatchedItem(item);
-        emit sigItemClicked();
-    }
-}
-
 void GrandSearchListView::onSetThemeType(int type)
 {
     m_themeType = type;
@@ -201,6 +178,38 @@ bool GrandSearchListView::event(QEvent *event)
 {
     Q_UNUSED(event)
     return QListView::event(event);
+}
+
+void GrandSearchListView::mousePressEvent(QMouseEvent *event)
+{
+    switch (event->button()) {
+    case Qt::LeftButton: {
+        const QModelIndex &index = indexAt(event->pos());
+        if (!index.isValid())
+            break;
+
+        MatchedItem item = index.data(DATA_ROLE).value<MatchedItem>();
+        if (event->modifiers() == Qt::ControlModifier) {
+            Utils::openMatchedItemWithCtrl(item);
+            emit sigItemClicked();
+        } else {
+            if (this->currentIndex() != index) {
+                setCurrentIndex(index);
+                // 通知选择已经改变
+                emit sigCurrentItemChanged(item);
+            } else {
+                Utils::openMatchedItem(item);
+                emit sigItemClicked();
+            }
+        }
+
+        break;
+    }
+    default:
+        break;
+    }
+
+    DListView::mousePressEvent(event);
 }
 
 QString GrandSearchListView::cacheDir()

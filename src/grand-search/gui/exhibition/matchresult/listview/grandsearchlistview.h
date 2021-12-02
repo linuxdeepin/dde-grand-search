@@ -60,7 +60,6 @@ public:
     void clear();
 
 public slots:
-    void onItemClicked(const QModelIndex &index);
     void onSetThemeType(int type);
 
 signals:
@@ -69,6 +68,7 @@ signals:
 
 protected:
     bool event(QEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 private:
     QString cacheDir();

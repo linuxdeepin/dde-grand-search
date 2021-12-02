@@ -118,7 +118,7 @@ TEST(PreviewWidgetTest, onOpenpathClicked)
     stub_ext::StubExt stu;
 
     bool ut_call_openFile = false;
-    stu.set_lamda(ADDR(Utils, openFile), [&](){
+    stu.set_lamda(ADDR(Utils, openInFileManager), [&](){
         ut_call_openFile = true;
         return ut_call_openFile;
     });

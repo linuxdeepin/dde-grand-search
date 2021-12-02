@@ -36,6 +36,7 @@ extern "C" {
 
 #include <DArrowRectangle>
 #include <DGuiApplicationHelper>
+#include <DDesktopServices>
 
 #include <QtTest>
 #include <QColor>
@@ -616,6 +617,52 @@ TEST(UtilsTest, openMatchedItem)
     result = Utils::openMatchedItem(item);
     EXPECT_TRUE(result);
     EXPECT_TRUE(ut_call_openFile);
+}
+
+TEST(UtilsTest, openMatchedItemWithCtrl)
+{
+    stub_ext::StubExt stu;
+    bool ut_call_openMatchedItem = false;
+    stu.set_lamda(&Utils::openMatchedItem, [&](){
+        ut_call_openMatchedItem = true;
+        return ut_call_openMatchedItem;
+    });
+
+    MatchedItem item;
+    bool result = Utils::openMatchedItemWithCtrl(item);
+    EXPECT_TRUE(result);
+    EXPECT_TRUE(ut_call_openMatchedItem);
+
+
+    bool ut_call_openInFileManager = false;
+    stu.set_lamda(&Utils::openInFileManager, [&](){
+        ut_call_openInFileManager = true;
+        return ut_call_openInFileManager;
+    });
+    stu.set_lamda(&QFileInfo::isDir, [](){
+        return false;
+    });
+
+    item.searcher = GRANDSEARCH_CLASS_FILE_DEEPIN;
+    result = Utils::openMatchedItemWithCtrl(item);
+    EXPECT_TRUE(result);
+    EXPECT_TRUE(ut_call_openInFileManager);
+}
+
+TEST(UtilsTest, openInFileManager)
+{
+    stub_ext::StubExt stu;
+    bool ut_call_showFileItem = false;
+    bool (*showFileItem_addr)(QString, const QString &) = &DDesktopServices::showFileItem;
+    stu.set_lamda(showFileItem_addr, [&](){
+        ut_call_showFileItem = true;
+        return ut_call_showFileItem;
+    });
+
+    MatchedItem item;
+    bool result = Utils::openInFileManager(item);
+    EXPECT_TRUE(result);
+    EXPECT_TRUE(ut_call_showFileItem);
 }
 
 TEST(UtilsTest, openExtendSearchMatchedItem)

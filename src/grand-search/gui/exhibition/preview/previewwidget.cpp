@@ -188,14 +188,7 @@ void PreviewWidget::onOpenClicked()
 
 void PreviewWidget::onOpenpathClicked()
 {
-    QFileInfo fi(m_item.item);
-    MatchedItem item = m_item;
-    item.icon = "inode-directory";
-    item.item = fi.absolutePath();
-    item.name = fi.dir().dirName();
-    item.type = "inode/directory";
-
-    Utils::openFile(item);
+    Utils::openInFileManager(m_item);
 }
 
 void PreviewWidget::onCopypathClicked()

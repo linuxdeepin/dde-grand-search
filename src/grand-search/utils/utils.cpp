@@ -32,6 +32,7 @@ extern "C" {
 #include <DArrowRectangle>
 #include <DDesktopEntry>
 #include <DGuiApplicationHelper>
+#include <DDesktopServices>
 
 #include <QCollator>
 #include <QFileInfo>
@@ -397,6 +398,22 @@ bool Utils::openMatchedItem(const MatchedItem &item)
     }
 
     return result;
+}
+
+bool Utils::openMatchedItemWithCtrl(const MatchedItem &item)
+{
+    if (GRANDSEARCH_CLASS_FILE_DEEPIN == item.searcher || GRANDSEARCH_CLASS_FILE_FSEARCH == item.searcher) {
+        QFileInfo fileInfo(item.item);
+        if (!fileInfo.isDir())
+            return openInFileManager(item);
+    }
+
+    return openMatchedItem(item);
+}
+
+bool Utils::openInFileManager(const MatchedItem &item)
+{
+    return DDesktopServices::showFileItem(item.item);
 }
 
 bool Utils::openExtendSearchMatchedItem(const MatchedItem &item)

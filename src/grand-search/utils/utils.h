@@ -65,6 +65,10 @@ public:
     static bool isResultFromBuiltSearch(const GrandSearch::MatchedItem &item);
     // 打开搜索结果项，如扩展搜索项/应用/文件/浏览器等
     static bool openMatchedItem(const GrandSearch::MatchedItem &item);
+    // 按住Ctrl键时打开搜索项
+    static bool openMatchedItemWithCtrl(const GrandSearch::MatchedItem &item);
+    // 在文件管理器中显示
+    static bool openInFileManager(const GrandSearch::MatchedItem &item);
     // 打开扩展搜索项
     static bool openExtendSearchMatchedItem(const GrandSearch::MatchedItem &item);
     // 打开文件
