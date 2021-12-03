@@ -28,6 +28,7 @@
 
 class GrandSearchWidget;
 class QGSettings;
+class QLabel;
 class DdeGrandSearchDockPlugin : public QObject, PluginsItemInterface
 {
     Q_OBJECT
@@ -43,11 +44,17 @@ public:
     // 返回插件的名称，必须是唯一值，不可以和其它插件冲突
     const QString pluginName() const override;
 
+    // 返回插件展示名称
+    const QString pluginDisplayName() const override;
+
     // 插件初始化函数
     void init(PluginProxyInterface *proxyInter) override;
 
     // 返回插件的 widget
     QWidget *itemWidget(const QString &itemKey) override;
+
+    // 返回插件的 tipsWidget
+    QWidget *itemTipsWidget(const QString &itemKey) override;
 
     // 返回插件是否允许被禁用
     bool pluginIsAllowDisable() override;
@@ -79,6 +86,7 @@ private slots:
 private:
     QScopedPointer<GrandSearchWidget> m_searchWidget;
     QScopedPointer<QGSettings> m_gsettings;
+    QScopedPointer<QLabel> m_tipsWidget;
 };
 
 #endif // DDEGRANDSEARCHDOCKPLUGIN_H

@@ -29,6 +29,7 @@
 
 #include <DApplication>
 #include <QGSettings>
+#include <QLabel>
 
 using namespace testing;
 DWIDGET_USE_NAMESPACE
@@ -68,8 +69,16 @@ TEST_F(TestDdeGrandSearchDockPlugin, pluginName)
     EXPECT_EQ(result, QString("grand-search"));
 }
 
+TEST_F(TestDdeGrandSearchDockPlugin, pluginDisplayName)
+{
+    QString result = plugin->pluginDisplayName();
+
+    EXPECT_EQ(result, QString("Grand Search"));
+}
+
 TEST_F(TestDdeGrandSearchDockPlugin, init)
 {
+    EXPECT_NE(plugin->m_tipsWidget.get(), nullptr);
     EXPECT_NE(plugin->m_searchWidget.get(), nullptr);
     if (QGSettings::isSchemaInstalled("com.deepin.dde.dock.module.grand-search"))
         EXPECT_NE(plugin->m_gsettings.get(), nullptr);
@@ -83,10 +92,16 @@ TEST_F(TestDdeGrandSearchDockPlugin, itemWidget)
     EXPECT_EQ(result, plugin->m_searchWidget.data());
 }
 
+TEST_F(TestDdeGrandSearchDockPlugin, itemTipsWidget)
+{
+    QLabel *result = qobject_cast<QLabel *>(plugin->itemTipsWidget(QString("test")));
+    EXPECT_EQ(result, plugin->m_tipsWidget.get());
+}
+
 TEST_F(TestDdeGrandSearchDockPlugin, pluginIsAllowDisable)
 {
     bool result = plugin->pluginIsAllowDisable();
-    EXPECT_FALSE(result);
+    EXPECT_TRUE(result);
 }
 
 TEST_F(TestDdeGrandSearchDockPlugin, pluginIsDisable)

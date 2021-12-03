@@ -24,6 +24,7 @@
 #include <DApplication>
 
 #include <QGSettings>
+#include <QLabel>
 
 #define GrandSearchPlugin "grand-search"
 #define MenuOpenSetting "menu_open_setting"
@@ -52,6 +53,11 @@ const QString DdeGrandSearchDockPlugin::pluginName() const
     return GrandSearchPlugin;
 }
 
+const QString DdeGrandSearchDockPlugin::pluginDisplayName() const
+{
+    return tr("Grand Search");
+}
+
 void DdeGrandSearchDockPlugin::init(PluginProxyInterface *proxyInter)
 {
     // 加载翻译
@@ -64,6 +70,9 @@ void DdeGrandSearchDockPlugin::init(PluginProxyInterface *proxyInter)
 
     if (m_searchWidget.isNull())
         m_searchWidget.reset(new GrandSearchWidget);
+
+    if (m_tipsWidget.isNull())
+        m_tipsWidget.reset(new QLabel);
 
     // 如果插件没有被禁用则在初始化插件时才添加主控件到面板上
     if (!pluginIsDisable()) {
@@ -84,10 +93,19 @@ QWidget *DdeGrandSearchDockPlugin::itemWidget(const QString &itemKey)
     return m_searchWidget.data();
 }
 
+QWidget *DdeGrandSearchDockPlugin::itemTipsWidget(const QString &itemKey)
+{
+    Q_UNUSED(itemKey);
+
+    // 设置/刷新 tips 中的信息
+    m_tipsWidget->setText(tr("Grand Search"));
+    return m_tipsWidget.data();
+}
+
 bool DdeGrandSearchDockPlugin::pluginIsAllowDisable()
 {
-    // 插件不允许禁用
-    return false;
+    // 插件允许禁用
+    return true;
 }
 
 bool DdeGrandSearchDockPlugin::pluginIsDisable()
