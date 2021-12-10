@@ -28,11 +28,13 @@
 
 #include <DFontSizeManager>
 #include <DGuiApplicationHelper>
+#include <DSysInfo>
 
 #include <QLabel>
 #include <QVBoxLayout>
 
 DWIDGET_USE_NAMESPACE
+DCORE_USE_NAMESPACE
 using namespace GrandSearch;
 
 PlanWidget::PlanWidget(QWidget *parent)
@@ -68,10 +70,18 @@ PlanWidget::PlanWidget(QWidget *parent)
 
     const QString leadintText = tr("To know more about the management of your data, "
                                             "please refer to the UnionTech Software Privacy Policy (");
-    const QString hyperlink = tr("https://www.uniontech.com/agreement/privacy-en");
+    const QString uosHyperlink = tr("https://www.uniontech.com/agreement/privacy-en");
+    const QString communityHyperlink = tr("https://www.deepin.org/en/agreement/privacy/");
+
     const QString endText = tr(").");
 
-    m_tipsLabel = new HyperlinkLabel(leadintText, hyperlink, endText, this);
+    QString showHyperlink;
+    if (DSysInfo::uosEditionType() == DSysInfo::UosCommunity)
+        showHyperlink = communityHyperlink;
+    else
+        showHyperlink = uosHyperlink;
+
+    m_tipsLabel = new HyperlinkLabel(leadintText, showHyperlink, endText, this);
 
     m_mainLayout->addWidget(m_contentLabel);
     m_mainLayout->addWidget(m_tipsLabel);
