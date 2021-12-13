@@ -203,17 +203,16 @@ void EntranceWidget::initUI()
     d_p->m_lineEdit->setFont(lineFont);
 
     QPalette palette;
-    QColor colorButton(255, 255, 255, int(0.15 * 255));
     QColor colorText(0, 0, 0);
     if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
         colorText = QColor(255, 255, 255);
 
-    palette.setColor(QPalette::Button, colorButton);
+    palette.setColor(QPalette::Button, Qt::transparent);
     palette.setColor(QPalette::Text, colorText);
     palette.setColor(QPalette::ButtonText, colorText);
 
-    d_p->m_searchEdit->lineEdit()->setPalette(palette);
-    DStyle::setFocusRectVisible(d_p->m_searchEdit->lineEdit(), true);
+    d_p->m_lineEdit->setPalette(palette);
+    DStyle::setFocusRectVisible(d_p->m_lineEdit, true);
 
     d_p->m_appIconLabel = new DLabel(d_p->m_searchEdit);
     d_p->m_appIconLabel->setFixedSize(LabelSize, LabelSize);
@@ -224,9 +223,18 @@ void EntranceWidget::initUI()
 
     // 搜索框界面布局设置
     // 必须对搜索框控件的边距和间隔设置为0,否则其内含的LineEdit不满足大小显示要求
-    d_p->m_searchEdit->layout()->setSpacing(0);
-    d_p->m_searchEdit->layout()->setMargin(0);
-    d_p->m_searchEdit->lineEdit()->setFixedSize(EntraceWidgetWidth, EntraceWidgetHeight);
+    {
+        auto slayout = d_p->m_searchEdit->layout();
+        slayout->setSpacing(0);
+        slayout->setMargin(0);
+
+        // 增加默认应用图标的右边距
+        auto conMar = slayout->contentsMargins();
+        conMar.setRight(2);
+        slayout->setContentsMargins(conMar);
+
+        d_p->m_lineEdit->setFixedSize(EntraceWidgetWidth, EntraceWidgetHeight);
+    }
 
     // 搜索框提示信息设置
     d_p->m_searchEdit->setPlaceHolder(tr("Search"));
