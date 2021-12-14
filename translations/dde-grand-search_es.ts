@@ -1,35 +1,35 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="bo">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="es">
 <context>
     <name>AudioPreviewPlugin</name>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="71"/>
         <source>Artist:</source>
-        <translation>གླུ་པ།</translation>
+        <translation>Artista: </translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="83"/>
         <source>Album:</source>
-        <translation>ཆེད་བསྒྲིགས།</translation>
+        <translation>Álbum:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="108"/>
         <source>Duration:</source>
-        <translation>དུས་ཡུན།</translation>
+        <translation>Duración:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="123"/>
         <source>Type:</source>
-        <translation>རིགས་གྲས།</translation>
+        <translation>Tipo</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="135"/>
         <source>Location:</source>
-        <translation>གནས་ས།</translation>
+        <translation>Ubicación:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="149"/>
         <source>Time modified:</source>
-        <translation>བཟོ་བའི་དུས་ཚོད།</translation>
+        <translation>Hora de la modificación</translation>
     </message>
 </context>
 <context>
@@ -38,12 +38,12 @@
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="58"/>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="101"/>
         <source>Grand Search</source>
-        <translation>ཁྱོན་ཡོངས་ནས་འཚོལ་བ།</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="164"/>
         <source>Search settings</source>
-        <translation>བཤེར་འཚོལ་སྒྲིག་འགོད།</translation>
+        <translation>Ajustes de búsqueda</translation>
     </message>
 </context>
 <context>
@@ -51,12 +51,12 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="232"/>
         <source>Search</source>
-        <translation>བཤེར་འཚོལ།</translation>
+        <translation>Buscar en Internet</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="233"/>
         <source>What would you like to search for?</source>
-        <translation>འཚོལ་འདོད་པའི་ནང་དོན་བཤེར་འཚོལ།</translation>
+        <translation>¿Qué desea buscar?</translation>
     </message>
 </context>
 <context>
@@ -64,17 +64,17 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="93"/>
         <source>Cut</source>
-        <translation>དྲས་གཏུབ།</translation>
+        <translation>Cortar</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="97"/>
         <source>Copy</source>
-        <translation>པར་སློག </translation>
+        <translation>Copiar</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="101"/>
         <source>Paste</source>
-        <translation>སྦྱར་བ།</translation>
+        <translation>Pegar</translation>
     </message>
 </context>
 <context>
@@ -82,12 +82,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="208"/>
         <source>Location:</source>
-        <translation>གནས་ས།</translation>
+        <translation>Ubicación:</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="219"/>
         <source>Time modified:</source>
-        <translation>བཟོ་བའི་དུས་ཚོད།</translation>
+        <translation>Hora de la modificación</translation>
     </message>
 </context>
 <context>
@@ -95,17 +95,17 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="85"/>
         <source>Open</source>
-        <translation>ཁ་ཕྱེ་བ།</translation>
+        <translation>Abrir</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="90"/>
         <source>Open Path</source>
-        <translation>འབྱེད་ལམ།</translation>
+        <translation>Ruta libre</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="95"/>
         <source>Copy Path</source>
-        <translation>པར་སློག་བྱེད་ལམ།</translation>
+        <translation>Copiar ruta</translation>
     </message>
 </context>
 <context>
@@ -113,7 +113,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="259"/>
         <source>More</source>
-        <translation>དེ་བས་མང་བར་ལྟ་བ།</translation>
+        <translation>Más</translation>
     </message>
 </context>
 <context>
@@ -121,27 +121,27 @@
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="67"/>
         <source>Dimension:</source>
-        <translation>ཆེ་ཆུང་།</translation>
+        <translation>Dimensión:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="83"/>
         <source>Type:</source>
-        <translation>རིགས་གྲས།</translation>
+        <translation>Tipo</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="98"/>
         <source>Size:</source>
-        <translation>ཆེ་ཆུང་། </translation>
+        <translation>Tamaño:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="110"/>
         <source>Location:</source>
-        <translation>གནས་ས།</translation>
+        <translation>Ubicación:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="124"/>
         <source>Time modified:</source>
-        <translation>བཟོ་བའི་དུས་ཚོད།</translation>
+        <translation>Hora de la modificación</translation>
     </message>
 </context>
 <context>
@@ -149,7 +149,7 @@
     <message>
         <location filename="../src/grand-search/gui/mainwindow.cpp" line="209"/>
         <source>No search results</source>
-        <translation>བཙལ་འབྲས་མེད།</translation>
+        <translation>Sin resultados</translation>
     </message>
 </context>
 <context>
@@ -157,7 +157,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="89"/>
         <source>Search for &quot;%1&quot;</source>
-        <translation>བཤར་ཆས་བརྒྱུད་དེ་ &quot;%1&quot;འཚོལ་བ།</translation>
+        <translation>Buscar de &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
@@ -165,22 +165,22 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="43"/>
         <source>Search experience program</source>
-        <translation>བཤེར་འཚོལ་གྱི་ཉམས་ཞིབ་འཆར་གཞི།</translation>
+        <translation>Programa de experiencia de búsqueda</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="51"/>
         <source>Join search experience program</source>
-        <translation>བཤེར་འཚོལ་གྱི་ཉམས་ཞིབ་འཆར་གཞིའི་ནང་ཞུགས་པ།</translation>
+        <translation>Únase al programa de experiencia de búsqueda</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="63"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations. If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation>བཤེར་འཚོལ་གྱི་ཉམས་ཞིབ་འཆར་གཞི་ཁ་ཕྱེ་བ་འདིས་ཁྱེད་ཀྱིས་ང་ཚོར་ཁྱེད་ཀྱི་སྒྲིག་ཆས་དང་། རྒྱུད་ཁོངས། ཡིག་ཆའི་རྟགས་རིས། ཡིག་ཆ་འགའི་ནང་དོན། ཡིག་ཆའི་ངོ་བོ། ཉེར་སྤྱོད་མཉེན་ཆས། དེ་བཞིན་སྒྲིག་འགོད་སོགས་ཀྱི་ཆ་འཕྲིན་བསྡུ་ལེན་བྱེད་པར་དབང་སྤྲད་པར་བརྩི་རྒྱུ། ཁྱེད་ཀྱིས་བཤེར་འཚོལ་ཉམས་ཞིབ་འཆར་གཞི་ཁ་བརྒྱབ་ནས་ང་ཚོས་གོང་གསལ་ཆ་འཕྲིན་དག་བསྡུ་བ་དང་བེད་སྤྱོད་བྱེད་པར་དང་ལེན་མ་བྱས་ཀྱང་ཆོག</translation>
+        <translation>Unirse al programa de experiencia de búsqueda significa que usted nos concede y autoriza a recopilar la información de su dispositivo y sistema, iconos de archivos, contenido y propiedades, aplicaciones y sus configuraciones. Si rechaza que recopilemos y utilicemos la información mencionada, no se una al programa.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="71"/>
         <source>To know more about the management of your data, please refer to the UnionTech Software Privacy Policy (</source>
-        <translation>གཞི་གྲངས་དོ་དམ་དང་བེད་སྤྱོད་བྱེད་སྟངས་ལ་རྒྱུས་ལོན་བྱེད་དགོས་ན། ཐུང་ཞིན་མཉེན་ཆས་ཀྱི་གསང་དོན་སྲིད་ཇུས་དཔྱད་གཞིར་བཟུང་ཆོག（</translation>
+        <translation>Para saber más sobre la gestión de sus datos, consulte la política de privacidad de UnionTech Software (</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="73"/>
@@ -190,12 +190,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="74"/>
         <source>https://www.deepin.org/en/agreement/privacy/</source>
-        <translation>https://www.deepin.org/zh/agreement/privacy/</translation>
+        <translation>https://www.deepin.org/en/agreement/privacy/</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="76"/>
         <source>).</source>
-        <translation>）</translation>
+        <translation>).</translation>
     </message>
 </context>
 <context>
@@ -203,77 +203,77 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="41"/>
         <source>Applications</source>
-        <translation>ཉེར་སྤྱོད།</translation>
+        <translation>Aplicaciones </translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="42"/>
         <source>Settings</source>
-        <translation>སྒྲིག་འགོད།</translation>
+        <translation>Ajustes</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="43"/>
         <source>Videos</source>
-        <translation>བརྙན་འཕྲིན།</translation>
+        <translation>Vídeos</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="44"/>
         <source>Music</source>
-        <translation>རོལ་མོ། </translation>
+        <translation>Música</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="45"/>
         <source>Pictures</source>
-        <translation>པར་རིས།</translation>
+        <translation>Imágenes</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="46"/>
         <source>Documents</source>
-        <translation>ཡིག་ཚགས།</translation>
+        <translation>Documentos</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="47"/>
         <source>Folders</source>
-        <translation>ཡིག་ཁུག</translation>
+        <translation>Carpetas</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="48"/>
         <source>Files</source>
-        <translation>ཡིག་ཆ།</translation>
+        <translation>Archivos</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="49"/>
         <source>Web</source>
-        <translation>Webབཤེར་འཚོལ།</translation>
+        <translation>Web</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="38"/>
         <source>Dimension:</source>
-        <translation>ཆེ་ཆུང་།</translation>
+        <translation>Dimensión:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="39"/>
         <source>Type:</source>
-        <translation>རིགས་གྲས།</translation>
+        <translation>Tipo</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="40"/>
         <source>Size:</source>
-        <translation>ཆེ་ཆུང་། </translation>
+        <translation>Tamaño:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="41"/>
         <source>Duration:</source>
-        <translation>དུས་ཡུན།</translation>
+        <translation>Duración:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="42"/>
         <source>Location:</source>
-        <translation>གནས་ས།</translation>
+        <translation>Ubicación:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="43"/>
         <source>Time modified:</source>
-        <translation>བཟོ་བའི་དུས་ཚོད།</translation>
+        <translation>Hora de la modificación</translation>
     </message>
 </context>
 <context>
@@ -281,7 +281,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/scopewidget.cpp" line="44"/>
         <source>Search contents</source>
-        <translation>འཚོལ་་བའི་ཁྱབ་ཁོངས།</translation>
+        <translation>Buscar contenidos</translation>
     </message>
 </context>
 </TS>
