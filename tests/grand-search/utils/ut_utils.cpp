@@ -76,11 +76,16 @@ TEST(UtilsTest, showAlertMessage)
     int duration = 10;
 
     QWidget w;
-    w.show();
+    QWidgetList widList;
+    widList << &w;
+
+    stu.set_lamda(&QApplication::topLevelWidgets, [widList](){
+        return widList;
+    });
 
     Utils::showAlertMessage(point, color, text, duration);
 
-    QTest::qWait(50);
+    QTest::qWaitFor([&ut_call_show](){return ut_call_show;}, 200);
 
     EXPECT_TRUE(ut_call_show);
 }
