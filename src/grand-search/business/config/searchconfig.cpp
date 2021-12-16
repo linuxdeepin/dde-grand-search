@@ -56,7 +56,7 @@ SearchConfig::SearchConfig()
         qInfo() << "create conf " << configPath;
     }
 
-    m_settings = new QSettings(configPath,QSettings::IniFormat);
+    m_settings = new QSettings(configPath, QSettings::IniFormat);
 
     m_settings->beginGroup(GRANDSEARCH_VERSION_GROUP);
     if (m_settings->childKeys().contains(GRANDSEARCH_VERSION_CONFIG)) {
@@ -70,6 +70,12 @@ SearchConfig::SearchConfig()
         m_settings->setValue(GRANDSEARCH_VERSION_CONFIG, GRANDSEARCH_VERSION_CONFIG_CURRENT);
     }
     m_settings->endGroup();
+}
+
+SearchConfig::~SearchConfig()
+{
+    delete m_settings;
+    m_settings = nullptr;
 }
 
 void SearchConfig::convertConfigFile()

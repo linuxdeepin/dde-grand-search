@@ -66,8 +66,10 @@ TEST(UtilsTest, showAlertMessage)
     typedef void (*fptr)(DArrowRectangle*, int, int);
     fptr ut_show = (fptr)(&DArrowRectangle::show);
 
-    stu.set_lamda(ut_show, [&](){
+    DArrowRectangle *tool = nullptr;
+    stu.set_lamda(ut_show, [&](DArrowRectangle *self, int x, int y){
         ut_call_show = true;
+        tool = self;
     });
 
     QPoint point(100, 100);
@@ -84,10 +86,16 @@ TEST(UtilsTest, showAlertMessage)
     });
 
     Utils::showAlertMessage(point, color, text, duration);
-
-    QTest::qWaitFor([&ut_call_show](){return ut_call_show;}, 200);
-
     EXPECT_TRUE(ut_call_show);
+
+    ASSERT_NE(tool, nullptr);
+    bool del = false;
+    tool->connect(tool, &DArrowRectangle::destroyed, [&del](){
+        del = true;
+    });
+
+    QTest::qWaitFor([&del](){return del;}, 200);
+    EXPECT_TRUE(del);
 }
 
 TEST(UtilsTest, sort)

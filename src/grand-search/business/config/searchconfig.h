@@ -39,6 +39,7 @@ public:
 
 protected:
     explicit SearchConfig();
+    ~SearchConfig();
 
 private:
     void convertConfigFile();

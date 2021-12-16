@@ -125,6 +125,7 @@ TEST(SwitchWidgetTest, setIcon)
 
     w.setIcon(icon, size);
     EXPECT_TRUE(ut_call_setPixmap);
+    delete switchWidget;
 }
 
 TEST(SwitchWidgetTest, setEnableBackground)

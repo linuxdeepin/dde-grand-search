@@ -40,6 +40,7 @@ FileStatisticsThread::~FileStatisticsThread()
     if (m_notifyDataTimer) {
         m_notifyDataTimer->stop();
         m_notifyDataTimer->deleteLater();
+        m_notifyDataTimer = nullptr;
     }
 }
 

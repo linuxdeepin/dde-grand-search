@@ -28,6 +28,10 @@
 
 #include <QTest>
 
+// 因为#include <QTest>, qApp会变成static_cast<QGuiApplication *>(QCoreApplication::instance()
+// 而main函数中定义的是QCoreApplication，此转换会导致报内存泄露，这里将qApp重新定义回QCoreApplication::instance()
+#define qApp QCoreApplication::instance()
+
 TEST(PluginLiaison, ut_init)
 {
     stub_ext::StubExt st;
@@ -127,6 +131,7 @@ TEST(PluginLiaison, ut_search)
     EXPECT_TRUE(search);
     EXPECT_TRUE(pl.d->m_searching.load());
     ASSERT_NE(pl.d->m_replyWatcher, nullptr);
+
     EXPECT_EQ(pl.d->m_replyWatcher->thread(), qApp->thread());
 
     //todo dbus mmleak

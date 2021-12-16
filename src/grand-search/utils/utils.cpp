@@ -89,7 +89,7 @@ void Utils::showAlertMessage(QPoint globalPoint, const QColor &backgroundColor, 
 
         tooltip->show(static_cast<int>(globalPoint.x()),static_cast<int>(globalPoint.y()));
 
-        QTimer::singleShot(duration, parent, [=] {
+        QTimer::singleShot(duration, tooltip, [=] {
             delete tooltip;
             tooltip = nullptr;
         });
