@@ -83,7 +83,7 @@ TEST(VideoPreviewPlugin, ut_previewItem)
     decode = false;
     item.insert(PREVIEW_ITEMINFO_ITEM, "/home/user/test.mp4");
     EXPECT_TRUE(vp.previewItem(item));
-    QTest::qWaitFor([&updateInfo](){return updateInfo;}, 200);
+    QTest::qWaitFor([&updateInfo](){return updateInfo;}, 2000);
     EXPECT_TRUE(decode);
     EXPECT_TRUE(updateInfo);
 
@@ -122,7 +122,7 @@ TEST(VideoPreviewPlugin, ut_stopPreview)
         EXPECT_TRUE(self->decoding);
         QTest::qWaitFor([self](){
             return !self->decoding;
-        }, 500);
+        }, 1000);
         decode = true;
         return QVariantHash();
     });
@@ -135,7 +135,7 @@ TEST(VideoPreviewPlugin, ut_stopPreview)
     EXPECT_TRUE(vp.stopPreview());
     QTest::qWaitFor([&decode](){
         return decode;
-    }, 500);
+    }, 1000);
 
     EXPECT_TRUE(decode);
     EXPECT_FALSE(vp.m_decode->decoding);
