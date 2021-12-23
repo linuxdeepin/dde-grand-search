@@ -22,6 +22,7 @@
 #include "ddegrandsearchdockplugin.h"
 #include "ut_mock_pluginproxyinterface.h"
 #include "gui/grandsearchwidget.h"
+#include "gui/tipswidget.h"
 
 #include "stubext.h"
 
@@ -94,7 +95,7 @@ TEST_F(TestDdeGrandSearchDockPlugin, itemWidget)
 
 TEST_F(TestDdeGrandSearchDockPlugin, itemTipsWidget)
 {
-    QLabel *result = qobject_cast<QLabel *>(plugin->itemTipsWidget(QString("test")));
+    TipsWidget *result = qobject_cast<TipsWidget *>(plugin->itemTipsWidget(QString("test")));
     EXPECT_EQ(result, plugin->m_tipsWidget.get());
 }
 

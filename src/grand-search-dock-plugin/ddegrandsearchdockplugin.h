@@ -26,9 +26,9 @@
 #include <QObject>
 #include <QScopedPointer>
 
+class TipsWidget;
 class GrandSearchWidget;
 class QGSettings;
-class QLabel;
 class DdeGrandSearchDockPlugin : public QObject, PluginsItemInterface
 {
     Q_OBJECT
@@ -86,7 +86,7 @@ private slots:
 private:
     QScopedPointer<GrandSearchWidget> m_searchWidget;
     QScopedPointer<QGSettings> m_gsettings;
-    QScopedPointer<QLabel> m_tipsWidget;
+    QScopedPointer<TipsWidget> m_tipsWidget;
 };
 
-#endif // DDEGRANDSEARCHDOCKPLUGIN_H
+#endif   // DDEGRANDSEARCHDOCKPLUGIN_H

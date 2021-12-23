@@ -19,6 +19,8 @@ set(SRCS
     ddegrandsearchdockplugin.cpp
     gui/grandsearchwidget.h
     gui/grandsearchwidget.cpp
+    gui/tipswidget.h
+    gui/tipswidget.cpp
     contacts/interface/grandsearchinterface.h
     contacts/interface/grandsearchinterface.cpp
     )

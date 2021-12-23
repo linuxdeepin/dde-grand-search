@@ -20,6 +20,7 @@
  */
 #include "ddegrandsearchdockplugin.h"
 #include "gui/grandsearchwidget.h"
+#include "gui/tipswidget.h"
 
 #include <DApplication>
 
@@ -30,22 +31,20 @@
 #define MenuOpenSetting "menu_open_setting"
 #define GrandSearchApp "dde-grand-search"
 
-#define SchemaId    "com.deepin.dde.dock.module.grand-search"
-#define SchemaPath  "/com/deepin/dde/dock/module/grand-search/"
+#define SchemaId "com.deepin.dde.dock.module.grand-search"
+#define SchemaPath "/com/deepin/dde/dock/module/grand-search/"
 #define SchemaKeyMenuEnable "menuEnable"
 
 DWIDGET_USE_NAMESPACE
 
 DdeGrandSearchDockPlugin::DdeGrandSearchDockPlugin(QObject *parent)
-    : QObject (parent)
+    : QObject(parent)
     , m_searchWidget(nullptr)
 {
-
 }
 
 DdeGrandSearchDockPlugin::~DdeGrandSearchDockPlugin()
 {
-
 }
 
 const QString DdeGrandSearchDockPlugin::pluginName() const
@@ -72,7 +71,7 @@ void DdeGrandSearchDockPlugin::init(PluginProxyInterface *proxyInter)
         m_searchWidget.reset(new GrandSearchWidget);
 
     if (m_tipsWidget.isNull())
-        m_tipsWidget.reset(new QLabel);
+        m_tipsWidget.reset(new TipsWidget);
 
     // 如果插件没有被禁用则在初始化插件时才添加主控件到面板上
     if (!pluginIsDisable()) {
@@ -195,4 +194,3 @@ void DdeGrandSearchDockPlugin::onGsettingsChanged(const QString &key)
         qInfo() << "The status of whether the grand search right-click menu is enabled changes to:" << enable;
     }
 }
-
