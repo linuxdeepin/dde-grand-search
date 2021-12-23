@@ -128,6 +128,8 @@ QMap<QString, DesktopEntryPointer> DesktopAppSearcherPrivate::scanDesktopFile(co
 
         const QString path = fileInfo.absoluteFilePath();
         DesktopEntryPointer pointer(new DDesktopEntry(path));
+        if (isHidden(pointer))
+            continue;
         //正常解析时pointer->status()返回的不是NoError
         //if (pointer->status() == DDesktopEntry::NoError)
         entrys.insert(path, pointer);

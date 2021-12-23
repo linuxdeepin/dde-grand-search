@@ -46,6 +46,13 @@ private:
     static void createIndex(DesktopAppSearcherPrivate *);
     static void updateIndex(DesktopAppSearcherPrivate *);
     static QMap<QString, DesktopEntryPointer> scanDesktopFile(const QString &path, volatile bool &runing);
+    static inline bool isHidden(DesktopEntryPointer pointer)
+    {
+        const auto noDisplay = pointer->stringValue("NoDisplay");
+        const auto hidden = pointer->stringValue("Hidden");
+
+        return (!noDisplay.compare("true", Qt::CaseInsensitive) || !hidden.compare("true", Qt::CaseInsensitive));
+    }
 private:
     DesktopAppSearcher *q;
     bool m_inited = false;
