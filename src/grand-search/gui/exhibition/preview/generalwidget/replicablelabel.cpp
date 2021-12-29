@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Uniontech Software Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 Uniontech Software Technology Co., Ltd.
  *
  * Author:     wangchunlin<wangchunlin@uniontech.com>
  *
@@ -29,6 +29,8 @@
 
 DGUI_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
+
+const static int LineEditHorizontalMargin = 2;
 
 ReplicableLabel::ReplicableLabel(QWidget *parent)
     : QLineEdit(parent)
@@ -101,7 +103,9 @@ void ReplicableLabel::resizeEvent(QResizeEvent *event)
 {
     QFontMetrics fontMetrics(this->font());
 
-    m_elideText = fontMetrics.elidedText(m_fullText, m_elideMode, event->size().width());
+    // 截断文本的显示宽度，需要扣除输入框控件两边的绘制间距
+    int drawTextWidth = event->size().width() - LineEditHorizontalMargin * 2;
+    m_elideText = fontMetrics.elidedText(m_fullText, m_elideMode, drawTextWidth);
 
     QLineEdit::setText(m_elideText);
 

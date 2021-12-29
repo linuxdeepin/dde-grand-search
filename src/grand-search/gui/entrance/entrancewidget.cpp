@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Uniontech Software Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 Uniontech Software Technology Co., Ltd.
  *
  * Author:     wangchunlin<wangchunlin@uniontech.com>
  *
@@ -41,6 +41,7 @@
 #include <QClipboard>
 #include <QContextMenuEvent>
 #include <QEvent>
+#include <QtGlobal>
 
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
@@ -253,9 +254,13 @@ void EntranceWidget::initUI()
 void EntranceWidget::initConnections()
 {
     Q_ASSERT(d_p->m_searchEdit);
+    Q_ASSERT(d_p->m_lineEdit);
 
     // 输入改变时重置定时器，避免短时间内发起大量无效调用
     connect(d_p->m_searchEdit, &DSearchEdit::textChanged, d_p.data(), &EntranceWidgetPrivate::delayChangeText);
+
+    // 终止搜索时，强制设置焦点
+    connect(d_p->m_searchEdit, &DSearchEdit::searchAborted, d_p->m_lineEdit, qOverload<>(&QLineEdit::setFocus));
 }
 
 void EntranceWidget::onAppIconChanged(const QString &searchGroupName, const GrandSearch::MatchedItem &item)
