@@ -57,47 +57,6 @@ TEST(UtilsTest, constructor)
     delete utils;
 }
 
-TEST(UtilsTest, showAlertMessage)
-{
-    stub_ext::StubExt stu;
-
-    bool ut_call_show = false;
-
-    typedef void (*fptr)(DArrowRectangle*, int, int);
-    fptr ut_show = (fptr)(&DArrowRectangle::show);
-
-    DArrowRectangle *tool = nullptr;
-    stu.set_lamda(ut_show, [&](DArrowRectangle *self, int x, int y){
-        ut_call_show = true;
-        tool = self;
-    });
-
-    QPoint point(100, 100);
-    QColor color(Qt::red);
-    QString text("testText");
-    int duration = 10;
-
-    QWidget w;
-    QWidgetList widList;
-    widList << &w;
-
-    stu.set_lamda(&QApplication::topLevelWidgets, [widList](){
-        return widList;
-    });
-
-    Utils::showAlertMessage(point, color, text, duration);
-    EXPECT_TRUE(ut_call_show);
-
-    ASSERT_NE(tool, nullptr);
-    bool del = false;
-    tool->connect(tool, &DArrowRectangle::destroyed, [&del](){
-        del = true;
-    });
-
-    QTest::qWaitFor([&del](){return del;}, 200);
-    EXPECT_TRUE(del);
-}
-
 TEST(UtilsTest, sort)
 {
     stub_ext::StubExt stu;

@@ -65,37 +65,6 @@ public:
 QMap<QString, QString> Utils::m_appIconNameMap;
 QMimeDatabase Utils::m_mimeDb;
 
-void Utils::showAlertMessage(QPoint globalPoint, const QColor &backgroundColor, const QString &text, int duration)
-{
-    QWidget* parent = nullptr;
-    if (!QApplication::topLevelWidgets().isEmpty())
-        parent = QApplication::topLevelWidgets().at(0);
-
-    static DArrowRectangle* tooltip = nullptr;
-    if (!tooltip && parent) {
-        tooltip = new DArrowRectangle(DArrowRectangle::ArrowBottom, nullptr);
-        tooltip->setObjectName("AlertTooltip");
-        QLabel *label = new QLabel(tooltip);
-        label->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-        label->setWordWrap(true);
-        label->setMaximumWidth(500);
-        tooltip->setContent(label);
-        tooltip->setBackgroundColor(backgroundColor);
-        tooltip->setArrowX(15);
-        tooltip->setArrowHeight(0);
-
-        label->setText(text);
-        label->adjustSize();
-
-        tooltip->show(static_cast<int>(globalPoint.x()),static_cast<int>(globalPoint.y()));
-
-        QTimer::singleShot(duration, tooltip, [=] {
-            delete tooltip;
-            tooltip = nullptr;
-        });
-    }
-}
-
 bool Utils::sort(MatchedItems &list, Qt::SortOrder order/* = Qt::AscendingOrder*/)
 {
     QTime time;
