@@ -29,7 +29,7 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 set(LIB_PLATFORM_DIR "/usr/lib/${CMAKE_LIBRARY_ARCHITECTURE}")
 
 #全局文件
-FILE(GLOB GLOBAL_SRC "./src/global/*.h" "./src/global/*.cpp")
+FILE(GLOB GLOBAL_SRC "./src/global/*.h" "./src/global/*.cpp" "./src/global/accessibility/*.h")
 
 # 国际化
 if (NOT (${CMAKE_BUILD_TYPE} MATCHES "Debug"))

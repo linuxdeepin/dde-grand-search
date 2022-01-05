@@ -10,6 +10,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIE -pie")
 # 定义可执行程序名称
 set(BIN_NAME ${SEARCH_BIN_NAME})
 
+# 集成测试标签
+ADD_DEFINITIONS(-DENABLE_ACCESSIBILITY)
+
 # 依赖包
 find_package(PkgConfig REQUIRED)
 find_package(DtkWidget REQUIRED)

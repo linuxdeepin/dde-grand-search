@@ -22,6 +22,7 @@
 #include "utils/utils.h"
 #include "global/matcheditem.h"
 #include "global/builtinsearch.h"
+#include "global/accessibility/acintelfunctions.h"
 
 #include <DGuiApplicationHelper>
 #include <DStandardPaths>
@@ -78,6 +79,9 @@ void GrandSearchListView::setMatchedItems(const MatchedItems &items)
 void GrandSearchListView::addRow(const MatchedItem &item)
 {
     QStandardItem *newItem = new QStandardItem;
+
+    AC_SET_ACCESSIBLE_TEXT(newItem, item.name);
+
     m_model->appendRow(newItem);
 
     auto row = m_model->rowCount() - 1;

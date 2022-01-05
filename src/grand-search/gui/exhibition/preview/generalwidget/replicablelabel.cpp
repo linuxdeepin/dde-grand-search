@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "replicablelabel.h"
+#include "global/accessibility/acintelfunctions.h"
 
 #include <DGuiApplicationHelper>
 #include <DStyle>
@@ -103,6 +104,8 @@ void ReplicableLabel::resizeEvent(QResizeEvent *event)
     m_elideText = fontMetrics.elidedText(m_fullText, m_elideMode, event->size().width());
 
     QLineEdit::setText(m_elideText);
+
+    AC_SET_ACCESSIBLE_NAME(this, m_elideText);
 
     return QLineEdit::resizeEvent(event);
 }

@@ -23,6 +23,7 @@
 #include "groupwidget.h"
 #include "listview/grandsearchlistview.h"
 #include "utils/utils.h"
+#include "global/accessibility/acintelfunctions.h"
 
 #include <DLabel>
 #include <DPushButton>
@@ -67,8 +68,11 @@ GroupWidget::~GroupWidget()
 void GroupWidget::setGroupName(const QString &groupName)
 {
     Q_ASSERT(m_groupLabel);
+    Q_ASSERT(m_listView);
 
     m_groupLabel->setText(groupName);
+
+    AC_SET_ACCESSIBLE_NAME(m_listView, groupName);
 }
 
 void GroupWidget::appendMatchedItems(const MatchedItems &newItems, const QString& searchGroupName)
