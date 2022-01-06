@@ -187,7 +187,8 @@ void MainWindow::onResetExhitionWidget(const QString &missionId)
 void MainWindow::initUI()
 {
     // 禁用窗口管理器并置顶
-    setWindowFlags(Qt::BypassWindowManagerHint | Qt::WindowStaysOnTopHint);
+    setWindowFlags(Qt::BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::Tool);
+    setAttribute(Qt::WA_QuitOnClose);
 
     // 控制界面大小和位置
     setFixedSize(MainWindowWidth, MainWindowHeight);
