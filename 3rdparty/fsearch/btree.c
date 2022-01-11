@@ -26,6 +26,8 @@
 
 BTreeNode *
 btree_node_new (const char *name,
+                const char *full_py_name,
+                const char *first_py_name,
                 time_t mtime,
                 off_t size,
                 uint32_t pos,
@@ -40,6 +42,9 @@ btree_node_new (const char *name,
 
     // data
     new->name = strdup(name);
+    new->full_py_name = strdup(full_py_name);
+    new->first_py_name = strdup(first_py_name);
+
     new->mtime = mtime;
     new->size = size;
     new->pos = pos;
@@ -57,6 +62,14 @@ btree_node_data_free (BTreeNode *node)
     if (node->name) {
         free (node->name);
         node->name = NULL;
+    }
+    if (node->full_py_name) {
+        free (node->full_py_name);
+        node->full_py_name = NULL;
+    }
+    if (node->first_py_name) {
+        free (node->first_py_name);
+        node->first_py_name = NULL;
     }
     free (node);
     node = NULL;

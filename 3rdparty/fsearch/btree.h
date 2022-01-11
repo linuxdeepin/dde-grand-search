@@ -31,6 +31,8 @@ struct _BTreeNode {
 
     // data
     char *name;
+    char *full_py_name;
+    char *first_py_name;
 
     time_t mtime;
     off_t size;
@@ -40,6 +42,8 @@ struct _BTreeNode {
 
 BTreeNode *
 btree_node_new(const char *name,
+               const char *full_py_name,
+               const char *first_py_name,
                time_t mtime,
                off_t size,
                uint32_t pos,

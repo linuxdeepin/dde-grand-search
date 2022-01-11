@@ -36,10 +36,14 @@
 #include "database.h"
 #include "fsearch_config.h"
 #include "fsearch.h"
-//#include "debug.h"
+#include "fsearch_utils.h"
 
 //#define WS_FOLLOWLINK	(1 << 1)	/* follow symlinks */
 #define WS_DOTFILES	(1 << 2)	/* per unix convention, .file is hidden */
+
+// add py index,update database version to 1.0
+#define DATABASE_MAJOR_VERSION 1
+#define DATABASE_MINOR_VERSION 0
 
 
 struct _DatabaseLocation
@@ -107,7 +111,8 @@ db_location_load_from_file (const char *fname)
     if (fread (&majorver, 1, 1, fp) != 1) {
         goto load_fail;
     }
-    if (majorver != 0) {
+
+    if (majorver != DATABASE_MAJOR_VERSION) {
         printf ("bad majorver=%d\n", majorver);
         goto load_fail;
     }
@@ -116,7 +121,8 @@ db_location_load_from_file (const char *fname)
     if (fread (&minorver, 1, 1, fp) != 1) {
         goto load_fail;
     }
-    if (minorver != 1) {
+
+    if (minorver != DATABASE_MINOR_VERSION) {
         printf ("bad minorver=%d\n", minorver);
         goto load_fail;
     }
@@ -158,6 +164,32 @@ db_location_load_from_file (const char *fname)
         }
         name[name_len] = '\0';
 
+        // read full pinyin
+        uint16_t full_py_len = 0;
+        if (fread (&full_py_len, 1, 2, fp) != 2) {
+            printf("failed to read full pinyin name length\n");
+            goto load_fail;
+        }
+        char full_py_name[full_py_len + 1];
+        if (full_py_len && fread (&full_py_name, 1, full_py_len, fp) != full_py_len) {
+            printf("failed to read full pinyin name\n");
+            goto load_fail;
+        }
+        full_py_name[full_py_len] = '\0';
+
+        // read first pinyin name
+        uint16_t first_py_len = 0;
+        if (fread (&first_py_len, 1, 2, fp) != 2) {
+            printf("failed to read first pinyin name length\n");
+            goto load_fail;
+        }
+        char first_py_name[first_py_len + 1];
+        if (first_py_len && fread (&first_py_name, 1, first_py_len, fp) != first_py_len) {
+            printf("failed to read first pinyin name\n");
+            goto load_fail;
+        }
+        first_py_name[first_py_len] = '\0';
+
         // read is_dir
         uint8_t is_dir = 0;
         if (fread (&is_dir, 1, 1, fp) != 1) {
@@ -188,6 +220,8 @@ db_location_load_from_file (const char *fname)
 
         int is_root = !strcmp (name, "/");
         BTreeNode *new = btree_node_new (is_root ? "" : name,
+                                         is_root ? "" : full_py_name,
+                                         is_root ? "" : first_py_name,
                                          mtime,
                                          size,
                                          pos,
@@ -245,12 +279,12 @@ db_location_write_to_file (DatabaseLocation *location, const char *path)
         goto save_fail;
     }
 
-    const uint8_t majorver = 0;
+    const uint8_t majorver = DATABASE_MAJOR_VERSION;
     if (fwrite (&majorver, 1, 1, fp) != 1) {
         goto save_fail;
     }
 
-    const uint8_t minorver = 1;
+    const uint8_t minorver = DATABASE_MINOR_VERSION;
     if (fwrite (&minorver, 1, 1, fp) != 1) {
         goto save_fail;
     }
@@ -269,7 +303,9 @@ db_location_write_to_file (DatabaseLocation *location, const char *path)
     while (node) {
         const char *name = is_root ? "/" : node->name;
         is_root = 0;
-        uint16_t len = strlen (name);
+        uint16_t len = (uint16_t)strlen (name);
+        uint16_t full_py_len = (uint16_t)strlen (node->full_py_name);
+        uint16_t first_py_len = (uint16_t)strlen (node->first_py_name);
         if (len) {
             // write length of node name
             if (fwrite (&len, 1, 2, fp) != 2) {
@@ -279,6 +315,23 @@ db_location_write_to_file (DatabaseLocation *location, const char *path)
             if (fwrite (name, 1, len, fp) != len) {
                 goto save_fail;
             }
+            // write length of node full pinyin name
+            if (fwrite (&full_py_len, 1, 2, fp) != 2) {
+                goto save_fail;
+            }
+            // write node full pinyin name
+            if (full_py_len && fwrite (node->full_py_name, 1, full_py_len, fp) != full_py_len) {
+                goto save_fail;
+            }
+            // write length of node first pinyin name
+            if (fwrite (&first_py_len, 1, 2, fp) != 2) {
+                goto save_fail;
+            }
+            // write node first pinyin name
+            if (first_py_len && fwrite (node->first_py_name, 1, first_py_len, fp) != first_py_len) {
+                goto save_fail;
+            }
+
             // write node name
             uint8_t is_dir = node->is_dir;
             if (fwrite (&is_dir, 1, 1, fp) != 1) {
@@ -439,7 +492,12 @@ db_location_walk_tree_recursive (DatabaseLocation *location,
         }
 
         const bool is_dir = S_ISDIR (st.st_mode);
+        char full_py_name[FILENAME_MAX] = "";
+        char first_py_name[FILENAME_MAX] = "";
+        convert_chinese_2_pinyin(dent->d_name, first_py_name, full_py_name);
         BTreeNode *node = btree_node_new (dent->d_name,
+                                          full_py_name,
+                                          first_py_name,
                                           st.st_mtime,
                                           st.st_size,
                                           0,
@@ -475,7 +533,7 @@ db_location_build_tree (const char *dname, void (*callback)(const char *))
     else {
         root_name = dname;
     }
-    BTreeNode *root = btree_node_new (root_name, 0, 0, 0, true);
+    BTreeNode *root = btree_node_new (root_name, "", "", 0, 0, 0, true);
     DatabaseLocation *location = db_location_new ();
     location->entries = root;
     FsearchConfig *config = (FsearchConfig *)(calloc(1, sizeof(FsearchConfig)));

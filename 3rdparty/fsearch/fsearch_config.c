@@ -387,7 +387,7 @@ config_load_default (FsearchConfig *config)
     g_assert (config != NULL);
 
     // Search
-    config->auto_search_in_path = true;
+    config->auto_search_in_path = false;
     config->search_as_you_type = true;
     config->match_case = false;
     config->enable_regex = false;

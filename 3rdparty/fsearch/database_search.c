@@ -234,7 +234,17 @@ search_thread (void * user_data)
                 haystack = haystack_name;
             }
             if (!search_func (haystack, ptr)) {
-                break;
+                if (strlen(node->full_py_name)) {
+                    // search first pinyin
+                    if (!search_func (node->first_py_name, ptr)) {
+                        // search full pinyin
+                        if (!search_func (node->full_py_name, ptr)) {
+                            break;
+                        }
+                    }
+                } else {
+                    break;
+                }
             }
         }
 
