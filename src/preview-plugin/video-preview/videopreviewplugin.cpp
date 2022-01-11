@@ -82,8 +82,8 @@ bool VideoPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
 #ifdef PREVIEW_ASYNC_DECODE
     m_decode.reset(new DecodeBridge);
     m_decode->decoding = true;
-    QtConcurrent::run(&DecodeBridge::decode, m_decode, path);
     connect(m_decode.get(), &DecodeBridge::sigUpdateInfo, this, &VideoPreviewPlugin::updateInfo);
+    QtConcurrent::run(&DecodeBridge::decode, m_decode, path);
 #else
     QFuture<QVariantHash> future = QtConcurrent::run(&DecodeBridge::decode, nullptr, path);
 #endif

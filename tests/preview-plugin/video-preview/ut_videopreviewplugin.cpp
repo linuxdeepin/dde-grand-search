@@ -80,6 +80,7 @@ TEST(VideoPreviewPlugin, ut_previewItem)
     EXPECT_FALSE(decode);
     EXPECT_FALSE(updateInfo);
 
+    updateInfo = false;
     decode = false;
     item.insert(PREVIEW_ITEMINFO_ITEM, "/home/user/test.mp4");
     EXPECT_TRUE(vp.previewItem(item));
