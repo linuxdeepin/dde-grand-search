@@ -31,11 +31,23 @@
 DCORE_USE_NAMESPACE
 
 #define  APPLICATION_DIR_PATH "/usr/share/applications"
+#define  APPLICATIONLOCAL_DIR_PATH "/usr/local/share/applications"
 
 DesktopAppSearcherPrivate::DesktopAppSearcherPrivate(DesktopAppSearcher *parent)
     : q(parent)
 {
-    m_fileWatcher = new QFileSystemWatcher({APPLICATION_DIR_PATH}, q);
+    m_appDirs << APPLICATION_DIR_PATH << APPLICATIONLOCAL_DIR_PATH;
+
+    // 扩展
+    for (const QString &path : QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation)) {
+        if (m_appDirs.contains(path))
+            continue;
+        m_appDirs.append(path);
+    }
+
+    qInfo() << "application dirs:" << m_appDirs;
+    m_fileWatcher = new QFileSystemWatcher(q);
+    m_fileWatcher->addPaths(m_appDirs);
 }
 
 DesktopAppSearcherPrivate::~DesktopAppSearcherPrivate()
@@ -58,7 +70,7 @@ void DesktopAppSearcherPrivate::createIndex(DesktopAppSearcherPrivate *d)
     QHash<QString, QList<DesktopAppPointer>> indexTable;
 
     //获取所有应用
-    QMap<QString, DesktopEntryPointer> apps = DesktopAppSearcherPrivate::scanDesktopFile(APPLICATION_DIR_PATH, d->m_creating);
+    QMap<QString, DesktopEntryPointer> apps = DesktopAppSearcherPrivate::scanDesktopFile(d->m_appDirs, d->m_creating);
     if (!d->m_creating)
         return;
 
@@ -113,26 +125,41 @@ void DesktopAppSearcherPrivate::updateIndex(DesktopAppSearcherPrivate *d)
     }
 }
 
-QMap<QString, DesktopEntryPointer> DesktopAppSearcherPrivate::scanDesktopFile(const QString &path, volatile bool &runing)
+QMap<QString, DesktopEntryPointer> DesktopAppSearcherPrivate::scanDesktopFile(const QStringList &paths, volatile bool &runing)
 {
     QMap<QString, DesktopEntryPointer> entrys;
-    QDir dir(path);
-    if (!dir.isReadable())
-        return entrys;
+    QSet<QString> duplicate;
 
-    QFileInfoList entryInfoList = dir.entryInfoList({"*.desktop"}, QDir::Files, QDir::Name);
-    for (const QFileInfo &fileInfo : entryInfoList) {
+    for (const QString &dirPath : paths) {
         //中断
         if (!runing)
             break;
 
-        const QString path = fileInfo.absoluteFilePath();
-        DesktopEntryPointer pointer(new DDesktopEntry(path));
-        if (isHidden(pointer))
+        QDir dir(dirPath);
+        if (!dir.isReadable())
             continue;
-        //正常解析时pointer->status()返回的不是NoError
-        //if (pointer->status() == DDesktopEntry::NoError)
-        entrys.insert(path, pointer);
+
+        QFileInfoList entryInfoList = dir.entryInfoList({"*.desktop"}, QDir::Files, QDir::Name);
+        for (const QFileInfo &fileInfo : entryInfoList) {
+            //中断
+            if (!runing)
+                break;
+
+            const QString path = fileInfo.absoluteFilePath();
+            const QString fileName = fileInfo.fileName();
+
+            // 重复的
+            if (duplicate.contains(fileName))
+                continue;
+
+            DesktopEntryPointer pointer(new DDesktopEntry(path));
+            if (isHidden(pointer))
+                continue;
+            //正常解析时pointer->status()返回的不是NoError
+            //if (pointer->status() == DDesktopEntry::NoError)
+            entrys.insert(path, pointer);
+            duplicate.insert(fileName);
+        }
     }
 
     return entrys;

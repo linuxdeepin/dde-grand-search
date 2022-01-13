@@ -32,6 +32,33 @@
 #include <QTest>
 
 DCORE_USE_NAMESPACE
+
+TEST(DesktopAppSearcherTest, ut_dir_0)
+{
+    const char *old = getenv("XDG_DATA_DIRS");
+    putenv("XDG_DATA_DIRS=");
+    DesktopAppSearcher das;
+    auto dir = das.d->m_appDirs;
+    EXPECT_TRUE(dir.contains("/usr/share/applications"));
+    EXPECT_TRUE(dir.contains("/usr/local/share/applications"));
+    EXPECT_TRUE(dir.contains(QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation).first()));
+    setenv("XDG_DATA_DIRS", old ? old : "", 0);
+}
+
+TEST(DesktopAppSearcherTest, ut_dir_1)
+{
+    const char *old = getenv("XDG_DATA_DIRS");
+    putenv("XDG_DATA_DIRS=/etc:/etc/apt");
+    DesktopAppSearcher das;
+    auto dir = das.d->m_appDirs;
+    EXPECT_TRUE(dir.contains("/usr/share/applications"));
+    EXPECT_TRUE(dir.contains("/usr/local/share/applications"));
+    EXPECT_TRUE(dir.contains(QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation).first()));
+    EXPECT_TRUE(dir.contains("/etc/applications"));
+    EXPECT_TRUE(dir.contains("/etc/apt/applications"));
+    setenv("XDG_DATA_DIRS", old ? old : "", 0);
+}
+
 TEST(DesktopAppSearcherTest, ut_asyncInit_0)
 {
     DesktopAppSearcher das;
@@ -150,13 +177,13 @@ TEST(DesktopAppSearcherTest, ut_scanDesktopFile)
 
     DesktopAppSearcher das;
     QString appPath = "/usr/share/applications";
-    EXPECT_TRUE(das.d->scanDesktopFile("", das.d->m_creating).isEmpty());
+    EXPECT_TRUE(das.d->scanDesktopFile({""}, das.d->m_creating).isEmpty());
 
     st.reset(&QDir::isReadable);
-    EXPECT_TRUE(das.d->scanDesktopFile(appPath, das.d->m_creating).isEmpty());
+    EXPECT_TRUE(das.d->scanDesktopFile({appPath}, das.d->m_creating).isEmpty());
 
     das.d->m_creating = true;
-    EXPECT_TRUE(!das.d->scanDesktopFile(appPath, das.d->m_creating).isEmpty());
+    EXPECT_TRUE(!das.d->scanDesktopFile({appPath}, das.d->m_creating).isEmpty());
 }
 
 TEST(DesktopAppSearcherTest, ut_desktopIndex)

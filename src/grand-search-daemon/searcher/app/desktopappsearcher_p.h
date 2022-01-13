@@ -45,7 +45,7 @@ public:
 private:
     static void createIndex(DesktopAppSearcherPrivate *);
     static void updateIndex(DesktopAppSearcherPrivate *);
-    static QMap<QString, DesktopEntryPointer> scanDesktopFile(const QString &path, volatile bool &runing);
+    static QMap<QString, DesktopEntryPointer> scanDesktopFile(const QStringList &paths, volatile bool &runing);
     static inline bool isHidden(DesktopEntryPointer pointer)
     {
         const auto noDisplay = pointer->stringValue("NoDisplay");
@@ -59,7 +59,7 @@ private:
     volatile bool m_creating = false;
     QFuture<void> m_creatingIndex;
     QFuture<void> m_updatingIndex;
-
+    QStringList m_appDirs;
     //索引表
     QReadWriteLock m_lock;
     QHash<QString, QList<DesktopAppPointer>> m_indexTable;
