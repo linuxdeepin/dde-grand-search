@@ -91,6 +91,8 @@ if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips"
         searcher/file/fssearcher.cpp
         searcher/file/fsworker.h
         searcher/file/fsworker.cpp
+        searcher/file/filesearchutils.h
+        searcher/file/filesearchutils.cpp
     )
     set(LINK_LIBS
         ${LINK_LIBS}
@@ -108,6 +110,8 @@ else ()
         searcher/file/filenameworker.h
         searcher/file/filenameworker.cpp
         searcher/file/filenameworker_p.h
+        searcher/file/filesearchutils.h
+        searcher/file/filesearchutils.cpp
     )
 endif()
 

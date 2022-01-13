@@ -26,6 +26,7 @@
 #include "configuration/configer.h"
 #include "configuration/configer_p.h"
 #include "utils/specialtools.h"
+#include "searcher/file/filesearchutils.h"
 
 #include <stubext.h>
 
@@ -132,7 +133,7 @@ TEST_F(FsWorkerTest, ut_hasItem_1)
 TEST_F(FsWorkerTest, ut_takeAll)
 {
     GrandSearch::MatchedItem item;
-    worker->m_items[FsWorker::Folder].append(item);
+    worker->m_items[FileSearchUtils::Folder].append(item);
     auto result = worker->takeAll();
 
     EXPECT_FALSE(result.isEmpty());
@@ -155,16 +156,6 @@ TEST_F(FsWorkerTest, ut_tryNotify)
     EXPECT_NO_FATAL_FAILURE(worker->tryNotify());
 }
 
-TEST_F(FsWorkerTest, ut_groupKey)
-{
-    EXPECT_TRUE(worker->groupKey(FsWorker::Folder) == GRANDSEARCH_GROUP_FOLDER);
-    EXPECT_TRUE(worker->groupKey(FsWorker::Picture) == GRANDSEARCH_GROUP_FILE_PICTURE);
-    EXPECT_TRUE(worker->groupKey(FsWorker::Audio) == GRANDSEARCH_GROUP_FILE_AUDIO);
-    EXPECT_TRUE(worker->groupKey(FsWorker::Video) == GRANDSEARCH_GROUP_FILE_VIDEO);
-    EXPECT_TRUE(worker->groupKey(FsWorker::Document) == GRANDSEARCH_GROUP_FILE_DOCUMNET);
-    EXPECT_TRUE(worker->groupKey(FsWorker::Normal) == GRANDSEARCH_GROUP_FILE);
-}
-
 TEST_F(FsWorkerTest, ut_appendSearchResult_0)
 {
     stub_ext::StubExt st;
@@ -177,8 +168,8 @@ TEST_F(FsWorkerTest, ut_appendSearchResult_0)
 TEST_F(FsWorkerTest, ut_appendSearchResult_1)
 {
     stub_ext::StubExt st;
-    st.set_lamda(&FsWorker::getGroupByFileName, [](){ return FsWorker::Folder; });
-    st.set_lamda(&QHash<FsWorker::Group, quint32>::contains, []() { return false; });
+    st.set_lamda(FileSearchUtils::getGroupByName, [](){ return FileSearchUtils::Folder; });
+    st.set_lamda(&QHash<FileSearchUtils::Group, quint32>::contains, []() { return false; });
 
     EXPECT_FALSE(worker->appendSearchResult("test"));
 }
@@ -186,8 +177,8 @@ TEST_F(FsWorkerTest, ut_appendSearchResult_1)
 TEST_F(FsWorkerTest, ut_appendSearchResult_2)
 {
     stub_ext::StubExt st;
-    st.set_lamda(&FsWorker::getGroupByFileName, [](){ return FsWorker::Normal; });
-    st.set_lamda(&QHash<FsWorker::Group, quint32>::contains, []() { return false; });
+    st.set_lamda(FileSearchUtils::getGroupByName, [](){ return FileSearchUtils::File; });
+    st.set_lamda(&QHash<FileSearchUtils::Group, quint32>::contains, []() { return false; });
 
     EXPECT_FALSE(worker->appendSearchResult("test"));
 }
@@ -195,9 +186,9 @@ TEST_F(FsWorkerTest, ut_appendSearchResult_2)
 TEST_F(FsWorkerTest, ut_appendSearchResult_3)
 {
     stub_ext::StubExt st;
-    st.set_lamda(&FsWorker::getGroupByFileName, [](){ return FsWorker::Normal; });
-    st.set_lamda(&QHash<FsWorker::Group, quint32>::contains, []() { return true; });
-    worker->m_resultCountHash[FsWorker::Normal] = 100;
+    st.set_lamda(FileSearchUtils::getGroupByName, [](){ return FileSearchUtils::File; });
+    st.set_lamda(&QHash<FileSearchUtils::Group, quint32>::contains, []() { return true; });
+    worker->m_resultCountHash[FileSearchUtils::File] = 100;
 
     EXPECT_FALSE(worker->appendSearchResult("test"));
 }
@@ -205,8 +196,8 @@ TEST_F(FsWorkerTest, ut_appendSearchResult_3)
 TEST_F(FsWorkerTest, ut_appendSearchResult_4)
 {
     stub_ext::StubExt st;
-    st.set_lamda(&FsWorker::getGroupByFileName, [](){ return FsWorker::Picture; });
-    st.set_lamda(&QHash<FsWorker::Group, quint32>::contains, []() { return true; });
+    st.set_lamda(&FileSearchUtils::getGroupByName, [](){ return FileSearchUtils::Picture; });
+    st.set_lamda(&QHash<FileSearchUtils::Group, quint32>::contains, []() { return true; });
 
     EXPECT_TRUE(worker->appendSearchResult("test", true));
 }

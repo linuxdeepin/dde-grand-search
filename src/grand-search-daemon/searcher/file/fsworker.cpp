@@ -89,7 +89,7 @@ ProxyWorker::Status FsWorker::status()
 bool FsWorker::hasItem() const
 {
     QMutexLocker lk(&m_mtx);
-     for (int i = GroupBegin; i < GroupCount; ++i)
+     for (int i = FileSearchUtils::GroupBegin; i < FileSearchUtils::GroupCount; ++i)
         if (!m_items[i].isEmpty())
             return true;
 
@@ -101,11 +101,11 @@ GrandSearch::MatchedItemMap FsWorker::takeAll()
     QMutexLocker lk(&m_mtx);
     //添加分组
     GrandSearch::MatchedItemMap ret;
-    for (int i = GroupBegin; i < GroupCount; ++i) {
+    for (int i = FileSearchUtils::GroupBegin; i < FileSearchUtils::GroupCount; ++i) {
         if (!m_items[i].isEmpty()) {
             GrandSearch::MatchedItems items = std::move(m_items[i]);
             Q_ASSERT(m_items[i].isEmpty());
-            ret.insert(groupKey(static_cast<FsWorker::Group>(i)), items);
+            ret.insert(FileSearchUtils::groupKey(static_cast<FileSearchUtils::Group>(i)), items);
         }
     }
     lk.unlock();
@@ -127,22 +127,22 @@ void FsWorker::initConfig()
     // 获取支持的搜索类目
     auto config = Configer::instance()->group(GRANDSEARCH_CLASS_FILE_FSEARCH);
     if (config->value(GRANDSEARCH_GROUP_FOLDER, false))
-        m_resultCountHash.insert(Folder, 0);
+        m_resultCountHash.insert(FileSearchUtils::Folder, 0);
 
     if (config->value(GRANDSEARCH_GROUP_FILE, false))
-        m_resultCountHash.insert(Normal, 0);
+        m_resultCountHash.insert(FileSearchUtils::File, 0);
 
     if (config->value(GRANDSEARCH_GROUP_FILE_VIDEO, false))
-        m_resultCountHash.insert(Video, 0);
+        m_resultCountHash.insert(FileSearchUtils::Video, 0);
 
     if (config->value(GRANDSEARCH_GROUP_FILE_AUDIO, false))
-        m_resultCountHash.insert(Audio, 0);
+        m_resultCountHash.insert(FileSearchUtils::Audio, 0);
 
     if (config->value(GRANDSEARCH_GROUP_FILE_PICTURE, false))
-        m_resultCountHash.insert(Picture, 0);
+        m_resultCountHash.insert(FileSearchUtils::Picture, 0);
 
     if (config->value(GRANDSEARCH_GROUP_FILE_DOCUMNET, false))
-        m_resultCountHash.insert(Document, 0);
+        m_resultCountHash.insert(FileSearchUtils::Document, 0);
 }
 
 void FsWorker::tryNotify()
@@ -160,29 +160,10 @@ int FsWorker::itemCount() const
 {
     QMutexLocker lk(&m_mtx);
     int count = 0;
-    for (int i = GroupBegin; i < GroupCount; ++i)
+    for (int i = FileSearchUtils::GroupBegin; i < FileSearchUtils::GroupCount; ++i)
         count += m_items[i].size();
 
     return count;
-}
-
-QString FsWorker::groupKey(FsWorker::Group group) const
-{
-    switch (group) {
-    case Folder:
-        return GRANDSEARCH_GROUP_FOLDER;
-    case Picture:
-        return GRANDSEARCH_GROUP_FILE_PICTURE;
-    case Audio:
-        return GRANDSEARCH_GROUP_FILE_AUDIO;
-    case Video:
-        return GRANDSEARCH_GROUP_FILE_VIDEO;
-    case Document:
-        return GRANDSEARCH_GROUP_FILE_DOCUMNET;
-    default:
-        break;
-    }
-    return GRANDSEARCH_GROUP_FILE;
 }
 
 bool FsWorker::isResultLimit()
@@ -192,41 +173,6 @@ bool FsWorker::isResultLimit()
     });
 
     return iter == m_resultCountHash.end();
-}
-
-FsWorker::Group FsWorker::getGroupByFileName(const QString &fileName)
-{
-    Group group = Normal;
-    QFileInfo fileInfo(fileName);
-
-    if (fileInfo.isDir()) {
-        group = Folder;
-    } else {
-        // 文档格式
-        static QRegExp docReg("^((pdf)|(txt)|(doc)|(docx)|(dot)|(dotx)|(ppt)|(pptx)|(pot)|(potx)"
-                              "|(xls)|(xlsx)|(xlt)|(xltx)|(wps)|(wpt)|(rtf)|(md)|(latex))$", Qt::CaseInsensitive);
-        // 图片格式
-        static QRegExp pictureReg("^((jpg)|(jpeg)|(jpe)|(bmp)|(png)|(gif)|(svg)|(tif)|(tiff))$", Qt::CaseInsensitive);
-        // 视频格式
-        static QRegExp videoReg("^((avi)|(mov)|(mp4)|(mp2)|(mpa)|(mpg)|(mpeg)|(qt)|(rm)|(rmvb)"
-                                "|(mkv)|(asx)|(asf)|(flv)|(3gp)|(mpe))$", Qt::CaseInsensitive);
-        // 音频格式
-        static QRegExp musicReg("^((au)|(snd)|(mid)|(mp3)|(aif)|(aifc)|(aiff)|(m3u)|(ra)"
-                                "|(ram)|(wav)|(cda)|(wma)|(ape))$", Qt::CaseInsensitive);
-        const auto &suffix = fileInfo.suffix();
-
-        if (docReg.exactMatch(suffix)) {
-            group = Document;
-        } else if (pictureReg.exactMatch(suffix)) {
-            group = Picture;
-        } else if (videoReg.exactMatch(suffix)) {
-            group = Video;
-        } else if (musicReg.exactMatch(suffix)) {
-            group = Audio;
-        }
-    }
-
-    return group;
 }
 
 void FsWorker::callbackReceiveResults(void *data, void *sender)
@@ -305,17 +251,17 @@ bool FsWorker::appendSearchResult(const QString &fileName, bool isRecentFile)
     if (m_tmpSearchResults.contains(fileName))
         return false;
 
-    auto group = getGroupByFileName(fileName);
-    Q_ASSERT(group >= GroupBegin && group< GroupCount);
+    auto group = FileSearchUtils::getGroupByName(fileName);
+    Q_ASSERT(group >= FileSearchUtils::GroupBegin && group< FileSearchUtils::GroupCount);
 
     // 根据搜索类目配置判断是否需要进行添加
     if (!m_resultCountHash.contains(group)) {
-        if (group == Folder) {
+        if (group == FileSearchUtils::Folder) {
             return false;
         }
 
-        if (m_resultCountHash.contains(Normal)) {
-            group = Normal;
+        if (m_resultCountHash.contains(FileSearchUtils::File)) {
+            group = FileSearchUtils::File;
         } else {
             return false;
         }
@@ -324,29 +270,16 @@ bool FsWorker::appendSearchResult(const QString &fileName, bool isRecentFile)
     if (++m_resultCountHash[group] > MAX_SEARCH_NUM)
         return false;
 
-    QFileInfo file(fileName);
     m_tmpSearchResults << fileName;
-    QMimeType mimeType = GrandSearch::SpecialTools::getMimeType(file);
-    GrandSearch::MatchedItem item;
-    item.item = fileName;
-    item.name = file.fileName();
-    item.type = mimeType.name();
-    item.icon = mimeType.iconName();
-    item.searcher = name();
-
-    // 最近使用文件需要置顶显示
-    if (isRecentFile) {
-        QVariantHash showLevelHash({{GRANDSEARCH_PROPERTY_ITEM_LEVEL, GRANDSEARCH_PROPERTY_ITEM_LEVEL_FIRST}});
-        item.extra = QVariant::fromValue(showLevelHash);
-    }
+    const auto &item = FileSearchUtils::packItem(fileName, name(), isRecentFile);
 
     QMutexLocker lk(&m_mtx);
     m_items[group].append(item);
     // 文档、音频、视频、图片需添加到文件组中
-    if (group != Normal && m_resultCountHash.contains(Normal)) {
-        if (group != Folder && m_resultCountHash[Normal] <= MAX_SEARCH_NUM) {
-            m_items[Normal].append(item);
-            ++m_resultCountHash[Normal];
+    if (group != FileSearchUtils::File && m_resultCountHash.contains(FileSearchUtils::File)) {
+        if (group != FileSearchUtils::Folder && m_resultCountHash[FileSearchUtils::File] <= MAX_SEARCH_NUM) {
+            m_items[FileSearchUtils::File].append(item);
+            ++m_resultCountHash[FileSearchUtils::File];
         }
     }
 

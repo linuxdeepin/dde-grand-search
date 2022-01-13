@@ -23,11 +23,11 @@
 
 #include "anything_interface.h"
 #include "searcher/proxyworker.h"
+#include "filesearchutils.h"
 
 class FileNameWorker;
 class FileNameWorkerPrivate
 {
-    enum Group {Normal = 0, Folder, Picture, Audio, Video, Document, GroupCount, GroupBegin = Normal};
 public:
     explicit FileNameWorkerPrivate(FileNameWorker *qq);
     void initConfig();
@@ -42,19 +42,17 @@ public:
 
     void tryNotify();
     int itemCount() const;
-    QString groupKey(Group group) const;
     // 判断所有类目的搜索结果是否达到限制数量
     bool isResultLimit();
-    Group getGroupByFileName(const QString &fileName);
 public:
     FileNameWorker *q_ptr = nullptr;
     QAtomicInt m_status = ProxyWorker::Ready;
     QString m_searchPath;
     QString m_context;                  // 搜索关键字
-    QHash<Group, quint32> m_resultCountHash; // 记录各类型文件搜索结果数量
+    QHash<FileSearchUtils::Group, quint32> m_resultCountHash; // 记录各类型文件搜索结果数量
 
     mutable QMutex m_mutex;
-    GrandSearch::MatchedItems m_items[GroupCount];  // 文件搜索
+    GrandSearch::MatchedItems m_items[FileSearchUtils::GroupCount];  // 文件搜索
     ComDeepinAnythingInterface *m_anythingInterface = nullptr;
     QStringList m_searchDirList;
     QSet<QString> m_tmpSearchResults;     // 存储所有的搜索结果，用于去重
@@ -64,6 +62,9 @@ public:
     //计时
     QTime m_time;
     int m_lastEmit = 0;
+
+    FileSearchUtils::SearchType m_searchType = FileSearchUtils::NormalSearch;
+    QRegularExpression m_regex;
 
     Q_DECLARE_PUBLIC(FileNameWorker)
 };

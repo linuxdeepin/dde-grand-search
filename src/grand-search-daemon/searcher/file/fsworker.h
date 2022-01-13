@@ -22,6 +22,7 @@
 #define FSWORKER_H
 
 #include "searcher/proxyworker.h"
+#include "filesearchutils.h"
 
 extern "C" {
 #include "fsearch.h"
@@ -29,7 +30,6 @@ extern "C" {
 
 class FsWorker : public ProxyWorker
 {
-    enum Group {Normal = 0, Folder, Picture, Audio, Video, Document, GroupCount, GroupBegin = Normal};
 public:
     explicit FsWorker(const QString &name, QObject *parent = nullptr);
 
@@ -49,9 +49,7 @@ private:
     bool searchLocalFile();
     void tryNotify();
     int itemCount() const;
-    QString groupKey(Group group) const;
     bool isResultLimit();
-    Group getGroupByFileName(const QString &fileName);
 private:
     FsearchApplication *m_app = nullptr;
     QAtomicInt m_status = Ready;
@@ -59,8 +57,8 @@ private:
 
     //搜索结果
     mutable QMutex m_mtx;
-    GrandSearch::MatchedItems m_items[GroupCount];  // 文件搜索
-    QHash<Group, quint32> m_resultCountHash; // 记录各类型文件搜索结果数量
+    GrandSearch::MatchedItems m_items[FileSearchUtils::GroupCount];  // 文件搜索
+    QHash<FileSearchUtils::Group, quint32> m_resultCountHash; // 记录各类型文件搜索结果数量
 
     QWaitCondition m_waitCondition;
     QMutex m_conditionMtx;
