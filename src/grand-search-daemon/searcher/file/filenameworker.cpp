@@ -342,7 +342,7 @@ void FileNameWorker::setContext(const QString &context)
     if (context.isEmpty())
         qWarning() << "search key is empty.";
     d->m_context = context;
-    d->m_searchType = FileSearchUtils::checkSearchTypeAndToReg(d->m_context);
+    d->m_searchType = FileSearchUtils::checkSearchTypeAndToRegexp(d->m_context);
     d->m_regex = QRegularExpression(d->m_context, QRegularExpression::CaseInsensitiveOption);
 }
 

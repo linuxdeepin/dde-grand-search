@@ -38,6 +38,8 @@ void FsWorker::setContext(const QString &context)
     if (context.isEmpty())
         qWarning() << "search key is empty.";
     m_context = context;
+    m_searchType = FileSearchUtils::checkSearchTypeAndToRegexp(m_context);
+    m_regex = QRegularExpression(m_context, QRegularExpression::CaseInsensitiveOption);
 }
 
 bool FsWorker::isAsync() const
@@ -296,7 +298,15 @@ bool FsWorker::searchRecentFile()
             return false;
 
         QFileInfo info(file);
-        if (info.fileName().contains(m_context, Qt::CaseInsensitive)) {
+        bool isMatched = false;
+        if (m_searchType == FileSearchUtils::NormalSearch) {
+            isMatched = info.fileName().contains(m_context, Qt::CaseInsensitive);
+        } else {
+            QRegularExpressionMatch match = m_regex.match(info.fileName());
+            isMatched = match.hasMatch();
+        }
+
+        if (isMatched) {
             appendSearchResult(file, true);
 
             //推送
@@ -332,7 +342,7 @@ bool FsWorker::searchLocalFile()
                          m_context.toStdString().c_str(),
                          m_app->config->hide_results_on_empty_search,
                          m_app->config->match_case,
-                         m_app->config->enable_regex,
+                         m_searchType == FileSearchUtils::NormalSearch ? false : true,
                          m_app->config->auto_search_in_path,
                          m_app->config->search_in_path);
 

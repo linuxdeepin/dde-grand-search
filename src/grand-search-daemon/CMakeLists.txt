@@ -84,6 +84,7 @@ if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips"
     ADD_DEFINITIONS(-DENABLE_FSEARCH)
     FILE(GLOB 3RD_FSEARCH_SRC ${CMAKE_SOURCE_DIR}/3rdparty/fsearch/*)
     pkg_check_modules(GLIB REQUIRED glib-2.0)
+    pkg_check_modules(PCRE REQUIRED libpcre)
     set(SEARCHER
         ${SEARCHER}
         ${3RD_FSEARCH_SRC}
@@ -97,6 +98,7 @@ if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips"
     set(LINK_LIBS
         ${LINK_LIBS}
         ${GLIB_LIBRARIES}
+        ${PCRE_LIBRARIES}
     )
 else ()
     message(${CMAKE_SYSTEM_PROCESSOR} ": using deepin-anything.")
@@ -192,6 +194,7 @@ target_include_directories(${BIN_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/3rdparty/fsearch
     ${GLIB_INCLUDE_DIRS}
+    ${PCRE_INCLUDE_DIRS}
 )
 
 target_link_libraries(${BIN_NAME} PRIVATE

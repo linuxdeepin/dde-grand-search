@@ -37,6 +37,7 @@ include_directories(${PROJECT_DAEMONSRC_PATH})
 ADD_DEFINITIONS(-DENABLE_FSEARCH)
 FILE(GLOB 3RD_FSEARCH_SRC ${CMAKE_SOURCE_DIR}/../3rdparty/fsearch/*)
 pkg_check_modules(GLIB REQUIRED glib-2.0)
+pkg_check_modules(PCRE REQUIRED libpcre)
 
 if (NOT (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "sw"))
     ADD_DEFINITIONS(-DENABLE_DEEPINANYTHING)
@@ -84,6 +85,7 @@ target_include_directories(${BIN_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/../3rdparty/fsearch
     ${GLIB_INCLUDE_DIRS}
+    ${PCRE_INCLUDE_DIRS}
 )
 
 target_link_libraries(${BIN_NAME} PRIVATE
@@ -92,5 +94,6 @@ target_link_libraries(${BIN_NAME} PRIVATE
     ${GTEST_LIBRARIES}
     ${Qt5Test_LIBRARIES}
     ${GLIB_LIBRARIES}
+    ${PCRE_LIBRARIES}
     -lpthread
 )

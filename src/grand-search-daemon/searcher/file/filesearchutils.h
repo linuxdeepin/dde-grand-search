@@ -48,10 +48,11 @@ public:
     static QString groupKey(Group group);
     static Group getGroupByName(const QString &fileName);
     static Group getGroupBySuffix(const QString &suffix);
-    static SearchType checkSearchTypeAndToReg(QString &pattern);
+    static SearchType checkSearchTypeAndToRegexp(QString &pattern);
 private:
-    static QString toSuffixReg(const QString &suffix, const QString &pattern);
-    static QString toGroupReg(const QString &group, const QString &pattern);
+    static QString toSuffixRegexp(const QString &suffix, const QString &pattern);
+    static QString toGroupRegexp(const QString &group, const QString &pattern);
+    static QString tropeInputSymbol(const QString &pattern);
 };
 
 #endif   // FILESEARCHUTILS_H

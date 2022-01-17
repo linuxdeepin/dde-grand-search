@@ -278,6 +278,76 @@ static inline void timer_stop()
 static void *
 search_regex_thread (void * user_data)
 {
+    search_thread_context_t *ctx = (search_thread_context_t *)user_data;
+    assert (ctx != NULL);
+    assert (ctx->results != NULL);
+
+    search_query_t **queries = ctx->queries;
+    search_query_t *query = queries[0];
+    const char *error;
+    int erroffset;
+    pcre *regex = pcre_compile (query->query,
+                                ctx->search->match_case ? 0 : PCRE_CASELESS,
+                                &error,
+                                &erroffset,
+                                NULL);
+
+    int ovector[OVECCOUNT];
+
+    if (regex) {
+        const uint32_t start = ctx->start_pos;
+        const uint32_t end = ctx->end_pos;
+        const uint32_t max_results = ctx->search->max_results;
+        const bool search_in_path = ctx->search->search_in_path;
+        const bool auto_search_in_path = ctx->search->auto_search_in_path;
+        DynamicArray *entries = ctx->search->entries;
+        BTreeNode **results = ctx->results;
+        const FsearchFilter filter = ctx->search->filter;
+
+        uint32_t num_results = 0;
+        char full_path[PATH_MAX] = "";
+        for (uint32_t i = start; i <= end; ++i) {
+            if (max_results && num_results == max_results) {
+                break;
+            }
+            BTreeNode *node = darray_get_item (entries, i);
+            if (!node) {
+                continue;
+            }
+
+            if (!filter_node (node, filter)) {
+                continue;
+            }
+
+            const char *haystack = NULL;
+            if (search_in_path || (auto_search_in_path && query->has_separator)) {
+                btree_node_get_path_full (node, full_path, sizeof (full_path));
+                haystack = full_path;
+            }
+            else {
+                haystack = node->name;
+            }
+            size_t haystack_len = strlen (haystack);
+
+            if (pcre_exec (regex, NULL, haystack, haystack_len,
+                           0, 0, ovector, OVECCOUNT) >= 0) {
+                results[num_results] = node;
+                num_results++;
+            } else if (strlen(node->full_py_name)) {
+                if (pcre_exec(regex, NULL, node->first_py_name, strlen(node->first_py_name),
+                              0, 0, ovector, OVECCOUNT) >= 0) {
+                    results[num_results] = node;
+                    num_results++;
+                } else if (pcre_exec(regex, NULL, node->full_py_name, strlen(node->full_py_name),
+                           0, 0, ovector, OVECCOUNT) >= 0) {
+                    results[num_results] = node;
+                    num_results++;
+                }
+            }
+        }
+        ctx->num_results = num_results;
+        pcre_free (regex);
+    }
     return NULL;
 }
 
@@ -400,31 +470,11 @@ build_queries (DatabaseSearch *search, FsearchQuery *q)
     // remove leading/trailing whitespace
     g_strstrip (tmp_query_copy);
 
-    // check if regex characters are present
-    const bool is_reg = is_regex (q->query);
-    if (is_reg && search->enable_regex) {
-        search_query_t **queries = calloc (2, sizeof (search_query_t *));
-        queries[0] = search_query_new (tmp_query_copy, search->match_case);
-        queries[1] = NULL;
-        g_free (tmp_query_copy);
-        tmp_query_copy = NULL;
-
-        return queries;
-    }
-    // whitespace is regarded as AND so split query there in multiple queries
-    char **tmp_queries = g_strsplit_set (tmp_query_copy, " ", -1);
-    assert (tmp_queries != NULL);
-
-    uint32_t tmp_queries_len = g_strv_length (tmp_queries);
-    search_query_t **queries = calloc (tmp_queries_len + 1, sizeof (search_query_t *));
-    for (uint32_t i = 0; i < tmp_queries_len; i++) {
-        queries[i] = search_query_new (tmp_queries[i], search->match_case);
-    }
-
+    search_query_t **queries = calloc (2, sizeof (search_query_t *));
+    queries[0] = search_query_new (tmp_query_copy, search->match_case);
+    queries[1] = NULL;
     g_free (tmp_query_copy);
     tmp_query_copy = NULL;
-    g_strfreev (tmp_queries);
-    tmp_queries = NULL;
 
     return queries;
 }

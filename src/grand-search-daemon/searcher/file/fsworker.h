@@ -67,6 +67,9 @@ private:
 
     QTime m_time;       //搜索计时
     int m_lastEmit = 0;
+
+    FileSearchUtils::SearchType m_searchType = FileSearchUtils::NormalSearch;
+    QRegularExpression m_regex;
 };
 
 #endif // FSWORKER_H

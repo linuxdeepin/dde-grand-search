@@ -78,20 +78,20 @@ FileSearchUtils::Group FileSearchUtils::getGroupByName(const QString &fileName)
 FileSearchUtils::Group FileSearchUtils::getGroupBySuffix(const QString &suffix)
 {
     Group group = Unknown;
+    if (suffix.isEmpty())
+        return group;
+
     // 文档格式
     static QRegExp docReg("^((pdf)|(txt)|(doc)|(docx)|(dot)|(dotx)|(ppt)|(pptx)|(pot)|(potx)"
-                          "|(xls)|(xlsx)|(xlt)|(xltx)|(wps)|(wpt)|(rtf)|(md)|(latex))$",
-                          Qt::CaseInsensitive);
+                          "|(xls)|(xlsx)|(xlt)|(xltx)|(wps)|(wpt)|(rtf)|(md)|(latex))$", Qt::CaseInsensitive);
     // 图片格式
     static QRegExp pictureReg("^((jpg)|(jpeg)|(jpe)|(bmp)|(png)|(gif)|(svg)|(tif)|(tiff))$", Qt::CaseInsensitive);
     // 视频格式
-    static QRegExp videoReg("^((avi)|(mov)|(mp4)|(mp2)|(mpa)|(mpg)|(mpeg)|(qt)|(rm)|(rmvb)"
-                            "|(mkv)|(asx)|(asf)|(flv)|(3gp)|(mpe))$",
-                            Qt::CaseInsensitive);
+    static QRegExp videoReg("^((avi)|(mov)|(mp4)|(mpg)|(mpeg)|(qt)|(rm)|(rmvb)"
+                            "|(mkv)|(asx)|(asf)|(flv)|(3gp)|(mpe))$", Qt::CaseInsensitive);
     // 音频格式
     static QRegExp musicReg("^((au)|(snd)|(mid)|(mp3)|(aif)|(aifc)|(aiff)|(m3u)|(ra)"
-                            "|(ram)|(wav)|(cda)|(wma)|(ape))$",
-                            Qt::CaseInsensitive);
+                            "|(ram)|(wav)|(cda)|(wma)|(ape)|(mp2)|(mpa))$", Qt::CaseInsensitive);
     // 文件格式
     static QRegExp fileReg("^((zip)|(rar)(z)|(deb)|(lib)|(iso)|(html)|(js))$", Qt::CaseInsensitive);
 
@@ -110,26 +110,33 @@ FileSearchUtils::Group FileSearchUtils::getGroupBySuffix(const QString &suffix)
     return group;
 }
 
-FileSearchUtils::SearchType FileSearchUtils::checkSearchTypeAndToReg(QString &pattern)
+FileSearchUtils::SearchType FileSearchUtils::checkSearchTypeAndToRegexp(QString &pattern)
 {
-    if (!pattern.contains(':'))
+    if (!pattern.contains(':') || pattern == ':')
         return NormalSearch;
 
+    QString tmpStr = pattern;
+    // 对特殊字符进行转义
+    pattern = tropeInputSymbol(pattern);
     int index = pattern.indexOf(':');
     QString suffix = pattern.mid(0, index);
     QString keyword = pattern.mid(index + 1);
 
-    pattern = toSuffixReg(suffix, keyword);
+    pattern = toSuffixRegexp(suffix, keyword);
+    if (pattern.isEmpty()) {
+        pattern = tmpStr;
+        return NormalSearch;
+    }
     return SuffixSearch;
 }
 
-QString FileSearchUtils::toSuffixReg(const QString &suffix, const QString &pattern)
+QString FileSearchUtils::toSuffixRegexp(const QString &suffix, const QString &pattern)
 {
     QString keyword = pattern;
     auto group = getGroupBySuffix(suffix);
     if (Unknown == group) {
-        if (keyword.trimmed().isEmpty())
-            return pattern;
+        if (keyword.trimmed().isEmpty() || suffix.trimmed().isEmpty())
+            return "";
 
         // 未知类型，冒号前后拆分搜索取并集
         QStringList keywords = keyword.split(':');
@@ -139,18 +146,52 @@ QString FileSearchUtils::toSuffixReg(const QString &suffix, const QString &patte
         }
         return keyword;
     } else {
-        if (keyword.isEmpty())
-            return suffix;
-
         return QString(R"(%1.*\.%2$)").arg(keyword, suffix);
     }
 }
 
-QString FileSearchUtils::toGroupReg(const QString &group, const QString &pattern)
+QString FileSearchUtils::toGroupRegexp(const QString &group, const QString &pattern)
 {
     // TODO 类目搜索
     Q_UNUSED(group)
     Q_UNUSED(pattern)
 
     return "";
+}
+
+QString FileSearchUtils::tropeInputSymbol(const QString &pattern)
+{
+    const int len = pattern.length();
+    QString rx;
+    rx.reserve(len + len / 16);
+    int i = 0;
+    const QChar *wc = pattern.unicode();
+
+    while (i < len) {
+        const QChar c = wc[i++];
+        switch (c.unicode()) {
+        case '*':
+        case '?':
+        case '\\':
+        case '$':
+        case '(':
+        case ')':
+        case '+':
+        case '.':
+        case '^':
+        case '{':
+        case '|':
+        case '}':
+        case '[':
+        case ']':
+            rx += QLatin1Char('\\');
+            rx += c;
+            break;
+        default:
+            rx += c;
+            break;
+        }
+    }
+
+    return rx;
 }
