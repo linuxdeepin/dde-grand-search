@@ -80,7 +80,6 @@ TEST(GroupWidgettTest, appendMatchedItems)
     ut_call_setMatchedItems = false;
     ut_call_addRows = false;
 
-    w.m_onlyDisplayAll = false;
     w.m_bListExpanded = false;
 
     items << item << item << item;
@@ -93,7 +92,6 @@ TEST(GroupWidgettTest, appendMatchedItems)
     ut_call_setMatchedItems = false;
     ut_call_addRows = false;
 
-    w.m_onlyDisplayAll = true;
     w.m_bListExpanded = true;
 
     w.appendMatchedItems(items, searchGroupName);

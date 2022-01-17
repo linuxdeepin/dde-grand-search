@@ -88,9 +88,6 @@ public:
     // 返回该组是否支持预览
     static bool canPreview(const QString &searchGroupName);
 
-    // 返回该组是否只能全量显示
-    static bool isOnlyDisplayAll(const QString &searchGroupName);
-
     // 根据当前主题返回合适的图标后缀（-light or -dark）
     static QString iconThemeSuffix();
 

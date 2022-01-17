@@ -578,15 +578,6 @@ bool Utils::canPreview(const QString &searchGroupName)
     return containPreviewGroup.contains(searchGroupName);
 }
 
-bool Utils::isOnlyDisplayAll(const QString &searchGroupName)
-{
-    static const QStringList containDisplayAllGroup{
-        GRANDSEARCH_GROUP_SETTING
-    };
-
-    return containDisplayAllGroup.contains(searchGroupName);
-}
-
 QString Utils::iconThemeSuffix()
 {
     if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)

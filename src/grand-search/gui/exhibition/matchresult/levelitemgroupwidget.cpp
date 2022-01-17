@@ -42,8 +42,8 @@ void LevelItemGroupWidget::appendMatchedItems(const GrandSearch::MatchedItems &n
     MatchedItems newGeneralItems;
     splitLevelData(newItems, newLevelItems, newGeneralItems);
 
-    // 结果列表允许折叠并且未展开
-    if (!m_onlyDisplayAll && !m_bListExpanded) {
+    // 结果列表未展开
+    if (!m_bListExpanded) {
 
         // 新来数据先放入对应层级的缓存中
         for (auto level : newLevelItems.keys()) {

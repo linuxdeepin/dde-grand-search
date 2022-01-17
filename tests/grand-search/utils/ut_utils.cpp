@@ -899,18 +899,6 @@ TEST(UtilsTest, canPreview)
     EXPECT_FALSE(result);
 }
 
-TEST(UtilsTest, isOnlyDisplayAll)
-{
-    QString searchGroupName(GRANDSEARCH_GROUP_SETTING);
-
-    bool result = Utils::isOnlyDisplayAll(searchGroupName);
-    EXPECT_TRUE(result);
-
-    searchGroupName = "testOther";
-    result = Utils::isOnlyDisplayAll(searchGroupName);
-    EXPECT_FALSE(result);
-}
-
 TEST(UtilsTest, iconThemeSuffix)
 {
     stub_ext::StubExt stu;

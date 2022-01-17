@@ -72,7 +72,6 @@ TEST(LevelItemGroupWidgetTest, appendMatchedItems)
     ut_call_setMatchedItems = false;
     ut_call_addRows = false;
 
-    w.m_onlyDisplayAll = false;
     w.m_bListExpanded = false;
 
     // 添加普通元素
@@ -99,7 +98,6 @@ TEST(LevelItemGroupWidgetTest, appendMatchedItems)
     ut_call_setMatchedItems = false;
     ut_call_addRows = false;
 
-    w.m_onlyDisplayAll = true;
     w.m_bListExpanded = true;
 
     w.appendMatchedItems(items, searchGroupName);

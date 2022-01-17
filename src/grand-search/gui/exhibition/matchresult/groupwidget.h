@@ -84,7 +84,6 @@ protected:
     GrandSearchListView *m_listView = nullptr;
     DPushButton* m_viewMoreButton = nullptr;
 
-    bool m_onlyDisplayAll = false;                  // 结果列表是否只能全量显示
     bool m_bListExpanded = false;                   // 结果列表是否已展开
     GrandSearch::MatchedItems m_firstFiveItems;     // 前5行正在显示的匹配结果
     GrandSearch::MatchedItems m_restShowItems;      // 剩余正在显示的匹配结果
