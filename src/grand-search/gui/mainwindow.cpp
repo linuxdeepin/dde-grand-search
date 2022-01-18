@@ -20,6 +20,7 @@
  */
 #include "mainwindow_p.h"
 #include "mainwindow.h"
+#include "utils/utils.h"
 #include "entrance/entrancewidget.h"
 #include "exhibition/exhibitionwidget.h"
 #include "gui/datadefine.h"
@@ -187,8 +188,14 @@ void MainWindow::onResetExhitionWidget(const QString &missionId)
 void MainWindow::initUI()
 {
     // 禁用窗口管理器并置顶
-    setWindowFlags(Qt::BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::Tool);
-    setAttribute(Qt::WA_QuitOnClose);
+    if (Utils::isWayland()) {
+        setWindowFlags(Qt::BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::Tool);
+        setAttribute(Qt::WA_QuitOnClose);
+    } else {
+        // 在Qt5.11版本、x11环境下，同时设置BypassWindowManagerHint与Tool属性之后，键盘切换大小写将会导致程序的激活状态发生改变。
+        setWindowFlags(Qt::BypassWindowManagerHint | Qt::WindowStaysOnTopHint);
+    }
+    qDebug() << "current platform name:" << QApplication::platformName() << "   flags:" << this->windowFlags();
 
     // 控制界面大小和位置
     setFixedSize(MainWindowWidth, MainWindowHeight);

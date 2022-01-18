@@ -584,3 +584,13 @@ QString Utils::iconThemeSuffix()
         return QString("-light");
     return QString("-dark");
 }
+
+bool Utils::isWayland()
+{
+    //! 该函数只能在QApplication之后调用才能返回有效的值，在此之前platformName会返回空值
+    Q_ASSERT(qApp);
+
+    static bool wayland = QApplication::platformName() == "wayland";
+
+    return wayland;
+}
