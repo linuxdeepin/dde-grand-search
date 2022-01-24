@@ -435,27 +435,19 @@ search_query_new (const char *query, bool match_case)
     else {
         new->is_utf8 = 0;
     }
-    if (strchr (query, '*') || strchr (query, '?')) {
-        if (match_case) {
-            new->search_func = search_wildcard;
-        }
-        else {
-            new->search_func = search_wildcard_icase;
-        }
+
+    if (match_case) {
+        new->search_func = search_normal;
     }
     else {
-        if (match_case) {
-            new->search_func = search_normal;
+        if (new->is_utf8) {
+            new->search_func = search_normal_icase_u8;
         }
         else {
-            if (new->is_utf8) {
-                new->search_func = search_normal_icase_u8;
-            }
-            else {
-                new->search_func = search_normal_icase;
-            }
+            new->search_func = search_normal_icase;
         }
     }
+
     return new;
 }
 
