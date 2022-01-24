@@ -93,7 +93,7 @@ FileSearchUtils::Group FileSearchUtils::getGroupBySuffix(const QString &suffix)
     static QRegExp musicReg("^((au)|(snd)|(mid)|(mp3)|(aif)|(aifc)|(aiff)|(m3u)|(ra)"
                             "|(ram)|(wav)|(cda)|(wma)|(ape)|(mp2)|(mpa))$", Qt::CaseInsensitive);
     // 文件格式
-    static QRegExp fileReg("^((zip)|(rar)(z)|(deb)|(lib)|(iso)|(html)|(js))$", Qt::CaseInsensitive);
+    static QRegExp fileReg("^((zip)|(rar)|(z)|(deb)|(lib)|(iso)|(html)|(js))$", Qt::CaseInsensitive);
 
     if (docReg.exactMatch(suffix)) {
         group = Document;
