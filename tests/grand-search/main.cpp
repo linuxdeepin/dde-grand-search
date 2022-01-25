@@ -26,7 +26,7 @@
 #include <sanitizer/asan_interface.h>
 #endif
 
-#include <QApplication>
+#include <DApplication>
 #include <QAccessible>
 
 #include <unistd.h>
@@ -37,9 +37,11 @@ static void noMessageHandler(QtMsgType type, const QMessageLogContext &context,
     return;
 }
 
+DWIDGET_USE_NAMESPACE
+
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
+    DApplication app(argc, argv);
 
     testing::InitGoogleTest(&argc,argv);
 

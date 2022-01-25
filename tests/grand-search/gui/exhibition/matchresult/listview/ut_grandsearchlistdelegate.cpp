@@ -170,6 +170,10 @@ TEST(GrandSearchListDelegateTest, helpEvent)
     view.m_model->setData(index, QString("TestToolTip"), Qt::ToolTipRole);
     result = delegate->helpEvent(&helpEventToolTip, &view, option, index);
     EXPECT_TRUE(result);
+
+    view.m_model->setData(index, QString(), Qt::ToolTipRole);
+    result = delegate->helpEvent(&helpEventToolTip, &view, option, index);
+    EXPECT_TRUE(result);
 }
 
 TEST(GrandSearchListDelegateTest, drawSelectState)
