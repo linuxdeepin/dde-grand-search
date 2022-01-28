@@ -32,16 +32,16 @@ using namespace GrandSearch;
 TEST(ChineseLetterHelperTest, ut_convertChinese2Pinyin)
 {
     stub_ext::StubExt st;
-    typedef bool (*fptr)(QFile*, QIODevice::OpenMode);
-    fptr open_stub = (fptr)((bool (QFile::*)(QIODevice::OpenMode))&QFile::open);
-    st.set_lamda(open_stub, [](){ return true; });
-    st.set_lamda(&QFile::readAll, [](){
+    typedef bool (*fptr)(QFile *, QIODevice::OpenMode);
+    fptr open_stub = (fptr)((bool (QFile::*)(QIODevice::OpenMode)) & QFile::open);
+    st.set_lamda(open_stub, []() { return true; });
+    st.set_lamda(&QFile::readAll, []() {
         return "0x6d4b:ce\n0x8bd5:shi";
     });
 
     QString firstPy;
     QString fullPy;
     Ch2PyIns->convertChinese2Pinyin("测试", firstPy, fullPy);
-    EXPECT_TRUE(firstPy == "cs");
-    EXPECT_TRUE(fullPy == "ceshi");
+    EXPECT_EQ(firstPy, "cs");
+    EXPECT_EQ(fullPy, "ceshi");
 }
