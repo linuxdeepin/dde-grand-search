@@ -119,7 +119,9 @@ TEST(VideoPreviewPlugin, ut_stopPreview)
 
     stub_ext::StubExt stub;
     bool decode = false;
-    stub.set_lamda(&DecodeBridge::decode,[&decode](QSharedPointer<DecodeBridge> self, const QString &file){
+    bool run = false;
+    stub.set_lamda(&DecodeBridge::decode,[&decode, &run](QSharedPointer<DecodeBridge> self, const QString &file){
+        run = true;
         EXPECT_TRUE(self->decoding);
         QTest::qWaitFor([self](){
             return !self->decoding;
@@ -132,6 +134,11 @@ TEST(VideoPreviewPlugin, ut_stopPreview)
     item.insert(PREVIEW_ITEMINFO_ITEM, "/home/user/test.mp4");
     EXPECT_TRUE(vp.previewItem(item));
     EXPECT_TRUE(vp.m_decode->decoding);
+
+    // waiting for running the decoding thread.
+    QTest::qWaitFor([&run](){
+        return run;
+    }, 1000);
 
     EXPECT_TRUE(vp.stopPreview());
     QTest::qWaitFor([&decode](){
