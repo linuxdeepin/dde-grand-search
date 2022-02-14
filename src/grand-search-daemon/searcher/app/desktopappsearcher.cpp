@@ -165,6 +165,42 @@ QMap<QString, DesktopEntryPointer> DesktopAppSearcherPrivate::scanDesktopFile(co
     return entrys;
 }
 
+bool DesktopAppSearcherPrivate::isHidden(DesktopEntryPointer pointer)
+{
+    // NoDisplay
+    {
+        QString noDisplay = pointer->stringValue("NoDisplay");
+        if (noDisplay.compare("true", Qt::CaseInsensitive) == 0)
+            return true;
+    }
+
+    // NotShowIn
+    {
+        QStringList notShows = pointer->stringValue("NotShowIn").split(';', QString::SkipEmptyParts);
+        if (notShows.contains("Deepin", Qt::CaseInsensitive))
+            return true;
+    }
+
+    // OnlyShowIn
+    {
+        QString onlyShow = pointer->stringValue("OnlyShowIn");
+        if (!onlyShow.isEmpty()) {
+            QStringList onlyShows = pointer->stringValue("OnlyShowIn").split(';');
+            if (!onlyShows.isEmpty() && !onlyShows.contains("Deepin", Qt::CaseInsensitive))
+                return true;
+        }
+    }
+
+    // Hidden
+    {
+        QString hidden = pointer->stringValue("Hidden");
+        if (hidden.compare("true", Qt::CaseInsensitive) == 0)
+            return true;
+    }
+
+    return false;
+}
+
 QSet<QString> DesktopAppSearcherPrivate::desktopIndex(const DesktopEntryPointer &app, const QString &locale)
 {
     QSet<QString> idxs;

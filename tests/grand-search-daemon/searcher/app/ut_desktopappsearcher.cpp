@@ -241,3 +241,102 @@ TEST(DesktopAppSearcherTest, ut_splitLocaleName)
     DesktopAppSearcher das;
     EXPECT_TRUE(!das.d->splitLocaleName("zh_CN").isEmpty());
 }
+
+TEST(DesktopAppSearcherTest, ut_isHidden)
+{
+    // no display
+    DesktopEntryPointer entry(new DTK_CORE_NAMESPACE::DDesktopEntry(""));
+    stub_ext::StubExt st;
+    QString display;
+    QString notShowIn;
+    QString onlyShowIn;
+    QString hidden;
+    st.set_lamda(&DDesktopEntry::stringValue, [&display,&notShowIn,&onlyShowIn,&hidden](DTK_CORE_NAMESPACE::DDesktopEntry *,
+                 const QString &key, const QString &section, const QString &defaultValue){
+        if (key == "NoDisplay")
+            return display;
+        else if (key == "NotShowIn")
+            return notShowIn;
+        else if (key == "OnlyShowIn")
+            return onlyShowIn;
+        else if (key == "Hidden")
+            return hidden;
+
+        return QString("");
+    });
+
+    EXPECT_FALSE(DesktopAppSearcherPrivate::isHidden(entry));
+    hidden = "no";
+    EXPECT_FALSE(DesktopAppSearcherPrivate::isHidden(entry));
+    hidden = "false";
+    EXPECT_FALSE(DesktopAppSearcherPrivate::isHidden(entry));
+    hidden = "FALSE";
+    EXPECT_FALSE(DesktopAppSearcherPrivate::isHidden(entry));
+    hidden = "False";
+    EXPECT_FALSE(DesktopAppSearcherPrivate::isHidden(entry));
+    hidden = "true";
+    EXPECT_TRUE(DesktopAppSearcherPrivate::isHidden(entry));
+    hidden = "True";
+    EXPECT_TRUE(DesktopAppSearcherPrivate::isHidden(entry));
+    hidden = "TRUE";
+    EXPECT_TRUE(DesktopAppSearcherPrivate::isHidden(entry));
+    hidden = "TRUE;";
+    EXPECT_FALSE(DesktopAppSearcherPrivate::isHidden(entry));
+    hidden.clear();
+
+    EXPECT_FALSE(DesktopAppSearcherPrivate::isHidden(entry));
+    display = "no";
+    EXPECT_FALSE(DesktopAppSearcherPrivate::isHidden(entry));
+    display = "false";
+    EXPECT_FALSE(DesktopAppSearcherPrivate::isHidden(entry));
+    display = "FALSE";
+    EXPECT_FALSE(DesktopAppSearcherPrivate::isHidden(entry));
+    display = "False";
+    EXPECT_FALSE(DesktopAppSearcherPrivate::isHidden(entry));
+    display = "true";
+    EXPECT_TRUE(DesktopAppSearcherPrivate::isHidden(entry));
+    display = "True";
+    EXPECT_TRUE(DesktopAppSearcherPrivate::isHidden(entry));
+    display = "TRUE";
+    EXPECT_TRUE(DesktopAppSearcherPrivate::isHidden(entry));
+    display = "TRUE;";
+    EXPECT_FALSE(DesktopAppSearcherPrivate::isHidden(entry));
+    display.clear();
+
+    notShowIn = "uos";
+    EXPECT_FALSE(DesktopAppSearcherPrivate::isHidden(entry));
+    notShowIn = ";";
+    EXPECT_FALSE(DesktopAppSearcherPrivate::isHidden(entry));
+    notShowIn = "deepin";
+    EXPECT_TRUE(DesktopAppSearcherPrivate::isHidden(entry));
+    notShowIn = "deepin;";
+    EXPECT_TRUE(DesktopAppSearcherPrivate::isHidden(entry));
+    notShowIn = "Deepin";
+    EXPECT_TRUE(DesktopAppSearcherPrivate::isHidden(entry));
+    notShowIn = "Deepin;";
+    EXPECT_TRUE(DesktopAppSearcherPrivate::isHidden(entry));
+    notShowIn = "Deepin;uos";
+    EXPECT_TRUE(DesktopAppSearcherPrivate::isHidden(entry));
+    notShowIn.clear();
+
+    onlyShowIn = ";";
+    EXPECT_TRUE(DesktopAppSearcherPrivate::isHidden(entry));
+    onlyShowIn = " ";
+    EXPECT_TRUE(DesktopAppSearcherPrivate::isHidden(entry));
+    onlyShowIn = "''";
+    EXPECT_TRUE(DesktopAppSearcherPrivate::isHidden(entry));
+    onlyShowIn = "*";
+    EXPECT_TRUE(DesktopAppSearcherPrivate::isHidden(entry));
+    onlyShowIn = "deepin";
+    EXPECT_FALSE(DesktopAppSearcherPrivate::isHidden(entry));
+    onlyShowIn = "Deepin";
+    EXPECT_FALSE(DesktopAppSearcherPrivate::isHidden(entry));
+    onlyShowIn = "Deepin;";
+    EXPECT_FALSE(DesktopAppSearcherPrivate::isHidden(entry));
+    onlyShowIn = "Deepin;uos";
+    EXPECT_FALSE(DesktopAppSearcherPrivate::isHidden(entry));
+
+    onlyShowIn = "Deepin";
+    notShowIn = "Deepin";
+    EXPECT_TRUE(DesktopAppSearcherPrivate::isHidden(entry));
+}
