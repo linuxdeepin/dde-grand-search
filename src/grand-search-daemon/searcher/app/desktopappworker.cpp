@@ -20,6 +20,7 @@
  */
 #include "desktopappworker.h"
 #include "global/builtinsearch.h"
+#include "utils/searchhelper.h"
 
 DesktopAppWorker::DesktopAppWorker(const QString &name, QObject *parent) : ProxyWorker(name, parent)
 {
@@ -30,7 +31,8 @@ void DesktopAppWorker::setContext(const QString &context)
 {
     if (context.isEmpty())
         qWarning() << "search key is empty.";
-    m_context = context;
+
+    m_context = buildKeyword(context);
 }
 
 bool DesktopAppWorker::isAsync() const
@@ -64,7 +66,8 @@ bool DesktopAppWorker::working(void *context)
             return false;
 
         //匹配
-        if (iter.key().contains(m_context, Qt::CaseInsensitive)) {
+        QRegExp regExp(m_context, Qt::CaseInsensitive);
+        if (iter.key().contains(regExp)) {
             //遍历该关键词匹配的项目检查是否已经被添加
             for (const QSharedPointer<GrandSearch::MatchedItem> &item : iter.value()) {
                 //检查是否已经添加过
@@ -158,4 +161,29 @@ void DesktopAppWorker::setIndexTable(const QHash<QString, QList<QSharedPointer<G
 QString DesktopAppWorker::group() const
 {
     return GRANDSEARCH_GROUP_APP;
+}
+
+QString DesktopAppWorker::buildKeyword(const QString &keyword)
+{
+    QJsonParseError error;
+    QJsonDocument doc = QJsonDocument::fromJson(keyword.toLocal8Bit(), &error);
+    if (error.error != QJsonParseError::NoError || doc.isEmpty())
+        return keyword;
+
+    // 应用搜索类目，只需要获取关键字信息
+    QStringList keywordList;
+    QJsonObject obj = doc.object();
+    QJsonArray arr = obj[JSON_KEYWORD_ATTRIBUTE].toArray();
+    for (int i = 0; i < arr.count(); ++i) {
+        const QString &key = arr[i].toString();
+        if (key.isEmpty())
+            continue;
+        keywordList.append(searchHelper->tropeInputSymbol(key));
+    }
+
+    // 搜索所有应用
+    if (keywordList.isEmpty())
+        return ".*";
+
+    return keywordList.join('|');
 }

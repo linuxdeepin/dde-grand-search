@@ -41,6 +41,7 @@ public:
     void setIndexTable(const QHash<QString, QList<QSharedPointer<GrandSearch::MatchedItem>>> &table);
 private:
     QString group() const;
+    QString buildKeyword(const QString &keyword);
 private:
     QAtomicInt m_status = Ready;
     QString m_context;

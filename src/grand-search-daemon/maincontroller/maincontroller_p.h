@@ -34,6 +34,8 @@ public:
     MainControllerPrivate(MainController *parent);
     ~MainControllerPrivate();
     void buildWorker(TaskCommander *task);
+    QStringList checkSearcher(const QStringList &groupList, const QStringList &suffixList, const QStringList &keywordList);
+    QString buildKeywordInJson(const QStringList &groupList, const QStringList &suffixList, const QStringList &keywordList);
 private slots:
     void dormancy();
 private:

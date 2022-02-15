@@ -27,7 +27,7 @@
 
 bool convert_chinese_2_pinyin(const char *in_str, char *out_first_py, char *out_full_py)
 {
-    static QRegExp reg("[\u4e00-\u9fa5]");
+    QRegExp reg("[\u4e00-\u9fa5]");
     QString str(in_str);
     if (!str.contains(reg))
         return false;

@@ -36,6 +36,7 @@ public:
     explicit TaskCommander(const QString &content, QObject *parent = nullptr);
     QString taskID() const;
     QString content() const;
+    void setContent(const QString &content);
     bool start();
     void stop();
     GrandSearch::MatchedItemMap getResults() const;

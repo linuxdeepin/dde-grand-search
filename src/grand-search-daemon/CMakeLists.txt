@@ -171,6 +171,8 @@ set(UTILS
     utils/specialtools.cpp
     utils/chineseletterhelper.h
     utils/chineseletterhelper.cpp
+    utils/searchhelper.h
+    utils/searchhelper.cpp
 )
 
 set(SRCS

@@ -20,6 +20,7 @@
  */
 #include "fsworker.h"
 #include "utils/specialtools.h"
+#include "utils/searchhelper.h"
 #include "global/builtinsearch.h"
 #include "configuration/configer.h"
 
@@ -37,9 +38,9 @@ void FsWorker::setContext(const QString &context)
 {
     if (context.isEmpty())
         qWarning() << "search key is empty.";
-    m_context = context;
-    m_searchType = FileSearchUtils::checkSearchTypeAndToRegexp(m_context);
-    m_regex = QRegularExpression(m_context, QRegularExpression::CaseInsensitiveOption);
+    m_context = FileSearchUtils::buildKeyword(context, m_suffixContainList, m_isContainFolder);
+    if (!m_suffixContainList.isEmpty() || m_isContainFolder)
+        m_isCombinationSearch = true;
 }
 
 bool FsWorker::isAsync() const
@@ -269,19 +270,33 @@ bool FsWorker::appendSearchResult(const QString &fileName, bool isRecentFile)
         }
     }
 
-    if (++m_resultCountHash[group] > MAX_SEARCH_NUM)
+    if (m_resultCountHash[group] >= MAX_SEARCH_NUM)
         return false;
+
+    // 对组合搜索到的结果进行过滤
+    if (m_isCombinationSearch) {
+        QFileInfo fileInfo(fileName);
+        if (fileInfo.isDir()) {
+            if (!m_isContainFolder)
+                return false;
+        } else {
+            const auto &suffix = fileInfo.suffix();
+            if (!m_suffixContainList.contains(suffix, Qt::CaseInsensitive))
+                return false;
+        }
+    }
 
     m_tmpSearchResults << fileName;
     const auto &item = FileSearchUtils::packItem(fileName, name(), isRecentFile);
 
     QMutexLocker lk(&m_mtx);
     m_items[group].append(item);
+    m_resultCountHash[group]++;
     // 文档、音频、视频、图片需添加到文件组中
     if (group != FileSearchUtils::File && m_resultCountHash.contains(FileSearchUtils::File)) {
-        if (group != FileSearchUtils::Folder && m_resultCountHash[FileSearchUtils::File] <= MAX_SEARCH_NUM) {
+        if (group != FileSearchUtils::Folder && m_resultCountHash[FileSearchUtils::File] < MAX_SEARCH_NUM) {
             m_items[FileSearchUtils::File].append(item);
-            ++m_resultCountHash[FileSearchUtils::File];
+            m_resultCountHash[FileSearchUtils::File]++;
         }
     }
 
@@ -298,15 +313,8 @@ bool FsWorker::searchRecentFile()
             return false;
 
         QFileInfo info(file);
-        bool isMatched = false;
-        if (m_searchType == FileSearchUtils::NormalSearch) {
-            isMatched = info.fileName().contains(m_context, Qt::CaseInsensitive);
-        } else {
-            QRegularExpressionMatch match = m_regex.match(info.fileName());
-            isMatched = match.hasMatch();
-        }
-
-        if (isMatched) {
+        QRegExp reg(m_context, Qt::CaseInsensitive);
+        if (info.fileName().contains(reg)) {
             appendSearchResult(file, true);
 
             //推送
@@ -342,7 +350,7 @@ bool FsWorker::searchLocalFile()
                          m_context.toStdString().c_str(),
                          m_app->config->hide_results_on_empty_search,
                          m_app->config->match_case,
-                         m_searchType == FileSearchUtils::NormalSearch ? false : true,
+                         true,
                          m_app->config->auto_search_in_path,
                          m_app->config->search_in_path);
 

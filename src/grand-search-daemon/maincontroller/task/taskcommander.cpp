@@ -121,6 +121,11 @@ QString TaskCommander::content() const
     return d->m_content;
 }
 
+void TaskCommander::setContent(const QString &content)
+{
+    d->m_content = content;
+}
+
 bool TaskCommander::start()
 {
     qDebug() << "start" << this->taskID() << d->m_working

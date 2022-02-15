@@ -63,8 +63,10 @@ public:
     QTime m_time;
     int m_lastEmit = 0;
 
-    FileSearchUtils::SearchType m_searchType = FileSearchUtils::NormalSearch;
-    QRegularExpression m_regex;
+    // 组合搜索
+    QStringList m_suffixContainList;    // 类目、后缀搜索包含的后缀
+    bool m_isContainFolder = false;     // 是否包含文件夹类目
+    bool m_isCombinationSearch = false; // 组合搜索，类目、后缀搜索
 
     Q_DECLARE_PUBLIC(FileNameWorker)
 };

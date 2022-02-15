@@ -38,21 +38,11 @@ public:
         GroupBegin = Unknown
     };
 
-    enum SearchType {
-        NormalSearch,   // 普通搜索
-        SuffixSearch,   // 后缀搜索
-        GrouopSearch    // 类目搜索
-    };
-
     static GrandSearch::MatchedItem packItem(const QString &fileName, const QString &searcher, bool isRecentFile = false);
     static QString groupKey(Group group);
     static Group getGroupByName(const QString &fileName);
     static Group getGroupBySuffix(const QString &suffix);
-    static SearchType checkSearchTypeAndToRegexp(QString &pattern);
-private:
-    static QString toSuffixRegexp(const QString &suffix, const QString &pattern);
-    static QString toGroupRegexp(const QString &group, const QString &pattern);
-    static QString tropeInputSymbol(const QString &pattern);
+    static QString buildKeyword(const QString &context, QStringList &suffixContainList, bool &isContainFolder);
 };
 
 #endif   // FILESEARCHUTILS_H

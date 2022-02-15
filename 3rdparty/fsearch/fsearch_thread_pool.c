@@ -127,7 +127,7 @@ fsearch_thread_pool_init (void)
     pool->threads = NULL;
     pool->num_threads = 0;
 
-    uint32_t num_cpus = 1;//g_get_num_processors ();
+    uint32_t num_cpus = g_get_num_processors ();
     for (uint32_t i = 0; i < num_cpus; i++) {
         thread_context_t *ctx = thread_context_new ();
         if (ctx) {

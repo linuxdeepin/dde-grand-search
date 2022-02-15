@@ -22,6 +22,7 @@
 #include "maincontroller.h"
 #include "maincontroller_p.h"
 #include "configuration/configer.h"
+#include "utils/searchhelper.h"
 
 #include <QDebug>
 
@@ -58,10 +59,22 @@ void MainControllerPrivate::buildWorker(TaskCommander *task)
     auto config = ConfigerIns->group(GRANDSEARCH_PREF_SEARCHERENABLED);
     Q_ASSERT(config);
 
+    // 类目、后缀搜索的判读与准备
+    QStringList groupList, suffixList, keywordList;
+    QStringList searcherData;
+    if (searchHelper->parseKeyword(task->content(), groupList, suffixList, keywordList)) {
+        if (!keywordList.isEmpty() || !suffixList.isEmpty() || !groupList.isEmpty()) {
+            searcherData = checkSearcher(groupList, suffixList, keywordList);
+            const auto &keyword = buildKeywordInJson(groupList, suffixList, keywordList);
+            if (!keyword.isEmpty())
+                task->setContent(keyword);
+        }
+    }
+
     for (auto searcher : searchers) {
         Q_ASSERT(searcher);
         // 判断搜索项是否启用
-        if (config->value(searcher->name(), true)) {
+        if (config->value(searcher->name(), true) && (searcherData.isEmpty() || searcherData.contains(searcher->name()))) {
             // 判断是否激活，若未激活则先激活
             qDebug() << "searcher create worker" << searcher->name();
             if (searcher->isActive() || searcher->activate()) {
@@ -73,6 +86,57 @@ void MainControllerPrivate::buildWorker(TaskCommander *task)
             }
         }
     }
+}
+
+QStringList MainControllerPrivate::checkSearcher(const QStringList &groupList, const QStringList &suffixList, const QStringList &keywordList)
+{
+    QStringList data;
+    for (const auto &group : groupList) {
+        const auto &searchers = searchHelper->getSearcherByGroupName(group);
+        if (searchers.isEmpty())
+            continue;
+        data.append(searchers);
+    }
+
+    // 后缀不为空，说明需要文件搜索项
+    if (!suffixList.isEmpty()) {
+        data.append(GRANDSEARCH_CLASS_FILE_DEEPIN);
+        data.append(GRANDSEARCH_CLASS_FILE_FSEARCH);
+    } else {
+        // 后缀、类目为空，搜索关键字不为空
+        // 说明分隔符前后的字段既不是后缀也不是类目
+        if (groupList.isEmpty() && !keywordList.isEmpty()) {
+            data.append(GRANDSEARCH_CLASS_FILE_DEEPIN);
+            data.append(GRANDSEARCH_CLASS_FILE_FSEARCH);
+            data.append(GRANDSEARCH_CLASS_APP_DESKTOP);
+        }
+    }
+
+    return data;
+}
+
+QString MainControllerPrivate::buildKeywordInJson(const QStringList &groupList, const QStringList &suffixList, const QStringList &keywordList)
+{
+    QJsonDocument doc;
+    QJsonObject obj;
+    QJsonArray groupArr, suffixArr, keywordArr;
+    for (const auto &group : groupList)
+        groupArr.append(group);
+
+    for (const auto &suffix : suffixList)
+        suffixArr.append(suffix);
+
+    for (const auto &keyword : keywordList) {
+        if (keyword.isEmpty())
+            continue;
+        keywordArr.append(keyword);
+    }
+
+    obj[JSON_GROUP_ATTRIBUTE] = groupArr;
+    obj[JSON_SUFFIX_ATTRIBUTE] = suffixArr;
+    obj[JSON_KEYWORD_ATTRIBUTE] = keywordArr;
+    doc.setObject(obj);
+    return doc.toJson(QJsonDocument::Compact);
 }
 
 void MainControllerPrivate::dormancy()

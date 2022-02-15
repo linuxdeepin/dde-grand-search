@@ -23,6 +23,7 @@
 #include "anything_interface.h"
 #include "global/builtinsearch.h"
 #include "utils/specialtools.h"
+#include "utils/searchhelper.h"
 #include "configuration/configer.h"
 
 #include <QStandardPaths>
@@ -128,19 +129,33 @@ bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName, bool isR
         }
     }
 
-    if (++m_resultCountHash[group] > MAX_SEARCH_NUM)
+    if (m_resultCountHash[group] >= MAX_SEARCH_NUM)
         return false;
+
+    // 对组合搜索到的结果进行过滤
+    if (m_isCombinationSearch) {
+        QFileInfo fileInfo(fileName);
+        if (fileInfo.isDir()) {
+            if (!m_isContainFolder)
+                return false;
+        } else {
+            const auto &suffix = fileInfo.suffix();
+            if (!m_suffixContainList.contains(suffix, Qt::CaseInsensitive))
+                return false;
+        }
+    }
 
     m_tmpSearchResults << fileName;
     const auto &item = FileSearchUtils::packItem(fileName, q->name(), isRecentFile);
 
     QMutexLocker lk(&m_mutex);
     m_items[group].append(item);
+    m_resultCountHash[group]++;
     // 文档、音频、视频、图片需添加到文件组中
     if (group != FileSearchUtils::File && m_resultCountHash.contains(FileSearchUtils::File)) {
-        if (group != FileSearchUtils::Folder && m_resultCountHash[FileSearchUtils::File] <= MAX_SEARCH_NUM) {
+        if (group != FileSearchUtils::Folder && m_resultCountHash[FileSearchUtils::File] < MAX_SEARCH_NUM) {
             m_items[FileSearchUtils::File].append(item);
-            ++m_resultCountHash[FileSearchUtils::File];
+            m_resultCountHash[FileSearchUtils::File]++;
         }
     }
 
@@ -156,16 +171,9 @@ bool FileNameWorkerPrivate::searchRecentFile()
         if (m_status.loadAcquire() != ProxyWorker::Runing)
             return false;
 
-        bool isMatched = false;
         QFileInfo info(file);
-        if (m_searchType == FileSearchUtils::NormalSearch) {
-            isMatched = info.fileName().contains(m_context, Qt::CaseInsensitive);
-        } else {
-            QRegularExpressionMatch match = m_regex.match(info.fileName());
-            isMatched = match.hasMatch();
-        }
-
-        if (isMatched) {
+        QRegExp reg(m_context, Qt::CaseInsensitive);
+        if (info.fileName().contains(reg)) {
             appendSearchResult(file, true);
 
             //推送
@@ -196,15 +204,8 @@ bool FileNameWorkerPrivate::searchUserPath()
         if (info.isDir())
             m_searchDirList << info.absoluteFilePath();
 
-        bool isMatched = false;
-        if (m_searchType == FileSearchUtils::NormalSearch) {
-            isMatched = info.fileName().contains(m_context, Qt::CaseInsensitive);
-        } else {
-            QRegularExpressionMatch match = m_regex.match(info.fileName());
-            isMatched = match.hasMatch();
-        }
-
-        if (isMatched) {
+        QRegExp reg(m_context, Qt::CaseInsensitive);
+        if (info.fileName().contains(reg)) {
             const auto &absoluteFilePath = info.absoluteFilePath();
 
             // 过滤文管设置的隐藏文件
@@ -243,7 +244,7 @@ bool FileNameWorkerPrivate::searchByAnything()
 
         const auto result = m_anythingInterface->search(100, 100, searchStartOffset,
                                                         searchEndOffset, m_searchDirList.first(), m_context,
-                                                        m_searchType == FileSearchUtils::NormalSearch ? false : true);
+                                                        true);
         // fix bug 93806
         // 直接判断errorType为NoError，需要先取值再判断
         QStringList searchResults = result.argumentAt<0>();
@@ -341,9 +342,9 @@ void FileNameWorker::setContext(const QString &context)
 
     if (context.isEmpty())
         qWarning() << "search key is empty.";
-    d->m_context = context;
-    d->m_searchType = FileSearchUtils::checkSearchTypeAndToRegexp(d->m_context);
-    d->m_regex = QRegularExpression(d->m_context, QRegularExpression::CaseInsensitiveOption);
+    d->m_context = FileSearchUtils::buildKeyword(context, d->m_suffixContainList, d->m_isContainFolder);
+    if (!d->m_suffixContainList.isEmpty() || d->m_isContainFolder)
+        d->m_isCombinationSearch = true;
 }
 
 bool FileNameWorker::isAsync() const

@@ -21,6 +21,7 @@
 #include "filesearchutils.h"
 #include "global/builtinsearch.h"
 #include "utils/specialtools.h"
+#include "utils/searchhelper.h"
 
 GrandSearch::MatchedItem FileSearchUtils::packItem(const QString &fileName, const QString &searcher, bool isRecentFile)
 {
@@ -81,117 +82,69 @@ FileSearchUtils::Group FileSearchUtils::getGroupBySuffix(const QString &suffix)
     if (suffix.isEmpty())
         return group;
 
-    // 文档格式
-    static QRegExp docReg("^((pdf)|(txt)|(doc)|(docx)|(dot)|(dotx)|(ppt)|(pptx)|(pot)|(potx)"
-                          "|(xls)|(xlsx)|(xlt)|(xltx)|(wps)|(wpt)|(rtf)|(md)|(latex))$", Qt::CaseInsensitive);
-    // 图片格式
-    static QRegExp pictureReg("^((jpg)|(jpeg)|(jpe)|(bmp)|(png)|(gif)|(svg)|(tif)|(tiff))$", Qt::CaseInsensitive);
-    // 视频格式
-    static QRegExp videoReg("^((avi)|(mov)|(mp4)|(mpg)|(mpeg)|(qt)|(rm)|(rmvb)"
-                            "|(mkv)|(asx)|(asf)|(flv)|(3gp)|(mpe))$", Qt::CaseInsensitive);
-    // 音频格式
-    static QRegExp musicReg("^((au)|(snd)|(mid)|(mp3)|(aif)|(aifc)|(aiff)|(m3u)|(ra)"
-                            "|(ram)|(wav)|(cda)|(wma)|(ape)|(mp2)|(mpa))$", Qt::CaseInsensitive);
-    // 文件格式
-    static QRegExp fileReg("^((zip)|(rar)|(z)|(deb)|(lib)|(iso)|(html)|(js))$", Qt::CaseInsensitive);
-
-    if (docReg.exactMatch(suffix)) {
+    if (searchHelper->getSuffixByGroupName(DOCUMENT_GROUP).contains(suffix, Qt::CaseInsensitive)) {
         group = Document;
-    } else if (pictureReg.exactMatch(suffix)) {
+    } else if (searchHelper->getSuffixByGroupName(PICTURE_GROUP).contains(suffix, Qt::CaseInsensitive)) {
         group = Picture;
-    } else if (videoReg.exactMatch(suffix)) {
+    } else if (searchHelper->getSuffixByGroupName(VIDEO_GROUP).contains(suffix, Qt::CaseInsensitive)) {
         group = Video;
-    } else if (musicReg.exactMatch(suffix)) {
+    } else if (searchHelper->getSuffixByGroupName(AUDIO_GROUP).contains(suffix, Qt::CaseInsensitive)) {
         group = Audio;
-    } else if (fileReg.exactMatch(suffix)) {
+    } else if (searchHelper->getSuffixByGroupName(FILE_GROUP).contains(suffix, Qt::CaseInsensitive)) {
         group = File;
     }
 
     return group;
 }
 
-FileSearchUtils::SearchType FileSearchUtils::checkSearchTypeAndToRegexp(QString &pattern)
+QString FileSearchUtils::buildKeyword(const QString &context, QStringList &suffixContainList, bool &isContainFolder)
 {
-    if (!pattern.contains(':') || pattern == ':')
-        return NormalSearch;
+    suffixContainList.clear();
+    isContainFolder = false;
+    QJsonParseError error;
+    QJsonDocument doc = QJsonDocument::fromJson(context.toLocal8Bit(), &error);
+    if (error.error != QJsonParseError::NoError || doc.isEmpty())
+        return searchHelper->tropeInputSymbol(context);
 
-    QString tmpStr = pattern;
-    // 对特殊字符进行转义
-    pattern = tropeInputSymbol(pattern);
-    int index = pattern.indexOf(':');
-    QString suffix = pattern.mid(0, index);
-    QString keyword = pattern.mid(index + 1);
+    QStringList keywordList;
+    QJsonObject obj = doc.object();
+    // 类目
+    QJsonArray groupArr = obj[JSON_GROUP_ATTRIBUTE].toArray();
+    for (int i = 0; i < groupArr.count(); ++i) {
+        const QString &group = groupArr[i].toString();
+        if (group.isEmpty())
+            continue;
 
-    pattern = toSuffixRegexp(suffix, keyword);
-    if (pattern.isEmpty()) {
-        pattern = tmpStr;
-        return NormalSearch;
-    }
-    return SuffixSearch;
-}
-
-QString FileSearchUtils::toSuffixRegexp(const QString &suffix, const QString &pattern)
-{
-    QString keyword = pattern;
-    auto group = getGroupBySuffix(suffix);
-    if (Unknown == group) {
-        if (keyword.trimmed().isEmpty() || suffix.trimmed().isEmpty())
-            return "";
-
-        // 未知类型，冒号前后拆分搜索取并集
-        QStringList keywords = keyword.split(':');
-        keyword = suffix;
-        for (const auto &word : keywords) {
-            keyword.append("|" + word);
+        // 文件夹类目
+        if (group.compare(FOLDER_GROUP, Qt::CaseInsensitive) == 0) {
+            isContainFolder = true;
+            continue;
         }
-        return keyword;
-    } else {
-        return QString(R"(%1.*\.%2$)").arg(keyword, suffix);
-    }
-}
 
-QString FileSearchUtils::toGroupRegexp(const QString &group, const QString &pattern)
-{
-    // TODO 类目搜索
-    Q_UNUSED(group)
-    Q_UNUSED(pattern)
-
-    return "";
-}
-
-QString FileSearchUtils::tropeInputSymbol(const QString &pattern)
-{
-    const int len = pattern.length();
-    QString rx;
-    rx.reserve(len + len / 16);
-    int i = 0;
-    const QChar *wc = pattern.unicode();
-
-    while (i < len) {
-        const QChar c = wc[i++];
-        switch (c.unicode()) {
-        case '*':
-        case '?':
-        case '\\':
-        case '$':
-        case '(':
-        case ')':
-        case '+':
-        case '.':
-        case '^':
-        case '{':
-        case '|':
-        case '}':
-        case '[':
-        case ']':
-            rx += QLatin1Char('\\');
-            rx += c;
-            break;
-        default:
-            rx += c;
-            break;
-        }
+        // 将类目转换为对应的后缀
+        const auto &list = searchHelper->getSuffixByGroupName(group);
+        if (list.isEmpty())
+            continue;
+        suffixContainList.append(list);
     }
 
-    return rx;
+    // 后缀
+    QJsonArray suffixArr = obj[JSON_SUFFIX_ATTRIBUTE].toArray();
+    for (int i = 0; i < suffixArr.count(); ++i) {
+        const QString &suffix = suffixArr[i].toString();
+        if (suffix.isEmpty())
+            continue;
+        suffixContainList.append(suffix);
+    }
+
+    // 搜索关键字
+    QJsonArray keywordArr = obj[JSON_KEYWORD_ATTRIBUTE].toArray();
+    for (int i = 0; i < keywordArr.count(); ++i) {
+        const QString &key = keywordArr[i].toString();
+        if (key.isEmpty())
+            continue;
+        keywordList.append(searchHelper->tropeInputSymbol(key));
+    }
+
+    return QString(R"((%1).*)").arg(keywordList.join('|'));
 }
