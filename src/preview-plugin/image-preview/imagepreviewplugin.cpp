@@ -64,7 +64,7 @@ bool ImagePreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
         dimensionStr = QString("%1*%2").arg(dimension.width()).arg(dimension.height());
 
     DetailTagInfo tagInfos;
-    tagInfos.insert(DetailInfoProperty::Text, QVariant(tr("Dimension:")));
+    tagInfos.insert(DetailInfoProperty::Text, QVariant(tr("Dimensions:")));
     tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
 
     DetailContentInfo contentInfos;

@@ -19,7 +19,7 @@
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="123"/>
         <source>Type:</source>
-        <translation>Rodzaj:</translation>
+        <translation>Typ:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="135"/>
@@ -29,7 +29,7 @@
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="149"/>
         <source>Time modified:</source>
-        <translation>Czas zmodyfikowania:</translation>
+        <translation>Data modyfikacji:</translation>
     </message>
 </context>
 <context>
@@ -87,7 +87,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="219"/>
         <source>Time modified:</source>
-        <translation>Czas modyfikacji:</translation>
+        <translation>Data modyfikacji:</translation>
     </message>
 </context>
 <context>
@@ -121,12 +121,12 @@
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="67"/>
         <source>Dimension:</source>
-        <translation>Wymiar:</translation>
+        <translation>Wymiary:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="83"/>
         <source>Type:</source>
-        <translation>Rodzaj:</translation>
+        <translation>Typ:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="98"/>
@@ -141,7 +141,7 @@
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="124"/>
         <source>Time modified:</source>
-        <translation>Czas modyfikacji:</translation>
+        <translation>Data modyfikacji:</translation>
     </message>
 </context>
 <context>
@@ -170,17 +170,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="51"/>
         <source>Join search experience program</source>
-        <translation>Dołącz do programu wyszukiwania</translation>
+        <translation>Dołącz do programu doświadczeń wyszukiwania</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="63"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations. If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation>Przystąpienie do programu wyszukiwania oznacza, że udzielasz i upoważniasz nas do gromadzenia informacji o Twoim urządzeniu i systemie, ikonach plików, treści i właściwościach, aplikacjach i ich konfiguracjach. Jeśli nie zgadzasz się na gromadzenie i wykorzystywanie wyżej wymienionych informacji, nie dołączaj do programu.</translation>
+        <translation>Przystąpienie do programu wyszukiwania oznacza, że udzielasz i upoważniasz nas do gromadzenia informacji o Twoim urządzeniu, systemie, ikonach, treści, właściwościach, aplikacjach i ich ustawieniach. Jeśli nie zgadzasz się na gromadzenie i wykorzystywanie wyżej wymienionych informacji, nie dołączaj do programu.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="71"/>
         <source>To know more about the management of your data, please refer to the UnionTech Software Privacy Policy (</source>
-        <translation>Aby dowiedzieć się więcej o zarządzaniu danymi, zapoznaj się z Polityką prywatności oprogramowania UnionTech (</translation>
+        <translation>Aby dowiedzieć się więcej w jaki sposób twoje dane są zarządzane, zapoznaj się z Polityką prywatności oprogramowania UnionTech (</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="73"/>
@@ -248,12 +248,12 @@
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="38"/>
         <source>Dimension:</source>
-        <translation>Wymiar:</translation>
+        <translation>Wymiary:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="39"/>
         <source>Type:</source>
-        <translation>Rodzaj:</translation>
+        <translation>Typ:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="40"/>
@@ -273,7 +273,7 @@
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="43"/>
         <source>Time modified:</source>
-        <translation>Czas modyfikacji:</translation>
+        <translation>Data modyfikacji:</translation>
     </message>
 </context>
 <context>

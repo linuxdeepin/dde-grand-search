@@ -43,7 +43,7 @@
     <message>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="164"/>
         <source>Search settings</source>
-        <translation type="unfinished"/>
+        <translation>Sucheinstellungen</translation>
     </message>
 </context>
 <context>
@@ -157,7 +157,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="89"/>
         <source>Search for &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Nach „%1“ suchen</translation>
     </message>
 </context>
 <context>
@@ -175,12 +175,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="63"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations. If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation type="unfinished"/>
+        <translation>Wenn Sie am Sucherfahrungsprogramm teilnehmen, erlauben Sie es uns, Informationen zu ihrem Gerät, System, ihren Datei-Icons, -Inhalten und -Eigenschaften sowieso Anwendungen und deren Konfiguration zu sammeln. Treten Sie nicht bei, wenn Sie der Sammlung und Verwendung dieser Informationen widersprechen.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="71"/>
         <source>To know more about the management of your data, please refer to the UnionTech Software Privacy Policy (</source>
-        <translation type="unfinished"/>
+        <translation>Wenn Sie mehr über den Umgang mit Ihren Daten erfahren möchten, lesen Sie bitte die UnionTech Software-Datenschutzerklärung (</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="73"/>
@@ -195,7 +195,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="76"/>
         <source>).</source>
-        <translation type="unfinished"/>
+        <translation>).</translation>
     </message>
 </context>
 <context>
@@ -281,7 +281,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/scopewidget.cpp" line="44"/>
         <source>Search contents</source>
-        <translation type="unfinished"/>
+        <translation>Inhalte suchen</translation>
     </message>
 </context>
 </TS>

@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="en">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="en">
 <context>
     <name>AudioPreviewPlugin</name>
     <message>
@@ -35,13 +37,13 @@
 <context>
     <name>DdeGrandSearchDockPlugin</name>
     <message>
-        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="58"/>
-        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="101"/>
+        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="57"/>
+        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="100"/>
         <source>Grand Search</source>
         <translation>Grand Search</translation>
     </message>
     <message>
-        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="164"/>
+        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="163"/>
         <source>Search settings</source>
         <translation>Search settings</translation>
     </message>
@@ -49,12 +51,12 @@
 <context>
     <name>EntranceWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="232"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="241"/>
         <source>Search</source>
         <translation>Search</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="233"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="242"/>
         <source>What would you like to search for?</source>
         <translation>What would you like to search for?</translation>
     </message>
@@ -62,17 +64,17 @@
 <context>
     <name>EntranceWidgetPrivate</name>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="93"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="94"/>
         <source>Cut</source>
         <translation>Cut</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="97"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="98"/>
         <source>Copy</source>
         <translation>Copy</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="101"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="102"/>
         <source>Paste</source>
         <translation>Paste</translation>
     </message>
@@ -111,7 +113,7 @@
 <context>
     <name>GroupWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="259"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="261"/>
         <source>More</source>
         <translation>More</translation>
     </message>
@@ -120,8 +122,8 @@
     <name>ImagePreviewPlugin</name>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="67"/>
-        <source>Dimension:</source>
-        <translation>Dimension:</translation>
+        <source>Dimensions:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="83"/>
@@ -147,7 +149,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/grand-search/gui/mainwindow.cpp" line="209"/>
+        <location filename="../src/grand-search/gui/mainwindow.cpp" line="217"/>
         <source>No search results</source>
         <translation>No search results</translation>
     </message>
@@ -247,8 +249,8 @@
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="38"/>
-        <source>Dimension:</source>
-        <translation>Dimension:</translation>
+        <source>Dimensions:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="39"/>

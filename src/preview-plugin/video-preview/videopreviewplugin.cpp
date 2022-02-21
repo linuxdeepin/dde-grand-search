@@ -35,7 +35,7 @@ extern "C" {
 #endif
 
 namespace  {
-static const QString kLabelDimension = QObject::tr("Dimension:");
+static const QString kLabelDimension = QObject::tr("Dimensions:");
 static const QString kLabelType = QObject::tr("Type:");
 static const QString kLabelSize = QObject::tr("Size:");
 static const QString kLabelDuration = QObject::tr("Duration:");

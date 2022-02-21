@@ -174,28 +174,31 @@ bool DesktopAppSearcherPrivate::isHidden(DesktopEntryPointer pointer)
             return true;
     }
 
-    // NotShowIn
-    {
-        QStringList notShows = pointer->stringValue("NotShowIn").split(';', QString::SkipEmptyParts);
-        if (notShows.contains("Deepin", Qt::CaseInsensitive))
-            return true;
-    }
-
-    // OnlyShowIn
-    {
-        QString onlyShow = pointer->stringValue("OnlyShowIn");
-        if (!onlyShow.isEmpty()) {
-            QStringList onlyShows = pointer->stringValue("OnlyShowIn").split(';');
-            if (!onlyShows.isEmpty() && !onlyShows.contains("Deepin", Qt::CaseInsensitive))
-                return true;
-        }
-    }
-
     // Hidden
     {
         QString hidden = pointer->stringValue("Hidden");
         if (hidden.compare("true", Qt::CaseInsensitive) == 0)
             return true;
+    }
+
+    static QString desktop = qgetenv("XDG_CURRENT_DESKTOP");
+    if (!desktop.isEmpty()) {
+        // NotShowIn
+        {
+            QStringList notShows = pointer->stringValue("NotShowIn").split(';', QString::SkipEmptyParts);
+            if (notShows.contains(desktop, Qt::CaseInsensitive))
+                return true;
+        }
+
+        // OnlyShowIn
+        {
+            QString onlyShow = pointer->stringValue("OnlyShowIn");
+            if (!onlyShow.isEmpty()) {
+                QStringList onlyShows = pointer->stringValue("OnlyShowIn").split(';');
+                if (!onlyShows.isEmpty() && !onlyShows.contains(desktop, Qt::CaseInsensitive))
+                    return true;
+            }
+        }
     }
 
     return false;

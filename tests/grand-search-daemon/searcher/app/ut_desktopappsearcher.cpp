@@ -303,6 +303,9 @@ TEST(DesktopAppSearcherTest, ut_isHidden)
     EXPECT_FALSE(DesktopAppSearcherPrivate::isHidden(entry));
     display.clear();
 
+    if (QString(qgetenv("XDG_CURRENT_DESKTOP")) != "Deepin")
+        return;
+
     notShowIn = "uos";
     EXPECT_FALSE(DesktopAppSearcherPrivate::isHidden(entry));
     notShowIn = ";";

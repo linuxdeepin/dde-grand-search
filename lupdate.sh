@@ -1,7 +1,7 @@
 #!/bin/bash
 cp ".transifexrc" ${HOME}/
 
-rm ./translations/*.ts
+#rm ./translations/*.ts
 
 lupdate ./src/ -ts -no-obsolete translations/dde-grand-search.ts
 
