@@ -199,7 +199,7 @@ TEST(VideoPreviewPlugin, ut_updateInfo)
     item.insert(PREVIEW_ITEMINFO_ITEM, "/home/user/test.mp4");
     EXPECT_TRUE(vp.previewItem(item));
     ASSERT_EQ(vp.m_infos.size(), 6);
-    EXPECT_EQ(vp.m_infos.at(0).first.value(DetailInfoProperty::Text).toString(), QString("Dimension:"));
+    EXPECT_EQ(vp.m_infos.at(0).first.value(DetailInfoProperty::Text).toString(), QString("Dimensions:"));
     EXPECT_EQ(vp.m_infos.at(1).first.value(DetailInfoProperty::Text).toString(), QString("Type:"));
     EXPECT_EQ(vp.m_infos.at(2).first.value(DetailInfoProperty::Text).toString(), QString("Size:"));
     EXPECT_EQ(vp.m_infos.at(3).first.value(DetailInfoProperty::Text).toString(), QString("Duration:"));
@@ -207,7 +207,7 @@ TEST(VideoPreviewPlugin, ut_updateInfo)
     EXPECT_EQ(vp.m_infos.at(5).first.value(DetailInfoProperty::Text).toString(), QString("Time modified:"));
 
     QVariantHash info;
-    info.insert("Dimension:",QSize(10,10));
+    info.insert("Dimensions:",QSize(10,10));
     info.insert("Duration:", 7777);
     QPixmap pix(QSize(50,50));
     pix.fill();
