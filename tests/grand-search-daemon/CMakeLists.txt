@@ -41,11 +41,11 @@ pkg_check_modules(PCRE REQUIRED libpcre)
 
 if (NOT (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "sw"))
     ADD_DEFINITIONS(-DENABLE_DEEPINANYTHING)
-    qt5_add_dbus_interface(ANYTHING_SRC /usr/share/dbus-1/interfaces/com.deepin.anything.xml anything_interface)
 else()
     # 移除不支持的文件
     FILE(GLOB_RECURSE RM_DASRC
         "${PROJECT_DAEMONSRC_PATH}/searcher/file/filename*"
+        "${PROJECT_DAEMONSRC_PATH}/searcher/file/anything*"
         )
 endif()
 
@@ -74,7 +74,6 @@ set(SRCS
     ${PRO_SRC}
     ${UT_SRC}
     ${CPP_STUB_SRC}
-    ${ANYTHING_SRC}
     ${3RD_FSEARCH_SRC}
 )
 

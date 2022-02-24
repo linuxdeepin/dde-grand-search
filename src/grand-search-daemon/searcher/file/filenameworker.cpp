@@ -242,9 +242,20 @@ bool FileNameWorkerPrivate::searchByAnything()
         if (m_status.loadAcquire() != ProxyWorker::Runing)
             return false;
 
-        const auto result = m_anythingInterface->search(100, 100, searchStartOffset,
-                                                        searchEndOffset, m_searchDirList.first(), m_context,
-                                                        true);
+        QDBusPendingReply<QStringList, uint, uint> result;
+        if (m_supportParallelSearch) {
+            QStringList rules;
+            rules << "0x02100"  // 搜索做大数量，100
+                  << "0x40."    // 过滤系统隐藏文件
+                  << "0x011";   // 支持正则表达式
+            result = m_anythingInterface->parallelsearch(m_searchDirList.first(), searchStartOffset,
+                                                         searchEndOffset, m_context, rules);
+        } else {
+            result = m_anythingInterface->search(100, 100, searchStartOffset,
+                                                 searchEndOffset, m_searchDirList.first(), m_context,
+                                                 true);
+        }
+
         // fix bug 93806
         // 直接判断errorType为NoError，需要先取值再判断
         QStringList searchResults = result.argumentAt<0>();
@@ -257,7 +268,8 @@ bool FileNameWorkerPrivate::searchByAnything()
             continue;
         }
 
-        searchResults = searchResults.filter(hiddenFileFilter);
+        if (!m_supportParallelSearch)
+            searchResults = searchResults.filter(hiddenFileFilter);
         searchStartOffset = result.argumentAt<1>();
         searchEndOffset = result.argumentAt<2>();
 
@@ -329,11 +341,11 @@ bool FileNameWorkerPrivate::isResultLimit()
     return iter == m_resultCountHash.end();
 }
 
-FileNameWorker::FileNameWorker(const QString &name, QObject *parent)
+FileNameWorker::FileNameWorker(const QString &name, bool supportParallelSearch, QObject *parent)
     : ProxyWorker(name, parent),
       d_ptr(new FileNameWorkerPrivate(this))
 {
-
+    d_ptr->m_supportParallelSearch = supportParallelSearch;
 }
 
 void FileNameWorker::setContext(const QString &context)
@@ -390,9 +402,13 @@ bool FileNameWorker::working(void *context)
     if (!d->searchRecentFile())
         return false; //中断
 
-    // 搜索user目录下文件
-    if (!d->searchUserPath())
-        return false; //中断
+    if (!d->m_supportParallelSearch) {
+        // 搜索user目录下文件
+        if (!d->searchUserPath())
+            return false; //中断
+    } else {
+        d->m_searchDirList << d->m_searchPath;
+    }
 
     // 使用anything搜索
     if (useAnything) {

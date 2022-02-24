@@ -77,7 +77,7 @@ bool FileNameSearcher::activate()
 
 ProxyWorker *FileNameSearcher::createWorker() const
 {
-    auto worker = new FileNameWorker(name());
+    auto worker = new FileNameWorker(name(), supportParallelSearch());
     return worker;
 }
 
@@ -86,4 +86,33 @@ bool FileNameSearcher::action(const QString &action, const QString &item)
     Q_UNUSED(item)
     qWarning() << "no such action:" << action << ".";
     return false;
+}
+
+bool FileNameSearcher::supportParallelSearch() const
+{
+    static QStringList methodNameList;
+    if (!methodNameList.isEmpty())
+        return methodNameList.contains("parallelsearch");
+
+    QDBusInterface introspectable("com.deepin.anything",
+                                  "/com/deepin/anything",
+                                  "org.freedesktop.DBus.Introspectable",
+                                  QDBusConnection::systemBus());
+    QDBusReply<QString> reply = introspectable.call("Introspect");
+    if (!reply.isValid())
+        return false;
+
+    QXmlStreamReader xmlReader;
+    xmlReader.addData(reply.value());
+    xmlReader.readNext();
+    while (!xmlReader.atEnd()) {
+        if (xmlReader.isStartElement() && xmlReader.name() == "method") {
+            methodNameList << xmlReader.attributes().value("name").toString();
+            xmlReader.skipCurrentElement();
+        } else {
+            xmlReader.readNext();
+        }
+    }
+
+    return methodNameList.contains("parallelsearch");
 }

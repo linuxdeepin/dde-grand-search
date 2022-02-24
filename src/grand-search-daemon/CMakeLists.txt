@@ -103,10 +103,8 @@ if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips"
 else ()
     message(${CMAKE_SYSTEM_PROCESSOR} ": using deepin-anything.")
     ADD_DEFINITIONS(-DENABLE_DEEPINANYTHING)
-    qt5_add_dbus_interface(ANYTHING_SRC /usr/share/dbus-1/interfaces/com.deepin.anything.xml anything_interface)
     set(SEARCHER
         ${SEARCHER}
-        ${ANYTHING_SRC}
         searcher/file/filenamesearcher.h
         searcher/file/filenamesearcher.cpp
         searcher/file/filenameworker.h
@@ -114,6 +112,8 @@ else ()
         searcher/file/filenameworker_p.h
         searcher/file/filesearchutils.h
         searcher/file/filesearchutils.cpp
+        searcher/file/anything_interface.h
+        searcher/file/anything_interface.cpp
     )
 endif()
 

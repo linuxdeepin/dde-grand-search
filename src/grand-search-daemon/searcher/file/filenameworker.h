@@ -29,7 +29,7 @@ class FileNameWorkerPrivate;
 class FileNameWorker : public ProxyWorker
 {
 public:
-    explicit FileNameWorker(const QString &name, QObject *parent = nullptr);
+    explicit FileNameWorker(const QString &name, bool supportParallelSearch, QObject *parent = nullptr);
 
     void setContext(const QString &context) Q_DECL_OVERRIDE;
     bool isAsync() const Q_DECL_OVERRIDE;

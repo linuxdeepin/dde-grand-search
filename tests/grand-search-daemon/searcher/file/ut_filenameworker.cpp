@@ -25,7 +25,7 @@
 #include "global/builtinsearch.h"
 #include "configuration/configer.h"
 #include "configuration/configer_p.h"
-#include "anything_interface.h"
+#include "searcher/file/anything_interface.h"
 #include "utils/specialtools.h"
 #include "searcher/file/filesearchutils.h"
 
@@ -50,7 +50,7 @@ public:
         st.set_lamda(&Configer::group, [fs](){
             return fs;
         });
-        worker.reset(new FileNameWorker(GRANDSEARCH_CLASS_FILE_DEEPIN));
+        worker.reset(new FileNameWorker(GRANDSEARCH_CLASS_FILE_DEEPIN, false));
     }
 
     QSharedPointer<FileNameWorker> worker = nullptr;

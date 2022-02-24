@@ -13,8 +13,6 @@ Build-Depends: debhelper (>= 9),
  libdframeworkdbus-dev (>=5.4.6),
  qttools5-dev-tools,
  cmake,
- deepin-anything-dev[i386 amd64],
- deepin-anything-server-dev[i386 amd64],
  dde-dock-dev,
  libglib2.0-dev,
  libpoppler-qt5-dev,
@@ -31,7 +29,6 @@ Homepage: http://www.deepin.org/
 Package: dde-grand-search
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
- deepin-anything-server[i386 amd64],
  deepin-desktop-schemas (>=5.8.0.34),
  dde-daemon (>=5.12.0.31),
  libdframeworkdbus2 (>=5.4.6),
@@ -42,5 +39,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
  libavcodec58(>= 7:4.0),
  libffmpegthumbnailer4v5,
  libtag1v5
+Recommends:
+ deepin-anything-server[i386 amd64]
 Description: deepin desktop-environment - search module
  Search module of deepin desktop-environment
