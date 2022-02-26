@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="en">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="en">
 <context>
     <name>AudioPreviewPlugin</name>
     <message>
@@ -123,7 +121,7 @@
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="67"/>
         <source>Dimensions:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensions:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="83"/>
@@ -250,7 +248,7 @@
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="38"/>
         <source>Dimensions:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensions:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="39"/>

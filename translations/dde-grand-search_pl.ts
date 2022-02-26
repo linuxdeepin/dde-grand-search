@@ -35,13 +35,13 @@
 <context>
     <name>DdeGrandSearchDockPlugin</name>
     <message>
-        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="58"/>
-        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="101"/>
+        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="57"/>
+        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="100"/>
         <source>Grand Search</source>
         <translation>Wyszukiwarka</translation>
     </message>
     <message>
-        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="164"/>
+        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="163"/>
         <source>Search settings</source>
         <translation>Ustawienia wyszukiwania</translation>
     </message>
@@ -49,12 +49,12 @@
 <context>
     <name>EntranceWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="232"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="241"/>
         <source>Search</source>
         <translation>Szukaj</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="233"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="242"/>
         <source>What would you like to search for?</source>
         <translation>Co chciałbyś wyszukać?</translation>
     </message>
@@ -62,17 +62,17 @@
 <context>
     <name>EntranceWidgetPrivate</name>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="93"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="94"/>
         <source>Cut</source>
         <translation>Wytnij</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="97"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="98"/>
         <source>Copy</source>
         <translation>Kopiuj</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="101"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="102"/>
         <source>Paste</source>
         <translation>Wklej</translation>
     </message>
@@ -111,7 +111,7 @@
 <context>
     <name>GroupWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="259"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="261"/>
         <source>More</source>
         <translation>Więcej</translation>
     </message>
@@ -120,7 +120,7 @@
     <name>ImagePreviewPlugin</name>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="67"/>
-        <source>Dimension:</source>
+        <source>Dimensions:</source>
         <translation>Wymiary:</translation>
     </message>
     <message>
@@ -147,7 +147,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/grand-search/gui/mainwindow.cpp" line="209"/>
+        <location filename="../src/grand-search/gui/mainwindow.cpp" line="217"/>
         <source>No search results</source>
         <translation>Brak wyników wyszukiwania</translation>
     </message>
@@ -247,7 +247,7 @@
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="38"/>
-        <source>Dimension:</source>
+        <source>Dimensions:</source>
         <translation>Wymiary:</translation>
     </message>
     <message>
