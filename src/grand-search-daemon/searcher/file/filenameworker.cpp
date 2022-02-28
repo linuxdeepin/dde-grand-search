@@ -118,9 +118,8 @@ bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName, bool isR
 
     // 根据搜索类目配置判断是否需要进行添加
     if (!m_resultCountHash.contains(group)) {
-        if (group == FileSearchUtils::Folder) {
+        if (group == FileSearchUtils::Folder)
             return false;
-        }
 
         if (m_resultCountHash.contains(FileSearchUtils::File)) {
             group = FileSearchUtils::File;
@@ -132,25 +131,19 @@ bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName, bool isR
     if (m_resultCountHash[group] >= MAX_SEARCH_NUM)
         return false;
 
-    // 对组合搜索到的结果进行过滤
-    if (m_isCombinationSearch) {
-        QFileInfo fileInfo(fileName);
-        if (fileInfo.isDir()) {
-            if (!m_isContainFolder)
-                return false;
-        } else {
-            const auto &suffix = fileInfo.suffix();
-            if (!m_suffixContainList.contains(suffix, Qt::CaseInsensitive))
-                return false;
-        }
-    }
+    if (!FileSearchUtils::fileShouldVisible(fileName, group, m_searchInfo))
+        return false;
 
     m_tmpSearchResults << fileName;
     const auto &item = FileSearchUtils::packItem(fileName, q->name(), isRecentFile);
-
     QMutexLocker lk(&m_mutex);
     m_items[group].append(item);
     m_resultCountHash[group]++;
+
+    // 非文件类目搜索，不需要向文件类目中添加搜索结果
+    if (m_searchInfo.isCombinationSearch && !m_searchInfo.groupList.contains(FileSearchUtils::File))
+        return true;
+
     // 文档、音频、视频、图片需添加到文件组中
     if (group != FileSearchUtils::File && m_resultCountHash.contains(FileSearchUtils::File)) {
         if (group != FileSearchUtils::Folder && m_resultCountHash[FileSearchUtils::File] < MAX_SEARCH_NUM) {
@@ -172,7 +165,7 @@ bool FileNameWorkerPrivate::searchRecentFile()
             return false;
 
         QFileInfo info(file);
-        QRegExp reg(m_context, Qt::CaseInsensitive);
+        QRegExp reg(m_searchInfo.keyword, Qt::CaseInsensitive);
         if (info.fileName().contains(reg)) {
             appendSearchResult(file, true);
 
@@ -204,7 +197,7 @@ bool FileNameWorkerPrivate::searchUserPath()
         if (info.isDir())
             m_searchDirList << info.absoluteFilePath();
 
-        QRegExp reg(m_context, Qt::CaseInsensitive);
+        QRegExp reg(m_searchInfo.keyword, Qt::CaseInsensitive);
         if (info.fileName().contains(reg)) {
             const auto &absoluteFilePath = info.absoluteFilePath();
 
@@ -249,10 +242,10 @@ bool FileNameWorkerPrivate::searchByAnything()
                   << "0x40."    // 过滤系统隐藏文件
                   << "0x011";   // 支持正则表达式
             result = m_anythingInterface->parallelsearch(m_searchDirList.first(), searchStartOffset,
-                                                         searchEndOffset, m_context, rules);
+                                                         searchEndOffset, m_searchInfo.keyword, rules);
         } else {
             result = m_anythingInterface->search(100, 100, searchStartOffset,
-                                                 searchEndOffset, m_searchDirList.first(), m_context,
+                                                 searchEndOffset, m_searchDirList.first(), m_searchInfo.keyword,
                                                  true);
         }
 
@@ -354,9 +347,7 @@ void FileNameWorker::setContext(const QString &context)
 
     if (context.isEmpty())
         qWarning() << "search key is empty.";
-    d->m_context = FileSearchUtils::buildKeyword(context, d->m_suffixContainList, d->m_isContainFolder);
-    if (!d->m_suffixContainList.isEmpty() || d->m_isContainFolder)
-        d->m_isCombinationSearch = true;
+    d->m_searchInfo = FileSearchUtils::parseContent(context);
 }
 
 bool FileNameWorker::isAsync() const
@@ -373,7 +364,7 @@ bool FileNameWorker::working(void *context)
     if (!d->m_status.testAndSetRelease(Ready, Runing))
         return false;
 
-    if (!d->m_anythingInterface->isValid() || d->m_context.isEmpty() || d->m_searchPath.isEmpty()) {
+    if (!d->m_anythingInterface->isValid() || d->m_searchInfo.keyword.isEmpty() || d->m_searchPath.isEmpty()) {
         d->m_status.storeRelease(Completed);
         return false;
     }

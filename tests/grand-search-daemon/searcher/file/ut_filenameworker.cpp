@@ -59,10 +59,10 @@ public:
 TEST_F(FileNameWorkerTest, ut_setContext)
 {
     worker->setContext("");
-    EXPECT_TRUE(worker_ptr->m_context.isEmpty());
+    EXPECT_TRUE(worker_ptr->m_searchInfo.keyword.isEmpty());
 
     worker->setContext("test");
-    EXPECT_TRUE(worker_ptr->m_context == "test");
+    EXPECT_TRUE(worker_ptr->m_searchInfo.keyword == "test");
 }
 
 TEST_F(FileNameWorkerTest, ut_isAsync)

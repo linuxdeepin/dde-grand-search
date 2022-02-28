@@ -48,7 +48,7 @@ public:
     FileNameWorker *q_ptr = nullptr;
     QAtomicInt m_status = ProxyWorker::Ready;
     QString m_searchPath;
-    QString m_context;                  // 搜索关键字
+    FileSearchUtils::SearchInfo m_searchInfo;                  // 搜索信息
     QHash<FileSearchUtils::Group, quint32> m_resultCountHash; // 记录各类型文件搜索结果数量
 
     mutable QMutex m_mutex;
@@ -63,10 +63,7 @@ public:
     QTime m_time;
     int m_lastEmit = 0;
 
-    // 组合搜索
-    QStringList m_suffixContainList;    // 类目、后缀搜索包含的后缀
-    bool m_isContainFolder = false;     // 是否包含文件夹类目
-    bool m_isCombinationSearch = false; // 组合搜索，类目、后缀搜索
+    // anything新特性
     bool m_supportParallelSearch = false;
 
     Q_DECLARE_PUBLIC(FileNameWorker)

@@ -97,14 +97,35 @@ FileSearchUtils::Group FileSearchUtils::getGroupBySuffix(const QString &suffix)
     return group;
 }
 
-QString FileSearchUtils::buildKeyword(const QString &context, QStringList &suffixContainList, bool &isContainFolder)
+FileSearchUtils::Group FileSearchUtils::getGroupByGroupName(const QString &groupName)
 {
-    suffixContainList.clear();
-    isContainFolder = false;
+    Group group = Unknown;
+    if (groupName.compare(FOLDER_GROUP, Qt::CaseInsensitive) == 0) {
+        group = Folder;
+    } else if (groupName.compare(FILE_GROUP, Qt::CaseInsensitive) == 0) {
+        group = File;
+    } else if (groupName.compare(VIDEO_GROUP, Qt::CaseInsensitive) == 0) {
+        group = Video;
+    } else if (groupName.compare(AUDIO_GROUP, Qt::CaseInsensitive) == 0) {
+        group = Audio;
+    } else if (groupName.compare(PICTURE_GROUP, Qt::CaseInsensitive) == 0) {
+        group = Picture;
+    } else if (groupName.compare(DOCUMENT_GROUP, Qt::CaseInsensitive) == 0) {
+        group = Document;
+    }
+
+    return group;
+}
+
+FileSearchUtils::SearchInfo FileSearchUtils::parseContent(const QString &content)
+{
+    SearchInfo info;
     QJsonParseError error;
-    QJsonDocument doc = QJsonDocument::fromJson(context.toLocal8Bit(), &error);
-    if (error.error != QJsonParseError::NoError || doc.isEmpty())
-        return searchHelper->tropeInputSymbol(context);
+    QJsonDocument doc = QJsonDocument::fromJson(content.toLocal8Bit(), &error);
+    if (error.error != QJsonParseError::NoError || doc.isEmpty()) {
+        info.keyword = searchHelper->tropeInputSymbol(content);
+        return info;
+    }
 
     QStringList keywordList;
     QJsonObject obj = doc.object();
@@ -115,17 +136,9 @@ QString FileSearchUtils::buildKeyword(const QString &context, QStringList &suffi
         if (group.isEmpty())
             continue;
 
-        // 文件夹类目
-        if (group.compare(FOLDER_GROUP, Qt::CaseInsensitive) == 0) {
-            isContainFolder = true;
-            continue;
-        }
-
-        // 将类目转换为对应的后缀
-        const auto &list = searchHelper->getSuffixByGroupName(group);
-        if (list.isEmpty())
-            continue;
-        suffixContainList.append(list);
+        auto groupType = getGroupByGroupName(group);
+        if (groupType != Unknown)
+            info.groupList << groupType;
     }
 
     // 后缀
@@ -134,8 +147,12 @@ QString FileSearchUtils::buildKeyword(const QString &context, QStringList &suffi
         const QString &suffix = suffixArr[i].toString();
         if (suffix.isEmpty())
             continue;
-        suffixContainList.append(suffix);
+        info.suffixList << suffix;
     }
+
+    // 类目/后缀表不为空，说明当前搜索方式为组合搜索
+    if (!info.groupList.isEmpty() || !info.suffixList.isEmpty())
+        info.isCombinationSearch = true;
 
     // 搜索关键字
     QJsonArray keywordArr = obj[JSON_KEYWORD_ATTRIBUTE].toArray();
@@ -146,5 +163,21 @@ QString FileSearchUtils::buildKeyword(const QString &context, QStringList &suffi
         keywordList.append(searchHelper->tropeInputSymbol(key));
     }
 
-    return QString(R"((%1).*)").arg(keywordList.join('|'));
+    info.keyword = QString(R"((%1).*)").arg(keywordList.join('|'));
+    return info;
+}
+
+bool FileSearchUtils::fileShouldVisible(const QString &fileName, Group group, const FileSearchUtils::SearchInfo &info)
+{
+    // 对组合搜索到的结果进行过滤
+    if (info.isCombinationSearch) {
+        if (!info.groupList.contains(group)) {
+            QFileInfo fileInfo(fileName);
+            const auto &suffix = fileInfo.suffix();
+            if (suffix.isEmpty() || !info.suffixList.contains(suffix, Qt::CaseInsensitive))
+                return false;
+        }
+    }
+
+    return true;
 }

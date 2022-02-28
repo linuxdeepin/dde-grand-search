@@ -38,9 +38,7 @@ void FsWorker::setContext(const QString &context)
 {
     if (context.isEmpty())
         qWarning() << "search key is empty.";
-    m_context = FileSearchUtils::buildKeyword(context, m_suffixContainList, m_isContainFolder);
-    if (!m_suffixContainList.isEmpty() || m_isContainFolder)
-        m_isCombinationSearch = true;
+    m_searchInfo = FileSearchUtils::parseContent(context);
 }
 
 bool FsWorker::isAsync() const
@@ -55,7 +53,7 @@ bool FsWorker::working(void *context)
         return false;
 
     Q_UNUSED(context);
-    if (m_context.isEmpty() || !m_app) {
+    if (m_searchInfo.keyword.isEmpty() || !m_app) {
         m_status.storeRelease(Completed);
         return true;
     }
@@ -273,18 +271,8 @@ bool FsWorker::appendSearchResult(const QString &fileName, bool isRecentFile)
     if (m_resultCountHash[group] >= MAX_SEARCH_NUM)
         return false;
 
-    // 对组合搜索到的结果进行过滤
-    if (m_isCombinationSearch) {
-        QFileInfo fileInfo(fileName);
-        if (fileInfo.isDir()) {
-            if (!m_isContainFolder)
-                return false;
-        } else {
-            const auto &suffix = fileInfo.suffix();
-            if (!m_suffixContainList.contains(suffix, Qt::CaseInsensitive))
-                return false;
-        }
-    }
+    if (!FileSearchUtils::fileShouldVisible(fileName, group, m_searchInfo))
+        return false;
 
     m_tmpSearchResults << fileName;
     const auto &item = FileSearchUtils::packItem(fileName, name(), isRecentFile);
@@ -292,6 +280,11 @@ bool FsWorker::appendSearchResult(const QString &fileName, bool isRecentFile)
     QMutexLocker lk(&m_mtx);
     m_items[group].append(item);
     m_resultCountHash[group]++;
+
+    // 非文件类目搜索，不需要向文件类目中添加搜索结果
+    if (m_searchInfo.isCombinationSearch && !m_searchInfo.groupList.contains(FileSearchUtils::File))
+        return true;
+
     // 文档、音频、视频、图片需添加到文件组中
     if (group != FileSearchUtils::File && m_resultCountHash.contains(FileSearchUtils::File)) {
         if (group != FileSearchUtils::Folder && m_resultCountHash[FileSearchUtils::File] < MAX_SEARCH_NUM) {
@@ -313,7 +306,7 @@ bool FsWorker::searchRecentFile()
             return false;
 
         QFileInfo info(file);
-        QRegExp reg(m_context, Qt::CaseInsensitive);
+        QRegExp reg(m_searchInfo.keyword, Qt::CaseInsensitive);
         if (info.fileName().contains(reg)) {
             appendSearchResult(file, true);
 
@@ -347,7 +340,7 @@ bool FsWorker::searchLocalFile()
                          db_get_num_entries(db),
                          UINT32_MAX,
                          FsearchFilter::FSEARCH_FILTER_NONE,
-                         m_context.toStdString().c_str(),
+                         m_searchInfo.keyword.toStdString().c_str(),
                          m_app->config->hide_results_on_empty_search,
                          m_app->config->match_case,
                          true,

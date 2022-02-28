@@ -38,11 +38,22 @@ public:
         GroupBegin = Unknown
     };
 
+    // 通过搜索内容获取到的搜索信息
+    struct SearchInfo
+    {
+        bool isCombinationSearch = false;   // 是否是组合搜索
+        QString keyword;                    // 搜索关键字
+        QStringList suffixList;             // 搜索后缀表
+        QList<Group> groupList;             // 搜索类目表
+    };
+
     static GrandSearch::MatchedItem packItem(const QString &fileName, const QString &searcher, bool isRecentFile = false);
     static QString groupKey(Group group);
     static Group getGroupByName(const QString &fileName);
     static Group getGroupBySuffix(const QString &suffix);
-    static QString buildKeyword(const QString &context, QStringList &suffixContainList, bool &isContainFolder);
+    static Group getGroupByGroupName(const QString &groupName);
+    static SearchInfo parseContent(const QString &content);
+    static bool fileShouldVisible(const QString &fileName, Group group, const SearchInfo &info);
 };
 
 #endif   // FILESEARCHUTILS_H
