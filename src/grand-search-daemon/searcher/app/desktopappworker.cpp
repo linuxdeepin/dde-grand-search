@@ -168,7 +168,7 @@ QString DesktopAppWorker::buildKeyword(const QString &keyword)
     QJsonParseError error;
     QJsonDocument doc = QJsonDocument::fromJson(keyword.toLocal8Bit(), &error);
     if (error.error != QJsonParseError::NoError || doc.isEmpty())
-        return keyword;
+        return searchHelper->tropeInputSymbol(keyword);
 
     // 应用搜索类目，只需要获取关键字信息
     QStringList keywordList;
