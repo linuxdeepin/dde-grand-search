@@ -240,7 +240,8 @@ bool FileNameWorkerPrivate::searchByAnything()
             QStringList rules;
             rules << "0x02100"  // 搜索做大数量，100
                   << "0x40."    // 过滤系统隐藏文件
-                  << "0x011";   // 支持正则表达式
+                  << "0x011"    // 支持正则表达式
+                  << "0x031";   // 忽略大小写
             result = m_anythingInterface->parallelsearch(m_searchDirList.first(), searchStartOffset,
                                                          searchEndOffset, m_searchInfo.keyword, rules);
         } else {
