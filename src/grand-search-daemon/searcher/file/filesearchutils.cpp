@@ -167,15 +167,24 @@ FileSearchUtils::SearchInfo FileSearchUtils::parseContent(const QString &content
     return info;
 }
 
-bool FileSearchUtils::fileShouldVisible(const QString &fileName, Group group, const FileSearchUtils::SearchInfo &info)
+bool FileSearchUtils::fileShouldVisible(const QString &fileName, Group &group, const FileSearchUtils::SearchInfo &info)
 {
     // 对组合搜索到的结果进行过滤
     if (info.isCombinationSearch) {
         if (!info.groupList.contains(group)) {
             QFileInfo fileInfo(fileName);
-            const auto &suffix = fileInfo.suffix();
-            if (suffix.isEmpty() || !info.suffixList.contains(suffix, Qt::CaseInsensitive))
+            if (fileInfo.isDir())
                 return false;
+
+            const auto &suffix = fileInfo.suffix();
+            if (suffix.isEmpty() || !info.suffixList.contains(suffix, Qt::CaseInsensitive)) {
+                if (info.groupList.contains(File)) {
+                    group = File;
+                    return true;
+                }
+
+                return false;
+            }
         }
     }
 

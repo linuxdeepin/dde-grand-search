@@ -128,10 +128,10 @@ bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName, bool isR
         }
     }
 
-    if (m_resultCountHash[group] >= MAX_SEARCH_NUM)
+    if (!FileSearchUtils::fileShouldVisible(fileName, group, m_searchInfo))
         return false;
 
-    if (!FileSearchUtils::fileShouldVisible(fileName, group, m_searchInfo))
+    if (m_resultCountHash[group] >= MAX_SEARCH_NUM)
         return false;
 
     m_tmpSearchResults << fileName;

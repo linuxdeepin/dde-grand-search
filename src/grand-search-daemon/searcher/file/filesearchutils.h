@@ -53,7 +53,7 @@ public:
     static Group getGroupBySuffix(const QString &suffix);
     static Group getGroupByGroupName(const QString &groupName);
     static SearchInfo parseContent(const QString &content);
-    static bool fileShouldVisible(const QString &fileName, Group group, const SearchInfo &info);
+    static bool fileShouldVisible(const QString &fileName, Group &group, const SearchInfo &info);
 };
 
 #endif   // FILESEARCHUTILS_H
