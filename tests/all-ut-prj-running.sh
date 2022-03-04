@@ -72,7 +72,7 @@ if [ "$UT_PRJ_TYPE" = "$UT_TYPE_ALL" ] || [ "$UT_PRJ_TYPE" = "$UT_TYPE_GRAND_SEA
 	cd $DIR_TEST_GRAND_SEARCH_DAEMON
 
 	extract_path_grand_search_daemon="*/src/grand-search-daemon/*"
-    remove_path_grand_search_daemon="*/tests/* */3rdParty/* */build-ut/* *moc_*"
+    remove_path_grand_search_daemon="*/tests/* */3rdParty/* */build-ut/* *moc_* */anything_interface.*"
 	# report的文件夹，报告后缀名，编译路径，可执行程序名，正向解析设置，逆向解析设置
 	./../../../tests/ut-target-running.sh $BUILD_DIR dde-grand-search-daemon $DIR_TEST_GRAND_SEARCH_DAEMON test-dde-grand-search-daemon "$extract_path_grand_search_daemon" "$remove_path_grand_search_daemon" $SHOW_REPORT
         check_ut_result $? $UT_TYPE_GRAND_SEARCH_DAEMON

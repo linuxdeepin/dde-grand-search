@@ -1,0 +1,160 @@
+/*
+ * Copyright (C) 2022 Uniontech Software Technology Co., Ltd.
+ *
+ * Author:     liuzhangjian<liuzhangjian@uniontech.com>
+ *
+ * Maintainer: liuzhangjian<liuzhangjian@uniontech.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "searcher/file/filesearchutils.h"
+#include "utils/specialtools.h"
+#include "global/builtinsearch.h"
+#include "utils/searchhelper.h"
+#include "stubext.h"
+
+#include <gtest/gtest.h>
+
+TEST(FileSearchUtilsTest, ut_packItem)
+{
+    stub_ext::StubExt st;
+    st.set_lamda(&QFileInfo::fileName, [](){ return "test"; });
+    st.set_lamda(GrandSearch::SpecialTools::getMimeType, [](const QFileInfo &){
+        QMimeType mimeType;
+        return mimeType;
+    });
+    st.set_lamda(&QMimeType::name, [](){ return "test"; });
+    st.set_lamda(&QMimeType::iconName, [](){ return "test.icon"; });
+
+    EXPECT_NO_FATAL_FAILURE(FileSearchUtils::packItem("test", "searcher name", true));
+}
+
+TEST(FileSearchUtilsTest, ut_groupKey)
+{
+    EXPECT_EQ(GRANDSEARCH_GROUP_FILE, FileSearchUtils::groupKey(FileSearchUtils::File));
+    EXPECT_EQ(GRANDSEARCH_GROUP_FOLDER, FileSearchUtils::groupKey(FileSearchUtils::Folder));
+    EXPECT_EQ(GRANDSEARCH_GROUP_FILE_PICTURE, FileSearchUtils::groupKey(FileSearchUtils::Picture));
+    EXPECT_EQ(GRANDSEARCH_GROUP_FILE_AUDIO, FileSearchUtils::groupKey(FileSearchUtils::Audio));
+    EXPECT_EQ(GRANDSEARCH_GROUP_FILE_VIDEO, FileSearchUtils::groupKey(FileSearchUtils::Video));
+    EXPECT_EQ(GRANDSEARCH_GROUP_FILE_DOCUMNET, FileSearchUtils::groupKey(FileSearchUtils::Document));
+}
+
+TEST(FileSearchUtilsTest, ut_getGroupByName)
+{
+    {
+        stub_ext::StubExt st;
+        st.set_lamda(&QFileInfo::isDir, [](){ return true; });
+        EXPECT_EQ(FileSearchUtils::Folder, FileSearchUtils::getGroupByName("test"));
+    }
+
+    {
+        stub_ext::StubExt st;
+        st.set_lamda(&QFileInfo::isDir, [](){ return false; });
+        st.set_lamda(&QFileInfo::suffix, [](){ return "png"; });
+        EXPECT_EQ(FileSearchUtils::Picture, FileSearchUtils::getGroupByName("test.png"));
+    }
+}
+
+TEST(FileSearchUtilsTest, ut_getGroupBySuffix)
+{
+    EXPECT_EQ(FileSearchUtils::Unknown, FileSearchUtils::getGroupBySuffix(""));
+    EXPECT_EQ(FileSearchUtils::Document, FileSearchUtils::getGroupBySuffix("txt"));
+    EXPECT_EQ(FileSearchUtils::Picture, FileSearchUtils::getGroupBySuffix("png"));
+    EXPECT_EQ(FileSearchUtils::Video, FileSearchUtils::getGroupBySuffix("mp4"));
+    EXPECT_EQ(FileSearchUtils::Audio, FileSearchUtils::getGroupBySuffix("mp3"));
+    EXPECT_EQ(FileSearchUtils::File, FileSearchUtils::getGroupBySuffix("zip"));
+}
+
+TEST(FileSearchUtilsTest, ut_getGroupByGroupName)
+{
+    EXPECT_EQ(FileSearchUtils::Unknown, FileSearchUtils::getGroupByGroupName("test"));
+    EXPECT_EQ(FileSearchUtils::Folder, FileSearchUtils::getGroupByGroupName(FOLDER_GROUP));
+    EXPECT_EQ(FileSearchUtils::Document, FileSearchUtils::getGroupByGroupName(DOCUMENT_GROUP));
+    EXPECT_EQ(FileSearchUtils::Picture, FileSearchUtils::getGroupByGroupName(PICTURE_GROUP));
+    EXPECT_EQ(FileSearchUtils::Video, FileSearchUtils::getGroupByGroupName(VIDEO_GROUP));
+    EXPECT_EQ(FileSearchUtils::Audio, FileSearchUtils::getGroupByGroupName(AUDIO_GROUP));
+    EXPECT_EQ(FileSearchUtils::File, FileSearchUtils::getGroupByGroupName(FILE_GROUP));
+}
+
+TEST(FileSearchUtilsTest, ut_parseContent1)
+{
+    auto info = FileSearchUtils::parseContent("test");
+    EXPECT_EQ("test", info.keyword);
+}
+
+TEST(FileSearchUtilsTest, ut_parseContent2)
+{
+    QString content = R"({
+                      "Group":[
+                          "text",
+                          "app",
+                          ""
+                      ],
+                      "Keyword":[
+                          "abc",
+                          "xyz",
+                          ""
+                      ],
+                      "Suffix":[
+                          "jpg",
+                          ""
+                      ]
+                  })";
+    auto info = FileSearchUtils::parseContent(content);
+    EXPECT_TRUE(info.isCombinationSearch);
+}
+
+TEST(FileSearchUtilsTest, ut_fileShouldVisible)
+{
+    {
+        FileSearchUtils::Group group = FileSearchUtils::File;
+        FileSearchUtils::SearchInfo info;
+        EXPECT_TRUE(FileSearchUtils::fileShouldVisible("test", group, info));
+    }
+
+    {
+        stub_ext::StubExt st;
+        st.set_lamda(&QFileInfo::isDir, [](){ return true; });
+
+        FileSearchUtils::Group group = FileSearchUtils::File;
+        FileSearchUtils::SearchInfo info;
+        info.isCombinationSearch = true;
+        EXPECT_FALSE(FileSearchUtils::fileShouldVisible("test", group, info));
+    }
+
+    {
+        stub_ext::StubExt st;
+        st.set_lamda(&QFileInfo::isDir, [](){ return false; });
+        st.set_lamda(&QFileInfo::suffix, [](){ return "png"; });
+
+        FileSearchUtils::Group group = FileSearchUtils::Picture;
+        FileSearchUtils::SearchInfo info;
+        info.isCombinationSearch = true;
+        EXPECT_FALSE(FileSearchUtils::fileShouldVisible("test.png", group, info));
+    }
+
+    {
+        stub_ext::StubExt st;
+        st.set_lamda(&QFileInfo::isDir, [](){ return false; });
+        st.set_lamda(&QFileInfo::suffix, [](){ return "png"; });
+
+        FileSearchUtils::Group group = FileSearchUtils::Picture;
+        FileSearchUtils::SearchInfo info;
+        info.isCombinationSearch = true;
+        info.groupList << FileSearchUtils::File;
+        EXPECT_TRUE(FileSearchUtils::fileShouldVisible("test.png", group, info));
+        EXPECT_EQ(group, FileSearchUtils::File);
+    }
+}
