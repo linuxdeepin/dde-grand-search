@@ -86,11 +86,9 @@ void MainWindow::connectToController()
     // 通知查询控制器停止搜索
     connect(this, &MainWindow::terminateSearch, d_p->m_queryController, &QueryController::onTerminateSearch);
 
-    // 同步查询搜索任务ID
-    connect(d_p->m_queryController, &QueryController::missionIdChanged, d_p->m_matchController, &MatchController::onMissionIdChanged);
-
-    connect(d_p->m_queryController, &QueryController::searchTextIsEmpty, this, &MainWindow::onHideExhitionWidget);
-    connect(d_p->m_queryController, &QueryController::missionIdChanged, this, &MainWindow::onResetExhitionWidget);
+    // 同步查询搜索任务
+    connect(d_p->m_queryController, &QueryController::missionChanged, d_p->m_matchController, &MatchController::onMissionChanged);
+    connect(d_p->m_queryController, &QueryController::missionChanged, this, &MainWindow::onMissionChanged);
 
     // 匹配结果解析显示
     connect(d_p->m_matchController, &MatchController::matchedResult, d_p->m_exhibitionWidget, &ExhibitionWidget::appendMatchedData);
@@ -183,6 +181,15 @@ void MainWindow::onResetExhitionWidget(const QString &missionId)
 
     Q_ASSERT(d_p->m_exhibitionWidget);
     d_p->m_exhibitionWidget->clearData();
+}
+
+void MainWindow::onMissionChanged(const QString &missionId, const QString &missionContent)
+{
+    onResetExhitionWidget(missionId);
+
+    if (missionContent.isEmpty()) {
+        onHideExhitionWidget();
+    }
 }
 
 void MainWindow::initUI()

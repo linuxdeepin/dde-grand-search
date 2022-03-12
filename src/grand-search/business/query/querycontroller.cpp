@@ -83,7 +83,7 @@ void QueryController::onSearchTextChanged(const QString &txt)
         d_p->m_missionId.clear();
 
         // 发出搜索文本为空信号
-        emit searchTextIsEmpty();
+        emit missionChanged(d_p->m_missionId, d_p->m_searchText);
 
         return;
     }
@@ -92,7 +92,7 @@ void QueryController::onSearchTextChanged(const QString &txt)
 
     // 搜索文本改变，创建新的会话ID
     d_p->m_missionId = QUuid::createUuid().toString(QUuid::WithoutBraces);
-    emit missionIdChanged(d_p->m_missionId);
+    emit missionChanged(d_p->m_missionId, d_p->m_searchText);
 
     qDebug() << QString("m_daemonDbus->Search begin missionId:%1").arg(d_p->m_missionId);
     bool started = d_p->m_daemonDbus->Search(d_p->m_missionId, d_p->m_searchText);

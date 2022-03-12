@@ -116,7 +116,7 @@ TEST(LevelItemGroupWidgetTest, clear)
     EXPECT_TRUE(w.m_cacheItems.isEmpty());
 }
 
-TEST(LevelItemGroupWidgetTest, onMoreBtnClcked)
+TEST(LevelItemGroupWidgetTest, onMoreBtnClicked)
 {
     LevelItemGroupWidget w;
 
@@ -132,7 +132,7 @@ TEST(LevelItemGroupWidgetTest, onMoreBtnClcked)
     items << item << item << item << item << item << item;
     w.appendMatchedItems(items, searchGroupName);
 
-    w.onMoreBtnClcked();
+    w.onMoreBtnClicked();
     EXPECT_TRUE(w.m_levelCacheItems.isEmpty());
 }
 

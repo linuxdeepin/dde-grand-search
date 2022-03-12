@@ -37,6 +37,24 @@ public:
     static bool startWithOtherLang(const QString &text);
     static bool startWidthNum(const QString &text);
 
+    // 通过权重进行排序
+    static bool sortByWeight(GrandSearch::MatchedItemMap &map, Qt::SortOrder order = Qt::DescendingOrder);
+    static bool compareByWeight(GrandSearch::MatchedItem &node1, GrandSearch::MatchedItem &node2, Qt::SortOrder order = Qt::DescendingOrder);
+
+    // 更新结果项的权重
+    static void updateItemsWeight(GrandSearch::MatchedItemMap &map, const QString &content);
+
+    // 返回该组是否支持权重
+    static bool isSupportWeight(const QString &searchGroupName);
+
+    // 计算文件类的权重
+    static int calcFileWeight(const QString &path, const QString &name, const QStringList &keys);
+    static qint64 calcDateDiff(const QDateTime &date1, const QDateTime &date2);
+    static int calcWeightByDateDiff(const qint64 &diff);
+
+    // 组装最佳匹配类目
+    static void packageBestMatch(GrandSearch::MatchedItemMap &map, int maxQuantity);
+
     // 获取搜索结果默认打开应用图标
     static QString appIconName(const GrandSearch::MatchedItem &item);
     static bool isShowAppIcon(const GrandSearch::MatchedItem &item);
@@ -69,7 +87,7 @@ public:
     static bool launchAppByGio(const QString &desktopFile, const QStringList &filePaths = {});
     // 跳转到浏览器
     static bool openWithBrowser(const QString &words);
-    //列表左边图标
+    // 列表左边图标
     static QIcon defaultIcon(const GrandSearch::MatchedItem &item);
 
     // 默认浏览器的desktop文件

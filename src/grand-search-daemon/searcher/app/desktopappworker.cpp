@@ -20,7 +20,7 @@
  */
 #include "desktopappworker.h"
 #include "global/builtinsearch.h"
-#include "utils/searchhelper.h"
+#include "global/searchhelper.h"
 
 DesktopAppWorker::DesktopAppWorker(const QString &name, QObject *parent) : ProxyWorker(name, parent)
 {

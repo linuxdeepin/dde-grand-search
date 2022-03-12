@@ -22,7 +22,7 @@
 #include "searcher/file/filesearchutils.h"
 #include "utils/specialtools.h"
 #include "global/builtinsearch.h"
-#include "utils/searchhelper.h"
+#include "global/searchhelper.h"
 #include "stubext.h"
 
 #include <gtest/gtest.h>

@@ -44,10 +44,7 @@ public:
 
 signals:
     // 搜索文本改变后，发起新的搜索前，发出该任务ID改变信号
-    void missionIdChanged(const QString &missionId);
-
-    // 发出搜索文本为空信号
-    void searchTextIsEmpty();
+    void missionChanged(const QString &missionId, const QString &missionContent);
 
 private:
     QScopedPointer<QueryControllerPrivate> d_p;

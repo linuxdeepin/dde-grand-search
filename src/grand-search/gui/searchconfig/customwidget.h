@@ -1,10 +1,9 @@
 /*
- * Copyright (C) 2021 Uniontech Software Technology Co., Ltd.
+ * Copyright (C) 2022 Uniontech Software Technology Co., Ltd.
  *
  * Author:     wangchunlin<wangchunlin@uniontech.com>
  *
  * Maintainer: wangchunlin<wangchunlin@uniontech.com>
- *             houchengqiu<houchengqiu@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,29 +18,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef MATCHCONTROLLER_H
-#define MATCHCONTROLLER_H
+#ifndef CUSTOMWIDGET_H
+#define CUSTOMWIDGET_H
 
-#include <QObject>
-#include <QScopedPointer>
-#include "global/matcheditem.h"
+#include <DWidget>
+#include <QVBoxLayout>
+#include <QLabel>
 
-class MatchControllerPrivate;
-class MatchController : public QObject
+namespace GrandSearch {
+class SwitchWidget;
+}
+
+class CustomWidget : public Dtk::Widget::DWidget
 {
     Q_OBJECT
 public:
-    explicit MatchController(QObject *parent = nullptr);
-    ~MatchController();
+    explicit CustomWidget(QWidget *parent = nullptr);
+    ~CustomWidget();
 
-    void onMissionChanged(const QString &missionId, const QString &missionContent);
-
-signals:
-    void matchedResult(const GrandSearch::MatchedItemMap &);
-    void searchCompleted();
+private slots:
+    void onSwitchStateChanged(const bool checked);
 
 private:
-    QScopedPointer<MatchControllerPrivate> d_p;
+    void updateIcons();
+
+private:
+    QVBoxLayout *m_mainLayout = nullptr;
+    QLabel *m_groupLabel = nullptr;
+
+    QHash<QString, QString> m_groupName;        // <searchGroupName, displayGroupName>
+    QList<GrandSearch::SwitchWidget*> m_switchWidgets;
+
+    QStringList m_displayIcons;                 // 显示图标
 };
 
-#endif // MATCHCONTROLLER_H
+#endif // CUSTOMWIDGET_H

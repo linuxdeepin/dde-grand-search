@@ -22,7 +22,7 @@
 #include "maincontroller.h"
 #include "maincontroller_p.h"
 #include "configuration/configer.h"
-#include "utils/searchhelper.h"
+#include "global/searchhelper.h"
 
 #include <QDebug>
 

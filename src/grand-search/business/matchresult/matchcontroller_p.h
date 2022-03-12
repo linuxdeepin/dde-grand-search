@@ -24,6 +24,8 @@
 
 #include "matchcontroller.h"
 
+#include <QAtomicInteger>
+
 class DaemonGrandSearchInterface;
 class MatchControllerPrivate : public QObject
 {
@@ -34,6 +36,7 @@ public:
 public slots:
     void onMatched(const QString &missionId);
     void onSearchCompleted(const QString &missionId);
+    void sendCacheItems();
 
 public:
     void initConnect();
@@ -42,6 +45,15 @@ public:
     MatchController *q_p = nullptr;
 
     QString m_missionId;
+    QString m_missionContent;
+
+    QAtomicInteger<bool> m_missionIdChanged = true;
+    GrandSearch::MatchedItemMap m_cacheItems;
+    bool m_enableBestMatch = true;
+    int m_firstItemLimit = 30;
+    int m_firstWaitTime = 500;
+    int m_bestItemMaxCount = 4;
+    QSharedPointer<QTimer> m_waitTimer = nullptr;
 
     DaemonGrandSearchInterface *m_daemonDbus = nullptr;
 };

@@ -46,30 +46,24 @@ TEST(QueryController, onSearchTextChanged)
     QueryController queryController;
     ASSERT_TRUE(queryController.d_p);
 
-    bool reciveSigSearchTextIsEmpty = false;
-    bool reciveSigMissionIdChanged = false;
-    QObject::connect(&queryController, &QueryController::searchTextIsEmpty, qApp, [&](){
-        reciveSigSearchTextIsEmpty = true;
-    });
-    QObject::connect(&queryController, &QueryController::missionIdChanged, qApp, [&](){
-       reciveSigMissionIdChanged = true;
+    bool reciveSigMissionChanged = false;
+    QObject::connect(&queryController, &QueryController::missionChanged, qApp, [&](){
+        reciveSigMissionChanged = true;
     });
 
     QString txt("test");
     queryController.d_p->m_searchText = txt;
     queryController.onSearchTextChanged(txt);
-    EXPECT_FALSE(reciveSigSearchTextIsEmpty);
-    EXPECT_FALSE(reciveSigMissionIdChanged);
+    EXPECT_FALSE(reciveSigMissionChanged);
 
+    reciveSigMissionChanged = false;
     txt.clear();
     queryController.onSearchTextChanged(txt);
-    EXPECT_TRUE(reciveSigSearchTextIsEmpty);
-    EXPECT_FALSE(reciveSigMissionIdChanged);
+    EXPECT_TRUE(reciveSigMissionChanged);
     EXPECT_TRUE(queryController.d_p->m_searchText.isEmpty());
     EXPECT_TRUE(queryController.d_p->m_missionId.isEmpty());
 
-    reciveSigSearchTextIsEmpty = false;
-    reciveSigMissionIdChanged = false;
+    reciveSigMissionChanged = false;
 
     stub_ext::StubExt stu;
     stu.set_lamda(ADDR(DaemonGrandSearchInterface, Search), [&](){
@@ -78,8 +72,7 @@ TEST(QueryController, onSearchTextChanged)
 
     txt = "testSearch";
     queryController.onSearchTextChanged(txt);
-    EXPECT_FALSE(reciveSigSearchTextIsEmpty);
-    EXPECT_TRUE(reciveSigMissionIdChanged);
+    EXPECT_TRUE(reciveSigMissionChanged);
     EXPECT_FALSE(queryController.d_p->m_missionId.isEmpty());
 }
 

@@ -65,8 +65,6 @@ set(GUISRC
     gui/exhibition/matchresult/groupwidget_p.h
     gui/exhibition/matchresult/groupwidget.h
     gui/exhibition/matchresult/groupwidget.cpp
-    gui/exhibition/matchresult/levelitemgroupwidget.h
-    gui/exhibition/matchresult/levelitemgroupwidget.cpp
     # listView
     gui/exhibition/matchresult/listview/grandsearchlistdelegate.h
     gui/exhibition/matchresult/listview/grandsearchlistdelegate.cpp
@@ -102,6 +100,8 @@ set(GUISRC
     gui/searchconfig/scopewidget.h
     gui/searchconfig/planwidget.cpp
     gui/searchconfig/planwidget.h
+    gui/searchconfig/customwidget.cpp
+    gui/searchconfig/customwidget.h
     gui/searchconfig/switchwidget/switchwidget.cpp
     gui/searchconfig/switchwidget/switchwidget.h
     gui/searchconfig/hyperlinklabel/hyperlinklabel.cpp

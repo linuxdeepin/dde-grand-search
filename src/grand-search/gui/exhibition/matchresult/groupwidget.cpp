@@ -55,6 +55,7 @@ GroupWidget::GroupWidget(QWidget *parent)
     m_firstFiveItems.clear();
     m_restShowItems.clear();
     m_cacheItems.clear();
+    m_cacheWeightItems.clear();
 
     initUi();
     initConnect();
@@ -84,36 +85,30 @@ void GroupWidget::appendMatchedItems(const MatchedItems &newItems, const QString
 
     // 结果列表未展开
     if (!m_bListExpanded) {
+        // 当前组没有数据，则需要判断本次数据是否包含权重
+        if (0 == m_listView->rowCount()) {
+            const MatchedItem &item = newItems.first();
+            if (!item.extra.isNull()
+                    && item.extra.type() == QVariant::Hash
+                    && item.extra.toHash().keys().contains(GRANDSEARCH_PROPERTY_ITEM_WEIGHT)) {
+                // 已经排序过，直接显示
+                m_cacheWeightItems << newItems;
+                updateShowItems(m_cacheWeightItems);
 
-        // 新来数据先放入缓存中
-        m_cacheItems << newItems;
-
-        // 显示不足5个，连带新增数据一起重排
-        if (GROUP_MAX_SHOW != m_listView->rowCount()) {
-
-            // 清空列表数据，将已显示数据还原到各自缓存中
-            m_cacheItems << m_firstFiveItems;
-            m_firstFiveItems.clear();
-
-            // 拉通重排缓存中的匹配结果
-            Utils::sort(m_cacheItems);
-            for (int i = 0; i < GROUP_MAX_SHOW; i++) {
-                if (!m_cacheItems.isEmpty())
-                    m_firstFiveItems.push_back(m_cacheItems.takeFirst());
+                return;
             }
-            m_listView->setMatchedItems(m_firstFiveItems);
         }
 
-        // 缓存中有数据，显示'查看更多'按钮
-        m_viewMoreButton->setVisible(!m_cacheItems.isEmpty());
+        // 执行按名称排序逻辑
+        m_cacheItems << newItems;
+        Utils::sort(m_cacheItems);
+        updateShowItems(m_cacheItems);
     } else {
         // 结果列表已展开，已经显示的数据保持不变，仅对新增数据排序，然后追加到列表末尾
         MatchedItems& tempNewItems = const_cast<MatchedItems&>(newItems);
         Utils::sort(tempNewItems);
         m_listView->addRows(tempNewItems);
     }
-
-    layout();
 }
 
 void GroupWidget::showHorLine(bool bShow)
@@ -121,8 +116,6 @@ void GroupWidget::showHorLine(bool bShow)
     Q_ASSERT(m_line);
 
     m_line->setVisible(bShow);
-
-    layout();
 }
 
 bool GroupWidget::isHorLineVisilbe()
@@ -178,8 +171,6 @@ void GroupWidget::reLayout()
     }
 
     this->setFixedHeight(nHeight);
-
-    layout();
 }
 
 void GroupWidget::clear()
@@ -188,6 +179,7 @@ void GroupWidget::clear()
 
     m_firstFiveItems.clear();
     m_restShowItems.clear();
+    m_cacheWeightItems.clear();
     m_cacheItems.clear();
 
     m_bListExpanded = false;
@@ -216,7 +208,8 @@ QString GroupWidget::groupName() const
 QString GroupWidget::convertDisplayName(const QString &searchGroupName)
 {
     static const QHash<QString, QString> groupDisplayName{
-        {GRANDSEARCH_GROUP_APP, GroupName_App}
+        {GRANDSEARCH_GROUP_BEST, GroupName_Best}
+        , {GRANDSEARCH_GROUP_APP, GroupName_App}
         , {GRANDSEARCH_GROUP_SETTING, GroupName_Setting}
         , {GRANDSEARCH_GROUP_FILE_VIDEO, GroupName_Video}
         , {GRANDSEARCH_GROUP_FILE_AUDIO, GroupName_Audio}
@@ -314,7 +307,22 @@ void GroupWidget::initConnect()
 {
     Q_ASSERT(m_viewMoreButton);
 
-    connect(m_viewMoreButton, &DPushButton::clicked, this, &GroupWidget::onMoreBtnClcked);
+    connect(m_viewMoreButton, &DPushButton::clicked, this, &GroupWidget::onMoreBtnClicked);
+}
+
+void GroupWidget::updateShowItems(MatchedItems &items)
+{
+    // 显示不足5个，补足显示
+    if (GROUP_MAX_SHOW != m_listView->rowCount()) {
+        for (int i = m_firstFiveItems.count(); i < GROUP_MAX_SHOW; i++) {
+            if (!items.isEmpty())
+                m_firstFiveItems.push_back(items.takeFirst());
+        }
+        m_listView->setMatchedItems(m_firstFiveItems);
+    }
+
+    // 缓存中有数据，显示'查看更多'按钮
+    m_viewMoreButton->setVisible(!items.isEmpty());
 }
 
 void GroupWidget::paintEvent(QPaintEvent *event)
@@ -322,19 +330,22 @@ void GroupWidget::paintEvent(QPaintEvent *event)
     DWidget::paintEvent(event);
 }
 
-void GroupWidget::onMoreBtnClcked()
+void GroupWidget::onMoreBtnClicked()
 {
     Q_ASSERT(m_listView);
     Q_ASSERT(m_viewMoreButton);
 
+    Utils::sort(m_cacheItems);
+
     // 将缓存中的数据转移到剩余显示结果中
+    m_restShowItems << m_cacheWeightItems;
     m_restShowItems << m_cacheItems;
-    Utils::sort(m_restShowItems);
 
     // 剩余显示结果追加显示到列表中
     m_listView->addRows(m_restShowItems);
 
     // 清空缓存中数据
+    m_cacheWeightItems.clear();
     m_cacheItems.clear();
 
     reLayout();

@@ -38,6 +38,7 @@ namespace GrandSearch {
 #define GroupObjName_File           "Group_File"
 
 // 组-中文词典翻译
+#define GroupName_Best              QObject::tr("Best match")
 #define GroupName_App               QObject::tr("Applications")
 #define GroupName_Setting           QObject::tr("Settings")
 #define GroupName_Video             QObject::tr("Videos")

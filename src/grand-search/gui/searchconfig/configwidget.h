@@ -28,6 +28,7 @@
 
 class ScopeWidget;
 class PlanWidget;
+class CustomWidget;
 
 class ConfigWidget : public Dtk::Widget::DMainWindow
 {
@@ -47,6 +48,7 @@ private:
     QVBoxLayout *m_scrollLayout                     = nullptr;      // 滚动区域内部部件布局
 
     ScopeWidget *m_searchGroupWidget          = nullptr;
+    CustomWidget *m_searchCustomWidget        = nullptr;
     PlanWidget *m_searchPlanWidget            = nullptr;
 };
 

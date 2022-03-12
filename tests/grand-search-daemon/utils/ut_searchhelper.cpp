@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "utils/searchhelper.h"
+#include "global/searchhelper.h"
 
 #include <gtest/gtest.h>
 

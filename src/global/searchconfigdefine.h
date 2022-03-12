@@ -36,6 +36,13 @@
 #define GRANDSEARCH_PLAN_GROUP              "Plan_Group"
 #define GRANDSEARCH_PLAN_EXPERIENCE         "plan.experience"
 
+// 个性化
+#define GRANDSEARCH_CUSTOM_GROUP                        "Custom_Group"
+#define GRANDSEARCH_CUSTOM_BESTMATCH                    "custom.bestMatch"
+#define GRANDSEARCH_CUSTOM_BESTMATCH_FIRSTITEMLIMIT     "custom.bestMatch.firstItemLimit"
+#define GRANDSEARCH_CUSTOM_BESTMATCH_FIRSTWAITTIME      "custom.bestMatch.firstWaitTime"
+#define GRANDSEARCH_CUSTOM_BESTMATCH_MAXCOUNT           "custom.bestMatch.maxCount"
+
 // 配置切换界面参数
 #define SWITCHWIDGETWIDTH       502
 #define SWITCHWIDGETHEIGHT      36

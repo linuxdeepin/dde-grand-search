@@ -98,7 +98,7 @@ void LevelItemGroupWidget::clear()
     GroupWidget::clear();
 }
 
-void LevelItemGroupWidget::onMoreBtnClcked()
+void LevelItemGroupWidget::onMoreBtnClicked()
 {
     Q_ASSERT(m_listView);
 
@@ -115,7 +115,7 @@ void LevelItemGroupWidget::onMoreBtnClcked()
     }
     m_levelCacheItems.clear();
 
-    GroupWidget::onMoreBtnClcked();
+    GroupWidget::onMoreBtnClicked();
 }
 
 void LevelItemGroupWidget::takeItemFromLevelCache()

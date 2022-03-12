@@ -24,7 +24,6 @@
 #include "listview/grandsearchlistview.h"
 #include "utils/utils.h"
 #include "gui/datadefine.h"
-#include "levelitemgroupwidget.h"
 
 #include <DScrollArea>
 #include <DApplicationHelper>
@@ -52,7 +51,7 @@ MatchWidget::MatchWidget(QWidget *parent)
     : DWidget(parent)
     , d_p(new MatchWidgetPrivate(this))
 {
-    m_groupHashShowOrder << GRANDSEARCH_GROUP_APP << GRANDSEARCH_GROUP_SETTING << GRANDSEARCH_GROUP_WEB
+    m_groupHashShowOrder << GRANDSEARCH_GROUP_BEST <<GRANDSEARCH_GROUP_APP << GRANDSEARCH_GROUP_SETTING << GRANDSEARCH_GROUP_WEB
                          << GRANDSEARCH_GROUP_FILE_VIDEO << GRANDSEARCH_GROUP_FILE_AUDIO << GRANDSEARCH_GROUP_FILE_PICTURE
                          << GRANDSEARCH_GROUP_FILE_DOCUMNET << GRANDSEARCH_GROUP_FOLDER << GRANDSEARCH_GROUP_FILE;
     initUi();
@@ -522,12 +521,7 @@ GroupWidget *MatchWidget::createGroupWidget(const QString &searchGroupName)
 
     if (!m_groupWidgetMap[searchGroupName]) {
 
-        GroupWidget *groupWidget = nullptr;
-        if (Utils::isLevelGroup(searchGroupName)) {
-            groupWidget = new LevelItemGroupWidget(m_scrollAreaContent);
-        } else {
-            groupWidget = new GroupWidget(m_scrollAreaContent);
-        }
+        GroupWidget *groupWidget = new GroupWidget(m_scrollAreaContent);
         groupWidget->setFocusPolicy(Qt::NoFocus);
 
         connect(groupWidget, &GroupWidget::showMore, this, &MatchWidget::reLayout);
@@ -551,14 +545,12 @@ GroupWidget *MatchWidget::createGroupWidget(const QString &searchGroupName)
 
 void MatchWidget::sortVislibleGroupList()
 {
-    // 1.优先在界面中显示: 应用 > 设置 > 音频 > 视频 > 图片 > WEB > 文档 >文件夹 > 文件
     m_vGroupWidgets.clear();
     for (auto searchGroupName : m_groupHashShowOrder) {
         if (m_groupWidgetMap[searchGroupName] && !m_groupWidgetMap[searchGroupName]->isHidden())
             m_vGroupWidgets.push_back(m_groupWidgetMap[searchGroupName]);
     }
 
-    // 2.其他类目追加在后面
     GroupWidgetMap::Iterator itemWidget = m_groupWidgetMap.begin();
     while (itemWidget != m_groupWidgetMap.end()) {
 

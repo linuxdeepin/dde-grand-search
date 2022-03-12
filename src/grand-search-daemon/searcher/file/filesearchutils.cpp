@@ -21,7 +21,7 @@
 #include "filesearchutils.h"
 #include "global/builtinsearch.h"
 #include "utils/specialtools.h"
-#include "utils/searchhelper.h"
+#include "global/searchhelper.h"
 
 GrandSearch::MatchedItem FileSearchUtils::packItem(const QString &fileName, const QString &searcher, bool isRecentFile)
 {

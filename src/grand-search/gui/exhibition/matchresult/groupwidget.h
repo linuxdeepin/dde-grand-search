@@ -68,7 +68,7 @@ public:
     static QString convertDisplayName(const QString &searchGroupName);
 
 public slots:
-    virtual void onMoreBtnClcked();
+    virtual void onMoreBtnClicked();
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -76,6 +76,7 @@ protected:
 private:
     void initUi();
     void initConnect();
+    void updateShowItems(GrandSearch::MatchedItems &items);
 
 signals:
     void showMore();
@@ -88,6 +89,7 @@ protected:
     GrandSearch::MatchedItems m_firstFiveItems;     // 前5行正在显示的匹配结果
     GrandSearch::MatchedItems m_restShowItems;      // 剩余正在显示的匹配结果
     GrandSearch::MatchedItems m_cacheItems;         // 缓存中的匹配结果
+    GrandSearch::MatchedItems m_cacheWeightItems;   // 缓存经过权重排序的匹配结果
 
     QString m_searchGroupName;                      // 所属类目
 

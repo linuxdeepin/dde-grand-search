@@ -30,8 +30,11 @@
 #include "business/matchresult/matchcontroller.h"
 #include "business/matchresult/matchcontroller_p.h"
 #include "contacts/interface/daemongrandsearchinterface.h"
+#include "utils/utils.h"
+#include "global/matcheditem.h"
 
 using namespace testing;
+using namespace GrandSearch;
 
 TEST(MatchController, constructor)
 {
@@ -45,10 +48,13 @@ TEST(MatchController, onMissionIdChanged)
 {
     MatchController matchController;
 
-    QString key("aaaa");
-    matchController.onMissionIdChanged(key);
+    QString id("aaaa");
+    QString content("test");
+    matchController.onMissionChanged(id, content);
 
-    EXPECT_EQ(key, matchController.d_p->m_missionId);
+    EXPECT_EQ(id, matchController.d_p->m_missionId);
+    EXPECT_EQ(content, matchController.d_p->m_missionContent);
+    EXPECT_TRUE(matchController.d_p->m_missionIdChanged);
 }
 
 TEST(MatchControllerPrivate, constructor)
@@ -118,8 +124,44 @@ TEST(MatchControllerPrivate, onMatched)
     EXPECT_EQ(spy.count(), 0);
 
     QString missionId("testId");
-    matchController.d_p->m_missionId = missionId;
+    QString content("tstContent");
+    matchController.onMissionChanged(missionId, content);
+    matchController.d_p->m_firstItemLimit = 30;
+
+    stu.set_lamda(ADDR(Utils, updateItemsWeight), [&](MatchedItemMap &map, const QString &content){
+        Q_UNUSED(content)
+
+        MatchedItem tstItem;
+        MatchedItems items;
+        items << tstItem;
+        map.insert(QString("tstGroup"), items);
+    });
+
     matchController.d_p->onMatched(missionId);
+    matchController.d_p->m_waitTimer->stop();
+    EXPECT_FALSE(matchController.d_p->m_cacheItems.isEmpty());
+    EXPECT_EQ(spy.count(), 0);
+
+    QString missionId2("testId2");
+    matchController.onMissionChanged(missionId2, content);
+    matchController.d_p->m_cacheItems.clear();
+    matchController.d_p->m_firstWaitTime = 0;
+    matchController.d_p->onMatched(missionId2);
+    EXPECT_FALSE(matchController.d_p->m_cacheItems.isEmpty());
+    EXPECT_EQ(spy.count(), 0);
+
+    matchController.d_p->m_missionIdChanged = true;
+    matchController.d_p->m_firstItemLimit = 30;
+    matchController.d_p->onMatched(missionId2);
+    EXPECT_EQ(spy.count(), 0);
+    EXPECT_TRUE(matchController.d_p->m_waitTimer->isActive());
+
+    matchController.d_p->onMatched(missionId2);
+    EXPECT_EQ(spy.count(), 0);
+    EXPECT_FALSE(matchController.d_p->m_cacheItems.isEmpty());
+
+    matchController.d_p->m_waitTimer->stop();
+    matchController.d_p->onMatched(missionId2);
     EXPECT_EQ(spy.count(), 1);
 }
 
@@ -131,12 +173,20 @@ TEST(MatchControllerPrivate, onSearchCompleted)
         reciveSig = true;
     });
 
+    bool calledSend = false;
+    stub_ext::StubExt stu;
+    stu.set_lamda(&MatchControllerPrivate::sendCacheItems, [&](){
+        calledSend = true;
+    });
+
     matchController.d_p->m_missionId.clear();
     matchController.d_p->onSearchCompleted(QString());
     EXPECT_FALSE(reciveSig);
+    EXPECT_FALSE(calledSend);
 
     QString missionId("testId");
     matchController.d_p->m_missionId = missionId;
     matchController.d_p->onSearchCompleted(missionId);
     EXPECT_TRUE(reciveSig);
+    EXPECT_TRUE(calledSend);
 }

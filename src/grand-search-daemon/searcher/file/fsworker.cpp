@@ -20,7 +20,7 @@
  */
 #include "fsworker.h"
 #include "utils/specialtools.h"
-#include "utils/searchhelper.h"
+#include "global/searchhelper.h"
 #include "global/builtinsearch.h"
 #include "configuration/configer.h"
 

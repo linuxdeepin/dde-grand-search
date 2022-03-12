@@ -30,6 +30,7 @@
 
 #include <DLabel>
 #include <DHorizontalLine>
+#include <DPushButton>
 
 #include <QPaintEvent>
 #include <QEvent>
@@ -58,9 +59,9 @@ TEST(GroupWidgettTest, appendMatchedItems)
 
     stub_ext::StubExt stu;
 
-    bool ut_call_setMatchedItems = false;
-    stu.set_lamda(ADDR(GrandSearchListView, setMatchedItems), [&](){
-        ut_call_setMatchedItems = true;
+    bool ut_call_updateShowItems = false;
+    stu.set_lamda(ADDR(GroupWidget, updateShowItems), [&](){
+        ut_call_updateShowItems = true;
     });
 
     bool ut_call_addRows = false;
@@ -73,30 +74,51 @@ TEST(GroupWidgettTest, appendMatchedItems)
     MatchedItem item;
     MatchedItems items;
     w.appendMatchedItems(items, searchGroupName);
-    EXPECT_FALSE(ut_call_setMatchedItems);
+    EXPECT_FALSE(ut_call_updateShowItems);
     EXPECT_FALSE(ut_call_addRows);
 
-    // 2.测试折叠添加
-    ut_call_setMatchedItems = false;
-    ut_call_addRows = false;
+    // 2.测试折叠添加,且此次为动态排序数据
+    ut_call_updateShowItems = false;
+    ut_call_addRows = false;    
 
     w.m_bListExpanded = false;
+    w.m_listView->clear();
+
+    QVariantHash itemWeight({{GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 100}});
+    item.extra = QVariant::fromValue(itemWeight);
 
     items << item << item << item;
     w.appendMatchedItems(items, searchGroupName);
 
-    EXPECT_TRUE(ut_call_setMatchedItems);
+    EXPECT_TRUE(ut_call_updateShowItems);
     EXPECT_FALSE(ut_call_addRows);
 
-    // 3.测试全量添加
-    ut_call_setMatchedItems = false;
+    // 3.测试折叠添加,且不是动态排序数据
+    ut_call_updateShowItems = false;
+    ut_call_addRows = false;
+    items.clear();
+
+    w.m_bListExpanded = false;
+    w.m_listView->clear();
+
+    MatchedItem itemOther;
+    items << itemOther;
+
+    w.appendMatchedItems(items, searchGroupName);
+
+    EXPECT_TRUE(ut_call_updateShowItems);
+    EXPECT_FALSE(ut_call_addRows);
+    EXPECT_FALSE(w.m_cacheItems.isEmpty());
+
+    // 4.测试全量添加
+    ut_call_updateShowItems = false;
     ut_call_addRows = false;
 
     w.m_bListExpanded = true;
 
     w.appendMatchedItems(items, searchGroupName);
 
-    EXPECT_FALSE(ut_call_setMatchedItems);
+    EXPECT_FALSE(ut_call_updateShowItems);
     EXPECT_TRUE(ut_call_addRows);
 }
 
@@ -257,11 +279,35 @@ TEST(GroupWidgettTest, convertDisplayName)
     EXPECT_EQ(actual, testOther);
 }
 
-TEST(GroupWidgettTest, onMoreBtnClcked)
+TEST(GroupWidgettTest, updateShowItems)
 {
     GroupWidget w;
 
-    w.onMoreBtnClcked();
+    w.m_listView->clear();
+    w.m_firstFiveItems.clear();
+
+    stub_ext::StubExt stu;
+
+    typedef void (*fptr)(QWidget*, bool);
+    fptr QWidget_setVisible = (fptr)(&QWidget::setVisible);
+
+    bool isCallSetVisible = false;
+    stu.set_lamda(QWidget_setVisible, [&](){
+        isCallSetVisible = true;
+    });
+
+    MatchedItems items;
+    w.updateShowItems(items);
+
+    EXPECT_TRUE(isCallSetVisible);
+}
+
+TEST(GroupWidgettTest, onMoreBtnClicked)
+{
+    GroupWidget w;
+
+    w.onMoreBtnClicked();
+    EXPECT_TRUE(w.m_cacheWeightItems.isEmpty());
     EXPECT_TRUE(w.m_cacheItems.isEmpty());
     EXPECT_TRUE(w.m_bListExpanded);
 }

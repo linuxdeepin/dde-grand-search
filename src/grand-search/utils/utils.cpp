@@ -27,6 +27,7 @@ extern "C" {
 #include "utils.h"
 
 #include "global/builtinsearch.h"
+#include "global/searchhelper.h"
 #include "contacts/interface/daemongrandsearchinterface.h"
 
 #include <DArrowRectangle>
@@ -52,6 +53,8 @@ using namespace GrandSearch;
 static const QString SessionManagerService = "com.deepin.SessionManager";
 static const QString StartManagerPath = "/com/deepin/StartManager";
 static const QString StartManagerInterface = "com.deepin.StartManager";
+
+static const int WeightDiffLimit = 18;
 
 class DCollator : public QCollator
 {
@@ -210,6 +213,175 @@ bool Utils::startWidthNum(const QString &text)
     bool bRet = regExp.exactMatch(text.at(0));
 
     return bRet;
+}
+
+bool Utils::sortByWeight(MatchedItemMap &map, Qt::SortOrder order)
+{
+    QTime time;
+    time.start();
+
+    for (const QString &searchGroupName : map.keys()) {
+        if (!isSupportWeight(searchGroupName))
+            continue;
+        MatchedItems &list = map[searchGroupName];
+
+        qSort(list.begin(), list.end(), [order](MatchedItem node1, MatchedItem node2){
+            return compareByWeight(node1, node2, order);
+        });
+    }
+
+    qDebug() << QString("sort matchItems by weight done.cost %1ms").arg(time.elapsed());
+    return true;
+}
+
+bool Utils::compareByWeight(MatchedItem &node1, MatchedItem &node2, Qt::SortOrder order)
+{
+    bool hasWeight1 = node1.extra.toHash().contains(GRANDSEARCH_PROPERTY_ITEM_WEIGHT);
+    bool hasWeight2 = node2.extra.toHash().contains(GRANDSEARCH_PROPERTY_ITEM_WEIGHT);
+
+    if (hasWeight1 && hasWeight2) {
+        // 两项均有权重，则对比权重
+        int weight1 = node1.extra.toHash().value(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 0).toInt();
+        int weight2 = node2.extra.toHash().value(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 0).toInt();
+
+        return order == Qt::DescendingOrder ? weight1 > weight2 : weight1 < weight2;
+    } else if (hasWeight1) {
+
+        return order == Qt::DescendingOrder;
+    } else if (hasWeight2) {
+
+        return order != Qt::DescendingOrder;
+    } else {
+        // 两项均无权重，采用名称排序
+        return compareByString(node1.item, node2.item);
+    }
+}
+
+void Utils::updateItemsWeight(MatchedItemMap &map, const QString &content)
+{
+    // 类目、后缀搜索时的关键字解析
+    QStringList groupList, suffixList, keys;
+    if (!searchHelper->parseKeyword(content, groupList, suffixList, keys))
+        keys = QStringList() << content;
+
+    for (const QString &searchGroupName : map.keys()) {
+        if (!isSupportWeight(searchGroupName))
+            continue;
+        MatchedItems &list = map[searchGroupName];
+        for (MatchedItem &item : list) {
+            int weight = calcFileWeight(item.item, item.name, keys);
+
+            QVariant &extra = item.extra;
+            if (extra.isNull()) {
+                QVariantHash itemWeight({{GRANDSEARCH_PROPERTY_ITEM_WEIGHT, weight}});
+                extra = QVariant::fromValue(itemWeight);
+            } else if (extra.type() == QVariant::Hash) {
+                QVariantHash originalValue = extra.toHash();
+                originalValue.insert(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, weight);
+                extra = QVariant::fromValue(originalValue);
+            } else {
+                qWarning() << "item extra error:" << item.name << item.item << item.extra;
+            }
+        }
+    }
+}
+
+bool Utils::isSupportWeight(const QString &searchGroupName)
+{
+    static const QStringList supportWeightGroup{
+        GRANDSEARCH_GROUP_FILE_VIDEO
+      , GRANDSEARCH_GROUP_FILE_AUDIO
+      , GRANDSEARCH_GROUP_FILE_PICTURE
+      , GRANDSEARCH_GROUP_FILE_DOCUMNET
+      , GRANDSEARCH_GROUP_FILE
+      , GRANDSEARCH_GROUP_FOLDER
+    };
+
+    return supportWeightGroup.contains(searchGroupName);
+}
+
+int Utils::calcFileWeight(const QString &path, const QString &name, const QStringList &keys)
+{
+    int weight = 0;
+    for (const QString &key : keys) {
+        if (name.contains(key)) {
+            weight += 46;
+            break;
+        }
+    }
+
+    QFileInfo fileInfo(path);
+
+    const QDateTime &currentDateTime = QDateTime::currentDateTime();
+    const QDateTime &createDateTime = fileInfo.created();
+    const QDateTime &lastModifyTime = fileInfo.lastModified();
+    const QDateTime &lastReadTime = fileInfo.lastRead();
+
+    qint64 createDayDiff = calcDateDiff(createDateTime, currentDateTime);
+    qint64 lastModifyDayDiff = calcDateDiff(lastModifyTime, currentDateTime);
+    qint64 lastReadDayDiff = calcDateDiff(lastReadTime, currentDateTime);
+
+    int createDayWeight = calcWeightByDateDiff(createDayDiff);
+    int lastModifyDayWeight = calcWeightByDateDiff(lastModifyDayDiff);
+    int lastReadDayWeight = calcWeightByDateDiff(lastReadDayDiff);
+
+    weight += createDayWeight + lastModifyDayWeight + lastReadDayWeight;
+    return weight;
+}
+
+qint64 Utils::calcDateDiff(const QDateTime &date1, const QDateTime &date2)
+{
+    static const qint64 day = 24*60*60;
+    return date1.secsTo(date2) / day;
+}
+
+int Utils::calcWeightByDateDiff(const qint64 &diff)
+{
+    switch (diff) {
+    case 0:
+        return 18;
+    case 1:
+    case 2:
+        return 12;
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+        return 6;
+    default:
+        return 0;
+    }
+}
+
+void Utils::packageBestMatch(MatchedItemMap &map, int maxQuantity)
+{
+    // 从文件类目提取权重最高项，打包为最佳匹配项
+    if (map.isEmpty() || !map.keys().contains(GRANDSEARCH_GROUP_FILE) || maxQuantity <= 0)
+        return;
+
+    QTime time;
+    time.start();
+
+    MatchedItems &list = map[GRANDSEARCH_GROUP_FILE];
+    MatchedItems bestlist;
+    while (maxQuantity-- && !list.isEmpty()) {
+        MatchedItem item = list.takeFirst();
+        if (!bestlist.isEmpty()) {
+            // 计算当前项与权重最高项的偏差
+            int weight1 = bestlist.first().extra.toHash().value(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 0).toInt();
+            int weight2 = item.extra.toHash().value(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 0).toInt();
+            if (weight1 - weight2 >= WeightDiffLimit) {
+                qDebug() << QString("diff more than %1,give up.").arg(WeightDiffLimit) << weight1 << weight2 << bestlist.first().item << item.item;
+                list.prepend(item);
+                break;
+            }
+        }
+        bestlist << item;
+    }
+
+    qDebug() << "find best match count:" << bestlist.count() << QString(".cost [%1]ms").arg(time.elapsed());
+    if (!bestlist.isEmpty())
+        map.insert(GRANDSEARCH_GROUP_BEST, bestlist);
 }
 
 QString Utils::appIconName(const MatchedItem &item)
@@ -573,6 +745,7 @@ bool Utils::canPreview(const QString &searchGroupName)
       , GRANDSEARCH_GROUP_FILE_AUDIO
       , GRANDSEARCH_GROUP_FILE_PICTURE
       , GRANDSEARCH_GROUP_FILE_DOCUMNET
+      , GRANDSEARCH_GROUP_BEST
     };
 
     return containPreviewGroup.contains(searchGroupName);

@@ -23,7 +23,7 @@
 #include "anything_interface.h"
 #include "global/builtinsearch.h"
 #include "utils/specialtools.h"
-#include "utils/searchhelper.h"
+#include "global/searchhelper.h"
 #include "configuration/configer.h"
 
 #include <QStandardPaths>

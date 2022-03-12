@@ -21,5 +21,7 @@
         <file>icons/videosearch-light.svg</file>
         <file>icons/websearch-dark.svg</file>
         <file>icons/websearch-light.svg</file>
+        <file>icons/bestmatch-dark.svg</file>
+        <file>icons/bestmatch-light.svg</file>
     </qresource>
 </RCC>

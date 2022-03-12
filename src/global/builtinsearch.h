@@ -29,6 +29,7 @@
 #define GRANDSEARCH_CLASS_WEB_STATICTEXT "com.deepin.dde-grand-search.web-statictext"
 
 // 搜索项所属组
+#define GRANDSEARCH_GROUP_BEST               "com.deepin.dde-grand-search.group.best-match"
 #define GRANDSEARCH_GROUP_APP                "com.deepin.dde-grand-search.group.application"
 #define GRANDSEARCH_GROUP_SETTING            "com.deepin.dde-grand-search.group.dde-control-center-setting"
 #define GRANDSEARCH_GROUP_WEB                "com.deepin.dde-grand-search.group.web"
@@ -46,6 +47,9 @@
 #define GRANDSEARCH_PROPERTY_ITEM_LEVEL_FIRST   1
 #define GRANDSEARCH_PROPERTY_ITEM_LEVEL_SECOND  2
 #define GRANDSEARCH_PROPERTY_ITEM_LEVEL_THIRD   3
+
+// 权重属性
+#define GRANDSEARCH_PROPERTY_ITEM_WEIGHT    "itemWeight"
 
 #define DEF_BUILTISEARCH_NAMES  \
 static const QStringList predefBuiltinSearches { \

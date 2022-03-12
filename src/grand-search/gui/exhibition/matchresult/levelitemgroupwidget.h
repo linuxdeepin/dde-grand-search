@@ -32,7 +32,7 @@ public:
     void clear() override;
 
 public slots:
-    void onMoreBtnClcked() override;
+    void onMoreBtnClicked() override;
 
 private:
     void takeItemFromLevelCache();
