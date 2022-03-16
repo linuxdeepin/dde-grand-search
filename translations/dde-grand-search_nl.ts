@@ -33,6 +33,14 @@
     </message>
 </context>
 <context>
+    <name>CustomWidget</name>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/customwidget.cpp" line="38"/>
+        <source>Custom search</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>DdeGrandSearchDockPlugin</name>
     <message>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="57"/>
@@ -111,7 +119,7 @@
 <context>
     <name>GroupWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="261"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="254"/>
         <source>More</source>
         <translation>Meer</translation>
     </message>
@@ -147,7 +155,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/grand-search/gui/mainwindow.cpp" line="217"/>
+        <location filename="../src/grand-search/gui/mainwindow.cpp" line="224"/>
         <source>No search results</source>
         <translation>Geen zoekresultaten</translation>
     </message>
@@ -155,7 +163,7 @@
 <context>
     <name>MatchWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="89"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="88"/>
         <source>Search for &quot;%1&quot;</source>
         <translation>Zoeken naar “%1”</translation>
     </message>
@@ -202,46 +210,51 @@
     <name>QObject</name>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="41"/>
+        <source>Best match</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/datadefine.h" line="42"/>
         <source>Applications</source>
         <translation>Programma&apos;s</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="42"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="43"/>
         <source>Settings</source>
         <translation>Instellingen</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="43"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="44"/>
         <source>Videos</source>
         <translation>Video&apos;s</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="44"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="45"/>
         <source>Music</source>
         <translation>Muziek</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="45"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="46"/>
         <source>Pictures</source>
         <translation>Afbeeldingen</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="46"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="47"/>
         <source>Documents</source>
         <translation>Documenten</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="47"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="48"/>
         <source>Folders</source>
         <translation>Mappen</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="48"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="49"/>
         <source>Files</source>
         <translation>Bestanden</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="49"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="50"/>
         <source>Web</source>
         <translation>Web</translation>
     </message>

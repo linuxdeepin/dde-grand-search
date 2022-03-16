@@ -33,6 +33,14 @@
     </message>
 </context>
 <context>
+    <name>CustomWidget</name>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/customwidget.cpp" line="38"/>
+        <source>Custom search</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>DdeGrandSearchDockPlugin</name>
     <message>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="57"/>
@@ -111,7 +119,7 @@
 <context>
     <name>GroupWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="261"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="254"/>
         <source>More</source>
         <translation>Lisää</translation>
     </message>
@@ -147,7 +155,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/grand-search/gui/mainwindow.cpp" line="217"/>
+        <location filename="../src/grand-search/gui/mainwindow.cpp" line="224"/>
         <source>No search results</source>
         <translation>Ei hakutuloksia</translation>
     </message>
@@ -155,7 +163,7 @@
 <context>
     <name>MatchWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="89"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="88"/>
         <source>Search for &quot;%1&quot;</source>
         <translation>Hae &quot;%1&quot;</translation>
     </message>
@@ -202,46 +210,51 @@
     <name>QObject</name>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="41"/>
+        <source>Best match</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/datadefine.h" line="42"/>
         <source>Applications</source>
         <translation>Ohjelmat</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="42"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="43"/>
         <source>Settings</source>
         <translation>Asetukset</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="43"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="44"/>
         <source>Videos</source>
         <translation>Videot</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="44"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="45"/>
         <source>Music</source>
         <translation>Musiikki</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="45"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="46"/>
         <source>Pictures</source>
         <translation>Kuvat</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="46"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="47"/>
         <source>Documents</source>
         <translation>Tiedostot</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="47"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="48"/>
         <source>Folders</source>
         <translation>Kansiot</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="48"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="49"/>
         <source>Files</source>
         <translation>Tiedostot</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="49"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="50"/>
         <source>Web</source>
         <translation>Web</translation>
     </message>
