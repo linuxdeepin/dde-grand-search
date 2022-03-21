@@ -50,7 +50,7 @@ public:
     // 计算文件类的权重
     static int calcFileWeight(const QString &path, const QString &name, const QStringList &keys);
     static qint64 calcDateDiff(const QDateTime &date1, const QDateTime &date2);
-    static int calcWeightByDateDiff(const qint64 &diff);
+    static int calcWeightByDateDiff(const qint64 &diff, const int &type);
 
     // 组装最佳匹配类目
     static void packageBestMatch(GrandSearch::MatchedItemMap &map, int maxQuantity);

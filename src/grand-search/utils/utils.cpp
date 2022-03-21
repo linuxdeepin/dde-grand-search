@@ -54,7 +54,11 @@ static const QString SessionManagerService = "com.deepin.SessionManager";
 static const QString StartManagerPath = "/com/deepin/StartManager";
 static const QString StartManagerInterface = "com.deepin.StartManager";
 
-static const int WeightDiffLimit = 18;
+static const int WeightDiffLimit = 21;
+
+static const int CreateDateType = 1;
+static const int ModifyDateType = 2;
+static const int ReadDateType = 3;
 
 class DCollator : public QCollator
 {
@@ -321,9 +325,9 @@ int Utils::calcFileWeight(const QString &path, const QString &name, const QStrin
     qint64 lastModifyDayDiff = calcDateDiff(lastModifyTime, currentDateTime);
     qint64 lastReadDayDiff = calcDateDiff(lastReadTime, currentDateTime);
 
-    int createDayWeight = calcWeightByDateDiff(createDayDiff);
-    int lastModifyDayWeight = calcWeightByDateDiff(lastModifyDayDiff);
-    int lastReadDayWeight = calcWeightByDateDiff(lastReadDayDiff);
+    int createDayWeight = calcWeightByDateDiff(createDayDiff, CreateDateType);
+    int lastModifyDayWeight = calcWeightByDateDiff(lastModifyDayDiff, ModifyDateType);
+    int lastReadDayWeight = calcWeightByDateDiff(lastReadDayDiff, ReadDateType);
 
     weight += createDayWeight + lastModifyDayWeight + lastReadDayWeight;
     return weight;
@@ -335,19 +339,44 @@ qint64 Utils::calcDateDiff(const QDateTime &date1, const QDateTime &date2)
     return date1.secsTo(date2) / day;
 }
 
-int Utils::calcWeightByDateDiff(const qint64 &diff)
+int Utils::calcWeightByDateDiff(const qint64 &diff, const int &type)
 {
-    switch (diff) {
-    case 0:
-        return 18;
-    case 1:
-    case 2:
-        return 12;
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-        return 6;
+    switch (type) {
+    case CreateDateType :
+    case ModifyDateType : {
+        switch (diff) {
+        case 0:
+            return 24;
+        case 1:
+        case 2:
+            return 16;
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+            return 8;
+        default:
+            return 0;
+        }
+    }
+        break;
+    case ReadDateType : {
+        switch (diff) {
+        case 0:
+            return 9;
+        case 1:
+        case 2:
+            return 6;
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+            return 3;
+        default:
+            return 0;
+        }
+    }
+        break;
     default:
         return 0;
     }
