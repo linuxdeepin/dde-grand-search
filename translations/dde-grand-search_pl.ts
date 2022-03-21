@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/customwidget.cpp" line="38"/>
         <source>Custom search</source>
-        <translation type="unfinished"/>
+        <translation>Wyszukiwanie niestandardowe</translation>
     </message>
 </context>
 <context>
@@ -183,7 +183,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="63"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations. If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation>Przystąpienie do programu wyszukiwania oznacza, że udzielasz i upoważniasz nas do gromadzenia informacji o Twoim urządzeniu, systemie, ikonach, treści, właściwościach, aplikacjach i ich ustawieniach. Jeśli nie zgadzasz się na gromadzenie i wykorzystywanie wyżej wymienionych informacji, nie dołączaj do programu.</translation>
+        <translation>Przystąpienie do programu wyszukiwania oznacza, że udzielasz zgodę i upoważniasz nas do gromadzenia informacji o Twoim urządzeniu, systemie, ikonach, treści, właściwościach, aplikacjach i ich ustawieniach. Jeśli nie zgadzasz się na gromadzenie i wykorzystywanie wyżej wymienionych informacji, nie dołączaj do programu.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="71"/>
@@ -211,7 +211,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="41"/>
         <source>Best match</source>
-        <translation type="unfinished"/>
+        <translation>Najlepsze dopasowanie</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="42"/>

@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/customwidget.cpp" line="38"/>
         <source>Custom search</source>
-        <translation type="unfinished"/>
+        <translation>Aangepaste zoekopdracht</translation>
     </message>
 </context>
 <context>
@@ -211,7 +211,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="41"/>
         <source>Best match</source>
-        <translation type="unfinished"/>
+        <translation>Beste overeenkomst</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="42"/>

@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/customwidget.cpp" line="38"/>
         <source>Custom search</source>
-        <translation>自定義搜索</translation>
+        <translation>個性化</translation>
     </message>
 </context>
 <context>
