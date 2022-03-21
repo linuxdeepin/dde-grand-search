@@ -72,7 +72,7 @@ bool Utils::sort(MatchedItems &list, Qt::SortOrder order/* = Qt::AscendingOrder*
 {
     QTime time;
     time.start();
-    qSort(list.begin(), list.end(), [order](MatchedItem node1, MatchedItem node2) {
+    qStableSort(list.begin(), list.end(), [order](MatchedItem node1, MatchedItem node2) {
         return compareByString(node1.name, node2.name, order);
     });
 
@@ -225,7 +225,7 @@ bool Utils::sortByWeight(MatchedItemMap &map, Qt::SortOrder order)
             continue;
         MatchedItems &list = map[searchGroupName];
 
-        qSort(list.begin(), list.end(), [order](MatchedItem node1, MatchedItem node2){
+        qStableSort(list.begin(), list.end(), [order](MatchedItem node1, MatchedItem node2){
             return compareByWeight(node1, node2, order);
         });
     }
