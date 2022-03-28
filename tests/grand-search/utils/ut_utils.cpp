@@ -385,6 +385,413 @@ TEST(UtilsTest, startWidthNum)
     EXPECT_TRUE(result);
 }
 
+TEST(UtilsTest, sortByWeight)
+{
+     MatchedItemMap map;
+     Qt::SortOrder order;
+     MatchedItems items;
+     MatchedItem item;
+     QString searchGroupName;
+     QVariant extra;
+
+     items.append(item);
+     map.insert(searchGroupName,items);
+     bool result = Utils::sortByWeight(map);
+     EXPECT_TRUE(result);
+     
+     // 清空map
+     map.clear();
+
+     // 不支持排序的类目
+     order = Qt::DescendingOrder;
+     map.insert(GRANDSEARCH_GROUP_APP, items);
+     result = Utils::sortByWeight(map, order);
+     EXPECT_TRUE(result);
+
+     // 清空map, items
+     map.clear();
+     items.clear();
+
+
+     //降序排序
+     QVariantHash itemWeight1({{GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 1}});
+     extra = QVariant::fromValue(itemWeight1);
+     item = {"a", "a", "a",GRANDSEARCH_GROUP_FILE, " ", extra};
+     items.append(item);
+     QVariantHash itemWeight2({{GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 2}});
+     extra = QVariant::fromValue(itemWeight2);
+     item = {"a", "aa", "aa",GRANDSEARCH_GROUP_FILE, " ", extra};
+     items.append(item);
+     QVariantHash itemWeight3({{GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 2}});
+     extra = QVariant::fromValue(itemWeight3);
+     item = {"a", "ab", "ab",GRANDSEARCH_GROUP_FILE, " ", extra};
+     items.append(item);
+     map.insert(GRANDSEARCH_GROUP_FILE, items);
+     result = Utils::sortByWeight(map, order);
+     EXPECT_TRUE(result);
+
+     // 清空items
+     items.clear();
+
+     // 降序排序结果
+     extra = QVariant::fromValue(itemWeight2);
+     item = {"a", "aa", "aa",GRANDSEARCH_GROUP_FILE, " ", extra};
+     items.append(item);
+     extra = QVariant::fromValue(itemWeight3);
+     item = {"a", "ab", "ab",GRANDSEARCH_GROUP_FILE, " ", extra};
+     items.append(item);
+     extra = QVariant::fromValue(itemWeight1);
+     item = {"a", "a", "a",GRANDSEARCH_GROUP_FILE, " ", extra};
+     items.append(item);
+     MatchedItemMap mapTest;
+     mapTest.insert(GRANDSEARCH_GROUP_FILE, items);
+     EXPECT_EQ(map, mapTest);
+
+     // 清空map,items
+     map.clear();
+     items.clear();
+
+     // 升序排序
+     order=Qt::AscendingOrder;
+     extra = QVariant::fromValue(itemWeight3);
+     item = {"a", "ab", "ab",GRANDSEARCH_GROUP_FILE, " ", extra};
+     items.append(item);
+     QVariantHash itemWeight4({{GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 1}});
+     extra = QVariant::fromValue(itemWeight4);
+     item = {"a", "a", "a",GRANDSEARCH_GROUP_FILE, " ", extra};
+     items.append(item);
+     QVariantHash itemWeight5({{GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 2}});
+     extra = QVariant::fromValue(itemWeight5);
+     item = {"a", "aa", "aa",GRANDSEARCH_GROUP_FILE, " ", extra};
+     items.append(item);
+     map.insert(GRANDSEARCH_GROUP_FILE, items);
+     result = Utils::sortByWeight(map, order);
+     EXPECT_TRUE(result);
+
+     // 清空items
+     items.clear();
+
+     // 升序排序结果
+     extra = QVariant::fromValue(itemWeight4);
+     item = {"a", "a", "a",GRANDSEARCH_GROUP_FILE, " ", extra};
+     items.append(item);
+     extra = QVariant::fromValue(itemWeight3);
+     item = {"a", "ab", "ab",GRANDSEARCH_GROUP_FILE, " ", extra};
+     items.append(item);
+     extra = QVariant::fromValue(itemWeight5);
+     item = {"a", "aa", "aa",GRANDSEARCH_GROUP_FILE, " ", extra};
+     items.append(item);
+     mapTest.insert(GRANDSEARCH_GROUP_FILE, items);
+     EXPECT_EQ(map, mapTest);
+}
+
+TEST(UtilsTest, compareByWeight)
+{
+     MatchedItem node1;
+     MatchedItem node2;
+     QVariant extra;
+
+     // 两项均有权重比较，默认降序排序
+     QVariantHash itemWeight1({{GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 1}});
+     extra = QVariant::fromValue(itemWeight1);
+     node1 = {"a", "a", "a",GRANDSEARCH_GROUP_FILE, " ", extra};
+     QVariantHash itemWeight2({{GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 2}});
+     extra = QVariant::fromValue(itemWeight2);
+     node2 = {"aa", "aa", "aa",GRANDSEARCH_GROUP_FILE, " ", extra};
+     bool result = Utils::compareByWeight(node1, node2);
+     EXPECT_FALSE(result);
+
+     // 仅第一个节点有权重，默认降序排序
+     QVariantHash itemWeight3({{"test", 0}});
+     extra = QVariant::fromValue(itemWeight3);
+     node2 = {"ab", "ab", "ab", GRANDSEARCH_GROUP_FILE, " ", extra};
+     result = Utils::compareByWeight(node1, node2);
+     EXPECT_TRUE(result);
+
+     //  仅第二个节点有权重，默认降序排序
+     result = Utils::compareByWeight(node2, node1);
+     EXPECT_FALSE(result);
+
+     // 两项均无权重，采用名称排序
+     QVariantHash itemWeight4({{"test", 0}});
+     extra = QVariant::fromValue(itemWeight4);
+     node1 = {"a", "a", "a",GRANDSEARCH_GROUP_FILE, " ", extra};
+     bool result1 = Utils::compareByWeight(node1, node2);
+     bool result2 = Utils::compareByString(node1.item, node2.item);
+     EXPECT_EQ(result1, result2);
+}
+
+TEST(UtilsTest, updateItemsWeight)
+{
+     MatchedItemMap map;
+     MatchedItemMap mapTest;
+     MatchedItems items;
+     MatchedItem item;
+     QString content = "a";
+     QStringList groupList, suffixList, keys;
+     QVariant extra;
+
+     // 关键字不包括冒号无需解析且不支持权重
+     QVariantHash itemWeight({{"test", 0}});
+     extra = QVariant::fromValue(itemWeight);
+     item = {"a", "a", "a",GRANDSEARCH_GROUP_APP, " ", extra};
+     items.append(item);
+     map.insert(GRANDSEARCH_GROUP_APP, items);
+     mapTest = map;
+     Utils::updateItemsWeight(map, content);
+     EXPECT_EQ(map, mapTest);
+
+     // 清空itemWeight,extra,items
+     itemWeight.clear();
+     extra = QVariant::fromValue(itemWeight);
+     items.clear();
+     map.clear();
+
+     // 对calcFileWeight进行打桩
+     stub_ext::StubExt stu;
+     stu.set_lamda(&Utils::calcFileWeight,[&](){
+          return 10;
+     });
+
+     // 关键字包括冒号，类目支持权重，但具体项无权重
+     content = "a:b";
+     item = {"a", "a", "a",GRANDSEARCH_GROUP_FILE, " ", QVariant()};
+     items.append(item);
+     map.insert(GRANDSEARCH_GROUP_FILE, items);
+     Utils::updateItemsWeight(map, content);
+     QVariant test = map.value(GRANDSEARCH_GROUP_FILE).first().extra;
+     QVariantHash itemWeight1({{GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 10}});
+     QVariant extraTest = QVariant::fromValue(itemWeight1);
+     EXPECT_EQ(extraTest, test);
+
+     // 清空items,map
+     items.clear();
+     map.clear();
+
+     // 关键字包括冒号，类目支持权重，具体项有权重且extra为哈希表结构
+     itemWeight.insert(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 0);
+     extra = QVariant::fromValue(itemWeight);
+     item = {"a","a","a",GRANDSEARCH_GROUP_FILE, " ", extra};
+     items.append(item);
+     map.insert(GRANDSEARCH_GROUP_FILE, items);
+     Utils::updateItemsWeight(map, content);
+     test = map.value(GRANDSEARCH_GROUP_FILE).first().extra;
+     EXPECT_EQ(extraTest, test);
+}
+
+TEST(UtilsTest, calcFileWeight)
+{
+     QString path = "ut_filestatisticsthread.cpp";
+     QString name = "ut_filestatisticsthread.cpp";
+     QStringList keys;
+
+     // 名称中包含关键字
+     keys.append("u");
+     int result=Utils::calcFileWeight(path, name, keys);
+     EXPECT_EQ(result, 103);
+
+     // 名称中不包含关键字
+     keys.clear();
+     keys.append("aaaaa");
+     result = Utils::calcFileWeight(path, name, keys);
+     EXPECT_EQ(result, 57);
+}
+
+TEST(UtilsTest, calcDateDiff)
+{
+     QDate dateTest1 = QDate(2022, 3, 27);
+     QDate dateTest2 = QDate(2022, 3, 28);
+     QString strTime1 = "12:00";
+     QString strTime2 = "12:01";
+     QTime timeTest1 = QTime::fromString(strTime1, "hh:mm");
+     QTime timeTest2 = QTime::fromString(strTime2, "hh:mm");
+     QDateTime date1(dateTest1, timeTest1);
+     QDateTime date2(dateTest2, timeTest2);
+
+     // 日期相隔计算是否正确
+     qint64 result = Utils::calcDateDiff(date1, date2);
+     EXPECT_EQ(result, 1);
+}
+
+TEST(UtilsTest, calcWeightByDateDiff)
+{
+     qint64 diff;
+     int type;
+
+     // 最近一天内创建
+     diff = 0;
+     type = 1;
+     int result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 24);
+
+     // 最近三天内创建
+     diff = 1;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 16);
+
+     diff = 2;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 16);
+
+     // 最近七天内创建
+     diff = 3;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 8);
+
+     diff = 4;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 8);
+
+     diff = 5;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 8);
+
+     diff = 6;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 8);
+
+     // 超过七天创建
+     diff = 7;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 0);
+
+     // 最近一天内修改
+     diff = 0;
+     type = 2;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 24);
+
+     // 最近三天内修改
+     diff = 1;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 16);
+
+     diff = 2;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 16);
+
+     // 最近七天内修改
+     diff = 3;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 8);
+
+     diff = 4;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 8);
+
+     diff = 5;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 8);
+
+     diff = 6;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 8);
+
+     // 超过七天修改
+     diff = 7;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 0);
+
+     // 最近一天内访问
+     diff = 0;
+     type = 3;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 9);
+
+     // 最近三天内访问
+     diff = 1;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 6);
+
+     diff = 2;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 6);
+
+     // 最近七天内访问
+     diff = 3;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 3);
+
+     diff = 4;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 3);
+
+     diff = 5;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 3);
+
+     diff = 6;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 3);
+
+     // 超过七天访问
+     diff = 7;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 0);
+
+     // 非创建,修改,访问属性
+     type = 4;
+     result = Utils::calcWeightByDateDiff(diff, type);
+     EXPECT_EQ(result, 0);
+}
+
+TEST(UtilsTest, packageBestMatch)
+{
+     MatchedItemMap map;
+     int maxQuantity = 4;
+     MatchedItems items;
+     MatchedItems itemsNull;
+     MatchedItem item;
+     QVariant extra;
+
+     // 匹配项为空
+     Utils::packageBestMatch(map, maxQuantity);
+     MatchedItems itemsTest;
+     itemsTest = map.value(GRANDSEARCH_GROUP_BEST);
+     EXPECT_EQ(itemsTest, itemsNull);
+
+     // 匹配项中不包含文件类目
+     item = {"a", "a", "a",GRANDSEARCH_GROUP_APP, " ", extra};
+     items.append(item);
+     item = {"a", "ab", "ab",GRANDSEARCH_GROUP_APP, " ", extra};
+     items.append(item);
+     map.insert(GRANDSEARCH_GROUP_APP, items);
+     Utils::packageBestMatch(map, maxQuantity);
+     itemsTest = map.value(GRANDSEARCH_GROUP_BEST);
+     EXPECT_EQ(itemsTest, itemsNull);
+
+     // 清空map,items
+     map.clear();
+     items.clear();
+
+     // 最大限制最佳匹配项数量小于等于0
+     maxQuantity = 0;
+     QVariantHash itemWeight({{GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 32}});
+     extra = QVariant::fromValue(itemWeight);
+     item = {"a", "a", "a", GRANDSEARCH_GROUP_FILE, " ", extra};
+     items.append(item);
+     itemWeight.insert(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 27);
+     extra = QVariant::fromValue(itemWeight);
+     item = {"a", "ab", "ab", GRANDSEARCH_GROUP_FILE, " ", extra};
+     items.append(item);
+     map.insert(GRANDSEARCH_GROUP_FILE, items);
+     Utils::packageBestMatch(map, maxQuantity);
+     itemsTest = map.value(GRANDSEARCH_GROUP_BEST);
+     EXPECT_EQ(itemsTest, itemsNull);
+
+     // 匹配项中包含文件类目并
+     itemWeight.insert(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 3);
+     extra = QVariant::fromValue(itemWeight);
+     item = {"a", "abc", "abc", GRANDSEARCH_GROUP_FILE, " ", extra};
+     items.append(item);
+     map.insert(GRANDSEARCH_GROUP_FILE, items);
+     maxQuantity = 4;
+     Utils::packageBestMatch(map, maxQuantity);
+     itemsTest = map.value(GRANDSEARCH_GROUP_BEST);
+     items.removeAt(2);
+     EXPECT_EQ(itemsTest, items);
+}
+
 TEST(UtilsTest, appIconName)
 {
     MatchedItem item;
