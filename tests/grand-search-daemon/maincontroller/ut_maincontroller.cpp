@@ -24,6 +24,7 @@
 #include "configuration/configer.h"
 #include "maincontroller/task/taskcommander.h"
 #include "searcher/searchergroup_p.h"
+#include "global/searchhelper.h"
 
 #include <stubext.h>
 
@@ -492,5 +493,64 @@ TEST(MainControllerTestPrivate, ut_dormancy_2)
     EXPECT_NO_FATAL_FAILURE(delete searchers);
 }
 
+TEST(MainControllerTestPrivate, ut_buildKeywordInJson_0)
+{
+    MainController mc;
+    QStringList groupList;
+    QStringList suffixList;
+    QStringList keywordList;
+    QJsonDocument doc;
+    QJsonObject obj;
+    QJsonArray groupArr, suffixArr, keywordArr;
+
+    groupList.append("a");
+    groupList.append("b");
+    suffixList.append("aa");
+    suffixList.append("bb");
+    keywordList.append("");
+    keywordList.append("aaa");
+    keywordList.append("bbb");
+
+    QString result = mc.d->buildKeywordInJson(groupList, suffixList, keywordList);
+    QString resultTest = "{\"Group\":[\"a\",\"b\"],\"Keyword\":[\"aaa\",\"bbb\"],\"Suffix\":[\"aa\",\"bb\"]}";
+    EXPECT_EQ(result, resultTest);
+}
+
+TEST(MainControllerTestPrivate, ut_checkSearcher_0)
+{
+    MainController mc;
+    QStringList groupList;
+    QStringList suffixList;
+    QStringList keywordList;
+
+    // searchHelper->getSearcherByGroupName打桩
+    stub_ext::StubExt stu;
+    stu.set_lamda(&SearchHelper::getSearcherByGroupName, []()->QStringList{
+        return {};
+    });
+    // 类目, 后缀不为空
+    groupList.append("text");
+    groupList.append("aaa");
+    suffixList.append("pdf");
+    QStringList result = mc.d->checkSearcher(groupList, suffixList, keywordList);
+    QStringList resultTest;
+    resultTest.append("com.deepin.dde-grand-search.file-deepin");
+    resultTest.append("com.deepin.dde-grand-search.file-fsearch");
+    EXPECT_EQ(result, resultTest);
+
+    // 清空groupList, suffixList
+    groupList.clear();
+    suffixList.clear();
+    resultTest.clear();
+
+    // 类目, 后缀为空
+    keywordList.append("a");
+    keywordList.append("b");
+    result = mc.d->checkSearcher(groupList, suffixList, keywordList);
+    resultTest.append("com.deepin.dde-grand-search.file-deepin");
+    resultTest.append("com.deepin.dde-grand-search.file-fsearch");
+    resultTest.append("com.deepin.dde-grand-search.app-desktop");
+    EXPECT_EQ(result, resultTest);
+}
 
 

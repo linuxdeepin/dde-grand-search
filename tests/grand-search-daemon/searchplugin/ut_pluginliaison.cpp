@@ -20,7 +20,10 @@
  */
 
 #include "searchplugin/pluginliaison_p.h"
+#include "searchplugin/pluginliaison.h"
 #include "searchplugin/convertors/dataconvertor.h"
+#include "grand-search/utils/utils.h"
+#include "global/builtinsearch.h"
 
 #include <stubext.h>
 
@@ -252,4 +255,109 @@ TEST(PluginLiaison, ut_onServiceStarted)
     registered = true;
     pl.d->onServiceStarted("service", "", "");
     EXPECT_TRUE(ready);
+}
+
+TEST(PluginLiaison, ut_parseResult_0)
+{
+    PluginLiaison pl;
+    QString json;
+
+    // 对fromJson进行打桩
+    stub_ext::StubExt stu;
+    stu.set_lamda(&QJsonDocument::fromJson, [](const QByteArray &json, QJsonParseError *error){
+        error->error = QJsonParseError::UnterminatedObject;
+        QJsonDocument doc;
+        return doc;
+    });
+    
+    // 对doc.object()进行打桩
+    bool root = false;
+    stu.set_lamda(&QJsonDocument::object, [&root](){
+        root = true;
+        QJsonObject obj;
+        return obj;
+    });
+
+    bool result = false;
+    pl.connect(&pl, &PluginLiaison::searchFinished, &pl, [&result](){result = true;});
+    pl.d->parseResult(json, pl.d);
+    EXPECT_TRUE(result);
+    EXPECT_FALSE(root);
+}
+
+TEST(PluginLiaison, ut_parseResult_1)
+{
+    PluginLiaison pl;
+    QString json;
+
+    // 对fromJson进行打桩
+    stub_ext::StubExt stu;
+    stu.set_lamda(&QJsonDocument::fromJson, [](const QByteArray &json, QJsonParseError *error){
+        error->error = QJsonParseError::NoError;
+        QJsonDocument doc;
+        return doc;
+    });
+
+    // 对loadAcpuire进行打桩
+    bool load = true;
+    stu.set_lamda(&QAtomicInteger<bool>::loadAcquire, [&load](){
+        load = false;
+        return load;
+    });
+
+    pl.d->parseResult(json, pl.d);
+    EXPECT_FALSE(load);
+}
+
+TEST(PluginLiaison, ut_parseResult_2)
+{
+    PluginLiaison pl;
+    QString json;
+
+    // 对fromJson进行打桩
+    stub_ext::StubExt stu;
+    stu.set_lamda(&QJsonDocument::fromJson, [](const QByteArray &json, QJsonParseError *error){
+        error->error = QJsonParseError::NoError;
+        QJsonDocument doc;
+        return doc;
+    });
+
+    // 对loadAcpuire进行打桩
+    stu.set_lamda(&QAtomicInteger<bool>::loadAcquire, [](){
+        return true;
+    });
+
+    // 对doc.object()进行打桩
+    stu.set_lamda(&QJsonDocument::object, [](){
+        QJsonObject obj;
+        return obj;
+    });
+
+    // 对DataConvIns->convert进行打桩
+    stu.set_lamda(&DataConvertor::convert, [](DataConvertor*, const QString &version, const QString &type, void *in, void *out)->int{
+        QVariantList ret;
+        QMap<QString, GrandSearch::MatchedItems> map;
+        GrandSearch::MatchedItems items;
+        GrandSearch::MatchedItem item;
+        QVariant extra;
+        QVariantHash itemWeight({{GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 32}});
+        extra = QVariant::fromValue(itemWeight);
+        item = {"a", "a", "a", GRANDSEARCH_GROUP_FILE, " ", extra};
+        items.append(item);
+        itemWeight.insert(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 27);
+        extra = QVariant::fromValue(itemWeight);
+        item = {"a", "ab", "ab", GRANDSEARCH_GROUP_FILE, " ", extra};
+        items.append(item);
+        map.insert(GRANDSEARCH_GROUP_FILE, items);
+        ret.append("test");
+        ret.append(QVariant::fromValue(map));
+        out = &ret;
+        return 1;
+    });
+
+    pl.d->m_searching = true;
+    bool result = false;
+    pl.connect(&pl, &PluginLiaison::searchFinished, &pl, [&result](GrandSearch::MatchedItemMap items){result = true;});
+    pl.d->parseResult(json, pl.d);
+    EXPECT_TRUE(result);
 }
