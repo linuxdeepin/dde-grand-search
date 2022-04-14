@@ -92,8 +92,8 @@ TEST_F(FileNameWorkerTest, ut_working_1)
         return QDBusPendingReply<bool>();
     });
     bool (QFile::*exists_addr)() const = &QFile::exists;
-    st.set_lamda(exists_addr, [](){ return true; });
-    st.set_lamda(&FileNameWorkerPrivate::searchRecentFile, [](){ return false; });
+    st.set_lamda(exists_addr, [](){ return false; });
+    st.set_lamda(&FileNameWorkerPrivate::searchUserPath, [](){ return false; });
 
     EXPECT_FALSE(worker->working(nullptr));
 }
@@ -108,25 +108,7 @@ TEST_F(FileNameWorkerTest, ut_working_2)
         return QDBusPendingReply<bool>();
     });
     bool (QFile::*exists_addr)() const = &QFile::exists;
-    st.set_lamda(exists_addr, [](){ return false; });
-    st.set_lamda(&FileNameWorkerPrivate::searchRecentFile, [](){ return true; });
-    st.set_lamda(&FileNameWorkerPrivate::searchUserPath, [](){ return false; });
-
-    EXPECT_FALSE(worker->working(nullptr));
-}
-
-TEST_F(FileNameWorkerTest, ut_working_3)
-{
-    worker->setContext("test");
-
-    stub_ext::StubExt st;
-    st.set_lamda(&ComDeepinAnythingInterface::isValid, [](){ return true; });
-    st.set_lamda(&ComDeepinAnythingInterface::hasLFT, [](){
-        return QDBusPendingReply<bool>();
-    });
-    bool (QFile::*exists_addr)() const = &QFile::exists;
     st.set_lamda(exists_addr, [](){ return true; });
-    st.set_lamda(&FileNameWorkerPrivate::searchRecentFile, [](){ return true; });
     st.set_lamda(&FileNameWorkerPrivate::searchUserPath, [](){ return true; });
     st.set_lamda(VADDR(FileNameWorker, hasItem), [](){ return true; });
 
@@ -220,35 +202,6 @@ TEST_F(FileNameWorkerTest, ut_appendSearchResult_3)
     EXPECT_FALSE(worker_ptr->appendSearchResult("test"));
 }
 
-TEST_F(FileNameWorkerTest, ut_appendSearchResult_4)
-{
-    stub_ext::StubExt st;
-    st.set_lamda(&FileSearchUtils::getGroupByName, [](){ return FileSearchUtils::Picture; });
-    st.set_lamda(&QHash<FileSearchUtils::Group, quint32>::contains, []() { return true; });
-
-    EXPECT_TRUE(worker_ptr->appendSearchResult("test", true));
-}
-
-TEST_F(FileNameWorkerTest, ut_searchRecentFile_0)
-{
-    stub_ext::StubExt st;
-    st.set_lamda(GrandSearch::SpecialTools::getRecentlyUsedFiles, [](){ return QStringList{"test.txt"}; });
-
-    EXPECT_FALSE(worker_ptr->searchRecentFile());
-}
-
-TEST_F(FileNameWorkerTest, ut_searchRecentFile_1)
-{
-    stub_ext::StubExt st;
-    st.set_lamda(GrandSearch::SpecialTools::getRecentlyUsedFiles, [](){ return QStringList{"/home/test.txt"}; });
-    st.set_lamda(&FileNameWorkerPrivate::isResultLimit, [](){ return true; });
-
-    worker->setContext("test");
-    worker_ptr->m_status.storeRelease(ProxyWorker::Runing);
-
-    EXPECT_TRUE(worker_ptr->searchRecentFile());
-}
-
 TEST_F(FileNameWorkerTest, ut_searchUserPath_0)
 {
     stub_ext::StubExt st;
@@ -268,6 +221,7 @@ TEST_F(FileNameWorkerTest, ut_searchUserPath_1)
     });
     st.set_lamda(&QFileInfo::isDir, [](){ return true; });
     st.set_lamda(&FileNameWorkerPrivate::isResultLimit, [](){ return true; });
+    st.set_lamda(&Configer::group, [](){ return ConfigerPrivate::tailerData(); });
     worker_ptr->m_status.storeRelease(ProxyWorker::Runing);
 
     EXPECT_TRUE(worker_ptr->searchUserPath());
@@ -305,6 +259,7 @@ TEST_F(FileNameWorkerTest, ut_searchByAnything_2)
     st.set_lamda(&QDBusPendingCall::error, [](){ return QDBusError(QDBusError::NoError, ""); });
     QStringList (QStringList::*filter_addr)(const QRegExp &) const = &QStringList::filter;
     st.set_lamda(filter_addr, [](){ return QStringList{"/data/home/test.txt", "/home/test.png", "/home/test.mp4", "/home/test.mp3"}; });
+    st.set_lamda(&Configer::group, [](){ return ConfigerPrivate::tailerData(); });
 
     EXPECT_TRUE(worker_ptr->searchByAnything());
 }

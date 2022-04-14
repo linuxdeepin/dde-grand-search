@@ -22,8 +22,10 @@
 #include "global/builtinsearch.h"
 #include "utils/specialtools.h"
 #include "global/searchhelper.h"
+#include "global/searchconfigdefine.h"
+#include "configuration/configer.h"
 
-GrandSearch::MatchedItem FileSearchUtils::packItem(const QString &fileName, const QString &searcher, bool isRecentFile)
+GrandSearch::MatchedItem FileSearchUtils::packItem(const QString &fileName, const QString &searcher)
 {
     QFileInfo fileInfo(fileName);
     QMimeType mimeType = GrandSearch::SpecialTools::getMimeType(fileInfo);
@@ -33,12 +35,7 @@ GrandSearch::MatchedItem FileSearchUtils::packItem(const QString &fileName, cons
     item.type = mimeType.name();
     item.icon = mimeType.iconName();
     item.searcher = searcher;
-
-    // 最近使用文件需要置顶显示
-    if (isRecentFile) {
-        QVariantHash showLevelHash({{GRANDSEARCH_PROPERTY_ITEM_LEVEL, GRANDSEARCH_PROPERTY_ITEM_LEVEL_FIRST}});
-        item.extra = QVariant::fromValue(showLevelHash);
-    }
+    item.extra = QVariant::fromValue(tailerData(fileInfo));
 
     return item;
 }
@@ -189,4 +186,25 @@ bool FileSearchUtils::fileShouldVisible(const QString &fileName, Group &group, c
     }
 
     return true;
+}
+
+QVariantHash FileSearchUtils::tailerData(const QFileInfo &info)
+{
+    QVariantHash hash;
+    QString data("");
+    auto config = Configer::instance()->group(GRANDSEARCH_TAILER_GROUP);
+    if (config->value(GRANDSEARCH_TAILER_PARENTDIR, false))
+        data.append(info.absolutePath());
+
+    if (config->value(GRANDSEARCH_TAILER_TIMEMODEFIED, false)) {
+        auto timeModified = info.lastModified().toString(" yyyy-MM-dd hh:mm:ss ") + QObject::tr("modified");
+        data.append(timeModified);
+    }
+
+    data = data.trimmed();
+    if (!data.isEmpty())
+        data.prepend("- ");
+
+    hash.insert(GRANDSEARCH_TAILER_DATA, data);
+    return hash;
 }

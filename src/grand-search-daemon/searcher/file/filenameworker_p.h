@@ -34,9 +34,8 @@ public:
     void initAnything();
     QFileInfoList traverseDirAndFile(const QString &path);
     bool sortFileName(const QFileInfo &info1, const QFileInfo &info2);
-    bool appendSearchResult(const QString &fileName, bool isRecentFile = false);
+    bool appendSearchResult(const QString &fileName);
 
-    bool searchRecentFile();
     bool searchUserPath();
     bool searchByAnything();
 

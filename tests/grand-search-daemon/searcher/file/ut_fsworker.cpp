@@ -60,30 +60,12 @@ TEST_F(FsWorkerTest, ut_isAsync)
     EXPECT_FALSE(worker->isAsync());
 }
 
-TEST_F(FsWorkerTest, ut_working_0)
-{
-    worker->m_status.storeRelease(FsWorker::Runing);
-    EXPECT_FALSE(worker->working(nullptr));
-
-    worker->m_status.storeRelease(FsWorker::Ready);
-    EXPECT_TRUE(worker->working(nullptr));
-
-    worker->m_status.storeRelease(FsWorker::Ready);
-    worker->setContext("test");
-    worker->m_app = static_cast<FsearchApplication *>(calloc(1, sizeof(FsearchApplication)));
-    stub_ext::StubExt st;
-    st.set_lamda(&FsWorker::searchRecentFile, [](){ return false; });
-    EXPECT_FALSE(worker->working(nullptr));
-    EXPECT_NO_FATAL_FAILURE(free(worker->m_app));
-}
-
 TEST_F(FsWorkerTest, ut_working_1)
 {
     worker->setContext("test");
     worker->m_app = static_cast<FsearchApplication *>(calloc(1, sizeof(FsearchApplication)));
 
     stub_ext::StubExt st;
-    st.set_lamda(&FsWorker::searchRecentFile, [](){ return true; });
     st.set_lamda(&FsWorker::searchLocalFile, [](){ return false; });
     EXPECT_FALSE(worker->working(nullptr));
     EXPECT_NO_FATAL_FAILURE(free(worker->m_app));
@@ -95,7 +77,6 @@ TEST_F(FsWorkerTest, ut_working_2)
     worker->m_app = static_cast<FsearchApplication *>(calloc(1, sizeof(FsearchApplication)));
 
     stub_ext::StubExt st;
-    st.set_lamda(&FsWorker::searchRecentFile, [](){ return true; });
     st.set_lamda(&FsWorker::searchLocalFile, [](){ return true; });
     bool (QAtomicInt::*testAndSetRelease_addr)(int, int) = &QAtomicInt::testAndSetRelease;
     st.set_lamda(testAndSetRelease_addr, [](){ return true; });
@@ -193,36 +174,6 @@ TEST_F(FsWorkerTest, ut_appendSearchResult_3)
     EXPECT_FALSE(worker->appendSearchResult("test"));
 }
 
-TEST_F(FsWorkerTest, ut_appendSearchResult_4)
-{
-    stub_ext::StubExt st;
-    st.set_lamda(&FileSearchUtils::getGroupByName, [](){ return FileSearchUtils::Picture; });
-    st.set_lamda(&QHash<FileSearchUtils::Group, quint32>::contains, []() { return true; });
-
-    EXPECT_TRUE(worker->appendSearchResult("test", true));
-}
-
-TEST_F(FsWorkerTest, ut_searchRecentFile_0)
-{
-    stub_ext::StubExt st;
-    st.set_lamda(GrandSearch::SpecialTools::getRecentlyUsedFiles, [](){ return QStringList{"test.txt"}; });
-
-    EXPECT_FALSE(worker->searchRecentFile());
-}
-
-TEST_F(FsWorkerTest, ut_searchRecentFile_1)
-{
-    stub_ext::StubExt st;
-    st.set_lamda(GrandSearch::SpecialTools::getRecentlyUsedFiles, [](){
-        return QStringList{"/home/test.txt", "/test.png", "/test.mp3", "test.mp4"};
-    });
-
-    worker->setContext("test");
-    worker->m_status.storeRelease(ProxyWorker::Runing);
-
-    EXPECT_TRUE(worker->searchRecentFile());
-}
-
 TEST_F(FsWorkerTest, ut_searchLocalFile_0)
 {
     worker->m_app = static_cast<FsearchApplication *>(calloc(1, sizeof(FsearchApplication)));
@@ -295,6 +246,9 @@ TEST_F(FsWorkerTest, ut_callbackReceiveResults_2)
     worker->m_app->search = static_cast<DatabaseSearch *>(calloc (1, sizeof (DatabaseSearch)));
     result->results = g_ptr_array_sized_new (1);
     g_ptr_array_add (result->results, nullptr);
+
+    stub_ext::StubExt st;
+    st.set_lamda(&Configer::group, [](){ return ConfigerPrivate::tailerData(); });
 
     EXPECT_NO_FATAL_FAILURE(worker->callbackReceiveResults(result, worker.get()));
     //free

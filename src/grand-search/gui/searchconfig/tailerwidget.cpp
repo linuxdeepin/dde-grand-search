@@ -20,6 +20,7 @@
  */
 #include "tailerwidget.h"
 #include "business/config/searchconfig.h"
+#include "global/searchconfigdefine.h"
 
 #include <DFontSizeManager>
 #include <DDialog>
@@ -46,8 +47,10 @@ TailerWidget::TailerWidget(QWidget *parent)
     m_mainLayout->addSpacerItem(new QSpacerItem(10, 10));
 
     m_checkBoxWidget = new CheckBoxWidget(this);
-    m_checkBoxWidget->addCheckBox(tr("Parent directory"));
-    m_checkBoxWidget->addCheckBox(tr("Time modified"));
+    m_checkBoxWidget->addCheckBox(tr("Parent directory"),
+                                  SearchConfig::instance()->getConfig(GRANDSEARCH_TAILER_GROUP, GRANDSEARCH_TAILER_PARENTDIR, false).toBool());
+    m_checkBoxWidget->addCheckBox(tr("Time modified"),
+                                  SearchConfig::instance()->getConfig(GRANDSEARCH_TAILER_GROUP, GRANDSEARCH_TAILER_TIMEMODEFIED, true).toBool());
     m_mainLayout->addWidget(m_checkBoxWidget);
 
     connect(m_checkBoxWidget, &CheckBoxWidget::checkedChanged, this, &TailerWidget::onCheckBoxStateChanged);
@@ -59,7 +62,14 @@ TailerWidget::~TailerWidget()
 
 void TailerWidget::onCheckBoxStateChanged(int index, bool checked)
 {
-    Q_UNUSED(index)
-    Q_UNUSED(checked)
-    // todo
+    switch (index) {
+    case ParentDirectory:
+        SearchConfig::instance()->setConfig(GRANDSEARCH_TAILER_GROUP, GRANDSEARCH_TAILER_PARENTDIR, checked);
+        break;
+    case TimeModified:
+        SearchConfig::instance()->setConfig(GRANDSEARCH_TAILER_GROUP, GRANDSEARCH_TAILER_TIMEMODEFIED, checked);
+        break;
+    default:
+        break;
+    }
 }

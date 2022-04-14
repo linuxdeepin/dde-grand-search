@@ -71,17 +71,6 @@ TEST(SpecialToolsTest, ut_getJsonArray)
     EXPECT_TRUE(!SpecialTools::getJsonArray(&object, "key1").isEmpty());
 }
 
-TEST(SpecialToolsTest, ut_getRecentlyUsedFiles)
-{
-    stub_ext::StubExt st;
-    bool (QFile::*exists_addr)() const = &QFile::exists;
-    st.set_lamda(exists_addr, [](){ return false; });
-    EXPECT_TRUE(SpecialTools::getRecentlyUsedFiles().isEmpty());
-    
-    st.reset(exists_addr);
-    EXPECT_NO_FATAL_FAILURE(SpecialTools::getRecentlyUsedFiles());
-}
-
 TEST(SpecialToolsTest, ut_isHiddenFile)
 {
     QString path = QDir::homePath();

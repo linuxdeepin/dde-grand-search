@@ -60,10 +60,6 @@ bool FsWorker::working(void *context)
 
     m_time.start();
 
-    // 搜索最近使用文件
-    if (!searchRecentFile())
-        return false;
-
     if (!searchLocalFile())
         return false;
 
@@ -247,7 +243,7 @@ void FsWorker::callbackReceiveResults(void *data, void *sender)
     self->m_conditionMtx.unlock();
 }
 
-bool FsWorker::appendSearchResult(const QString &fileName, bool isRecentFile)
+bool FsWorker::appendSearchResult(const QString &fileName)
 {
     if (m_tmpSearchResults.contains(fileName))
         return false;
@@ -275,7 +271,7 @@ bool FsWorker::appendSearchResult(const QString &fileName, bool isRecentFile)
         return false;
 
     m_tmpSearchResults << fileName;
-    const auto &item = FileSearchUtils::packItem(fileName, name(), isRecentFile);
+    const auto &item = FileSearchUtils::packItem(fileName, name());
 
     QMutexLocker lk(&m_mtx);
     m_items[group].append(item);
@@ -292,36 +288,6 @@ bool FsWorker::appendSearchResult(const QString &fileName, bool isRecentFile)
             m_resultCountHash[FileSearchUtils::File]++;
         }
     }
-
-    return true;
-}
-
-bool FsWorker::searchRecentFile()
-{
-    // 搜索最近使用文件
-    const auto &recentfiles = GrandSearch::SpecialTools::getRecentlyUsedFiles();
-    for (const auto &file : recentfiles) {
-        //中断
-        if (m_status.loadAcquire() != ProxyWorker::Runing)
-            return false;
-
-        QFileInfo info(file);
-        QRegExp reg(m_searchInfo.keyword, Qt::CaseInsensitive);
-        if (info.fileName().contains(reg)) {
-            appendSearchResult(file, true);
-
-            //推送
-            tryNotify();
-
-            if (isResultLimit())
-                break;
-        }
-    }
-
-    int leave = itemCount();
-    qInfo() << "recently-used search found file items:" << m_resultCountHash
-            << "total spend:" << m_time.elapsed()
-            << "current items" << leave;
 
     return true;
 }
