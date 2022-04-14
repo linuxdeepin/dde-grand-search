@@ -23,6 +23,8 @@
 #include "utils/specialtools.h"
 #include "global/builtinsearch.h"
 #include "global/searchhelper.h"
+#include "configuration/configer.h"
+#include "configuration/configer_p.h"
 #include "stubext.h"
 
 #include <gtest/gtest.h>
@@ -37,8 +39,9 @@ TEST(FileSearchUtilsTest, ut_packItem)
     });
     st.set_lamda(&QMimeType::name, [](){ return "test"; });
     st.set_lamda(&QMimeType::iconName, [](){ return "test.icon"; });
+    st.set_lamda(&Configer::group, [](){ return ConfigerPrivate::tailerData(); });
 
-    EXPECT_NO_FATAL_FAILURE(FileSearchUtils::packItem("test", "searcher name", true));
+    EXPECT_NO_FATAL_FAILURE(FileSearchUtils::packItem("test", "searcher name"));
 }
 
 TEST(FileSearchUtilsTest, ut_groupKey)

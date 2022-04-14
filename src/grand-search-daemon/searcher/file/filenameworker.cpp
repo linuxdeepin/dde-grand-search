@@ -106,7 +106,7 @@ QFileInfoList FileNameWorkerPrivate::traverseDirAndFile(const QString &path)
     return result;
 }
 
-bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName, bool isRecentFile)
+bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName)
 {
     Q_Q(FileNameWorker);
 
@@ -135,7 +135,7 @@ bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName, bool isR
         return false;
 
     m_tmpSearchResults << fileName;
-    const auto &item = FileSearchUtils::packItem(fileName, q->name(), isRecentFile);
+    const auto &item = FileSearchUtils::packItem(fileName, q->name());
     QMutexLocker lk(&m_mutex);
     m_items[group].append(item);
     m_resultCountHash[group]++;
@@ -151,36 +151,6 @@ bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName, bool isR
             m_resultCountHash[FileSearchUtils::File]++;
         }
     }
-
-    return true;
-}
-
-bool FileNameWorkerPrivate::searchRecentFile()
-{
-    // 搜索最近使用文件
-    const auto &recentfiles = GrandSearch::SpecialTools::getRecentlyUsedFiles();
-    for (const auto &file : recentfiles) {
-        //中断
-        if (m_status.loadAcquire() != ProxyWorker::Runing)
-            return false;
-
-        QFileInfo info(file);
-        QRegExp reg(m_searchInfo.keyword, Qt::CaseInsensitive);
-        if (info.fileName().contains(reg)) {
-            appendSearchResult(file, true);
-
-            //推送
-            tryNotify();
-
-            if (isResultLimit())
-                break;
-        }
-    }
-
-    int leave = itemCount();
-    qInfo() << "recently-used search found items:" << m_resultCountHash
-            << "total spend:" << m_time.elapsed()
-            << "current items" << leave;
 
     return true;
 }
@@ -390,10 +360,6 @@ bool FileNameWorker::working(void *context)
             useAnything = false;
         }
     }
-
-    // 搜索最新使用文件
-    if (!d->searchRecentFile())
-        return false; //中断
 
     if (!d->m_supportParallelSearch) {
         // 搜索user目录下文件

@@ -44,8 +44,7 @@ public:
 private:
     void initConfig();
     static void callbackReceiveResults(void *data, void *sender);
-    bool appendSearchResult(const QString &fileName, bool isRecentFile = false);
-    bool searchRecentFile();
+    bool appendSearchResult(const QString &fileName);
     bool searchLocalFile();
     void tryNotify();
     int itemCount() const;

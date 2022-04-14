@@ -21,6 +21,7 @@
 
 #include "configer_p.h"
 #include "preferenceitem.h"
+#include "global/searchconfigdefine.h"
 
 #include <QStandardPaths>
 #include <QCoreApplication>
@@ -69,12 +70,22 @@ UserPreferencePointer ConfigerPrivate::fileSearcher()
     return UserPreferencePointer(new UserPreference(data));
 }
 
+UserPreferencePointer ConfigerPrivate::tailerData()
+{
+    QVariantHash data = {
+        {GRANDSEARCH_TAILER_PARENTDIR, false},
+        {GRANDSEARCH_TAILER_TIMEMODEFIED, true}
+    };
+
+    return UserPreferencePointer(new UserPreference(data));
+}
+
 bool ConfigerPrivate::updateConfig1(QSettings *set)
 {
     if (!set || m_root.isNull())
         return false;
 
-    set->beginGroup("Search_Group");
+    set->beginGroup(GRANDSEARCH_SEARCH_GROUP);
     UserPreferencePointer searcherConfig = m_root->group(GRANDSEARCH_PREF_SEARCHERENABLED);
     Q_ASSERT(searcherConfig);
 
@@ -177,6 +188,20 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
     }
 
     set->endGroup();
+
+    // 拖尾
+    set->beginGroup(GRANDSEARCH_TAILER_GROUP);
+    if (UserPreferencePointer conf = m_root->group(GRANDSEARCH_TAILER_GROUP)) {
+        bool ret = set->value(GRANDSEARCH_TAILER_PARENTDIR, false).toBool();
+        conf->setValue(GRANDSEARCH_TAILER_PARENTDIR, ret);
+
+        ret = set->value(GRANDSEARCH_TAILER_TIMEMODEFIED, true).toBool();
+        conf->setValue(GRANDSEARCH_TAILER_TIMEMODEFIED, ret);
+    } else {
+        qWarning() << "no shuch config:" << GRANDSEARCH_TAILER_GROUP;
+    }
+
+    set->endGroup();
     return true;
 }
 
@@ -258,6 +283,9 @@ void Configer::initDefault()
 #ifdef ENABLE_FSEARCH
     rootData.insert(GRANDSEARCH_CLASS_FILE_FSEARCH, QVariant::fromValue(d->fileSearcher()));
 #endif
+
+    // 拖尾
+    rootData.insert(GRANDSEARCH_TAILER_GROUP, QVariant::fromValue(d->tailerData()));
 
     {
         UserPreferencePointer root(new UserPreference(rootData));
