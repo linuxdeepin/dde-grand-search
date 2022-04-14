@@ -32,6 +32,11 @@
 // 搜索范围
 #define GRANDSEARCH_SEARCH_GROUP            "Search_Group"
 
+// 拖尾
+#define GRANDSEARCH_TAILER_GROUP            "Tailer_File_Group"
+#define GRANDSEARCH_TAILER_PARENTDIR        "tailer.file.parentDir"
+#define GRANDSEARCH_TAILER_TIMEMODEFIED     "tailer.file.timeModified"
+
 // 搜索体验计划
 #define GRANDSEARCH_PLAN_GROUP              "Plan_Group"
 #define GRANDSEARCH_PLAN_EXPERIENCE         "plan.experience"

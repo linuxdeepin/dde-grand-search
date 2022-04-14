@@ -115,32 +115,6 @@ QJsonArray SpecialTools::getJsonArray(QJsonObject *json, const QString &key)
     return ret;
 }
 
-QStringList SpecialTools::getRecentlyUsedFiles()
-{
-    static QString recentlyPath = QDir::homePath().append("/.local/share/recently-used.xbel");
-    QFile file(recentlyPath);
-    if (!file.exists() || !file.open(QIODevice::ReadOnly))
-        return {};
-
-    QStringList recentFiles;
-    QXmlStreamReader reader(&file);
-    while (!reader.atEnd()) {
-        if (!reader.readNextStartElement() || reader.name() != "bookmark")
-            continue;
-
-        const QString &location = reader.attributes().value("href").toString();
-        QUrl url(location);
-        auto filePath = url.toLocalFile();
-        // 过滤保险箱文件
-        static auto vaultPath = QDir::homePath().append("/.local/share/applications/vault_unlocked");
-        if (!filePath.contains(vaultPath) && QFile::exists(filePath))
-            recentFiles << filePath;
-    }
-
-    file.close();
-    return recentFiles;
-}
-
 bool SpecialTools::isHiddenFile(const QString &fileName, QHash<QString, QSet<QString>> &filters, const QString &pathPrefix)
 {
     if (!fileName.startsWith(pathPrefix) || fileName == pathPrefix)

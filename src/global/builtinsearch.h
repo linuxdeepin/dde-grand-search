@@ -51,6 +51,9 @@
 // 权重属性
 #define GRANDSEARCH_PROPERTY_ITEM_WEIGHT    "itemWeight"
 
+// 拖尾数据
+#define GRANDSEARCH_TAILER_DATA             "tailerData"
+
 #define DEF_BUILTISEARCH_NAMES  \
 static const QStringList predefBuiltinSearches { \
 GRANDSEARCH_CLASS_FILE_DEEPIN, \

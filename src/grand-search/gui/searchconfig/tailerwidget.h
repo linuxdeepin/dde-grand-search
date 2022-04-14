@@ -33,6 +33,12 @@ class TailerWidget : public Dtk::Widget::DWidget
 {
     Q_OBJECT
 public:
+    enum TailerProperty
+    {
+        ParentDirectory,
+        TimeModified
+    };
+
     explicit TailerWidget(QWidget *parent = nullptr);
     ~TailerWidget();
 
