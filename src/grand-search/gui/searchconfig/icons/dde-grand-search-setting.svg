@@ -1,100 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>画板备份 6</title>
+    <title>编组 2</title>
     <defs>
-        <filter x="-37.5%" y="-37.5%" width="190.9%" height="193.4%" filterUnits="objectBoundingBox" id="filter-1">
-            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
-            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
-            <feColorMatrix values="0 0 0 0 0.411764706   0 0 0 0 0.839215686   0 0 0 0 0.788235294  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
-            <feMerge>
-                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
-                <feMergeNode in="SourceGraphic"></feMergeNode>
-            </feMerge>
-        </filter>
-        <linearGradient x1="50%" y1="4.14048842%" x2="50%" y2="100%" id="linearGradient-2">
-            <stop stop-color="#48CEBE" offset="0%"></stop>
-            <stop stop-color="#2383FF" offset="100%"></stop>
+        <linearGradient x1="39.598747%" y1="12.4444444%" x2="75.3018846%" y2="87.5555556%" id="linearGradient-1">
+            <stop stop-color="#D7E4FF" offset="0%"></stop>
+            <stop stop-color="#F4F9FF" offset="100%"></stop>
         </linearGradient>
-        <filter x="-46.2%" y="-44.7%" width="200.1%" height="196.7%" filterUnits="objectBoundingBox" id="filter-3">
-            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
-            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
-            <feColorMatrix values="0 0 0 0 0.151661233   0 0 0 0 0.466492764   0 0 0 0 0.475361257  0 0 0 0.492597247 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
-            <feMerge>
-                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
-                <feMergeNode in="SourceGraphic"></feMergeNode>
-            </feMerge>
-        </filter>
-        <linearGradient x1="100%" y1="45.1843739%" x2="7.9821481%" y2="45.1843739%" id="linearGradient-4">
-            <stop stop-color="#EEEEEE" offset="0%"></stop>
-            <stop stop-color="#FFFFFF" offset="32.5819063%"></stop>
-            <stop stop-color="#D4EDEE" offset="57.2329662%"></stop>
-            <stop stop-color="#D3E7E7" offset="76.5272336%"></stop>
-            <stop stop-color="#ACC9CA" offset="100%"></stop>
+        <linearGradient x1="46.8261315%" y1="0.564822635%" x2="46.8261315%" y2="106.941106%" id="linearGradient-2">
+            <stop stop-color="#416F97" offset="0%"></stop>
+            <stop stop-color="#17255D" offset="100%"></stop>
         </linearGradient>
-        <path d="M0.424197897,0 L3.01360601,0 L3.40075554,8.36681275 C3.42240629,8.83471417 3.11637444,9.25494905 2.6644091,9.37794428 L2.58085115,9.40068326 C2.01969511,9.55339301 1.42798371,9.55382771 0.866603905,9.40194262 L0.774868631,9.37712302 C0.322191884,9.25464828 0.0154279904,8.83405784 0.0371041804,8.36560673 L0.424197897,0 L0.424197897,0 Z" id="path-5"></path>
-        <linearGradient x1="16.7068037%" y1="56.377551%" x2="100%" y2="50%" id="linearGradient-7">
-            <stop stop-color="#EEEEEE" offset="0%"></stop>
-            <stop stop-color="#79ACAE" offset="100%"></stop>
+        <linearGradient x1="39.598747%" y1="14.2011834%" x2="75.3018846%" y2="85.7988166%" id="linearGradient-3">
+            <stop stop-color="#D7E4FF" offset="0%"></stop>
+            <stop stop-color="#F4F9FF" offset="100%"></stop>
         </linearGradient>
-        <filter x="-46.7%" y="-130.9%" width="193.5%" height="361.8%" filterUnits="objectBoundingBox" id="filter-8">
-            <feGaussianBlur stdDeviation="0.5" in="SourceGraphic"></feGaussianBlur>
-        </filter>
-        <linearGradient x1="100%" y1="50%" x2="0%" y2="50%" id="linearGradient-9">
-            <stop stop-color="#E2EEEF" offset="0%"></stop>
-            <stop stop-color="#DEEAE9" offset="18.4953885%"></stop>
-            <stop stop-color="#E6F3F3" offset="28.9673485%"></stop>
-            <stop stop-color="#F0F5F5" offset="45.8332195%"></stop>
-            <stop stop-color="#F5F8F8" offset="71.6350058%"></stop>
-            <stop stop-color="#E1EDED" offset="82.9737146%"></stop>
-            <stop stop-color="#D4E7E7" offset="100%"></stop>
+        <linearGradient x1="19.1505187%" y1="-17.6408098%" x2="19.1505187%" y2="133.960992%" id="linearGradient-4">
+            <stop stop-color="#E98E6C" offset="0%"></stop>
+            <stop stop-color="#7428AA" offset="100%"></stop>
         </linearGradient>
-        <rect id="path-10" x="-9.09494702e-13" y="0" width="3.43780391" height="2.29186927" rx="0.2"></rect>
-        <filter x="-1.5%" y="-2.2%" width="102.9%" height="108.7%" filterUnits="objectBoundingBox" id="filter-11">
-            <feOffset dx="0" dy="0.1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
-            <feColorMatrix values="0 0 0 0 0.561384046   0 0 0 0 0.751254619   0 0 0 0 0.758910691  0 0 0 1 0" type="matrix" in="shadowOffsetOuter1"></feColorMatrix>
-        </filter>
-        <path d="M8.5,0 C13.1944204,0 17,3.80557963 17,8.5 C17,13.1944204 13.1944204,17 8.5,17 C3.80557963,17 0,13.1944204 0,8.5 C0,3.80557963 3.80557963,0 8.5,0 Z M8.5,2.26666667 C5.05742506,2.26666667 2.26666667,5.05742506 2.26666667,8.5 C2.26666667,11.9425749 5.05742506,14.7333333 8.5,14.7333333 C11.9425749,14.7333333 14.7333333,11.9425749 14.7333333,8.5 C14.7333333,5.05742506 11.9425749,2.26666667 8.5,2.26666667 Z" id="path-12"></path>
-        <filter x="-1.2%" y="-1.2%" width="102.4%" height="102.4%" filterUnits="objectBoundingBox" id="filter-13">
-            <feGaussianBlur stdDeviation="0.05" in="SourceAlpha" result="shadowBlurInner1"></feGaussianBlur>
-            <feOffset dx="0" dy="-0.2" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
-            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
-            <feColorMatrix values="0 0 0 0 0.573778474   0 0 0 0 0.774977658   0 0 0 0 0.784123075  0 0 0 1 0" type="matrix" in="shadowInnerInner1" result="shadowMatrixInner1"></feColorMatrix>
-            <feGaussianBlur stdDeviation="0.1" in="SourceAlpha" result="shadowBlurInner2"></feGaussianBlur>
-            <feOffset dx="0" dy="0.2" in="shadowBlurInner2" result="shadowOffsetInner2"></feOffset>
-            <feComposite in="shadowOffsetInner2" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner2"></feComposite>
-            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 1 0" type="matrix" in="shadowInnerInner2" result="shadowMatrixInner2"></feColorMatrix>
-            <feMerge>
-                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
-                <feMergeNode in="shadowMatrixInner2"></feMergeNode>
-            </feMerge>
-        </filter>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-5">
+            <stop stop-color="#EFEFEF" offset="0%"></stop>
+            <stop stop-color="#EFEFEF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="34.3158356%" y1="8.67853163%" x2="63.4505604%" y2="100%" id="linearGradient-6">
+            <stop stop-color="#00EADB" offset="0%"></stop>
+            <stop stop-color="#0071FF" offset="100%"></stop>
+        </linearGradient>
     </defs>
-    <g id="画板备份-6" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="编组-4">
+    <g id="1.1.0" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="编组-2">
             <rect id="矩形" x="0" y="0" width="32" height="32"></rect>
-            <g id="编组-3" filter="url(#filter-1)" transform="translate(2.000000, 2.000000)">
-                <rect id="矩形" fill="url(#linearGradient-2)" x="0" y="0" width="28" height="28" rx="5"></rect>
-                <rect id="矩形" fill-opacity="0.0563674607" fill="#0AA19E" opacity="0.477592832" x="3.5" y="4" width="21" height="3" rx="1.5"></rect>
-                <rect id="矩形备份" fill-opacity="0.0563674607" fill="#0AA19E" opacity="0.477592832" x="3.5" y="13" width="21" height="3" rx="1.5"></rect>
-                <rect id="矩形备份-2" fill-opacity="0.0563674607" fill="#0AA19E" opacity="0.477592832" x="3.5" y="20" width="13" height="3" rx="1.5"></rect>
-                <g id="编组-2" filter="url(#filter-3)" transform="translate(4.000000, 4.000000)">
-                    <g id="编组" transform="translate(17.285121, 18.039962) rotate(-45.000000) translate(-17.285121, -18.039962) translate(15.566219, 12.077082)">
-                        <g id="椭圆形" transform="translate(0.000000, 2.291869)">
-                            <mask id="mask-6" fill="white">
-                                <use xlink:href="#path-5"></use>
-                            </mask>
-                            <use id="蒙版" fill="url(#linearGradient-4)" xlink:href="#path-5"></use>
-                        </g>
-                        <ellipse id="椭圆形" fill="url(#linearGradient-7)" filter="url(#filter-8)" cx="1.75485167" cy="10.8978963" rx="1.60430849" ry="1"></ellipse>
-                        <g id="矩形">
-                            <use fill="black" fill-opacity="1" filter="url(#filter-11)" xlink:href="#path-10"></use>
-                            <use fill="url(#linearGradient-9)" fill-rule="evenodd" xlink:href="#path-10"></use>
-                        </g>
+            <g id="32px" transform="translate(1.000000, 3.000000)">
+                <g id="矩形">
+                    <g id="path-3-link" fill="url(#linearGradient-1)">
+                        <path d="M4.375,0 L25.625,0 C28.0412458,0 30,1.95875422 30,4.375 L30,21.625 C30,24.0412458 28.0412458,26 25.625,26 L4.375,26 C1.95875422,26 0,24.0412458 0,21.625 L0,4.375 C0,1.95875422 1.95875422,0 4.375,0 Z" id="path-3"></path>
                     </g>
-                    <g id="蒙版">
-                        <use fill="#FBFBFB" fill-rule="evenodd" xlink:href="#path-12"></use>
-                        <use fill="black" fill-opacity="1" filter="url(#filter-13)" xlink:href="#path-12"></use>
+                    <g id="path-3-link" fill="#000000" fill-rule="nonzero">
+                        <path d="M4.375,0 L25.625,0 C28.0412458,0 30,1.95875422 30,4.375 L30,21.625 C30,24.0412458 28.0412458,26 25.625,26 L4.375,26 C1.95875422,26 0,24.0412458 0,21.625 L0,4.375 C0,1.95875422 1.95875422,0 4.375,0 Z" id="path-3"></path>
                     </g>
+                </g>
+                <path d="M4.5,1 L25.5,1 C27.4329966,1 29,2.56700338 29,4.5 L29,21.5 C29,23.4329966 27.4329966,25 25.5,25 L4.5,25 C2.56700338,25 1,23.4329966 1,21.5 L1,4.5 C1,2.56700338 2.56700338,1 4.5,1 Z" id="矩形" fill="url(#linearGradient-2)" fill-rule="nonzero"></path>
+                <path d="M25.875,2 C27.0486051,2 28,2.95139491 28,4.125 L28,6 L27,6 L27,4.4375 C27,3.69029122 26.4298989,3.07623668 25.7009408,3.00658047 L25.5625,3 L24,3 L24,2 L25.875,2 Z M25.875,24 C27.0486051,24 28,23.0486051 28,21.875 L28,20 L27,20 L27,21.5625 C27,22.3097088 26.4298989,22.9237633 25.7009408,22.9934195 L25.5625,23 L24,23.001 L24,24 L25.875,24 Z M4.125,2 C2.95139491,2 2,2.95139491 2,4.125 L2,6 L3,6 L3,4.4375 C3,3.69029122 3.57010108,3.07623668 4.29905916,3.00658047 L4.4375,3 L6,3 L6,2 L4.125,2 Z M4.125,24 C2.95139491,24 2,23.0486051 2,21.875 L2,20 L3,20 L3,21.5625 C3,22.3097088 3.57010108,22.9237633 4.29905916,22.9934195 L4.4375,23 L6,23.001 L6,24 L4.125,24 Z" id="形状结合" fill="url(#linearGradient-3)" fill-rule="nonzero" opacity="0.498705183"></path>
+                <g id="编组" transform="translate(14.436287, 13.312500) scale(-1, 1) translate(-14.436287, -13.312500) translate(7.540641, 4.031250)" fill-rule="nonzero">
+                    <polygon id="矩形" fill="#FFFFFF" transform="translate(4.008216, 12.663559) rotate(27.000000) translate(-4.008216, -12.663559) " points="3.11583084 10.6862102 4.90060085 10.6862102 4.90060085 14.6409073 3.11583084 14.6409073"></polygon>
+                    <path d="M1.50698163,13.4261792 L3.0822952,13.4261792 C3.3969644,13.4261792 3.65205418,13.681269 3.65205418,13.9959382 L3.65205418,16.8493573 C3.65205418,17.5990374 3.04431843,18.2067731 2.29463841,18.2067731 C1.54495838,18.2067731 0.937222644,17.5990374 0.937222644,16.8493573 L0.937222644,13.9959382 C0.937222644,13.681269 1.19231243,13.4261792 1.50698163,13.4261792 Z" id="路径" fill="url(#linearGradient-4)" transform="translate(2.294638, 15.816476) rotate(27.000000) translate(-2.294638, -15.816476) "></path>
+                    <circle id="椭圆形" stroke="#FFFFFF" stroke-width="0.5" fill="url(#linearGradient-5)" cx="7.01913573" cy="6.77215528" r="6.77215528"></circle>
+                    <circle id="椭圆形" fill="url(#linearGradient-6)" cx="7.01913573" cy="6.77215528" r="5.80954747"></circle>
                 </g>
             </g>
         </g>

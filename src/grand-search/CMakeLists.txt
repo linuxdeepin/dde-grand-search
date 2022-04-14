@@ -102,6 +102,12 @@ set(GUISRC
     gui/searchconfig/planwidget.h
     gui/searchconfig/customwidget.cpp
     gui/searchconfig/customwidget.h
+    gui/searchconfig/tailerwidget.cpp
+    gui/searchconfig/tailerwidget.h
+    gui/searchconfig/checkboxwidget/checkboxwidget.cpp
+    gui/searchconfig/checkboxwidget/checkboxwidget.h
+    gui/searchconfig/checkboxwidget/checkboxitem.cpp
+    gui/searchconfig/checkboxwidget/checkboxitem.h
     gui/searchconfig/switchwidget/switchwidget.cpp
     gui/searchconfig/switchwidget/switchwidget.h
     gui/searchconfig/hyperlinklabel/hyperlinklabel.cpp
