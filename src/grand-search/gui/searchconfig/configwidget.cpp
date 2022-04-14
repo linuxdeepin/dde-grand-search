@@ -24,6 +24,7 @@
 #include "scopewidget.h"
 #include "planwidget.h"
 #include "customwidget.h"
+#include "tailerwidget.h"
 
 #include <DSwitchButton>
 #include <DScrollArea>
@@ -46,7 +47,6 @@ ConfigWidget::ConfigWidget(QWidget *parent)
 
 ConfigWidget::~ConfigWidget()
 {
-
 }
 
 void ConfigWidget::initUI()
@@ -87,7 +87,9 @@ void ConfigWidget::initUI()
     m_searchGroupWidget = new ScopeWidget(m_scrollAreaContent);
     m_searchCustomWidget = new CustomWidget(m_scrollAreaContent);
     m_searchPlanWidget = new PlanWidget(m_scrollAreaContent);
+    m_tailerWidget = new TailerWidget(m_scrollAreaContent);
     m_scrollLayout->addWidget(m_searchGroupWidget);
+    m_scrollLayout->addWidget(m_tailerWidget);
     m_scrollLayout->addWidget(m_searchCustomWidget);
     m_scrollLayout->addWidget(m_searchPlanWidget);
     m_scrollLayout->addStretch();
@@ -97,5 +99,4 @@ void ConfigWidget::initUI()
 
 void ConfigWidget::initData()
 {
-
 }

@@ -29,6 +29,7 @@
 class ScopeWidget;
 class PlanWidget;
 class CustomWidget;
+class TailerWidget;
 
 class ConfigWidget : public Dtk::Widget::DMainWindow
 {
@@ -50,6 +51,7 @@ private:
     ScopeWidget *m_searchGroupWidget          = nullptr;
     CustomWidget *m_searchCustomWidget        = nullptr;
     PlanWidget *m_searchPlanWidget            = nullptr;
+    TailerWidget *m_tailerWidget              = nullptr;
 };
 
 #endif // CONFIGWIDGET_H
