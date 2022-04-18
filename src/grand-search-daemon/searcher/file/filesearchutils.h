@@ -54,6 +54,7 @@ public:
     static Group getGroupByGroupName(const QString &groupName);
     static SearchInfo parseContent(const QString &content);
     static bool fileShouldVisible(const QString &fileName, Group &group, const SearchInfo &info);
+    static bool filterByBlacklist(const QString &fileName);
     static QVariantHash tailerData(const QFileInfo &info);
 };
 

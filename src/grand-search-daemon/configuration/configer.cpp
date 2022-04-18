@@ -80,6 +80,15 @@ UserPreferencePointer ConfigerPrivate::tailerData()
     return UserPreferencePointer(new UserPreference(data));
 }
 
+UserPreferencePointer ConfigerPrivate::blacklist()
+{
+    QVariantHash data = {
+        {GRANDSEARCH_BLACKLIST_PATH, QStringList("")}
+    };
+
+    return UserPreferencePointer(new UserPreference(data));
+}
+
 bool ConfigerPrivate::updateConfig1(QSettings *set)
 {
     if (!set || m_root.isNull())
@@ -202,6 +211,20 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
     }
 
     set->endGroup();
+
+    // 路径黑名单
+    set->beginGroup(GRANDSEARCH_BLACKLIST_GROUP);
+    if (UserPreferencePointer conf = m_root->group(GRANDSEARCH_BLACKLIST_GROUP)) {
+        auto blacklist = set->value(GRANDSEARCH_BLACKLIST_PATH, QStringList()).toStringList();
+        for (auto &path : blacklist) {
+            path = QByteArray::fromBase64(path.toLocal8Bit());
+        }
+
+        conf->setValue(GRANDSEARCH_BLACKLIST_PATH, blacklist);
+    } else {
+        qWarning() << "no shuch config:" << GRANDSEARCH_BLACKLIST_GROUP;
+    }
+    set->endGroup();
     return true;
 }
 
@@ -286,6 +309,9 @@ void Configer::initDefault()
 
     // 拖尾
     rootData.insert(GRANDSEARCH_TAILER_GROUP, QVariant::fromValue(d->tailerData()));
+
+    // 路径黑名单
+    rootData.insert(GRANDSEARCH_BLACKLIST_GROUP, QVariant::fromValue(d->blacklist()));
 
     {
         UserPreferencePointer root(new UserPreference(rootData));

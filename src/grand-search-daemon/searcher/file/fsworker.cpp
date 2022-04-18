@@ -267,7 +267,7 @@ bool FsWorker::appendSearchResult(const QString &fileName)
     if (!FileSearchUtils::fileShouldVisible(fileName, group, m_searchInfo))
         return false;
 
-    if (m_resultCountHash[group] >= MAX_SEARCH_NUM)
+    if (m_resultCountHash[group] >= MAX_SEARCH_NUM || FileSearchUtils::filterByBlacklist(fileName))
         return false;
 
     m_tmpSearchResults << fileName;

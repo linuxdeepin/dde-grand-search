@@ -41,6 +41,10 @@
 #define GRANDSEARCH_PLAN_GROUP              "Plan_Group"
 #define GRANDSEARCH_PLAN_EXPERIENCE         "plan.experience"
 
+// 路径黑名单
+#define GRANDSEARCH_BLACKLIST_GROUP         "Blacklist_Group"
+#define GRANDSEARCH_BLACKLIST_PATH          "Blacklist.path"
+
 // 个性化
 #define GRANDSEARCH_CUSTOM_GROUP                        "Custom_Group"
 #define GRANDSEARCH_CUSTOM_BESTMATCH                    "custom.bestMatch"
