@@ -188,6 +188,21 @@ bool FileSearchUtils::fileShouldVisible(const QString &fileName, Group &group, c
     return true;
 }
 
+bool FileSearchUtils::filterByBlacklist(const QString &fileName)
+{
+    // 过滤黑名单中的结果
+    auto config = Configer::instance()->group(GRANDSEARCH_BLACKLIST_GROUP);
+    auto blacklist = config->value(GRANDSEARCH_BLACKLIST_PATH, QStringList());
+    if (!blacklist.isEmpty()) {
+        for (const auto &path : blacklist) {
+            if (fileName.startsWith(path))
+                return true;
+        }
+    }
+
+    return false;
+}
+
 QVariantHash FileSearchUtils::tailerData(const QFileInfo &info)
 {
     QVariantHash hash;

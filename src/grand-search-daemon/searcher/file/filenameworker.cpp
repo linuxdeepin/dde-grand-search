@@ -131,7 +131,7 @@ bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName)
     if (!FileSearchUtils::fileShouldVisible(fileName, group, m_searchInfo))
         return false;
 
-    if (m_resultCountHash[group] >= MAX_SEARCH_NUM)
+    if (m_resultCountHash[group] >= MAX_SEARCH_NUM || FileSearchUtils::filterByBlacklist(fileName))
         return false;
 
     m_tmpSearchResults << fileName;
@@ -169,13 +169,17 @@ bool FileNameWorkerPrivate::searchUserPath()
 
         QRegExp reg(m_searchInfo.keyword, Qt::CaseInsensitive);
         if (info.fileName().contains(reg)) {
-            const auto &absoluteFilePath = info.absoluteFilePath();
+            auto absoluteFilePath = info.absoluteFilePath();
 
             // 过滤文管设置的隐藏文件
             if (GrandSearch::SpecialTools::isHiddenFile(absoluteFilePath, m_hiddenFilters, QDir::homePath()))
                 continue;
 
-            appendSearchResult(info.absoluteFilePath());
+            // 去除掉添加的data前缀
+            if (m_hasAddDataPrefix && absoluteFilePath.startsWith("/data"))
+                absoluteFilePath = absoluteFilePath.mid(5);
+
+            appendSearchResult(absoluteFilePath);
 
             //推送
             tryNotify();
