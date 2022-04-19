@@ -191,20 +191,18 @@ bool FileSearchUtils::fileShouldVisible(const QString &fileName, Group &group, c
 QVariantHash FileSearchUtils::tailerData(const QFileInfo &info)
 {
     QVariantHash hash;
-    QString data("");
+    QStringList datas;
     auto config = Configer::instance()->group(GRANDSEARCH_TAILER_GROUP);
     if (config->value(GRANDSEARCH_TAILER_PARENTDIR, false))
-        data.append(info.absolutePath());
+        datas.append(info.absolutePath());
 
     if (config->value(GRANDSEARCH_TAILER_TIMEMODEFIED, false)) {
-        auto timeModified = info.lastModified().toString(" yyyy-MM-dd hh:mm:ss ") + QObject::tr("modified");
-        data.append(timeModified);
+        auto timeModified = info.lastModified().toString("yyyy-MM-dd hh:mm ") + QObject::tr("modified");
+        datas.append(timeModified);
     }
 
-    data = data.trimmed();
-    if (!data.isEmpty())
-        data.prepend("- ");
+    if (!datas.isEmpty())
+        hash.insert(GRANDSEARCH_PROPERTY_ITEM_TAILER, datas);
 
-    hash.insert(GRANDSEARCH_TAILER_DATA, data);
     return hash;
 }
