@@ -59,6 +59,9 @@ public:
 
     void clear();
 
+    void updatePreviewItemState(const bool preview);
+    bool isPreviewItem() const;
+
 public slots:
     void onSetThemeType(int type);
 
@@ -81,6 +84,8 @@ private:
 
     int                         m_themeType     = 1;// 当前应用主题类型 1:浅色 2:深色 默认1:浅色
     MatchedItems                m_matchedItems;
+
+    bool                        m_isPreviewItem = false;
 };
 
 #endif // GRANDSEARCHLISTVIEW_H

@@ -56,6 +56,7 @@ signals:
     void sigCurrentItemChanged(const QString &searchGroupName, const GrandSearch::MatchedItem &item);
     void sigShowNoContent(bool noContent);
     void sigCloseWindow();
+    void sigPreviewStateChanged(bool priview);
 
 protected:
     void initUi();
