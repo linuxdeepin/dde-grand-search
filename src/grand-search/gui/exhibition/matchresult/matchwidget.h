@@ -48,6 +48,8 @@ public slots:
     void selectPreviousItem();
     void handleItem();
 
+    void onPreviewStateChanged(const bool preview);
+
 private slots:
     void onSelectItemByMouse(const GrandSearch::MatchedItem &item);
 
@@ -102,6 +104,7 @@ private:
     GroupWidgets m_vGroupWidgets;                       // 类目列表按显示顺序存放
 
     bool m_customSelected = false;                      // 记录用户是否手动选中
+    bool m_isPreviewItem = false;                       // 记录当前是否预览项目
 };
 
 #endif // MATCHWIDGET_H

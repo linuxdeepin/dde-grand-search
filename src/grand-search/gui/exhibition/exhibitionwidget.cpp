@@ -115,6 +115,9 @@ void ExhibitionWidget::previewItem(const QString &searchGroupName, const Matched
 
         // 不显示预览界面，右侧空隙需为0, 用来贴着主界面右侧显示滚动条区域
         m_hLayout->setContentsMargins(MARGIN_SIZE, 0, 0, MARGIN_SIZE);
+
+        emit sigPreviewStateChanged(false);
+
         return;
     }
 
@@ -123,6 +126,8 @@ void ExhibitionWidget::previewItem(const QString &searchGroupName, const Matched
 
     // 预览界面预览选择的匹配结果项
     m_previewWidget->previewItem(item);
+
+    emit sigPreviewStateChanged(true);
 }
 
 void ExhibitionWidget::initUi()
@@ -151,6 +156,8 @@ void ExhibitionWidget::initConnect()
     connect(m_matchWidget, &MatchWidget::sigShowNoContent, this, &ExhibitionWidget::sigShowNoContent);
     connect(m_matchWidget, &MatchWidget::sigCloseWindow, this, &ExhibitionWidget::sigCloseWindow);
     connect(m_matchWidget, &MatchWidget::sigCurrentItemChanged, this, &ExhibitionWidget::previewItem);
+
+    connect(this, &ExhibitionWidget::sigPreviewStateChanged, m_matchWidget, &MatchWidget::onPreviewStateChanged);
 }
 
 void ExhibitionWidget::paintEvent(QPaintEvent *event)

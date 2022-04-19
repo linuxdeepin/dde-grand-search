@@ -173,6 +173,16 @@ void GrandSearchListView::clear()
         m_model->clear();
 }
 
+void GrandSearchListView::updatePreviewItemState(const bool preview)
+{
+    m_isPreviewItem = preview;
+}
+
+bool GrandSearchListView::isPreviewItem() const
+{
+    return m_isPreviewItem;
+}
+
 void GrandSearchListView::onSetThemeType(int type)
 {
     m_themeType = type;

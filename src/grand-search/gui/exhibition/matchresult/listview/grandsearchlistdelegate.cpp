@@ -20,6 +20,8 @@
 #include "grandsearchlistview.h"
 #include "global/builtinsearch.h"
 
+#include <DGuiApplicationHelper>
+
 #include <QDebug>
 #include <QPainter>
 #include <QPainterPath>
@@ -34,8 +36,10 @@
 #define ListItemSpace             10       // 列表图标与文本间间距
 #define ListItemHeight            36       // 列表行高
 #define ListIconSize              24       // 列表图标大小
-#define ListRowWidth              350      // 列表行宽
-#define ListIconMargin            6        // 列表图标边距距
+#define ListRowWidth              740      // 列表行宽
+#define ListIconMargin            10       // 列表图标边距
+#define TailDataMargin            10       // 拖尾信息显示间隔
+#define TailMaxWidth              150      // 拖尾信息最大显示宽度
 
 DWIDGET_USE_NAMESPACE
 
@@ -141,47 +145,32 @@ void GrandSearchListDelegate::drawSelectState(QPainter *painter, const QStyleOpt
 
 void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    QColor textColor;
-    QColor lightColor;
-
+    QColor nameTextColor;
     const GrandSearchListView *listview = qobject_cast<const GrandSearchListView *>(option.widget);
 
-    // 主题改变需要修改color
-    if (listview->getThemeType() == 2) {
-        textColor = QColor("#FFFFFF");
+    if ((listview->getThemeType() == DGuiApplicationHelper::DarkType)
+            || (index.isValid() && index == listview->currentIndex())) {
+        nameTextColor = QColor("#FFFFFF");
     } else {
-        textColor = QColor("#000000");
-    }
-
-    DPalette pa = option.palette;
-    QBrush selectBrush = pa.brush(QPalette::Active, DPalette:: Highlight);
-    QColor selectColor = selectBrush.color();
-    lightColor = selectColor;
-
-    if (index.isValid() && index == listview->currentIndex()) {
-        textColor = QColor("#FFFFFF");
-        lightColor = QColor("#FFFFFF");
+        nameTextColor = QColor("#000000");
     }
 
     // 设置字体
-    QFont fontT6 = DFontSizeManager::instance()->get(DFontSizeManager::T6);
+    QFont nameFont = DFontSizeManager::instance()->get(DFontSizeManager::T6);
 
     const QString &name = index.data(DATA_ROLE).value<MatchedItem>().name;
     const QString &searcher = index.data(DATA_ROLE).value<MatchedItem>().searcher;
 
-    int listItemTextMaxWidth = option.rect.width() / 2 - ListItemSpace * 2 - ListIconSize;
-    //预览界面正在显示，结果列表截断显示宽度改为列表显示最大宽度
-    if (listItemTextMaxWidth < ListRowWidth / 2)
-        listItemTextMaxWidth = option.rect.width() - ListItemSpace * 2 -ListIconSize;
-    QFontMetrics fontMetrics(fontT6);
-    QString mtext = fontMetrics.elidedText(name, Qt::ElideRight, listItemTextMaxWidth);
-    if (mtext != name && GRANDSEARCH_CLASS_WEB_STATICTEXT == searcher) {
+    int listItemTextMaxWidth = option.rect.width() - ListIconMargin - ListIconSize - ListItemSpace;
+    QFontMetrics nameFontMetrics(nameFont);
+    QString elidedName = nameFontMetrics.elidedText(name, Qt::ElideRight, listItemTextMaxWidth);
+    if (elidedName != name && GRANDSEARCH_CLASS_WEB_STATICTEXT == searcher) {
         // 如果存在截断显示，且该项属于web搜索，则截断时需要保留尾部的双引号
         // 根据文档工程师给出的翻译规范，双引号会被翻译，需要使用翻译后的字符计算宽度
         static const QString markStr = name.right(1);
-        static const int markWidth = fontMetrics.size(Qt::TextSingleLine, markStr).width();
-        mtext = fontMetrics.elidedText(name.left(name.count() - 1), Qt::ElideRight, listItemTextMaxWidth - markWidth);
-        mtext.append(markStr);
+        static const int markWidth = nameFontMetrics.size(Qt::TextSingleLine, markStr).width();
+        elidedName = nameFontMetrics.elidedText(name.left(name.count() - 1), Qt::ElideRight, listItemTextMaxWidth - markWidth);
+        elidedName.append(markStr);
     }
 
     QStyleOptionViewItem viewOption(option);
@@ -192,31 +181,224 @@ void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QSty
     viewOption.text = "";
     pStyle->drawControl(QStyle::CE_ItemViewItem, &viewOption, painter, viewOption.widget);
 
+    QTextDocument nameDocument;
+    nameDocument.setDocumentMargin(0);
+    nameDocument.setPlainText(elidedName);
+    QTextCursor nameCursor(&nameDocument);
+
+    nameCursor.beginEditBlock();
+    nameCursor.select(QTextCursor::LineUnderCursor);
+    QTextCharFormat nameFmt;
+    nameFmt.setForeground(nameTextColor);
+    nameFmt.setFont(nameFont);
+    nameCursor.mergeCharFormat(nameFmt);
+    nameCursor.clearSelection();
+    nameCursor.movePosition(QTextCursor::EndOfLine);
+    nameCursor.endEditBlock();
+
     // 设置文字边距，保证绘制文字居中
+    QAbstractTextDocumentLayout::PaintContext paintContext;
+    int nameMargin = static_cast<int>((option.rect.height() - nameFontMetrics.height()) / 2);
+    int actualNameWidth = nameFontMetrics.size(Qt::TextSingleLine, elidedName).width();
+    int actualStartX = ListIconMargin + ListIconSize + ListItemSpace;
+    QRect nameTextRect(actualStartX , option.rect.y() + nameMargin, actualNameWidth, option.rect.height());
+
+    painter->save();
+    painter->translate(nameTextRect.topLeft());
+    painter->setClipRect(nameTextRect.translated(-nameTextRect.topLeft()));
+    nameDocument.documentLayout()->draw(painter, paintContext);
+    painter->restore();
+
+    // 未显示预览窗口时，需要显示拖尾数据
+    if (!listview->isPreviewItem()) {
+        drawTailText(painter, option, index, listItemTextMaxWidth, actualStartX + nameTextRect.width());
+    }
+
+}
+
+void GrandSearchListDelegate::drawTailText(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index, int textMaxWidth, int actualStartX) const
+{
+    QFont tailFont = DFontSizeManager::instance()->get(DFontSizeManager::T8);
+    QFontMetrics tailFontMetrics(tailFont);
+
+    // 计算拖尾间隔符号显示宽度
+    static QString separator("— ");
+    int separatorWidth = tailFontMetrics.size(Qt::TextSingleLine, separator).width();
+
+    // 计算是否有空间显示拖尾信息
+    int totalTailWidth = textMaxWidth - actualStartX;
+    // 显示拖尾信息前，必须先显示分隔符
+    totalTailWidth = totalTailWidth - TailDataMargin - separatorWidth;
+
+    // 存在剩余空间来显示拖尾信息
+    if (totalTailWidth > 0) {
+
+        // 提取拖尾数据
+        const QVariant &extra = index.data(DATA_ROLE).value<MatchedItem>().extra;
+        QStringList tailStringList = extra.toHash().value(GRANDSEARCH_PROPERTY_ITEM_TAILER, QStringList()).toStringList();
+        if (!tailStringList.isEmpty()) {
+
+            // 根据剩余宽度，计算能够显示的拖尾数量
+            int tailCount = tailStringList.count();
+            int tailAverageWidth = totalTailWidth;
+            calcTailShowInfo(totalTailWidth, tailCount, tailAverageWidth);
+
+            // 设置拖尾字体属性
+            QColor tailTextColor;
+            const GrandSearchListView *listview = qobject_cast<const GrandSearchListView *>(option.widget);
+
+            if ((listview->getThemeType() == DGuiApplicationHelper::DarkType)
+                    || (index.isValid() && index == listview->currentIndex())) {
+                tailTextColor = QColor("#FFFFFF");
+            } else {
+                tailTextColor = QColor("#000000");
+            }
+
+            tailTextColor.setAlphaF(0.5);
+
+            // 先绘制分隔符,与名称间隔10个像素
+            actualStartX += TailDataMargin;
+            drawTailDetailedInfo(painter, option, separator, tailTextColor, tailFont, tailFontMetrics, actualStartX);
+
+            // 再逐个绘制拖尾信息
+            const QMap<int, QString> &tailMap = calcTailShowData(tailStringList, tailCount, tailAverageWidth, tailFontMetrics);
+            for (auto index : tailMap.keys()) {
+
+                if (0 != index) {
+                    // 如果不是第一个拖尾数据，则需要保留必要的间隔空间
+                    actualStartX += TailDataMargin;
+                }
+
+                const QString &showTailInfo = tailMap.value(index);
+                drawTailDetailedInfo(painter, option, showTailInfo, tailTextColor, tailFont, tailFontMetrics, actualStartX);
+            }
+        }
+    }
+}
+
+void GrandSearchListDelegate::drawTailDetailedInfo(QPainter *painter, const QStyleOptionViewItem &option, const QString &text, const QColor &color, const QFont &font, const QFontMetrics &fontMetrics, int &startX) const
+{
     QTextDocument document;
     document.setDocumentMargin(0);
-    document.setPlainText(mtext);
+    document.setPlainText(text);
     QTextCursor cursor(&document);
 
     cursor.beginEditBlock();
-    QTextCursor testcursor(&document);
-    testcursor.select(QTextCursor::LineUnderCursor);
+    cursor.select(QTextCursor::LineUnderCursor);
     QTextCharFormat fmt;
-    fmt.setForeground(textColor);
-    fmt.setFont(fontT6);
-    testcursor.mergeCharFormat(fmt);
-    testcursor.clearSelection();
-    testcursor.movePosition(QTextCursor::EndOfLine);
+    fmt.setForeground(color);
+    fmt.setFont(font);
+    cursor.mergeCharFormat(fmt);
+    cursor.clearSelection();
+    cursor.movePosition(QTextCursor::EndOfLine);
     cursor.endEditBlock();
 
-    // 动态计算边距，保证调整字体大小时绘制居中
+    int margin = static_cast<int>((option.rect.height() - fontMetrics.height()) / 2);
+    int showWidth = fontMetrics.size(Qt::TextSingleLine, text).width();
+    QRect rect(startX, option.rect.y() + margin, showWidth, option.rect.height());
+
     QAbstractTextDocumentLayout::PaintContext paintContext;
-    int margin = static_cast<int>(((option.rect.height() - fontMetrics.height()) / 2));
-    QRect textRect(ListItemSpace * 2 + ListIconSize, option.rect.y() + margin, listItemTextMaxWidth, option.rect.height());
     painter->save();
-    painter->translate(textRect.topLeft());
-    painter->setClipRect(textRect.translated(-textRect.topLeft()));
+    painter->translate(rect.topLeft());
+    painter->setClipRect(rect.translated(-rect.topLeft()));
     document.documentLayout()->draw(painter, paintContext);
     painter->restore();
+    // 更新绘制开始位置
+    startX += showWidth;
+}
+
+void GrandSearchListDelegate::calcTailShowInfo(const int totalTailWidth, int &tailCount, int &averageWidth) const
+{
+    Q_ASSERT(tailCount >= 1);
+
+    while (1 != tailCount) {
+        // 计算每个拖尾信息平均可显示宽度(每个拖尾信息之间显示间隔10个像素)
+        averageWidth = (totalTailWidth - (tailCount - 1) * TailDataMargin) / tailCount;
+        if (averageWidth > 0)
+            break;
+        // 宽度不够显示 (tailCount - 1) * TailDataMargin 个间隔，则减少拖尾数量继续计算
+        tailCount--;
+    }
+}
+
+QMap<int, QString> GrandSearchListDelegate::calcTailShowData(QStringList &strings, const int &tailCount, int averageWidth, const QFontMetrics &fontMetrics) const
+{
+    if (averageWidth >= TailMaxWidth) {
+        averageWidth = TailMaxWidth;
+
+        // 平均宽度大于最大限制，则每个项可用的最大宽度均为限制宽度，此时不需要计算剩余空间，再累加给截断显示项进行使用
+        return calcTailShowDataByMaxWidth(strings, tailCount, averageWidth, fontMetrics);
+    }
+
+    // 平均宽度小于最大限制，则需要针对每个项，计算使用后的剩余空间，并累加后提供给被截断显示的项使用
+    return calcTailShowDataByOptimalWidth(strings, tailCount, averageWidth, fontMetrics);
+}
+
+QMap<int, QString> GrandSearchListDelegate::calcTailShowDataByMaxWidth(QStringList &strings, const int &tailCount, int averageWidth, const QFontMetrics &fontMetrics) const
+{
+    QString tailString;             // 拖尾数据
+    QString elidedTailText;         // 实际显示的拖尾数据
+    QMap<int, QString> tailMap;     // 最终显示的数据--<拖尾序号，拖尾数据>
+
+    for (int i = 0; i < tailCount; i++) {
+        tailString = strings.takeFirst();
+        elidedTailText = fontMetrics.elidedText(tailString, Qt::ElideLeft, averageWidth);
+        tailMap.insert(i, elidedTailText);
+    }
+
+    return tailMap;
+}
+
+QMap<int, QString> GrandSearchListDelegate::calcTailShowDataByOptimalWidth(QStringList &strings, const int &tailCount, int averageWidth, const QFontMetrics &fontMetrics) const
+{
+    QString tailString;             // 拖尾数据
+    QMap<int, QString> tailMap;     // 最终显示的数据--<拖尾序号，拖尾数据>
+    QMap<int, QString> pendMap;     // 推迟计算的拖尾数据(仅使用平均空间时会发生截断的拖尾数据)
+    int unUsedWidth = 0;            // 未使用空间
+    // 提取能够全量显示的拖尾信息
+    for (int i = 0; i < tailCount ; i++) {
+        // 从前向后，逐个取出数据进行计算
+        tailString = strings.takeFirst();
+        int currentTailWidth = fontMetrics.size(Qt::TextSingleLine, tailString).width();
+        if (currentTailWidth < averageWidth) {
+            // 该项拖尾数据能够全量显示，则保存，并累加剩余空间
+            unUsedWidth += averageWidth - currentTailWidth;
+            tailMap.insert(i, tailString);
+            continue;
+        }
+        pendMap.insert(i, tailString);
+    }
+
+    // 提取被截断显示的拖尾信息
+    int availableWidth;             // 当前项可利用的最大宽度
+    QString pendString;             // 待处理的原始信息
+    QString elidedTailText;         // 截断显示的拖尾数据
+    for (auto index : pendMap.keys()) {
+
+        availableWidth = averageWidth;
+        if (unUsedWidth > 0) {
+            availableWidth += unUsedWidth;
+            unUsedWidth = 0;
+
+            if (availableWidth > TailMaxWidth) {
+                // 退还超出限制的空间
+                unUsedWidth = availableWidth - TailMaxWidth;
+                availableWidth = TailMaxWidth;
+            }
+        }
+
+        pendString = pendMap.value(index);
+        elidedTailText = fontMetrics.elidedText(pendString, Qt::ElideLeft, availableWidth);
+        if (elidedTailText == pendString) {
+            // 未截断显示，说明设置的可用空间还有剩余，需要退还给未使用空间
+            int elidedTailWidth = fontMetrics.size(Qt::TextSingleLine, pendString).width();
+            unUsedWidth += availableWidth - elidedTailWidth;
+        }
+
+        tailMap.insert(index, elidedTailText);
+        pendMap.remove(index);
+    }
+
+    return tailMap;
 }
 

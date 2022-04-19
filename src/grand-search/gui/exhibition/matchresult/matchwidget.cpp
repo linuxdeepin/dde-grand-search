@@ -258,6 +258,25 @@ void MatchWidget::handleItem()
     }
 }
 
+void MatchWidget::onPreviewStateChanged(const bool preview)
+{
+    if (this->isHidden() || preview == m_isPreviewItem)
+        return ;
+
+    m_isPreviewItem = preview;
+
+    for (int i = 0; i < m_vGroupWidgets.count(); ++i) {
+
+        GroupWidget *group = m_vGroupWidgets.at(i);
+        Q_ASSERT(group);
+
+        GrandSearchListView *listView = group->getListView();
+        Q_ASSERT(listView);
+
+        listView->updatePreviewItemState(preview);
+    }
+}
+
 void MatchWidget::onSelectItemByMouse(const MatchedItem &item)
 {
     QString searchGroupName;
@@ -528,6 +547,7 @@ GroupWidget *MatchWidget::createGroupWidget(const QString &searchGroupName)
 
         GrandSearchListView *listView = groupWidget->getListView();
         Q_ASSERT(listView);
+        listView->updatePreviewItemState(m_isPreviewItem);
         connect(listView, &GrandSearchListView::sigCurrentItemChanged, this, &MatchWidget::onSelectItemByMouse);
         connect(listView, &GrandSearchListView::sigItemClicked, this, &MatchWidget::sigCloseWindow);
 
