@@ -28,6 +28,7 @@
 #include "business/matchresult/matchcontroller.h"
 #include "contacts/services/grandsearchservice.h"
 #include "contacts/services/grandsearchserviceadaptor.h"
+#include "business/config/accessrecord/accessrecord.h"
 
 #include <DApplication>
 #include <DWidgetUtil>
@@ -106,6 +107,11 @@ int main(int argc, char *argv[])
         app.loadTranslator();
 
         qDebug() << "starting search:" << app.applicationName() << app.applicationVersion() << getpid();
+
+        // 解析点选数据
+        AccessRecord::instance()->startParseRecord();
+        QObject::connect(&app, &QCoreApplication::aboutToQuit, AccessRecord::instance(), &AccessRecord::sync);
+
         MainWindow mainWindow;
         mainWindow.show();
 

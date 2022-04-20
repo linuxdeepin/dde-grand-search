@@ -23,6 +23,7 @@
 
 // 全局搜索后端的名称
 #define GRANDSEARCH_DAEMON_NAME "dde-grand-search-daemon"
+#define GRANDSEARCH_NAME "dde-grand-search"
 
 // 搜索配置版本
 #define GRANDSEARCH_VERSION_GROUP           "Version_Group"

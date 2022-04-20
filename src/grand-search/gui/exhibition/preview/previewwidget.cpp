@@ -183,7 +183,7 @@ void PreviewWidget::clearLayoutWidgets()
 
 void PreviewWidget::onOpenClicked()
 {
-    Utils::openFile(m_item);
+    Utils::openMatchedItem(m_item);
 }
 
 void PreviewWidget::onOpenpathClicked()
