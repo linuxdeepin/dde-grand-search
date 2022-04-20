@@ -39,13 +39,27 @@ TEST(SpecialToolsTest, ut_splitCommand)
 
 TEST(SpecialToolsTest, ut_getMimeType)
 {
-    QFileInfo info(QDir::homePath());
-    auto type = SpecialTools::getMimeType(info);
-    EXPECT_TRUE(type.name() == "inode/directory");
+    {
+        stub_ext::StubExt st;
+        st.set_lamda(&QMimeType::name, [](){
+            return "inode/directory";
+        });
 
-    QFileInfo fileInfo("/test.wps");
-    type = SpecialTools::getMimeType(fileInfo);
-    EXPECT_TRUE(!type.name().isEmpty());
+        QFileInfo info(QDir::homePath());
+        auto type = SpecialTools::getMimeType(info);
+        EXPECT_EQ(type.name(), "inode/directory");
+    }
+
+    {
+        stub_ext::StubExt st;
+        st.set_lamda(&QMimeType::name, [](){
+            return "application/wps-office.wps";
+        });
+
+        QFileInfo fileInfo("/test.wps");
+        auto type = SpecialTools::getMimeType(fileInfo);
+        EXPECT_EQ(type.name(), "application/wps-office.wps");
+    }
 }
 
 TEST(SpecialToolsTest, ut_getJsonString)
@@ -56,7 +70,7 @@ TEST(SpecialToolsTest, ut_getJsonString)
     };
 
     EXPECT_TRUE(SpecialTools::getJsonString(&object, "").isEmpty());
-    EXPECT_TRUE(SpecialTools::getJsonString(&object, "key1") == "test");
+    EXPECT_EQ(SpecialTools::getJsonString(&object, "key1"), "test");
 }
 
 TEST(SpecialToolsTest, ut_getJsonArray)
