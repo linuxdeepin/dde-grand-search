@@ -31,6 +31,7 @@ set(Qt_LIBS
     Qt5::Gui
     Qt5::Widgets
     Qt5::DBus
+    Qt5::Concurrent
 )
 
 # gio 打开功能需要依赖的库
@@ -127,6 +128,9 @@ set(BUSINESSSRC
     # 配置读写
     business/config/searchconfig.cpp
     business/config/searchconfig.h
+    # 访问记录
+    business/config/accessrecord/accessrecord.h
+    business/config/accessrecord/accessrecord.cpp
     )
 
 # contacts

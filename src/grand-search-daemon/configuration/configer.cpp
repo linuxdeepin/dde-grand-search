@@ -215,12 +215,15 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
     // 路径黑名单
     set->beginGroup(GRANDSEARCH_BLACKLIST_GROUP);
     if (UserPreferencePointer conf = m_root->group(GRANDSEARCH_BLACKLIST_GROUP)) {
-        auto blacklist = set->value(GRANDSEARCH_BLACKLIST_PATH, QStringList()).toStringList();
-        for (auto &path : blacklist) {
+        const QStringList blacklist = set->value(GRANDSEARCH_BLACKLIST_PATH, QStringList()).toStringList();
+        QStringList vaild;
+        for (QString path : blacklist) {
             path = QByteArray::fromBase64(path.toLocal8Bit());
+            if (!path.isEmpty())
+                vaild.append(path);
         }
 
-        conf->setValue(GRANDSEARCH_BLACKLIST_PATH, blacklist);
+        conf->setValue(GRANDSEARCH_BLACKLIST_PATH, vaild);
     } else {
         qWarning() << "no shuch config:" << GRANDSEARCH_BLACKLIST_GROUP;
     }

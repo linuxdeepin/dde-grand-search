@@ -42,17 +42,27 @@
 #define GRANDSEARCH_GROUP_FILE_PICTURE       "com.deepin.dde-grand-search.group.files.picture"
 #define GRANDSEARCH_GROUP_FILE_DOCUMNET      "com.deepin.dde-grand-search.group.files.document"
 
+
+/****************** 扩展数据 *********************************/
 // 搜索项在组内的显示等级
 #define GRANDSEARCH_PROPERTY_ITEM_LEVEL      "itemLevel"
 #define GRANDSEARCH_PROPERTY_ITEM_LEVEL_FIRST   1
 #define GRANDSEARCH_PROPERTY_ITEM_LEVEL_SECOND  2
 #define GRANDSEARCH_PROPERTY_ITEM_LEVEL_THIRD   3
 
+// 权重计算方法
+#define GRANDSEARCH_PROPERTY_WEIGHT_METHOD            "weightMethod"
+#define GRANDSEARCH_PROPERTY_WEIGHT_METHOD_LOCALFILE  "localFileMethod"
+#define GRANDSEARCH_PROPERTY_WEIGHT_METHOD_APP        "desktopAppMethod"
+#define GRANDSEARCH_PROPERTY_WEIGHT_METHOD_SETTING    "settingMethod"
+
 // 权重属性
 #define GRANDSEARCH_PROPERTY_ITEM_WEIGHT    "itemWeight"
 
 // 拖尾数据
 #define GRANDSEARCH_PROPERTY_ITEM_TAILER    "itemTailer"
+
+/****************** 扩展数据 END ******************************/
 
 #define DEF_BUILTISEARCH_NAMES  \
 static const QStringList predefBuiltinSearches { \
