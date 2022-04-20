@@ -136,7 +136,7 @@ TEST(GrandSearchListDelegateTest, sizeHint)
     QModelIndex index;
 
     QSize actual = delegate->sizeHint(option, index);
-    QSize expect(350, 36);
+    QSize expect(740, 36);
 
     EXPECT_EQ(actual.width(), expect.width());
     EXPECT_EQ(actual.height(), expect.height());

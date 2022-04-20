@@ -555,28 +555,29 @@ TEST(UtilsTest, updateItemsWeight)
 
      // 关键字包括冒号，类目支持权重，但具体项无权重
      content = "a:b";
-     item = {"a", "a", "a",GRANDSEARCH_GROUP_FILE, " ", QVariant()};
+     item = {"a", "a", "a", " ", GRANDSEARCH_CLASS_FILE_DEEPIN, QVariant()};
      items.append(item);
      map.insert(GRANDSEARCH_GROUP_FILE, items);
      Utils::updateItemsWeight(map, content);
-     QVariant test = map.value(GRANDSEARCH_GROUP_FILE).first().extra;
-     QVariantHash itemWeight1({{GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 10}});
-     QVariant extraTest = QVariant::fromValue(itemWeight1);
-     EXPECT_EQ(extraTest, test);
+     QVariantHash test = map.value(GRANDSEARCH_GROUP_FILE).first().extra.toHash();
+     int itemWeight1 = test.value(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 0).toInt();
+     EXPECT_EQ(10, itemWeight1);
 
      // 清空items,map
      items.clear();
      map.clear();
 
      // 关键字包括冒号，类目支持权重，具体项有权重且extra为哈希表结构
-     itemWeight.insert(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 0);
+     itemWeight.insert(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 5);
      extra = QVariant::fromValue(itemWeight);
-     item = {"a","a","a",GRANDSEARCH_GROUP_FILE, " ", extra};
+     item = {"a","a","a",GRANDSEARCH_GROUP_FILE, GRANDSEARCH_CLASS_FILE_DEEPIN, extra};
      items.append(item);
      map.insert(GRANDSEARCH_GROUP_FILE, items);
      Utils::updateItemsWeight(map, content);
-     test = map.value(GRANDSEARCH_GROUP_FILE).first().extra;
-     EXPECT_EQ(extraTest, test);
+     test = map.value(GRANDSEARCH_GROUP_FILE).first().extra.toHash();
+     int itemWeight2 = test.value(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 0).toInt();
+
+     EXPECT_EQ(5, itemWeight2);
 }
 
 TEST(UtilsTest, calcFileWeight)
@@ -588,7 +589,7 @@ TEST(UtilsTest, calcFileWeight)
      // 名称中包含关键字
      keys.append("u");
      int result=Utils::calcFileWeight(path, name, keys);
-     EXPECT_EQ(result, 103);
+     EXPECT_EQ(result, 100);
 
      // 名称中不包含关键字
      keys.clear();
@@ -737,10 +738,11 @@ TEST(UtilsTest, calcWeightByDateDiff)
 
 TEST(UtilsTest, packageBestMatch)
 {
+    // todo:最佳匹配增加了应用与设置，该用例需要补充完善
+
      MatchedItemMap map;
      int maxQuantity = 4;
      MatchedItems items;
-     MatchedItems itemsNull;
      MatchedItem item;
      QVariant extra;
 
@@ -748,17 +750,17 @@ TEST(UtilsTest, packageBestMatch)
      Utils::packageBestMatch(map, maxQuantity);
      MatchedItems itemsTest;
      itemsTest = map.value(GRANDSEARCH_GROUP_BEST);
-     EXPECT_EQ(itemsTest, itemsNull);
+     EXPECT_TRUE(itemsTest.isEmpty());
 
-     // 匹配项中不包含文件类目
-     item = {"a", "a", "a",GRANDSEARCH_GROUP_APP, " ", extra};
+     // 匹配项中不包含最佳匹配类目
+     item = {"a", "a", "a", "a", "a", extra};
      items.append(item);
-     item = {"a", "ab", "ab",GRANDSEARCH_GROUP_APP, " ", extra};
+     item = {"a", "ab", "ab", "ab", "ab", extra};
      items.append(item);
      map.insert(GRANDSEARCH_GROUP_APP, items);
      Utils::packageBestMatch(map, maxQuantity);
      itemsTest = map.value(GRANDSEARCH_GROUP_BEST);
-     EXPECT_EQ(itemsTest, itemsNull);
+     EXPECT_TRUE(itemsTest.isEmpty());
 
      // 清空map,items
      map.clear();
@@ -777,19 +779,19 @@ TEST(UtilsTest, packageBestMatch)
      map.insert(GRANDSEARCH_GROUP_FILE, items);
      Utils::packageBestMatch(map, maxQuantity);
      itemsTest = map.value(GRANDSEARCH_GROUP_BEST);
-     EXPECT_EQ(itemsTest, itemsNull);
+     EXPECT_TRUE(itemsTest.isEmpty());
 
      // 匹配项中包含文件类目并
-     itemWeight.insert(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 3);
-     extra = QVariant::fromValue(itemWeight);
-     item = {"a", "abc", "abc", GRANDSEARCH_GROUP_FILE, " ", extra};
-     items.append(item);
-     map.insert(GRANDSEARCH_GROUP_FILE, items);
-     maxQuantity = 4;
-     Utils::packageBestMatch(map, maxQuantity);
-     itemsTest = map.value(GRANDSEARCH_GROUP_BEST);
-     items.removeAt(2);
-     EXPECT_EQ(itemsTest, items);
+//     itemWeight.insert(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 3);
+//     extra = QVariant::fromValue(itemWeight);
+//     item = {"a", "abc", "abc", GRANDSEARCH_GROUP_FILE, " ", extra};
+//     items.append(item);
+//     map.insert(GRANDSEARCH_GROUP_FILE, items);
+//     maxQuantity = 4;
+//     Utils::packageBestMatch(map, maxQuantity);
+//     itemsTest = map.value(GRANDSEARCH_GROUP_BEST);
+//     items.removeAt(2);
+//     EXPECT_EQ(itemsTest, items);
 }
 
 TEST(UtilsTest, appIconName)

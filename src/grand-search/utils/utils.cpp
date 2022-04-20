@@ -354,6 +354,8 @@ bool Utils::setWeightMethod(GrandSearch::MatchedItem &item)
         return false;
     }
 
+    item.extra = QVariant::fromValue(ext);
+
     return true;
 }
 
