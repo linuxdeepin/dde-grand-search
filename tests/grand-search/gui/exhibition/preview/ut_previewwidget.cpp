@@ -101,14 +101,14 @@ TEST(PreviewWidgetTest, onOpenClicked)
 
     stub_ext::StubExt stu;
 
-    bool ut_call_openFile = false;
-    stu.set_lamda(ADDR(Utils, openFile), [&](){
-        ut_call_openFile = true;
-        return ut_call_openFile;
+    bool ut_call_openMatchedItem = false;
+    stu.set_lamda(ADDR(Utils, openMatchedItem), [&](){
+        ut_call_openMatchedItem = true;
+        return ut_call_openMatchedItem;
     });
 
     w.onOpenClicked();
-    EXPECT_TRUE(ut_call_openFile);
+    EXPECT_TRUE(ut_call_openMatchedItem);
 }
 
 TEST(PreviewWidgetTest, onOpenpathClicked)

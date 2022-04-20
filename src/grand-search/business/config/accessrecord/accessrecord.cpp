@@ -192,16 +192,18 @@ void AccessRecord::parseJson(const QString &recordPath)
     QJsonParseError jsonError;
     QJsonDocument doc(QJsonDocument::fromJson(allData, &jsonError));
 
-    if (jsonError.error != QJsonParseError::NoError) {
-        qWarning() << "parse json error" << jsonError.errorString();
-        return;
-    }
-
     static const int validTime = 7 * 24 * 60 * 60;
 
     // 记录计算次数的searcher
     QHash<QString, QHash<QString, int>> searcherHash;
-    QJsonObject searcherObj = doc.object();
+    QJsonObject searcherObj;
+    if (jsonError.error != QJsonParseError::NoError) {
+        qWarning() << "parse json error" << jsonError.errorString();
+        emit AccessRecord::instance()->sigParseFinished(searcherObj, searcherHash, QPrivateSignal());
+        return;
+    }
+
+    searcherObj = doc.object();
     for (auto searcherIt = searcherObj.begin(); searcherIt != searcherObj.end(); ) {
         if (searcherIt.key() == "version") {
             ++searcherIt;
@@ -214,7 +216,7 @@ void AccessRecord::parseJson(const QString &recordPath)
         for (auto itemIt = itemsObj.begin(); itemIt != itemsObj.end(); ) {
             QJsonArray timeArray = itemIt.value().toArray();
             for (auto timeIt = timeArray.begin(); timeIt != timeArray.end();) {
-                auto timeT = (*timeIt).toDouble();
+                qint64 timeT = (*timeIt).toDouble();
                 // 获取当前时间戳
                 const qint64 currentTimeT = QDateTime::currentDateTime().toSecsSinceEpoch();
                 // 计算两个时间戳的差
