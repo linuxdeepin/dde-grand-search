@@ -44,6 +44,7 @@ set(Qt_LIBS
     Qt5::Gui
     Qt5::Widgets
     Qt5::DBus
+    Qt5::Concurrent
 )
 
 set(PROJECT_SRC_PATH "${PROJECT_SOURCE_PATH}/grand-search")

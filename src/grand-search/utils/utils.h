@@ -23,6 +23,9 @@
 #define SORTMATCHITEM_H
 
 #include "global/matcheditem.h"
+#include "global/builtinsearch.h"
+
+#include <QStringList>
 
 class Utils
 {
@@ -44,16 +47,26 @@ public:
     // 更新结果项的权重
     static void updateItemsWeight(GrandSearch::MatchedItemMap &map, const QString &content);
 
-    // 返回该组是否支持权重
-    static bool isSupportWeight(const QString &searchGroupName);
+    // 设置权重函数
+    static bool setWeightMethod(GrandSearch::MatchedItem &item);
 
     // 计算文件类的权重
     static int calcFileWeight(const QString &path, const QString &name, const QStringList &keys);
     static qint64 calcDateDiff(const QDateTime &date1, const QDateTime &date2);
     static int calcWeightByDateDiff(const qint64 &diff, const int &type);
 
+    // 计算应用和设置的权重
+    static int calcAppWeight(const QString &path, const QString name, const QStringList &keys);
+    static int calcSettingWeight(const QString &path, const QString name, const QStringList &keys);
+
     // 组装最佳匹配类目
     static void packageBestMatch(GrandSearch::MatchedItemMap &map, int maxQuantity);
+
+    // 更新最佳匹配项中应用和设置的权重
+    static bool updateBestMatchWeight(GrandSearch::MatchedItemMap &map);
+
+    // 判断类目所属搜索项是否支持重排
+    static bool isResetSearcher(QString searcher);
 
     // 获取搜索结果默认打开应用图标
     static QString appIconName(const GrandSearch::MatchedItem &item);
