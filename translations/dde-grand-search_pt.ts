@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/customwidget.cpp" line="38"/>
         <source>Custom search</source>
-        <translation type="unfinished"/>
+        <translation>Pesquisa personalizada</translation>
     </message>
 </context>
 <context>
@@ -46,7 +46,7 @@
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="57"/>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="100"/>
         <source>Grand Search</source>
-        <translation>Grande Procura</translation>
+        <translation>Pesquisa geral</translation>
     </message>
     <message>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="163"/>
@@ -108,12 +108,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="90"/>
         <source>Open Path</source>
-        <translation>Abrir caminho</translation>
+        <translation>Abrir o caminho de acesso</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="95"/>
         <source>Copy Path</source>
-        <translation>Copiar caminho</translation>
+        <translation>Copiar o caminho de acesso</translation>
     </message>
 </context>
 <context>
@@ -173,17 +173,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="43"/>
         <source>Search experience program</source>
-        <translation>Programa de experiência de pesquisa</translation>
+        <translation>Programa de experiência da pesquisa</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="51"/>
         <source>Join search experience program</source>
-        <translation>Aderir ao programa de experiência de pesquisa</translation>
+        <translation>Aderir ao programa de experiência da pesquisa</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="63"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations. If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation>A adesão ao programa de experiência de pesquisa significa que nos concede e autoriza a recolher a informação do seu dispositivo e sistema, ícones de ficheiro, conteúdo e propriedades, aplicações e as suas configurações. Se recusar a nossa recolha e utilização das informações acima mencionadas, não se junte ao programa.</translation>
+        <translation>A adesão ao programa de experiência da pesquisa significa que nos concede e autoriza a recolher a informação do seu dispositivo e sistema, ícones de ficheiro, conteúdo e propriedades, aplicações e as suas configurações. Se recusar a nossa recolha e utilização das informações acima mencionadas, não se junte ao programa.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="71"/>
@@ -211,7 +211,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="41"/>
         <source>Best match</source>
-        <translation type="unfinished"/>
+        <translation>Melhor resultado</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="42"/>
@@ -288,13 +288,41 @@
         <source>Time modified:</source>
         <translation>Hora da modificação:</translation>
     </message>
+    <message>
+        <location filename="../src/grand-search-daemon/searcher/file/filesearchutils.cpp" line="215"/>
+        <source>modified</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>ScopeWidget</name>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/scopewidget.cpp" line="44"/>
         <source>Search contents</source>
-        <translation>Conteúdos de pesquisa</translation>
+        <translation>Pesquisar conteúdos</translation>
+    </message>
+</context>
+<context>
+    <name>TailerWidget</name>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="33"/>
+        <source>Tailer settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="42"/>
+        <source>It is displayed at the end of search results for better identification and distinction of items with duplicate names.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="50"/>
+        <source>Parent directory</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="52"/>
+        <source>Time modified</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>
