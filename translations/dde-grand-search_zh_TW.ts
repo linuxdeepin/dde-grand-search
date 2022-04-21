@@ -288,6 +288,11 @@
         <source>Time modified:</source>
         <translation>修改時間：</translation>
     </message>
+    <message>
+        <location filename="../src/grand-search-daemon/searcher/file/filesearchutils.cpp" line="215"/>
+        <source>modified</source>
+        <translation>修改</translation>
+    </message>
 </context>
 <context>
     <name>ScopeWidget</name>
@@ -295,6 +300,29 @@
         <location filename="../src/grand-search/gui/searchconfig/scopewidget.cpp" line="44"/>
         <source>Search contents</source>
         <translation>搜尋範圍</translation>
+    </message>
+</context>
+<context>
+    <name>TailerWidget</name>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="33"/>
+        <source>Tailer settings</source>
+        <translation>拖尾設定</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="42"/>
+        <source>It is displayed at the end of search results for better identification and distinction of items with duplicate names.</source>
+        <translation>搜尋結果尾部顯示，用於輔助識別搜尋結果或區分重名項。</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="50"/>
+        <source>Parent directory</source>
+        <translation>上級目錄</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="52"/>
+        <source>Time modified</source>
+        <translation>最近修改時間</translation>
     </message>
 </context>
 </TS>

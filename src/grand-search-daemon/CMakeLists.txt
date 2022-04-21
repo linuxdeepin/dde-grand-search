@@ -13,10 +13,11 @@ set(BIN_NAME ${DAEMON_BIN_NAME})
 # 依赖包
 find_package(PkgConfig REQUIRED)
 find_package(DtkCore REQUIRED)
-#find_package(DtkCMake REQUIRED)
+find_package(DtkWidget REQUIRED)
 find_package(Qt5 COMPONENTS
     Core
     Gui
+    Widgets
     Concurrent
     DBus
 REQUIRED)
@@ -24,6 +25,7 @@ REQUIRED)
 set(Qt_LIBS
     Qt5::Core
     Qt5::Gui
+    Qt5::Widgets
     Qt5::DBus
     Qt5::Concurrent
 )
@@ -32,6 +34,7 @@ set(Qt_LIBS
 set(LINK_LIBS
     ${Qt_LIBS}
     ${DtkCore_LIBRARIES}
+    ${DtkWidget_LIBRARIES}
 )
 
 # 源文件
@@ -192,6 +195,7 @@ add_executable(${BIN_NAME} ${SRCS} ${QRC_FILES})
 
 target_include_directories(${BIN_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include
+    ${DtkWidget_INCLUDE_DIRS}
     ${CMAKE_SOURCE_DIR}/3rdparty/fsearch
     ${GLIB_INCLUDE_DIRS}
     ${PCRE_INCLUDE_DIRS}
