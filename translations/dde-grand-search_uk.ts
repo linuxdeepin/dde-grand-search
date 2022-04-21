@@ -288,6 +288,11 @@
         <source>Time modified:</source>
         <translation>Час внесення змін:</translation>
     </message>
+    <message>
+        <location filename="../src/grand-search-daemon/searcher/file/filesearchutils.cpp" line="215"/>
+        <source>modified</source>
+        <translation>змінено</translation>
+    </message>
 </context>
 <context>
     <name>ScopeWidget</name>
@@ -295,6 +300,29 @@
         <location filename="../src/grand-search/gui/searchconfig/scopewidget.cpp" line="44"/>
         <source>Search contents</source>
         <translation>Пошук вмісту</translation>
+    </message>
+</context>
+<context>
+    <name>TailerWidget</name>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="33"/>
+        <source>Tailer settings</source>
+        <translation>Параметри хвостовика</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="42"/>
+        <source>It is displayed at the end of search results for better identification and distinction of items with duplicate names.</source>
+        <translation>Його буде показано наприкінці результатів пошуку для поліпшення ідентифікації та розрізнення записів із дубльованими назвами.</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="50"/>
+        <source>Parent directory</source>
+        <translation>Батьківський каталог</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="52"/>
+        <source>Time modified</source>
+        <translation>Час зміни</translation>
     </message>
 </context>
 </TS>

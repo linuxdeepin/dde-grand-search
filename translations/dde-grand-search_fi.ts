@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/customwidget.cpp" line="38"/>
         <source>Custom search</source>
-        <translation type="unfinished"/>
+        <translation>Mukautettu haku</translation>
     </message>
 </context>
 <context>
@@ -211,7 +211,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="41"/>
         <source>Best match</source>
-        <translation type="unfinished"/>
+        <translation>Paras osuma</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="42"/>
@@ -288,6 +288,11 @@
         <source>Time modified:</source>
         <translation>Muutosaika:</translation>
     </message>
+    <message>
+        <location filename="../src/grand-search-daemon/searcher/file/filesearchutils.cpp" line="215"/>
+        <source>modified</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>ScopeWidget</name>
@@ -295,6 +300,29 @@
         <location filename="../src/grand-search/gui/searchconfig/scopewidget.cpp" line="44"/>
         <source>Search contents</source>
         <translation>Hae sisältöä</translation>
+    </message>
+</context>
+<context>
+    <name>TailerWidget</name>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="33"/>
+        <source>Tailer settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="42"/>
+        <source>It is displayed at the end of search results for better identification and distinction of items with duplicate names.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="50"/>
+        <source>Parent directory</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="52"/>
+        <source>Time modified</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

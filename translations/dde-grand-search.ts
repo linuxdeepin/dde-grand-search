@@ -288,6 +288,11 @@
         <source>Time modified:</source>
         <translation>Time modified:</translation>
     </message>
+    <message>
+        <location filename="../src/grand-search-daemon/searcher/file/filesearchutils.cpp" line="215"/>
+        <source>modified</source>
+        <translation>modified</translation>
+    </message>
 </context>
 <context>
     <name>ScopeWidget</name>
@@ -295,6 +300,29 @@
         <location filename="../src/grand-search/gui/searchconfig/scopewidget.cpp" line="44"/>
         <source>Search contents</source>
         <translation>Search contents</translation>
+    </message>
+</context>
+<context>
+    <name>TailerWidget</name>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="33"/>
+        <source>Tailer settings</source>
+        <translation>Tailer settings</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="42"/>
+        <source>It is displayed at the end of search results for better identification and distinction of items with duplicate names.</source>
+        <translation>It is displayed at the end of search results for better identification and distinction of items with duplicate names.</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="50"/>
+        <source>Parent directory</source>
+        <translation>Parent directory</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="52"/>
+        <source>Time modified</source>
+        <translation>Time modified</translation>
     </message>
 </context>
 </TS>

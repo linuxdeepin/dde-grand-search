@@ -24,6 +24,7 @@
 #include "dbusservice/grandsearchinterface.h"
 
 #include <DLog>
+#include <DApplication>
 
 #include <QCoreApplication>
 #include <QDBusConnection>
@@ -34,6 +35,7 @@
 #include <signal.h>
 
 DCORE_USE_NAMESPACE
+DWIDGET_USE_NAMESPACE
 
 static void appExitHandler(int sig) {
     qInfo() << "signal" << sig << "exit.";
@@ -49,7 +51,7 @@ int main(int argc, char *argv[])
     signal(SIGQUIT, appExitHandler);
     signal(SIGTERM, appExitHandler);
 
-    QCoreApplication app(argc, argv);
+    DApplication app(argc, argv);
 
     {
         QString dateTime = QDateTime::currentDateTime().toString(Qt::ISODateWithMs);
@@ -90,6 +92,14 @@ int main(int argc, char *argv[])
     if (!interface.init()) {
         qCritical() << "initialization failed.";
         exit(0x0001);
+    }
+
+    {
+        // 加载翻译
+        QString appName = app.applicationName();
+        app.setApplicationName("dde-grand-search");
+        app.loadTranslator();
+        app.setApplicationName(appName);
     }
 
     app.exec();
