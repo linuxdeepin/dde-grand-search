@@ -24,6 +24,7 @@
 
 #include <QVBoxLayout>
 #include <QPainter>
+#include <QPainterPath>
 
 #define RADIUS 8
 
