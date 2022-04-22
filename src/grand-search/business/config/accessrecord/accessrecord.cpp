@@ -242,7 +242,6 @@ void AccessRecord::parseJson(const QString &recordPath)
         if (itemsObj.empty()) {
             // item对象为空，删除该searcher对象
             searcherIt = searcherObj.erase(searcherIt);
-            break;
         } else {
             for (auto tempItemIt = itemsObj.begin(); tempItemIt != itemsObj.end(); ) {
                 QJsonArray timeArray = tempItemIt.value().toArray();
