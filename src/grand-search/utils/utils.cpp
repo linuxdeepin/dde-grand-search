@@ -19,10 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 extern "C" {
-#include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
 #include <ctype.h>
 }
+#include <gio/gio.h>
 
 #include "utils.h"
 
