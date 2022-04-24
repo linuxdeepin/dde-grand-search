@@ -998,7 +998,6 @@ bool Utils::canPreview(const QString &searchGroupName)
       , GRANDSEARCH_GROUP_FILE_AUDIO
       , GRANDSEARCH_GROUP_FILE_PICTURE
       , GRANDSEARCH_GROUP_FILE_DOCUMNET
-      , GRANDSEARCH_GROUP_BEST
     };
 
     return containPreviewGroup.contains(searchGroupName);
