@@ -45,7 +45,7 @@ void AccessRecord::startParseRecord()
 {
     std::call_once(m_initFlag, [](){
         // 异步解析
-        QtConcurrent::run(&AccessRecord::parseRecord);
+        QtConcurrent::run(&AccessRecord::parseRecord, AccessRecord::instance()->m_recordPath);
     });
 }
 
@@ -152,10 +152,8 @@ AccessRecord::~AccessRecord()
 /**
  * @brief AccessRecord::ParseRecord 解析记录文件
  */
-void AccessRecord::parseRecord()
+void AccessRecord::parseRecord(QString recordPath)
 {
-    auto recordPath = AccessRecord::instance()->m_recordPath;
-
     QFileInfo recordFile(recordPath);
     // 创建文件
     if (!recordFile.exists()) {
@@ -169,9 +167,8 @@ void AccessRecord::parseRecord()
          file.write(data);
          file.close();
          qInfo() << "create record" << recordPath;
-    } else {
-        parseJson(recordPath);
     }
+    parseJson(recordPath);
 }
 
 /**
