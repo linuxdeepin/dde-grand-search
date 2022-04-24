@@ -211,7 +211,7 @@ void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QSty
 
     // 未显示预览窗口时，需要显示拖尾数据
     if (!listview->isPreviewItem()) {
-        drawTailText(painter, option, index, listItemTextMaxWidth, actualStartX + nameTextRect.width());
+        drawTailText(painter, option, index, option.rect.width(), actualStartX + nameTextRect.width());
     }
 
 }
@@ -242,6 +242,10 @@ void GrandSearchListDelegate::drawTailText(QPainter *painter, const QStyleOption
             int tailCount = tailStringList.count();
             int tailAverageWidth = totalTailWidth;
             calcTailShowInfo(totalTailWidth, tailCount, tailAverageWidth);
+            const QMap<int, QString> &tailMap = calcTailShowData(tailStringList, tailCount, tailAverageWidth, tailFontMetrics);
+
+            if (tailMap.isEmpty())
+                return;
 
             // 设置拖尾字体属性
             QColor tailTextColor;
@@ -261,7 +265,6 @@ void GrandSearchListDelegate::drawTailText(QPainter *painter, const QStyleOption
             drawTailDetailedInfo(painter, option, separator, tailTextColor, tailFont, tailFontMetrics, actualStartX);
 
             // 再逐个绘制拖尾信息
-            const QMap<int, QString> &tailMap = calcTailShowData(tailStringList, tailCount, tailAverageWidth, tailFontMetrics);
             for (auto index : tailMap.keys()) {
 
                 if (0 != index) {
@@ -318,6 +321,7 @@ void GrandSearchListDelegate::calcTailShowInfo(const int totalTailWidth, int &ta
             break;
         // 宽度不够显示 (tailCount - 1) * TailDataMargin 个间隔，则减少拖尾数量继续计算
         tailCount--;
+        averageWidth = totalTailWidth;
     }
 }
 
@@ -343,7 +347,8 @@ QMap<int, QString> GrandSearchListDelegate::calcTailShowDataByMaxWidth(QStringLi
     for (int i = 0; i < tailCount; i++) {
         tailString = strings.takeFirst();
         elidedTailText = fontMetrics.elidedText(tailString, Qt::ElideLeft, averageWidth);
-        tailMap.insert(i, elidedTailText);
+        if (!elidedTailText.isEmpty())
+            tailMap.insert(i, elidedTailText);
     }
 
     return tailMap;
@@ -363,7 +368,8 @@ QMap<int, QString> GrandSearchListDelegate::calcTailShowDataByOptimalWidth(QStri
         if (currentTailWidth < averageWidth) {
             // 该项拖尾数据能够全量显示，则保存，并累加剩余空间
             unUsedWidth += averageWidth - currentTailWidth;
-            tailMap.insert(i, tailString);
+            if (!tailString.isEmpty())
+                tailMap.insert(i, tailString);
             continue;
         }
         pendMap.insert(i, tailString);
@@ -395,7 +401,8 @@ QMap<int, QString> GrandSearchListDelegate::calcTailShowDataByOptimalWidth(QStri
             unUsedWidth += availableWidth - elidedTailWidth;
         }
 
-        tailMap.insert(index, elidedTailText);
+        if (!elidedTailText.isEmpty())
+            tailMap.insert(index, elidedTailText);
         pendMap.remove(index);
     }
 
