@@ -42,7 +42,7 @@ protected:
     ~AccessRecord();
 
 private:
-    static void parseRecord();  // 子线程创建/解析文件
+    static void parseRecord(QString recordPath);  // 子线程创建/解析文件
     static void parseJson(const QString &recordPath); //子线程解析文件数据并过滤数据
 
 private:
