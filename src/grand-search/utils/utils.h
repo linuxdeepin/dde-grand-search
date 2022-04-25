@@ -56,14 +56,14 @@ public:
     static int calcWeightByDateDiff(const qint64 &diff, const int &type);
 
     // 计算应用和设置的权重
-    static int calcAppWeight(const QString &path, const QString name, const QStringList &keys);
-    static int calcSettingWeight(const QString &path, const QString name, const QStringList &keys);
+    static double calcAppWeight(const GrandSearch::MatchedItem &item, const QStringList &keys);
+    static double calcSettingWeight(const GrandSearch::MatchedItem &item, const QStringList &keys);
 
     // 组装最佳匹配类目
     static void packageBestMatch(GrandSearch::MatchedItemMap &map, int maxQuantity);
 
-    // 更新最佳匹配项中应用和设置的权重
-    static bool updateBestMatchWeight(GrandSearch::MatchedItemMap &map);
+    // 计算点选事件的权重
+    static double calcRecordWeight(const GrandSearch::MatchedItem &item);
 
     // 判断类目所属搜索项是否支持重排
     static bool isResetSearcher(QString searcher);
