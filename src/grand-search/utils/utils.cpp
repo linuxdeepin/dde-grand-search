@@ -289,7 +289,7 @@ void Utils::updateItemsWeight(MatchedItemMap &map, const QString &content)
                 continue;
 
             // 计算权重
-            int weight = 0;
+            double weight = 0;
             {
                 const QVariantHash &extData = item.extra.toHash();
                 const QString &method = extData.value(GRANDSEARCH_PROPERTY_WEIGHT_METHOD).toString();
@@ -297,25 +297,18 @@ void Utils::updateItemsWeight(MatchedItemMap &map, const QString &content)
                 if (method == GRANDSEARCH_PROPERTY_WEIGHT_METHOD_LOCALFILE) {
                     weight = calcFileWeight(item.item, item.name, keys);
                 } else if (method == GRANDSEARCH_PROPERTY_WEIGHT_METHOD_APP) {
-                    weight = calcAppWeight(item.item, item.name, keys);
+                    weight = calcAppWeight(item, keys);
                 } else if (method == GRANDSEARCH_PROPERTY_WEIGHT_METHOD_SETTING) {
-                    weight = calcSettingWeight(item.item, item.name, keys);
+                    weight = calcSettingWeight(item, keys);
                 } else {
                     continue;
                 }
             }
 
             QVariant &extra = item.extra;
-            if (extra.isNull()) {
-                QVariantHash itemWeight({{GRANDSEARCH_PROPERTY_ITEM_WEIGHT, weight}});
-                extra = QVariant::fromValue(itemWeight);
-            } else if (extra.type() == QVariant::Hash) {
-                QVariantHash originalValue = extra.toHash();
-                originalValue.insert(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, weight);
-                extra = QVariant::fromValue(originalValue);
-            } else {
-                qWarning() << "item extra error:" << item.name << item.item << item.extra;
-            }
+            QVariantHash originalValue = extra.toHash();
+            originalValue.insert(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, weight);
+            extra = QVariant::fromValue(originalValue);
         }
     }
 }
@@ -457,35 +450,36 @@ int Utils::calcWeightByDateDiff(const qint64 &diff, const int &type)
 }
 
 /**
- * @brief Utils::calcAppAndSettingWeight 计算应用和设置的权重
- * @param path 路径
- * @param name 名称
- * @param keys 输入的关键字列表
+ * @brief Utils::calcAppWeight 计算应用权重
+ * @param item 类目
+ * @param keys 关键字
  * @return 权重
  */
-int Utils::calcAppWeight(const QString &path, const QString name, const QStringList &keys)
+double Utils::calcAppWeight(const GrandSearch::MatchedItem &item, const QStringList &keys)
 {
-    int weight = 0;
+    double weight = 0;
     for (const QString &key : keys) {
-        if (name.contains(key)) {
+        if (item.item.contains(key)) {
             weight += 20;
             break;
         }
     }
+    weight += Utils::calcRecordWeight(item);
 
     weight += 60;
     return weight;
 }
 
-int Utils::calcSettingWeight(const QString &path, const QString name, const QStringList &keys)
+double Utils::calcSettingWeight(const GrandSearch::MatchedItem &item, const QStringList &keys)
 {
-    int weight = 0;
+    double weight = 0;
     for (const QString &key : keys) {
-        if (name.contains(key)) {
+        if (item.item.contains(key)) {
             weight += 20;
             break;
         }
     }
+    weight += Utils::calcRecordWeight(item);
 
     weight += 60;
     return weight;
@@ -583,43 +577,22 @@ void Utils::packageBestMatch(MatchedItemMap &map, int maxQuantity)
     qDebug() << "find best match count:" << bestList.count() << QString(".cost [%1]ms").arg(time.elapsed());
     if (!bestList.isEmpty()) {
         map.insert(GRANDSEARCH_GROUP_BEST, bestList);
-        if (Utils::updateBestMatchWeight(map)) {
-            MatchedItemMap tempMap;
-            tempMap.insert(GRANDSEARCH_GROUP_BEST, map[GRANDSEARCH_GROUP_BEST]);
-            Utils::sortByWeight(tempMap);
-            MatchedItems tempList = tempMap.value(GRANDSEARCH_GROUP_BEST);
-            map.insert(GRANDSEARCH_GROUP_BEST, tempList);
-        }
-
     }
 }
 
-bool Utils::updateBestMatchWeight(GrandSearch::MatchedItemMap &map)
+double Utils::calcRecordWeight(const GrandSearch::MatchedItem &item)
 {
-   if (!map.keys().contains(GRANDSEARCH_GROUP_BEST))
-        return false;
-
-    MatchedItems &bestList = map[GRANDSEARCH_GROUP_BEST];
     auto recordHash = AccessRecord::instance()->getRecord();
 
-    QList<MatchedItem>::iterator it = bestList.begin();
-    while (it != bestList.end()) {
-        if (isResetSearcher(it->searcher)) {
-            QVariant &tempExtra = (*it).extra;
-            double weight = tempExtra.toHash().value(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 0).toDouble();
-            auto itemHash = recordHash[it->searcher];
-            for (auto itemKey : itemHash.keys()) {
-                if (itemKey == it->item) {
-                     weight += (itemHash.value(itemKey)) * TimesWeight;
-                     QVariantHash tempItem({{GRANDSEARCH_PROPERTY_ITEM_WEIGHT, weight}});
-                     tempExtra = QVariant::fromValue(tempItem);
-                }
-            }
+    double weight = 0.0;
+    if (recordHash.contains(item.searcher)) {
+        auto itemHash = recordHash[item.searcher];
+        if (itemHash.contains(item.item)) {
+            weight += itemHash[item.item] * TimesWeight;
         }
-        ++it;
     }
-    qDebug() << "update best items weight completed";
-    return true;
+
+    return weight;
 }
 
 bool Utils::isResetSearcher(QString searcher)
