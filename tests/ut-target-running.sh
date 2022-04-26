@@ -22,6 +22,7 @@ if [ ! $# -eq 7 ]; then
 fi
 
 RESULT_COVERAGE_DIR=$REPORT_DIR/html
+
 #创建 coverage 总目录
 mkdir -p $RESULT_COVERAGE_DIR
 
@@ -43,7 +44,12 @@ lcov --remove $COVERAGE_INFO $REMOVE_INFO --output-file $COVERAGE_INFO
 
 lcov --list-full-path -e $COVERAGE_INFO –o $BUILD_DIR/coverage-stripped.info
 
-genhtml -o $RESULT_COVERAGE_DIR $COVERAGE_INFO
+# prefix of the src fullpath
+PREFIX_PATH=$(realpath $REPORT_DIR/../src)
+echo "PREFIX_PATH: " $PREFIX_PATH
+
+# -p is to remove output prefix path
+genhtml -o $RESULT_COVERAGE_DIR $COVERAGE_INFO -p $PREFIX_PATH
 
 LOV_REPORT_FILE=$RESULT_COVERAGE_DIR/cov_$REPORT_NAME.html
 mv $RESULT_COVERAGE_DIR/index.html $LOV_REPORT_FILE
