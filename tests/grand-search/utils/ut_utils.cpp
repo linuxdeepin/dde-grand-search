@@ -29,6 +29,7 @@ extern "C" {
 #include "global/matcheditem.h"
 #include "global/builtinsearch.h"
 #include "contacts/interface/daemongrandsearchinterface.h"
+#include "business/config/accessrecord/accessrecord.h"
 
 #include "stubext.h"
 
@@ -398,7 +399,7 @@ TEST(UtilsTest, sortByWeight)
      map.insert(searchGroupName,items);
      bool result = Utils::sortByWeight(map);
      EXPECT_TRUE(result);
-     
+
      // 清空map
      map.clear();
 
@@ -523,61 +524,116 @@ TEST(UtilsTest, compareByWeight)
 
 TEST(UtilsTest, updateItemsWeight)
 {
-     MatchedItemMap map;
-     MatchedItemMap mapTest;
-     MatchedItems items;
-     MatchedItem item;
-     QString content = "a";
-     QStringList groupList, suffixList, keys;
-     QVariant extra;
+    MatchedItemMap map;
+    MatchedItems items;
+    MatchedItem item;
+    QString content = "a";
 
-     // 关键字不包括冒号无需解析且不支持权重
-     QVariantHash itemWeight({{"test", 0}});
-     extra = QVariant::fromValue(itemWeight);
-     item = {"a", "a", "a",GRANDSEARCH_GROUP_APP, " ", extra};
-     items.append(item);
-     map.insert(GRANDSEARCH_GROUP_APP, items);
-     mapTest = map;
-     Utils::updateItemsWeight(map, content);
-     EXPECT_EQ(map, mapTest);
+    stub_ext::StubExt stu;
+    // 对calcFileWeight进行打桩
+    stu.set_lamda(&Utils::calcFileWeight, [](const QString &path, const QString &name, const QStringList &keys)->int{
+        return 10;
+    });
 
-     // 清空itemWeight,extra,items
-     itemWeight.clear();
-     extra = QVariant::fromValue(itemWeight);
-     items.clear();
-     map.clear();
+    // 对calcSettingWeight进行打桩
+    stu.set_lamda(&Utils::calcSettingWeight, [](const GrandSearch::MatchedItem &item, const QStringList &keys)->double{
+        return 20;
+    });
 
-     // 对calcFileWeight进行打桩
-     stub_ext::StubExt stu;
-     stu.set_lamda(&Utils::calcFileWeight,[&](){
-          return 10;
-     });
+    // 对calcAppWeight进行打桩
+    stu.set_lamda(&Utils::calcAppWeight, [](const GrandSearch::MatchedItem &item, const QStringList &keys)->double{
+        return 30;
+    });
 
-     // 关键字包括冒号，类目支持权重，但具体项无权重
-     content = "a:b";
-     item = {"a", "a", "a", " ", GRANDSEARCH_CLASS_FILE_DEEPIN, QVariant()};
-     items.append(item);
-     map.insert(GRANDSEARCH_GROUP_FILE, items);
-     Utils::updateItemsWeight(map, content);
-     QVariantHash test = map.value(GRANDSEARCH_GROUP_FILE).first().extra.toHash();
-     int itemWeight1 = test.value(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 0).toInt();
-     EXPECT_EQ(10, itemWeight1);
+    // 关键字不包括冒号无需解析，类目为文件, 未设置权重计算方式/设置权重计算方式
+    item = {"a", "a", "a", "a", "test", QVariant()};
+    items.append(item);
+    QVariantHash weightMethod({{GRANDSEARCH_PROPERTY_WEIGHT_METHOD, GRANDSEARCH_PROPERTY_WEIGHT_METHOD_LOCALFILE}});
+    item = {"ab", "ab", "ab", GRANDSEARCH_GROUP_FILE, GRANDSEARCH_CLASS_FILE_FSEARCH, QVariant::fromValue(weightMethod)};
+    items.append(item);
+    map.insert(GRANDSEARCH_GROUP_FILE, items);
+    Utils::updateItemsWeight(map, content);
+    QVariant test = map.value(GRANDSEARCH_GROUP_FILE).last().extra;
+    int tempWeight = test.toHash().value(GRANDSEARCH_PROPERTY_ITEM_WEIGHT).toInt();
+    EXPECT_EQ(tempWeight, 10);
 
-     // 清空items,map
-     items.clear();
-     map.clear();
+    items.clear();
+    map.clear();
 
-     // 关键字包括冒号，类目支持权重，具体项有权重且extra为哈希表结构
-     itemWeight.insert(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 5);
-     extra = QVariant::fromValue(itemWeight);
-     item = {"a","a","a",GRANDSEARCH_GROUP_FILE, GRANDSEARCH_CLASS_FILE_DEEPIN, extra};
-     items.append(item);
-     map.insert(GRANDSEARCH_GROUP_FILE, items);
-     Utils::updateItemsWeight(map, content);
-     test = map.value(GRANDSEARCH_GROUP_FILE).first().extra.toHash();
-     int itemWeight2 = test.value(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 0).toInt();
+    // 关键字包括冒号，类目为应用
+    content = "a:b";
+    weightMethod.insert(GRANDSEARCH_PROPERTY_WEIGHT_METHOD, GRANDSEARCH_PROPERTY_WEIGHT_METHOD_APP);
+    item = {"a", "a", "a", "a", GRANDSEARCH_CLASS_APP_DESKTOP, QVariant::fromValue(weightMethod)};
+    items.append(item);
+    map.insert(GRANDSEARCH_GROUP_APP, items);
+    Utils::updateItemsWeight(map, content);
+    test = map.value(GRANDSEARCH_GROUP_APP).first().extra;
+    double temp = test.toHash().value(GRANDSEARCH_PROPERTY_ITEM_WEIGHT).toInt();
 
-     EXPECT_EQ(5, itemWeight2);
+    EXPECT_EQ(temp, 30);
+
+    map.clear();
+    items.clear();
+
+    // 关键字包括冒号，类目为设置
+    weightMethod.insert(GRANDSEARCH_PROPERTY_WEIGHT_METHOD, GRANDSEARCH_PROPERTY_WEIGHT_METHOD_SETTING);
+    item = {"a", "a", "a", "a", GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, QVariant::fromValue(weightMethod)};
+    items.append(item);
+    map.insert(GRANDSEARCH_GROUP_SETTING, items);
+    Utils::updateItemsWeight(map, content);
+    test = map.value(GRANDSEARCH_GROUP_SETTING).first().extra;
+    temp = test.toHash().value(GRANDSEARCH_PROPERTY_ITEM_WEIGHT).toInt();
+    EXPECT_EQ(temp, 20);
+}
+
+TEST(UtilsTest, setWeightMethod)
+{
+    MatchedItem item;
+
+    // 不支持权重计算
+    item = {"a", "a", "a", "a", "test", QVariant()};
+    bool result = Utils::setWeightMethod(item);
+    EXPECT_FALSE(result);
+
+    // 已经设置权重数值
+    QVariantHash weight({{GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 11}});
+    item = {"a", "a", "a", "a", GRANDSEARCH_CLASS_FILE_DEEPIN, QVariant::fromValue(weight)};
+    result = Utils::setWeightMethod(item);
+    EXPECT_FALSE(result);
+
+    // 已经设置计算方法
+    weight.clear();
+    weight.insert(GRANDSEARCH_PROPERTY_WEIGHT_METHOD, "test");
+    item = {"a", "a", "a", "a", GRANDSEARCH_CLASS_FILE_DEEPIN, QVariant::fromValue(weight)};
+    result = Utils::setWeightMethod(item);
+    EXPECT_TRUE(result);
+
+    // 类目为文件
+    item = {"a", "a", "a", "a", GRANDSEARCH_CLASS_FILE_DEEPIN, QVariant()};
+    result = Utils::setWeightMethod(item);
+    QVariantHash hash;
+    hash.insert(GRANDSEARCH_PROPERTY_WEIGHT_METHOD,
+                GRANDSEARCH_PROPERTY_WEIGHT_METHOD_LOCALFILE);
+    EXPECT_TRUE(result);
+    EXPECT_EQ(hash, item.extra.toHash());
+
+    // 类目为应用
+    item = {"a", "a", "a", "a", GRANDSEARCH_CLASS_APP_DESKTOP, QVariant()};
+    result = Utils::setWeightMethod(item);
+    hash.clear();
+    hash.insert(GRANDSEARCH_PROPERTY_WEIGHT_METHOD,
+                GRANDSEARCH_PROPERTY_WEIGHT_METHOD_APP);
+    EXPECT_TRUE(result);
+    EXPECT_EQ(hash, item.extra.toHash());
+
+    // 类目为设置
+    item = {"a", "a", "a", "a", GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, QVariant()};
+    result = Utils::setWeightMethod(item);
+    hash.clear();
+    hash.insert(GRANDSEARCH_PROPERTY_WEIGHT_METHOD,
+                GRANDSEARCH_PROPERTY_WEIGHT_METHOD_SETTING);
+    EXPECT_TRUE(result);
+    EXPECT_EQ(hash, item.extra.toHash());
 }
 
 TEST(UtilsTest, calcFileWeight)
@@ -736,6 +792,52 @@ TEST(UtilsTest, calcWeightByDateDiff)
      EXPECT_EQ(result, 0);
 }
 
+TEST(UtilsTest, calcAppWeight)
+{
+    // 对计算点选权重函数进行打桩
+    stub_ext::StubExt stu;
+    stu.set_lamda(&Utils::calcRecordWeight, [&](){
+       return 0.5;
+    });
+
+    // 名称包含关键字
+    QStringList keys;
+    keys.append("a");
+    keys.append("b");
+    GrandSearch::MatchedItem item;
+    item.item = "aa";
+    double result = Utils::calcAppWeight(item, keys);
+    EXPECT_EQ(result, 80.5);
+
+    // 名称不包含关键字
+    item.item = "ccc";
+    result = Utils::calcAppWeight(item, keys);
+    EXPECT_EQ(result, 60.5);
+}
+
+TEST(UtilsTest, calcSettingWeight)
+{
+    // 对计算点选权重函数进行打桩
+    stub_ext::StubExt stu;
+    stu.set_lamda(&Utils::calcRecordWeight, [&](){
+       return 1.5;
+    });
+
+    // 名称包含关键字
+    QStringList keys;
+    keys.append("a");
+    keys.append("b");
+    GrandSearch::MatchedItem item;
+    item.item = "aa";
+    double result = Utils::calcSettingWeight(item, keys);
+    EXPECT_EQ(result, 81.5);
+
+    // 名称不包含关键字
+    item.item = "ccc";
+    result = Utils::calcSettingWeight(item, keys);
+    EXPECT_EQ(result, 61.5);
+}
+
 TEST(UtilsTest, packageBestMatch)
 {
     // todo:最佳匹配增加了应用与设置，该用例需要补充完善
@@ -781,17 +883,73 @@ TEST(UtilsTest, packageBestMatch)
      itemsTest = map.value(GRANDSEARCH_GROUP_BEST);
      EXPECT_TRUE(itemsTest.isEmpty());
 
-     // 匹配项中包含文件类目并
-//     itemWeight.insert(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 3);
-//     extra = QVariant::fromValue(itemWeight);
-//     item = {"a", "abc", "abc", GRANDSEARCH_GROUP_FILE, " ", extra};
-//     items.append(item);
-//     map.insert(GRANDSEARCH_GROUP_FILE, items);
-//     maxQuantity = 4;
-//     Utils::packageBestMatch(map, maxQuantity);
-//     itemsTest = map.value(GRANDSEARCH_GROUP_BEST);
-//     items.removeAt(2);
-//     EXPECT_EQ(itemsTest, items);
+     map.clear();
+     items.clear();
+
+     // 匹配项中包含文件、应用、设置
+     for (int i = 0; i < 5; ++i) {
+         item = {"a", "a", "a", "testa", GRANDSEARCH_CLASS_FILE_DEEPIN, extra};
+         items.append(item);
+     }
+     map.insert(GRANDSEARCH_GROUP_FILE, items);
+     items.clear();
+     itemWeight.insert(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 49);
+     extra = QVariant::fromValue(itemWeight);
+     for (int i = 0; i < 5; ++i) {
+         item = {"b", "b", "b", "testb", GRANDSEARCH_CLASS_APP_DESKTOP, extra};
+         items.append(item);
+     }
+     map.insert(GRANDSEARCH_GROUP_APP, items);
+     items.clear();
+     itemWeight.insert(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 52);
+     extra = QVariant::fromValue(itemWeight);
+     item = {"c", "c", "c", "testc", GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, extra};
+     items.append(item);
+     map.insert(GRANDSEARCH_GROUP_SETTING, items);
+     Utils::packageBestMatch(map, 4);
+
+     MatchedItems tempBestList;
+     tempBestList.append(item);
+     itemWeight.insert(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 49);
+     extra = QVariant::fromValue(itemWeight);
+     item = {"b", "b", "b", "testb", GRANDSEARCH_CLASS_APP_DESKTOP, extra};
+     tempBestList.append(item);
+     tempBestList.append(item);
+     tempBestList.append(item);
+     MatchedItems list = map.value(GRANDSEARCH_GROUP_BEST);
+     EXPECT_EQ(tempBestList, list);
+}
+
+TEST(UtilsTest, calcRecordWeight)
+{
+    MatchedItem item;
+
+    // 包含最佳匹配项
+    // 对getRecord打桩
+    stub_ext::StubExt stu;
+    stu.set_lamda(&AccessRecord::getRecord, [](){
+        QHash<QString, QHash<QString, int>> hash;
+        QHash<QString, int> item;
+        item.insert("test", 2);
+        hash.insert(GRANDSEARCH_CLASS_APP_DESKTOP, item);
+        return hash;
+    });
+
+    item.searcher = GRANDSEARCH_CLASS_APP_DESKTOP;
+    item.item = "test";
+    double result = Utils::calcRecordWeight(item);
+    EXPECT_EQ(result, 1);
+}
+
+TEST(UtilsTest, isResetSeacher)
+{
+    QString searcher = GRANDSEARCH_CLASS_APP_DESKTOP;
+    bool result = Utils::isResetSearcher(searcher);
+    EXPECT_TRUE(result);
+
+    searcher = "aaa";
+    result = Utils::isResetSearcher(searcher);
+    EXPECT_FALSE(result);
 }
 
 TEST(UtilsTest, appIconName)
