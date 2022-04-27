@@ -99,18 +99,21 @@ TEST(AccessRecordTest, updateRecord)
 
 TEST(AccessRecordTest, sync)
 {
-    AccessRecord::instance()->m_finished = true;
-    QFile file(AccessRecord::instance()->m_recordPath);
+    AccessRecord accessRecord;
+    accessRecord.m_finished = true;
+    accessRecord.m_recordPath = "./test";
+    QFile file(accessRecord.m_recordPath);
     file.open(QFile::Truncate);
+    file.close();
 
-    AccessRecord::instance()->m_recordObj.insert("aaa", "1");
-    AccessRecord::instance()->sync();
+    accessRecord.m_recordObj.insert("aaa", "1");
+    accessRecord.sync();
     file.open(QFile::ReadOnly);
     QByteArray array = file.readAll();
     file.close();
     QJsonDocument doc(QJsonDocument::fromJson(array));
     QJsonObject obj = doc.object();
-    EXPECT_EQ(obj, AccessRecord::instance()->m_recordObj);
+    EXPECT_EQ(obj, accessRecord.m_recordObj);
 
 }
 
