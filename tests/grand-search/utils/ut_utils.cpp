@@ -805,12 +805,12 @@ TEST(UtilsTest, calcAppWeight)
     keys.append("a");
     keys.append("b");
     GrandSearch::MatchedItem item;
-    item.item = "aa";
+    item.name = "aa";
     double result = Utils::calcAppWeight(item, keys);
     EXPECT_EQ(result, 80.5);
 
     // 名称不包含关键字
-    item.item = "ccc";
+    item.name = "ccc";
     result = Utils::calcAppWeight(item, keys);
     EXPECT_EQ(result, 60.5);
 }
@@ -828,12 +828,12 @@ TEST(UtilsTest, calcSettingWeight)
     keys.append("a");
     keys.append("b");
     GrandSearch::MatchedItem item;
-    item.item = "aa";
+    item.name = "aa";
     double result = Utils::calcSettingWeight(item, keys);
     EXPECT_EQ(result, 81.5);
 
     // 名称不包含关键字
-    item.item = "ccc";
+    item.name = "ccc";
     result = Utils::calcSettingWeight(item, keys);
     EXPECT_EQ(result, 61.5);
 }

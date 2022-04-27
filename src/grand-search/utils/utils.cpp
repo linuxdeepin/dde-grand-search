@@ -459,7 +459,7 @@ double Utils::calcAppWeight(const GrandSearch::MatchedItem &item, const QStringL
 {
     double weight = 0;
     for (const QString &key : keys) {
-        if (item.item.contains(key)) {
+        if (item.name.contains(key)) {
             weight += 20;
             break;
         }
@@ -474,7 +474,7 @@ double Utils::calcSettingWeight(const GrandSearch::MatchedItem &item, const QStr
 {
     double weight = 0;
     for (const QString &key : keys) {
-        if (item.item.contains(key)) {
+        if (item.name.contains(key)) {
             weight += 20;
             break;
         }
