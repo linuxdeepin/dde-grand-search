@@ -335,6 +335,25 @@ TEST(MatchWidgetTest, handleItem)
     EXPECT_TRUE(ut_call_utilsOpen);
 }
 
+TEST(MatchWidgetTest, onPreviewStateChanged)
+{
+    bool preview = true;
+    MatchWidget widget;
+    GroupWidgets list;
+    GroupWidget tempWidget;
+    list.append(&tempWidget);
+    widget.m_vGroupWidgets = list;
+
+    bool test = false;
+    stub_ext::StubExt stu;
+    stu.set_lamda(&GrandSearchListView::updatePreviewItemState, [&](){
+        test = true;
+    });
+
+    widget.onPreviewStateChanged(preview);
+    EXPECT_TRUE(test);
+}
+
 TEST(MatchWidgetTest, onSelectItemByMouse)
 {
     MatchWidget w;

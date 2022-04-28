@@ -279,6 +279,22 @@ TEST(GrandSearchListViewTest, clear)
     EXPECT_EQ(w.m_model->rowCount(), 0);
 }
 
+TEST(GrandSearchListViewTest, updatePreviewItemState)
+{
+    GrandSearchListView list;
+    bool preview = true;
+    list.updatePreviewItemState(preview);
+    EXPECT_TRUE(list.m_isPreviewItem);
+}
+
+TEST(GrandSearchListViewTest, isPreviewItem)
+{
+    GrandSearchListView list;
+    list.m_isPreviewItem = true;
+    bool result = list.isPreviewItem();
+    EXPECT_TRUE(result);
+}
+
 TEST(GrandSearchListViewTest, mousePressEvent)
 {
     GrandSearchListView w;
