@@ -21,6 +21,8 @@
 
 #include "searcher/web/statictextworker.h"
 #include "global/builtinsearch.h"
+#include "configuration/configer.h"
+#include "global/searchconfigdefine.h"
 
 #include <stubext.h>
 
@@ -53,6 +55,14 @@ TEST(StaticTextWorker, ut_working_1)
 {
     StaticTextWorker worker(GRANDSEARCH_CLASS_WEB_STATICTEXT);
     worker.setContext("test");
+    stub_ext::StubExt stu;
+    stu.set_lamda(&Configer::group, [](){
+        QVariantHash datas;
+        datas.insert(GRANDSEARCH_WEB_SEARCHENGINE, GRANDSEARCH_WEB_SEARCHENGINE_GOOGLE);
+        UserPreferencePointer u(new UserPreference(datas));
+        return u;
+    });
+
     EXPECT_TRUE(worker.working(nullptr));
 }
 

@@ -36,6 +36,7 @@ public:
     GrandSearch::MatchedItemMap takeAll() Q_DECL_OVERRIDE;
 private:
     QString group() const;
+    QString createUrl(const QString &searchEngine) const;
 private:
     QAtomicInt m_status = Ready;
     QString m_context;

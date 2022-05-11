@@ -67,6 +67,7 @@ public:
     QStringList getSearcherByGroupName(const QString &name);
     QStringList getSuffixByGroupName(const QString &name);
     QString tropeInputSymbol(const QString &pattern);
+    bool isSimplifiedChinese() const;
 
 private:
     explicit SearchHelper();

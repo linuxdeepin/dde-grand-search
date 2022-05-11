@@ -108,6 +108,8 @@ set(GUISRC
     gui/searchconfig/customwidget.h
     gui/searchconfig/tailerwidget.cpp
     gui/searchconfig/tailerwidget.h
+    gui/searchconfig/searchenginewidget.cpp
+    gui/searchconfig/searchenginewidget.h
     gui/searchconfig/checkboxwidget/checkboxwidget.cpp
     gui/searchconfig/checkboxwidget/checkboxwidget.h
     gui/searchconfig/checkboxwidget/checkboxitem.cpp
@@ -116,6 +118,10 @@ set(GUISRC
     gui/searchconfig/switchwidget/switchwidget.h
     gui/searchconfig/hyperlinklabel/hyperlinklabel.cpp
     gui/searchconfig/hyperlinklabel/hyperlinklabel.h
+    gui/searchconfig/comboboxwidget/comboboxwidget.h
+    gui/searchconfig/comboboxwidget/comboboxwidget.cpp
+    gui/searchconfig/bestmatchwidget.cpp
+    gui/searchconfig/bestmatchwidget.h
     )
 
 # business

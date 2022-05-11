@@ -50,5 +50,5 @@ TEST(ConfigWidgetTest, initUI)
     ConfigWidget w;
 
     EXPECT_TRUE(w.m_searchGroupWidget);
-    EXPECT_TRUE(w.m_searchPlanWidget);
+    EXPECT_TRUE(w.m_searchCustomWidget);
 }

@@ -39,6 +39,7 @@ public:
     static UserPreferencePointer fileSearcher();
     static UserPreferencePointer tailerData();
     static UserPreferencePointer blacklist();
+    static UserPreferencePointer webSearchEngine();
     bool updateConfig1(QSettings *);
 private:
     Configer *q;

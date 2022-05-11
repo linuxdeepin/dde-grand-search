@@ -22,6 +22,8 @@
 #include "global/builtinsearch.h"
 
 #include <QSet>
+#include <QVariantList>
+#include <QLocale>
 
 SearchHelper::SearchHelper()
 {
@@ -161,4 +163,24 @@ QString SearchHelper::tropeInputSymbol(const QString &pattern)
     }
 
     return rx;
+}
+
+/**
+ * @brief SearchHelper::isSimplifiedChinese
+ * @return 简体中文返回true，非简体中文返回false
+ */
+bool SearchHelper::isSimplifiedChinese() const
+{
+    static const QList<QLocale> supportLanguage{{QLocale::Tibetan}, {QLocale::Uighur}, {QLocale::Mongolian}, {QLocale::Chinese}};
+    QLocale locale;
+    if(supportLanguage.contains(locale.language())) {
+        static const QStringList traditionalChinese{{"zh_HK"}, {"zh_MO"}, {"zh_TW"}, "zh_SG"};
+         if (traditionalChinese.contains(locale.name().simplified())) {
+             return false;
+         } else {
+             return true;
+         }
+    } else {
+        return false;
+    }
 }

@@ -20,6 +20,9 @@
  */
 #include "statictextworker.h"
 #include "global/builtinsearch.h"
+#include "global/searchconfigdefine.h"
+#include "configuration/configer.h"
+#include "global/searchhelper.h"
 
 StaticTextWorker::StaticTextWorker(const QString &name, QObject *parent) : ProxyWorker(name, parent)
 {
@@ -51,11 +54,18 @@ bool StaticTextWorker::working(void *context)
         return true;
     }
 
-    const static QString templateStr = "Search for \"%0\"";
+    auto config = Configer::instance()->group(GRANDSEARCH_WEB_GROUP);
+    auto searchEngine = config->value(GRANDSEARCH_WEB_SEARCHENGINE, QString(""));
+    QString defaultUrl = createUrl(searchEngine);
+
     GrandSearch::MatchedItem ret;
-    ret.item = m_context;
-    ret.name = templateStr.arg(m_context); //由前端做国际化预览处理
-    ret.type = "application/x-dde-grand-search-web-statictext";
+
+    QString encodeString(QUrl::toPercentEncoding(m_context));
+    QString url = defaultUrl.arg(QString(encodeString));
+
+    ret.item = url;
+    ret.name = tr("Search for \"%1\"").arg(m_context);
+    ret.type = "x-scheme-handler/http";
     ret.icon = ret.type; //给一个无效的图标名，由前端寻找默认浏览器图标
     ret.searcher = name();
 
@@ -108,4 +118,24 @@ GrandSearch::MatchedItemMap StaticTextWorker::takeAll()
 QString StaticTextWorker::group() const
 {
     return GRANDSEARCH_GROUP_WEB;
+}
+
+QString StaticTextWorker::createUrl(const QString &searchEngine) const
+{
+    static const QString baidu("https://www.baidu.com/s?&wd=%0");
+    static const QString google("https://www.google.com/search?q=%0");
+
+    static const QHash<QString, QString> searchEngineChinese{{GRANDSEARCH_WEB_SEARCHENGINE_GOOGLE, "https://www.google.com/search?q=%0"},
+                                                {GRANDSEARCH_WEB_SEARCHENGINE_BING, "https://bing.com/search?q=%0"},
+                                                {GRANDSEARCH_WEB_SEARCHENGINE_YAHOO, "https://search.yahoo.com/search?p=%0"},
+                                                {GRANDSEARCH_WEB_SEARCHENGINE_SO, "https://www.so.com/s?&q=%0"},
+                                                {GRANDSEARCH_WEB_SEARCHENGINE_SOGOU, "https://www.sogou.com/web?query=%0"}};
+    static const QHash<QString, QString> searchEngineEnglish{{GRANDSEARCH_WEB_SEARCHENGINE_BING, "https://bing.com/search?q=%0"},
+                                                {GRANDSEARCH_WEB_SEARCHENGINE_YAHOO, "https://search.yahoo.com/search?p=%0"},
+                                                {GRANDSEARCH_WEB_SEARCHENGINE_BAIDU, "https://www.baidu.com/s?&wd=%0"}};
+    if (SearchHelper::instance()->isSimplifiedChinese()) {
+        return searchEngineChinese.value(searchEngine, baidu);
+    } else {
+        return searchEngineEnglish.value(searchEngine, google);
+    }
 }

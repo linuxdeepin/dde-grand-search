@@ -89,6 +89,13 @@ UserPreferencePointer ConfigerPrivate::blacklist()
     return UserPreferencePointer(new UserPreference(data));
 }
 
+UserPreferencePointer ConfigerPrivate::webSearchEngine()
+{
+    QVariantHash data{{GRANDSEARCH_WEB_SEARCHENGINE, ""}};
+
+    return UserPreferencePointer(new UserPreference(data));
+}
+
 bool ConfigerPrivate::updateConfig1(QSettings *set)
 {
     if (!set || m_root.isNull())
@@ -228,6 +235,17 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
         qWarning() << "no shuch config:" << GRANDSEARCH_BLACKLIST_GROUP;
     }
     set->endGroup();
+
+    // 搜索引擎
+    set->beginGroup(GRANDSEARCH_WEB_GROUP);
+    if (UserPreferencePointer conf = m_root->group(GRANDSEARCH_WEB_GROUP)) {
+        auto searchEngine = set->value(GRANDSEARCH_WEB_SEARCHENGINE).toString();
+        conf->setValue(GRANDSEARCH_WEB_SEARCHENGINE, searchEngine);
+    } else {
+        qWarning() << "no shuch config:" << GRANDSEARCH_WEB_SEARCHENGINE;
+    }
+    set->endGroup();
+
     return true;
 }
 
@@ -315,6 +333,9 @@ void Configer::initDefault()
 
     // 路径黑名单
     rootData.insert(GRANDSEARCH_BLACKLIST_GROUP, QVariant::fromValue(d->blacklist()));
+
+    // 搜索引擎
+    rootData.insert(GRANDSEARCH_WEB_GROUP, QVariant::fromValue(d->webSearchEngine()));
 
     {
         UserPreferencePointer root(new UserPreference(rootData));
