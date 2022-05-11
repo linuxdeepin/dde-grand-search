@@ -24,6 +24,9 @@ extern "C" {
 #include <gio/gdesktopappinfo.h>
 #include <gio/gio.h>
 
+#include <gio/gio.h>
+#include <gio/gdesktopappinfo.h>
+
 #include "utils.h"
 
 #include "global/builtinsearch.h"
@@ -45,7 +48,6 @@ extern "C" {
 #include <QDateTime>
 #include <QIcon>
 #include <QApplication>
-
 
 DCORE_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
