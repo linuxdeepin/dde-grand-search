@@ -19,10 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 extern "C" {
-#include <gio/gio.h>
-#include <gio/gdesktopappinfo.h>
 #include <ctype.h>
 }
+
+#include <gio/gio.h>
+#include <gio/gdesktopappinfo.h>
 
 #include "utils.h"
 
@@ -45,7 +46,6 @@ extern "C" {
 #include <QDateTime>
 #include <QIcon>
 #include <QApplication>
-
 
 DCORE_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
