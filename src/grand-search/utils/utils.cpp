@@ -900,11 +900,6 @@ bool Utils::openWithBrowser(const QString &words)
     if (words.isEmpty())
         return false;
 
-    static QString defaultUrl = "https://www.baidu.com/s?wd=%0&ie=UTF-8";
-
-    QString encodeString(QUrl::toPercentEncoding(words));
-    QString url = defaultUrl.arg(QString(encodeString));
-
     // 获取默认浏览器
     QString defaultDesktopFile = defaultBrowser();
     if (defaultDesktopFile.isEmpty()) {
@@ -913,7 +908,7 @@ bool Utils::openWithBrowser(const QString &words)
     }
     //默认浏览器
     qDebug() << "open with" << defaultDesktopFile;
-    return launchApp(defaultDesktopFile, {url});
+    return launchApp(defaultDesktopFile, {words});
 }
 
 QIcon Utils::defaultIcon(const MatchedItem &item)

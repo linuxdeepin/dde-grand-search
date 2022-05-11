@@ -41,10 +41,10 @@ PlanWidget::PlanWidget(QWidget *parent)
     : DWidget(parent)
 {
     m_groupLabel = new QLabel(tr("Search experience program"), this);
-    DFontSizeManager::instance()->bind(m_groupLabel, DFontSizeManager::T5, QFont::Bold);
+    m_groupLabel->adjustSize();
 
     m_mainLayout = new QVBoxLayout(this);
-    m_mainLayout->setSpacing(10);
+    m_mainLayout->setSpacing(0);
     m_mainLayout->setContentsMargins(0, 0, 0, 0);
     m_mainLayout->addWidget(m_groupLabel);
 
@@ -57,6 +57,7 @@ PlanWidget::PlanWidget(QWidget *parent)
     m_switchWidget->setEnableBackground(true);
     m_switchWidget->setTitle(display);
     m_switchWidget->setChecked(enable);
+    m_mainLayout->addSpacerItem(new QSpacerItem(10, 10));
     m_mainLayout->addWidget(m_switchWidget);
     m_switchWidget->setProperty(GRANDSEARCH_SEARCH_GROUP, GRANDSEARCH_PLAN_EXPERIENCE);
 
@@ -67,6 +68,7 @@ PlanWidget::PlanWidget(QWidget *parent)
                          "and use of the aforementioned information, do not join the program.");
     m_contentLabel = new QLabel(content, this);
     m_contentLabel->setWordWrap(true);
+    DFontSizeManager::instance()->bind(m_contentLabel, DFontSizeManager::T10);
 
     const QString leadintText = tr("To know more about the management of your data, "
                                             "please refer to the UnionTech Software Privacy Policy (");
@@ -82,8 +84,11 @@ PlanWidget::PlanWidget(QWidget *parent)
         showHyperlink = uosHyperlink;
 
     m_tipsLabel = new HyperlinkLabel(leadintText, showHyperlink, endText, this);
+    DFontSizeManager::instance()->bind(m_tipsLabel, DFontSizeManager::T10);
 
+    m_mainLayout->addSpacerItem(new QSpacerItem(10, 10));
     m_mainLayout->addWidget(m_contentLabel);
+    m_mainLayout->addSpacerItem(new QSpacerItem(6, 6));
     m_mainLayout->addWidget(m_tipsLabel);
 
     updateIcons();

@@ -46,18 +46,30 @@
 #define GRANDSEARCH_BLACKLIST_GROUP         "Blacklist_Group"
 #define GRANDSEARCH_BLACKLIST_PATH          "Blacklist.path"
 
-// 个性化
+// 最佳匹配项
 #define GRANDSEARCH_CUSTOM_GROUP                        "Custom_Group"
 #define GRANDSEARCH_CUSTOM_BESTMATCH                    "custom.bestMatch"
 #define GRANDSEARCH_CUSTOM_BESTMATCH_FIRSTITEMLIMIT     "custom.bestMatch.firstItemLimit"
 #define GRANDSEARCH_CUSTOM_BESTMATCH_FIRSTWAITTIME      "custom.bestMatch.firstWaitTime"
 #define GRANDSEARCH_CUSTOM_BESTMATCH_MAXCOUNT           "custom.bestMatch.maxCount"
 
+// 搜索引擎
+#define GRANDSEARCH_WEB_GROUP                       "Web_Group"
+#define GRANDSEARCH_WEB_SEARCHENGINE                "web.searchEngine"
+#define GRANDSEARCH_WEB_SEARCHENGINE_GOOGLE         "Google"
+#define GRANDSEARCH_WEB_SEARCHENGINE_BING           "Bing"
+#define GRANDSEARCH_WEB_SEARCHENGINE_BAIDU          "Baidu"
+#define GRANDSEARCH_WEB_SEARCHENGINE_YAHOO          "Yahoo"
+#define GRANDSEARCH_WEB_SEARCHENGINE_SO             "So"
+#define GRANDSEARCH_WEB_SEARCHENGINE_SOGOU          "Sogou"
+
 // 配置切换界面参数
-#define SWITCHWIDGETWIDTH       502
+#define SWITCHWIDGETWIDTH       476
 #define SWITCHWIDGETHEIGHT      36
 #define SWITCHWIDGETICONSIZE    36
-#define CHECKBOXITEMWIDTH       502
+#define CHECKBOXITEMWIDTH       476
 #define CHECKBOXITEMHEIGHT      36
+#define COMBOBOXWIDGETWIDTH     476
+#define COMBOBOXWIDGETHEIGHT    48
 
 #endif // SEARCHCONFIGDEFINE_H

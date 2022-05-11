@@ -1,9 +1,9 @@
 /*
  * Copyright (C) 2022 Uniontech Software Technology Co., Ltd.
  *
- * Author:     wangchunlin<wangchunlin@uniontech.com>
+ * Author:     zhaohanxi<zhaohanxi@uniontech.com>
  *
- * Maintainer: wangchunlin<wangchunlin@uniontech.com>
+ * Maintainer: zhaohanxi<zhaohanxi@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,45 +18,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef CUSTOMWIDGET_H
-#define CUSTOMWIDGET_H
+
+#ifndef SEARCHENGINEWIDGET_H
+#define SEARCHENGINEWIDGET_H
 
 #include <DWidget>
-#include <QVBoxLayout>
-#include <QLabel>
+#include <DLabel>
+#include <DSwitchButton>
 
-class PlanWidget;
-class BestMatchWidget;
-class TailerWidget;
-class SearchEngineWidget;
+#include <QVBoxLayout>
 
 namespace GrandSearch {
-class SwitchWidget;
+class ComboboxWidget;
 }
 
-class CustomWidget : public Dtk::Widget::DWidget
+class SearchEngineWidget : public Dtk::Widget::DWidget
 {
     Q_OBJECT
 public:
-    explicit CustomWidget(QWidget *parent = nullptr);
-    ~CustomWidget();
+    explicit SearchEngineWidget(QWidget *parent = nullptr);
+    ~SearchEngineWidget();
 
 private slots:
-    void onSwitchStateChanged(const bool checked);
+    void checkedChangedIndex(int index);
+
+private:
+    int getIndex(const QString text) const;
 
 private:
     QVBoxLayout *m_mainLayout = nullptr;
-    QLabel *m_groupLabel = nullptr;
-    PlanWidget *m_searchPlanWidget = nullptr;
-    TailerWidget *m_tailerWidget = nullptr;
-    BestMatchWidget *m_bestMatchWidget = nullptr;
-    SearchEngineWidget *m_searchEngineWidget = nullptr;
-    QVBoxLayout *m_innerLayout = nullptr;
+    QLabel *m_groupLabel= nullptr;
+    QLabel *m_contentLabel = nullptr;
 
     QHash<QString, QString> m_groupName;        // <searchGroupName, displayGroupName>
-    QList<GrandSearch::SwitchWidget*> m_switchWidgets;
-
-    QStringList m_displayIcons;                 // 显示图标
+    GrandSearch::ComboboxWidget* m_comboboxWidget;
 };
 
-#endif // CUSTOMWIDGET_H
+#endif // SEARCHENGINEWIDGET_H

@@ -50,8 +50,6 @@ private:
 
     ScopeWidget *m_searchGroupWidget          = nullptr;
     CustomWidget *m_searchCustomWidget        = nullptr;
-    PlanWidget *m_searchPlanWidget            = nullptr;
-    TailerWidget *m_tailerWidget              = nullptr;
 };
 
 #endif // CONFIGWIDGET_H

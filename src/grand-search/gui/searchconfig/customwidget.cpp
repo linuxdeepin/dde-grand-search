@@ -25,6 +25,10 @@
 #include "utils/utils.h"
 #include "global/builtinsearch.h"
 #include "global/searchconfigdefine.h"
+#include "planwidget.h"
+#include "bestmatchwidget.h"
+#include "searchenginewidget.h"
+#include "tailerwidget.h"
 
 #include <DFontSizeManager>
 #include <DGuiApplicationHelper>
@@ -37,6 +41,7 @@ CustomWidget::CustomWidget(QWidget *parent)
 {
     m_groupLabel = new QLabel(tr("Custom search"), this);
     DFontSizeManager::instance()->bind(m_groupLabel, DFontSizeManager::T5, QFont::Bold);
+    m_groupLabel->setMargin(0);
 
     m_mainLayout = new QVBoxLayout(this);
     m_mainLayout->setSpacing(10);
@@ -44,33 +49,20 @@ CustomWidget::CustomWidget(QWidget *parent)
 
     m_mainLayout->addWidget(m_groupLabel);
 
-    m_groupName = {{GRANDSEARCH_CUSTOM_BESTMATCH, GroupName_Best}};
+    m_innerLayout = new QVBoxLayout(this);
+    m_innerLayout->setSpacing(20);
+    m_innerLayout->setContentsMargins(0, 0, 0, 0);
 
-    QStringList displayOrder;
-    displayOrder << GRANDSEARCH_CUSTOM_BESTMATCH;
+    m_tailerWidget = new TailerWidget(this);
+    m_bestMatchWidget = new BestMatchWidget(this);
+    m_searchEngineWidget = new SearchEngineWidget(this);
+    m_searchPlanWidget = new PlanWidget(this);
+    m_innerLayout->addWidget(m_tailerWidget);
+    m_innerLayout->addWidget(m_bestMatchWidget);
+    m_innerLayout->addWidget(m_searchEngineWidget);
+    m_innerLayout->addWidget(m_searchPlanWidget);
 
-    m_displayIcons << QStringLiteral("bestmatch");
-
-    for (int i = 0; i < displayOrder.count(); ++i) {
-        const QString &searchGroup = displayOrder.at(i);
-        bool enable = SearchConfig::instance()->getConfig(GRANDSEARCH_CUSTOM_GROUP, searchGroup, true).toBool();
-        SwitchWidget *switchWidget = new SwitchWidget(this);
-        switchWidget->setFixedSize(SWITCHWIDGETWIDTH, SWITCHWIDGETHEIGHT);
-        switchWidget->setEnableBackground(true);
-        switchWidget->setTitle(m_groupName.value(searchGroup));
-        switchWidget->setChecked(enable);
-        switchWidget->setProperty(GRANDSEARCH_CUSTOM_GROUP, searchGroup);
-
-        m_mainLayout->addWidget(switchWidget);
-        m_switchWidgets.append(switchWidget);
-
-        connect(switchWidget, &SwitchWidget::checkedChanged, this, &CustomWidget::onSwitchStateChanged);
-    }
-
-    setLayout(m_mainLayout);
-    updateIcons();
-
-    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &CustomWidget::updateIcons);
+    m_mainLayout->addLayout(m_innerLayout);
 
 }
 
@@ -88,24 +80,4 @@ void CustomWidget::onSwitchStateChanged(const bool checked)
         QString group = switchWidget->property(GRANDSEARCH_CUSTOM_GROUP).toString();
         SearchConfig::instance()->setConfig(GRANDSEARCH_CUSTOM_GROUP, group, checked);
     }
-}
-
-void CustomWidget::updateIcons()
-{
-    Q_ASSERT(m_switchWidgets.count() == m_displayIcons.count());
-
-    QString suffix = Utils::iconThemeSuffix();
-
-    for (int i = 0; i < m_switchWidgets.count(); ++i) {
-
-        QString iconName = m_displayIcons.at(i);
-        QIcon icon = QIcon(QString(":/icons/%1%2.svg").arg(iconName).arg(suffix));
-
-        auto switchWidget = m_switchWidgets.at(i);
-        Q_ASSERT(switchWidget);
-
-        switchWidget->setIcon(icon, QSize(SWITCHWIDGETICONSIZE, SWITCHWIDGETICONSIZE));
-    }
-
-    update();
 }
