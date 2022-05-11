@@ -81,25 +81,8 @@ void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
             continue;
         }
 
-        // 网络搜索项时，对显示内容进行翻译处理
-        if (itData.key() == GRANDSEARCH_GROUP_WEB) {
-
-            MatchedItems webItems;
-            for (auto val : itData.value()) {
-                QString showItem = tr("Search for \"%1\"").arg(val.item);
-                val.name = showItem;
-                webItems.append(val);
-            }
-
-            // 追加匹配数据到类目列表中
-            groupWidget->appendMatchedItems(webItems, itData.key());
-
-            bNeedRelayout = true;
-
-        } else {
-            // 追加匹配数据到类目列表中
-            groupWidget->appendMatchedItems(itData.value(), itData.key());
-        }
+        // 追加匹配数据到类目列表中
+        groupWidget->appendMatchedItems(itData.value(), itData.key());
 
         // 列表中有数据，显示类目列表
         groupWidget->setVisible(groupWidget->itemCount() > 0);

@@ -1,9 +1,9 @@
 /*
  * Copyright (C) 2022 Uniontech Software Technology Co., Ltd.
  *
- * Author:     wangchunlin<wangchunlin@uniontech.com>
+ * Author:     zhaohanxi<zhaohanxi@uniontech.com>
  *
- * Maintainer: wangchunlin<wangchunlin@uniontech.com>
+ * Maintainer: zhaohanxi<zhaohanxi@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,40 +18,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef CUSTOMWIDGET_H
-#define CUSTOMWIDGET_H
+
+#ifndef BESTMATCHWIDGET_H
+#define BESTMATCHWIDGET_H
 
 #include <DWidget>
 #include <QVBoxLayout>
 #include <QLabel>
 
-class PlanWidget;
-class BestMatchWidget;
-class TailerWidget;
-class SearchEngineWidget;
-
 namespace GrandSearch {
 class SwitchWidget;
 }
 
-class CustomWidget : public Dtk::Widget::DWidget
+class BestMatchWidget : public Dtk::Widget::DWidget
 {
-    Q_OBJECT
 public:
-    explicit CustomWidget(QWidget *parent = nullptr);
-    ~CustomWidget();
+    explicit BestMatchWidget(QWidget *parent = nullptr);
+    ~BestMatchWidget();
 
 private slots:
     void onSwitchStateChanged(const bool checked);
 
 private:
+    void updateIcons();
+
+private:
     QVBoxLayout *m_mainLayout = nullptr;
     QLabel *m_groupLabel = nullptr;
-    PlanWidget *m_searchPlanWidget = nullptr;
-    TailerWidget *m_tailerWidget = nullptr;
-    BestMatchWidget *m_bestMatchWidget = nullptr;
-    SearchEngineWidget *m_searchEngineWidget = nullptr;
-    QVBoxLayout *m_innerLayout = nullptr;
 
     QHash<QString, QString> m_groupName;        // <searchGroupName, displayGroupName>
     QList<GrandSearch::SwitchWidget*> m_switchWidgets;
@@ -59,4 +52,4 @@ private:
     QStringList m_displayIcons;                 // 显示图标
 };
 
-#endif // CUSTOMWIDGET_H
+#endif // BESTMATCHWIDGET_H

@@ -37,15 +37,22 @@ TEST(CustomWidgetTest, constructor)
 {
     stub_ext::StubExt stu;
 
-    bool ut_call_updateIcons = false;
-    stu.set_lamda(&CustomWidget::updateIcons, [&]() {
-        ut_call_updateIcons = true;
-    });
+//    bool ut_call_updateIcons = false;
+//    stu.set_lamda(&CustomWidget::updateIcons, [&]() {
+//        ut_call_updateIcons = true;
+//    });
 
     CustomWidget *w = new CustomWidget;
 
     EXPECT_TRUE(w);
-    EXPECT_TRUE(ut_call_updateIcons);
+//    EXPECT_TRUE(ut_call_updateIcons);
+    EXPECT_TRUE(w->m_mainLayout);
+    EXPECT_TRUE(w->m_groupLabel);
+    EXPECT_TRUE(w->m_searchPlanWidget);
+    EXPECT_TRUE(w->m_tailerWidget);
+    EXPECT_TRUE(w->m_bestMatchWidget);
+    EXPECT_TRUE(w->m_searchEngineWidget);
+    EXPECT_TRUE(w->m_innerLayout);
 
     delete w;
 }
@@ -73,17 +80,17 @@ TEST(CustomWidgetTest, onSwitchStateChanged)
     delete switchWidget;
 }
 
-TEST(CustomWidgetTest, updateIcons)
-{
-    CustomWidget w;
+//TEST(CustomWidgetTest, updateIcons)
+//{
+//    CustomWidget w;
 
-    stub_ext::StubExt stu;
+//    stub_ext::StubExt stu;
 
-    bool ut_call_setIcon = false;
-    stu.set_lamda(&SwitchWidget::setIcon, [&]() {
-        ut_call_setIcon = true;
-    });
+//    bool ut_call_setIcon = false;
+//    stu.set_lamda(&SwitchWidget::setIcon, [&]() {
+//        ut_call_setIcon = true;
+//    });
 
-    w.updateIcons();
-    EXPECT_TRUE(ut_call_setIcon);
-}
+//    w.updateIcons();
+//    EXPECT_TRUE(ut_call_setIcon);
+//}
