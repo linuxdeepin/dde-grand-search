@@ -22,6 +22,7 @@
 #include "matchwidget_p.h"
 #include "matchwidget.h"
 #include "listview/grandsearchlistview.h"
+#include "viewmore/viewmorebutton.h"
 #include "utils/utils.h"
 #include "gui/datadefine.h"
 
@@ -171,9 +172,17 @@ void MatchWidget::selectNextItem()
         // 选择项在当前列表中
         GroupWidget *group = m_vGroupWidgets.at(i);
         GrandSearchListView *listView = group->getListView();
-        const QModelIndex &index = listView->currentIndex();
+        ViewMoreButton *viewMoreBtn = group->getViewMoreButton();
 
-        int nextRow = index.row() + 1;
+        int nextRow = -1;
+        if (viewMoreBtn->isSelected()) {
+            nextRow = 0;
+            viewMoreBtn->setSelected(false);
+        } else {
+            const QModelIndex &index = listView->currentIndex();
+            nextRow = index.row() + 1;
+        }
+
         const QModelIndex &nextIndex = listView->model()->index(nextRow, 0);
         if (nextIndex.isValid()) {
             listView->setCurrentIndex(nextIndex);
@@ -214,14 +223,21 @@ void MatchWidget::selectPreviousItem()
         // 选择项在当前列表中
         GroupWidget *group = m_vGroupWidgets.at(i);
         GrandSearchListView *listView = group->getListView();
-        const QModelIndex &index = listView->currentIndex();
+        ViewMoreButton *viewMoreBtn = group->getViewMoreButton();
 
+        const QModelIndex &index = listView->currentIndex();
         int previousRow = index.row() - 1;
         const QModelIndex &previousIndex = listView->model()->index(previousRow, 0);
         if (previousIndex.isValid()) {
             listView->setCurrentIndex(previousIndex);
             m_customSelected = true;
             currentIndexChanged(group->searchGroupName(), previousIndex);
+            break;
+        } else if (viewMoreBtn->isVisible() && !viewMoreBtn->isSelected()) {
+            viewMoreBtn->setSelected(true);
+            listView->setCurrentIndex(QModelIndex());
+            currentIndexChanged(group->searchGroupName(), QModelIndex());
+            m_customSelected = true;
             break;
         } else {
             // 选择项是当前列表的第一项，需要选择上一个列表的最后一项
@@ -230,6 +246,7 @@ void MatchWidget::selectPreviousItem()
                 if (Q_LIKELY(selected)) {
                     // 切换成功后，需要将当前列表选择为空
                     listView->setCurrentIndex(QModelIndex());
+                    viewMoreBtn->setSelected(false);
                     m_customSelected = true;
                 } else {
                     qWarning() << "select previous failed";
@@ -248,8 +265,16 @@ void MatchWidget::handleItem()
 {
     for (int i = 0; i < m_vGroupWidgets.count(); ++i) {
         if (hasSelectItem(i)) {
+            ViewMoreButton *viewMoreBtn = m_vGroupWidgets.at(i)->getViewMoreButton();
+            Q_ASSERT(viewMoreBtn);
             GrandSearchListView *listView = m_vGroupWidgets.at(i)->getListView();
             Q_ASSERT(listView);
+
+            if (viewMoreBtn->isSelected()) {
+                viewMoreBtn->click();
+                break;
+            }
+
             MatchedItem item = listView->currentIndex().data(DATA_ROLE).value<MatchedItem>();
             Utils::openMatchedItem(item);
             emit sigCloseWindow();
@@ -286,6 +311,10 @@ void MatchWidget::onSelectItemByMouse(const MatchedItem &item)
     if (listView) {
         for (int i = 0; i < m_vGroupWidgets.count(); ++i) {
             if (hasSelectItem(i)) {
+                ViewMoreButton *viewMoreBtn = m_vGroupWidgets.at(i)->getViewMoreButton();
+                Q_ASSERT(viewMoreBtn);
+                viewMoreBtn->setSelected(false);
+
                 GrandSearchListView *tmpListView = m_vGroupWidgets.at(i)->getListView();
                 Q_ASSERT(tmpListView);
                 if (listView != tmpListView) {
@@ -310,6 +339,15 @@ bool MatchWidget::selectFirstItem(int groupNumber)
 
         GroupWidget *group = m_vGroupWidgets.at(i);
         Q_ASSERT(group);
+
+        ViewMoreButton *viewMoreBtn = group->getViewMoreButton();
+        Q_ASSERT(viewMoreBtn);
+
+        if (viewMoreBtn->isVisible()) {
+            viewMoreBtn->setSelected(true);
+            currentIndexChanged(group->searchGroupName(), QModelIndex());
+            return true;
+        }
 
         GrandSearchListView *listView = group->getListView();
         Q_ASSERT(listView);
@@ -363,6 +401,13 @@ bool MatchWidget::hasSelectItem(int groupNumber)
     if (Q_UNLIKELY(!group))
         return false;
 
+    ViewMoreButton *viewMoreBtn = group->getViewMoreButton();
+    if (Q_UNLIKELY(!viewMoreBtn))
+        return false;
+
+    if (viewMoreBtn->isSelected())
+        return true;
+
     GrandSearchListView *listView = group->getListView();
     if (Q_UNLIKELY(!listView))
         return false;
@@ -380,9 +425,13 @@ void MatchWidget::clearSelectItem()
 
     for (int i = 0; i < m_vGroupWidgets.count(); ++i) {
         if (hasSelectItem(i)) {
+            ViewMoreButton *viewMoreBtn = m_vGroupWidgets.at(i)->getViewMoreButton();
+            Q_ASSERT(viewMoreBtn);
+
             GrandSearchListView *tmpListView = m_vGroupWidgets.at(i)->getListView();
             Q_ASSERT(tmpListView);
 
+            viewMoreBtn->setSelected(false);
             tmpListView->setCurrentIndex(QModelIndex());
             selectChanged = true;
         }
@@ -404,14 +453,17 @@ void MatchWidget::adjustScrollBar()
         if (Q_UNLIKELY((!group)))
             continue;
 
+        ViewMoreButton *viewMoreBtn = group->getViewMoreButton();
+        if (Q_UNLIKELY(!viewMoreBtn))
+            continue;
+
         GrandSearchListView* listView = group->getListView();
         if (Q_UNLIKELY(!listView))
             continue;
 
-        if (!listView->currentIndex().isValid()) {
+        if (!listView->currentIndex().isValid() && !viewMoreBtn->isSelected()) {
             nCurSelHeight += group->height();
-        }
-        else {
+        } else {
             nCurSelHeight += group->getCurSelectHeight();
             break;
         }
@@ -544,6 +596,7 @@ GroupWidget *MatchWidget::createGroupWidget(const QString &searchGroupName)
         groupWidget->setFocusPolicy(Qt::NoFocus);
 
         connect(groupWidget, &GroupWidget::showMore, this, &MatchWidget::reLayout);
+        connect(groupWidget, &GroupWidget::sigCurrentItemChanged, this, &MatchWidget::sigCurrentItemChanged);
 
         GrandSearchListView *listView = groupWidget->getListView();
         Q_ASSERT(listView);

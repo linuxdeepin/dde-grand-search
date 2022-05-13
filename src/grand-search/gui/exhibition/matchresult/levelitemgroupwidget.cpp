@@ -20,9 +20,8 @@
  */
 #include "levelitemgroupwidget.h"
 #include "listview/grandsearchlistview.h"
+#include "viewmore/viewmorebutton.h"
 #include "utils/utils.h"
-
-#include <DPushButton>
 
 LevelItemGroupWidget::LevelItemGroupWidget(QWidget *parent)
     : GroupWidget (parent)

@@ -110,7 +110,7 @@ void ExhibitionWidget::previewItem(const QString &searchGroupName, const Matched
     Q_ASSERT(m_hLayout);
 
     // 搜索类型为空，或web搜索、应用、设置等，不显示预览
-    if (!Utils::canPreview(searchGroupName)) {
+    if (!Utils::canPreview(searchGroupName) || item.name.isEmpty()) {
         m_previewWidget->hide();
 
         // 不显示预览界面，右侧空隙需为0, 用来贴着主界面右侧显示滚动条区域

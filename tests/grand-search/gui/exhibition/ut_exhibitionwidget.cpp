@@ -190,6 +190,7 @@ TEST(ExhibitionWidgetTest, previewItem)
 
     QString searchGroupName("test");
     MatchedItem item;
+    item.name = "test";
 
     w.previewItem(searchGroupName, item);
     EXPECT_FALSE(ut_preview_item);
