@@ -22,6 +22,7 @@
 #include "groupwidget_p.h"
 #include "groupwidget.h"
 #include "listview/grandsearchlistview.h"
+#include "viewmore/viewmorebutton.h"
 #include "utils/utils.h"
 #include "global/accessibility/acintelfunctions.h"
 
@@ -130,6 +131,11 @@ GrandSearchListView *GroupWidget::getListView()
     return m_listView;
 }
 
+ViewMoreButton *GroupWidget::getViewMoreButton()
+{
+    return m_viewMoreButton;
+}
+
 int GroupWidget::itemCount()
 {
     Q_ASSERT(m_listView);
@@ -142,7 +148,7 @@ int GroupWidget::getCurSelectHeight()
     Q_ASSERT(m_listView);
 
     int nHeight = 0;
-    if (m_listView->currentIndex().isValid()) {
+    if (m_listView->currentIndex().isValid() || m_viewMoreButton->isSelected()) {
         nHeight += m_groupLabel->height();
         nHeight += (m_listView->currentIndex().row() + 1) * ListItemHeight;
     }
@@ -251,24 +257,9 @@ void GroupWidget::initUi()
     m_groupLabel->setFont(groupLabelFont);
 
     // 查看更多按钮
-    m_viewMoreButton = new DPushButton(tr("More"), this);
+    m_viewMoreButton = new ViewMoreButton(tr("More"), this);
     m_viewMoreButton->setMaximumHeight(MoreBtnMaxHeight);
-    m_viewMoreButton->setFlat(true);
 
-    // 设置查看按钮文本颜色
-    QColor moreTextColor = QColor(0, 0, 0, static_cast<int>(255*0.4));
-    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
-        moreTextColor = QColor(255, 255, 255, static_cast<int>(255*0.4));
-    QPalette palette = m_viewMoreButton->palette();
-    palette.setColor(QPalette::ButtonText, moreTextColor);
-    // 使'查看更多'按钮按下时，背景色变淡
-    QBrush brush(QColor(0,0,0,0));
-    palette.setBrush(QPalette::Active, QPalette::Button, brush);
-    palette.setBrush(QPalette::Active, QPalette::Light, brush);
-    palette.setBrush(QPalette::Active, QPalette::Midlight, brush);
-    palette.setBrush(QPalette::Active, QPalette::Dark, brush);
-    palette.setBrush(QPalette::Active, QPalette::Mid, brush);
-    m_viewMoreButton->setPalette(palette);
     DFontSizeManager::instance()->bind(m_viewMoreButton, DFontSizeManager::T8, QFont::Normal);
     QFont fontMoreBtn = m_viewMoreButton->font();
     fontMoreBtn.setWeight(QFont::Normal);
@@ -352,6 +343,17 @@ void GroupWidget::onMoreBtnClicked()
 
     emit showMore();
     m_viewMoreButton->hide();
+
+    // '查看更多'按钮处于被选中状态时，回车、鼠标点击后，选中列表第一项
+    if (m_viewMoreButton->isSelected()) {
+        m_viewMoreButton->setSelected(false);
+        const QModelIndex &index = m_listView->model()->index(0, 0);
+        if (Q_LIKELY(index.isValid())) {
+            m_listView->setCurrentIndex(index);
+            MatchedItem item = m_listView->currentIndex().data(DATA_ROLE).value<MatchedItem>();
+            emit sigCurrentItemChanged(m_searchGroupName, item);
+        }
+    }
 
     m_bListExpanded = true;
 }

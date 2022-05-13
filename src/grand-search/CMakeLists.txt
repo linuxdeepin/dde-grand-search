@@ -73,6 +73,9 @@ set(GUISRC
     gui/exhibition/matchresult/listview/grandsearchlistmodel.cpp
     gui/exhibition/matchresult/listview/grandsearchlistview.h
     gui/exhibition/matchresult/listview/grandsearchlistview.cpp
+    # viewMore
+    gui/exhibition/matchresult/viewmore/viewmorebutton.cpp
+    gui/exhibition/matchresult/viewmore/viewmorebutton.h
     # preview
     gui/exhibition/preview/previewwidget.h
     gui/exhibition/preview/previewwidget.cpp

@@ -32,6 +32,7 @@
 
 class GroupWidgetPrivate;
 class GrandSearchListView;
+class ViewMoreButton;
 
 DWIDGET_BEGIN_NAMESPACE
 class DLabel;
@@ -60,6 +61,7 @@ public:
     void showHorLine(bool bShow = true);
     bool isHorLineVisilbe();
     GrandSearchListView *getListView();
+    ViewMoreButton *getViewMoreButton();
     int itemCount();
     // 获取当前选中行在类目中的高度
     int getCurSelectHeight();
@@ -80,10 +82,11 @@ private:
 
 signals:
     void showMore();
+    void sigCurrentItemChanged(const QString &groupName, const GrandSearch::MatchedItem &item);
 
 protected:
     GrandSearchListView *m_listView = nullptr;
-    DPushButton* m_viewMoreButton = nullptr;
+    ViewMoreButton* m_viewMoreButton = nullptr;
 
     bool m_bListExpanded = false;                   // 结果列表是否已展开
     GrandSearch::MatchedItems m_firstFiveItems;     // 前5行正在显示的匹配结果
