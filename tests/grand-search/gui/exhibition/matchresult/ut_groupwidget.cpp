@@ -215,6 +215,13 @@ TEST(GroupWidgettTest, getListView)
     EXPECT_EQ(w.getListView(), w.m_listView);
 }
 
+TEST(GroupWidgettTest, getViewMoreButton)
+{
+    GroupWidget w;
+
+    EXPECT_EQ(w.getViewMoreButton(), w.m_viewMoreButton);
+}
+
 TEST(GroupWidgettTest, itemCount)
 {
     GroupWidget w;
