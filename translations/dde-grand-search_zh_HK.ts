@@ -33,9 +33,17 @@
     </message>
 </context>
 <context>
+    <name>BestMatchWidget</name>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/bestmatchwidget.cpp" line="38"/>
+        <source>Best match</source>
+        <translation>最佳匹配</translation>
+    </message>
+</context>
+<context>
     <name>CustomWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/customwidget.cpp" line="38"/>
+        <location filename="../src/grand-search/gui/searchconfig/customwidget.cpp" line="42"/>
         <source>Custom search</source>
         <translation>個性化</translation>
     </message>
@@ -119,7 +127,7 @@
 <context>
     <name>GroupWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="254"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="260"/>
         <source>More</source>
         <translation>查看更多</translation>
     </message>
@@ -161,14 +169,6 @@
     </message>
 </context>
 <context>
-    <name>MatchWidget</name>
-    <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="88"/>
-        <source>Search for &quot;%1&quot;</source>
-        <translation>通過瀏覽器搜索“%1”</translation>
-    </message>
-</context>
-<context>
     <name>PlanWidget</name>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="43"/>
@@ -181,27 +181,27 @@
         <translation>加入搜索體驗計劃</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="63"/>
+        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="64"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations. If you refuse our collection and use of the aforementioned information, do not join the program.</source>
         <translation>開啟搜索體驗計劃，視為您授權我們收集與您的設備、系統、文件圖標、部分文件內容、文件屬性、應用軟件及配置等訊息，您可以關閉搜索體驗計劃，以拒絕我們對前述訊息的收集與使用。</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="71"/>
+        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="73"/>
         <source>To know more about the management of your data, please refer to the UnionTech Software Privacy Policy (</source>
         <translation>了解對數據的管理與使用方式，請參考統信軟件私隱政策（</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="73"/>
+        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="75"/>
         <source>https://www.uniontech.com/agreement/privacy-en</source>
         <translation>https://www.uniontech.com/agreement/privacy-hk</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="74"/>
+        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="76"/>
         <source>https://www.deepin.org/en/agreement/privacy/</source>
         <translation>https://www.deepin.org/zh/agreement/privacy/</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="76"/>
+        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="78"/>
         <source>).</source>
         <translation>）。</translation>
     </message>
@@ -303,6 +303,62 @@
     </message>
 </context>
 <context>
+    <name>SearchEngineWidget</name>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="48"/>
+        <source>Default search engine</source>
+        <translation>默認搜尋引擎</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="56"/>
+        <source>Search for keywords by the default search engine.</source>
+        <translation>通過搜索關鍵詞，可跳轉到的默認搜尋引擎</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="72"/>
+        <source>Default search engine is</source>
+        <translation>默認搜尋引擎為</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="81"/>
+        <source>Google</source>
+        <translation>Google</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="82"/>
+        <source>Baidu</source>
+        <translation>百度</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="83"/>
+        <source>Bing</source>
+        <translation>必應</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="84"/>
+        <source>Yahoo</source>
+        <translation>雅虎</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="85"/>
+        <source>360</source>
+        <translation>360</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="86"/>
+        <source>Sogou</source>
+        <translation>搜狗</translation>
+    </message>
+</context>
+<context>
+    <name>StaticTextWorker</name>
+    <message>
+        <location filename="../src/grand-search-daemon/searcher/web/statictextworker.cpp" line="67"/>
+        <source>Search for &quot;%1&quot;</source>
+        <translation>通過瀏覽器搜索“%1”</translation>
+    </message>
+</context>
+<context>
     <name>TailerWidget</name>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="33"/>
@@ -310,17 +366,17 @@
         <translation>拖尾設置</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="42"/>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="43"/>
         <source>It is displayed at the end of search results for better identification and distinction of items with duplicate names.</source>
         <translation>搜索結果尾部顯示，用於輔助識別搜索結果或區分重名項。</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="50"/>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="56"/>
         <source>Parent directory</source>
         <translation>上級目錄</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="52"/>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="58"/>
         <source>Time modified</source>
         <translation>最近修改時間</translation>
     </message>
