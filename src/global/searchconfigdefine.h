@@ -60,7 +60,7 @@
 #define GRANDSEARCH_WEB_SEARCHENGINE_BING           "Bing"
 #define GRANDSEARCH_WEB_SEARCHENGINE_BAIDU          "Baidu"
 #define GRANDSEARCH_WEB_SEARCHENGINE_YAHOO          "Yahoo"
-#define GRANDSEARCH_WEB_SEARCHENGINE_SO             "So"
+#define GRANDSEARCH_WEB_SEARCHENGINE_360            "360"
 #define GRANDSEARCH_WEB_SEARCHENGINE_SOGOU          "Sogou"
 
 // 配置切换界面参数
