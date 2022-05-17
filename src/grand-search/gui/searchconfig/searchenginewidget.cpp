@@ -39,7 +39,7 @@ using namespace GrandSearch;
 static const QHash<int, QString> searchEngineEnglish{{0, GRANDSEARCH_WEB_SEARCHENGINE_GOOGLE}, {1, GRANDSEARCH_WEB_SEARCHENGINE_YAHOO},
                           {2, GRANDSEARCH_WEB_SEARCHENGINE_BING}, {3, GRANDSEARCH_WEB_SEARCHENGINE_BAIDU}};
 static const QHash<int, QString> searchEngineChinese{{0, GRANDSEARCH_WEB_SEARCHENGINE_BAIDU}, {1, GRANDSEARCH_WEB_SEARCHENGINE_SOGOU},
-                                 {2, GRANDSEARCH_WEB_SEARCHENGINE_SO}, {3, GRANDSEARCH_WEB_SEARCHENGINE_GOOGLE},
+                                 {2, GRANDSEARCH_WEB_SEARCHENGINE_360}, {3, GRANDSEARCH_WEB_SEARCHENGINE_GOOGLE},
                                  {4, GRANDSEARCH_WEB_SEARCHENGINE_YAHOO}, {5, GRANDSEARCH_WEB_SEARCHENGINE_BING}};
 
 SearchEngineWidget::SearchEngineWidget(QWidget *parent)
@@ -82,10 +82,10 @@ SearchEngineWidget::SearchEngineWidget(QWidget *parent)
         const QString searchEngineBaidu = tr("Baidu");
         const QString searchEngineBing = tr("Bing");
         const QString searchEngineYahoo = tr("Yahoo");
-        const QString searchEngineSo = tr("So");
+        const QString searchEngine360 = tr("360");
         const QString searchEngineSogou = tr("Sogou");
         if (searchHelper->isSimplifiedChinese()) {
-            list << searchEngineBaidu << searchEngineSogou << searchEngineSo << searchEngineGoogle << searchEngineYahoo << searchEngineBing;
+            list << searchEngineBaidu << searchEngineSogou << searchEngine360 << searchEngineGoogle << searchEngineYahoo << searchEngineBing;
         } else {
             list << searchEngineGoogle<< searchEngineYahoo << searchEngineBing << searchEngineBaidu;
         }
