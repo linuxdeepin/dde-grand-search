@@ -23,6 +23,7 @@
 #include "global/builtinsearch.h"
 #include "configuration/configer.h"
 #include "global/searchconfigdefine.h"
+#include "global/searchhelper.h"
 
 #include <stubext.h>
 
@@ -91,4 +92,21 @@ TEST(StaticTextWorker, ut_takeAll)
 
     worker.m_items << item;
     EXPECT_FALSE(worker.takeAll().isEmpty());
+}
+
+TEST(StaticTextWorker, ut_createUrl)
+{
+    bool language = true;
+    stub_ext::StubExt stu;
+    stu.set_lamda(&SearchHelper::isSimplifiedChinese, [&](){
+        return language;
+    });
+
+    StaticTextWorker s(GRANDSEARCH_CLASS_WEB_STATICTEXT);
+    QString result = s.createUrl(GRANDSEARCH_WEB_SEARCHENGINE_SOGOU);
+    EXPECT_EQ(result, "https://www.sogou.com/web?query=%0");
+
+    language = false;
+    result = s.createUrl(GRANDSEARCH_WEB_SEARCHENGINE_YAHOO);
+    EXPECT_EQ(result, "https://search.yahoo.com/search?p=%0");
 }
