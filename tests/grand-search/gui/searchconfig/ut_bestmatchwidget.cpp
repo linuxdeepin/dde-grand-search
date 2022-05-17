@@ -1,9 +1,9 @@
 /*
  * Copyright (C) 2022 Uniontech Software Technology Co., Ltd.
  *
- * Author:     wangchunlin<wangchunlin@uniontech.com>
+ * Author:     zhaohanxi<zhaohanxi@uniontech.com>
  *
- * Maintainer: wangchunlin<wangchunlin@uniontech.com>
+ * Maintainer: zhaohanxi<zhaohanxi@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/searchconfig/customwidget.h"
+#include "gui/searchconfig/bestmatchwidget.h"
 #include "gui/searchconfig/switchwidget/switchwidget.h"
 #include "business/config/searchconfig.h"
 
@@ -33,25 +33,28 @@
 using namespace testing;
 using namespace GrandSearch;
 
-TEST(CustomWidgetTest, constructor)
+TEST(BestMatchWidgetTest, constructor)
 {
-    CustomWidget *w = new CustomWidget;
+    stub_ext::StubExt stu;
+
+    bool ut_call_updateIcons = false;
+    stu.set_lamda(&BestMatchWidget::updateIcons, [&]() {
+        ut_call_updateIcons = true;
+    });
+
+    BestMatchWidget *w = new BestMatchWidget;
 
     EXPECT_TRUE(w);
+    EXPECT_TRUE(ut_call_updateIcons);
     EXPECT_TRUE(w->m_mainLayout);
     EXPECT_TRUE(w->m_groupLabel);
-    EXPECT_TRUE(w->m_searchPlanWidget);
-    EXPECT_TRUE(w->m_tailerWidget);
-    EXPECT_TRUE(w->m_bestMatchWidget);
-    EXPECT_TRUE(w->m_searchEngineWidget);
-    EXPECT_TRUE(w->m_innerLayout);
 
     delete w;
 }
 
-TEST(CustomWidgetTest, onSwitchStateChanged)
+TEST(BestMatchWidgetTest, onSwitchStateChanged)
 {
-    CustomWidget w;
+    BestMatchWidget w;
 
     stub_ext::StubExt stu;
 
@@ -72,3 +75,17 @@ TEST(CustomWidgetTest, onSwitchStateChanged)
     delete switchWidget;
 }
 
+TEST(BestMatchWidgetTest, updateIcons)
+{
+    BestMatchWidget w;
+
+    stub_ext::StubExt stu;
+
+    bool ut_call_setIcon = false;
+    stu.set_lamda(&SwitchWidget::setIcon, [&]() {
+        ut_call_setIcon = true;
+    });
+
+    w.updateIcons();
+    EXPECT_TRUE(ut_call_setIcon);
+}
