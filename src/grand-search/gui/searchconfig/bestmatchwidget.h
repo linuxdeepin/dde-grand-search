@@ -32,6 +32,7 @@ class SwitchWidget;
 
 class BestMatchWidget : public Dtk::Widget::DWidget
 {
+    Q_OBJECT
 public:
     explicit BestMatchWidget(QWidget *parent = nullptr);
     ~BestMatchWidget();
