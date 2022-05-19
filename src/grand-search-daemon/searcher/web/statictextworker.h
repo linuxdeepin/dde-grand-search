@@ -25,6 +25,7 @@
 
 class StaticTextWorker : public ProxyWorker
 {
+    Q_OBJECT
 public:
     explicit StaticTextWorker(const QString &name, QObject *parent = nullptr);
     void setContext(const QString &context) Q_DECL_OVERRIDE;
