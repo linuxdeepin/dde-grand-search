@@ -21,17 +21,21 @@
 #include "pdfview.h"
 #include "global/commontools.h"
 
+#include <dpdfpage.h>
+
 #include <QDebug>
 #include <QVBoxLayout>
 #include <QtConcurrent>
 #include <QPainter>
 #include <QLabel>
 #include <QPainterPath>
+#include <QApplication>
+#include <QScreen>
 
-#define PAGE_FIXED_SIZE   QSize(360, 386)
+#define PAGE_FIXED_SIZE QSize(360, 386)
 
 PDFView::PDFView(const QString &file, QWidget *parent)
-    :QWidget (parent)
+    : QWidget(parent)
 {
     initDoc(file);
     initUI();
@@ -46,8 +50,8 @@ PDFView::~PDFView()
 
 void PDFView::initDoc(const QString &file)
 {
-    m_doc = QSharedPointer<Poppler::Document>(Poppler::Document::load(file));
-    if (!m_doc || m_doc->isLocked()) {
+    m_doc.reset(new DPdfDoc(file));
+    if (!m_doc || m_doc->status() != DPdfDoc::SUCCESS) {
         qWarning() << "Cannot read this pdf file: " << file;
         m_isBadDoc = true;
     }
@@ -86,7 +90,7 @@ QPixmap PDFView::scaleAndRound(const QImage &img)
     // 缩放
     pixmap = pixmap.scaledToWidth(m_pageLabel->width(), Qt::SmoothTransformation);
 
-    QPixmap destImage (m_pageLabel->width(), std::min(pixmap.height(), PAGE_FIXED_SIZE.height()));
+    QPixmap destImage(m_pageLabel->width(), std::min(pixmap.height(), PAGE_FIXED_SIZE.height()));
     destImage.fill(Qt::transparent);
     QPainter painter(&destImage);
     // 抗锯齿
@@ -122,20 +126,29 @@ void PDFView::onPageUpdated(QImage img)
 
 void PDFView::syncLoadFirstPage()
 {
-    m_future = QtConcurrent::run([=]{
-       QSharedPointer<Poppler::Page> page = QSharedPointer<Poppler::Page>(m_doc->page(0));
-       if (!page) {
-           emit parseFailed();
-           m_isLoadFinished = true;
-           return;
-       }
+    m_future = QtConcurrent::run([=] {
+        if (m_doc->pageCount() > 0) {
+            qreal docXRes = 72;
+            qreal docYRes = 72;
+            QScreen *srn = QApplication::screens().value(0);
+            if (nullptr != srn) {
+                docXRes = srn->physicalDotsPerInchX();
+                docYRes = srn->physicalDotsPerInchY();
+            }
 
-       // 渲染抗锯齿
-       m_doc->setRenderHint(Poppler::Document::Antialiasing, true);
-       m_doc->setRenderHint(Poppler::Document::TextAntialiasing, true);
-       QImage img = page->renderToImage(200, 200);
+            DPdfPage *page = m_doc->page(0, docXRes, docYRes);
+            if (!page || !page->isValid()) {
+                emit parseFailed();
+                m_isLoadFinished = true;
+                return;
+            }
 
-       emit pageUpdate(img);
-       m_isLoadFinished = true;
+            QSizeF size = page->sizeF();
+            QImage img = page->image(static_cast<int>(size.width()), static_cast<int>(size.height()));
+
+            emit pageUpdate(img);
+        }
+
+        m_isLoadFinished = true;
     });
 }

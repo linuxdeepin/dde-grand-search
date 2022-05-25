@@ -24,7 +24,7 @@
 #include <QWidget>
 #include <QFuture>
 
-#include <poppler-qt5.h>
+#include <dpdfdoc.h>
 
 class QLabel;
 class PDFView : public QWidget
@@ -44,15 +44,17 @@ public slots:
 signals:
     void pageUpdate(const QImage &img);
     void parseFailed();
+
 private:
     void syncLoadFirstPage();
+
 private:
     QLabel *m_pageLabel = nullptr;
     bool m_isBadDoc = false;
     bool m_isLoadFinished = false;
-    QSharedPointer<Poppler::Document> m_doc;
+    QSharedPointer<DPdfDoc> m_doc = nullptr;
     QFuture<void> m_future;
     QImage m_pageImg;
 };
 
-#endif // PDFVIEW_H
+#endif   // PDFVIEW_H

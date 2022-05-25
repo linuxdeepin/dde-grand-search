@@ -4,7 +4,8 @@ project(pdf-preview)
 set(LIB_NAME pdf-preview-plugin)
 
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(PDF REQUIRED poppler-qt5)
+pkg_check_modules(PDF REQUIRED deepin-pdfium)
+pkg_check_modules(JPEG REQUIRED libjpeg)
 
 set(SRCS
     pdfpreviewinterface.h
@@ -28,6 +29,7 @@ target_link_libraries(${LIB_NAME} PRIVATE
     ${DtkWidget_LIBRARIES}
     ${DtkGUI_LIBRARIES}
     ${PDF_LIBRARIES}
+    ${JPEG_LIBRARIES}
 )
 
 # bin

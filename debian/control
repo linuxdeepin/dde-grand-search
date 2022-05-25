@@ -15,14 +15,15 @@ Build-Depends: debhelper (>= 9),
  cmake,
  dde-dock-dev,
  libglib2.0-dev,
- libpoppler-qt5-dev,
  libffmpegthumbnailer-dev,
  libavformat-dev,
  libavcodec-dev,
  libtag1-dev,
  libicu-dev,
  libgsettings-qt-dev,
- libpcre3-dev
+ libpcre3-dev,
+ libdeepin-pdfium-dev,
+ libjpeg62-turbo-dev
 Standards-Version: 3.9.8
 Homepage: http://www.deepin.org/
 

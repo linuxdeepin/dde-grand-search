@@ -34,9 +34,9 @@ public:
         : testing::Test()
     {
         stub_ext::StubExt st;
-        st.set_lamda(&PDFView::initDoc, [](){ return; });
-        st.set_lamda(&PDFView::initUI, [](){ return; });
-        st.set_lamda(&PDFView::initConnections, [](){ return; });
+        st.set_lamda(&PDFView::initDoc, []() { return; });
+        st.set_lamda(&PDFView::initUI, []() { return; });
+        st.set_lamda(&PDFView::initConnections, []() { return; });
 
         view.reset(new PDFView("test.pdf"));
     }
@@ -46,15 +46,13 @@ public:
 
 TEST_F(PDFViewTest, ut_initDoc)
 {
-    stub_ext::StubExt st;
-    st.set_lamda(Poppler::Document::load, [](){ return nullptr; });
     EXPECT_NO_FATAL_FAILURE(view->initDoc("test.pdf"));
 }
 
 TEST_F(PDFViewTest, ut_initUI_0)
 {
     stub_ext::StubExt st;
-    st.set_lamda(&PDFView::syncLoadFirstPage, [](){ return; });
+    st.set_lamda(&PDFView::syncLoadFirstPage, []() { return; });
 
     EXPECT_NO_FATAL_FAILURE(view->initUI());
 }
@@ -80,10 +78,9 @@ TEST_F(PDFViewTest, ut_onPageUpdated)
 TEST_F(PDFViewTest, ut_syncLoadFirstPage)
 {
     stub_ext::StubExt st;
-    Poppler::Page *(Poppler::Document::*page_addr)(int) const = &Poppler::Document::page;
-    st.set_lamda(page_addr, [](){ return nullptr; });
+    st.set_lamda(&DPdfDoc::page, []() { return nullptr; });
 
-    view->m_doc.reset(new Poppler::Document(nullptr));
+    view->m_doc.reset(new DPdfDoc(""));
     view->syncLoadFirstPage();
     view->m_future.waitForFinished();
     EXPECT_TRUE(view->m_isLoadFinished);

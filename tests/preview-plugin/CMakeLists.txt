@@ -36,7 +36,8 @@ pkg_check_modules(AVFORMAT REQUIRED libavformat)
 pkg_check_modules(ICU REQUIRED icu-i18n)
 
 # pdf
-pkg_check_modules(PDF REQUIRED poppler-qt5)
+pkg_check_modules(PDF REQUIRED deepin-pdfium)
+pkg_check_modules(JPEG REQUIRED libjpeg)
 
 #video
 pkg_check_modules(Ffm REQUIRED libffmpegthumbnailer)
@@ -93,6 +94,7 @@ target_link_libraries(${BIN_NAME} PRIVATE
     ${AVFORMAT_LIBRARIES}
     ${ICU_LIBRARIES}
     ${PDF_LIBRARIES}
+    ${JPEG_LIBRARIES}
     ${Avformat_LIBRARIES}
     ${Ffm_LIBRARIES}
     -lpthread
