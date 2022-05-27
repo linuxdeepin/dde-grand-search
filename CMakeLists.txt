@@ -26,7 +26,8 @@ configure_file(${CMAKE_SOURCE_DIR}/src/environments.h.in ${CMAKE_SOURCE_DIR}/src
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
 # 平台库目录
-set(LIB_PLATFORM_DIR "/usr/lib/${CMAKE_LIBRARY_ARCHITECTURE}")
+set(LIB_PLATFORM_DIR "${CMAKE_INSTALL_PREFIX}/lib/${CMAKE_LIBRARY_ARCHITECTURE}")
+message("LIB_PLATFORM_DIR: ${LIB_PLATFORM_DIR}")
 
 #全局文件
 FILE(GLOB GLOBAL_SRC "./src/global/*.h" "./src/global/*.cpp" "./src/global/accessibility/*.h")
