@@ -1,10 +1,9 @@
 [Desktop Entry]
 Version=1.0
-Name=Grand Search
-Name[zh_CN]=全局搜索服务
+Name=Grand Search Deamon
 Comment=Start the dde-grand-search-daemon
-Comment[zh_CN]=启动全局搜索服务
-Exec=dde-grand-search-daemon
+Exec=/usr/bin/dde-grand-search-daemon
+OnlyShowIn=''
 Terminal=false
 Type=Application
 X-GNOME-Autostart-Delay=30

@@ -102,5 +102,5 @@ int main(int argc, char *argv[])
         app.setApplicationName(appName);
     }
 
-    app.exec();
+    return app.exec();
 }
