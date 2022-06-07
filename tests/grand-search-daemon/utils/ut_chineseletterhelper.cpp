@@ -42,6 +42,6 @@ TEST(ChineseLetterHelperTest, ut_convertChinese2Pinyin)
     QString firstPy;
     QString fullPy;
     Ch2PyIns->convertChinese2Pinyin("测试", firstPy, fullPy);
-    EXPECT_EQ(firstPy, "cs");
-    EXPECT_EQ(fullPy, "ceshi");
+    EXPECT_EQ(firstPy, QString("cs"));
+    EXPECT_EQ(fullPy, QString("ceshi"));
 }
