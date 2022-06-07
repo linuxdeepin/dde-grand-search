@@ -214,5 +214,7 @@ install(FILES data/com.deepin.dde.daemon.GrandSearch.service DESTINATION share/d
 # autostart
 install(FILES data/dde-grand-search-daemon.desktop DESTINATION /etc/xdg/autostart)
 
+install(FILES data/dde-grand-search-daemon.desktop DESTINATION share/applications)
+
 # 扩展搜索插件目录
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/.readme DESTINATION ${PLUGIN_SEARCHER_DIR})
