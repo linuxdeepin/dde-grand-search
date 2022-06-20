@@ -8,6 +8,7 @@
 #include <DWidget>
 #include <DLabel>
 #include <DSwitchButton>
+#include <DLineEdit>
 
 #include <QVBoxLayout>
 
@@ -23,6 +24,7 @@ public:
 
 private slots:
     void checkedChangedIndex(int index);
+    void setCustomSearchEngineAddress(QString text);
 
 private:
     int getIndex(const QString text) const;
@@ -31,6 +33,7 @@ private:
     QVBoxLayout *m_mainLayout = nullptr;
     QLabel *m_groupLabel= nullptr;
     QLabel *m_contentLabel = nullptr;
+    QLineEdit *m_lineEdit = nullptr;
 
     QHash<QString, QString> m_groupName;        // <searchGroupName, displayGroupName>
     ComboboxWidget *m_comboboxWidget;

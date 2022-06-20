@@ -12,6 +12,7 @@
 #include <DWidget>
 #include <DComboBox>
 #include <DStyleOption>
+#include <DLineEdit>
 
 #define Margin  10
 
@@ -20,10 +21,12 @@ DCORE_USE_NAMESPACE
 using namespace GrandSearch;
 
 static const QHash<int, QString> searchEngineEnglish{{0, GRANDSEARCH_WEB_SEARCHENGINE_GOOGLE}, {1, GRANDSEARCH_WEB_SEARCHENGINE_YAHOO},
-                          {2, GRANDSEARCH_WEB_SEARCHENGINE_BING}, {3, GRANDSEARCH_WEB_SEARCHENGINE_BAIDU}};
+                          {2, GRANDSEARCH_WEB_SEARCHENGINE_BING}, {3, GRANDSEARCH_WEB_SEARCHENGINE_BAIDU}, 
+                          {4, GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM}};
 static const QHash<int, QString> searchEngineChinese{{0, GRANDSEARCH_WEB_SEARCHENGINE_BAIDU}, {1, GRANDSEARCH_WEB_SEARCHENGINE_SOGOU},
                                  {2, GRANDSEARCH_WEB_SEARCHENGINE_360}, {3, GRANDSEARCH_WEB_SEARCHENGINE_GOOGLE},
-                                 {4, GRANDSEARCH_WEB_SEARCHENGINE_YAHOO}, {5, GRANDSEARCH_WEB_SEARCHENGINE_BING}};
+                                 {4, GRANDSEARCH_WEB_SEARCHENGINE_YAHOO}, {5, GRANDSEARCH_WEB_SEARCHENGINE_BING}, 
+                                 {6, GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM}};
 
 SearchEngineWidget::SearchEngineWidget(QWidget *parent)
     :DWidget(parent)
@@ -67,10 +70,11 @@ SearchEngineWidget::SearchEngineWidget(QWidget *parent)
         const QString searchEngineYahoo = tr("Yahoo");
         const QString searchEngine360 = tr("360");
         const QString searchEngineSogou = tr("Sogou");
+        const QString searchEngineCustom = tr("Custom");
         if (searchHelper->isSimplifiedChinese()) {
-            list << searchEngineBaidu << searchEngineSogou << searchEngine360 << searchEngineGoogle << searchEngineYahoo << searchEngineBing;
+            list << searchEngineBaidu << searchEngineSogou << searchEngine360 << searchEngineGoogle << searchEngineYahoo << searchEngineBing << searchEngineCustom;
         } else {
-            list << searchEngineGoogle<< searchEngineYahoo << searchEngineBing << searchEngineBaidu;
+            list << searchEngineGoogle<< searchEngineYahoo << searchEngineBing << searchEngineBaidu << searchEngineCustom;
         }
     }
 
@@ -85,7 +89,18 @@ SearchEngineWidget::SearchEngineWidget(QWidget *parent)
     m_mainLayout->addWidget(m_comboboxWidget);
     m_comboboxWidget->setProperty(GRANDSEARCH_SEARCH_GROUP, GRANDSEARCH_WEB_SEARCHENGINE);
 
+    m_lineEdit =  new QLineEdit(this);
+    if(userChoice == "Custom"){
+        QString searchEngineCustom = SearchConfig::instance()->getConfig(GRANDSEARCH_WEB_GROUP, GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM_ADDR, "").toString();
+        m_lineEdit->setText(searchEngineCustom);
+        m_lineEdit->setVisible(true);
+    } else {
+        m_lineEdit->setVisible(false);
+    }
+    m_mainLayout->addWidget(m_lineEdit);
+
     connect(m_comboboxWidget, &ComboboxWidget::checkedChanged, this, &SearchEngineWidget::checkedChangedIndex);
+    connect(m_lineEdit, &QLineEdit::textChanged, this, &SearchEngineWidget::setCustomSearchEngineAddress);
 }
 
 SearchEngineWidget::~SearchEngineWidget()
@@ -106,6 +121,14 @@ void SearchEngineWidget::checkedChangedIndex(int index)
             text = searchEngineEnglish.value(index);
         }
         SearchConfig::instance()->setConfig(GRANDSEARCH_WEB_GROUP, GRANDSEARCH_WEB_SEARCHENGINE, text);
+
+        if(text == "Custom"){
+            QString searchEngineCustom = SearchConfig::instance()->getConfig(GRANDSEARCH_WEB_GROUP, GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM_ADDR, "").toString();
+            m_lineEdit->setText(searchEngineCustom);
+            m_lineEdit->setVisible(true);
+        } else {
+            m_lineEdit->setVisible(false);
+        }
     }
 }
 
@@ -119,4 +142,9 @@ int SearchEngineWidget::getIndex(const QString text) const
         index = searchEngineEnglish.key(text);
     }
     return index;
+}
+
+void SearchEngineWidget::setCustomSearchEngineAddress(QString text)
+{
+    SearchConfig::instance()->setConfig(GRANDSEARCH_WEB_GROUP, GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM_ADDR, text);
 }
