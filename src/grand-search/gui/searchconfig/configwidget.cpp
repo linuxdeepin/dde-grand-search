@@ -33,7 +33,7 @@
 #include <QLabel>
 #include <QPushButton>
 
-#define MAINWINDOW_WIDTH    682
+#define MAINWINDOW_WIDTH    696
 #define MAINWINDOW_HEIGHT   529
 
 DWIDGET_USE_NAMESPACE
@@ -47,6 +47,18 @@ ConfigWidget::ConfigWidget(QWidget *parent)
 
 ConfigWidget::~ConfigWidget()
 {
+}
+
+void ConfigWidget::themeTypeChanged(DGuiApplicationHelper::ColorType themeColor)
+{
+    if (themeColor == DGuiApplicationHelper::LightType){
+        QPalette p(this->palette());
+        p.setColor(QPalette::Background, QColor(255, 255, 255, static_cast<int>(255 * 0.99)));
+        this->setPalette(p);
+    } else {
+        this->setPalette(QPalette());
+    }
+    update();
 }
 
 void ConfigWidget::initUI()
@@ -64,11 +76,17 @@ void ConfigWidget::initUI()
     this->titlebar()->setIcon(tmpIcon);
     setWindowIcon(tmpIcon);
 
+    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType){
+        QPalette p(this->palette());
+        p.setColor(QPalette::Background, QColor(255, 255, 255, static_cast<int>(255 * 0.99)));
+        this->setPalette(p);
+    }
+
     QWidget *mainWidget = new QWidget(this);
     setCentralWidget(mainWidget);
 
     m_mainLayout = new QVBoxLayout(mainWidget);
-    m_mainLayout->setContentsMargins(10, 10, 10, 10);
+    m_mainLayout->setContentsMargins(0, 10, 0, 10);
     m_mainLayout->setSpacing(0);
     mainWidget->setLayout(m_mainLayout);
 
@@ -80,7 +98,7 @@ void ConfigWidget::initUI()
 
     m_scrollAreaContent = new QWidget(m_scrollArea);
     m_scrollLayout = new QVBoxLayout(m_scrollAreaContent);
-    m_scrollLayout->setContentsMargins(80, 20, 80, 20);
+    m_scrollLayout->setContentsMargins(109, 20, 109, 20);
     m_scrollLayout->setSpacing(20);
     m_scrollAreaContent->setLayout(m_scrollLayout);
 
@@ -91,6 +109,8 @@ void ConfigWidget::initUI()
     m_scrollLayout->addStretch();
 
     m_scrollArea->setWidget(m_scrollAreaContent);
+
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &ConfigWidget::themeTypeChanged);
 }
 
 void ConfigWidget::initData()

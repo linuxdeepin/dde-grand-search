@@ -23,6 +23,7 @@
 
 #include <DMainWindow>
 #include <DWidget>
+#include <DGuiApplicationHelper>
 
 #include <QVBoxLayout>
 
@@ -37,6 +38,9 @@ class ConfigWidget : public Dtk::Widget::DMainWindow
 public:
     explicit ConfigWidget(QWidget *parent = nullptr);
     ~ConfigWidget();
+
+private slots:
+    void themeTypeChanged(DGuiApplicationHelper::ColorType themeColor);
 
 private:
     void initUI();
