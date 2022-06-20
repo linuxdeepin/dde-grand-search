@@ -349,6 +349,11 @@
         <source>Sogou</source>
         <translation>搜狗</translation>
     </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="87"/>
+        <source>Custom</source>
+        <translation>自定义</translation>
+    </message>
 </context>
 <context>
     <name>StaticTextWorker</name>
