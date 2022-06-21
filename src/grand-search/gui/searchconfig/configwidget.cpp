@@ -49,6 +49,18 @@ ConfigWidget::~ConfigWidget()
 {
 }
 
+void ConfigWidget::themeTypeChanged(DGuiApplicationHelper::ColorType themeColor)
+{
+    if (themeColor == DGuiApplicationHelper::LightType) {
+        QPalette p(this->palette());
+        p.setColor(QPalette::Background, QColor(255, 255, 255, static_cast<int>(255 * 0.99)));
+        this->setPalette(p);
+    } else {
+        this->setPalette(QPalette());
+    }
+    update();
+}
+
 void ConfigWidget::initUI()
 {
     setFixedSize(MAINWINDOW_WIDTH, MAINWINDOW_HEIGHT);
@@ -63,6 +75,12 @@ void ConfigWidget::initUI()
     QIcon tmpIcon = QIcon(QString(":/icons/%1.svg").arg("dde-grand-search-setting"));
     this->titlebar()->setIcon(tmpIcon);
     setWindowIcon(tmpIcon);
+
+    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
+        QPalette p(this->palette());
+        p.setColor(QPalette::Background, QColor(255, 255, 255, static_cast<int>(255 * 0.99)));
+        this->setPalette(p);
+    }
 
     QWidget *mainWidget = new QWidget(this);
     setCentralWidget(mainWidget);
@@ -91,6 +109,8 @@ void ConfigWidget::initUI()
     m_scrollLayout->addStretch();
 
     m_scrollArea->setWidget(m_scrollAreaContent);
+
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &ConfigWidget::themeTypeChanged);
 }
 
 void ConfigWidget::initData()
