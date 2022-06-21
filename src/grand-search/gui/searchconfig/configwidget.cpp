@@ -33,7 +33,7 @@
 #include <QLabel>
 #include <QPushButton>
 
-#define MAINWINDOW_WIDTH    682
+#define MAINWINDOW_WIDTH    696
 #define MAINWINDOW_HEIGHT   529
 
 DWIDGET_USE_NAMESPACE
@@ -63,12 +63,11 @@ void ConfigWidget::initUI()
     QIcon tmpIcon = QIcon(QString(":/icons/%1.svg").arg("dde-grand-search-setting"));
     this->titlebar()->setIcon(tmpIcon);
     setWindowIcon(tmpIcon);
-
     QWidget *mainWidget = new QWidget(this);
     setCentralWidget(mainWidget);
 
     m_mainLayout = new QVBoxLayout(mainWidget);
-    m_mainLayout->setContentsMargins(10, 10, 10, 10);
+    m_mainLayout->setContentsMargins(0, 10, 0, 10);
     m_mainLayout->setSpacing(0);
     mainWidget->setLayout(m_mainLayout);
 
@@ -80,7 +79,7 @@ void ConfigWidget::initUI()
 
     m_scrollAreaContent = new QWidget(m_scrollArea);
     m_scrollLayout = new QVBoxLayout(m_scrollAreaContent);
-    m_scrollLayout->setContentsMargins(80, 20, 80, 20);
+    m_scrollLayout->setContentsMargins(109, 20, 109, 20);
     m_scrollLayout->setSpacing(20);
     m_scrollAreaContent->setLayout(m_scrollLayout);
 
