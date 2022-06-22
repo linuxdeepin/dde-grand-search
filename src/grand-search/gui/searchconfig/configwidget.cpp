@@ -22,9 +22,8 @@
 #include "business/config/searchconfig.h"
 #include "global/builtinsearch.h"
 #include "scopewidget.h"
-#include "planwidget.h"
 #include "customwidget.h"
-#include "tailerwidget.h"
+#include "indexwidget.h"
 
 #include <DSwitchButton>
 #include <DScrollArea>
@@ -85,7 +84,9 @@ void ConfigWidget::initUI()
 
     m_searchGroupWidget = new ScopeWidget(m_scrollAreaContent);
     m_searchCustomWidget = new CustomWidget(m_scrollAreaContent);
+    m_indexWidget = new IndexWidget(m_scrollAreaContent);
     m_scrollLayout->addWidget(m_searchGroupWidget);
+    m_scrollLayout->addWidget(m_indexWidget);
     m_scrollLayout->addWidget(m_searchCustomWidget);
     m_scrollLayout->addStretch();
 
