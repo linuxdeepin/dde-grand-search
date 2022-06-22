@@ -202,6 +202,7 @@ TEST(GrandSearchListDelegateTest, drawSelectState)
 
     QStyleOptionViewItem option;
     QModelIndex index = view.model()->index(0, 0);
+    option.widget = &view;
 
     delegate->initStyleOption(&option, index);
     option.state = option.state | QStyle::State_Selected;

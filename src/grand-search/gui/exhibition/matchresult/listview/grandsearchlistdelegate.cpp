@@ -134,7 +134,15 @@ void GrandSearchListDelegate::drawSelectState(QPainter *painter, const QStyleOpt
     if (option.state & QStyle::State_MouseOver) {
         painter->save();
         painter->setPen(Qt::NoPen);
-        QColor hovertColor(0, 0, 0, int(255*0.05));
+
+        QColor hovertColor;
+        const GrandSearchListView *listview = qobject_cast<const GrandSearchListView *>(option.widget);
+        if ((listview->getThemeType() == DGuiApplicationHelper::DarkType)
+                || (index.isValid() && index == listview->currentIndex())) {
+            hovertColor = QColor(255, 255, 255, static_cast<int>(255 * 0.05));
+        } else {
+            hovertColor = QColor(0, 0, 0, static_cast<int>(255*0.05));
+        }
         painter->setBrush(hovertColor);
         QRect selecteColorRect = option.rect.adjusted(0, 0, 0, 0);
         painter->drawRoundedRect(selecteColorRect, 8, 8);
@@ -157,6 +165,7 @@ void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QSty
 
     // 设置字体
     QFont nameFont = DFontSizeManager::instance()->get(DFontSizeManager::T6);
+    nameFont.setWeight(QFont::Medium);
 
     const QString &name = index.data(DATA_ROLE).value<MatchedItem>().name;
     const QString &searcher = index.data(DATA_ROLE).value<MatchedItem>().searcher;
