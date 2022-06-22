@@ -31,6 +31,8 @@
 #include <DStyleOption>
 #include <DLineEdit>
 
+#include <QByteArray>
+
 #define Margin  10
 
 DWIDGET_USE_NAMESPACE
@@ -110,7 +112,7 @@ SearchEngineWidget::SearchEngineWidget(QWidget *parent)
     m_lineEdit->setPlaceholderText(tr("You need to use \"%0\" to replace the keyword in the URL"));
     if(userChoice == GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM){
         QString searchEngineCustom = SearchConfig::instance()->getConfig(GRANDSEARCH_WEB_GROUP, GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM_ADDR, "").toString();
-        m_lineEdit->setText(searchEngineCustom);
+        m_lineEdit->setText(QString::fromStdString(QByteArray::fromBase64(searchEngineCustom.toUtf8()).toStdString()));
         m_lineEdit->setVisible(true);
     } else {
         m_lineEdit->setVisible(false);
@@ -142,7 +144,7 @@ void SearchEngineWidget::checkedChangedIndex(int index)
 
         if(text == GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM){
             QString searchEngineCustom = SearchConfig::instance()->getConfig(GRANDSEARCH_WEB_GROUP, GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM_ADDR, "").toString();
-            m_lineEdit->setText(searchEngineCustom);
+            m_lineEdit->setText(QString::fromStdString(QByteArray::fromBase64(searchEngineCustom.toUtf8()).toStdString()));
             m_lineEdit->setVisible(true);
         } else {
             m_lineEdit->setVisible(false);
@@ -174,6 +176,6 @@ void SearchEngineWidget::setCustomSearchEngineAddress(const QString &text)
         m_lineEdit->showAlertMessage(tr("Invalid URL"), m_lineEdit, 2000);
     } else {
         m_lineEdit->setAlert(false);
-        SearchConfig::instance()->setConfig(GRANDSEARCH_WEB_GROUP, GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM_ADDR, text);
+        SearchConfig::instance()->setConfig(GRANDSEARCH_WEB_GROUP, GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM_ADDR, QString::fromStdString(text.toUtf8().toBase64().toStdString()));
     }
 }

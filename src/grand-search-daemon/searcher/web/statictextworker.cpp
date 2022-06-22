@@ -24,6 +24,8 @@
 #include "configuration/configer.h"
 #include "global/searchhelper.h"
 
+#include <QByteArray>
+
 StaticTextWorker::StaticTextWorker(const QString &name, QObject *parent) : ProxyWorker(name, parent)
 {
 
@@ -127,7 +129,8 @@ QString StaticTextWorker::createUrl(const QString &searchEngine) const
 
     auto config = Configer::instance()->group(GRANDSEARCH_WEB_GROUP);
     QString searchEngineAddr = config->value(GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM_ADDR, QString(""));
-    if(searchEngineAddr.isEmpty()) {
+    searchEngineAddr = QString::fromStdString(QByteArray::fromBase64(searchEngineAddr.toUtf8()).toStdString());
+    if(searchEngineAddr.isEmpty() || !searchEngineAddr.contains("%0")) {
         if (SearchHelper::instance()->isSimplifiedChinese()) {
             searchEngineAddr = baidu;
         } else {
