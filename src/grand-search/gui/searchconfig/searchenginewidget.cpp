@@ -89,8 +89,9 @@ SearchEngineWidget::SearchEngineWidget(QWidget *parent)
     m_mainLayout->addWidget(m_comboboxWidget);
     m_comboboxWidget->setProperty(GRANDSEARCH_SEARCH_GROUP, GRANDSEARCH_WEB_SEARCHENGINE);
 
-    m_lineEdit =  new QLineEdit(this);
-    if(userChoice == "Custom"){
+    m_lineEdit =  new Dtk::Widget::DLineEdit(this);
+    m_lineEdit->setPlaceholderText(tr("You need to use \"%0\" to replace the keyword in the URL"));
+    if(userChoice == GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM){
         QString searchEngineCustom = SearchConfig::instance()->getConfig(GRANDSEARCH_WEB_GROUP, GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM_ADDR, "").toString();
         m_lineEdit->setText(searchEngineCustom);
         m_lineEdit->setVisible(true);
@@ -100,7 +101,7 @@ SearchEngineWidget::SearchEngineWidget(QWidget *parent)
     m_mainLayout->addWidget(m_lineEdit);
 
     connect(m_comboboxWidget, &ComboboxWidget::checkedChanged, this, &SearchEngineWidget::checkedChangedIndex);
-    connect(m_lineEdit, &QLineEdit::textChanged, this, &SearchEngineWidget::setCustomSearchEngineAddress);
+    connect(m_lineEdit, &DLineEdit::textChanged, this, &SearchEngineWidget::setCustomSearchEngineAddress);
 }
 
 SearchEngineWidget::~SearchEngineWidget()
@@ -122,7 +123,7 @@ void SearchEngineWidget::checkedChangedIndex(int index)
         }
         SearchConfig::instance()->setConfig(GRANDSEARCH_WEB_GROUP, GRANDSEARCH_WEB_SEARCHENGINE, text);
 
-        if(text == "Custom"){
+        if(text == GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM){
             QString searchEngineCustom = SearchConfig::instance()->getConfig(GRANDSEARCH_WEB_GROUP, GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM_ADDR, "").toString();
             m_lineEdit->setText(searchEngineCustom);
             m_lineEdit->setVisible(true);
@@ -144,7 +145,18 @@ int SearchEngineWidget::getIndex(const QString text) const
     return index;
 }
 
-void SearchEngineWidget::setCustomSearchEngineAddress(QString text)
+void SearchEngineWidget::setCustomSearchEngineAddress(const QString &text)
 {
-    SearchConfig::instance()->setConfig(GRANDSEARCH_WEB_GROUP, GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM_ADDR, text);
+    if (text.isEmpty()) {
+        m_lineEdit->setAlert(false);
+        return;
+    }
+
+    if (!text.contains("%0")) {
+        m_lineEdit->setAlert(true);
+        m_lineEdit->showAlertMessage(tr("Invalid URL"), m_lineEdit, 2000);
+    } else {
+        m_lineEdit->setAlert(false);
+        SearchConfig::instance()->setConfig(GRANDSEARCH_WEB_GROUP, GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM_ADDR, text);
+    }
 }

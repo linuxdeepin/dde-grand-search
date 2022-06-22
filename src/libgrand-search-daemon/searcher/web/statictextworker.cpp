@@ -113,6 +113,13 @@ QString StaticTextWorker::createUrl(const QString &searchEngine) const
 
     auto config = Configer::instance()->group(GRANDSEARCH_WEB_GROUP);
     QString searchEngineAddr = config->value(GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM_ADDR, QString(""));
+    if(searchEngineAddr.isEmpty()) {
+        if (SearchHelper::instance()->isSimplifiedChinese()) {
+            searchEngineAddr = baidu;
+        } else {
+            searchEngineAddr = google;
+        }
+    }
 
     static const QHash<QString, QString> searchEngineChinese{{GRANDSEARCH_WEB_SEARCHENGINE_GOOGLE, "https://www.google.com/search?q=%0"},
                                                 {GRANDSEARCH_WEB_SEARCHENGINE_BING, "https://bing.com/search?q=%0"},
