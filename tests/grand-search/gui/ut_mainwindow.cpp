@@ -82,7 +82,6 @@ TEST(MainWindowTest, onGeometryChanged)
     w.onGeometryChanged(rect);
 
     QPoint point = w.geometry().topLeft();
-    auto aaa = rect.topLeft();
 
     EXPECT_EQ(point, rect.topLeft());
 }
