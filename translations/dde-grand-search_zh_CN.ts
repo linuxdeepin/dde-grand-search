@@ -251,7 +251,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="87"/>
         <source>You need to use &quot;%0&quot; to replace the keyword in the URL</source>
-        <translation>需要使用 &quot;%0&quot; 来替换URL中关键词</translation>
+        <translation>需要使用 “%0” 来替换URL中关键词</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="87"/>
