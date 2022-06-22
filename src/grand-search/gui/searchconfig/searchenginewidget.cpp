@@ -112,7 +112,7 @@ SearchEngineWidget::~SearchEngineWidget()
 
 void SearchEngineWidget::checkedChangedIndex(int index)
 {
-    GrandSearch::ComboboxWidget *ComboboxWidget = static_cast<GrandSearch::ComboboxWidget *>(sender());
+    GrandSearch::ComboboxWidget *ComboboxWidget = qobject_cast<GrandSearch::ComboboxWidget *>(sender());
 
     if (ComboboxWidget) {
         QString text;

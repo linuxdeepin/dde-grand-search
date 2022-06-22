@@ -226,7 +226,17 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
         QStringList vaild;
         for (QString path : blacklist) {
             path = QByteArray::fromBase64(path.toLocal8Bit());
-            if (!path.isEmpty())
+            resetPath(path);
+            bool isChild = false;
+            for (const auto &p : vaild) {
+                if (path.startsWith(p)) {
+                    isChild = true;
+                    break;
+                }
+                if (p.startsWith(path))
+                    vaild.removeOne(p);
+            }
+            if (!isChild)
                 vaild.append(path);
         }
 
@@ -247,6 +257,25 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
     set->endGroup();
 
     return true;
+}
+
+void ConfigerPrivate::resetPath(QString &path) const
+{
+    // If the path is the root directory, do nothing
+    if (path == QString("/"))
+        path = QString("");
+
+    // If the path is "/data", "/data/home" or "/home", all of them treated as "/home/"
+    if (path == QString("/data") || path == QString("/data/home") || path == QString("/home"))
+        path = QString("/home");
+
+    // If the path starts with "/data/home", remove the beginning "/data"
+    if (path.startsWith("/data/home")) {
+        path.remove(0, 5);
+    }
+
+    // Add "/" at the end of path to distinguish the paths with the same URL part
+    path += "/";
 }
 
 Configer::Configer(QObject *parent) : QObject(parent)

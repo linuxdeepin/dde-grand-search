@@ -41,6 +41,7 @@ public:
     static UserPreferencePointer blacklist();
     static UserPreferencePointer webSearchEngine();
     bool updateConfig1(QSettings *);
+    void resetPath(QString &path) const;
 private:
     Configer *q;
     mutable QReadWriteLock m_rwLock;

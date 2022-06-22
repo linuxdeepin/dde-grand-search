@@ -122,6 +122,18 @@ set(GUISRC
     gui/searchconfig/comboboxwidget/comboboxwidget.cpp
     gui/searchconfig/bestmatchwidget.cpp
     gui/searchconfig/bestmatchwidget.h
+    gui/searchconfig/blacklistview/blacklistview.h
+    gui/searchconfig/blacklistview/blacklistview.cpp
+    gui/searchconfig/blacklistview/blacklistmodel.cpp
+    gui/searchconfig/blacklistview/blacklistmodel.h
+    gui/searchconfig/blacklistview/blacklistdelegate.cpp
+    gui/searchconfig/blacklistview/blacklistdelegate.h
+    gui/searchconfig/blacklistview/deletedialog.cpp
+    gui/searchconfig/blacklistview/deletedialog.h
+    gui/searchconfig/blacklistwidget.cpp
+    gui/searchconfig/blacklistwidget.h
+    gui/searchconfig/indexwidget.cpp
+    gui/searchconfig/indexwidget.h
     )
 
 # business
