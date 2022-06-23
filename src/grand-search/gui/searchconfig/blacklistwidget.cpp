@@ -40,11 +40,12 @@ BlackListWidget::BlackListWidget(QWidget *parent)
     m_groupLabel = new QLabel(tr("Excluded path"), this);
     m_groupLabel->adjustSize();
 
-    m_mainLayout = new QVBoxLayout(this);
+    m_mainLayout = new QVBoxLayout();
+    setLayout(m_mainLayout);
     m_mainLayout->setSpacing(0);
     m_mainLayout->setContentsMargins(0, 0, 0, 0);
 
-    m_childHLayout = new QHBoxLayout(this);
+    m_childHLayout = new QHBoxLayout();
     m_childHLayout->addWidget(m_groupLabel);
 
     m_contentLabel = new QLabel(tr("Add paths to the exclusion list to prevent searching in them"), this);
@@ -76,13 +77,8 @@ BlackListWidget::BlackListWidget(QWidget *parent)
     m_mainLayout->addSpacerItem(new QSpacerItem(10, 10));
     m_mainLayout->addWidget(m_listWrapper);
 
-    m_deletedialog = new DeleteDialog(this);
-
     connect(m_addButton, &DIconButton::clicked, this, &BlackListWidget::addButtonClicked);
-    connect(m_deleteButton, &DIconButton::clicked, m_deletedialog, &DeleteDialog::exec);
-    connect(m_deletedialog->getButton(m_deletedialog->getButtonIndexByText(ConfirmButton))
-            , &QAbstractButton::clicked
-            , this, &BlackListWidget::confirmButtonClicked);
+    connect(m_deleteButton, &DIconButton::clicked, this, &BlackListWidget::deleteButtonClicked);
     connect(m_listWrapper, &BlackListWrapper::selectedChanged, this, &BlackListWidget::selectedChanged);
 }
 
@@ -104,16 +100,19 @@ void BlackListWidget::addButtonClicked()
     }
 }
 
-void BlackListWidget::confirmButtonClicked()
+void BlackListWidget::deleteButtonClicked()
 {
-    auto selectedRows = m_listWrapper->selectionModel()->selectedRows();
-    QList<int> rowList;
-    for (auto index : selectedRows) {
-        rowList << index.row();
-    }
-    qStableSort(rowList.begin(), rowList.end(), qGreater<int>());
-    for (auto index : rowList) {
-        m_listWrapper->removeRows(index, 1);
+    DeleteDialog dlg(this);
+    if (dlg.exec() == QDialog::Accepted) {
+        auto selectedRows = m_listWrapper->selectionModel()->selectedRows();
+        QList<int> rowList;
+        for (auto index : selectedRows) {
+            rowList << index.row();
+        }
+        qStableSort(rowList.begin(), rowList.end(), qGreater<int>());
+        for (auto index : rowList) {
+            m_listWrapper->removeRows(index, 1);
+        }
     }
 }
 

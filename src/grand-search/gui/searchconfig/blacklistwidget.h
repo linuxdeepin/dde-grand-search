@@ -43,7 +43,7 @@ public:
 
 private slots:
     void addButtonClicked();
-    void confirmButtonClicked();
+    void deleteButtonClicked();
     void selectedChanged(const QItemSelection &selected, const QItemSelection &deselected) const;
 
 private:
@@ -56,7 +56,6 @@ private:
     DIconButton *m_deleteButton = nullptr;
 
     BlackListWrapper *m_listWrapper = nullptr;
-    DeleteDialog *m_deletedialog = nullptr;
 };
 
 #endif // BLACKLISTWIDGET_H
