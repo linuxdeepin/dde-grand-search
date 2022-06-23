@@ -27,10 +27,8 @@
 #include <QVBoxLayout>
 
 class ScopeWidget;
-class PlanWidget;
 class CustomWidget;
-class TailerWidget;
-
+class IndexWidget;
 class ConfigWidget : public Dtk::Widget::DMainWindow
 {
     Q_OBJECT
@@ -50,6 +48,7 @@ private:
 
     ScopeWidget *m_searchGroupWidget          = nullptr;
     CustomWidget *m_searchCustomWidget        = nullptr;
+    IndexWidget *m_indexWidget        = nullptr;
 };
 
 #endif // CONFIGWIDGET_H
