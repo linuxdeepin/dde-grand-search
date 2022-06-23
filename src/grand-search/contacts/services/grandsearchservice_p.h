@@ -23,6 +23,8 @@
 
 #include "grandsearchservice.h"
 
+namespace GrandSearch {
+
 class GrandSearchServicePrivate
 {
 public:
@@ -31,5 +33,7 @@ public:
     GrandSearchService *q_p = nullptr;
     MainWindow *m_mainWindow = nullptr;
 };
+
+}
 
 #endif // GRANDSEARCHSERVICE_P_H

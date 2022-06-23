@@ -25,6 +25,7 @@
 #include <DGuiApplicationHelper>
 #include <DPalette>
 #include <DPaletteHelper>
+#include <DFontSizeManager>
 
 #include <QColor>
 #include <QPainter>
@@ -39,6 +40,9 @@
 #define ListItemSpace       10      // 列表图标与文本间间距
 #define ListIconMargin      10      // 列表图标边距
 #define ListTextMaxWidth    362     // 列表文本最长显示宽度
+
+DWIDGET_USE_NAMESPACE
+using namespace GrandSearch;
 
 BlackListDelegate::BlackListDelegate(QAbstractItemView *parent)
     : DStyledItemDelegate(parent)

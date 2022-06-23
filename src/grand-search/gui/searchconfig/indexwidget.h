@@ -27,6 +27,8 @@
 #include <QVBoxLayout>
 #include <QLabel>
 
+namespace GrandSearch {
+
 class BlackListWidget;
 class IndexWidget : public Dtk::Widget::DWidget
 {
@@ -41,4 +43,5 @@ private:
     BlackListWidget *m_blackListWidget = nullptr;
 };
 
+}
 #endif // INDEXWIDGET_H

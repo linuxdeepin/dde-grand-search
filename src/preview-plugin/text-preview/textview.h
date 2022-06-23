@@ -27,6 +27,10 @@
 
 class QLabel;
 class QStackedWidget;
+
+namespace GrandSearch {
+namespace text_preview {
+
 class PlainTextEdit : public QPlainTextEdit
 {
     Q_OBJECT
@@ -52,5 +56,7 @@ private:
      QLabel *m_errLabel = nullptr;
      QStackedWidget *m_stackedWidget = nullptr;
 };
+
+}}
 
 #endif // TEXTVIEW_H

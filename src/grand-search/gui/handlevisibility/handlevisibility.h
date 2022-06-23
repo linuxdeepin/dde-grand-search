@@ -27,6 +27,8 @@
 
 #include <QObject>
 
+namespace GrandSearch {
+
 class MainWindow;
 
 class HandleVisibility : public QObject
@@ -48,7 +50,9 @@ private:
 private:
     MainWindow *m_mainWindow = nullptr;
     Dtk::Gui::DRegionMonitor *m_regionMonitor = nullptr;
-    com::deepin::SessionManager *m_sessionManagerInter = nullptr;
+    __SessionManager *m_sessionManagerInter = nullptr;
 };
+
+}
 
 #endif // HANDLEVISIBILITY_H

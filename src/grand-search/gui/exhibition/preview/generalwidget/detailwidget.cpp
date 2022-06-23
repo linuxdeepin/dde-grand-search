@@ -25,6 +25,8 @@
 
 #include <DFontSizeManager>
 
+using namespace GrandSearch;
+
 DWIDGET_USE_NAMESPACE
 
 DetailWidget::DetailWidget(QWidget *parent)
@@ -46,7 +48,7 @@ DetailWidget::DetailWidget(QWidget *parent)
         m_alignment = true;
 }
 
-void DetailWidget::setDetailInfoList(const GrandSearch::DetailInfoList &list)
+void DetailWidget::setDetailInfoList(const DetailInfoList &list)
 {
     qDeleteAll(m_detailItems);
     m_detailItems.clear();

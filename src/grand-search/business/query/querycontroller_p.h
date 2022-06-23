@@ -26,6 +26,8 @@
 #include <QObject>
 #include <QTimer>
 
+namespace GrandSearch {
+
 class DaemonGrandSearchInterface;
 class QueryControllerPrivate : public QObject
 {
@@ -48,5 +50,7 @@ public:
 
     DaemonGrandSearchInterface *m_daemonDbus = nullptr;
 };
+
+}
 
 #endif // QUERYCONTROLLER_P_H

@@ -112,9 +112,9 @@ SearchEngineWidget::~SearchEngineWidget()
 
 void SearchEngineWidget::checkedChangedIndex(int index)
 {
-    GrandSearch::ComboboxWidget *ComboboxWidget = qobject_cast<GrandSearch::ComboboxWidget *>(sender());
+    GrandSearch::ComboboxWidget *comboboxWidget = qobject_cast<GrandSearch::ComboboxWidget *>(sender());
 
-    if (ComboboxWidget) {
+    if (comboboxWidget) {
         QString text;
         bool language = SearchHelper::instance()->isSimplifiedChinese();
         if (language) {

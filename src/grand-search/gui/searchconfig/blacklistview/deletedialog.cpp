@@ -23,6 +23,8 @@
 
 #include <QAbstractButton>
 
+using namespace GrandSearch;
+
 DeleteDialog::DeleteDialog(QWidget *parent)
     : DDialog(parent)
 {

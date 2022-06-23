@@ -35,6 +35,7 @@
 #include <QVBoxLayout>
 
 using namespace GrandSearch;
+DWIDGET_USE_NAMESPACE
 
 #define ListItemHeight            36       // 列表行高
 #define GroupLabelHeight          28       // 组标签高度

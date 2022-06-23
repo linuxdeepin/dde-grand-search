@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+#include "global/grandsearch_global.h"
 #include "gui/searchconfig/blacklistview/blacklistview.h"
 #include "gui/searchconfig/blacklistview/blacklistmodel.h"
 #include "business/config/searchconfig.h"
@@ -36,6 +36,7 @@
 #include <QIcon>
 
 using namespace testing;
+GRANDSEARCH_USE_NAMESPACE
 
 TEST(BlackListViewTest, constructor)
 {

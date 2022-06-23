@@ -18,17 +18,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "pdfpreview_global.h"
 #include "pdfpreviewinterface.h"
 #include "pdfpreviewplugin.h"
 
+GRANDSEARCH_USE_NAMESPACE
+using namespace GrandSearch::pdf_preview;
+
 PDFPreviewInterface::PDFPreviewInterface(QObject *parent)
     : QObject(parent)
-    , GrandSearch::PreviewPluginInterface()
+    , PreviewPluginInterface()
 {
 
 }
 
-GrandSearch::PreviewPlugin *PDFPreviewInterface::create(const QString &mimetype)
+PreviewPlugin *PDFPreviewInterface::create(const QString &mimetype)
 {
     Q_UNUSED(mimetype)
 

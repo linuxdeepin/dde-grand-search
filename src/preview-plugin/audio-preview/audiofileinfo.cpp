@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "audiopreview_global.h"
 #include "audiofileinfo.h"
 #include "global/commontools.h"
 
@@ -30,6 +31,9 @@
 #include <fileref.h>
 #include <taglib.h>
 #include <tpropertymap.h>
+
+GRANDSEARCH_USE_NAMESPACE
+using namespace GrandSearch::audio_preview;
 
 AudioFileInfo::AudioFileInfo()
 {
@@ -56,7 +60,7 @@ AudioFileInfo::AudioMetaData AudioFileInfo::openAudioFile(const QString &file)
     TagLib::AudioProperties *ap = f.audioProperties();
     if (ap) {
         auto len = ap->length() * 1000;
-        meta.duration = GrandSearch::CommonTools::durationString(len / 1000);
+        meta.duration = CommonTools::durationString(len / 1000);
     }
 
     return meta;

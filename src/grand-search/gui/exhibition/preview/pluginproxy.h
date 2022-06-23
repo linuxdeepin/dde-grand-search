@@ -26,6 +26,8 @@
 
 #include <QObject>
 
+namespace GrandSearch {
+
 class PluginProxy : public QObject
 {
     Q_OBJECT
@@ -35,9 +37,11 @@ public:
 signals:
 
 public slots:
-    void updateDetailInfo(GrandSearch::PreviewPlugin *plugin);
+    void updateDetailInfo(PreviewPlugin *plugin);
 private:
     PreviewWidget *q = nullptr;
 };
+
+}
 
 #endif // PLUGINPROXY_H

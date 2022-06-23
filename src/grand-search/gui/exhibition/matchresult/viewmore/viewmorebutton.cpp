@@ -26,6 +26,7 @@
 #include <QPainter>
 #include <QStyleOptionToolButton>
 
+using namespace GrandSearch;
 DWIDGET_USE_NAMESPACE
 
 ViewMoreButton::ViewMoreButton(const QString &text, QWidget *parent)

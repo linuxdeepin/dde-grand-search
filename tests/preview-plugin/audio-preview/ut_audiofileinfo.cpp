@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "audio-preview/audiopreview_global.h"
 #include "audio-preview/audiofileinfo.h"
 
 #include <stubext.h>
@@ -25,6 +26,8 @@
 #include <gtest/gtest.h>
 #include <fileref.h>
 #include <taglib.h>
+
+AUDIO_PREVIEW_USE_NAMESPACE
 
 class TestTag : public TagLib::Tag
 {

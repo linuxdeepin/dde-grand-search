@@ -7,6 +7,7 @@ pkg_check_modules(Avformat REQUIRED libavformat)
 pkg_check_modules(Ffm REQUIRED libffmpegthumbnailer)
 
 set(SRCS
+    videopreview_global.h
     videopreviewinterface.h
     videopreviewinterface.cpp
     videopreviewplugin.h

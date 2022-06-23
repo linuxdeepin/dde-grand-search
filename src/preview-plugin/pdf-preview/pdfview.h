@@ -21,12 +21,18 @@
 #ifndef PDFVIEW_H
 #define PDFVIEW_H
 
+#include "pdfpreview_global.h"
+
 #include <QWidget>
 #include <QFuture>
 
 #include <dpdfdoc.h>
 
 class QLabel;
+
+namespace GrandSearch {
+namespace pdf_preview {
+
 class PDFView : public QWidget
 {
     Q_OBJECT
@@ -57,4 +63,6 @@ private:
     QImage m_pageImg;
 };
 
-#endif   // PDFVIEW_H
+}}
+
+#endif // PDFVIEW_H

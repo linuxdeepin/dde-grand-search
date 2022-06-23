@@ -21,6 +21,7 @@
  */
 
 #include "environments.h"
+#include "global/grandsearch_global.h"
 
 #include "gui/mainwindow.h"
 #include "gui/searchconfig/configwidget.h"
@@ -41,6 +42,7 @@
 
 #include <unistd.h>
 
+GRANDSEARCH_USE_NAMESPACE
 DGUI_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE

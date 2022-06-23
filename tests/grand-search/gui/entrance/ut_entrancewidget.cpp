@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "global/grandsearch_global.h"
 #include "stubext.h"
 
 #include <gtest/gtest.h>
@@ -36,6 +37,7 @@
 #include "utils/utils.h"
 
 using namespace testing;
+GRANDSEARCH_USE_NAMESPACE
 
 TEST(EntranceWidgetTest, constructor)
 {

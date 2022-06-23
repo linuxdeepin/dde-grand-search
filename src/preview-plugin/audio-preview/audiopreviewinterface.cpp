@@ -18,17 +18,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "audiopreview_global.h"
+
 #include "audiopreviewinterface.h"
 #include "audiopreviewplugin.h"
 
+GRANDSEARCH_USE_NAMESPACE
+using namespace GrandSearch::audio_preview;
+
 AudioPreviewInterface::AudioPreviewInterface(QObject *parent)
     : QObject(parent)
-    , GrandSearch::PreviewPluginInterface()
+    , PreviewPluginInterface()
 {
 
 }
 
-GrandSearch::PreviewPlugin *AudioPreviewInterface::create(const QString &mimetype)
+PreviewPlugin *AudioPreviewInterface::create(const QString &mimetype)
 {
     Q_UNUSED(mimetype)
 

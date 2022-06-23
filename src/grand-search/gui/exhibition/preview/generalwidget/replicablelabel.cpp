@@ -27,6 +27,7 @@
 #include <QMouseEvent>
 #include <QResizeEvent>
 
+using namespace GrandSearch;
 DGUI_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
 

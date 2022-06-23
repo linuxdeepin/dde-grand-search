@@ -18,14 +18,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "pdfpreview_global.h"
 #include "pdfpreviewplugin.h"
 #include "pdfview.h"
 
 #include <QFileInfo>
 
+GRANDSEARCH_USE_NAMESPACE
+using namespace GrandSearch::pdf_preview;
+
 PDFPreviewPlugin::PDFPreviewPlugin(QObject *parent)
     : QObject (parent)
-    , GrandSearch::PreviewPlugin()
+    , PreviewPlugin()
 {
 
 }
@@ -41,7 +45,7 @@ void PDFPreviewPlugin::init(QObject *proxyInter)
     Q_UNUSED(proxyInter)
 }
 
-bool PDFPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
+bool PDFPreviewPlugin::previewItem(const ItemInfo &item)
 {
     const QString path = item.value(PREVIEW_ITEMINFO_ITEM);
     if (path.isEmpty())
@@ -58,7 +62,7 @@ bool PDFPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
     return true;
 }
 
-GrandSearch::ItemInfo PDFPreviewPlugin::item() const
+ItemInfo PDFPreviewPlugin::item() const
 {
     return m_item;
 }
@@ -73,7 +77,7 @@ bool PDFPreviewPlugin::stopPreview()
     return true;
 }
 
-GrandSearch::DetailInfoList PDFPreviewPlugin::getAttributeDetailInfo() const
+DetailInfoList PDFPreviewPlugin::getAttributeDetailInfo() const
 {
     return {};
 }

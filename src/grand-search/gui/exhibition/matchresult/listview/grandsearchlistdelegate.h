@@ -26,6 +26,8 @@
 #include <QScopedPointer>
 #include <DStyledItemDelegate>
 
+namespace GrandSearch {
+
 class GrandSearchListDelegate : public Dtk::Widget::DStyledItemDelegate
 {
     Q_OBJECT
@@ -55,5 +57,7 @@ private:
     QMap<int, QString> calcTailShowDataByMaxWidth(QStringList &strings, const int &tailCount, int averageWidth, const QFontMetrics &fontMetrics) const;
     QMap<int, QString> calcTailShowDataByOptimalWidth(QStringList &strings, const int &tailCount, int averageWidth, const QFontMetrics &fontMetrics) const;
 };
+
+}
 
 #endif // GRANDSEARCHLISTDELEGATE_H

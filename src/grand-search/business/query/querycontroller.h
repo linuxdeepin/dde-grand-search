@@ -24,6 +24,8 @@
 #include <QObject>
 #include <QScopedPointer>
 
+namespace GrandSearch {
+
 class QueryControllerPrivate;
 class QueryController : public QObject
 {
@@ -49,5 +51,7 @@ signals:
 private:
     QScopedPointer<QueryControllerPrivate> d_p;
 };
+
+}
 
 #endif // QUERYCONTROLLER_H

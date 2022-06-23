@@ -27,6 +27,9 @@
 #include <QVBoxLayout>
 
 DWIDGET_USE_NAMESPACE
+
+using namespace GrandSearch;
+
 IndexWidget::IndexWidget(QWidget *parent)
     : DWidget(parent)
 {

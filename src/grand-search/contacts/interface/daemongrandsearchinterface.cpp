@@ -35,6 +35,8 @@
  * Implementation of interface class DaemonGrandSearchInterface
  */
 
+using namespace GrandSearch;
+
 DaemonGrandSearchInterface::DaemonGrandSearchInterface(QObject *parent)
     : QDBusAbstractInterface(staticServiceName(), staticObjectPath(), staticInterfaceName(), QDBusConnection::sessionBus(), parent)
 {

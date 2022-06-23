@@ -25,6 +25,9 @@
 
 #include <QLabel>
 
+namespace GrandSearch {
+namespace audio_preview {
+
 class NameLabel: public QLabel
 {
     Q_OBJECT
@@ -44,7 +47,7 @@ class AudioView : public QWidget
     Q_OBJECT
 public:
     explicit AudioView(QWidget *parent = nullptr);
-    void setItemInfo(const GrandSearch::ItemInfo &item);
+    void setItemInfo(const ItemInfo &item);
 private:
     void initUI();
     QIcon defaultIcon(const QString &fileName);
@@ -53,5 +56,7 @@ private:
     NameLabel *m_nameLabel = nullptr;
     SizeLabel *m_sizeLabel = nullptr;
 };
+
+}}
 
 #endif // AUDIOVIEW_H

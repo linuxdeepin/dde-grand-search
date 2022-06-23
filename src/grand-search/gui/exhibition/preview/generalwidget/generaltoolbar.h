@@ -29,6 +29,8 @@ class DVerticalLine;
 DWIDGET_END_NAMESPACE
 class QHBoxLayout;
 
+namespace GrandSearch {
+
 class IconButton: public QToolButton
 {
     Q_OBJECT
@@ -61,5 +63,7 @@ private:
     Dtk::Widget::DVerticalLine* m_vLine1 = nullptr;
     Dtk::Widget::DVerticalLine* m_vLine2 = nullptr;
 };
+
+}
 
 #endif // GENERALTOOLBAR_H

@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+#include "image-preview/imagepreview_global.h"
 #include "image-preview/imageview.h"
 
 #include "stubext.h"
@@ -31,8 +31,10 @@
 #include <QMovie>
 #include <QFileInfo>
 
-using namespace testing;
 DWIDGET_USE_NAMESPACE;
+IMAGE_PREVIEW_USE_NAMESPACE
+
+using namespace testing;
 
 TEST(ImageViewTest, constructor)
 {

@@ -41,6 +41,9 @@ DCORE_USE_NAMESPACE
 #define ListItemMaxWidth    362
 #define InitCount       7   // 初始显示数量
 
+DWIDGET_USE_NAMESPACE
+using namespace GrandSearch;
+
 BlackListView::BlackListView(QWidget *parent)
     : DListView(parent)
 {

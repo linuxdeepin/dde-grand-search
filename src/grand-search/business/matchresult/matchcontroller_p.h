@@ -26,6 +26,8 @@
 
 #include <QAtomicInteger>
 
+namespace GrandSearch {
+
 class DaemonGrandSearchInterface;
 class MatchControllerPrivate : public QObject
 {
@@ -48,7 +50,7 @@ public:
     QString m_missionContent;
 
     QAtomicInteger<bool> m_missionIdChanged = true;
-    GrandSearch::MatchedItemMap m_cacheItems;
+    MatchedItemMap m_cacheItems;
     bool m_enableBestMatch = true;
     int m_firstItemLimit = 30;
     int m_firstWaitTime = 500;
@@ -57,5 +59,7 @@ public:
 
     DaemonGrandSearchInterface *m_daemonDbus = nullptr;
 };
+
+}
 
 #endif // MATCHCONTROLLER_P_H

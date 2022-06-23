@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "global/grandsearch_global.h"
 #include "ddegrandsearchdockplugin.h"
 #include "ut_mock_pluginproxyinterface.h"
 #include "gui/grandsearchwidget.h"
@@ -34,6 +35,7 @@
 
 using namespace testing;
 DWIDGET_USE_NAMESPACE
+GRANDSEARCH_USE_NAMESPACE
 
 namespace  {
     class TestDdeGrandSearchDockPlugin : public testing::Test {

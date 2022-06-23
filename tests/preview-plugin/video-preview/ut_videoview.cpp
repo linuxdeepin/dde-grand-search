@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+#include "video-preview/videopreview_global.h"
 #include "video-preview/videoview.h"
 
 #include <QLayout>
@@ -26,6 +26,8 @@
 #include <stubext.h>
 
 #include <gtest/gtest.h>
+
+VIDEO_PREVIEW_USE_NAMESPACE
 
 TEST(VideoView, ut_initUI)
 {

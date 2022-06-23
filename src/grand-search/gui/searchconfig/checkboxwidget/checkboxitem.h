@@ -24,6 +24,8 @@
 #include <DWidget>
 #include <DCheckBox>
 
+namespace GrandSearch {
+
 class CheckBoxItem : public Dtk::Widget::DWidget
 {
     Q_OBJECT
@@ -47,5 +49,7 @@ private:
     bool m_topRound = false;
     bool m_bottomRound = false;
 };
+
+}
 
 #endif   // CHECKBOXITEM_H

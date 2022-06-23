@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "audiopreview_global.h"
 #include "audiopreviewplugin.h"
 #include "audiofileinfo.h"
 #include "audioview.h"
@@ -33,11 +34,12 @@ extern "C"
 #include <libavformat/avformat.h>
 }
 
-using namespace GrandSearch;
+GRANDSEARCH_USE_NAMESPACE
+using namespace GrandSearch::audio_preview;
 
 AudioPreviewPlugin::AudioPreviewPlugin(QObject *parent)
     : QObject (parent)
-    , GrandSearch::PreviewPlugin()
+    , PreviewPlugin()
 {
 
 }
@@ -55,7 +57,7 @@ void AudioPreviewPlugin::init(QObject *proxyInter)
         m_audioView = new AudioView();
 }
 
-bool AudioPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
+bool AudioPreviewPlugin::previewItem(const ItemInfo &item)
 {
     const QString path = item.value(PREVIEW_ITEMINFO_ITEM);
     if (path.isEmpty())
@@ -98,7 +100,7 @@ bool AudioPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
             avformat_find_stream_info(avFmormat, nullptr);
             qint64 dura = avFmormat->duration / (qint64)AV_TIME_BASE;
             if (dura >= 0)
-                amd.duration = GrandSearch::CommonTools::durationString(dura);
+                amd.duration = CommonTools::durationString(dura);
         }
         avformat_close_input(&avFmormat);
         avformat_free_context(avFmormat);
@@ -150,7 +152,7 @@ bool AudioPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
     tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
 
     contentInfos.clear();
-    contentInfos.insert(DetailInfoProperty::Text, QVariant(time.toString(GrandSearch::CommonTools::dateTimeFormat())));
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(time.toString(CommonTools::dateTimeFormat())));
     contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideMiddle));
 
     detailInfo = qMakePair(tagInfos, contentInfos);
@@ -160,7 +162,7 @@ bool AudioPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
     return true;
 }
 
-GrandSearch::ItemInfo AudioPreviewPlugin::item() const
+ItemInfo AudioPreviewPlugin::item() const
 {
     return m_item;
 }
@@ -175,7 +177,7 @@ QWidget *AudioPreviewPlugin::contentWidget() const
     return m_audioView;
 }
 
-GrandSearch::DetailInfoList AudioPreviewPlugin::getAttributeDetailInfo() const
+DetailInfoList AudioPreviewPlugin::getAttributeDetailInfo() const
 {
     return m_detailInfos;
 }

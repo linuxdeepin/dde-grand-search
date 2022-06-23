@@ -28,6 +28,8 @@
 #include <QVBoxLayout>
 #include <QScrollArea>
 
+namespace GrandSearch {
+
 class DetailItem;
 
 class DetailWidget : public Dtk::Widget::DWidget
@@ -36,7 +38,7 @@ class DetailWidget : public Dtk::Widget::DWidget
 public:
     explicit DetailWidget(QWidget *parent = nullptr);
 
-    void setDetailInfoList(const GrandSearch::DetailInfoList &list);
+    void setDetailInfoList(const DetailInfoList &list);
 
 private:
     QList<DetailItem *> m_detailItems;
@@ -45,5 +47,7 @@ private:
 
     bool m_alignment = false;
 };
+
+}
 
 #endif // DETAILWIDGET_H

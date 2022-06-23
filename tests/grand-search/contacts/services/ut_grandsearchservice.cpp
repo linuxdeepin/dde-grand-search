@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
+#include "global/grandsearch_global.h"
 #include "gui/mainwindow.h"
 
 #include "stubext.h"
@@ -32,6 +32,7 @@
 #include "contacts/services/grandsearchservice_p.h"
 
 using namespace testing;
+GRANDSEARCH_USE_NAMESPACE
 
 TEST(GrandSearchServiceTest, constructor)
 {

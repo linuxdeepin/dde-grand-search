@@ -18,18 +18,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+#include "videopreview_global.h"
 #include "videopreviewinterface.h"
 #include "videopreviewplugin.h"
 
+GRANDSEARCH_USE_NAMESPACE
+using namespace GrandSearch::video_preview;
+
 VideoPreviewInterface::VideoPreviewInterface(QObject *parent)
   : QObject(parent)
-  , GrandSearch::PreviewPluginInterface()
+  , PreviewPluginInterface()
 {
 
 }
 
-GrandSearch::PreviewPlugin *VideoPreviewInterface::create(const QString &mimetype)
+PreviewPlugin *VideoPreviewInterface::create(const QString &mimetype)
 {
     return new VideoPreviewPlugin();
 }

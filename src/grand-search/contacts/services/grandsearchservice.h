@@ -28,6 +28,8 @@
 #define GrandSearchViewServicePath          "/com/deepin/dde/GrandSearch"
 #define GrandSearchViewServiceInterface     "com.deepin.dde.GrandSearch"
 
+namespace GrandSearch {
+
 class MainWindow;
 class GrandSearchServicePrivate;
 class GrandSearchService : public QObject
@@ -47,5 +49,7 @@ signals:
 private:
     QScopedPointer<GrandSearchServicePrivate> d_p;
 };
+
+}
 
 #endif // GRANDSEARCHSERVICE_H

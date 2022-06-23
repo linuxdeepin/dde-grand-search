@@ -26,6 +26,8 @@
 #include <QDirIterator>
 #include <QTimer>
 
+using namespace GrandSearch;
+
 FileStatisticsThread::FileStatisticsThread(QObject *parent)
     : QThread (parent)
 {

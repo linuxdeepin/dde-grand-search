@@ -25,7 +25,8 @@
 
 #include <QWidget>
 
-DWIDGET_USE_NAMESPACE
+namespace GrandSearch {
+namespace video_preview {
 
 class ThumbnailLabel : public QWidget
 {
@@ -51,8 +52,10 @@ signals:
 
 public slots:
 protected:
-    DLabel *m_title = nullptr;
+    Dtk::Widget::DLabel *m_title = nullptr;
     ThumbnailLabel *m_picFrame= nullptr;
 };
+
+}}
 
 #endif // VIDEOVIEW_H

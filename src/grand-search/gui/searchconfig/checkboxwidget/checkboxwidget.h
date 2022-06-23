@@ -25,6 +25,8 @@
 
 #include <QVBoxLayout>
 
+namespace GrandSearch {
+
 class CheckBoxItem;
 class CheckBoxWidget : public Dtk::Widget::DWidget
 {
@@ -48,5 +50,7 @@ private:
     QList<CheckBoxItem *> m_checkBoxList;
     QVBoxLayout *m_mainLayout;
 };
+
+}
 
 #endif   // CHECKBOXWIDGET_H

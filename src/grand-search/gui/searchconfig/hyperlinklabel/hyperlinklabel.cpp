@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "hyperlinklabel.h"
+
 #include <QDebug>
 #include <QPainter>
 #include <QPalette>
@@ -26,6 +27,8 @@
 #include <QLayout>
 #include <QMouseEvent>
 #include <QDesktopServices>
+
+using namespace GrandSearch;
 
 HyperlinkLabel::HyperlinkLabel(const QString &leadintText, const QString &hyperlink, const QString &endText, QWidget *parent)
     : QLabel(parent)

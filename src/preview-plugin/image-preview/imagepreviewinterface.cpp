@@ -18,17 +18,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "imagepreview_global.h"
 #include "imagepreviewinterface.h"
 #include "imagepreviewplugin.h"
 
+GRANDSEARCH_USE_NAMESPACE
+using namespace GrandSearch::image_preview;
+
 ImagePreviewInterface::ImagePreviewInterface(QObject *parent)
     : QObject(parent)
-    , GrandSearch::PreviewPluginInterface()
+    , PreviewPluginInterface()
 {
 
 }
 
-GrandSearch::PreviewPlugin *ImagePreviewInterface::create(const QString &mimetype)
+PreviewPlugin *ImagePreviewInterface::create(const QString &mimetype)
 {
     Q_UNUSED(mimetype)
 

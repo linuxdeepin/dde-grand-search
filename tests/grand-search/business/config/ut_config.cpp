@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "global/grandsearch_global.h"
 #include "global/searchconfigdefine.h"
 #include "global/builtinsearch.h"
 
@@ -35,6 +36,7 @@
 #define protected public
 #include "business/config/searchconfig.h"
 
+GRANDSEARCH_USE_NAMESPACE
 using namespace testing;
 
 TEST(SearchConfigTest, init)

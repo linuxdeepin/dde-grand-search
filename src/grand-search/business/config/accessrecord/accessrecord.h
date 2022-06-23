@@ -23,6 +23,8 @@
 
 #include "global/matcheditem.h"
 
+namespace GrandSearch {
+
 class AccessRecord : public QObject
 {
     Q_OBJECT
@@ -31,7 +33,7 @@ public:
 
     void startParseRecord();
     QHash<QString, QHash<QString, int>> getRecord();  //主线程获取数据  item:次数
-    void updateRecord(const GrandSearch::MatchedItem &matchedItem, qint64 time); // 主线程更新用户点击后的数据
+    void updateRecord(const MatchedItem &matchedItem, qint64 time); // 主线程更新用户点击后的数据
 public slots:
     void sync();   //主线程回写数据
 
@@ -52,5 +54,7 @@ private:
     bool m_finished = false;
     std::once_flag m_initFlag;
 };
+
+}
 
 #endif // ACCESSRECORD_H

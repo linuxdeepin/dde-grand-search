@@ -61,9 +61,9 @@ sed -i 's|lib/|%{_lib}/|' src/grand-search-dock-plugin/CMakeLists.txt
 
 %files
 %license LICENSE
-/etc/xdg/autostart/dde-grand-search-daemon.desktop
 %{_bindir}/%{name}
 %{_bindir}/%{name}-daemon
+%{_libdir}/dde-grand-search-daemon/lib%{name}-daemon.so
 %{_libdir}/dde-dock/plugins/libddegrandsearch_dockplugin.so
 %{_libdir}/dde-grand-search-daemon/plugins/searcher/.readme
 %{_libdir}/dde-grand-search/plugins/preview
@@ -72,5 +72,6 @@ sed -i 's|lib/|%{_lib}/|' src/grand-search-dock-plugin/CMakeLists.txt
 %{_datadir}/dbus-1/services/com.deepin.dde.daemon.GrandSearch.service
 %{_datadir}/dde-grand-search/translations
 %{_datadir}/glib-2.0/schemas/com.deepin.dde.dock.module.grand-search.gschema.xml
+%{_datadir}/applications/dde-grand-search-daemon.desktop
 
 %changelog

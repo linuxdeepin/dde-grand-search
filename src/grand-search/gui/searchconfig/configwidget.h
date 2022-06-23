@@ -26,6 +26,8 @@
 
 #include <QVBoxLayout>
 
+namespace GrandSearch {
+
 class ScopeWidget;
 class CustomWidget;
 class IndexWidget;
@@ -50,5 +52,7 @@ private:
     CustomWidget *m_searchCustomWidget        = nullptr;
     IndexWidget *m_indexWidget        = nullptr;
 };
+
+}
 
 #endif // CONFIGWIDGET_H

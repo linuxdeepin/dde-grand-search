@@ -8,6 +8,7 @@ pkg_check_modules(AVFORMAT REQUIRED libavformat)
 pkg_check_modules(ICU REQUIRED icu-i18n)
 
 set(SRCS
+    audiopreview_global.h
     audiopreviewinterface.h
     audiopreviewinterface.cpp
     audiopreviewplugin.h

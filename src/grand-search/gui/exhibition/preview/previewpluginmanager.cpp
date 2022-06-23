@@ -37,7 +37,7 @@ PreviewPluginManager::~PreviewPluginManager()
     clearPluginInfo();
 }
 
-PreviewPlugin *PreviewPluginManager::getPreviewPlugin(const GrandSearch::MatchedItem &item)
+PreviewPlugin *PreviewPluginManager::getPreviewPlugin(const MatchedItem &item)
 {
     PreviewPlugin* previewPlugin = nullptr;
 
@@ -136,7 +136,7 @@ bool PreviewPluginManager::loadConfig()
 
         auto entrys = dir.entryInfoList({"*.conf"}, QDir::Files, QDir::Name);
         for (const QFileInfo &entry : entrys) {
-            GrandSearch::PreviewPluginInfo info;
+            PreviewPluginInfo info;
             if (readInfo(entry.absoluteFilePath(), info)) {
                 // 检查插件版本是否向下兼容
                 if (!downwardCompatibility(info.version)) {
@@ -155,7 +155,7 @@ bool PreviewPluginManager::loadConfig()
     return true;
 }
 
-bool PreviewPluginManager::readInfo(const QString &path, GrandSearch::PreviewPluginInfo &info)
+bool PreviewPluginManager::readInfo(const QString &path, PreviewPluginInfo &info)
 {
     qDebug() << "load conf" << path;
     QSettings conf(path, QSettings::IniFormat);
@@ -194,7 +194,7 @@ bool PreviewPluginManager::readInfo(const QString &path, GrandSearch::PreviewPlu
     return true;
 }
 
-GrandSearch::PreviewPluginInfo *PreviewPluginManager::getPreviewPlugin(const QString &name)
+PreviewPluginInfo *PreviewPluginManager::getPreviewPlugin(const QString &name)
 {
     if (name.isEmpty())
         return nullptr;

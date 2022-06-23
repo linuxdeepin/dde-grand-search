@@ -25,15 +25,19 @@
 
 #include <QWidget>
 
+
+DWIDGET_BEGIN_NAMESPACE
+class DLabel;
+DWIDGET_END_NAMESPACE
+class QVBoxLayout;
+
+namespace GrandSearch {
 class EntranceWidget;
 class ExhibitionWidget;
 class HandleVisibility;
 class QueryController;
 class MatchController;
-DWIDGET_BEGIN_NAMESPACE
-class DLabel;
-DWIDGET_END_NAMESPACE
-class QVBoxLayout;
+
 class MainWindowPrivate
 {
 public:
@@ -48,5 +52,7 @@ public:
     QueryController *m_queryController = nullptr;
     MatchController *m_matchController = nullptr;
 };
+
+}
 
 #endif // MAINWINDOW_P_H

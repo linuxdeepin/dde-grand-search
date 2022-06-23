@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+#include "image-preview/imagepreview_global.h"
 #include "image-preview/imagepreviewinterface.h"
 #include "image-preview/imagepreviewplugin.h"
 #include "image-preview/imageview.h"
@@ -29,7 +29,7 @@
 
 #include <QTest>
 
-using namespace GrandSearch;
+IMAGE_PREVIEW_USE_NAMESPACE
 
 TEST(ImagePreviewPluginTest, constructor)
 {

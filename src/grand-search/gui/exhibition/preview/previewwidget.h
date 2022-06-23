@@ -26,9 +26,12 @@
 
 #include <QScopedPointer>
 
-class GeneralToolBar;;
 class QVBoxLayout;
 class QSpacerItem;
+
+namespace GrandSearch {
+
+class GeneralToolBar;
 class DetailWidget;
 class PluginProxy;
 class PreviewWidget : public Dtk::Widget::DWidget
@@ -40,7 +43,7 @@ public:
     ~PreviewWidget() override;
 
     // 预览指定搜索项
-    bool previewItem(const GrandSearch::MatchedItem &item);
+    bool previewItem(const MatchedItem &item);
 
 private:
     void initUi();
@@ -56,9 +59,9 @@ private:
 
     QSpacerItem* m_vSpaceItem = nullptr;       // 垂直弹簧，用于将工具栏置底显示
 
-    QSharedPointer<GrandSearch::PreviewPlugin> m_preview = nullptr;        // 当前正在预览的插件界面
+    QSharedPointer<PreviewPlugin> m_preview = nullptr;        // 当前正在预览的插件界面
 
-    QSharedPointer<GrandSearch::PreviewPlugin> m_generalPreview = nullptr; // 默认预览插件界面
+    QSharedPointer<PreviewPlugin> m_generalPreview = nullptr; // 默认预览插件界面
 
     DetailWidget* m_detailInfoWidget = nullptr; // 通用属性详情部件
     GeneralToolBar *m_generalToolBar = nullptr;     // 通用工具栏部件
@@ -66,8 +69,10 @@ private:
 
 
 private:
-    GrandSearch::MatchedItem m_item; //当前正在预览的匹配结果
+    MatchedItem m_item; //当前正在预览的匹配结果
     PreviewPluginManager m_pluginManager; //预览插件管理对象
 };
+
+}
 
 #endif // PREVIEWWIDGET_H

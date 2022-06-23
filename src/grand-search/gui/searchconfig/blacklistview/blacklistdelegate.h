@@ -24,6 +24,7 @@
 #include <DListView>
 #include <DStyledItemDelegate>
 
+namespace GrandSearch {
 class BlackListDelegate : public Dtk::Widget::DStyledItemDelegate
 {
     Q_OBJECT
@@ -39,5 +40,6 @@ private:
     void drawPathsText(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void drawItemBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
+}
 
 #endif // BLACKLISTDELEGATE_H

@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "imagepreview_global.h"
 #include "imagepreviewplugin.h"
 #include "imageview.h"
 #include "global/commontools.h"
@@ -25,11 +26,12 @@
 #include <QFileInfo>
 #include <QDateTime>
 
-using namespace GrandSearch;
+GRANDSEARCH_USE_NAMESPACE
+using namespace GrandSearch::image_preview;
 
 ImagePreviewPlugin::ImagePreviewPlugin(QObject *parent)
     : QObject (parent)
-    , GrandSearch::PreviewPlugin()
+    , PreviewPlugin()
 {
 
 }
@@ -47,7 +49,7 @@ void ImagePreviewPlugin::init(QObject *proxyInter)
     Q_UNUSED(proxyInter)
 }
 
-bool ImagePreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
+bool ImagePreviewPlugin::previewItem(const ItemInfo &item)
 {
     const QString path = item.value(PREVIEW_ITEMINFO_ITEM);
     const QString type = item.value(PREVIEW_ITEMINFO_TYPE);
@@ -92,14 +94,14 @@ bool ImagePreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
 
     // 大小
     auto size = fileInfo.size();
-    auto fileSize = qMakePair<QString, QString>("Size:", GrandSearch::CommonTools::formatFileSize(size));
+    auto fileSize = qMakePair<QString, QString>("Size:", CommonTools::formatFileSize(size));
 
     tagInfos.clear();
     tagInfos.insert(DetailInfoProperty::Text, QVariant(tr("Size:")));
     tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
 
     contentInfos.clear();
-    contentInfos.insert(DetailInfoProperty::Text, QVariant(GrandSearch::CommonTools::formatFileSize(size)));
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(CommonTools::formatFileSize(size)));
     contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
 
     detailInfo = qMakePair(tagInfos, contentInfos);
@@ -125,7 +127,7 @@ bool ImagePreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
     tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
 
     contentInfos.clear();
-    contentInfos.insert(DetailInfoProperty::Text, QVariant(time.toString(GrandSearch::CommonTools::dateTimeFormat())));
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(time.toString(CommonTools::dateTimeFormat())));
     contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
 
     detailInfo = qMakePair(tagInfos, contentInfos);
@@ -135,7 +137,7 @@ bool ImagePreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
     return true;
 }
 
-GrandSearch::ItemInfo ImagePreviewPlugin::item() const
+ItemInfo ImagePreviewPlugin::item() const
 {
     return m_item;
 }
@@ -152,7 +154,7 @@ bool ImagePreviewPlugin::stopPreview()
     return true;
 }
 
-GrandSearch::DetailInfoList ImagePreviewPlugin::getAttributeDetailInfo() const
+DetailInfoList ImagePreviewPlugin::getAttributeDetailInfo() const
 {
     return m_detailInfos;
 }

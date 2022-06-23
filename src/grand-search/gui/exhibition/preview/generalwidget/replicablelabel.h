@@ -23,6 +23,8 @@
 
 #include <QLineEdit>
 
+namespace GrandSearch {
+
 class ReplicableLabel : public QLineEdit
 {
     Q_OBJECT
@@ -48,5 +50,7 @@ private:
     QString m_elideText;                // 截断文本-用于显示
     bool m_pressed = false;             // 记录是否按照鼠标左键
 };
+
+}
 
 #endif // REPLICABLELABEL_H

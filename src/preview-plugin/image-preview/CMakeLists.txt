@@ -4,6 +4,7 @@ project(image-preview)
 set(LIB_NAME image-preview-plugin)
 
 set(SRCS
+    imagepreview_global.h
     imagepreviewinterface.h
     imagepreviewinterface.cpp
     imagepreviewplugin.h

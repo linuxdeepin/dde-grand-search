@@ -35,6 +35,7 @@
 #define SchemaPath "/com/deepin/dde/dock/module/grand-search/"
 #define SchemaKeyMenuEnable "menuEnable"
 
+using namespace GrandSearch;
 DWIDGET_USE_NAMESPACE
 
 DdeGrandSearchDockPlugin::DdeGrandSearchDockPlugin(QObject *parent)

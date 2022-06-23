@@ -25,6 +25,7 @@
 #include <DFontSizeManager>
 #include <DDialog>
 
+using namespace GrandSearch;
 DWIDGET_USE_NAMESPACE
 
 TailerWidget::TailerWidget(QWidget *parent)

@@ -28,13 +28,13 @@
 #define SessionManagerService "com.deepin.SessionManager"
 #define SessionManagerPath "/com/deepin/SessionManager"
 
+using namespace GrandSearch;
 DWIDGET_USE_NAMESPACE
-using namespace com::deepin;
 
 HandleVisibility::HandleVisibility(MainWindow *mainWindow, QObject *parent)
     : QObject(parent)
     , m_mainWindow(mainWindow)
-    , m_sessionManagerInter(new SessionManager(SessionManagerService, SessionManagerPath, QDBusConnection::sessionBus(), this))
+    , m_sessionManagerInter(new com::deepin::SessionManager(SessionManagerService, SessionManagerPath, QDBusConnection::sessionBus(), this))
 {
     init();
 }
@@ -51,7 +51,7 @@ void HandleVisibility::init()
     connect(qApp, &QGuiApplication::applicationStateChanged, this, &HandleVisibility::onApplicationStateChanged);
 
     // 锁屏状态改变
-    connect(m_sessionManagerInter, &SessionManager::LockedChanged, this, &HandleVisibility::onLockedChanged);
+    connect(m_sessionManagerInter, &com::deepin::SessionManager::LockedChanged, this, &HandleVisibility::onLockedChanged);
 }
 
 void HandleVisibility::onApplicationStateChanged(const Qt::ApplicationState state)

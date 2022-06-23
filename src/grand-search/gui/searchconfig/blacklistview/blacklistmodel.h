@@ -25,6 +25,8 @@
 
 #define DATAROLE Qt::UserRole+1
 
+namespace GrandSearch {
+
 class BlackListModel : public QStandardItemModel
 {
     Q_OBJECT
@@ -36,5 +38,5 @@ public:
     QStringList mimeTypes() const override;
 
 };
-
+}
 #endif // BLACKLISTMODEL_H

@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "global/grandsearch_global.h"
 #include "utils/filestatisticsthread.h"
 
 #include "stubext.h"
@@ -30,6 +31,7 @@
 #include <QThread>
 
 using namespace testing;
+GRANDSEARCH_USE_NAMESPACE
 
 TEST(FileStatisticsThreadest, constructor)
 {

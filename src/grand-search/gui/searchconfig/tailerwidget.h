@@ -29,6 +29,8 @@
 
 #include <QVBoxLayout>
 
+namespace GrandSearch {
+
 class TailerWidget : public Dtk::Widget::DWidget
 {
     Q_OBJECT
@@ -51,5 +53,7 @@ private:
     QLabel *m_contentLabel = nullptr;
     CheckBoxWidget *m_checkBoxWidget = nullptr;
 };
+
+}
 
 #endif   // TAILERWIDGET_H

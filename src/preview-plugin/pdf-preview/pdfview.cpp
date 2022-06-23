@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "pdfpreview_global.h"
 #include "pdfview.h"
 #include "global/commontools.h"
 
@@ -32,7 +33,10 @@
 #include <QApplication>
 #include <QScreen>
 
-#define PAGE_FIXED_SIZE QSize(360, 386)
+GRANDSEARCH_USE_NAMESPACE
+using namespace GrandSearch::pdf_preview;
+
+#define PAGE_FIXED_SIZE   QSize(360, 386)
 
 PDFView::PDFView(const QString &file, QWidget *parent)
     : QWidget(parent)
@@ -112,7 +116,7 @@ void PDFView::showErrorPage()
     m_pageLabel->setFixedSize(PAGE_FIXED_SIZE);
     QImage errImg(":/icons/file_damaged.svg");
     errImg = errImg.scaled(70, 70);
-    errImg = GrandSearch::CommonTools::creatErrorImage(PAGE_FIXED_SIZE, errImg);
+    errImg = CommonTools::creatErrorImage(PAGE_FIXED_SIZE, errImg);
 
     auto errPixmap = scaleAndRound(errImg);
     m_pageLabel->setPixmap(errPixmap);

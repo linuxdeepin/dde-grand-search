@@ -8,6 +8,7 @@ pkg_check_modules(PDF REQUIRED deepin-pdfium)
 pkg_check_modules(JPEG REQUIRED libjpeg)
 
 set(SRCS
+    pdfpreview_global.h
     pdfpreviewinterface.h
     pdfpreviewinterface.cpp
     pdfpreviewplugin.h

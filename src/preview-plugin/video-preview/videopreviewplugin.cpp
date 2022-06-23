@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "videopreview_global.h"
 #include "videopreviewplugin.h"
 #include "videoview.h"
 #include "global/commontools.h"
@@ -33,6 +34,9 @@ extern "C" {
 #include <libffmpegthumbnailer/videothumbnailerc.h>
 }
 #endif
+
+GRANDSEARCH_USE_NAMESPACE
+using namespace GrandSearch::video_preview;
 
 namespace  {
 static const QString kLabelDimension = QObject::tr("Dimensions:");
@@ -52,7 +56,7 @@ using namespace GrandSearch;
 
 VideoPreviewPlugin::VideoPreviewPlugin(QObject *parent)
     : QObject(parent)
-    , GrandSearch::PreviewPlugin()
+    , PreviewPlugin()
 {
 
 }
@@ -72,7 +76,7 @@ void VideoPreviewPlugin::init(QObject *proxyInter)
     }
 }
 #define PREVIEW_ASYNC_DECODE
-bool VideoPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
+bool VideoPreviewPlugin::previewItem(const ItemInfo &item)
 {
     const QString path = item.value(PREVIEW_ITEMINFO_ITEM);
     if (path.isEmpty())
@@ -122,7 +126,7 @@ bool VideoPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
     tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
 
     contentInfos.clear();
-    contentInfos.insert(DetailInfoProperty::Text, QVariant(GrandSearch::CommonTools::formatFileSize(fileInfo.size())));
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(CommonTools::formatFileSize(fileInfo.size())));
     contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
 
     detailInfo = qMakePair(tagInfos, contentInfos);
@@ -153,7 +157,7 @@ bool VideoPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
     m_infos.push_back(detailInfo);
 
     // 修改时间
-    auto lt = fileInfo.lastModified().toString(GrandSearch::CommonTools::dateTimeFormat());
+    auto lt = fileInfo.lastModified().toString(CommonTools::dateTimeFormat());
 
     tagInfos.clear();
     tagInfos.insert(DetailInfoProperty::Text, QVariant(kLabelTime));
@@ -177,7 +181,7 @@ bool VideoPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
     return true;
 }
 
-GrandSearch::ItemInfo VideoPreviewPlugin::item() const
+ItemInfo VideoPreviewPlugin::item() const
 {
     return m_item;
 }
@@ -204,7 +208,7 @@ bool VideoPreviewPlugin::showToolBar() const
     return true;
 }
 
-GrandSearch::DetailInfoList VideoPreviewPlugin::getAttributeDetailInfo() const
+DetailInfoList VideoPreviewPlugin::getAttributeDetailInfo() const
 {
     return m_infos;
 }
@@ -240,7 +244,7 @@ void VideoPreviewPlugin::updateInfo(const QVariantHash &hash, bool needUpdate)
         tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
 
         DetailContentInfo contentInfos;
-        contentInfos.insert(DetailInfoProperty::Text, QVariant(GrandSearch::CommonTools::durationString(duration)));
+        contentInfos.insert(DetailInfoProperty::Text, QVariant(CommonTools::durationString(duration)));
         contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
 
         DetailInfo detailInfo = qMakePair(tagInfos, contentInfos);
@@ -315,7 +319,7 @@ QVariantHash DecodeBridge::decode(QSharedPointer<DecodeBridge> self, const QStri
             qWarning() << "thumbnailer create image error";
             QImage errorImg(":/icons/image_damaged.svg");
             errorImg = errorImg.scaled(46, 46);
-            auto img = GrandSearch::CommonTools::creatErrorImage({192, 108}, errorImg);
+            auto img = CommonTools::creatErrorImage({192, 108}, errorImg);
             QPixmap pixmap = DecodeBridge::scaleAndRound(img, maxSize);
             info.insert(kKeyThumbnailer, QVariant::fromValue(pixmap));
         }
@@ -325,7 +329,7 @@ QVariantHash DecodeBridge::decode(QSharedPointer<DecodeBridge> self, const QStri
         // 预览失败
         QImage errorImg(":/icons/image_damaged.svg");
         errorImg = errorImg.scaled(46, 46);
-        auto img = GrandSearch::CommonTools::creatErrorImage({192, 108}, errorImg);
+        auto img = CommonTools::creatErrorImage({192, 108}, errorImg);
         QPixmap pixmap = DecodeBridge::scaleAndRound(img, VideoView::maxThumbnailSize());
         info.insert(kKeyThumbnailer, QVariant::fromValue(pixmap));
     }

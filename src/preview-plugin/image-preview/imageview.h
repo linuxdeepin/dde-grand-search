@@ -31,6 +31,9 @@ DWIDGET_BEGIN_NAMESPACE
 class DLabel;
 DWIDGET_END_NAMESPACE
 
+namespace GrandSearch {
+namespace image_preview {
+
 class ImageView : public Dtk::Widget::DWidget
 {
     Q_OBJECT
@@ -67,5 +70,7 @@ private:
     QLabel *m_imageLabel;               // 显示图片
     Dtk::Widget::DLabel *m_titleLabel;  // 显示名称
 };
+
+}}
 
 #endif // IMAGEVIEW_H

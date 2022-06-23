@@ -27,11 +27,13 @@
 
 #include <QStringList>
 
+namespace GrandSearch {
+
 class Utils
 {
 public:
     // 排序算法 用于搜索结果排序 规则为：中文 > 英文 > 其他语言 > 标点符号
-    static bool sort(GrandSearch::MatchedItems &list, Qt::SortOrder order = Qt::AscendingOrder);
+    static bool sort(MatchedItems &list, Qt::SortOrder order = Qt::AscendingOrder);
 
     static bool compareByString(QString &str1, QString &str2, Qt::SortOrder order = Qt::AscendingOrder);
     static bool startWithSymbol(const QString &text);
@@ -41,14 +43,14 @@ public:
     static bool startWidthNum(const QString &text);
 
     // 通过权重进行排序
-    static bool sortByWeight(GrandSearch::MatchedItemMap &map, Qt::SortOrder order = Qt::DescendingOrder);
-    static bool compareByWeight(GrandSearch::MatchedItem &node1, GrandSearch::MatchedItem &node2, Qt::SortOrder order = Qt::DescendingOrder);
+    static bool sortByWeight(MatchedItemMap &map, Qt::SortOrder order = Qt::DescendingOrder);
+    static bool compareByWeight(MatchedItem &node1, MatchedItem &node2, Qt::SortOrder order = Qt::DescendingOrder);
 
     // 更新结果项的权重
-    static void updateItemsWeight(GrandSearch::MatchedItemMap &map, const QString &content);
+    static void updateItemsWeight(MatchedItemMap &map, const QString &content);
 
     // 设置权重函数
-    static bool setWeightMethod(GrandSearch::MatchedItem &item);
+    static bool setWeightMethod(MatchedItem &item);
 
     // 计算文件类的权重
     static int calcFileWeight(const QString &path, const QString &name, const QStringList &keys);
@@ -56,21 +58,21 @@ public:
     static int calcWeightByDateDiff(const qint64 &diff, const int &type);
 
     // 计算应用和设置的权重
-    static double calcAppWeight(const GrandSearch::MatchedItem &item, const QStringList &keys);
-    static double calcSettingWeight(const GrandSearch::MatchedItem &item, const QStringList &keys);
+    static double calcAppWeight(const MatchedItem &item, const QStringList &keys);
+    static double calcSettingWeight(const MatchedItem &item, const QStringList &keys);
 
     // 组装最佳匹配类目
-    static void packageBestMatch(GrandSearch::MatchedItemMap &map, int maxQuantity);
+    static void packageBestMatch(MatchedItemMap &map, int maxQuantity);
 
     // 计算点选事件的权重
-    static double calcRecordWeight(const GrandSearch::MatchedItem &item);
+    static double calcRecordWeight(const MatchedItem &item);
 
     // 判断类目所属搜索项是否支持重排
     static bool isResetSearcher(QString searcher);
 
     // 获取搜索结果默认打开应用图标
-    static QString appIconName(const GrandSearch::MatchedItem &item);
-    static bool isShowAppIcon(const GrandSearch::MatchedItem &item);
+    static QString appIconName(const MatchedItem &item);
+    static bool isShowAppIcon(const MatchedItem &item);
 
     // 根据文件路径获取mimetype
     static QString getFileMimetype(const QString &filePath);
@@ -81,17 +83,17 @@ public:
     // 根据mimeType获取默认打开应用路径
     static QString getDefaultAppDesktopFileByMimeType(const QString &mimeType);
     // 搜索结果是否来自内置搜索项
-    static bool isResultFromBuiltSearch(const GrandSearch::MatchedItem &item);
+    static bool isResultFromBuiltSearch(const MatchedItem &item);
     // 打开搜索结果项，如扩展搜索项/应用/文件/浏览器等
-    static bool openMatchedItem(const GrandSearch::MatchedItem &item);
+    static bool openMatchedItem(const MatchedItem &item);
     // 按住Ctrl键时打开搜索项
-    static bool openMatchedItemWithCtrl(const GrandSearch::MatchedItem &item);
+    static bool openMatchedItemWithCtrl(const MatchedItem &item);
     // 在文件管理器中显示
-    static bool openInFileManager(const GrandSearch::MatchedItem &item);
+    static bool openInFileManager(const MatchedItem &item);
     // 打开扩展搜索项
-    static bool openExtendSearchMatchedItem(const GrandSearch::MatchedItem &item);
+    static bool openExtendSearchMatchedItem(const MatchedItem &item);
     // 打开文件
-    static bool openFile(const GrandSearch::MatchedItem &item);
+    static bool openFile(const MatchedItem &item);
     // 启动应用，若filePaths不为空，则用该应用打开传入的文件, 否则，仅启动应用
     static bool launchApp(const QString& desktopFile, const QStringList &filePaths = {});
     // 使用Dbus启动应用
@@ -101,7 +103,7 @@ public:
     // 跳转到浏览器
     static bool openWithBrowser(const QString &words);
     // 列表左边图标
-    static QIcon defaultIcon(const GrandSearch::MatchedItem &item);
+    static QIcon defaultIcon(const MatchedItem &item);
 
     // 默认浏览器的desktop文件
     static QString defaultBrowser();
@@ -111,7 +113,7 @@ public:
      * \param level 输出参数，item所属的层级
      * \return 项item是否属于分层项
      */
-    static bool isLevelItem(const GrandSearch::MatchedItem &item, int &level);
+    static bool isLevelItem(const MatchedItem &item, int &level);
 
     // 返回该组是否包分层显示项
     static bool isLevelGroup(const QString &searchGroupName);
@@ -128,5 +130,7 @@ private:
     static QMap<QString, QString> m_appIconNameMap;// 存放应用desktop文件对应的图标名称，用于搜索框应用图标刷新
     static QMimeDatabase m_mimeDb;
 };
+
+}
 
 #endif // SORTMATCHITEM_H

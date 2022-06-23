@@ -25,23 +25,27 @@
 #include "global/matcheditem.h"
 #include "global/builtinsearch.h"
 #include "previewplugin.h"
+
 #include <QObject>
 #include <QScopedPointer>
 
 class QFrame;
+
+namespace GrandSearch {
+
 class GeneralPreviewPluginPrivate;
-class GeneralPreviewPlugin : public QObject, public GrandSearch::PreviewPlugin
+class GeneralPreviewPlugin : public QObject, public PreviewPlugin
 {
     Q_OBJECT
 public:
     explicit GeneralPreviewPlugin(QObject *parent = nullptr);
     ~GeneralPreviewPlugin() override;
     void init(QObject *proxyInter) Q_DECL_OVERRIDE;
-    virtual bool previewItem(const GrandSearch::ItemInfo &info) override;
-    virtual GrandSearch::ItemInfo item() const override;
+    virtual bool previewItem(const ItemInfo &info) override;
+    virtual ItemInfo item() const override;
     bool stopPreview() override;
     virtual QWidget *contentWidget() const override;
-    virtual GrandSearch::DetailInfoList getAttributeDetailInfo() const override;
+    virtual DetailInfoList getAttributeDetailInfo() const override;
     virtual QWidget *toolBarWidget() const override;
     bool showToolBar() const override;
 private slots:
@@ -49,5 +53,7 @@ private slots:
 private:
     QScopedPointer<GeneralPreviewPluginPrivate> d_p;
 };
+
+}
 
 #endif // GENERALPREVIEWPLUGIN_H

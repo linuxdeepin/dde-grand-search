@@ -28,11 +28,10 @@
 #include <QPainter>
 
 DWIDGET_USE_NAMESPACE
+using namespace GrandSearch;
 
 #define COMBOBOXW 250
 #define COMBOBOXH 36
-
-namespace GrandSearch {
 
 ComboboxWidget::ComboboxWidget(const QString &title, QWidget *parent)
     : ComboboxWidget(parent, new QLabel(title, parent))
@@ -122,6 +121,4 @@ void ComboboxWidget::paintEvent(QPaintEvent *event)
         p.drawRoundedRect(rect(), 8, 8);
     }
     return QWidget::paintEvent(event);
-}
-
 }

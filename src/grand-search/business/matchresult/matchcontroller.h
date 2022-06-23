@@ -22,9 +22,12 @@
 #ifndef MATCHCONTROLLER_H
 #define MATCHCONTROLLER_H
 
+#include "global/matcheditem.h"
+
 #include <QObject>
 #include <QScopedPointer>
-#include "global/matcheditem.h"
+
+namespace GrandSearch {
 
 class MatchControllerPrivate;
 class MatchController : public QObject
@@ -37,11 +40,13 @@ public:
     void onMissionChanged(const QString &missionId, const QString &missionContent);
 
 signals:
-    void matchedResult(const GrandSearch::MatchedItemMap &);
+    void matchedResult(const MatchedItemMap &);
     void searchCompleted();
 
 private:
     QScopedPointer<MatchControllerPrivate> d_p;
 };
+
+}
 
 #endif // MATCHCONTROLLER_H

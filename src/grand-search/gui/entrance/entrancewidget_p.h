@@ -21,10 +21,11 @@
 #ifndef ENTRANCEWIDGET_P_H
 #define ENTRANCEWIDGET_P_H
 
-#include "QObject"
 #include "entrancewidget.h"
 
 #include <DWidget>
+
+#include "QObject"
 
 DWIDGET_BEGIN_NAMESPACE
 class DSearchEdit;
@@ -36,6 +37,9 @@ class QTimer;
 class QLineEdit;
 class QAction;
 class QPushButton;
+
+namespace GrandSearch {
+
 class EntranceWidgetPrivate : public QObject
 {
     Q_OBJECT
@@ -58,5 +62,7 @@ public:
 
     QString m_appIconName;                              // 当前搜索框显示的默认打开应用图标名称
 };
+
+}
 
 #endif // ENTRANCEWIDGET_P_H

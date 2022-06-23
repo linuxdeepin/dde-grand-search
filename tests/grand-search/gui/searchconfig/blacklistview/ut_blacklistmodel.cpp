@@ -19,11 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "global/grandsearch_global.h"
 #include "gui/searchconfig/blacklistview/blacklistmodel.h"
 
 #include "stubext.h"
 
 #include <gtest/gtest.h>
+
+GRANDSEARCH_USE_NAMESPACE
 
 TEST(BlackListModelTest, constructor)
 {

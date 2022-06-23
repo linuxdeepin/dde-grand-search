@@ -18,13 +18,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+#include "text-preview/textpreview_global.h"
 #include "text-preview/textpreviewplugin.h"
 #include "text-preview/textview.h"
 
 #include <stubext.h>
 
 #include <gtest/gtest.h>
+
+TEXT_PREVIEW_USE_NAMESPACE
 
 TEST(TextPreviewPlugin, ut_init)
 {

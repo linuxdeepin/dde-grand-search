@@ -18,15 +18,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "textpreview_global.h"
 #include "textpreviewplugin.h"
 #include "textview.h"
 
 #include <QFileInfo>
 #include <QDateTime>
 
+GRANDSEARCH_USE_NAMESPACE
+using namespace GrandSearch::text_preview;
+
 TextPreviewPlugin::TextPreviewPlugin(QObject *parent)
     : QObject(parent)
-    , GrandSearch::PreviewPlugin()
+    , PreviewPlugin()
 {
 
 }
@@ -46,7 +51,7 @@ void TextPreviewPlugin::init(QObject *proxyInter)
     }
 }
 
-bool TextPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
+bool TextPreviewPlugin::previewItem(const ItemInfo &item)
 {
     const QString path = item.value(PREVIEW_ITEMINFO_ITEM);
     if (path.isEmpty())
@@ -57,7 +62,7 @@ bool TextPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
     return true;
 }
 
-GrandSearch::ItemInfo TextPreviewPlugin::item() const
+ItemInfo TextPreviewPlugin::item() const
 {
     return m_item;
 }
@@ -83,7 +88,7 @@ bool TextPreviewPlugin::showToolBar() const
 }
 
 
-GrandSearch::DetailInfoList TextPreviewPlugin::getAttributeDetailInfo() const
+DetailInfoList TextPreviewPlugin::getAttributeDetailInfo() const
 {
     return {};
 }

@@ -20,6 +20,8 @@
 
 #include <QDebug>
 
+using namespace GrandSearch;
+
 GrandSearchListModel::GrandSearchListModel(int rows, int columns, QObject *parent):
     QStandardItemModel(rows, columns, parent)
 {

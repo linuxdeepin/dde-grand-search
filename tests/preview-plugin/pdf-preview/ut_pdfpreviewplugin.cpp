@@ -27,6 +27,8 @@
 
 #include <QTest>
 
+PDF_PREVIEW_USE_NAMESPACE
+
 TEST(PDFPreviewPluginTest, ut_init)
 {
     PDFPreviewPlugin pdf;

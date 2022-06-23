@@ -32,8 +32,9 @@
 #include <QPainter>
 #include <QMouseEvent>
 
-DCORE_USE_NAMESPACE
 using namespace GrandSearch;
+DCORE_USE_NAMESPACE
+DWIDGET_USE_NAMESPACE
 
 #define ICON_SIZE 24
 #define ListItemTextMaxWidth      240      // 文本元素最大显示宽度

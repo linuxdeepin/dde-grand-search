@@ -54,7 +54,9 @@ APPLICATION_GROUP\
 // 文件类目
 #define FILE_SUFFIX         "zip,rar,z,deb,lib,iso,html,js"
 
-#define searchHelper SearchHelper::instance()
+#define searchHelper GrandSearch::SearchHelper::instance()
+
+namespace GrandSearch {
 
 class SearchHelper
 {
@@ -88,5 +90,7 @@ private:
     // 类目-搜索项映射表
     QHash<QString, QStringList> m_groupSearcherHash;
 };
+
+}
 
 #endif // SEARCHHELPER_H

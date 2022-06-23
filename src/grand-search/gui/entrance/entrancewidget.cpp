@@ -80,7 +80,7 @@ void EntranceWidgetPrivate::notifyTextChanged()
     emit q_p->searchTextChanged(currentSearchText);
 
     // 搜索内容改变后，清空图标显示
-    GrandSearch::MatchedItem item;
+    MatchedItem item;
     q_p->onAppIconChanged(QString(), item);
 }
 
@@ -263,7 +263,7 @@ void EntranceWidget::initConnections()
     connect(d_p->m_searchEdit, &DSearchEdit::searchAborted, d_p->m_lineEdit, qOverload<>(&QLineEdit::setFocus));
 }
 
-void EntranceWidget::onAppIconChanged(const QString &searchGroupName, const GrandSearch::MatchedItem &item)
+void EntranceWidget::onAppIconChanged(const QString &searchGroupName, const MatchedItem &item)
 {
     Q_UNUSED(searchGroupName)
 

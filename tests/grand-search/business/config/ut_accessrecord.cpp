@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "global/grandsearch_global.h"
 #include "business/config/accessrecord/accessrecord.h"
 #include "global/matcheditem.h"
 #include "global/searchconfigdefine.h"
@@ -36,6 +37,8 @@
 #include <stdio.h>
 
 #include <QTest>
+
+GRANDSEARCH_USE_NAMESPACE
 
 TEST(AccessRecordTest, init)
 {

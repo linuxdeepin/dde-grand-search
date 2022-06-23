@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "imagepreview_global.h"
 #include "imageview.h"
 #include "global/commontools.h"
 
@@ -40,6 +41,8 @@
 #define ROUNDRADIUS     8
 
 DWIDGET_USE_NAMESPACE
+GRANDSEARCH_USE_NAMESPACE
+using namespace GrandSearch::image_preview;
 
 ImageView::ImageView(QWidget *parent)
     :DWidget (parent)
@@ -235,7 +238,7 @@ void ImageView::showErrorPage()
     m_imageLabel->setFixedSize(192, 108);
     QImage errorImg(":/icons/image_damaged.svg");
     errorImg = errorImg.scaled(46, 46);
-    errorImg = GrandSearch::CommonTools::creatErrorImage({192, 108}, errorImg);
+    errorImg = CommonTools::creatErrorImage({192, 108}, errorImg);
 
     auto errorPixmap = getRoundPixmap(QPixmap::fromImage(errorImg));
     m_imageLabel->setPixmap(errorPixmap);

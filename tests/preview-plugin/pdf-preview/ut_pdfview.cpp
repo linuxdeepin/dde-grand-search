@@ -27,6 +27,8 @@
 #include <QTest>
 #include <QLabel>
 
+PDF_PREVIEW_USE_NAMESPACE
+
 class PDFViewTest : public testing::Test
 {
 public:

@@ -24,6 +24,8 @@
 
 #include <QDebug>
 
+using namespace GrandSearch;
+
 GrandSearchServicePrivate::GrandSearchServicePrivate(MainWindow *mainWindow, GrandSearchService *parent)
     : q_p(parent)
     , m_mainWindow(mainWindow)

@@ -24,6 +24,9 @@
 #include <QThread>
 
 class QTimer;
+
+namespace GrandSearch {
+
 class FileStatisticsThread : public QThread
 {
     Q_OBJECT
@@ -53,5 +56,7 @@ private:
     QString m_sourceFile;
     State m_state = StoppedState;
 };
+
+}
 
 #endif // FILESTATISTICSTHREAD_H

@@ -24,6 +24,8 @@
 
 #include "matchwidget.h"
 
+namespace GrandSearch {
+
 class MatchWidgetPrivate
 {
 public:
@@ -31,5 +33,7 @@ public:
 
     MatchWidget *q_p = nullptr;
 };
+
+}
 
 #endif // MATCHWIDGET_P_H

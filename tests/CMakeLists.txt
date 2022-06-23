@@ -36,7 +36,7 @@ include_directories("${PROJECT_3RDPARTY_PATH}/cpp-stub" "${PROJECT_3RDPARTY_PATH
 include_directories(${PROJECT_SOURCE_PATH})
 
 add_subdirectory(grand-search)
-add_subdirectory(grand-search-daemon)
+add_subdirectory(libgrand-search-daemon)
 add_subdirectory(preview-plugin)
 add_subdirectory(grand-search-dock-plugin)
 

@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "audio-preview/audiopreview_global.h"
 #include "audio-preview/audioview.h"
 #include "global/commontools.h"
 
@@ -26,6 +27,8 @@
 #include <gtest/gtest.h>
 
 #include <QTest>
+
+AUDIO_PREVIEW_USE_NAMESPACE
 
 TEST(AudioViewTest, ut_setItemInfo_0)
 {

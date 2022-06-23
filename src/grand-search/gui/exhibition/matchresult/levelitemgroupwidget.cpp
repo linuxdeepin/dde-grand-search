@@ -18,10 +18,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "global/grandsearch_global.h"
 #include "levelitemgroupwidget.h"
 #include "listview/grandsearchlistview.h"
 #include "viewmore/viewmorebutton.h"
 #include "utils/utils.h"
+
+GRANDSEARCH_USE_NAMESPACE
 
 LevelItemGroupWidget::LevelItemGroupWidget(QWidget *parent)
     : GroupWidget (parent)

@@ -27,8 +27,8 @@
 #include <QLabel>
 
 namespace GrandSearch {
+
 class SwitchWidget;
-}
 
 class BestMatchWidget : public Dtk::Widget::DWidget
 {
@@ -48,9 +48,11 @@ private:
     QLabel *m_groupLabel = nullptr;
 
     QHash<QString, QString> m_groupName;        // <searchGroupName, displayGroupName>
-    QList<GrandSearch::SwitchWidget*> m_switchWidgets;
+    QList<SwitchWidget*> m_switchWidgets;
 
     QStringList m_displayIcons;                 // 显示图标
 };
+
+}
 
 #endif // BESTMATCHWIDGET_H
