@@ -24,9 +24,6 @@
 
 #include <DDialog>
 
-#define CancelButton tr("Cancel")
-#define ConfirmButton tr("Confirm")
-
 class DeleteDialog : public Dtk::Widget::DDialog
 {
     Q_OBJECT

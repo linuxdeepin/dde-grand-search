@@ -43,13 +43,17 @@ CustomWidget::CustomWidget(QWidget *parent)
     DFontSizeManager::instance()->bind(m_groupLabel, DFontSizeManager::T5, QFont::Bold);
     m_groupLabel->setMargin(0);
 
-    m_mainLayout = new QVBoxLayout(this);
+    m_mainLayout = new QVBoxLayout();
+    setLayout(m_mainLayout);
+
     m_mainLayout->setSpacing(10);
     m_mainLayout->setContentsMargins(0, 0, 0, 0);
 
     m_mainLayout->addWidget(m_groupLabel);
 
-    m_innerLayout = new QVBoxLayout(this);
+    m_innerLayout = new QVBoxLayout();
+    m_mainLayout->addLayout(m_innerLayout);
+
     m_innerLayout->setSpacing(20);
     m_innerLayout->setContentsMargins(0, 0, 0, 0);
 
@@ -61,9 +65,6 @@ CustomWidget::CustomWidget(QWidget *parent)
     m_innerLayout->addWidget(m_bestMatchWidget);
     m_innerLayout->addWidget(m_searchEngineWidget);
     m_innerLayout->addWidget(m_searchPlanWidget);
-
-    m_mainLayout->addLayout(m_innerLayout);
-
 }
 
 CustomWidget::~CustomWidget()
