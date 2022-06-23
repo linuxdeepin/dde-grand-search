@@ -41,6 +41,19 @@
     </message>
 </context>
 <context>
+    <name>BlackListWidget</name>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="40"/>
+        <source>Excluded path</source>
+        <translation>路徑黑名單</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="51"/>
+        <source>Add paths to the exclusion list to prevent searching in them.</source>
+        <translation>可將不希望被搜尋到的路徑添加至黑名單中。</translation>
+    </message>
+</context>
+<context>
     <name>CustomWidget</name>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/customwidget.cpp" line="42"/>
@@ -60,6 +73,26 @@
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="163"/>
         <source>Search settings</source>
         <translation>搜尋設定</translation>
+    </message>
+</context>
+<context>
+    <name>DeleteDialog</name>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="29"/>
+        <source>Do you want to remove the path from the exclusion list?</source>
+        <translation>是否從路徑黑名單中移出選中路徑？</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="35"/>
+        <source>Cancel</source>
+        <comment>button</comment>
+        <translation>取 消</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="43"/>
+        <source>Confirm</source>
+        <comment>button</comment>
+        <translation>確 定</translation>
     </message>
 </context>
 <context>
@@ -158,6 +191,14 @@
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="124"/>
         <source>Time modified:</source>
         <translation>修改時間：</translation>
+    </message>
+</context>
+<context>
+    <name>IndexWidget</name>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/indexwidget.cpp" line="36"/>
+        <source>Index</source>
+        <translation>索引</translation>
     </message>
 </context>
 <context>

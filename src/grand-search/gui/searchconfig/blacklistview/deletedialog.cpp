@@ -32,7 +32,7 @@ DeleteDialog::DeleteDialog(QWidget *parent)
 
     // the cancel button
     {
-        int idx = addButton(tr("Cancel"));
+        int idx = addButton(tr("Cancel", "button"));
         auto btn = getButton(idx);
         Q_ASSERT(btn);
         connect(btn, &QAbstractButton::clicked, this, &QDialog::reject);
@@ -40,7 +40,7 @@ DeleteDialog::DeleteDialog(QWidget *parent)
 
     // the confirm button
     {
-        auto idx = addButton(tr("Confirm"));
+        auto idx = addButton(tr("Confirm", "button"));
         auto btn = getButton(idx);
         Q_ASSERT(btn);
         connect(btn, &QAbstractButton::clicked, this, &QDialog::accept);
