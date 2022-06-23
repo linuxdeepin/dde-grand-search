@@ -1,35 +1,35 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="hu">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="fr">
 <context>
     <name>AudioPreviewPlugin</name>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="71"/>
         <source>Artist:</source>
-        <translation>Előadó:</translation>
+        <translation>Artiste :</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="83"/>
         <source>Album:</source>
-        <translation>Album:</translation>
+        <translation>Album :</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="108"/>
         <source>Duration:</source>
-        <translation>Időtartam:</translation>
+        <translation>Durée :</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="123"/>
         <source>Type:</source>
-        <translation>Típus:</translation>
+        <translation>Type :</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="135"/>
         <source>Location:</source>
-        <translation>Hely:</translation>
+        <translation>Emplacement :</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="149"/>
         <source>Time modified:</source>
-        <translation>Módosítási idő:</translation>
+        <translation>Heure modifiée :</translation>
     </message>
 </context>
 <context>
@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/bestmatchwidget.cpp" line="38"/>
         <source>Best match</source>
-        <translation>Legjobb találat</translation>
+        <translation>Meilleure correspondance</translation>
     </message>
 </context>
 <context>
@@ -58,7 +58,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/customwidget.cpp" line="42"/>
         <source>Custom search</source>
-        <translation>Egyéni keresés</translation>
+        <translation>Recherche personnalisée</translation>
     </message>
 </context>
 <context>
@@ -67,12 +67,12 @@
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="57"/>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="100"/>
         <source>Grand Search</source>
-        <translation>Nagy keresés</translation>
+        <translation>Grande recherche</translation>
     </message>
     <message>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="163"/>
         <source>Search settings</source>
-        <translation>Keresési beállítások</translation>
+        <translation>Paramètres de recherche</translation>
     </message>
 </context>
 <context>
@@ -100,12 +100,12 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="241"/>
         <source>Search</source>
-        <translation>Keresés</translation>
+        <translation>Rechercher</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="242"/>
         <source>What would you like to search for?</source>
-        <translation>Mit szeretne keresni?</translation>
+        <translation>Qu&apos;aimeriez-vous rechercher ?</translation>
     </message>
 </context>
 <context>
@@ -113,17 +113,17 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="94"/>
         <source>Cut</source>
-        <translation>Kivágás</translation>
+        <translation>Couper</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="98"/>
         <source>Copy</source>
-        <translation>Másolás</translation>
+        <translation>Copier</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="102"/>
         <source>Paste</source>
-        <translation>Beillesztés</translation>
+        <translation>Coller</translation>
     </message>
 </context>
 <context>
@@ -131,12 +131,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="208"/>
         <source>Location:</source>
-        <translation>Hely:</translation>
+        <translation>Emplacement :</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="219"/>
         <source>Time modified:</source>
-        <translation>Módosítási idő:</translation>
+        <translation>Heure modifiée :</translation>
     </message>
 </context>
 <context>
@@ -144,17 +144,17 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="85"/>
         <source>Open</source>
-        <translation>Megnyitás</translation>
+        <translation>Ouvrir</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="90"/>
         <source>Open Path</source>
-        <translation>Megnyitási útvonal</translation>
+        <translation>Ouvrir le chemin</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="95"/>
         <source>Copy Path</source>
-        <translation>Másolási útvonal</translation>
+        <translation>Copier le chemin</translation>
     </message>
 </context>
 <context>
@@ -162,7 +162,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="260"/>
         <source>More</source>
-        <translation>Továbbiak</translation>
+        <translation>Autres</translation>
     </message>
 </context>
 <context>
@@ -170,27 +170,27 @@
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="67"/>
         <source>Dimensions:</source>
-        <translation>Méretek:</translation>
+        <translation>Dimensions :</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="83"/>
         <source>Type:</source>
-        <translation>Típus:</translation>
+        <translation>Type :</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="98"/>
         <source>Size:</source>
-        <translation>Méret:</translation>
+        <translation>Taille :</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="110"/>
         <source>Location:</source>
-        <translation>Hely:</translation>
+        <translation>Emplacement :</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="124"/>
         <source>Time modified:</source>
-        <translation>Módosítási idő:</translation>
+        <translation>Heure modifiée :</translation>
     </message>
 </context>
 <context>
@@ -206,7 +206,7 @@
     <message>
         <location filename="../src/grand-search/gui/mainwindow.cpp" line="224"/>
         <source>No search results</source>
-        <translation>Nincs keresési eredmény</translation>
+        <translation>Aucun résultat trouvé</translation>
     </message>
 </context>
 <context>
@@ -214,22 +214,22 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="43"/>
         <source>Search experience program</source>
-        <translation>Keresési élmény program</translation>
+        <translation>Programme d&apos;expérience de recherche</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="51"/>
         <source>Join search experience program</source>
-        <translation>Csatlakozzon a keresési élmény programhoz</translation>
+        <translation>Rejoindre le programme d&apos;expérience de recherche</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="64"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations. If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation>A keresési élményprogramhoz való csatlakozás azt jelenti, hogy Ön engedélyezi számunkra, és felhatalmazza minket, hogy összegyűjtsük az eszközéről és rendszeréről, a fájl ikonjairól, a tartalomról és a tulajdonságokról, az alkalmazásokról és azok konfigurációiról szóló információkat. Ha megtagadja a fent említett információk gyűjtését és felhasználását, ne csatlakozzon a programhoz. </translation>
+        <translation>Rejoindre le programme d&apos;expérience de recherche signifie que vous nous accordez et nous autorisez à collecter les informations de votre appareil et de votre système, les icônes de fichiers, le contenu et les propriétés, les applications et leurs configurations. Si vous refusez notre collecte et notre utilisation des informations susmentionnées, ne rejoignez pas le programme.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="73"/>
         <source>To know more about the management of your data, please refer to the UnionTech Software Privacy Policy (</source>
-        <translation>Ha többet szeretne megtudni adatai kezeléséről, olvassa el a UnionTech szoftver adatvédelmi irányelveit</translation>
+        <translation>Pour en savoir plus sur la gestion de vos données, veuillez consulter la politique de confidentialité d&apos;UnionTech Software (</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="75"/>
@@ -252,87 +252,87 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="41"/>
         <source>Best match</source>
-        <translation>Legjobb találat</translation>
+        <translation>Meilleure correspondance</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="42"/>
         <source>Applications</source>
-        <translation>Alkalmazások</translation>
+        <translation>Applications</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="43"/>
         <source>Settings</source>
-        <translation>Beállítások</translation>
+        <translation>Paramètres</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="44"/>
         <source>Videos</source>
-        <translation>Videók</translation>
+        <translation>Vidéos</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="45"/>
         <source>Music</source>
-        <translation>Zene</translation>
+        <translation>Musique</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="46"/>
         <source>Pictures</source>
-        <translation>Képek</translation>
+        <translation>Images</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="47"/>
         <source>Documents</source>
-        <translation>Dokumentumok</translation>
+        <translation>Documents</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="48"/>
         <source>Folders</source>
-        <translation>Mappák</translation>
+        <translation>Dossiers</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="49"/>
         <source>Files</source>
-        <translation>Fáljok</translation>
+        <translation>Fichiers</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="50"/>
         <source>Web</source>
-        <translation>Internet</translation>
+        <translation>la toile</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="38"/>
         <source>Dimensions:</source>
-        <translation>Méretek:</translation>
+        <translation>Dimensions :</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="39"/>
         <source>Type:</source>
-        <translation>Típus:</translation>
+        <translation>Type :</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="40"/>
         <source>Size:</source>
-        <translation>Méret:</translation>
+        <translation>Taille :</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="41"/>
         <source>Duration:</source>
-        <translation>Időtartam:</translation>
+        <translation>Durée :</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="42"/>
         <source>Location:</source>
-        <translation>Hely:</translation>
+        <translation>Emplacement :</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="43"/>
         <source>Time modified:</source>
-        <translation>Módosítási idő:</translation>
+        <translation>Heure modifiée :</translation>
     </message>
     <message>
         <location filename="../src/grand-search-daemon/searcher/file/filesearchutils.cpp" line="215"/>
         <source>modified</source>
-        <translation>Módosított</translation>
+        <translation>modifié</translation>
     </message>
 </context>
 <context>
@@ -340,7 +340,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/scopewidget.cpp" line="44"/>
         <source>Search contents</source>
-        <translation>Tartalom keresése</translation>
+        <translation>Contenu de la recherche</translation>
     </message>
 </context>
 <context>
@@ -348,17 +348,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="48"/>
         <source>Default search engine</source>
-        <translation>Alapértelmezett keresési motor</translation>
+        <translation>Moteur de recherche par défaut</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="56"/>
         <source>Search for keywords by the default search engine.</source>
-        <translation>Keressen kulcsszavakra az alapértelmezett keresőmotor segítségével.</translation>
+        <translation>Recherchez des mots-clés avec le moteur de recherche par défaut.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="72"/>
         <source>Default search engine is</source>
-        <translation>Az alapértelmezett keresési motor a</translation>
+        <translation>Le moteur de recherche par défaut est</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="81"/>
@@ -396,7 +396,7 @@
     <message>
         <location filename="../src/grand-search-daemon/searcher/web/statictextworker.cpp" line="67"/>
         <source>Search for &quot;%1&quot;</source>
-        <translation>&quot;%1&quot; keresése</translation>
+        <translation>Rechercher &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
@@ -404,22 +404,22 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="33"/>
         <source>Tailer settings</source>
-        <translation>Tailer beállítások</translation>
+        <translation>Paramètres de tailleur</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="43"/>
         <source>It is displayed at the end of search results for better identification and distinction of items with duplicate names.</source>
-        <translation>Megjelenik a keresési eredmények végén a többszörös névvel rendelkező elemek jobb azonosítása és megkülönböztetése érdekében. </translation>
+        <translation>Il est affiché à la fin des résultats de recherche pour une meilleure identification et distinction des éléments avec des noms en double.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="56"/>
         <source>Parent directory</source>
-        <translation>Szülő mappa</translation>
+        <translation>Dossier Parent</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="58"/>
         <source>Time modified</source>
-        <translation>Módosítási idő</translation>
+        <translation>Heure modifiée</translation>
     </message>
 </context>
 </TS>
