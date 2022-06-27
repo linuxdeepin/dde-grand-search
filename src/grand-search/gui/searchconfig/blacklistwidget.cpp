@@ -93,6 +93,7 @@ void BlackListWidget::addButtonClicked()
     auto url = fileDialog.getExistingDirectoryUrl(this, QString("")
                                                   , QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first());
     QFileInfo info(url.toLocalFile());
+    m_listWrapper->clearSelection();
     if (!url.isEmpty() && !info.isSymLink() && info.exists()) {
         m_listWrapper->addRow(info.absoluteFilePath());
     } else {
