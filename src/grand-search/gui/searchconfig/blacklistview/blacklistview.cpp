@@ -139,6 +139,7 @@ void BlackListView:: moveRowToLast(const QModelIndex &index)
 
 void BlackListView::dropEvent(QDropEvent *e)
 {
+    this->clearSelection();
     auto urls = e->mimeData()->urls();
     for (auto &url : urls) {
         QFileInfo info(url.toLocalFile());
@@ -242,6 +243,11 @@ QItemSelectionModel *BlackListWrapper::selectionModel() const
 void BlackListWrapper::removeRows(int row, int count)
 {
     m_listView->removeRows(row, count);
+}
+
+void BlackListWrapper::clearSelection()
+{
+    m_listView->clearSelection();
 }
 
 void BlackListWrapper::addRow(const QString &path) const
