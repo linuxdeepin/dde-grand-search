@@ -40,7 +40,7 @@ DeleteDialog::DeleteDialog(QWidget *parent)
 
     // the confirm button
     {
-        auto idx = addButton(tr("Confirm", "button"));
+        auto idx = addButton(tr("Confirm", "button"), false, ButtonWarning);
         auto btn = getButton(idx);
         Q_ASSERT(btn);
         connect(btn, &QAbstractButton::clicked, this, &QDialog::accept);

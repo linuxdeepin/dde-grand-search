@@ -74,6 +74,7 @@ public:
     void addRow(const QString &path) const;
     QItemSelectionModel *selectionModel() const;
     void removeRows(int row, int count);
+    void clearSelection();
 
 protected:
     void paintEvent(QPaintEvent *event) override;

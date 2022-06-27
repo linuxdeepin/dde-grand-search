@@ -191,11 +191,13 @@ bool FileSearchUtils::fileShouldVisible(const QString &fileName, Group &group, c
 bool FileSearchUtils::filterByBlacklist(const QString &fileName)
 {
     // 过滤黑名单中的结果
+    // add "/" to the end of fileName to distinguish partially identical path
+    QString filePath = fileName + "/";
     auto config = Configer::instance()->group(GRANDSEARCH_BLACKLIST_GROUP);
     auto blacklist = config->value(GRANDSEARCH_BLACKLIST_PATH, QStringList());
     if (!blacklist.isEmpty()) {
         for (const auto &path : blacklist) {
-            if (fileName.startsWith(path))
+            if (filePath.startsWith(path))
                 return true;
         }
     }
