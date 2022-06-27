@@ -33,7 +33,7 @@ IndexWidget::IndexWidget(QWidget *parent)
     m_mainLayout = new QVBoxLayout(this);
     m_mainLayout->setContentsMargins(0, 0, 0, 0);
     m_blackListWidget = new BlackListWidget(this);
-    m_groupLabel = new QLabel(tr("index"));
+    m_groupLabel = new QLabel(tr("Index"));
     DFontSizeManager::instance()->bind(m_groupLabel, DFontSizeManager::T5, QFont::Bold);
 
     m_mainLayout->addWidget(m_groupLabel);

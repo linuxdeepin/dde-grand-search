@@ -48,7 +48,7 @@ BlackListWidget::BlackListWidget(QWidget *parent)
     m_childHLayout = new QHBoxLayout();
     m_childHLayout->addWidget(m_groupLabel);
 
-    m_contentLabel = new QLabel(tr("Add paths to the exclusion list to prevent searching in them"), this);
+    m_contentLabel = new QLabel(tr("Add paths to the exclusion list to prevent searching in them."), this);
 
     m_contentLabel->setWordWrap(true);
     DFontSizeManager::instance()->bind(m_contentLabel, DFontSizeManager::T8);

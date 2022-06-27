@@ -37,6 +37,19 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/bestmatchwidget.cpp" line="38"/>
         <source>Best match</source>
+        <translation>Najlepsze dopasowanie</translation>
+    </message>
+</context>
+<context>
+    <name>BlackListWidget</name>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="40"/>
+        <source>Excluded path</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="51"/>
+        <source>Add paths to the exclusion list to prevent searching in them.</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -60,6 +73,26 @@
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="163"/>
         <source>Search settings</source>
         <translation>Ustawienia wyszukiwania</translation>
+    </message>
+</context>
+<context>
+    <name>DeleteDialog</name>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="29"/>
+        <source>Do you want to remove the path from the exclusion list?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="35"/>
+        <source>Cancel</source>
+        <comment>button</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="43"/>
+        <source>Confirm</source>
+        <comment>button</comment>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -161,6 +194,14 @@
     </message>
 </context>
 <context>
+    <name>IndexWidget</name>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/indexwidget.cpp" line="36"/>
+        <source>Index</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
         <location filename="../src/grand-search/gui/mainwindow.cpp" line="224"/>
@@ -246,7 +287,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="48"/>
         <source>Folders</source>
-        <translation>Katalog</translation>
+        <translation>Katalogi</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="49"/>
@@ -307,47 +348,47 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="48"/>
         <source>Default search engine</source>
-        <translation type="unfinished"/>
+        <translation>Domyślna wyszukiwarka</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="56"/>
         <source>Search for keywords by the default search engine.</source>
-        <translation type="unfinished"/>
+        <translation>Szukaj słów kluczowych przy użyciu domyślnej wyszukiwarki.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="72"/>
         <source>Default search engine is</source>
-        <translation type="unfinished"/>
+        <translation>Domyślna wyszukiwarka to</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="81"/>
         <source>Google</source>
-        <translation type="unfinished"/>
+        <translation>Google</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="82"/>
         <source>Baidu</source>
-        <translation type="unfinished"/>
+        <translation>Baidu</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="83"/>
         <source>Bing</source>
-        <translation type="unfinished"/>
+        <translation>Bing</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="84"/>
         <source>Yahoo</source>
-        <translation type="unfinished"/>
+        <translation>Yahoo</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="85"/>
         <source>360</source>
-        <translation type="unfinished"/>
+        <translation>360</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="86"/>
         <source>Sogou</source>
-        <translation type="unfinished"/>
+        <translation>Sogou</translation>
     </message>
 </context>
 <context>
@@ -355,7 +396,7 @@
     <message>
         <location filename="../src/grand-search-daemon/searcher/web/statictextworker.cpp" line="67"/>
         <source>Search for &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Wyszukaj &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
