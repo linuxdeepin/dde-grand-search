@@ -125,3 +125,17 @@ TEST(ConfigerPrivate, ut_updateConfig1)
     conf.initDefault();
     EXPECT_TRUE(conf.d->updateConfig1(&set));
 }
+
+TEST(ConfigerPrivate, resetPath)
+{
+    Configer conf;
+    QString path("/");
+    conf.d->resetPath(path);
+    EXPECT_EQ(QString("/"), path);
+    path = QString("/data");
+    conf.d->resetPath(path);
+    EXPECT_EQ(QString("/home/"), path);
+    path = QString("/data/home/aaa");
+    conf.d->resetPath(path);
+    EXPECT_EQ(QString("/home/aaa/"), path);
+}
