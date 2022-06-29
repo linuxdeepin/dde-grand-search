@@ -254,11 +254,12 @@ void BlackListWrapper::paintEvent(QPaintEvent *event)
     QWidget::paintEvent(event);
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
+
     QColor color;
     if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType)
         color.setRgb(0, 0, 0, static_cast<int>(255 * 0.1));
     else
         color.setRgb(255, 255, 255, static_cast<int>(255 * 0.1));
     p.setPen(color);
-    p.drawRoundedRect(rect().adjusted(0, 0, -1, -1), 8, 8);
+    p.drawRoundedRect(rect().adjusted(1, 1, -1, -1), 8, 8);
 }
