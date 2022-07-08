@@ -34,4 +34,6 @@ TEST(IndexWidgetText, constructor)
     EXPECT_TRUE(indexWidget->m_mainLayout);
     EXPECT_TRUE(indexWidget->m_groupLabel);
     EXPECT_TRUE(indexWidget->m_blackListWidget);
+
+    delete indexWidget;
 }
