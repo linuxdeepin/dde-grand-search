@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Uniontech Software Technology Co., Ltd.
+ * Copyright (C) 2022 Uniontech Software Technology Co., Ltd.
  *
  * Author:     zhangyu<zhangyub@uniontech.com>
  *
@@ -18,25 +18,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef VIDEOPREVIEWINTERFACE_H
-#define VIDEOPREVIEWINTERFACE_H
+#ifndef LIBAUDIOVIEWER_H
+#define LIBAUDIOVIEWER_H
 
-#include "libvideoviewer.h"
+#include <QObject>
 
-#include <previewplugininterface.h>
+class QLibrary;
+namespace GrandSearch {
 
-#include <QSharedPointer>
+typedef void (*GetMovieInfoFunc)(const QUrl &url, QJsonObject *json);
 
-class VideoPreviewInterface : public QObject, public GrandSearch::PreviewPluginInterface
+class LibAudioViewer : public QObject
 {
     Q_OBJECT
-    Q_INTERFACES(GrandSearch::PreviewPluginInterface)
-    Q_PLUGIN_METADATA(IID FilePreviewInterface_iid)
 public:
-    explicit VideoPreviewInterface(QObject *parent = nullptr);
-    virtual GrandSearch::PreviewPlugin *create(const QString &mimetype);
-protected:
-    QSharedPointer<GrandSearch::LibVideoViewer> lib;
-};
+    explicit LibAudioViewer(QObject *parent = nullptr);
+    bool initLibrary();
+    bool getDuration(const QUrl &url, qint64 &duration);
+signals:
 
-#endif // VIDEOPREVIEWINTERFACE_H
+private:
+    QLibrary *m_imageLib = nullptr;
+    GetMovieInfoFunc m_getMovieInfoFunc = nullptr;
+    bool loaded = false;
+};
+}
+
+#endif // LIBAUDIOVIEWER_H

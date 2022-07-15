@@ -3,14 +3,16 @@ project(video-preview)
 # 定义插件名称
 set(LIB_NAME video-preview-plugin)
 
-pkg_check_modules(Avformat REQUIRED libavformat)
-pkg_check_modules(Ffm REQUIRED libffmpegthumbnailer)
+# run time depends
+#pkg_check_modules(ImageEditor REQUIRED libimageeditor)
 
 set(SRCS
     videopreviewinterface.h
     videopreviewinterface.cpp
     videopreviewplugin.h
     videopreviewplugin.cpp
+    libvideoviewer.h
+    libvideoviewer.cpp
     videoview.h
     videoview.cpp
 )

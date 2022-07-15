@@ -21,18 +21,12 @@
 #include "videopreviewplugin.h"
 #include "videoview.h"
 #include "global/commontools.h"
+#include "libvideoviewer.h"
 
 #include <QFileInfo>
 #include <QDateTime>
 #include <QtConcurrent>
 #include <QPainterPath>
-
-#ifdef __cplusplus
-extern "C" {
-#include <libavformat/avformat.h>
-#include <libffmpegthumbnailer/videothumbnailerc.h>
-}
-#endif
 
 namespace  {
 static const QString kLabelDimension = QObject::tr("Dimensions:");
@@ -83,9 +77,9 @@ bool VideoPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
     m_decode.reset(new DecodeBridge);
     m_decode->decoding = true;
     connect(m_decode.get(), &DecodeBridge::sigUpdateInfo, this, &VideoPreviewPlugin::updateInfo);
-    QtConcurrent::run(&DecodeBridge::decode, m_decode, path);
+    QtConcurrent::run(&DecodeBridge::decode, m_decode, path, m_parser);
 #else
-    QFuture<QVariantHash> future = QtConcurrent::run(&DecodeBridge::decode, nullptr, path);
+    QFuture<QVariantHash> future = QtConcurrent::run(&DecodeBridge::decode, nullptr, path, m_parser);
 #endif
 
     //初始化静态属性
@@ -209,6 +203,11 @@ GrandSearch::DetailInfoList VideoPreviewPlugin::getAttributeDetailInfo() const
     return m_infos;
 }
 
+void VideoPreviewPlugin::setParser(QSharedPointer<LibVideoViewer> parser)
+{
+    m_parser = parser;
+}
+
 void VideoPreviewPlugin::updateInfo(const QVariantHash &hash, bool needUpdate)
 {
     bool updateDetail = false;
@@ -258,76 +257,57 @@ void VideoPreviewPlugin::updateInfo(const QVariantHash &hash, bool needUpdate)
         requestUpdateDetailInfo(m_proxy, this);
 }
 
-QVariantHash DecodeBridge::decode(QSharedPointer<DecodeBridge> self, const QString &file)
+QVariantHash DecodeBridge::decode(QSharedPointer<DecodeBridge> self, const QString &file, QSharedPointer<GrandSearch::LibVideoViewer> parser)
 {
     if (!self.isNull() && !self->decoding)
         return {};
 
+    Q_ASSERT(parser.get());
+
     QVariantHash info;
 
     //获取分辨率和时长
-    AVFormatContext *avCtx = nullptr;
-    qint64 duration = 0;
-    auto stdStr = file.toStdString();
-    if (avformat_open_input(&avCtx, stdStr.c_str(), nullptr , nullptr) == 0) {
-        if (avformat_find_stream_info(avCtx, nullptr) >= 0) {
-            int videoRet = av_find_best_stream(avCtx, AVMEDIA_TYPE_VIDEO, -1, -1, nullptr, 0);
-            if (videoRet >= 0) {
-                AVStream *videoStream = avCtx->streams[videoRet];
-                AVCodecParameters *codecpar = videoStream->codecpar;
-                duration = avCtx->duration / (qint64)AV_TIME_BASE;
-                info.insert(kLabelDuration, QVariant::fromValue(duration));
-                info.insert(kLabelDimension, QSize(codecpar->width, codecpar->height));
-            } else {
-                qWarning() << "VideoPreviewPlugin: find stream error" << videoRet;
-            }
-        }
-
-        avformat_close_input(&avCtx);
+    qint64 duration = 1;
+    QSize dimension;
+    if (!parser->getMovieInfo(QUrl::fromLocalFile(file), dimension, duration)) {
+        qWarning() << "get video info failed" << dimension << duration;
     } else {
-        qWarning() << "VideoPreviewPlugin: could not open video....";
+        qDebug() << "video duration" << duration << "dimension" << dimension;
+        if (duration > 0)
+            info.insert(kLabelDuration, QVariant::fromValue(duration));
+
+        if (dimension.isValid())
+            info.insert(kLabelDimension, dimension);
     }
 
     //检查一次是否停止
     if (!self.isNull() && !self->decoding)
         return {};
 
-    //时长大于0才获取预览图
-    if (duration > 0) {
-        //获取预览图
-        video_thumbnailer *thumbnailer = video_thumbnailer_create();
-        //缩略图最大size
-         auto maxSize = VideoView::maxThumbnailSize();
-         thumbnailer->thumbnail_size = qMax(maxSize.width(), maxSize.height());
-
-        //第一秒
-        thumbnailer->seek_time = const_cast<char *>("00:00:01");
-
-        image_data *imageData = video_thumbnailer_create_image_data();
-        if (video_thumbnailer_generate_thumbnail_to_buffer(thumbnailer, stdStr.c_str(), imageData) == 0) {
-            QImage img = QImage::fromData(imageData->image_data_ptr,
-                                          static_cast<int>(imageData->image_data_size), "png");
-            //缩放与圆角处理
-            QPixmap pixmap = DecodeBridge::scaleAndRound(img, maxSize);
-            info.insert(kKeyThumbnailer, QVariant::fromValue(pixmap));
-        } else {
-            // 预览失败
-            qWarning() << "thumbnailer create image error";
-            QImage errorImg(":/icons/image_damaged.svg");
-            errorImg = errorImg.scaled(46, 46);
-            auto img = GrandSearch::CommonTools::creatErrorImage({192, 108}, errorImg);
-            QPixmap pixmap = DecodeBridge::scaleAndRound(img, maxSize);
-            info.insert(kKeyThumbnailer, QVariant::fromValue(pixmap));
-        }
-        video_thumbnailer_destroy_image_data(imageData);
-        video_thumbnailer_destroy(thumbnailer);
-    } else {
-        // 预览失败
+    // 预览失败
+    auto failPreview = [](QVariantHash &info) {
         QImage errorImg(":/icons/image_damaged.svg");
         errorImg = errorImg.scaled(46, 46);
         auto img = GrandSearch::CommonTools::creatErrorImage({192, 108}, errorImg);
         QPixmap pixmap = DecodeBridge::scaleAndRound(img, VideoView::maxThumbnailSize());
         info.insert(kKeyThumbnailer, QVariant::fromValue(pixmap));
+    };
+
+    //时长大于0才获取预览图
+    if (duration > 0) {
+        //获取预览图
+        QImage image;
+        parser->getMovieCover(QUrl::fromLocalFile(file), image);
+        if (!image.isNull()) {
+            QPixmap pixmap = DecodeBridge::scaleAndRound(image, VideoView::maxThumbnailSize());
+            info.insert(kKeyThumbnailer, QVariant::fromValue(pixmap));
+        } else {
+            // 预览失败
+            qWarning() << "LibViewer create image error";
+            failPreview(info);
+        }
+    } else {
+        failPreview(info);
     }
 
     //检查一次是否中断
