@@ -22,6 +22,9 @@
 #define AUDIOPREVIEWINTERFACE_H
 
 #include "previewplugininterface.h"
+#include "libaudioviewer.h"
+
+#include <QSharedPointer>
 
 class AudioPreviewInterface : public QObject, public GrandSearch::PreviewPluginInterface
 {
@@ -31,6 +34,8 @@ class AudioPreviewInterface : public QObject, public GrandSearch::PreviewPluginI
 public:
     explicit AudioPreviewInterface(QObject *parent = nullptr);
     virtual GrandSearch::PreviewPlugin *create(const QString &mimetype);
+protected:
+    QSharedPointer<GrandSearch::LibAudioViewer> lib;
 };
 
 #endif // AUDIOPREVIEWINTERFACE_H

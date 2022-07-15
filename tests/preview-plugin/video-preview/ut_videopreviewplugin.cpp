@@ -22,12 +22,15 @@
 #include "video-preview/videopreviewplugin.h"
 #include "video-preview/videoview.h"
 #include "global/commontools.h"
+#include "video-preview/libvideoviewer.h"
 
 #include <QTest>
 
 #include <stubext.h>
 
 #include <gtest/gtest.h>
+
+using namespace GrandSearch;
 
 TEST(VideoPreviewPlugin, ut_init)
 {
@@ -59,7 +62,7 @@ TEST(VideoPreviewPlugin, ut_previewItem)
     GrandSearch::ItemInfo item;
     stub_ext::StubExt stub;
     bool decode = false;
-    stub.set_lamda(&DecodeBridge::decode,[&decode](QSharedPointer<DecodeBridge> self, const QString &file){
+    stub.set_lamda(&DecodeBridge::decode,[&decode](QSharedPointer<DecodeBridge> self, const QString &file, QSharedPointer<GrandSearch::LibVideoViewer> viewer){
         decode = true;
         emit self->sigUpdateInfo(QVariantHash(), true);
         return QVariantHash();
@@ -120,7 +123,8 @@ TEST(VideoPreviewPlugin, ut_stopPreview)
     stub_ext::StubExt stub;
     bool decode = false;
     bool run = false;
-    stub.set_lamda(&DecodeBridge::decode,[&decode, &run](QSharedPointer<DecodeBridge> self, const QString &file){
+    stub.set_lamda(&DecodeBridge::decode,[&decode, &run](QSharedPointer<DecodeBridge> self,
+                   const QString &file, QSharedPointer<LibVideoViewer> viewer){
         run = true;
         EXPECT_TRUE(self->decoding);
         QTest::qWaitFor([self](){
@@ -183,11 +187,12 @@ TEST(VideoPreviewPlugin, ut_updateInfo)
     vp.init(nullptr);
 
     stub_ext::StubExt stub;
-    stub.set_lamda(&DecodeBridge::decode,[](QSharedPointer<DecodeBridge> self, const QString &file){
+    stub.set_lamda(&DecodeBridge::decode,[](QSharedPointer<DecodeBridge> self, const QString &file
+                   , QSharedPointer<GrandSearch::LibVideoViewer> viewer){
         return QVariantHash();
     });
 
-    bool updated;
+    bool updated = false;
     stub.set_lamda(&GrandSearch::requestUpdateDetailInfo,[&updated](){
         updated = true;
         return true;
@@ -245,8 +250,36 @@ TEST(DecodeBridge, ut_decode)
     QObject::connect(decode.get(),&DecodeBridge::sigUpdateInfo,[&ok](){
         ok = true;
     });
-    DecodeBridge::decode(decode, QString("/home/user/test.mp4"));
+
+    QSharedPointer<LibVideoViewer> viewer(new GrandSearch::LibVideoViewer());
+    stub_ext::StubExt stub;
+    bool callInfo = false;
+    int defDuration = 0;
+    stub.set_lamda(&LibVideoViewer::getMovieInfo,[&callInfo, &defDuration](LibVideoViewer *self, const QUrl &url, QSize &dimension, qint64 &duration){
+        callInfo = true;
+        duration = defDuration;
+        return true;
+    });
+
+    bool callCover = false;
+    stub.set_lamda(&LibVideoViewer::getMovieCover,[&callCover](){
+        callCover = true;
+        return true;
+    });
+
+    DecodeBridge::decode(decode, QString("/home/user/test.mp4"), viewer);
     EXPECT_TRUE(ok);
+    EXPECT_TRUE(callInfo);
+    EXPECT_FALSE(callCover);
+
+    callInfo = false;
+    callCover = false;
+    defDuration = 10;
+    decode->decoding = true;
+    DecodeBridge::decode(decode, QString("/home/user/test.mp4"), viewer);
+    EXPECT_TRUE(ok);
+    EXPECT_TRUE(callInfo);
+    EXPECT_TRUE(callCover);
 }
 
 TEST(DecodeBridge, ut_scaleAndRound)

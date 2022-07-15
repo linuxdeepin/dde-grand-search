@@ -26,10 +26,13 @@ VideoPreviewInterface::VideoPreviewInterface(QObject *parent)
   : QObject(parent)
   , GrandSearch::PreviewPluginInterface()
 {
-
+    lib.reset(new GrandSearch::LibVideoViewer);
+    lib->initLibrary();
 }
 
 GrandSearch::PreviewPlugin *VideoPreviewInterface::create(const QString &mimetype)
 {
-    return new VideoPreviewPlugin();
+    auto plugin = new VideoPreviewPlugin();
+    plugin->setParser(lib);
+    return plugin;
 }

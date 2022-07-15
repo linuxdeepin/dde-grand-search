@@ -21,6 +21,8 @@
 #ifndef VIDEOPREVIEWPLUGIN_H
 #define VIDEOPREVIEWPLUGIN_H
 
+#include "libvideoviewer.h"
+
 #include <previewplugin.h>
 
 #include <QFuture>
@@ -31,7 +33,7 @@ class DecodeBridge : public QObject
 public:
     DecodeBridge();
     ~DecodeBridge();
-    static QVariantHash decode(QSharedPointer<DecodeBridge> self, const QString &file);
+    static QVariantHash decode(QSharedPointer<DecodeBridge> self, const QString &file, QSharedPointer<GrandSearch::LibVideoViewer> parser);
     static QPixmap scaleAndRound(const QImage &img, const QSize &size);
 signals:
     void sigUpdateInfo(const QVariantHash &, bool needUpdate);
@@ -54,6 +56,7 @@ public:
     QWidget *toolBarWidget() const Q_DECL_OVERRIDE;
     bool showToolBar() const Q_DECL_OVERRIDE;
     GrandSearch::DetailInfoList getAttributeDetailInfo() const Q_DECL_OVERRIDE;
+    void setParser(QSharedPointer<GrandSearch::LibVideoViewer> parser);
 protected slots:
     void updateInfo(const QVariantHash &, bool needUpdate);
 protected:
@@ -62,6 +65,7 @@ protected:
     VideoView *m_view = nullptr;
     QObject *m_proxy = nullptr;
     QSharedPointer<DecodeBridge> m_decode;
+    QSharedPointer<GrandSearch::LibVideoViewer> m_parser;
 };
 
 #endif // VIDEOPREVIEWPLUGIN_H

@@ -26,12 +26,7 @@
 #include <QFileInfo>
 #include <QRect>
 #include <QDateTime>
-
-extern "C"
-{
-#include <libavcodec/avcodec.h>
-#include <libavformat/avformat.h>
-}
+#include <QUrl>
 
 using namespace GrandSearch;
 
@@ -91,17 +86,13 @@ bool AudioPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
     m_detailInfos.push_back(detailInfo);
 
     // 时长
-    if (amd.duration.isEmpty()) {
-        AVFormatContext *avFmormat = avformat_alloc_context();
-        avformat_open_input(&avFmormat, path.toStdString().c_str(), nullptr, nullptr);
-        if (avFmormat) {
-            avformat_find_stream_info(avFmormat, nullptr);
-            qint64 dura = avFmormat->duration / (qint64)AV_TIME_BASE;
+    if (amd.duration.isEmpty() && m_parser.get()) {
+        if (m_parser->initLibrary()) {
+            qint64 dura = -1;
+            m_parser->getDuration(QUrl::fromLocalFile(path), dura);
             if (dura >= 0)
                 amd.duration = GrandSearch::CommonTools::durationString(dura);
         }
-        avformat_close_input(&avFmormat);
-        avformat_free_context(avFmormat);
     }
 
     tagInfos.clear();
@@ -188,4 +179,9 @@ QWidget *AudioPreviewPlugin::toolBarWidget() const
 bool AudioPreviewPlugin::showToolBar() const
 {
     return true;
+}
+
+void AudioPreviewPlugin::setExtendParser(QSharedPointer<LibAudioViewer> parser)
+{
+    m_parser = parser;
 }

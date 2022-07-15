@@ -25,12 +25,13 @@ AudioPreviewInterface::AudioPreviewInterface(QObject *parent)
     : QObject(parent)
     , GrandSearch::PreviewPluginInterface()
 {
-
+    lib.reset(new GrandSearch::LibAudioViewer);
 }
 
 GrandSearch::PreviewPlugin *AudioPreviewInterface::create(const QString &mimetype)
 {
     Q_UNUSED(mimetype)
-
-    return new AudioPreviewPlugin();
+    auto plugin = new AudioPreviewPlugin();
+    plugin->setExtendParser(lib);
+    return plugin;
 }
