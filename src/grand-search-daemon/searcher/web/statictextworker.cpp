@@ -24,6 +24,8 @@
 #include "configuration/configer.h"
 #include "global/searchhelper.h"
 
+#include <QByteArray>
+
 StaticTextWorker::StaticTextWorker(const QString &name, QObject *parent) : ProxyWorker(name, parent)
 {
 
@@ -125,14 +127,27 @@ QString StaticTextWorker::createUrl(const QString &searchEngine) const
     static const QString baidu("https://www.baidu.com/s?&wd=%0");
     static const QString google("https://www.google.com/search?q=%0");
 
+    auto config = Configer::instance()->group(GRANDSEARCH_WEB_GROUP);
+    QString searchEngineAddr = config->value(GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM_ADDR, QString(""));
+    searchEngineAddr = QString::fromStdString(QByteArray::fromBase64(searchEngineAddr.toUtf8()).toStdString());
+    if(searchEngineAddr.isEmpty() || !searchEngineAddr.contains("%0")) {
+        if (SearchHelper::instance()->isSimplifiedChinese()) {
+            searchEngineAddr = baidu;
+        } else {
+            searchEngineAddr = google;
+        }
+    }
+
     static const QHash<QString, QString> searchEngineChinese{{GRANDSEARCH_WEB_SEARCHENGINE_GOOGLE, "https://www.google.com/search?q=%0"},
                                                 {GRANDSEARCH_WEB_SEARCHENGINE_BING, "https://bing.com/search?q=%0"},
                                                 {GRANDSEARCH_WEB_SEARCHENGINE_YAHOO, "https://search.yahoo.com/search?p=%0"},
                                                 {GRANDSEARCH_WEB_SEARCHENGINE_360, "https://www.so.com/s?&q=%0"},
-                                                {GRANDSEARCH_WEB_SEARCHENGINE_SOGOU, "https://www.sogou.com/web?query=%0"}};
+                                                {GRANDSEARCH_WEB_SEARCHENGINE_SOGOU, "https://www.sogou.com/web?query=%0"},
+                                                {GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM, searchEngineAddr}};
     static const QHash<QString, QString> searchEngineEnglish{{GRANDSEARCH_WEB_SEARCHENGINE_BING, "https://bing.com/search?q=%0"},
                                                 {GRANDSEARCH_WEB_SEARCHENGINE_YAHOO, "https://search.yahoo.com/search?p=%0"},
-                                                {GRANDSEARCH_WEB_SEARCHENGINE_BAIDU, "https://www.baidu.com/s?&wd=%0"}};
+                                                {GRANDSEARCH_WEB_SEARCHENGINE_BAIDU, "https://www.baidu.com/s?&wd=%0"},
+                                                {GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM, searchEngineAddr}};
     if (SearchHelper::instance()->isSimplifiedChinese()) {
         return searchEngineChinese.value(searchEngine, baidu);
     } else {
