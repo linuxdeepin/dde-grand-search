@@ -1,6 +1,6 @@
 [Desktop Entry]
 Version=1.0
-Name=Grand Search Deamon
+Name=Grand Search Daemon
 Comment=Start the dde-grand-search-daemon
 Exec=/usr/bin/dde-grand-search-daemon
 OnlyShowIn=''
