@@ -180,6 +180,7 @@ set(UTILSSRC
 set(SRCS
     main.cpp
     ${GLOBAL_SRC}
+    ${BURYINGPOINT_SRC}
     ${GUISRC}
     ${BUSINESSSRC}
     ${CONTACTSSRC}

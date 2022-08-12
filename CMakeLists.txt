@@ -32,6 +32,10 @@ message("LIB_PLATFORM_DIR: ${LIB_PLATFORM_DIR}")
 #全局文件
 FILE(GLOB GLOBAL_SRC "./src/global/*.h" "./src/global/*.cpp" "./src/global/accessibility/*.h")
 
+#埋点文件
+FILE(GLOB BURYINGPOINT_SRC "./src/buryingpoint/*.h" "./src/buryingpoint/*.cpp"
+    "./src/buryingpoint/eventlogutil/*.h" "./src/buryingpoint/eventlogutil/*.cpp")
+
 # 国际化
 if (NOT (${CMAKE_BUILD_TYPE} MATCHES "Debug"))
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast")
