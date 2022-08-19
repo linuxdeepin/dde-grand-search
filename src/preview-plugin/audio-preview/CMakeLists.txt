@@ -4,7 +4,6 @@ project(audio-preview)
 set(LIB_NAME audio-preview-plugin)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(TAGLIB REQUIRED taglib)
-pkg_check_modules(AVFORMAT REQUIRED libavformat)
 pkg_check_modules(ICU REQUIRED icu-i18n)
 
 set(SRCS
@@ -16,6 +15,8 @@ set(SRCS
     audiofileinfo.cpp
     audioview.h
     audioview.cpp
+    libaudioviewer.h
+    libaudioviewer.cpp
 )
 
 add_library(${LIB_NAME} SHARED ${SRCS})

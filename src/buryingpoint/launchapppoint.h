@@ -1,9 +1,9 @@
 /*
- * Copyright (C) 2021 Uniontech Software Technology Co., Ltd.
+ * Copyright (C) 2022 Uniontech Software Technology Co., Ltd.
  *
- * Author:     liuzhangjian<liuzhangjian@uniontech.com>
+ * Author:     zhaohanxi<zhaohanxi@uniontech.com>
  *
- * Maintainer: liuzhangjian<liuzhangjian@uniontech.com>
+ * Maintainer: zhaohanxi<zhaohanxi@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,20 +18,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "audiopreviewinterface.h"
-#include "audiopreviewplugin.h"
+#ifndef LAUNCHAPPPOINT_H
+#define LAUNCHAPPPOINT_H
 
-AudioPreviewInterface::AudioPreviewInterface(QObject *parent)
-    : QObject(parent)
-    , GrandSearch::PreviewPluginInterface()
+#include "basicpoint.h"
+
+#include <QCoreApplication>
+
+namespace GrandSearch {
+
+namespace burying_point {
+
+class LaunchAppPoint : public BasicPoint
 {
-    lib.reset(new GrandSearch::LibAudioViewer);
+public:
+    explicit LaunchAppPoint();
+    ~LaunchAppPoint() override;
+
+    QVariantMap assemblingData() const override;
+
+private:
+    QPair<QString, QString> m_version;
+    QPair<QString, int> m_mode;
+};
+
 }
 
-GrandSearch::PreviewPlugin *AudioPreviewInterface::create(const QString &mimetype)
-{
-    Q_UNUSED(mimetype)
-    auto plugin = new AudioPreviewPlugin();
-    plugin->setExtendParser(lib);
-    return plugin;
 }
+#endif // LAUNCHAPPPOINT_H

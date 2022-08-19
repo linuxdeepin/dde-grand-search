@@ -22,6 +22,9 @@
 #define AUDIOPREVIEWPLUGIN_H
 
 #include "previewplugin.h"
+#include "libaudioviewer.h"
+
+#include <QSharedPointer>
 
 class AudioView;
 class AudioPreviewPlugin : public QObject, public GrandSearch::PreviewPlugin
@@ -38,10 +41,12 @@ public:
     GrandSearch::DetailInfoList getAttributeDetailInfo() const Q_DECL_OVERRIDE;
     QWidget *toolBarWidget() const Q_DECL_OVERRIDE;
     bool showToolBar() const Q_DECL_OVERRIDE;
+    void setExtendParser(QSharedPointer<GrandSearch::LibAudioViewer> parser);
 private:
     GrandSearch::ItemInfo m_item;
     GrandSearch::DetailInfoList m_detailInfos;
     AudioView *m_audioView = nullptr;
+    QSharedPointer<GrandSearch::LibAudioViewer> m_parser;
 };
 
 #endif // AUDIOPREVIEWPLUGIN_H
