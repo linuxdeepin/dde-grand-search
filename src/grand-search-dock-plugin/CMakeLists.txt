@@ -77,6 +77,6 @@ set(CMAKE_INSTALL_PREFIX "/usr")
 install(TARGETS ${PLUGIN_NAME} LIBRARY DESTINATION lib/dde-dock/plugins/)
 
 # gsettings
-install(FILES gschema/com.deepin.dde.dock.module.grand-search.gschema.xml DESTINATION share/glib-2.0/schemas)
+install(FILES gschema/com.deepin.dde.dock.module.grand-search.gschema.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/glib-2.0/schemas)
 
 
