@@ -8,6 +8,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 project(dde-grand-search)
 
 # Install settings
+include(GNUInstallDirs)
 if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set(CMAKE_INSTALL_PREFIX /usr)
 endif ()
