@@ -30,22 +30,14 @@
 
 DCORE_USE_NAMESPACE
 
-#define  APPLICATION_DIR_PATH "/usr/share/applications"
-#define  APPLICATIONLOCAL_DIR_PATH "/usr/local/share/applications"
-
 DesktopAppSearcherPrivate::DesktopAppSearcherPrivate(DesktopAppSearcher *parent)
     : q(parent)
 {
-    m_appDirs << APPLICATION_DIR_PATH << APPLICATIONLOCAL_DIR_PATH;
-
-    // 扩展
-    for (const QString &path : QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation)) {
-        if (m_appDirs.contains(path))
-            continue;
-        m_appDirs.append(path);
-    }
+    m_appDirs = QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation);
 
     qInfo() << "application dirs:" << m_appDirs;
+    qInfo() << "XDG_DATA_DIRS:" << qgetenv("XDG_DATA_DIRS");
+
     m_fileWatcher = new QFileSystemWatcher(q);
     m_fileWatcher->addPaths(m_appDirs);
 }
