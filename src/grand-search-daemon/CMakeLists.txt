@@ -206,15 +206,15 @@ target_link_libraries(${BIN_NAME} PRIVATE
 )
 
 # bin
-install(TARGETS ${BIN_NAME} DESTINATION bin)
+install(TARGETS ${BIN_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 # dbus
-install(FILES data/com.deepin.dde.daemon.GrandSearch.service DESTINATION share/dbus-1/services)
+install(FILES data/com.deepin.dde.daemon.GrandSearch.service DESTINATION ${CMAKE_INSTALL_DATADIR}/dbus-1/services)
 
 # autostart
-install(FILES data/dde-grand-search-daemon.desktop DESTINATION /etc/xdg/autostart)
+install(FILES data/dde-grand-search-daemon.desktop DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/xdg/autostart)
 
-install(FILES data/dde-grand-search-daemon.desktop DESTINATION share/applications)
+install(FILES data/dde-grand-search-daemon.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
 
 # 扩展搜索插件目录
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/.readme DESTINATION ${PLUGIN_SEARCHER_DIR})
