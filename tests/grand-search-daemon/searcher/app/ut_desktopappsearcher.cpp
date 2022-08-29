@@ -51,8 +51,8 @@ TEST(DesktopAppSearcherTest, ut_dir_1)
     putenv("XDG_DATA_DIRS=/etc:/etc/apt");
     DesktopAppSearcher das;
     auto dir = das.d->m_appDirs;
-    EXPECT_TRUE(dir.contains("/usr/share/applications"));
-    EXPECT_TRUE(dir.contains("/usr/local/share/applications"));
+    EXPECT_FALSE(dir.contains("/usr/share/applications"));
+    EXPECT_FALSE(dir.contains("/usr/local/share/applications"));
     EXPECT_TRUE(dir.contains(QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation).first()));
     EXPECT_TRUE(dir.contains("/etc/applications"));
     EXPECT_TRUE(dir.contains("/etc/apt/applications"));
