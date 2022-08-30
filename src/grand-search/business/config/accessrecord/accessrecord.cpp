@@ -16,6 +16,8 @@
 #include <QApplication>
 #include <QtConcurrent>
 
+using namespace GrandSearch;
+
 class AccessRecordGlobal : public AccessRecord {};
 Q_GLOBAL_STATIC(AccessRecordGlobal, accessRecordGlobal)
 
@@ -45,7 +47,7 @@ QHash<QString, QHash<QString, int>> AccessRecord::getRecord()
  * @param matchedItem 用户点击的类目
  * @param time 用户点击的时间
  */
-void AccessRecord::updateRecord(const GrandSearch::MatchedItem &matchedItem, qint64 time)
+void AccessRecord::updateRecord(const MatchedItem &matchedItem, qint64 time)
 {
     const QString &seacher = matchedItem.searcher;
     const QString &item = matchedItem.item;

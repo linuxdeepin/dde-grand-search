@@ -19,6 +19,7 @@
 #define MAINWINDOW_WIDTH    696
 #define MAINWINDOW_HEIGHT   529
 
+using namespace GrandSearch;
 DWIDGET_USE_NAMESPACE
 
 ConfigWidget::ConfigWidget(QWidget *parent)

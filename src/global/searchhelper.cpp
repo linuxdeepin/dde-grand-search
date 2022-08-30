@@ -9,6 +9,8 @@
 #include <QVariantList>
 #include <QLocale>
 
+using namespace GrandSearch;
+
 SearchHelper::SearchHelper()
 {
     initSuffixTable();

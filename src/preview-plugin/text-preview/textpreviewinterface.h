@@ -7,14 +7,19 @@
 
 #include <previewplugininterface.h>
 
-class TextPreviewInterface : public QObject, public GrandSearch::PreviewPluginInterface
+namespace GrandSearch {
+namespace text_preview {
+
+class TextPreviewInterface : public QObject, public PreviewPluginInterface
 {
     Q_OBJECT
     Q_INTERFACES(GrandSearch::PreviewPluginInterface)
     Q_PLUGIN_METADATA(IID FilePreviewInterface_iid)
 public:
     explicit TextPreviewInterface(QObject *parent = 0);
-    virtual GrandSearch::PreviewPlugin *create(const QString &mimetype);
+    virtual PreviewPlugin *create(const QString &mimetype);
 };
+
+}}
 
 #endif // TEXTPREVIEWINTERFACE_H

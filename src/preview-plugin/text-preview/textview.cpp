@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "textpreview_global.h"
 #include "textview.h"
 #include "global/commontools.h"
 
@@ -13,6 +14,9 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QLabel>
+
+GRANDSEARCH_USE_NAMESPACE
+using namespace GrandSearch::text_preview;
 
 void PlainTextEdit::mouseMoveEvent(QMouseEvent *e)
 {
@@ -56,7 +60,7 @@ void TextView::showErrorPage()
     static int height = 386;
     QImage errImg(":/icons/file_damaged.svg");
     errImg = errImg.scaled(70, 70);
-    errImg = GrandSearch::CommonTools::creatErrorImage({width, height}, errImg);
+    errImg = CommonTools::creatErrorImage({width, height}, errImg);
 
     QPixmap roundPixmap(width, height);
     roundPixmap.fill(Qt::transparent);

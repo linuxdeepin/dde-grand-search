@@ -7,6 +7,8 @@
 
 #include <QToolButton>
 
+namespace GrandSearch {
+
 class ViewMoreButton : public QToolButton
 {
     Q_OBJECT
@@ -21,5 +23,7 @@ protected:
 private:
     bool m_bIsSelected = false;
 };
+
+}
 
 #endif // VIEWMOREBUTTON_H

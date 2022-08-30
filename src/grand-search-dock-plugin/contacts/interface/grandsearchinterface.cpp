@@ -11,6 +11,8 @@
 
 #include "grandsearchinterface.h"
 
+using namespace GrandSearch;
+
 /*
  * Implementation of interface class GrandSearchInterface
  */

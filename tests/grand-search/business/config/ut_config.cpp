@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "global/grandsearch_global.h"
 #include "global/searchconfigdefine.h"
 #include "global/builtinsearch.h"
 
@@ -18,6 +19,7 @@
 #define protected public
 #include "business/config/searchconfig.h"
 
+GRANDSEARCH_USE_NAMESPACE
 using namespace testing;
 
 TEST(SearchConfigTest, init)

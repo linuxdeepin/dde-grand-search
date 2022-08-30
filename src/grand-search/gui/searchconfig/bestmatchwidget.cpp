@@ -15,6 +15,7 @@
 
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
+
 BestMatchWidget::BestMatchWidget(QWidget *parent)
     : DWidget(parent)
 {

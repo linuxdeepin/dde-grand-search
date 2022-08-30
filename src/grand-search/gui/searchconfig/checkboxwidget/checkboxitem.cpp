@@ -12,6 +12,7 @@
 
 #define RADIUS 8
 
+using namespace GrandSearch;
 DWIDGET_USE_NAMESPACE
 
 CheckBoxItem::CheckBoxItem(const QString &text, QWidget *parent)

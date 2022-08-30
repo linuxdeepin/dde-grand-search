@@ -59,6 +59,9 @@ set(SEARCH_PLUGIN_BASE_DIR "${SEARCH_LIB_BASE_DIR}/plugins")
 set(PLUGIN_PREVIEW_DIR "${SEARCH_PLUGIN_BASE_DIR}/preview")
 add_definitions(-DPLUGIN_PREVIEW_DIR="${PLUGIN_PREVIEW_DIR}")
 
+# 定义后端库名称
+set(DAEMON_LIB_NAME libdde-grand-search-daemon)
+
 # 定义后端可执行程序名称
 set(DAEMON_BIN_NAME dde-grand-search-daemon)
 
@@ -73,6 +76,7 @@ set(PLUGIN_SEARCHER_DIR "${DAEMON_PLUGIN_DIR}/searcher")
 add_definitions(-DPLUGIN_SEARCHER_DIR="${PLUGIN_SEARCHER_DIR}")
 
 add_subdirectory(src/grand-search)
+add_subdirectory(src/libgrand-search-daemon)
 add_subdirectory(src/grand-search-daemon)
 add_subdirectory(src/grand-search-dock-plugin)
 add_subdirectory(src/preview-plugin)

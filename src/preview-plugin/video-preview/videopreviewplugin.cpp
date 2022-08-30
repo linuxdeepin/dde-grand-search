@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "global/grandsearch_global.h"
 #include "videopreviewplugin.h"
 #include "videoview.h"
 #include "global/commontools.h"
@@ -12,6 +13,8 @@
 #include <QtConcurrent>
 #include <QPainterPath>
 
+GRANDSEARCH_USE_NAMESPACE
+using namespace GrandSearch::video_preview;
 namespace  {
 static const QString kLabelDimension = QObject::tr("Dimensions:");
 static const QString kLabelType = QObject::tr("Type:");
@@ -30,7 +33,7 @@ using namespace GrandSearch;
 
 VideoPreviewPlugin::VideoPreviewPlugin(QObject *parent)
     : QObject(parent)
-    , GrandSearch::PreviewPlugin()
+    , PreviewPlugin()
 {
 
 }
@@ -50,7 +53,7 @@ void VideoPreviewPlugin::init(QObject *proxyInter)
     }
 }
 #define PREVIEW_ASYNC_DECODE
-bool VideoPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
+bool VideoPreviewPlugin::previewItem(const ItemInfo &item)
 {
     const QString path = item.value(PREVIEW_ITEMINFO_ITEM);
     if (path.isEmpty())
@@ -100,7 +103,7 @@ bool VideoPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
     tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
 
     contentInfos.clear();
-    contentInfos.insert(DetailInfoProperty::Text, QVariant(GrandSearch::CommonTools::formatFileSize(fileInfo.size())));
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(CommonTools::formatFileSize(fileInfo.size())));
     contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
 
     detailInfo = qMakePair(tagInfos, contentInfos);
@@ -131,7 +134,7 @@ bool VideoPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
     m_infos.push_back(detailInfo);
 
     // 修改时间
-    auto lt = fileInfo.lastModified().toString(GrandSearch::CommonTools::dateTimeFormat());
+    auto lt = fileInfo.lastModified().toString(CommonTools::dateTimeFormat());
 
     tagInfos.clear();
     tagInfos.insert(DetailInfoProperty::Text, QVariant(kLabelTime));
@@ -155,7 +158,7 @@ bool VideoPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
     return true;
 }
 
-GrandSearch::ItemInfo VideoPreviewPlugin::item() const
+ItemInfo VideoPreviewPlugin::item() const
 {
     return m_item;
 }
@@ -182,7 +185,7 @@ bool VideoPreviewPlugin::showToolBar() const
     return true;
 }
 
-GrandSearch::DetailInfoList VideoPreviewPlugin::getAttributeDetailInfo() const
+DetailInfoList VideoPreviewPlugin::getAttributeDetailInfo() const
 {
     return m_infos;
 }
@@ -223,7 +226,7 @@ void VideoPreviewPlugin::updateInfo(const QVariantHash &hash, bool needUpdate)
         tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
 
         DetailContentInfo contentInfos;
-        contentInfos.insert(DetailInfoProperty::Text, QVariant(GrandSearch::CommonTools::durationString(duration)));
+        contentInfos.insert(DetailInfoProperty::Text, QVariant(CommonTools::durationString(duration)));
         contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
 
         DetailInfo detailInfo = qMakePair(tagInfos, contentInfos);

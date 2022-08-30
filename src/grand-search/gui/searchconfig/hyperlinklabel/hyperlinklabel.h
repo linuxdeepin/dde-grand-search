@@ -9,6 +9,8 @@
 #include <QFontMetrics>
 #include <QRegion>
 
+namespace GrandSearch {
+
 class HyperlinkLabel : public QLabel
 {
     Q_OBJECT
@@ -33,5 +35,7 @@ private:
     QFontMetrics m_fontMetrics;   // 绘制字符的字体属性
     QRegion m_hyperlinkRegion;    // 超链接的绘制区域
 };
+
+}
 
 #endif // HYPERLINKLABEL_H

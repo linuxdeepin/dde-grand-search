@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "global/grandsearch_global.h"
 #include "gui/searchconfig/checkboxwidget/checkboxitem.h"
 #include "stubext.h"
 
@@ -10,6 +11,7 @@
 #include <QPaintEvent>
 
 using namespace testing;
+GRANDSEARCH_USE_NAMESPACE
 
 TEST(CheckBoxItemTest, setChecked)
 {

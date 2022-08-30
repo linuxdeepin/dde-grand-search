@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "global/grandsearch_global.h"
 #include "contacts/services/grandsearchserviceadaptor.h"
 #include "contacts/services/grandsearchservice.h"
 #include "gui/mainwindow.h"
@@ -11,6 +12,7 @@
 #include <gtest/gtest.h>
 
 using namespace testing;
+GRANDSEARCH_USE_NAMESPACE
 
 TEST(GrandSearchServiceAdaptorTest, constructor)
 {

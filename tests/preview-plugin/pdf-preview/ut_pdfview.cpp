@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "pdf-preview/pdfpreview_global.h"
 #include "pdf-preview/pdfview.h"
 
 #include <stubext.h>
@@ -10,6 +11,8 @@
 
 #include <QTest>
 #include <QLabel>
+
+PDF_PREVIEW_USE_NAMESPACE
 
 class PDFViewTest : public testing::Test
 {

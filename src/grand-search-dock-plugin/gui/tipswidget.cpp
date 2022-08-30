@@ -8,6 +8,8 @@
 #include <QAccessible>
 #include <QTextDocument>
 
+using namespace GrandSearch;
+
 TipsWidget::TipsWidget(QWidget *parent)
     : QFrame(parent)
     , m_type(SingleLine)

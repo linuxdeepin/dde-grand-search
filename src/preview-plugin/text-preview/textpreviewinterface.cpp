@@ -2,17 +2,21 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "textpreview_global.h"
 #include "textpreviewinterface.h"
 #include "textpreviewplugin.h"
 
+GRANDSEARCH_USE_NAMESPACE
+using namespace GrandSearch::text_preview;
+
 TextPreviewInterface::TextPreviewInterface(QObject *parent)
     : QObject(parent)
-    , GrandSearch::PreviewPluginInterface()
+    , PreviewPluginInterface()
 {
 
 }
 
-GrandSearch::PreviewPlugin *TextPreviewInterface::create(const QString &mimetype)
+PreviewPlugin *TextPreviewInterface::create(const QString &mimetype)
 {
     return new TextPreviewPlugin();
 }

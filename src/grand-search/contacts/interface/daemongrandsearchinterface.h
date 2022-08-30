@@ -20,6 +20,8 @@
 #include <QtCore/QVariant>
 #include <QtDBus/QtDBus>
 
+namespace GrandSearch {
+
 /*
  * Proxy class for interface com.deepin.dde.daemon.GrandSearch
  */
@@ -35,7 +37,7 @@ public:
     { return "/com/deepin/dde/daemon/GrandSearch"; }
 
 public:
-    DaemonGrandSearchInterface(QObject *parent = nullptr);
+    explicit DaemonGrandSearchInterface(QObject *parent = nullptr);
 
     ~DaemonGrandSearchInterface();
 
@@ -116,9 +118,11 @@ namespace com {
   namespace deepin {
     namespace dde {
       namespace daemon {
-        typedef ::DaemonGrandSearchInterface GrandSearch;
+        typedef DaemonGrandSearchInterface GrandSearch;
       }
     }
   }
+}
+
 }
 #endif

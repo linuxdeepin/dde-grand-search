@@ -11,11 +11,11 @@
 #include <QDropEvent>
 #include <QVBoxLayout>
 
-DWIDGET_USE_NAMESPACE
+namespace GrandSearch {
 
 class BlackListModel;
 class BlackListDelegate;
-class BlackListView : public DListView
+class BlackListView : public Dtk::Widget::DListView
 {
     Q_OBJECT
 public:
@@ -69,5 +69,7 @@ private:
     QVBoxLayout *m_mainLayout = nullptr;
     BlackListView *m_listView = nullptr;
 };
+
+}
 
 #endif // BLACKLISTVIEW_H

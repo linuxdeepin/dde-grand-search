@@ -12,7 +12,7 @@
 
 using namespace GrandSearch;
 
-static const uint KeepAliveTime             = 15000;    // 搜索过程中，调用后端心跳函数间隔时间
+static const uint KeepAliveTime  = 15000;    // 搜索过程中，调用后端心跳函数间隔时间
 
 QueryControllerPrivate::QueryControllerPrivate(QueryController *parent)
     : q_p(parent)

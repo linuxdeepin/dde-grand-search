@@ -2,12 +2,15 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "text-preview/textpreview_global.h"
 #include "text-preview/textpreviewplugin.h"
 #include "text-preview/textview.h"
 
 #include <stubext.h>
 
 #include <gtest/gtest.h>
+
+TEXT_PREVIEW_USE_NAMESPACE
 
 TEST(TextPreviewPlugin, ut_init)
 {

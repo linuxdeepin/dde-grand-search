@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "video-preview/videopreview_global.h"
 #include "video-preview/videoview.h"
 
 #include <QLayout>
@@ -9,6 +10,8 @@
 #include <stubext.h>
 
 #include <gtest/gtest.h>
+
+VIDEO_PREVIEW_USE_NAMESPACE
 
 TEST(VideoView, ut_initUI)
 {

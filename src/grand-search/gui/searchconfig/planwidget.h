@@ -12,9 +12,8 @@
 #include <QVBoxLayout>
 
 namespace GrandSearch {
-class SwitchWidget;
-}
 
+class SwitchWidget;
 class PlanWidget : public Dtk::Widget::DWidget
 {
     Q_OBJECT
@@ -35,9 +34,11 @@ private:
     QLabel *m_tipsLabel = nullptr;
 
     QHash<QString, QString> m_groupName;        // <searchGroupName, displayGroupName>
-    GrandSearch::SwitchWidget* m_switchWidget;
+    SwitchWidget *m_switchWidget;
 
     QString m_displayIcon;                      // 显示图标
 };
+
+}
 
 #endif // PLANWIDGET_H

@@ -12,9 +12,11 @@
 #ifndef GRANDSEARCHSERVICEADAPTOR_H
 #define GRANDSEARCHSERVICEADAPTOR_H
 
+#include "grandsearchservice.h"
+
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
-#include "grandsearchservice.h"
+
 QT_BEGIN_NAMESPACE
 class QByteArray;
 template<class T> class QList;
@@ -23,6 +25,8 @@ class QString;
 class QStringList;
 class QVariant;
 QT_END_NAMESPACE
+
+namespace GrandSearch {
 
 /*
  * Adaptor class for interface com.deepin.dde.GrandSearch
@@ -55,5 +59,7 @@ public Q_SLOTS: // METHODS
 Q_SIGNALS: // SIGNALS
     void VisibleChanged(bool visible);
 };
+
+}
 
 #endif

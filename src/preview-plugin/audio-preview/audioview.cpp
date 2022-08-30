@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "audiopreview_global.h"
 #include "audioview.h"
 #include "global/commontools.h"
 
@@ -18,6 +19,8 @@
 #define MARGIN_SIZE             15
 
 DWIDGET_USE_NAMESPACE
+GRANDSEARCH_USE_NAMESPACE
+using namespace GrandSearch::audio_preview;
 
 NameLabel::NameLabel(const QString &text, QWidget *parent, Qt::WindowFlags f):
     QLabel(text, parent, f)
@@ -61,7 +64,7 @@ AudioView::AudioView(QWidget *parent)
     initUI();
 }
 
-void AudioView::setItemInfo(const GrandSearch::ItemInfo &item)
+void AudioView::setItemInfo(const ItemInfo &item)
 {
     // 设置图标
     QPixmap pixmap;
@@ -88,14 +91,14 @@ void AudioView::setItemInfo(const GrandSearch::ItemInfo &item)
     m_iconLabel->setPixmap(pixmap);
 
     // 设置名称，并计算换行内容
-    QString elidedText = GrandSearch::CommonTools::lineFeed(item[PREVIEW_ITEMINFO_NAME], m_nameLabel->width(), m_nameLabel->font(), 2);
+    QString elidedText = CommonTools::lineFeed(item[PREVIEW_ITEMINFO_NAME], m_nameLabel->width(), m_nameLabel->font(), 2);
     m_nameLabel->setText(elidedText);
     if (elidedText != item[PREVIEW_ITEMINFO_NAME])
         m_nameLabel->setToolTip(item[PREVIEW_ITEMINFO_NAME]);
 
     // 获取文件大小
     QFileInfo fi(item[PREVIEW_ITEMINFO_ITEM]);
-    m_sizeLabel->setText(GrandSearch::CommonTools::formatFileSize(fi.size()));
+    m_sizeLabel->setText(CommonTools::formatFileSize(fi.size()));
 }
 
 void AudioView::initUI()

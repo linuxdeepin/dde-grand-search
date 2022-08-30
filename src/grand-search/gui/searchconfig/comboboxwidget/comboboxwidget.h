@@ -41,5 +41,7 @@ private:
     QWidget *m_leftWidget = nullptr;
     Dtk::Widget::DComboBox *m_comboBox = nullptr;
 };
+
 }
+
 #endif // COMBOBOXWIDGET_H

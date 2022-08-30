@@ -12,9 +12,8 @@
 #include <QVBoxLayout>
 
 namespace GrandSearch {
-class ComboboxWidget;
-}
 
+class ComboboxWidget;
 class SearchEngineWidget : public Dtk::Widget::DWidget
 {
     Q_OBJECT
@@ -34,7 +33,9 @@ private:
     QLabel *m_contentLabel = nullptr;
 
     QHash<QString, QString> m_groupName;        // <searchGroupName, displayGroupName>
-    GrandSearch::ComboboxWidget* m_comboboxWidget;
+    ComboboxWidget *m_comboboxWidget;
 };
+
+}
 
 #endif // SEARCHENGINEWIDGET_H

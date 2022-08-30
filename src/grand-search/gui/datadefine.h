@@ -9,8 +9,6 @@
 #include <QObject>
 #include <QPluginLoader>
 
-namespace GrandSearch {
-
 // 组-列表对象名
 #define GroupObjName_App            "Group_App"
 #define GroupObjName_Setting        "Group_Setting"
@@ -35,6 +33,8 @@ namespace GrandSearch {
 #define GroupName_Web               QObject::tr("Web")
 
 #define GROUP_MAX_SHOW              5   // 每组默认显示数量
+
+namespace GrandSearch {
 
 //预览插件信息
 struct PreviewPluginInfo {
@@ -61,6 +61,6 @@ struct PreviewPluginInfo {
 
 typedef QList<PreviewPluginInfo> PreviewPluginInfoList;
 
-};
+}
 
 #endif // DATADEFINE_H

@@ -148,6 +148,6 @@ inline QString lineFeed(const QString &text, int nWidth, const QFont &font, int 
 
 }   // end CommonTools
 
-}   // end GrandSearch
+}
 
 #endif // COMMONTOOLS_H

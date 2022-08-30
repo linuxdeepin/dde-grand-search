@@ -9,6 +9,8 @@
 #include <QIcon>
 #include <QPixmap>
 
+namespace GrandSearch {
+
 class GrandSearchInterface;
 
 class GrandSearchWidget : public QWidget
@@ -41,5 +43,7 @@ private:
     bool m_grandSearchVisible = false;
     GrandSearchInterface *m_grandSearchInterface = nullptr;
 };
+
+}
 
 #endif // GRANDSEARCHWIDGET_H

@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "global/grandsearch_global.h"
 #include "ddegrandsearchdockplugin.h"
 #include "ut_mock_pluginproxyinterface.h"
 #include "gui/grandsearchwidget.h"
@@ -17,6 +18,7 @@
 
 using namespace testing;
 DWIDGET_USE_NAMESPACE
+GRANDSEARCH_USE_NAMESPACE
 
 namespace  {
     class TestDdeGrandSearchDockPlugin : public testing::Test {

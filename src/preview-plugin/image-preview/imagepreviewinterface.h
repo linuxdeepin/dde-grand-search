@@ -7,14 +7,19 @@
 
 #include "previewplugininterface.h"
 
-class ImagePreviewInterface : public QObject, public GrandSearch::PreviewPluginInterface
+namespace GrandSearch {
+namespace image_preview {
+
+class ImagePreviewInterface : public QObject, public PreviewPluginInterface
 {
     Q_OBJECT
     Q_INTERFACES(GrandSearch::PreviewPluginInterface)
     Q_PLUGIN_METADATA(IID FilePreviewInterface_iid)
 public:
     explicit ImagePreviewInterface(QObject *parent = nullptr);
-    virtual GrandSearch::PreviewPlugin *create(const QString &mimetype);
+    virtual PreviewPlugin *create(const QString &mimetype);
 };
+
+}}
 
 #endif // IMAGEPREVIEWINTERFACE_H

@@ -7,6 +7,8 @@
 
 #include <QDebug>
 
+using namespace GrandSearch;
+
 PluginProxy::PluginProxy(PreviewWidget *parent)
     : QObject(parent)
     , q(parent)
@@ -14,7 +16,7 @@ PluginProxy::PluginProxy(PreviewWidget *parent)
 
 }
 
-void PluginProxy::updateDetailInfo(GrandSearch::PreviewPlugin *plugin)
+void PluginProxy::updateDetailInfo(PreviewPlugin *plugin)
 {
     if (plugin == nullptr || plugin != q->m_preview) {
         qWarning() << "updateDetailInfo: invaild plugin.";

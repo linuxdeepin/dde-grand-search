@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "global/grandsearch_global.h"
 #include "gui/exhibition/preview/generalwidget/replicablelabel.h"
 
 #include "stubext.h"
@@ -13,6 +14,7 @@
 #include <QResizeEvent>
 
 using namespace testing;
+GRANDSEARCH_USE_NAMESPACE
 
 TEST(ReplicableLabelTest, constructor)
 {

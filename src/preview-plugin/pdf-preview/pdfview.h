@@ -11,6 +11,10 @@
 #include <poppler-qt5.h>
 
 class QLabel;
+
+namespace GrandSearch {
+namespace pdf_preview {
+
 class PDFView : public QWidget
 {
     Q_OBJECT
@@ -38,5 +42,7 @@ private:
     QFuture<void> m_future;
     QImage m_pageImg;
 };
+
+}}
 
 #endif // PDFVIEW_H

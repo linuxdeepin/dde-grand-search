@@ -22,9 +22,9 @@
 #define MARGIN_SIZE             15
 #define NAME_WIDTH              239
 
-DWIDGET_USE_NAMESPACE
-
 using namespace GrandSearch;
+
+DWIDGET_USE_NAMESPACE
 
 NameLabel::NameLabel(const QString &text, QWidget *parent, Qt::WindowFlags f):
     QLabel(text, parent, f)
@@ -120,9 +120,9 @@ void GeneralPreviewPlugin::init(QObject *proxyInter)
     Q_UNUSED(proxyInter)
 }
 
-bool GeneralPreviewPlugin::previewItem(const GrandSearch::ItemInfo &info)
+bool GeneralPreviewPlugin::previewItem(const ItemInfo &info)
 {
-    GrandSearch::MatchedItem item;
+    MatchedItem item;
     item.item = info[PREVIEW_ITEMINFO_ITEM];
     item.name = info[PREVIEW_ITEMINFO_NAME];
     item.icon = info[PREVIEW_ITEMINFO_ICON];
@@ -162,7 +162,7 @@ bool GeneralPreviewPlugin::previewItem(const GrandSearch::ItemInfo &info)
     d_p->m_iconLabel->setPixmap(pixmap);
 
     // 设置名称，并计算换行内容
-    QString elidedText = GrandSearch::CommonTools::lineFeed(item.name, d_p->m_nameLabel->width(), d_p->m_nameLabel->font(), 2);
+    QString elidedText = CommonTools::lineFeed(item.name, d_p->m_nameLabel->width(), d_p->m_nameLabel->font(), 2);
     d_p->m_nameLabel->setText(elidedText);
     if (elidedText != item.name)
         d_p->m_nameLabel->setToolTip(item.name);

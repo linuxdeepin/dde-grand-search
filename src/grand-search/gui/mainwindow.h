@@ -9,6 +9,8 @@
 
 #include <QScopedPointer>
 
+namespace GrandSearch {
+
 class MainWindowPrivate;
 class MainWindow : public Dtk::Widget::DBlurEffectWidget
 {
@@ -62,5 +64,7 @@ signals:
 private:
     QScopedPointer<MainWindowPrivate> d_p;
 };
+
+}
 
 #endif // MAINWINDOW_H

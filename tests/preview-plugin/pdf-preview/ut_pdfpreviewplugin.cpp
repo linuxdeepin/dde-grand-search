@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "pdf-preview/pdfpreview_global.h"
 #include "pdf-preview/pdfpreviewplugin.h"
 #include "pdf-preview/pdfview.h"
 
@@ -10,6 +11,8 @@
 #include <gtest/gtest.h>
 
 #include <QTest>
+
+PDF_PREVIEW_USE_NAMESPACE
 
 TEST(PDFPreviewPluginTest, ut_init)
 {

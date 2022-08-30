@@ -10,16 +10,21 @@
 
 #include <QSharedPointer>
 
-class AudioPreviewInterface : public QObject, public GrandSearch::PreviewPluginInterface
+namespace GrandSearch {
+namespace audio_preview {
+
+class AudioPreviewInterface : public QObject, public PreviewPluginInterface
 {
     Q_OBJECT
     Q_INTERFACES(GrandSearch::PreviewPluginInterface)
     Q_PLUGIN_METADATA(IID FilePreviewInterface_iid)
 public:
     explicit AudioPreviewInterface(QObject *parent = nullptr);
-    virtual GrandSearch::PreviewPlugin *create(const QString &mimetype);
+    virtual PreviewPlugin *create(const QString &mimetype);
 protected:
     QSharedPointer<GrandSearch::LibAudioViewer> lib;
 };
+
+}}
 
 #endif // AUDIOPREVIEWINTERFACE_H

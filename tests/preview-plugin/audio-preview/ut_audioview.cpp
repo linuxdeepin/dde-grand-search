@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "audio-preview/audiopreview_global.h"
 #include "audio-preview/audioview.h"
 #include "global/commontools.h"
 
@@ -10,6 +11,8 @@
 #include <gtest/gtest.h>
 
 #include <QTest>
+
+AUDIO_PREVIEW_USE_NAMESPACE
 
 TEST(AudioViewTest, ut_setItemInfo_0)
 {

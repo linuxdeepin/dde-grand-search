@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "global/grandsearch_global.h"
 #include "business/config/accessrecord/accessrecord.h"
 #include "global/matcheditem.h"
 #include "global/searchconfigdefine.h"
@@ -19,6 +20,8 @@
 #include <stdio.h>
 
 #include <QTest>
+
+GRANDSEARCH_USE_NAMESPACE
 
 TEST(AccessRecordTest, init)
 {

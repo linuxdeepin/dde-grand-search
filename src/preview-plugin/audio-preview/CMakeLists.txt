@@ -7,6 +7,7 @@ pkg_check_modules(TAGLIB REQUIRED taglib)
 pkg_check_modules(ICU REQUIRED icu-i18n)
 
 set(SRCS
+    audiopreview_global.h
     audiopreviewinterface.h
     audiopreviewinterface.cpp
     audiopreviewplugin.h

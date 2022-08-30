@@ -7,6 +7,8 @@
 
 #include "groupwidget.h"
 
+namespace GrandSearch {
+
 class GroupWidgetPrivate
 {
 public:
@@ -14,5 +16,7 @@ public:
 
     GroupWidget *q_p = nullptr;
 };
+
+}
 
 #endif // GROUPWIDGET_P_H

@@ -4,6 +4,7 @@ project(text-preview)
 set(LIB_NAME text-preview-plugin)
 
 set(SRCS
+    textpreview_global.h
     textpreviewinterface.h
     textpreviewinterface.cpp
     textpreviewplugin.h

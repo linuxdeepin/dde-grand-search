@@ -13,6 +13,8 @@
 #include <QMutexLocker>
 #include <QtDebug>
 
+using namespace GrandSearch;
+
 class SearchConfigGlobal : public SearchConfig {};
 Q_GLOBAL_STATIC(SearchConfigGlobal, searchConfigGlobal)
 

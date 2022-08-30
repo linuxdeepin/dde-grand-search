@@ -14,6 +14,8 @@
 
 #include <DLabel>
 
+namespace GrandSearch {
+
 class ReplicableLabel;
 
 class DetailItem : public QWidget
@@ -23,7 +25,7 @@ public:
     explicit DetailItem(QWidget *parent = nullptr);
     ~DetailItem();
 
-    void setDetailInfo(const GrandSearch::DetailInfo &info);
+    void setDetailInfo(const DetailInfo &info);
 
     void setTopRound(bool round);
     bool topRound() const;
@@ -58,5 +60,7 @@ protected:
     QHBoxLayout *m_mainLayout = nullptr;
 
 };
+
+}
 
 #endif // DETAILITEM_H

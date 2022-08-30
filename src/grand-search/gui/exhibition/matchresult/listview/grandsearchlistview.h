@@ -7,20 +7,19 @@
 
 #include "global/matcheditem.h"
 #include "gui/datadefine.h"
-using namespace GrandSearch;
 
 #include <DListView>
 
 #include <QPixmap>
 
-DWIDGET_USE_NAMESPACE
-
 #define ICON_ROLE Qt::UserRole+1
 #define DATA_ROLE Qt::UserRole+2
 
+namespace GrandSearch {
+
 class GrandSearchListModel;
 class GrandSearchListDelegate;
-class GrandSearchListView: public DListView
+class GrandSearchListView: public Dtk::Widget::DListView
 {
     Q_OBJECT
 public:
@@ -52,7 +51,7 @@ public slots:
     void onSetThemeType(int type);
 
 signals:
-    void sigCurrentItemChanged(const GrandSearch::MatchedItem &item);
+    void sigCurrentItemChanged(const MatchedItem &item);
     void sigItemClicked();
 
 protected:
@@ -73,5 +72,7 @@ private:
 
     bool                        m_isPreviewItem = false;
 };
+
+}
 
 #endif // GRANDSEARCHLISTVIEW_H

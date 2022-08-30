@@ -13,7 +13,7 @@
 #include <QVBoxLayout>
 #include <QItemSelection>
 
-DWIDGET_USE_NAMESPACE
+namespace GrandSearch {
 
 class BlackListWrapper;
 class DeleteDialog;
@@ -35,10 +35,10 @@ private:
     QLabel *m_groupLabel = nullptr;
     QLabel *m_contentLabel = nullptr;
 
-    DIconButton *m_addButton = nullptr;
-    DIconButton *m_deleteButton = nullptr;
+    Dtk::Widget::DIconButton *m_addButton = nullptr;
+    Dtk::Widget::DIconButton *m_deleteButton = nullptr;
 
     BlackListWrapper *m_listWrapper = nullptr;
 };
-
+}
 #endif // BLACKLISTWIDGET_H

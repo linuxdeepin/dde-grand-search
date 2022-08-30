@@ -2,11 +2,14 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "global/grandsearch_global.h"
 #include "gui/searchconfig/blacklistview/blacklistmodel.h"
 
 #include "stubext.h"
 
 #include <gtest/gtest.h>
+
+GRANDSEARCH_USE_NAMESPACE
 
 TEST(BlackListModelTest, constructor)
 {
