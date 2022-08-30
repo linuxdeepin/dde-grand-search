@@ -7,6 +7,8 @@
 
 #include <QFrame>
 
+namespace GrandSearch {
+
 class TipsWidget : public QFrame
 {
     Q_OBJECT
@@ -32,5 +34,7 @@ private:
     QStringList m_textList;
     ShowType m_type;
 };
+
+}
 
 #endif   // TIPSWIDGET_H

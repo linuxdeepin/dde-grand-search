@@ -7,6 +7,7 @@ set(LIB_NAME video-preview-plugin)
 #pkg_check_modules(ImageEditor REQUIRED libimageeditor)
 
 set(SRCS
+    videopreview_global.h
     videopreviewinterface.h
     videopreviewinterface.cpp
     videopreviewplugin.h

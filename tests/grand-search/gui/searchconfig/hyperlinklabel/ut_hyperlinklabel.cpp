@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "global/grandsearch_global.h"
 #include "gui/searchconfig/hyperlinklabel/hyperlinklabel.h"
 
 #include "stubext.h"
@@ -14,6 +15,7 @@
 #include <QtTest>
 
 using namespace testing;
+GRANDSEARCH_USE_NAMESPACE
 
 TEST(HyperlinkLabelTest, constructor)
 {

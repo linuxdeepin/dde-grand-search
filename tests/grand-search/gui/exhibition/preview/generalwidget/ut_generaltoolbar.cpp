@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "global/grandsearch_global.h"
 #include "gui/exhibition/preview/generalwidget/generaltoolbar.h"
 
 #include "stubext.h"
@@ -14,6 +15,7 @@
 
 using namespace testing;
 DGUI_USE_NAMESPACE;
+GRANDSEARCH_USE_NAMESPACE
 
 TEST(GeneralToolBarTest, constructor)
 {

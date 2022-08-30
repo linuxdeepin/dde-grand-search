@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "audiopreview_global.h"
 #include "audiofileinfo.h"
 #include "global/commontools.h"
 
@@ -14,6 +15,9 @@
 #include <fileref.h>
 #include <taglib.h>
 #include <tpropertymap.h>
+
+GRANDSEARCH_USE_NAMESPACE
+using namespace GrandSearch::audio_preview;
 
 AudioFileInfo::AudioFileInfo()
 {
@@ -40,7 +44,7 @@ AudioFileInfo::AudioMetaData AudioFileInfo::openAudioFile(const QString &file)
     TagLib::AudioProperties *ap = f.audioProperties();
     if (ap) {
         auto len = ap->length() * 1000;
-        meta.duration = GrandSearch::CommonTools::durationString(len / 1000);
+        meta.duration = CommonTools::durationString(len / 1000);
     }
 
     return meta;

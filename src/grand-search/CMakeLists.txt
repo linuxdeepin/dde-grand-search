@@ -225,5 +225,5 @@ install(DIRECTORY ${PROJECT_SOURCE_DIR}/translations
     FILES_MATCHING PATTERN "*.qm")
 
 # dbus
-install(FILES contacts/services/com.deepin.dde.GrandSearch.service DESTINATION share/dbus-1/services)
-install(FILES contacts/services/com.deepin.dde.GrandSearch.xml DESTINATION share/dbus-1/interfaces)
+install(FILES contacts/services/com.deepin.dde.GrandSearch.service DESTINATION ${CMAKE_INSTALL_DATADIR}/dbus-1/services)
+install(FILES contacts/services/com.deepin.dde.GrandSearch.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/dbus-1/interfaces)

@@ -17,6 +17,9 @@
 #include <QItemSelection>
 
 DWIDGET_USE_NAMESPACE
+
+using namespace GrandSearch;
+
 BlackListWidget::BlackListWidget(QWidget *parent)
     :DWidget(parent)
 {

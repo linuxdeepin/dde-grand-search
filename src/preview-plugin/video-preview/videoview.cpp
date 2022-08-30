@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "videopreview_global.h"
 #include "videoview.h"
 
 #include <DFontSizeManager>
@@ -14,6 +15,10 @@
 
 #define CONTENT_WIDTH 310
 #define CONTENT_HEIGHT 110
+
+DWIDGET_USE_NAMESPACE
+GRANDSEARCH_USE_NAMESPACE
+using namespace GrandSearch::video_preview;
 
 VideoView::VideoView(QWidget *parent) : QWidget(parent)
 {

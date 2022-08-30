@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "global/grandsearch_global.h"
 #include "gui/searchconfig/blacklistwidget.h"
 #include "gui/searchconfig/blacklistview/blacklistview.h"
 
@@ -17,6 +18,7 @@
 
 using namespace testing;
 DWIDGET_USE_NAMESPACE
+GRANDSEARCH_USE_NAMESPACE
 
 TEST(BlackListWidgetTest, constructor)
 {

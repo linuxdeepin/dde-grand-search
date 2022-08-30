@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "global/grandsearch_global.h"
 #include "gui/searchconfig/blacklistview/blacklistview.h"
 #include "gui/searchconfig/blacklistview/blacklistmodel.h"
 #include "business/config/searchconfig.h"
@@ -19,6 +20,7 @@
 #include <QIcon>
 
 using namespace testing;
+GRANDSEARCH_USE_NAMESPACE
 
 TEST(BlackListViewTest, constructor)
 {

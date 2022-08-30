@@ -11,7 +11,10 @@
 
 #include <QSharedPointer>
 
-class VideoPreviewInterface : public QObject, public GrandSearch::PreviewPluginInterface
+namespace GrandSearch {
+namespace video_preview {
+
+class VideoPreviewInterface : public QObject, public PreviewPluginInterface
 {
     Q_OBJECT
     Q_INTERFACES(GrandSearch::PreviewPluginInterface)
@@ -22,5 +25,6 @@ public:
 protected:
     QSharedPointer<GrandSearch::LibVideoViewer> lib;
 };
+}}
 
 #endif // VIDEOPREVIEWINTERFACE_H

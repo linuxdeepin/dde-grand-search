@@ -8,6 +8,8 @@
 #include <QStandardItemModel>
 #include <QScopedPointer>
 
+namespace GrandSearch {
+
 class GrandSearchListModel : public QStandardItemModel
 {
     Q_OBJECT
@@ -18,5 +20,7 @@ public:
     virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) Q_DECL_OVERRIDE;
     virtual Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE;
 };
+
+}
 
 #endif // GRANDSEARCHLISTMODEL_H

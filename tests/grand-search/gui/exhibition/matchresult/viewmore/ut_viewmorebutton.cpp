@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "global/grandsearch_global.h"
 #include "gui/exhibition/matchresult/viewmore/viewmorebutton.h"
 
 #include "stubext.h"
@@ -14,6 +15,7 @@
 #include <QPaintEvent>
 #include <QStyleOptionToolButton>
 
+GRANDSEARCH_USE_NAMESPACE
 DGUI_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
 

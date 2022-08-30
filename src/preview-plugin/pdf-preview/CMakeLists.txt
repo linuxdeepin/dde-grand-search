@@ -7,6 +7,7 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(PDF REQUIRED poppler-qt5)
 
 set(SRCS
+    pdfpreview_global.h
     pdfpreviewinterface.h
     pdfpreviewinterface.cpp
     pdfpreviewplugin.h

@@ -4,6 +4,8 @@
 
 #include "blacklistmodel.h"
 
+using namespace GrandSearch;
+
 BlackListModel::BlackListModel(int rows, int columns, QObject *parent)
     : QStandardItemModel(rows, columns, parent)
 {

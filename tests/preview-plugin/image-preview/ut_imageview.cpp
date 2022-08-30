@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "image-preview/imagepreview_global.h"
 #include "image-preview/imageview.h"
 
 #include "stubext.h"
@@ -14,8 +15,10 @@
 #include <QMovie>
 #include <QFileInfo>
 
-using namespace testing;
 DWIDGET_USE_NAMESPACE;
+IMAGE_PREVIEW_USE_NAMESPACE
+
+using namespace testing;
 
 TEST(ImageViewTest, constructor)
 {

@@ -6,6 +6,7 @@
 #include "checkboxitem.h"
 #include "global/searchconfigdefine.h"
 
+using namespace GrandSearch;
 DWIDGET_USE_NAMESPACE
 
 CheckBoxWidget::CheckBoxWidget(QWidget *parent)

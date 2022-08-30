@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "video-preview/videopreview_global.h"
 #include "video-preview/videopreviewplugin.h"
 #include "video-preview/videoview.h"
 #include "global/commontools.h"
@@ -13,7 +14,7 @@
 
 #include <gtest/gtest.h>
 
-using namespace GrandSearch;
+VIDEO_PREVIEW_USE_NAMESPACE
 
 TEST(VideoPreviewPlugin, ut_init)
 {

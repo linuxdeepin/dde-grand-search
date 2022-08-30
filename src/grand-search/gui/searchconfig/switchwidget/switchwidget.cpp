@@ -12,8 +12,7 @@
 #define ICONLABELSIZE   36
 
 DWIDGET_USE_NAMESPACE
-
-namespace GrandSearch {
+using namespace GrandSearch;
 
 SwitchWidget::SwitchWidget(const QString &title, QWidget *parent)
     : SwitchWidget(parent, new QLabel(title, parent))
@@ -111,6 +110,4 @@ void SwitchWidget::paintEvent(QPaintEvent *event)
         p.drawRoundedRect(rect(), 8, 8);
     }
     return QWidget::paintEvent(event);
-}
-
 }

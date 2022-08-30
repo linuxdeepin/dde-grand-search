@@ -12,9 +12,8 @@
 #include <QVBoxLayout>
 
 namespace GrandSearch {
-class SwitchWidget;
-}
 
+class SwitchWidget;
 class ScopeWidget : public Dtk::Widget::DWidget
 {
     Q_OBJECT
@@ -34,9 +33,11 @@ private:
     QLabel *m_groupLabel = nullptr;
 
     QHash<QString, QString> m_groupName;        // <searchGroupName, displayGroupName>
-    QList<GrandSearch::SwitchWidget*> m_switchWidgets;
+    QList<SwitchWidget*> m_switchWidgets;
 
     QStringList m_displayIcons;                 // 显示图标
 };
+
+}
 
 #endif // SCOPEWIDGET_H

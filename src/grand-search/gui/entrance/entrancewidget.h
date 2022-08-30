@@ -10,6 +10,8 @@
 #include <QFrame>
 #include <QScopedPointer>
 
+namespace GrandSearch {
+
 class EntranceWidgetPrivate;
 class EntranceWidget : public QFrame
 {
@@ -30,7 +32,7 @@ private:
 
 public slots:
     // 切换选择搜索结果时，应用图标发生改变
-    void onAppIconChanged(const QString &searchGroupName, const GrandSearch::MatchedItem &item);
+    void onAppIconChanged(const QString &searchGroupName, const MatchedItem &item);
 
 signals:
     void searchTextChanged(const QString &txt);
@@ -42,5 +44,7 @@ signals:
 private:
     QScopedPointer<EntranceWidgetPrivate> d_p;
 };
+
+}
 
 #endif // ENTRANCEWIDGET_H

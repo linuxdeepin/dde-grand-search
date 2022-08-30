@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "audio-preview/audiopreview_global.h"
 #include "audio-preview/audiopreviewplugin.h"
 #include "audio-preview/audiofileinfo.h"
 #include "audio-preview/audioview.h"
@@ -13,7 +14,8 @@
 
 #include <QTest>
 
-using namespace GrandSearch;
+AUDIO_PREVIEW_USE_NAMESPACE
+
 TEST(AudioPreviewPluginTest, ut_init)
 {
     AudioPreviewPlugin plugin;
@@ -82,6 +84,7 @@ TEST(AudioPreviewPluginTest, ut_previewItem_2)
     EXPECT_FALSE(called);
 
     called = false;
+    st.set_lamda(&LibAudioViewer::initLibrary, [](){ return true; });
     plugin.m_parser.reset(new LibAudioViewer);
 
     EXPECT_TRUE(plugin.previewItem(info));

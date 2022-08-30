@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "text-preview/textpreview_global.h"
 #include "text-preview/textview.h"
 
 #include <QLayout>
@@ -12,6 +13,8 @@
 #include <stubext.h>
 
 #include <gtest/gtest.h>
+
+TEXT_PREVIEW_USE_NAMESPACE
 
 TEST(TextView, ut_initUI)
 {

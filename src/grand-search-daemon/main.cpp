@@ -2,22 +2,23 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "global/grandsearch_global.h"
 #include "environments.h"
-#include "dbusservice/grandsearchinterface.h"
+#include "daemonlibrary.h"
 
 #include <DLog>
 #include <DApplication>
 
-#include <QCoreApplication>
-#include <QDBusConnection>
-#include <QDBusError>
 #include <QDebug>
 
 #include <unistd.h>
 #include <signal.h>
 
-DCORE_USE_NAMESPACE
+GRANDSEARCH_USE_NAMESPACE
+
+DGUI_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
+DCORE_USE_NAMESPACE
 
 static void appExitHandler(int sig) {
     qInfo() << "signal" << sig << "exit.";
@@ -50,39 +51,35 @@ int main(int argc, char *argv[])
         qInfo() << dateTime << "starting " << app.applicationName() << app.applicationVersion() << getpid();
     }
 
-    //服务接口
-    GrandSearchInterface interface;
-
-    //注册DBus服务
+    QString libPath;
     {
-        QDBusConnection session = QDBusConnection::sessionBus();
-        if (!session.registerService(GrandSearchServiceName)) {
-            qCritical() << "registerService Failed, maybe service exist" << QDBusError::errorString(session.lastError().type());
-            exit(0x0002);
-        }
+        //默认路径
+    #ifdef QT_DEBUG
+        char path[PATH_MAX] = {0};
+        const char *defaultPath = realpath("../libgrand-search-daemon", path);
+    #else
+        auto defaultPath = DAEMON_LIB_BASE_DIR;
+    #endif
+        static_assert(std::is_same<decltype(defaultPath), const char *>::value, "DAEMON_LIB_BASE_DIR is not a string.");
 
-        if (!session.registerObject(GrandSearchServicePath, &interface,
-                                 QDBusConnection::ExportScriptableSlots |
-                                 QDBusConnection::ExportScriptableSignals |
-                                 QDBusConnection::ExportScriptableProperties)) {
-            qCritical() << "registerObject Failed" << QDBusError::errorString(session.lastError().type());
-            exit(0x0003);
-        }
+        QDir dir(defaultPath);
+        libPath = dir.absoluteFilePath("libdde-grand-search-daemon.so");
+        qInfo() << "daemon lib path:" << libPath;
     }
+
+    DaemonLibrary lib(libPath);
+    if (!lib.load())
+        return -1;
 
     //初始化
-    if (!interface.init()) {
+    qInfo() << "lib start " << lib.version();
+    int ret = lib.start(argc, argv);
+    if (ret != 0) {
         qCritical() << "initialization failed.";
-        exit(0x0001);
+        return ret;
     }
+    ret = app.exec();
+    lib.stop();
 
-    {
-        // 加载翻译
-        QString appName = app.applicationName();
-        app.setApplicationName("dde-grand-search");
-        app.loadTranslator();
-        app.setApplicationName(appName);
-    }
-
-    return app.exec();
+    return ret;
 }

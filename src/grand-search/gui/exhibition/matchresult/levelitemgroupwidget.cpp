@@ -2,10 +2,13 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "global/grandsearch_global.h"
 #include "levelitemgroupwidget.h"
 #include "listview/grandsearchlistview.h"
 #include "viewmore/viewmorebutton.h"
 #include "utils/utils.h"
+
+GRANDSEARCH_USE_NAMESPACE
 
 LevelItemGroupWidget::LevelItemGroupWidget(QWidget *parent)
     : GroupWidget (parent)

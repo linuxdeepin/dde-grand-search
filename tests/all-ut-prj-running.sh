@@ -14,11 +14,11 @@ BUILD_DIR=${2}
 
 UT_TESTS_FOLDER=$BUILD_DIR/tests
 
-#运行UT类型 all dde-grand-search dde-grand-search-daemon
+#运行UT类型 all dde-grand-search libdde-grand-search-daemon
 UT_PRJ_TYPE=${3}
 UT_TYPE_ALL="all"
 UT_TYPE_GRAND_SEARCH="dde-grand-search"
-UT_TYPE_GRAND_SEARCH_DAEMON="dde-grand-search-daemon"
+UT_TYPE_LIBGRAND_SEARCH_DAEMON="libdde-grand-search-daemon"
 UT_TYPE_PREVIEW_PLUGIN="preview-plugin"
 UT_TYPE_GRAND_SEARCH_DOCK_PLUGIN="dde-grand-search-dock-plugin"
 
@@ -64,18 +64,18 @@ if [ "$UT_PRJ_TYPE" = "$UT_TYPE_ALL" ] || [ "$UT_PRJ_TYPE" = "$UT_TYPE_GRAND_SEA
         check_ut_result $? $UT_TYPE_GRAND_SEARCH
 fi
 
-# 3. 运行ut-grand-search-daemon工程
-if [ "$UT_PRJ_TYPE" = "$UT_TYPE_ALL" ] || [ "$UT_PRJ_TYPE" = "$UT_TYPE_GRAND_SEARCH_DAEMON" ] ; then
-        echo $UT_TYPE_GRAND_SEARCH_DAEMON "test case is running"
+# 3. 运行ut-libgrand-search-daemon工程
+if [ "$UT_PRJ_TYPE" = "$UT_TYPE_ALL" ] || [ "$UT_PRJ_TYPE" = "$UT_TYPE_LIBGRAND_SEARCH_DAEMON" ] ; then
+        echo $UT_TYPE_LIBGRAND_SEARCH_DAEMON "test case is running"
 
-	DIR_TEST_GRAND_SEARCH_DAEMON=$UT_TESTS_FOLDER/grand-search-daemon
-	cd $DIR_TEST_GRAND_SEARCH_DAEMON
+	DIR_TEST_LIBGRAND_SEARCH_DAEMON=$UT_TESTS_FOLDER/libgrand-search-daemon
+	cd $DIR_TEST_LIBGRAND_SEARCH_DAEMON
 
-	extract_path_grand_search_daemon="*/src/grand-search-daemon/*"
-    remove_path_grand_search_daemon="*/tests/* */3rdParty/* */build-ut/* *moc_* */anything_interface.*"
+	extract_path_libgrand_search_daemon="*/src/libgrand-search-daemon/*"
+    remove_path_libgrand_search_daemon="*/tests/* */3rdParty/* */build-ut/* *moc_* */anything_interface.*"
 	# report的文件夹，报告后缀名，编译路径，可执行程序名，正向解析设置，逆向解析设置
-	./../../../tests/ut-target-running.sh $BUILD_DIR dde-grand-search-daemon $DIR_TEST_GRAND_SEARCH_DAEMON test-dde-grand-search-daemon "$extract_path_grand_search_daemon" "$remove_path_grand_search_daemon" $SHOW_REPORT
-        check_ut_result $? $UT_TYPE_GRAND_SEARCH_DAEMON
+	./../../../tests/ut-target-running.sh $BUILD_DIR libdde-grand-search-daemon $DIR_TEST_LIBGRAND_SEARCH_DAEMON test-libdde-grand-search-daemon "$extract_path_libgrand_search_daemon" "$remove_path_libgrand_search_daemon" $SHOW_REPORT
+        check_ut_result $? $UT_TYPE_LIBGRAND_SEARCH_DAEMON
 fi
 
 # 4. 运行ut-preview-plugin工程

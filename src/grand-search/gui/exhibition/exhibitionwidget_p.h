@@ -7,6 +7,8 @@
 
 #include "exhibitionwidget.h"
 
+namespace GrandSearch {
+
 class ExhibitionWidgetPrivate
 {
 public:
@@ -14,5 +16,7 @@ public:
 
     ExhibitionWidget *q_p = nullptr;
 };
+
+}
 
 #endif // EXHIBITIONWIDGET_P_H

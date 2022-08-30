@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "image-preview/imagepreview_global.h"
 #include "image-preview/imagepreviewinterface.h"
 #include "image-preview/imagepreviewplugin.h"
 #include "image-preview/imageview.h"
@@ -12,7 +13,7 @@
 
 #include <QTest>
 
-using namespace GrandSearch;
+IMAGE_PREVIEW_USE_NAMESPACE
 
 TEST(ImagePreviewPluginTest, constructor)
 {

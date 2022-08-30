@@ -7,6 +7,9 @@
 
 #include <QMap>
 
+namespace GrandSearch {
+namespace audio_preview {
+
 class AudioFileInfo
 {
 public:
@@ -29,5 +32,7 @@ private:
 private:
     QMap<QString, QByteArray> m_localeCodeMap;  // 区域与编码
 };
+
+}}
 
 #endif // AUDIOINFO_H

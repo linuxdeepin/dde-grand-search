@@ -11,12 +11,16 @@
 
 #include <QScopedPointer>
 
-class ExhibitionWidgetPrivate;
-class MatchWidget;
-class PreviewWidget;
 class QHBoxLayout;
 class QVBoxLayout;
 class QPushButton;
+
+namespace GrandSearch {
+
+class ExhibitionWidgetPrivate;
+class MatchWidget;
+class PreviewWidget;
+
 class ExhibitionWidget : public Dtk::Widget::DWidget
 {
     Q_OBJECT
@@ -31,12 +35,12 @@ public slots:
     void onSelectPreviousItem();
     void onHandleItem();
 
-    void appendMatchedData(const GrandSearch::MatchedItemMap &matchedData);//追加显示匹配数据
+    void appendMatchedData(const MatchedItemMap &matchedData);//追加显示匹配数据
     void onSearchCompleted();
-    void previewItem(const QString &searchGroupName, const GrandSearch::MatchedItem &item);
+    void previewItem(const QString &searchGroupName, const MatchedItem &item);
 
 signals:
-    void sigCurrentItemChanged(const QString &searchGroupName, const GrandSearch::MatchedItem &item);
+    void sigCurrentItemChanged(const QString &searchGroupName, const MatchedItem &item);
     void sigShowNoContent(bool noContent);
     void sigCloseWindow();
     void sigPreviewStateChanged(bool priview);
@@ -58,5 +62,7 @@ private:
     MatchWidget *m_matchWidget = nullptr;
     PreviewWidget *m_previewWidget = nullptr;
 };
+
+}
 
 #endif // EXHIBITIONWIDGET_H

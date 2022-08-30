@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "audio-preview/audiopreview_global.h"
 #include "audio-preview/audiofileinfo.h"
 
 #include <stubext.h>
@@ -9,6 +10,8 @@
 #include <gtest/gtest.h>
 #include <fileref.h>
 #include <taglib.h>
+
+AUDIO_PREVIEW_USE_NAMESPACE
 
 class TestTag : public TagLib::Tag
 {

@@ -9,6 +9,7 @@
  */
 
 #include "grandsearchserviceadaptor.h"
+
 #include <QtCore/QMetaObject>
 #include <QtCore/QByteArray>
 #include <QtCore/QList>
@@ -20,6 +21,8 @@
 /*
  * Implementation of adaptor class GrandSearchServiceAdaptor
  */
+
+using namespace GrandSearch;
 
 GrandSearchServiceAdaptor::GrandSearchServiceAdaptor(QObject *parent)
     : QDBusAbstractAdaptor(parent)

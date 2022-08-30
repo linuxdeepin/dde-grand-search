@@ -7,12 +7,14 @@
 
 #include "groupwidget.h"
 
+namespace GrandSearch {
+
 class LevelItemGroupWidget : public GroupWidget
 {
 public:
     explicit LevelItemGroupWidget(QWidget *parent = nullptr);
 
-    void appendMatchedItems(const GrandSearch::MatchedItems &newItems, const QString& searchGroupName) override;
+    void appendMatchedItems(const MatchedItems &newItems, const QString& searchGroupName) override;
     void clear() override;
 
 public slots:
@@ -21,9 +23,11 @@ public slots:
 private:
     void takeItemFromLevelCache();
     void takeItemFromGeneralCache();
-    void splitLevelData(const GrandSearch::MatchedItems &newItems, QMap<int, GrandSearch::MatchedItems> &newLevelItems, GrandSearch::MatchedItems &newGeneralItems);
+    void splitLevelData(const MatchedItems &newItems, QMap<int, MatchedItems> &newLevelItems, MatchedItems &newGeneralItems);
 private:
-    QMap<int, GrandSearch::MatchedItems> m_levelCacheItems;     //<层级, 该层的缓解项>
+    QMap<int, MatchedItems> m_levelCacheItems;     //<层级, 该层的缓解项>
 };
+
+}
 
 #endif // LEVELITEMGROUPWIDGET_H

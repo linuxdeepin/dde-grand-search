@@ -11,9 +11,13 @@
 
 #include <QScopedPointer>
 
+class QVBoxLayout;
+
+namespace GrandSearch {
+
 class GroupWidget;
 class MatchWidgetPrivate;
-class QVBoxLayout;
+
 class MatchWidget : public Dtk::Widget::DWidget
 {
     Q_OBJECT
@@ -22,7 +26,7 @@ public:
     ~MatchWidget() override;
 
 public slots:
-    void appendMatchedData(const GrandSearch::MatchedItemMap &matchedData);//追加显示匹配数据
+    void appendMatchedData(const MatchedItemMap &matchedData);//追加显示匹配数据
     void clearMatchedData();
     void onSearchCompleted();
     void onShowMore();
@@ -34,10 +38,10 @@ public slots:
     void onPreviewStateChanged(const bool preview);
 
 private slots:
-    void onSelectItemByMouse(const GrandSearch::MatchedItem &item);
+    void onSelectItemByMouse(const MatchedItem &item);
 
 signals:
-    void sigCurrentItemChanged(const QString &searchGroupName, const GrandSearch::MatchedItem &item);
+    void sigCurrentItemChanged(const QString &searchGroupName, const MatchedItem &item);
     void sigShowNoContent(bool noContent);
     void sigCloseWindow();
 
@@ -78,7 +82,7 @@ private:
 
     QVBoxLayout *m_vMainLayout = nullptr;               // 匹配界面主体布局
     Dtk::Widget::DScrollArea *m_scrollArea = nullptr;   // 滚动区域部件
-    DWidget *m_scrollAreaContent = nullptr;             // 滚动区域内容部件
+    Dtk::Widget::DWidget *m_scrollAreaContent = nullptr;// 滚动区域内容部件
     QVBoxLayout *m_vScrollLayout = nullptr;             // 滚动区域内部部件整体布局
 
     QStringList m_groupHashShowOrder;                   // 类目列表显示顺序
@@ -89,5 +93,7 @@ private:
     bool m_customSelected = false;                      // 记录用户是否手动选中
     bool m_isPreviewItem = false;                       // 记录当前是否预览项目
 };
+
+}
 
 #endif // MATCHWIDGET_H

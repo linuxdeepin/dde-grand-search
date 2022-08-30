@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "global/grandsearch_global.h"
 #include "stubext.h"
 
 #include <gtest/gtest.h>
@@ -17,6 +18,7 @@
 
 using namespace testing;
 DGUI_USE_NAMESPACE;
+GRANDSEARCH_USE_NAMESPACE
 
 TEST(HandleVisibilityTest, constructor)
 {

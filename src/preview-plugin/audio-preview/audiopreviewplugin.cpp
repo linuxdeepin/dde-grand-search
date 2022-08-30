@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "global/grandsearch_global.h"
 #include "audiopreviewplugin.h"
 #include "audiofileinfo.h"
 #include "audioview.h"
@@ -12,11 +13,12 @@
 #include <QDateTime>
 #include <QUrl>
 
-using namespace GrandSearch;
+GRANDSEARCH_USE_NAMESPACE
+using namespace GrandSearch::audio_preview;
 
 AudioPreviewPlugin::AudioPreviewPlugin(QObject *parent)
     : QObject (parent)
-    , GrandSearch::PreviewPlugin()
+    , PreviewPlugin()
 {
 
 }
@@ -34,7 +36,7 @@ void AudioPreviewPlugin::init(QObject *proxyInter)
         m_audioView = new AudioView();
 }
 
-bool AudioPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
+bool AudioPreviewPlugin::previewItem(const ItemInfo &item)
 {
     const QString path = item.value(PREVIEW_ITEMINFO_ITEM);
     if (path.isEmpty())
@@ -75,7 +77,7 @@ bool AudioPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
             qint64 dura = -1;
             m_parser->getDuration(QUrl::fromLocalFile(path), dura);
             if (dura >= 0)
-                amd.duration = GrandSearch::CommonTools::durationString(dura);
+                amd.duration = CommonTools::durationString(dura);
         }
     }
 
@@ -125,7 +127,7 @@ bool AudioPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
     tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
 
     contentInfos.clear();
-    contentInfos.insert(DetailInfoProperty::Text, QVariant(time.toString(GrandSearch::CommonTools::dateTimeFormat())));
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(time.toString(CommonTools::dateTimeFormat())));
     contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideMiddle));
 
     detailInfo = qMakePair(tagInfos, contentInfos);
@@ -135,7 +137,7 @@ bool AudioPreviewPlugin::previewItem(const GrandSearch::ItemInfo &item)
     return true;
 }
 
-GrandSearch::ItemInfo AudioPreviewPlugin::item() const
+ItemInfo AudioPreviewPlugin::item() const
 {
     return m_item;
 }
@@ -150,7 +152,7 @@ QWidget *AudioPreviewPlugin::contentWidget() const
     return m_audioView;
 }
 
-GrandSearch::DetailInfoList AudioPreviewPlugin::getAttributeDetailInfo() const
+DetailInfoList AudioPreviewPlugin::getAttributeDetailInfo() const
 {
     return m_detailInfos;
 }

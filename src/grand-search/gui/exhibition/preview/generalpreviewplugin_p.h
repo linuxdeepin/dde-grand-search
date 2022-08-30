@@ -16,6 +16,12 @@
 #include <QFormLayout>
 #include <QToolButton>
 
+DWIDGET_BEGIN_NAMESPACE
+class DHorizontalLine;
+DWIDGET_END_NAMESPACE
+
+namespace GrandSearch {
+
 class NameLabel: public QLabel
 {
     Q_OBJECT
@@ -30,9 +36,7 @@ public:
     explicit SizeLabel(const QString &text = "", QWidget *parent = nullptr, Qt::WindowFlags f = {});
 };
 
-DWIDGET_BEGIN_NAMESPACE
-class DHorizontalLine;
-DWIDGET_END_NAMESPACE
+
 class GeneralPreviewPluginPrivate
 {
 public:
@@ -41,8 +45,8 @@ public:
 
     GeneralPreviewPlugin *q_p = nullptr;
 
-    GrandSearch::MatchedItem m_item;
-    GrandSearch::DetailInfoList m_detailInfos;
+    MatchedItem m_item;
+    DetailInfoList m_detailInfos;
 
     QVBoxLayout *m_vMainLayout = nullptr;
     QPointer<QWidget> m_contentWidget = nullptr;
@@ -55,5 +59,7 @@ public:
     SizeLabel *m_sizeLabel = nullptr;
     FileStatisticsThread *m_sizeWorker = nullptr;
 };
+
+}
 
 #endif // UNKNOWNPREVIEWPLUGIN_P_H

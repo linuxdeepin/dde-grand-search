@@ -9,6 +9,8 @@
 #include <QSettings>
 #include <QMutex>
 
+namespace GrandSearch {
+
 class SearchConfig : public QObject
 {
     Q_OBJECT
@@ -32,5 +34,7 @@ private:
     QMutex  m_mutex;
     QSettings *m_settings = nullptr;
 };
+
+}
 
 #endif // SEARCHCONFIG_H

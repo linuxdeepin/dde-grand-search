@@ -9,15 +9,13 @@
 #include <QVBoxLayout>
 #include <QLabel>
 
+namespace GrandSearch {
+
 class PlanWidget;
 class BestMatchWidget;
 class TailerWidget;
 class SearchEngineWidget;
-
-namespace GrandSearch {
 class SwitchWidget;
-}
-
 class CustomWidget : public Dtk::Widget::DWidget
 {
     Q_OBJECT
@@ -38,9 +36,11 @@ private:
     QVBoxLayout *m_innerLayout = nullptr;
 
     QHash<QString, QString> m_groupName;        // <searchGroupName, displayGroupName>
-    QList<GrandSearch::SwitchWidget*> m_switchWidgets;
+    QList<SwitchWidget*> m_switchWidgets;
 
     QStringList m_displayIcons;                 // 显示图标
 };
+
+}
 
 #endif // CUSTOMWIDGET_H

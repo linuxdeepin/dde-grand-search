@@ -304,7 +304,7 @@ void Utils::updateItemsWeight(MatchedItemMap &map, const QString &content)
  * @param item 搜索结果
  * @return 支持权重计算则返回true
  */
-bool Utils::setWeightMethod(GrandSearch::MatchedItem &item)
+bool Utils::setWeightMethod(MatchedItem &item)
 {
     QVariantHash ext = item.extra.toHash();
 
@@ -441,7 +441,7 @@ int Utils::calcWeightByDateDiff(const qint64 &diff, const int &type)
  * @param keys 关键字
  * @return 权重
  */
-double Utils::calcAppWeight(const GrandSearch::MatchedItem &item, const QStringList &keys)
+double Utils::calcAppWeight(const MatchedItem &item, const QStringList &keys)
 {
     double weight = 0;
     for (const QString &key : keys) {
@@ -456,7 +456,7 @@ double Utils::calcAppWeight(const GrandSearch::MatchedItem &item, const QStringL
     return weight;
 }
 
-double Utils::calcSettingWeight(const GrandSearch::MatchedItem &item, const QStringList &keys)
+double Utils::calcSettingWeight(const MatchedItem &item, const QStringList &keys)
 {
     double weight = 0;
     for (const QString &key : keys) {
@@ -566,7 +566,7 @@ void Utils::packageBestMatch(MatchedItemMap &map, int maxQuantity)
     }
 }
 
-double Utils::calcRecordWeight(const GrandSearch::MatchedItem &item)
+double Utils::calcRecordWeight(const MatchedItem &item)
 {
     auto recordHash = AccessRecord::instance()->getRecord();
 

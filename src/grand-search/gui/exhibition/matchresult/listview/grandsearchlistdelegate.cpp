@@ -28,6 +28,7 @@
 #define TailMaxWidth              150      // 拖尾信息最大显示宽度
 
 DWIDGET_USE_NAMESPACE
+using namespace GrandSearch;
 
 GrandSearchListDelegate::GrandSearchListDelegate(QAbstractItemView *parent)
     : DStyledItemDelegate(parent)

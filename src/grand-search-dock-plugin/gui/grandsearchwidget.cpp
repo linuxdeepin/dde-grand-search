@@ -14,7 +14,8 @@
 #include <QPainterPath>
 #include <QDebug>
 
-DWIDGET_USE_NAMESPACE;
+using namespace GrandSearch;
+DWIDGET_USE_NAMESPACE
 
 GrandSearchWidget::GrandSearchWidget(QWidget *parent)
     : QWidget(parent)
