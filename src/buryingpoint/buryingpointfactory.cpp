@@ -4,6 +4,7 @@
 
 #include "buryingpointfactory.h"
 #include "launchapppoint.h"
+#include "clickitempoint.h"
 
 using namespace GrandSearch;
 using namespace burying_point;
@@ -32,6 +33,10 @@ BasicPoint *BuryingPointFactory::createData(const GrandSearch::burying_point::Bu
     switch (id) {
     case BuryingPointEventId::Launch: {
         p = new LaunchAppPoint();
+        break;
+    }
+    case BuryingPointEventId::ClickItem: {
+        p = new ClickItemPoint();
         break;
     }
     default:

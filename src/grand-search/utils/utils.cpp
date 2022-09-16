@@ -17,6 +17,9 @@ extern "C" {
 #include "global/searchhelper.h"
 #include "contacts/interface/daemongrandsearchinterface.h"
 #include "business/config/accessrecord/accessrecord.h"
+#include "buryingpoint/eventlogutil/eventlogutil.h"
+#include "buryingpoint/basicpoint.h"
+#include "buryingpoint/buryingpointfactory.h"
 
 #include <DArrowRectangle>
 #include <DDesktopEntry>
@@ -750,6 +753,8 @@ bool Utils::openMatchedItem(const MatchedItem &item)
         result = openFile(item);
     }
 
+    Utils::clickItemPoint(item);
+
     return result;
 }
 
@@ -972,4 +977,22 @@ bool Utils::isWayland()
     static bool wayland = QApplication::platformName() == "wayland";
 
     return wayland;
+}
+
+void Utils::clickItemPoint(const MatchedItem &item)
+{
+    QScopedPointer<burying_point::BasicPoint> p(burying_point::BuryingPointFactory::instance()
+                                                ->createData(burying_point::BuryingPointEventId::ClickItem));
+    QVariantMap data;
+    if (item.searcher == GRANDSEARCH_CLASS_APP_DESKTOP) {   // 应用
+        data.insert("category", "app");
+    } else if (item.searcher == GRANDSEARCH_CLASS_WEB_STATICTEXT) { // web
+        data.insert("category", "web");
+    } else if (item.searcher == GRANDSEARCH_CLASS_SETTING_CONTROLCENTER) {  // 设置
+        data.insert("category", "setting");
+    } else {
+        data.insert("category", item.type);
+    }
+    p->setAdditionalData(data);
+    burying_point::EventLogUtil::instance()->writeEvent(p->assemblingData());
 }
