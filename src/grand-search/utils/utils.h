@@ -109,6 +109,8 @@ public:
 
     static bool isWayland();
 
+    static void clickItemPoint(const MatchedItem &item); // 打开搜索结果埋点
+
 private:
     static QMap<QString, QString> m_appIconNameMap;// 存放应用desktop文件对应的图标名称，用于搜索框应用图标刷新
     static QMimeDatabase m_mimeDb;

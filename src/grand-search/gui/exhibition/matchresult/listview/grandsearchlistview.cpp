@@ -9,6 +9,7 @@
 #include "global/matcheditem.h"
 #include "global/builtinsearch.h"
 #include "global/accessibility/acintelfunctions.h"
+#include "gui/exhibition/matchresult/groupwidget.h"
 
 #include <DGuiApplicationHelper>
 #include <DStandardPaths>
@@ -17,6 +18,7 @@
 #include <QFileInfo>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QVariant>
 
 using namespace GrandSearch;
 DCORE_USE_NAMESPACE

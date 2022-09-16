@@ -15,7 +15,8 @@ namespace burying_point {
 enum BuryingPointEventId {
     // Each event has its unique id defined by data platform except Default id.
     Default = 0,  // default event id, which is only used to identify base data
-    Launch = 1000000003  // launch application event id
+    Launch = 1000000003,  // launch application event id
+    ClickItem = 1000700000  // click the search result event id
 };
 
 class BasicPoint
