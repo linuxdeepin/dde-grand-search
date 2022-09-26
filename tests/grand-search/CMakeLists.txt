@@ -16,6 +16,14 @@ set(LIB_BASE_DIR "${LIB_PLATFORM_DIR}/${BIN_NAME}")
 # 插件目录
 set(PLUGIN_BASE_DIR "${LIB_BASE_DIR}/plugins")
 
+# 埋点文件
+FILE(GLOB BURYINGPOINT_SRC
+    "${PROJECT_SOURCE_PATH}/buryingpoint/*.h"
+    "${PROJECT_SOURCE_PATH}/buryingpoint/*.cpp"
+    "${PROJECT_SOURCE_PATH}/buryingpoint/eventlogutil/*.h"
+    "${PROJECT_SOURCE_PATH}/buryingpoint/eventlogutil/*.cpp"
+)
+
 # 预览插件目录
 set(PLUGIN_PREVIEW_DIR "${PLUGIN_BASE_DIR}/preview")
 add_definitions(-DPLUGIN_PREVIEW_DIR="${PLUGIN_PREVIEW_DIR}")
@@ -63,6 +71,7 @@ set(SRCS
     ${PRO_SRC}
     ${UT_SRC}
     ${CPP_STUB_SRC}
+    ${BURYINGPOINT_SRC}
 )
 
 add_executable(${BIN_NAME} ${SRCS})
