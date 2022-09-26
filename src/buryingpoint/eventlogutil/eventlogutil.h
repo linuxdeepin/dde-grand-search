@@ -7,32 +7,38 @@
 
 #include <QVariantMap>
 
-namespace  GrandSearch {
+namespace GrandSearch {
 
 namespace burying_point {
 
-class EventLogUtil
+class CommitLog;
+class EventLogUtil : public QObject
 {
+    Q_OBJECT
 public:
     ~EventLogUtil();
 
     static EventLogUtil *instance();
-    void writeEvent(const QVariantMap &data) const;
+    void writeEvent(const QVariantMap &data);
+
+Q_SIGNALS:
+    void appendData(const QString &data);
 
 protected:
-    explicit EventLogUtil();
-private:
-    QJsonObject castToJson(const QVariantMap &data) const;
+    explicit EventLogUtil(QObject *parent = nullptr);
 
 private:
-    bool (*init)(const std::string &packgename, bool enable_sig) = nullptr;
-    void (*writeLog)(const std::string &eventData) = nullptr;
+    QJsonObject castToJson(const QVariantMap &data) const;
+    void init();
+
+private:
+    bool m_isInit = false;
+    CommitLog *m_commitLog = nullptr;
+    QThread *m_commitThread = nullptr;
 };
 
 }
 
-
-
 }
 
-#endif // EVENTLOGUTIL_H
+#endif   // EVENTLOGUTIL_H
