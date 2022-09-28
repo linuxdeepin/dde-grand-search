@@ -1,47 +1,29 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="es">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="es">
 <context>
-    <name>AudioPreviewPlugin</name>
+    <name>GrandSearch::BestMatchWidget</name>
     <message>
-        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="71"/>
-        <source>Artist:</source>
-        <translation>Artista: </translation>
-    </message>
-    <message>
-        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="83"/>
-        <source>Album:</source>
-        <translation>Álbum:</translation>
-    </message>
-    <message>
-        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="108"/>
-        <source>Duration:</source>
-        <translation>Duración:</translation>
-    </message>
-    <message>
-        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="123"/>
-        <source>Type:</source>
-        <translation>Tipo</translation>
-    </message>
-    <message>
-        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="135"/>
-        <source>Location:</source>
-        <translation>Ubicación:</translation>
-    </message>
-    <message>
-        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="149"/>
-        <source>Time modified:</source>
-        <translation>Hora de la modificación</translation>
-    </message>
-</context>
-<context>
-    <name>BestMatchWidget</name>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/bestmatchwidget.cpp" line="38"/>
+        <location filename="../src/grand-search/gui/searchconfig/bestmatchwidget.cpp" line="39"/>
         <source>Best match</source>
-        <translation type="unfinished"/>
+        <translation>Mejor resultado</translation>
     </message>
 </context>
 <context>
-    <name>CustomWidget</name>
+    <name>GrandSearch::BlackListWidget</name>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="43"/>
+        <source>Excluded path</source>
+        <translation>Ruta excluida</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="54"/>
+        <source>Add paths to the exclusion list to prevent searching in them.</source>
+        <translation>Añadir rutas a la lista de exclusión para evitar buscar en ellas.</translation>
+    </message>
+</context>
+<context>
+    <name>GrandSearch::CustomWidget</name>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/customwidget.cpp" line="42"/>
         <source>Custom search</source>
@@ -49,25 +31,45 @@
     </message>
 </context>
 <context>
-    <name>DdeGrandSearchDockPlugin</name>
+    <name>GrandSearch::DdeGrandSearchDockPlugin</name>
     <message>
-        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="57"/>
-        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="100"/>
+        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="58"/>
+        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="101"/>
         <source>Grand Search</source>
-        <translation>Buscador general</translation>
+        <translation>Búsqueda general</translation>
     </message>
     <message>
-        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="163"/>
+        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="164"/>
         <source>Search settings</source>
         <translation>Ajustes de búsqueda</translation>
     </message>
 </context>
 <context>
-    <name>EntranceWidget</name>
+    <name>GrandSearch::DeleteDialog</name>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="31"/>
+        <source>Do you want to remove the path from the exclusion list?</source>
+        <translation>¿Desea eliminar la ruta de la lista de exclusión?</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="37"/>
+        <source>Cancel</source>
+        <comment>button</comment>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="45"/>
+        <source>Confirm</source>
+        <comment>button</comment>
+        <translation>Confirmar</translation>
+    </message>
+</context>
+<context>
+    <name>GrandSearch::EntranceWidget</name>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="241"/>
         <source>Search</source>
-        <translation>Buscar en Internet</translation>
+        <translation>Buscar</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="242"/>
@@ -76,7 +78,7 @@
     </message>
 </context>
 <context>
-    <name>EntranceWidgetPrivate</name>
+    <name>GrandSearch::EntranceWidgetPrivate</name>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="94"/>
         <source>Cut</source>
@@ -94,7 +96,7 @@
     </message>
 </context>
 <context>
-    <name>GeneralPreviewPlugin</name>
+    <name>GrandSearch::GeneralPreviewPlugin</name>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="208"/>
         <source>Location:</source>
@@ -103,65 +105,45 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="219"/>
         <source>Time modified:</source>
-        <translation>Hora de la modificación</translation>
+        <translation>Hora modificada:</translation>
     </message>
 </context>
 <context>
-    <name>GeneralToolBar</name>
+    <name>GrandSearch::GeneralToolBar</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="85"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="86"/>
         <source>Open</source>
         <translation>Abrir</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="90"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="91"/>
         <source>Open Path</source>
         <translation>Ruta libre</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="95"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="96"/>
         <source>Copy Path</source>
         <translation>Copiar ruta</translation>
     </message>
 </context>
 <context>
-    <name>GroupWidget</name>
+    <name>GrandSearch::GroupWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="260"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="261"/>
         <source>More</source>
         <translation>Más</translation>
     </message>
 </context>
 <context>
-    <name>ImagePreviewPlugin</name>
+    <name>GrandSearch::IndexWidget</name>
     <message>
-        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="67"/>
-        <source>Dimensions:</source>
-        <translation>Dimensiones:</translation>
-    </message>
-    <message>
-        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="83"/>
-        <source>Type:</source>
-        <translation>Tipo</translation>
-    </message>
-    <message>
-        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="98"/>
-        <source>Size:</source>
-        <translation>Tamaño:</translation>
-    </message>
-    <message>
-        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="110"/>
-        <source>Location:</source>
-        <translation>Ubicación:</translation>
-    </message>
-    <message>
-        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="124"/>
-        <source>Time modified:</source>
-        <translation>Hora de la modificación</translation>
+        <location filename="../src/grand-search/gui/searchconfig/indexwidget.cpp" line="39"/>
+        <source>Index</source>
+        <translation>Índice</translation>
     </message>
 </context>
 <context>
-    <name>MainWindow</name>
+    <name>GrandSearch::MainWindow</name>
     <message>
         <location filename="../src/grand-search/gui/mainwindow.cpp" line="224"/>
         <source>No search results</source>
@@ -169,7 +151,7 @@
     </message>
 </context>
 <context>
-    <name>PlanWidget</name>
+    <name>GrandSearch::PlanWidget</name>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="43"/>
         <source>Search experience program</source>
@@ -178,17 +160,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="51"/>
         <source>Join search experience program</source>
-        <translation>Únase al programa de experiencia de búsqueda</translation>
+        <translation>Unirse al programa de experiencia de búsqueda</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="64"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations. If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation>Unirse al programa de experiencia de búsqueda significa que usted nos concede y autoriza a recopilar la información de su dispositivo y sistema, iconos de archivos, contenido y propiedades, aplicaciones y sus configuraciones. Si rechaza que recopilemos y utilicemos la información mencionada, no se una al programa.</translation>
+        <translation>Unirse al programa de experiencia de búsqueda significa que nos otorga y autoriza a recopilar la información de su dispositivo y sistema, íconos de archivos, contenido y propiedades, aplicaciones y sus configuraciones. Si rechaza nuestra recopilación y uso de la información antes mencionada, no se una al programa.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="73"/>
         <source>To know more about the management of your data, please refer to the UnionTech Software Privacy Policy (</source>
-        <translation>Para saber más sobre la gestión de sus datos, consulte la política de privacidad de UnionTech Software (</translation>
+        <translation>Para obtener más información sobre la gestión de sus datos, consulte la Política de privacidad del software de UnionTech (</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="75"/>
@@ -207,95 +189,7 @@
     </message>
 </context>
 <context>
-    <name>QObject</name>
-    <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="41"/>
-        <source>Best match</source>
-        <translation>Mejor resultado</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="42"/>
-        <source>Applications</source>
-        <translation>Aplicaciones </translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="43"/>
-        <source>Settings</source>
-        <translation>Ajustes</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="44"/>
-        <source>Videos</source>
-        <translation>Vídeos</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="45"/>
-        <source>Music</source>
-        <translation>Música</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="46"/>
-        <source>Pictures</source>
-        <translation>Imágenes</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="47"/>
-        <source>Documents</source>
-        <translation>Documentos</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="48"/>
-        <source>Folders</source>
-        <translation>Carpetas</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="49"/>
-        <source>Files</source>
-        <translation>Archivos</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="50"/>
-        <source>Web</source>
-        <translation>Web</translation>
-    </message>
-    <message>
-        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="38"/>
-        <source>Dimensions:</source>
-        <translation>Dimensiones:</translation>
-    </message>
-    <message>
-        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="39"/>
-        <source>Type:</source>
-        <translation>Tipo</translation>
-    </message>
-    <message>
-        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="40"/>
-        <source>Size:</source>
-        <translation>Tamaño:</translation>
-    </message>
-    <message>
-        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="41"/>
-        <source>Duration:</source>
-        <translation>Duración:</translation>
-    </message>
-    <message>
-        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="42"/>
-        <source>Location:</source>
-        <translation>Ubicación:</translation>
-    </message>
-    <message>
-        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="43"/>
-        <source>Time modified:</source>
-        <translation>Hora de la modificación</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search-daemon/searcher/file/filesearchutils.cpp" line="215"/>
-        <source>modified</source>
-        <translation>Modificado</translation>
-    </message>
-</context>
-<context>
-    <name>ScopeWidget</name>
+    <name>GrandSearch::ScopeWidget</name>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/scopewidget.cpp" line="44"/>
         <source>Search contents</source>
@@ -303,82 +197,231 @@
     </message>
 </context>
 <context>
-    <name>SearchEngineWidget</name>
+    <name>GrandSearch::SearchEngineWidget</name>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="48"/>
         <source>Default search engine</source>
-        <translation type="unfinished"/>
+        <translation>Motor de búsqueda por defecto</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="56"/>
         <source>Search for keywords by the default search engine.</source>
-        <translation type="unfinished"/>
+        <translation>Busque palabras clave mediante el motor de búsqueda por defecto.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="72"/>
         <source>Default search engine is</source>
-        <translation type="unfinished"/>
+        <translation>El motor de búsqueda por defecto es</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="81"/>
         <source>Google</source>
-        <translation type="unfinished"/>
+        <translation>Google</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="82"/>
         <source>Baidu</source>
-        <translation type="unfinished"/>
+        <translation>Baidu</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="83"/>
         <source>Bing</source>
-        <translation type="unfinished"/>
+        <translation>Bing</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="84"/>
         <source>Yahoo</source>
-        <translation type="unfinished"/>
+        <translation>Yahoo</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="85"/>
         <source>360</source>
-        <translation type="unfinished"/>
+        <translation>360</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="86"/>
         <source>Sogou</source>
-        <translation type="unfinished"/>
+        <translation>Sogou</translation>
     </message>
 </context>
 <context>
-    <name>StaticTextWorker</name>
+    <name>GrandSearch::StaticTextWorker</name>
     <message>
-        <location filename="../src/grand-search-daemon/searcher/web/statictextworker.cpp" line="67"/>
+        <location filename="../src/libgrand-search-daemon/searcher/web/statictextworker.cpp" line="69"/>
         <source>Search for &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Buscar por &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
-    <name>TailerWidget</name>
+    <name>GrandSearch::TailerWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="33"/>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="34"/>
         <source>Tailer settings</source>
-        <translation>Configuración de fondo</translation>
+        <translation>Ajustes de fondo</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="43"/>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="44"/>
         <source>It is displayed at the end of search results for better identification and distinction of items with duplicate names.</source>
         <translation>Se muestra al final de los resultados de búsqueda para una mejor identificación y distinción de elementos con nombres duplicados.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="56"/>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="57"/>
         <source>Parent directory</source>
         <translation>Directorio principal</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="58"/>
+        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="59"/>
         <source>Time modified</source>
-        <translation>Hora de modificación </translation>
+        <translation>Hora modificada</translation>
+    </message>
+</context>
+<context>
+    <name>GrandSearch::audio_preview::AudioPreviewPlugin</name>
+    <message>
+        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="73"/>
+        <source>Artist:</source>
+        <translation>Artista: </translation>
+    </message>
+    <message>
+        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="85"/>
+        <source>Album:</source>
+        <translation>Album:</translation>
+    </message>
+    <message>
+        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="110"/>
+        <source>Duration:</source>
+        <translation>Duración:</translation>
+    </message>
+    <message>
+        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="125"/>
+        <source>Type:</source>
+        <translation>Tipo:</translation>
+    </message>
+    <message>
+        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="137"/>
+        <source>Location:</source>
+        <translation>Ubicación:</translation>
+    </message>
+    <message>
+        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="151"/>
+        <source>Time modified:</source>
+        <translation>Hora modificada:</translation>
+    </message>
+</context>
+<context>
+    <name>GrandSearch::image_preview::ImagePreviewPlugin</name>
+    <message>
+        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="69"/>
+        <source>Dimensions:</source>
+        <translation>Dimensiones:</translation>
+    </message>
+    <message>
+        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="85"/>
+        <source>Type:</source>
+        <translation>Tipo:</translation>
+    </message>
+    <message>
+        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="100"/>
+        <source>Size:</source>
+        <translation>Tamaño:</translation>
+    </message>
+    <message>
+        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="112"/>
+        <source>Location:</source>
+        <translation>Ubicación:</translation>
+    </message>
+    <message>
+        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="126"/>
+        <source>Time modified:</source>
+        <translation>Hora modificada:</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="../src/grand-search/gui/datadefine.h" line="39"/>
+        <source>Best match</source>
+        <translation>Mejor resultado</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/datadefine.h" line="40"/>
+        <source>Applications</source>
+        <translation>Aplicaciones </translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/datadefine.h" line="41"/>
+        <source>Settings</source>
+        <translation>Ajustes</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/datadefine.h" line="42"/>
+        <source>Videos</source>
+        <translation>Vídeos</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/datadefine.h" line="43"/>
+        <source>Music</source>
+        <translation>Música</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/datadefine.h" line="44"/>
+        <source>Pictures</source>
+        <translation>Imágenes</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/datadefine.h" line="45"/>
+        <source>Documents</source>
+        <translation>Documentos</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/datadefine.h" line="46"/>
+        <source>Folders</source>
+        <translation>Carpetas</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/datadefine.h" line="47"/>
+        <source>Files</source>
+        <translation>Archivos</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/datadefine.h" line="48"/>
+        <source>Web</source>
+        <translation>Web</translation>
+    </message>
+    <message>
+        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="42"/>
+        <source>Dimensions:</source>
+        <translation>Dimensiones:</translation>
+    </message>
+    <message>
+        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="43"/>
+        <source>Type:</source>
+        <translation>Tipo</translation>
+    </message>
+    <message>
+        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="44"/>
+        <source>Size:</source>
+        <translation>Tamaño:</translation>
+    </message>
+    <message>
+        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="45"/>
+        <source>Duration:</source>
+        <translation>Duración:</translation>
+    </message>
+    <message>
+        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="46"/>
+        <source>Location:</source>
+        <translation>Ubicación:</translation>
+    </message>
+    <message>
+        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="47"/>
+        <source>Time modified:</source>
+        <translation>Hora de la modificación</translation>
+    </message>
+    <message>
+        <location filename="../src/libgrand-search-daemon/searcher/file/filesearchutils.cpp" line="220"/>
+        <source>modified</source>
+        <translation>Modificado</translation>
     </message>
 </context>
 </TS>
