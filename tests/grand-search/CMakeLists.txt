@@ -16,6 +16,10 @@ set(LIB_BASE_DIR "${LIB_PLATFORM_DIR}/${BIN_NAME}")
 # 插件目录
 set(PLUGIN_BASE_DIR "${LIB_BASE_DIR}/plugins")
 
+# 扩展搜索插件目录
+set(PLUGIN_SEARCHER_DIR "${PLUGIN_BASE_DIR}/searcher")
+add_definitions(-DPLUGIN_SEARCHER_DIR="${PLUGIN_SEARCHER_DIR}")
+
 # 预览插件目录
 set(PLUGIN_PREVIEW_DIR "${PLUGIN_BASE_DIR}/preview")
 add_definitions(-DPLUGIN_PREVIEW_DIR="${PLUGIN_PREVIEW_DIR}")

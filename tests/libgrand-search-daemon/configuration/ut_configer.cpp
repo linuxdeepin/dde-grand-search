@@ -20,6 +20,7 @@
  */
 
 #include "global/grandsearch_global.h"
+#include "global/commontools.h"
 #include "configuration/configer.h"
 #include "configuration/configer_p.h"
 
@@ -29,7 +30,6 @@
 
 #include <QTest>
 GRANDSEARCH_USE_NAMESPACE
-
 
 TEST(UserPreference, ut_initDefault)
 {
@@ -61,7 +61,7 @@ TEST(UserPreference, ut_init)
         load = true;
     });
 
-    auto orgFunc = (bool(QFileInfo::*)()const)&QFileInfo::exists;
+    auto orgFunc = (bool (QFileInfo::*)() const) & QFileInfo::exists;
     st.set_lamda(orgFunc, []() {
         return true;
     });
@@ -131,11 +131,14 @@ TEST(ConfigerPrivate, ut_updateConfig1)
 
 TEST(ConfigerPrivate, resetPath)
 {
+    stub_ext::StubExt st;
+    st.set_lamda(CommonTools::bindPathTransform, []() { return "/data/home"; });
+
     Configer conf;
     QString path("/");
     conf.d->resetPath(path);
     EXPECT_EQ(QString("/"), path);
-    path = QString("/data");
+    path = QString("/data/home");
     conf.d->resetPath(path);
     EXPECT_EQ(QString("/home/"), path);
     path = QString("/data/home/aaa");

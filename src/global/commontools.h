@@ -28,11 +28,14 @@
 #include <QtDebug>
 #include <QImage>
 #include <QPainter>
+#include <QMutex>
+
+#include <fstab.h>
+#include <sys/stat.h>
 
 namespace GrandSearch {
 
-namespace CommonTools
-{
+namespace CommonTools {
 
 // 规范化浮点型字串，去掉小数点后多余的0
 inline QString normalizeDoubleString(const QString &str)
@@ -56,7 +59,7 @@ inline QString normalizeDoubleString(const QString &str)
 
 // 根据文件size换算为KB\MB\GB\TB
 inline QString formatFileSize(qint64 num, bool withUnitVisible = true, int precision = 1, int forceUnit = -1,
-                              QStringList unitList = QStringList({" B", " KB", " MB", " GB", " TB"}))
+                              QStringList unitList = QStringList({ " B", " KB", " MB", " GB", " TB" }))
 {
     if (num < 0) {
         qWarning() << "Negative number passed to formatSize():" << num;
@@ -120,8 +123,8 @@ inline QImage creatErrorImage(const QSize &imgSize, const QImage &errorImg)
 
     // errorImg居中
     painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-    painter.drawImage((img.width() - errorImg.width())/2,
-                      (img.height() - errorImg.height())/2, errorImg);
+    painter.drawImage((img.width() - errorImg.width()) / 2,
+                      (img.height() - errorImg.height()) / 2, errorImg);
     painter.end();
 
     return img;
@@ -163,8 +166,68 @@ inline QString lineFeed(const QString &text, int nWidth, const QFont &font, int 
     return strText;
 }
 
+// 获取bind信息
+inline QMap<QString, QString> fstabBindInfo()
+{
+    static QMutex mutex;
+    static QMap<QString, QString> table;
+    struct stat statInfo;
+    int result = stat("/etc/fstab", &statInfo);
+
+    QMutexLocker locker(&mutex);
+    if (0 == result) {
+        static quint32 lastModify = 0;
+        if (lastModify != statInfo.st_mtime) {
+            lastModify = static_cast<quint32>(statInfo.st_mtime);
+            table.clear();
+            struct fstab *fs;
+
+            setfsent();
+            while ((fs = getfsent()) != nullptr) {
+                QString mntops(fs->fs_mntops);
+                if (mntops.contains("bind"))
+                    table.insert(fs->fs_spec, fs->fs_file);
+            }
+            endfsent();
+        }
+    }
+
+    return table;
+}
+
+// bind目录相互转换
+// toDevice为true转换为设备名，否则转换为挂载点名
+inline QString bindPathTransform(const QString &path, bool toDevice)
+{
+    if (!path.startsWith("/") || path == "/")
+        return path;
+
+    const QMap<QString, QString> &table = fstabBindInfo();
+    if (table.isEmpty())
+        return path;
+
+    QString bindPath(path);
+    if (toDevice) {
+        for (const auto &mntPoint : table.values()) {
+            if (path.startsWith(mntPoint)) {
+                bindPath.replace(mntPoint, table.key(mntPoint));
+                break;
+            }
+        }
+    } else {
+        for (const auto &device : table.keys()) {
+            if (path.startsWith(device)) {
+                bindPath.replace(device, table[device]);
+                break;
+            }
+        }
+    }
+
+    return bindPath;
+}
+
 }   // end CommonTools
 
 }
 
-#endif // COMMONTOOLS_H
+#endif   // COMMONTOOLS_H
