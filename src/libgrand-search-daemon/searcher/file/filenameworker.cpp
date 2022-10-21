@@ -4,7 +4,7 @@
 
 #include "filenameworker.h"
 #include "filenameworker_p.h"
-#include "anything_interface.h"
+#include "../3rdparty/interfaces/anything_interface.h"
 #include "global/builtinsearch.h"
 #include "utils/specialtools.h"
 #include "global/searchhelper.h"

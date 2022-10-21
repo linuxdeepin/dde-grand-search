@@ -15,7 +15,7 @@ extern "C" {
 
 #include "global/builtinsearch.h"
 #include "global/searchhelper.h"
-#include "contacts/interface/daemongrandsearchinterface.h"
+#include "../3rdparty/interfaces/daemongrandsearchinterface.h"
 #include "business/config/accessrecord/accessrecord.h"
 #include "buryingpoint/eventlogutil/eventlogutil.h"
 #include "buryingpoint/basicpoint.h"

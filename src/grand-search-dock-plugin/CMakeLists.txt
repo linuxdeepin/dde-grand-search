@@ -21,8 +21,8 @@ set(SRCS
     gui/grandsearchwidget.cpp
     gui/tipswidget.h
     gui/tipswidget.cpp
-    contacts/interface/grandsearchinterface.h
-    contacts/interface/grandsearchinterface.cpp
+    ${CMAKE_SOURCE_DIR}/3rdparty/interfaces/grandsearchinterface.h
+    ${CMAKE_SOURCE_DIR}/3rdparty/interfaces/grandsearchinterface.cpp
     )
 
 # 指定资源文件

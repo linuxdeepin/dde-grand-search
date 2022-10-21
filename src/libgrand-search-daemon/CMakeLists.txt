@@ -115,8 +115,8 @@ else ()
         searcher/file/filenameworker_p.h
         searcher/file/filesearchutils.h
         searcher/file/filesearchutils.cpp
-        searcher/file/anything_interface.h
-        searcher/file/anything_interface.cpp
+        ${CMAKE_SOURCE_DIR}/3rdparty/interfaces/anything_interface.h
+        ${CMAKE_SOURCE_DIR}/3rdparty/interfaces/anything_interface.cpp
     )
 endif()
 

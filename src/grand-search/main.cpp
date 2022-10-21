@@ -10,7 +10,7 @@
 #include "business/query/querycontroller.h"
 #include "business/matchresult/matchcontroller.h"
 #include "contacts/services/grandsearchservice.h"
-#include "contacts/services/grandsearchserviceadaptor.h"
+#include "../3rdparty/services/grandsearchserviceadaptor.h"
 #include "business/config/accessrecord/accessrecord.h"
 #include "buryingpoint/basicpoint.h"
 #include "buryingpoint/buryingpointfactory.h"

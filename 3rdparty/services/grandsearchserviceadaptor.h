@@ -12,7 +12,7 @@
 #ifndef GRANDSEARCHSERVICEADAPTOR_H
 #define GRANDSEARCHSERVICEADAPTOR_H
 
-#include "grandsearchservice.h"
+#include "../src/grand-search/contacts/services/grandsearchservice.h"
 
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
