@@ -3,9 +3,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "global/grandsearch_global.h"
-#include "contacts/services/grandsearchserviceadaptor.h"
 #include "contacts/services/grandsearchservice.h"
 #include "gui/mainwindow.h"
+
+#include "services/grandsearchserviceadaptor.h"
 
 #include "stubext.h"
 

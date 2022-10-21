@@ -4,7 +4,8 @@
 
 #include "global/grandsearch_global.h"
 #include "gui/grandsearchwidget.h"
-#include "contacts/interface/grandsearchinterface.h"
+
+#include "interfaces/grandsearchinterface.h"
 
 #include "constants.h"
 

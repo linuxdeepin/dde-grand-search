@@ -3,7 +3,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "grandsearchwidget.h"
-#include "contacts/interface/grandsearchinterface.h"
+
+#include "interfaces/grandsearchinterface.h"
 
 #include "constants.h"
 #include <DGuiApplicationHelper>

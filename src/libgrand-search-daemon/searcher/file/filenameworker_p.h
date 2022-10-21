@@ -5,9 +5,10 @@
 #ifndef FILENAMEWORKER_P_H
 #define FILENAMEWORKER_P_H
 
-#include "anything_interface.h"
 #include "searcher/proxyworker.h"
 #include "filesearchutils.h"
+
+#include "interfaces/anything_interface.h"
 
 namespace GrandSearch {
 

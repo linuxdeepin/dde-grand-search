@@ -4,11 +4,12 @@
 
 #include "filenameworker.h"
 #include "filenameworker_p.h"
-#include "anything_interface.h"
 #include "global/builtinsearch.h"
 #include "utils/specialtools.h"
 #include "global/searchhelper.h"
 #include "configuration/configer.h"
+
+#include "interfaces/anything_interface.h"
 
 #include <QStandardPaths>
 

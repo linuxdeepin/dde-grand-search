@@ -12,9 +12,10 @@
 #define protected public
 #include "business/matchresult/matchcontroller.h"
 #include "business/matchresult/matchcontroller_p.h"
-#include "contacts/interface/daemongrandsearchinterface.h"
 #include "utils/utils.h"
 #include "global/matcheditem.h"
+
+#include "interfaces/daemongrandsearchinterface.h"
 
 using namespace testing;
 using namespace GrandSearch;

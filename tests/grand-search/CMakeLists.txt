@@ -16,6 +16,13 @@ set(LIB_BASE_DIR "${LIB_PLATFORM_DIR}/${BIN_NAME}")
 # 插件目录
 set(PLUGIN_BASE_DIR "${LIB_BASE_DIR}/plugins")
 
+# DBus接口与服务
+set(3RD_PARTY_PLUGIN
+    "${PROJECT_3RDPARTY_PATH}/interfaces/daemongrandsearchinterface.h"
+    "${PROJECT_3RDPARTY_PATH}/interfaces/daemongrandsearchinterface.cpp"
+    "${PROJECT_3RDPARTY_PATH}/services/grandsearchserviceadaptor.h"
+    "${PROJECT_3RDPARTY_PATH}/services/grandsearchserviceadaptor.cpp")
+
 # 埋点文件
 FILE(GLOB BURYINGPOINT_SRC
     "${PROJECT_SOURCE_PATH}/buryingpoint/*.h"
@@ -72,6 +79,7 @@ set(SRCS
     ${UT_SRC}
     ${CPP_STUB_SRC}
     ${BURYINGPOINT_SRC}
+    ${3RD_PARTY_PLUGIN}
 )
 
 add_executable(${BIN_NAME} ${SRCS})

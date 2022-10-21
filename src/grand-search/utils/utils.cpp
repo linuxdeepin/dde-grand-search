@@ -15,11 +15,12 @@ extern "C" {
 
 #include "global/builtinsearch.h"
 #include "global/searchhelper.h"
-#include "contacts/interface/daemongrandsearchinterface.h"
 #include "business/config/accessrecord/accessrecord.h"
 #include "buryingpoint/eventlogutil/eventlogutil.h"
 #include "buryingpoint/basicpoint.h"
 #include "buryingpoint/buryingpointfactory.h"
+
+#include "interfaces/daemongrandsearchinterface.h"
 
 #include <DArrowRectangle>
 #include <DDesktopEntry>

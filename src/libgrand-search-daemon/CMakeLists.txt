@@ -85,7 +85,7 @@ if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips"
         )
     message(${CMAKE_SYSTEM_PROCESSOR} ": using fsearch")
     ADD_DEFINITIONS(-DENABLE_FSEARCH)
-    FILE(GLOB 3RD_FSEARCH_SRC ${CMAKE_SOURCE_DIR}/3rdparty/fsearch/*)
+    FILE(GLOB 3RD_FSEARCH_SRC ${PROJECT_3RDPARTY_PATH}/fsearch/*)
     pkg_check_modules(GLIB REQUIRED glib-2.0)
     pkg_check_modules(PCRE REQUIRED libpcre)
     set(SEARCHER
@@ -115,8 +115,8 @@ else ()
         searcher/file/filenameworker_p.h
         searcher/file/filesearchutils.h
         searcher/file/filesearchutils.cpp
-        searcher/file/anything_interface.h
-        searcher/file/anything_interface.cpp
+        ${PROJECT_3RDPARTY_PATH}/interfaces/anything_interface.h
+        ${PROJECT_3RDPARTY_PATH}/interfaces/anything_interface.cpp
     )
 endif()
 
@@ -202,7 +202,7 @@ set_target_properties(${LIB_NAME} PROPERTIES OUTPUT_NAME ${DAEMON_BIN_NAME})
 target_include_directories(${LIB_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${DtkWidget_INCLUDE_DIRS}
-    ${CMAKE_SOURCE_DIR}/3rdparty/fsearch
+    ${PROJECT_3RDPARTY_PATH}/fsearch
     ${GLIB_INCLUDE_DIRS}
     ${PCRE_INCLUDE_DIRS}
 )

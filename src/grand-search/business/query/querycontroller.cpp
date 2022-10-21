@@ -4,8 +4,9 @@
 
 #include "querycontroller_p.h"
 #include "querycontroller.h"
-#include "contacts/interface/daemongrandsearchinterface.h"
 #include "gui/datadefine.h"
+
+#include "interfaces/daemongrandsearchinterface.h"
 
 #include <QUuid>
 #include <QDebug>

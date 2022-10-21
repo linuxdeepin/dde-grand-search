@@ -10,9 +10,10 @@
 #include "global/builtinsearch.h"
 #include "configuration/configer.h"
 #include "configuration/configer_p.h"
-#include "searcher/file/anything_interface.h"
 #include "utils/specialtools.h"
 #include "searcher/file/filesearchutils.h"
+
+#include "interfaces/anything_interface.h"
 
 #include <stubext.h>
 
