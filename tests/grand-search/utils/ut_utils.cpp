@@ -11,8 +11,9 @@ extern "C" {
 #include "utils/utils.h"
 #include "global/matcheditem.h"
 #include "global/builtinsearch.h"
-#include "contacts/interface/daemongrandsearchinterface.h"
 #include "business/config/accessrecord/accessrecord.h"
+
+#include "interfaces/daemongrandsearchinterface.h"
 
 #include "stubext.h"
 

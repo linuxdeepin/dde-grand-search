@@ -10,7 +10,7 @@
 #include "global/searchconfigdefine.h"
 #include "utils/utils.h"
 
-#include "contacts/interface/daemongrandsearchinterface.h"
+#include "interfaces/daemongrandsearchinterface.h"
 
 using namespace GrandSearch;
 

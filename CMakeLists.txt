@@ -25,6 +25,7 @@ endif()
 configure_file(${CMAKE_SOURCE_DIR}/src/environments.h.in ${CMAKE_SOURCE_DIR}/src/environments.h @ONLY)
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(${CMAKE_SOURCE_DIR}/3rdparty)
 
 # 平台库目录
 set(LIB_PLATFORM_DIR "${CMAKE_INSTALL_PREFIX}/lib/${CMAKE_LIBRARY_ARCHITECTURE}")
@@ -70,6 +71,9 @@ set(DAEMON_LIB_BASE_DIR "${LIB_PLATFORM_DIR}/${DAEMON_BIN_NAME}")
 
 # 定义后端插件目录
 set(DAEMON_PLUGIN_DIR "${DAEMON_LIB_BASE_DIR}/plugins")
+
+# 定义3rdparty目录
+set(PROJECT_3RDPARTY_PATH "${CMAKE_SOURCE_DIR}/3rdparty")
 
 # 定义后端扩展搜索插件目录
 set(PLUGIN_SEARCHER_DIR "${DAEMON_PLUGIN_DIR}/searcher")

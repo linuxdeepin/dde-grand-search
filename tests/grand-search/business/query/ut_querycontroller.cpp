@@ -13,7 +13,8 @@
 #define protected public
 #include "business/query/querycontroller.h"
 #include "business/query/querycontroller_p.h"
-#include "contacts/interface/daemongrandsearchinterface.h"
+
+#include "interfaces/daemongrandsearchinterface.h"
 
 using namespace testing;
 GRANDSEARCH_USE_NAMESPACE

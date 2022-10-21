@@ -35,7 +35,7 @@ set(PROJECT_DAEMONSRC_PATH "${PROJECT_SOURCE_PATH}/libgrand-search-daemon")
 include_directories(${PROJECT_DAEMONSRC_PATH})
 
 ADD_DEFINITIONS(-DENABLE_FSEARCH)
-FILE(GLOB 3RD_FSEARCH_SRC ${CMAKE_SOURCE_DIR}/../3rdparty/fsearch/*)
+FILE(GLOB 3RD_FSEARCH_SRC ${PROJECT_3RDPARTY_PATH}/fsearch/*)
 pkg_check_modules(GLIB REQUIRED glib-2.0)
 pkg_check_modules(PCRE REQUIRED libpcre)
 
@@ -80,6 +80,8 @@ set(SRCS
     ${UT_SRC}
     ${CPP_STUB_SRC}
     ${3RD_FSEARCH_SRC}
+    "${PROJECT_3RDPARTY_PATH}/interfaces/anything_interface.h"
+    "${PROJECT_3RDPARTY_PATH}/interfaces/anything_interface.cpp"
 )
 
 # 可执行程序
@@ -87,7 +89,7 @@ add_executable(${BIN_NAME} ${SRCS})
 
 target_include_directories(${BIN_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/../3rdparty/fsearch
+    ${PROJECT_3RDPARTY_PATH}/fsearch
     ${GLIB_INCLUDE_DIRS}
     ${PCRE_INCLUDE_DIRS}
 )

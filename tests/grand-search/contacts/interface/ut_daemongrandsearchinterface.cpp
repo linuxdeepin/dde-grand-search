@@ -3,7 +3,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "global/grandsearch_global.h"
-#include "contacts/interface/daemongrandsearchinterface.h"
+
+#include "interfaces/daemongrandsearchinterface.h"
 
 #include "stubext.h"
 
