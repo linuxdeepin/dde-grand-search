@@ -71,25 +71,26 @@ GeneralPreviewPluginPrivate::GeneralPreviewPluginPrivate(GeneralPreviewPlugin *p
     m_iconLabel->setObjectName("IconLabel");
     m_iconLabel->setFixedSize(QSize(ICON_SIZE, ICON_SIZE));
     m_nameLabel = new NameLabel("", m_contentWidget);
+    m_nameLabel->setFixedSize(QSize(240, 48));
     m_sizeLabel = new SizeLabel("", m_contentWidget);
+    m_sizeLabel->setFixedSize(QSize(240, 24));
 
     QVBoxLayout *vLayout = new QVBoxLayout();
     vLayout->setContentsMargins(0, 0, 0, 0);
     vLayout->setSpacing(0);
-    vLayout->addSpacerItem(new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding));
+    vLayout->addSpacerItem(new QSpacerItem(20, 12, QSizePolicy::Minimum, QSizePolicy::Minimum));
     vLayout->addWidget(m_nameLabel);
     vLayout->addWidget(m_sizeLabel);
-    vLayout->addSpacerItem(new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding));
+    vLayout->addSpacerItem(new QSpacerItem(20, 12, QSizePolicy::Minimum, QSizePolicy::Fixed));
 
     QHBoxLayout *hLayout = new QHBoxLayout();
-    hLayout->setContentsMargins(HOR_MARGIN_SIZE - 3, MARGIN_SIZE, HOR_MARGIN_SIZE, MARGIN_SIZE);
-    hLayout->setSpacing(HOR_MARGIN_SIZE);
+    hLayout->setContentsMargins(HOR_MARGIN_SIZE, MARGIN_SIZE, HOR_MARGIN_SIZE, 5);
     hLayout->addWidget(m_iconLabel);
+    hLayout->addSpacing(12);
     hLayout->addLayout(vLayout);
 
     m_vMainLayout = new QVBoxLayout(m_contentWidget);
-
-    m_vMainLayout->setContentsMargins(MARGIN_SIZE, 0, MARGIN_SIZE, MARGIN_SIZE);
+    m_vMainLayout->setContentsMargins(0, 0, MARGIN_SIZE, 0);
     m_vMainLayout->addLayout(hLayout);
 }
 
