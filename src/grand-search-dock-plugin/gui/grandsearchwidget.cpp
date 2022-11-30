@@ -161,9 +161,9 @@ const QPixmap GrandSearchWidget::loadSvg(const QString &fileName, const QSize &s
 {
     const auto ratio = devicePixelRatioF();
 
-    QPixmap pixmap;
-    pixmap = QIcon::fromTheme(fileName, m_icon).pixmap(size * ratio);
-    pixmap.setDevicePixelRatio(ratio);
+    // 高分辨率下不缩放
+    auto pixmapSize = QCoreApplication::testAttribute(Qt::AA_UseHighDpiPixmaps) ? size : (size * ratio);
+    QPixmap pixmap = QIcon::fromTheme(fileName, m_icon).pixmap(pixmapSize);
 
     return pixmap;
 }
