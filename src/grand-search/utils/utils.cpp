@@ -52,9 +52,15 @@ DWIDGET_USE_NAMESPACE
 DGUI_USE_NAMESPACE
 using namespace GrandSearch;
 
+#ifdef COMPILE_ON_V23
+static const QString SessionManagerService = "org.deepin.dde.Application1.Manager";
+static const QString StartManagerPath = "/org/deepin/dde/Application1/Manager";
+static const QString StartManagerInterface = "org.deepin.dde.Application1.Manager";
+#else
 static const QString SessionManagerService = "com.deepin.SessionManager";
 static const QString StartManagerPath = "/com/deepin/StartManager";
 static const QString StartManagerInterface = "com.deepin.StartManager";
+#endif
 
 static const int WeightDiffLimit = 21;
 

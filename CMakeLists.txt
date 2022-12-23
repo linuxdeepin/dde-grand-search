@@ -22,6 +22,18 @@ if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -z noexecstack -z relro")
 endif()
 
+#Indentify the version
+find_package(DtkCMake REQUIRED)
+if (${DEEPIN_OS_VERSION} MATCHES "23")
+    add_definitions(-DCOMPILE_ON_V23)
+    set(COMPLIE_ON_V23 TRUE)
+    message("COMPILE ON v23")
+else()
+    add_definitions(-DCOMPILE_ON_V20)
+    set(COMPLIE_ON_V20 TRUE)
+    message("COMPILE ON v20")
+endif()
+
 configure_file(${CMAKE_SOURCE_DIR}/src/environments.h.in ${CMAKE_SOURCE_DIR}/src/environments.h @ONLY)
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
