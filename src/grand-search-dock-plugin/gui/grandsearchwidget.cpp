@@ -66,6 +66,16 @@ QString GrandSearchWidget::itemCommand(const QString &itemKey)
     return QString();
 }
 
+QPixmap GrandSearchWidget::iconPixmap(int iconSize) const
+{
+    QString iconName = "grand-search-light";
+    if (std::min(width(), height()) <= PLUGIN_BACKGROUND_MIN_SIZE
+            || DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType)
+        iconName.replace("-light", PLUGIN_MIN_ICON_NAME);
+
+    return loadSvg(iconName, QSize(iconSize, iconSize));
+}
+
 void GrandSearchWidget::grandSearchVisibleChanged(bool visible)
 {
     m_grandSearchVisible = visible;
@@ -176,8 +186,8 @@ const QPixmap GrandSearchWidget::loadSvg(const QString &fileName, const QSize &s
 {
     const auto ratio = devicePixelRatioF();
 
-    QPixmap pixmap;
-    pixmap = QIcon::fromTheme(fileName, m_icon).pixmap(size * ratio);
+    QSize pixmapSize = QCoreApplication::testAttribute(Qt::AA_UseHighDpiPixmaps) ? size : (size * ratio);
+    QPixmap pixmap = QIcon::fromTheme(fileName, m_icon).pixmap(pixmapSize);
     pixmap.setDevicePixelRatio(ratio);
 
     return pixmap;

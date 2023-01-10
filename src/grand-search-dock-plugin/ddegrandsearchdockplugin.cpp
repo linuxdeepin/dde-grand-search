@@ -90,12 +90,16 @@ void DdeGrandSearchDockPlugin::init(PluginProxyInterface *proxyInter)
 QWidget *DdeGrandSearchDockPlugin::itemWidget(const QString &itemKey)
 {
     Q_UNUSED(itemKey);
-    return m_searchWidget.data();
+
+    if (itemKey == "QUICK_ITEM_KEY")
+        return m_searchWidget.data();
+
+    return nullptr;
 }
 
 QWidget *DdeGrandSearchDockPlugin::itemTipsWidget(const QString &itemKey)
 {
-    Q_UNUSED(itemKey);
+    Q_UNUSED(itemKey);    
 
     // 设置/刷新 tips 中的信息
     m_tipsWidget->setText(tr("Grand Search"));
@@ -183,6 +187,20 @@ void DdeGrandSearchDockPlugin::invokedMenuItem(const QString &itemKey, const QSt
     if (menuId == MenuOpenSetting) {
         QProcess::startDetached("dde-grand-search", QStringList() << "--setting");
     }
+}
+
+QIcon DdeGrandSearchDockPlugin::icon(const DockPart &dockPart, DGuiApplicationHelper::ColorType themeType)
+{
+    if (dockPart == DockPart::DCCSetting) {
+        if (themeType == DGuiApplicationHelper::ColorType::LightType)
+            return QIcon(":/icons/grand-search-dark.svg");
+
+        return QIcon(":/icons/grand-search-light.svg");
+    } else if (dockPart == DockPart::QuickPanel) {
+        return m_searchWidget->iconPixmap(24);
+    }
+
+    return m_searchWidget->iconPixmap(20);
 }
 
 void DdeGrandSearchDockPlugin::onGsettingsChanged(const QString &key)

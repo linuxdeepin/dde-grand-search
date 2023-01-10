@@ -83,6 +83,8 @@ public:
     // 菜单执行项
     void invokedMenuItem(const QString &itemKey, const QString &menuId, const bool checked) override;
 
+    QIcon icon(const DockPart &dockPart, DGuiApplicationHelper::ColorType themeType = DGuiApplicationHelper::instance()->themeType()) override;
+
 private slots:
     void onGsettingsChanged(const QString &key);
 

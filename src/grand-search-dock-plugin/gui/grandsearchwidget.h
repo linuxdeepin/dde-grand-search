@@ -37,6 +37,7 @@ public:
     ~GrandSearchWidget() override;
 
     QString itemCommand(const QString &itemKey);
+    QPixmap iconPixmap(int iconSize) const;
 
 private slots:
     void grandSearchVisibleChanged(bool visible);
