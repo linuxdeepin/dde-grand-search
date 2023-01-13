@@ -91,9 +91,6 @@ QWidget *DdeGrandSearchDockPlugin::itemWidget(const QString &itemKey)
 {
     Q_UNUSED(itemKey);
 
-    if (itemKey == "QUICK_ITEM_KEY")
-        return m_searchWidget.data();
-
     return nullptr;
 }
 
@@ -197,10 +194,10 @@ QIcon DdeGrandSearchDockPlugin::icon(const DockPart &dockPart, DGuiApplicationHe
 
         return QIcon(":/icons/grand-search-light.svg");
     } else if (dockPart == DockPart::QuickPanel) {
-        return m_searchWidget->iconPixmap(24);
+        return m_searchWidget->iconPixmap(QSize(24, 24), themeType);
     }
 
-    return m_searchWidget->iconPixmap(20);
+    return m_searchWidget->iconPixmap(QSize(18, 16), themeType);;
 }
 
 void DdeGrandSearchDockPlugin::onGsettingsChanged(const QString &key)

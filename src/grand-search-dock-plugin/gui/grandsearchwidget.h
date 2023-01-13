@@ -21,6 +21,8 @@
 #ifndef GRANDSEARCHWIDGET_H
 #define GRANDSEARCHWIDGET_H
 
+#include <DGuiApplicationHelper>
+
 #include <QWidget>
 #include <QIcon>
 #include <QPixmap>
@@ -37,7 +39,7 @@ public:
     ~GrandSearchWidget() override;
 
     QString itemCommand(const QString &itemKey);
-    QPixmap iconPixmap(int iconSize) const;
+    QPixmap iconPixmap(QSize iconSize, DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType themeType) const;
 
 private slots:
     void grandSearchVisibleChanged(bool visible);

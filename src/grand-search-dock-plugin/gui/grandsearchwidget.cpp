@@ -32,6 +32,7 @@
 
 using namespace GrandSearch;
 DWIDGET_USE_NAMESPACE
+DGUI_USE_NAMESPACE
 
 GrandSearchWidget::GrandSearchWidget(QWidget *parent)
     : QWidget(parent)
@@ -66,14 +67,14 @@ QString GrandSearchWidget::itemCommand(const QString &itemKey)
     return QString();
 }
 
-QPixmap GrandSearchWidget::iconPixmap(int iconSize) const
+QPixmap GrandSearchWidget::iconPixmap(QSize iconSize, DGuiApplicationHelper::ColorType themeType) const
 {
     QString iconName = "grand-search-light";
     if (std::min(width(), height()) <= PLUGIN_BACKGROUND_MIN_SIZE
-            || DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType)
+            || themeType == DGuiApplicationHelper::LightType)
         iconName.replace("-light", PLUGIN_MIN_ICON_NAME);
 
-    return loadSvg(iconName, QSize(iconSize, iconSize));
+    return loadSvg(iconName, iconSize);
 }
 
 void GrandSearchWidget::grandSearchVisibleChanged(bool visible)
@@ -189,6 +190,7 @@ const QPixmap GrandSearchWidget::loadSvg(const QString &fileName, const QSize &s
     QSize pixmapSize = QCoreApplication::testAttribute(Qt::AA_UseHighDpiPixmaps) ? size : (size * ratio);
     QPixmap pixmap = QIcon::fromTheme(fileName, m_icon).pixmap(pixmapSize);
     pixmap.setDevicePixelRatio(ratio);
+    pixmap.scaled(size * ratio);
 
     return pixmap;
 }
