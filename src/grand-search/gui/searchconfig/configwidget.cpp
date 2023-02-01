@@ -57,6 +57,7 @@ void ConfigWidget::initUI()
 
     m_scrollArea = new DScrollArea;
     m_scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     m_scrollArea->setWidgetResizable(true);
     m_scrollArea->setLineWidth(0);
     m_mainLayout->addWidget(m_scrollArea);
