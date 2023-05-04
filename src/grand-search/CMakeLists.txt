@@ -26,6 +26,15 @@ find_package(Qt5 COMPONENTS
     DBus
 REQUIRED)
 
+set(DBUSSRC
+    # dbus接口
+    ${PROJECT_3RDPARTY_PATH}/interfaces/daemongrandsearchinterface.h
+    ${PROJECT_3RDPARTY_PATH}/interfaces/daemongrandsearchinterface.cpp
+    # dbus服务
+    ${PROJECT_3RDPARTY_PATH}/services/grandsearchserviceadaptor.h
+    ${PROJECT_3RDPARTY_PATH}/services/grandsearchserviceadaptor.cpp
+)
+
 set(Qt_LIBS
     Qt5::Core
     Qt5::Gui
@@ -160,11 +169,6 @@ set(CONTACTSSRC
     contacts/services/grandsearchservice_p.h
     contacts/services/grandsearchservice.h
     contacts/services/grandsearchservice.cpp
-    contacts/services/grandsearchserviceadaptor.h
-    contacts/services/grandsearchserviceadaptor.cpp
-    # dbus接口
-    contacts/interface/daemongrandsearchinterface.h
-    contacts/interface/daemongrandsearchinterface.cpp
     )
 
 # utils
@@ -184,6 +188,7 @@ set(SRCS
     ${BUSINESSSRC}
     ${CONTACTSSRC}
     ${UTILSSRC}
+    ${DBUSSRC}
 )
 
 # 指定资源文件

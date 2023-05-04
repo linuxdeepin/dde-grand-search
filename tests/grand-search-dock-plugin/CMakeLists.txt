@@ -55,6 +55,8 @@ set(SRCS
     ${PRO_SRC}
     ${UT_SRC}
     ${CPP_STUB_SRC}
+    "${PROJECT_3RDPARTY_PATH}/interfaces/grandsearchinterface.h"
+    "${PROJECT_3RDPARTY_PATH}/interfaces/grandsearchinterface.cpp"
 )
 
 add_executable(${BIN_NAME} ${SRCS} ${QRCS})

@@ -7,7 +7,8 @@ project(test-dde-grand-search)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DQT_DEBUG")
 
 set(PROJECT_SOURCE_PATH "${CMAKE_SOURCE_DIR}/../src")
-set(PROJECT_3RDPARTY_PATH "${CMAKE_SOURCE_DIR}/3rdparty")
+set(PROJECT_3RDPARTY_PATH "${CMAKE_SOURCE_DIR}/../3rdparty")
+set(TESTS_3RDPARTY_PATH "${CMAKE_SOURCE_DIR}/3rdparty")
 
 # 内存泄漏
 if (NOT ("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "mips"))
@@ -27,13 +28,14 @@ find_package(Qt5 COMPONENTS Test REQUIRED)
 FILE(GLOB GLOBAL_SRC "${PROJECT_SOURCE_PATH}/global/*.h" "${PROJECT_SOURCE_PATH}/global/*.cpp")
 
 # 打桩工具
-FILE(GLOB CPP_STUB_SRC "${PROJECT_3RDPARTY_PATH}/cpp-stub/*.h"
-    "${PROJECT_3RDPARTY_PATH}/cpp-stub/*.hpp"
-    "${PROJECT_3RDPARTY_PATH}/stub-ext/*.h"
-    "${PROJECT_3RDPARTY_PATH}/stub-ext/*.cpp")
+FILE(GLOB CPP_STUB_SRC "${TESTS_3RDPARTY_PATH}/cpp-stub/*.h"
+    "${TESTS_3RDPARTY_PATH}/cpp-stub/*.hpp"
+    "${TESTS_3RDPARTY_PATH}/stub-ext/*.h"
+    "${TESTS_3RDPARTY_PATH}/stub-ext/*.cpp")
 
-include_directories("${PROJECT_3RDPARTY_PATH}/cpp-stub" "${PROJECT_3RDPARTY_PATH}/stub-ext")
+include_directories("${TESTS_3RDPARTY_PATH}/cpp-stub" "${TESTS_3RDPARTY_PATH}/stub-ext")
 include_directories(${PROJECT_SOURCE_PATH})
+include_directories("${CMAKE_SOURCE_DIR}/../3rdparty")
 
 add_subdirectory(grand-search)
 add_subdirectory(libgrand-search-daemon)
