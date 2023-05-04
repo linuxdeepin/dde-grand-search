@@ -3,11 +3,31 @@ Upstream-Name: dde-grand-search
 Upstream-Contact: https://github.com/linuxdeepin/dde-grand-search/issues
 Source: https://github.com/linuxdeepin/dde-grand-search
 
-Files: *
-Copyright: 2021, Uniontech Software Technology Co., Ltd.
-License: GPL-3+
+Files: src/*
+Copyright: 2021 - 2022, Uniontech Software Technology Co., Ltd.
+License: GPL3+
 
-License: GPL-3+
+Files: tests/*
+Copyright: UnionTech Software Technology Co., Ltd.
+License: GPL3+
+
+Files: tests/3rdparty/cpp-stub/*
+Copyright: 2019 coolxv
+License: MIT
+
+Files: tests/3rdparty/stub-ext/*
+Copyright: 2020 Zhang Yu
+License: MIT
+
+Files: tests/cmake/modules/FindGMock.cmake
+Copyright: 2011 Matej Svec
+License: MIT
+
+Files：3rdparty/fsearch/*
+Copyright：2020 Christian Boxdörfer
+License：GPL2+
+
+License: GPL3+
  This package is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 3 of the License, or

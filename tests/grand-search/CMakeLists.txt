@@ -16,6 +16,13 @@ set(LIB_BASE_DIR "${LIB_PLATFORM_DIR}/${BIN_NAME}")
 # 插件目录
 set(PLUGIN_BASE_DIR "${LIB_BASE_DIR}/plugins")
 
+# DBus接口与服务
+set(3RD_PARTY_PLUGIN
+    "${PROJECT_3RDPARTY_PATH}/interfaces/daemongrandsearchinterface.h"
+    "${PROJECT_3RDPARTY_PATH}/interfaces/daemongrandsearchinterface.cpp"
+    "${PROJECT_3RDPARTY_PATH}/services/grandsearchserviceadaptor.h"
+    "${PROJECT_3RDPARTY_PATH}/services/grandsearchserviceadaptor.cpp")
+
 # 扩展搜索插件目录
 set(PLUGIN_SEARCHER_DIR "${PLUGIN_BASE_DIR}/searcher")
 add_definitions(-DPLUGIN_SEARCHER_DIR="${PLUGIN_SEARCHER_DIR}")
@@ -67,6 +74,7 @@ set(SRCS
     ${PRO_SRC}
     ${UT_SRC}
     ${CPP_STUB_SRC}
+    ${3RD_PARTY_PLUGIN}
 )
 
 add_executable(${BIN_NAME} ${SRCS})

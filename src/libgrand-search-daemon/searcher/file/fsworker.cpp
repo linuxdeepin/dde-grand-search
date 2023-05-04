@@ -1,23 +1,6 @@
-/*
- * Copyright (C) 2021 Uniontech Software Technology Co., Ltd.
- *
- * Author:     liuzhangjian<liuzhangjian@uniontech.com>
- *
- * Maintainer: liuzhangjian<liuzhangjian@uniontech.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "global/grandsearch_global.h"
 #include "fsworker.h"
@@ -319,7 +302,7 @@ bool FsWorker::searchLocalFile()
 
         m_conditionMtx.lock();
         db_perform_search(m_app->search, callbackReceiveResults, m_app, this);
-        m_waitCondition.wait(&m_conditionMtx);
+        m_waitCondition.wait(&m_conditionMtx, ULONG_MAX);
         m_conditionMtx.unlock();
     }
     db_unlock(db);
