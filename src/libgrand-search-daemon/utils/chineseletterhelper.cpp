@@ -47,7 +47,7 @@ void ChineseLetterHelper::initDict()
 
     m_inited = true;
 
-    const QString dictPath = ":/misc/pinyin.dict";
+    const QString dictPath = ":/misc/grand-search-daemon/pinyin.dict";
     const int maxWord = 25333;
     QHash<uint, QString> dict;
     dict.reserve(maxWord);
