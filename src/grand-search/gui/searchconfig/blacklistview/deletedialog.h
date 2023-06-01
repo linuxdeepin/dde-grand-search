@@ -14,7 +14,10 @@ class DeleteDialog : public Dtk::Widget::DDialog
     Q_OBJECT
 public:
     explicit DeleteDialog(QWidget *parent = nullptr);
-    ~DeleteDialog();
+    ~DeleteDialog() override;
+
+protected:
+    void showEvent(QShowEvent *e) override;
 };
 }
-#endif // DELETEDIALOG_H
+#endif   // DELETEDIALOG_H

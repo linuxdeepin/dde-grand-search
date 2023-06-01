@@ -34,5 +34,10 @@ DeleteDialog::DeleteDialog(QWidget *parent)
 
 DeleteDialog::~DeleteDialog()
 {
+}
 
+void DeleteDialog::showEvent(QShowEvent *e)
+{
+    DDialog::showEvent(e);
+    moveToCenter();
 }
