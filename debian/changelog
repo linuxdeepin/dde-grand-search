@@ -1,3 +1,9 @@
+dde-grand-search (5.4.3) unstable; urgency=medium
+
+  * update version to 5.4.3
+
+ -- Zhang Yu <zhangyub@uniontech.com>  Wed, 7 Jun 2023 16:00:00 +0800
+ 
 dde-grand-search (1.0) unstable; urgency=medium
 
   * Pre-release for dde-grand-search 1.0
