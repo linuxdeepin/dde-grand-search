@@ -28,6 +28,7 @@ public:
     bool init();
 public slots:
     Q_SCRIPTABLE bool Search(const QString &session, const QString &key);
+    Q_SCRIPTABLE bool Search2(const QString &session, const QString &jsonArgs);
     Q_SCRIPTABLE void Terminate();
     Q_SCRIPTABLE QByteArray MatchedResults(const QString &session);
     Q_SCRIPTABLE QByteArray MatchedBuffer(const QString &session);

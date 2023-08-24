@@ -6,6 +6,7 @@
 #include "maincontroller_p.h"
 #include "configuration/configer.h"
 #include "global/searchhelper.h"
+#include "global/search2params.h"
 
 #include <QDebug>
 
@@ -33,7 +34,7 @@ MainControllerPrivate::~MainControllerPrivate()
     }
 }
 
-void MainControllerPrivate::buildWorker(TaskCommander *task)
+void MainControllerPrivate::buildWorker(TaskCommander *task, const QSet<QString> &blankList)
 {
     Q_ASSERT(task);
     Q_ASSERT(m_searchers);
@@ -44,31 +45,60 @@ void MainControllerPrivate::buildWorker(TaskCommander *task)
     auto config = ConfigerIns->group(GRANDSEARCH_PREF_SEARCHERENABLED);
     Q_ASSERT(config);
 
-    // 类目、后缀搜索的判读与准备
-    QStringList groupList, suffixList, keywordList;
     QStringList searcherData;
-    if (searchHelper->parseKeyword(task->content(), groupList, suffixList, keywordList)) {
-        if (!keywordList.isEmpty() || !suffixList.isEmpty() || !groupList.isEmpty()) {
-            searcherData = checkSearcher(groupList, suffixList, keywordList);
-            const auto &keyword = buildKeywordInJson(groupList, suffixList, keywordList);
-            if (!keyword.isEmpty())
-                task->setContent(keyword);
+    {
+        // 类目、后缀搜索的判读与准备
+        QStringList groupList, suffixList, keywordList;
+        if (searchHelper->parseKeyword(task->content(), groupList, suffixList, keywordList)) {
+            if (!keywordList.isEmpty() || !suffixList.isEmpty() || !groupList.isEmpty()) {
+                searcherData = checkSearcher(groupList, suffixList, keywordList);
+                const auto &keyword = buildKeywordInJson(groupList, suffixList, keywordList);
+                if (!keyword.isEmpty())
+                    task->setContent(keyword);
+            }
         }
     }
 
     for (auto searcher : searchers) {
         Q_ASSERT(searcher);
-        // 判断搜索项是否启用
-        if (config->value(searcher->name(), true) && (searcherData.isEmpty() || searcherData.contains(searcher->name()))) {
-            // 判断是否激活，若未激活则先激活
-            qDebug() << "searcher create worker" << searcher->name();
-            if (searcher->isActive() || searcher->activate()) {
-                if (auto worker = searcher->createWorker()) {
-                    task->join(worker);
-                }
-            } else {
-                qWarning() << searcher->name() << "is unenabled.";
+        const QString name = searcher->name();
+
+        // 判断搜索项是否可用
+        if (blankList.contains(name) || !config->value(name, true)
+                || (!searcherData.isEmpty() && !searcherData.contains(name)))
+            continue;
+
+        // 判断是否激活，若未激活则先激活
+        qDebug() << "searcher create worker" << name;
+        if (searcher->isActive() || searcher->activate()) {
+            if (auto worker = searcher->createWorker()) {
+                task->join(worker);
             }
+        } else {
+            qWarning() << name << "is unenabled.";
+        }
+    }
+}
+
+void MainControllerPrivate::buildWorker(TaskCommander *task, const QList<QString> &searchers)
+{
+    Q_ASSERT(task);
+    Q_ASSERT(m_searchers);
+
+    for (const QString &name : searchers) {
+        auto searcher = m_searchers->searcher(name);
+        if (!searcher) {
+            qWarning() << "no such shearch:" << name;
+            continue;
+        }
+
+        qDebug() << "searcher create worker" << name;
+        if (searcher->isActive() || searcher->activate()) {
+            if (auto worker = searcher->createWorker()) {
+                task->join(worker);
+            }
+        } else {
+            qWarning() << name << "is unenabled.";
         }
     }
 }
@@ -161,34 +191,34 @@ bool MainController::newSearch(const QString &key)
     if (Q_UNLIKELY(key.isEmpty()))
         return false;
 
-    //释放当前任务
-    terminate();
+    // 普通搜索不使用语义解析
+    auto func = [this](TaskCommander *task) {
+        const QSet<QString> blankList {GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC};
+        d->buildWorker(task, blankList);
+    };
 
-    auto task = new TaskCommander(key);
-    qInfo() << "new task:" << task << task->taskID();
-    Q_ASSERT(task);
+    return d->buildTask(key, func);
+}
 
-    //直连，防止被事件循环打乱时序
-    connect(task, &TaskCommander::matched, this, &MainController::matched, Qt::DirectConnection);
-    connect(task, &TaskCommander::finished, this, &MainController::searchCompleted, Qt::DirectConnection);
+bool MainController::newSearch(const QJsonObject &root)
+{
+    qInfo() << "new search2, current task:" << d->m_currentTask;
+    QVariantMap params = root.toVariantMap();
+    QString words = params.value(Search2Keys::kWords).toString();
+    if (Q_UNLIKELY(words.isEmpty()))
+        return false;
 
-    d->buildWorker(task);
-    if (task->start()) {
-        d->m_currentTask = task;
+    // 只使用语义解析
+    auto func = [this](TaskCommander *task) {
+        const QList<QString> whiteList {GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC};
+        d->buildWorker(task, whiteList);
+    };
 
-        //重新计时休眠
-        d->m_dormancy.start();
-        return true;
-    }
-
-    qWarning() << "fail to start task" << task << task->taskID();
-    task->deleteSelf();
-    return false;
+    return d->buildTask(words, func);
 }
 
 void MainController::terminate()
 {
-    qDebug() << __FUNCTION__;
     //停止任务
     if (d->m_currentTask) {
         disconnect(d->m_currentTask, nullptr, this, nullptr);

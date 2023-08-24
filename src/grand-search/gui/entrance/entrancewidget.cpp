@@ -6,6 +6,8 @@
 #include "entrancewidget.h"
 #include "gui/datadefine.h"
 #include "utils/utils.h"
+#include "global/searchconfigdefine.h"
+#include "business/config/searchconfig.h"
 
 #include <DSearchEdit>
 #include <DStyle>
@@ -60,12 +62,67 @@ void EntranceWidgetPrivate::notifyTextChanged()
 {
     Q_ASSERT(m_searchEdit);
 
-    const QString &currentSearchText = m_searchEdit->text().trimmed();
-    emit q_p->searchTextChanged(currentSearchText);
+    QString currentSearchText;
+
+    //手动触发模式下，使用空文本清空搜索结果
+    if (!isManualTrigger())
+        currentSearchText = m_searchEdit->text().trimmed();
+
+    emit q_p->searchTextChanged(triggerMode, currentSearchText);
 
     // 搜索内容改变后，清空图标显示
     MatchedItem item;
     q_p->onAppIconChanged(QString(), item);
+}
+
+bool EntranceWidgetPrivate::isManualTrigger() const
+{
+    return triggerMode == GRANDSEARCH_PREFERENCES_TRIGGERMODE_MANUAL;
+}
+
+void EntranceWidgetPrivate::setTriggerMode(int mode)
+{
+    Q_ASSERT(mode >= GRANDSEARCH_PREFERENCES_TRIGGERMODE_DEFAULT && mode <= GRANDSEARCH_PREFERENCES_TRIGGERMODE_MANUAL);
+    triggerMode = mode;
+
+    // 修改提示图标
+    updateIcon();
+}
+
+void EntranceWidgetPrivate::switchTriggerMode()
+{
+    int mode = triggerMode == GRANDSEARCH_PREFERENCES_TRIGGERMODE_DEFAULT
+            ? GRANDSEARCH_PREFERENCES_TRIGGERMODE_MANUAL : GRANDSEARCH_PREFERENCES_TRIGGERMODE_DEFAULT;
+    setTriggerMode(mode);
+
+    SearchConfig::instance()->setConfig(GRANDSEARCH_PREFERENCES_GROUP,
+                                                             GRANDSEARCH_PREFERENCES_TRIGGERMODE,
+                                        triggerMode);
+}
+
+void EntranceWidgetPrivate::updateIcon()
+{
+    auto ac = leadAciton();
+    if (!ac)
+        return;
+
+    if (triggerMode == GRANDSEARCH_PREFERENCES_TRIGGERMODE_MANUAL) {
+        ac->setIcon(QIcon(":/icons/aisearch.svg"));
+    } else {
+        ac->setIcon(DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType ?
+                        QIcon(":/icons/search-white.svg") : QIcon(":/icons/search-black.svg"));//QIcon::fromTheme("search_indicator"));
+    }
+}
+
+QAction *EntranceWidgetPrivate::leadAciton() const
+{
+    // 寻找图标action
+    auto acitons = m_lineEdit->actions();
+    auto actionIter = std::find_if(acitons.begin(), acitons.end(), [](const QAction *ac) {
+        return ac->objectName() == "_d_search_leftAction";
+    });
+
+    return actionIter == acitons.end() ? nullptr : *actionIter;
 }
 
 void EntranceWidgetPrivate::showMenu(const QPoint &pos)
@@ -149,11 +206,18 @@ bool EntranceWidget::eventFilter(QObject *watched, QEvent *event)
             }
             case Qt::Key_Return:
             case Qt::Key_Enter: {
-                emit sigHandleItem();
+                if (keyEvent->modifiers() & Qt::ControlModifier)
+                    emit searchTextChanged(d_p->triggerMode, d_p->m_searchEdit->text().trimmed());
+                else
+                    emit sigHandleItem();
                 return true;
             }
             case Qt::Key_Escape : {
                 emit sigCloseWindow();
+                return true;
+            }
+            case Qt::Key_F3 : {
+                d_p->switchTriggerMode();
                 return true;
             }
             default:break;
@@ -233,6 +297,16 @@ void EntranceWidget::initUI()
     d_p->m_mainLayout->setMargin(WidgetMargins);
 
     this->setLayout(d_p->m_mainLayout);
+
+    {
+        int mode = SearchConfig::instance()->getConfig(GRANDSEARCH_PREFERENCES_GROUP,
+                                                         GRANDSEARCH_PREFERENCES_TRIGGERMODE,
+                                                         GRANDSEARCH_PREFERENCES_TRIGGERMODE_DEFAULT).toInt();
+        if (mode < GRANDSEARCH_PREFERENCES_TRIGGERMODE_DEFAULT || mode > GRANDSEARCH_PREFERENCES_TRIGGERMODE_MANUAL)
+            mode = GRANDSEARCH_PREFERENCES_TRIGGERMODE_DEFAULT;
+        qInfo() << "search mode" << mode;
+        d_p->setTriggerMode(mode);
+    }
 }
 
 void EntranceWidget::initConnections()
@@ -258,7 +332,6 @@ void EntranceWidget::onAppIconChanged(const QString &searchGroupName, const Matc
         d_p->m_appIconName.clear();
         return;
     }
-
 
     if (appIconName == d_p->m_appIconName)
         return;

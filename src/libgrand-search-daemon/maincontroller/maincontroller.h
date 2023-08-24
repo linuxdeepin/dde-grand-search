@@ -7,6 +7,7 @@
 
 #include <QObject>
 
+class QJsonObject;
 namespace GrandSearch {
 
 class MainControllerPrivate;
@@ -17,8 +18,8 @@ class MainController : public QObject
 public:
     explicit MainController(QObject *parent = nullptr);
     bool init();
-
     bool newSearch(const QString &key);
+    bool newSearch(const QJsonObject &root);
     void terminate();
     QByteArray getResults() const;
     QByteArray readBuffer() const;

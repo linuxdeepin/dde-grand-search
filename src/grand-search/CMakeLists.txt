@@ -1,7 +1,7 @@
 # 定义需要的cmake版本
 cmake_minimum_required(VERSION 3.10)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -196,6 +196,7 @@ set(SRCS
 set(QRCS
     gui/searchconfig/resource.qrc
     gui/exhibition/preview/resource.qrc
+    gui/entrance/icons.qrc
     )
 
 add_executable(${BIN_NAME} ${SRCS} ${QRCS})

@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/aisearch.svg</file>
+        <file>icons/search-white.svg</file>
+        <file>icons/search-black.svg</file>
+    </qresource>
+</RCC>

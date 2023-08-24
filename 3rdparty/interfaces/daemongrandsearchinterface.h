@@ -96,6 +96,13 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QStringLiteral("Search"), argumentList);
     }
 
+    inline QDBusPendingReply<bool> Search2(const QString &session, const QString &jsonArgs)
+    {
+        QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(session) << QVariant::fromValue(jsonArgs);
+        return asyncCallWithArgumentList(QStringLiteral("Search2"), argumentList);
+    }
+
     inline QDBusPendingReply<bool> SetFeedBackStrategy(const QVariantMap &in0)
     {
         QList<QVariant> argumentList;

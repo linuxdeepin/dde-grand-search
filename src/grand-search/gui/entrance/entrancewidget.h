@@ -35,7 +35,7 @@ public slots:
     void onAppIconChanged(const QString &searchGroupName, const MatchedItem &item);
 
 signals:
-    void searchTextChanged(const QString &txt);
+    void searchTextChanged(int mode, const QString &txt);
     void sigSelectNextItem();
     void sigSelectPreviousItem();
     void sigHandleItem();

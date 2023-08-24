@@ -12,6 +12,11 @@
       <arg name="session" type="s" direction="in"/>
       <arg name="key" type="s" direction="in"/>
     </method>
+    <method name="Search2">
+      <arg type="b" direction="out"/>
+      <arg name="session" type="s" direction="in"/>
+      <arg name="jsonArgs" type="s" direction="in"/>
+    </method>
     <method name="Terminate">
     </method>
     <method name="MatchedResults">

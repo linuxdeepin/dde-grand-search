@@ -5,6 +5,8 @@
 #include "querycontroller_p.h"
 #include "querycontroller.h"
 #include "gui/datadefine.h"
+#include "global/searchconfigdefine.h"
+#include "global/search2params.h"
 
 #include "interfaces/daemongrandsearchinterface.h"
 
@@ -54,7 +56,7 @@ QueryController::~QueryController()
 
 }
 
-void QueryController::onSearchTextChanged(const QString &txt)
+void QueryController::onSearchTextChanged(int mode, const QString &txt)
 {
     if (txt == d_p->m_searchText)
         return;
@@ -79,9 +81,19 @@ void QueryController::onSearchTextChanged(const QString &txt)
     d_p->m_missionId = QUuid::createUuid().toString(QUuid::WithoutBraces);
     emit missionChanged(d_p->m_missionId, d_p->m_searchText);
 
-    qDebug() << QString("m_daemonDbus->Search begin missionId:%1").arg(d_p->m_missionId);
-    bool started = d_p->m_daemonDbus->Search(d_p->m_missionId, d_p->m_searchText);
-    qDebug() << QString("m_daemonDbus->Search end   missionId:%1").arg(d_p->m_missionId);
+    bool started = false;
+    qDebug() << QString("m_daemonDbus->Search begin missionId:%1 mode:%2").arg(d_p->m_missionId).arg(mode);
+    if (mode == GRANDSEARCH_PREFERENCES_TRIGGERMODE_MANUAL) {
+        QVariantMap params;
+        params.insert(Search2Keys::kWords, d_p->m_searchText);
+        params.insert(Search2Keys::kTriggerMode, mode);
+        QString json = QJsonDocument::fromVariant(params).toJson();
+        started  = d_p->m_daemonDbus->Search2(d_p->m_missionId, json);
+    } else {
+        started  = d_p->m_daemonDbus->Search(d_p->m_missionId, d_p->m_searchText);
+    }
+
+    qDebug() << QString("m_daemonDbus->Search end missionId:%1").arg(d_p->m_missionId);
     if (started) {
         d_p->m_keepAliveTimer->start();
     } else {

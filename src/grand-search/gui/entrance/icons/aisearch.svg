@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon/ai搜索</title>
+    <defs>
+        <pattern id="pattern-1" width="100%" height="100%" patternUnits="objectBoundingBox">
+            <use xlink:href="#image-2"></use>
+        </pattern>
+        <image id="image-2" width="22" height="22" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAFqADAAQAAAABAAAAFgAAAAAcITNaAAAD2UlEQVQ4EWWVy47kNBiFT2znUn0faBYsQGJYzI5HYDFvwGuwZsNTIbHgOWaFNBskhDQXCaab6uq6JJWY7zhpagSR/nISO99/fPzbVb38YchdHrWaJmLU+UjQXtJeTkddHY+6Hj+OoTyHs70iEVa0q4NC1yu0vapmUCDSPgRpkiqakLNiyEq0bZg05ErHqtJIZDGGX7qlOKlKo6r6qEC4LdHwDNTw1Mcy/ATnuxrwIQf1ZCtg3hUwP5G+Ak0fwVpUojY0Vr2Aq5Q1WNGIZC6niTkWeIc9PTMaSZAZU9Gf6Dc4LOoK0FAHdvxrRVUjA6aVbRQL3Cms2nbYbyfGLYbl8t7TfQKFzv4S9tnKUV2RNM1g4FZNrBd4jFlNNjgW1RN99jdgQQEA8+KVBXS7AmjV9YBfBjcsxAgUsQ6rX/ezci+iK2WHTSwVKbHBal0JFzvF821pXSHFhgRUR0aNSqHJyhNSgFfJCeZYHwxviupnlJztqJmBFaarR2KjdI155ztVqJ+Bx6WdUNyieAK2wHPN/eAkWQ8x6I26UtNfkci1nm4eVH96r/r2XpEEUo/CgTB0LJErg7ECc1UhGkFzEtSzmiiZtGmiXutcXx+26lbEF+/Ufvme8tiwoFYKtJqBrlnmzzv2Qmjnm/LsV+URMG1gfL4+an8T9cvvn+n7b35W8/xXTdUj3U8KT7DyEQxfsxUuUF+lNXG+rygDW5LbnTbfvlL//kdm9YLZnTG0ZlCgXQaXj08gFHv+ZQwVB7RUxqgcek1xp7Feq1+91faTV/ppeKHvPrxmA90Cv+Czlkh8TLBTT0mCFQPDbPuUA6VSDQAN3WvCx2Nzp+HsLZ496E1zrd+6Cz3f/4lO6lYrEhiO+soJlnqlN+W0m6EV0MBCFKUHoFuN6UHH9q6ovhoP2sRWfzQ3enbcEms+t8+uiIYENW0iieFRydOd1S7QxYICrh+Kao9pOUIPqPqQzvWuuaL0/lI3bbGPcuXYFcI4CAjbUsB7wP9RC8jgidkUS5hJGicqMBTVd/FMl/VBn/d/4zespVZ9onjXVZXB4bBYgGJ7G/DW/hKZe1sjfI8UuU+5fUhsnFb3sVPHFr4dXHon+LxJEh7HE7gk8bOhtF5E+94wVZ9sPvB77NiGBuWd1pP7/C/j3TfD2bfsBf9Z2NNl0WbFAMs7BqPU/tcGM5iq5syIOqB6G2o9kqANnRL/KGejF3G5sAYrZlVzgqd7A+27y4+TijPCSvxrn72Ie8Db2KhDsVXHvGeBZ7jHopiH/wUrDJTztIT9LVPk1z4PAdWGEzsSNChPPvmAJ5JY+T+4u2f3Xa83WAAAAABJRU5ErkJggg=="></image>
+        <linearGradient x1="50%" y1="109.360765%" x2="50%" y2="-19.8307874%" id="linearGradient-3">
+            <stop stop-color="#130B75" offset="0%"></stop>
+            <stop stop-color="#0069D2" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="-19.4937897%" x2="50%" y2="200.915375%" id="linearGradient-4">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.579687159" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="icon/ai搜索" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="编组" transform="translate(1.000000, 1.000000)">
+            <path d="M11,22 C17.0751322,22 22,17.0751322 22,11 C22,4.92486775 17.0751322,0 11,0 C4.92486775,0 0,4.92486775 0,11 C0,13.1759321 0.631791472,15.2043013 1.72193808,16.9116714 C1.98907974,17.3300644 2.157761,18.4810122 1.79347826,19.410746 C1.47140373,20.2327548 1.0102231,20.5897714 1.10637735,20.7569868 C1.20253161,20.9242022 2.55448858,21.0050462 3.65944075,20.6754762 C4.43208358,20.4450229 5.07992185,20.2781568 5.3530097,20.4418373 C7.00373428,21.4312312 8.93544561,22 11,22 Z" id="椭圆形" fill="url(#pattern-1)"></path>
+            <circle id="椭圆形" fill="url(#linearGradient-3)" cx="11" cy="11" r="9"></circle>
+            <path d="M7,10.8675 C7,10.940625 7.0711,11 7.159,11 L7.841,11 C7.9289,11 8,11.05925 8,11.1325 L8,11.8797632 C8,11.9528882 8.07125,12.0123882 8.159,12.0123882 L8.841,12.0123882 C8.92875,12.0123882 9,11.9528882 9,11.8797632 L9,8.132625 C9,8.059375 8.92875,8 8.841,8 L7.159,8 C7.0711,8 7,8.059375 7,8.132625 L7,10.8675 Z" id="路径" fill="url(#linearGradient-4)" fill-rule="nonzero"></path>
+            <path d="M14,8.132625 C14,8.06255978 14.0650518,8.00518927 14.1476345,8.00033298 L14.159,8 L15.841,8 C15.9249348,8 15.9937732,8.0543242 15.9996004,8.12315308 L16,8.132625 L16,11.8797632 C16,11.9497089 15.934811,12.0071886 15.8523476,12.0120546 L15.841,12.0123882 L15.159,12.0123882 C15.0750652,12.0123882 15.0062268,11.9579497 15.0003996,11.8892202 L15,11.8797632 L15,11.1325 C15,11.0624348 14.9349482,11.0051786 14.8523655,11.0003323 L14.841,11 L14.159,11 C14.0749217,11 14.0062144,10.9456758 14.0003988,10.8769563 L14,10.8675 L14,8.132625 Z" id="路径" fill="url(#linearGradient-4)" fill-rule="nonzero"></path>
+        </g>
+    </g>
+</svg>

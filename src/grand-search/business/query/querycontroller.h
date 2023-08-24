@@ -19,7 +19,7 @@ public:
     ~QueryController();
 
     // 搜索文本发生变化，发起新的搜索请求
-    void onSearchTextChanged(const QString &txt);
+    void onSearchTextChanged(int mode, const QString &txt);
 
     // 前端主动终止搜索，调用接口通知后端
     void onTerminateSearch();

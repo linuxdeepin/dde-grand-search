@@ -32,7 +32,11 @@ public:
 
     void delayChangeText();
     void notifyTextChanged();
-
+    bool isManualTrigger() const;
+    void setTriggerMode(int);
+    void switchTriggerMode();
+    void updateIcon();
+    QAction *leadAciton() const;
     void showMenu(const QPoint& pos);
 
     EntranceWidget *q_p = nullptr;
@@ -45,6 +49,8 @@ public:
     QTimer *m_delayChangeTimer = nullptr;               // 延迟发出搜索文本改变
 
     QString m_appIconName;                              // 当前搜索框显示的默认打开应用图标名称
+
+    int triggerMode = 0;
 };
 
 }

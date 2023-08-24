@@ -15,6 +15,9 @@
 #include <QCoreApplication>
 #include <QDebug>
 
+#include <QJsonDocument>
+#include <QJsonObject>
+
 #define CHECKINVOKER(ret) if (!d->isAccessable(message()))\
                             return ret
 
@@ -133,6 +136,37 @@ bool GrandSearchInterface::Search(const QString &session, const QString &key)
 
     //发起新的搜索
     if (d->m_main->newSearch(key)) {
+        d->m_session = session;
+        d->m_deadline.start();
+        return true;
+    }
+
+    d->m_deadline.stop();
+    d->m_session.clear();
+    return false;
+}
+
+bool GrandSearchInterface::Search2(const QString &session, const QString &jsonArgs)
+{
+    qDebug() << __FUNCTION__ << "session " << session;
+    CHECKINVOKER(false);
+
+    //会话ID检查，符合UUID宽度36。
+    static int sessionLength = 36;
+    if (session.size() != sessionLength) {
+        return false;
+    }
+
+    QJsonParseError error;
+    QJsonDocument doc = QJsonDocument::fromJson(jsonArgs.toUtf8(), &error);
+    if (error.error != QJsonParseError::NoError) {
+        qWarning() << "input context is not a valid json.";
+        return false;
+    }
+
+    //发起新的搜索
+    auto root = doc.object();
+    if (d->m_main->newSearch(root)) {
         d->m_session = session;
         d->m_deadline.start();
         return true;
