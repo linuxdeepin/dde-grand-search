@@ -10,6 +10,7 @@
 #include "app/desktopappsearcher.h"
 #include "extend/extendsearcher.h"
 #include "web/statictextechoer.h"
+#include "semantic/semanticsearcher.h"
 
 #ifdef ENABLE_DEEPINANYTHING
     #include "file/filenamesearcher.h"

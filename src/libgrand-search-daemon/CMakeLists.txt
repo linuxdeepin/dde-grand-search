@@ -1,7 +1,7 @@
 # 定义需要的cmake版本
 cmake_minimum_required(VERSION 3.10)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -53,6 +53,11 @@ set(MAINCTRL
     maincontroller/task/taskcommander_p.h
 )
 
+FILE(GLOB_RECURSE SEMANTIC_FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/searcher/semantic/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/searcher/semantic/*.cpp"
+)
+
 set(SEARCHER
     searcher/searchergroup.h
     searcher/searchergroup_p.h
@@ -75,6 +80,7 @@ set(SEARCHER
     searcher/extend/extendsearcher.cpp
     searcher/extend/extendworker.h
     searcher/extend/extendworker.cpp
+    ${SEMANTIC_FILES}
 )
 
 #文件搜索
@@ -209,6 +215,8 @@ target_include_directories(${LIB_NAME} PUBLIC
 
 target_link_libraries(${LIB_NAME} PRIVATE
     ${LINK_LIBS}
+    semanticparser
+    luceneengine
 )
 
 # lib

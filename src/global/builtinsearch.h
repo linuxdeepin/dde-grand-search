@@ -11,6 +11,7 @@
 #define GRANDSEARCH_CLASS_APP_DESKTOP "com.deepin.dde-grand-search.app-desktop"
 #define GRANDSEARCH_CLASS_SETTING_CONTROLCENTER "com.deepin.dde-grand-search.dde-control-center-setting"
 #define GRANDSEARCH_CLASS_WEB_STATICTEXT "com.deepin.dde-grand-search.web-statictext"
+#define GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC "com.deepin.dde-grand-search.generalfile-semantic"
 
 // 搜索项所属组
 #define GRANDSEARCH_GROUP_BEST               "com.deepin.dde-grand-search.group.best-match"
@@ -26,6 +27,7 @@
 #define GRANDSEARCH_GROUP_FILE_PICTURE       "com.deepin.dde-grand-search.group.files.picture"
 #define GRANDSEARCH_GROUP_FILE_DOCUMNET      "com.deepin.dde-grand-search.group.files.document"
 
+#define GRANDSEARCH_GROUP_FILE_INFERENCE    "com.deepin.dde-grand-search.group.files.inference"
 
 /****************** 扩展数据 *********************************/
 // 搜索项在组内的显示等级
@@ -53,7 +55,8 @@ static const QStringList predefBuiltinSearches { \
 GRANDSEARCH_CLASS_FILE_DEEPIN, \
 GRANDSEARCH_CLASS_FILE_FSEARCH, \
 GRANDSEARCH_CLASS_APP_DESKTOP, \
-GRANDSEARCH_CLASS_WEB_STATICTEXT \
+GRANDSEARCH_CLASS_WEB_STATICTEXT, \
+GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC \
 }
 
 #endif // BUILTINSEARCH_H
