@@ -19,7 +19,9 @@ Build-Depends: debhelper (>= 9),
  libtag1-dev,
  libicu-dev,
  libgsettings-qt-dev,
- libpcre3-dev
+ libpcre3-dev,
+ liblucene++-dev,
+ libboost-filesystem-dev
 Standards-Version: 3.9.8
 Homepage: http://www.deepin.org/
 

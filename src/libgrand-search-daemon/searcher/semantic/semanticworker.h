@@ -1,23 +1,21 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#ifndef FILENAMEWORKER_H
-#define FILENAMEWORKER_H
+#ifndef SEMANTICWORKER_H
+#define SEMANTICWORKER_H
 
 #include "searcher/proxyworker.h"
 
-class ComDeepinAnythingInterface;
-
 namespace GrandSearch {
-
-class FileNameWorkerPrivate;
-class FileNameWorker : public ProxyWorker
+class SemanticWorkerPrivate;
+class SemanticWorker : public ProxyWorker
 {
     Q_OBJECT
+    friend class SemanticWorkerPrivate;
 public:
-    explicit FileNameWorker(const QString &name, bool supportParallelSearch, QObject *parent = nullptr);
-    ~FileNameWorker();
+    explicit SemanticWorker(const QString &name, const QString &service, QObject *parent = nullptr);
+    ~SemanticWorker();
     void setContext(const QString &context) Q_DECL_OVERRIDE;
     bool isAsync() const Q_DECL_OVERRIDE;
     bool working(void *context) Q_DECL_OVERRIDE;
@@ -26,10 +24,9 @@ public:
     bool hasItem() const Q_DECL_OVERRIDE;
     MatchedItemMap takeAll() Q_DECL_OVERRIDE;
 private:
-    FileNameWorkerPrivate *d_ptr;
-    Q_DECLARE_PRIVATE(FileNameWorker)
+    SemanticWorkerPrivate *d;
 };
 
 }
 
-#endif // FILENAMEWORKER_H
+#endif // SEMANTICWORKER_H

@@ -26,6 +26,7 @@ configure_file(${CMAKE_SOURCE_DIR}/src/environments.h.in ${CMAKE_SOURCE_DIR}/src
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/3rdparty)
+include_directories(${CMAKE_SOURCE_DIR}/src/tools)
 
 # 平台库目录
 set(LIB_PLATFORM_DIR "${CMAKE_INSTALL_PREFIX}/lib/${CMAKE_LIBRARY_ARCHITECTURE}")
@@ -84,3 +85,5 @@ add_subdirectory(src/libgrand-search-daemon)
 add_subdirectory(src/grand-search-daemon)
 add_subdirectory(src/grand-search-dock-plugin)
 add_subdirectory(src/preview-plugin)
+add_subdirectory(src/tools/semanticparser)
+add_subdirectory(src/tools/luceneengine)
