@@ -77,3 +77,8 @@ License: CC0-1.0
 Files: 3rdparty/services/*
 Copyright: 2017 The Qt Company Ltd.
 License: CC0-1.0
+
+#lucene
+Files: 3rdparty/lucene/*
+Copyright: 2009-2014 Alan Wright
+License: LGPL-3.0-or-later
