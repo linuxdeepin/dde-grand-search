@@ -2,7 +2,6 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "filenameworker.h"
 #include "filenameworker_p.h"
 #include "global/builtinsearch.h"
 #include "utils/specialtools.h"
@@ -302,6 +301,12 @@ FileNameWorker::FileNameWorker(const QString &name, bool supportParallelSearch, 
       d_ptr(new FileNameWorkerPrivate(this))
 {
     d_ptr->m_supportParallelSearch = supportParallelSearch;
+}
+
+FileNameWorker::~FileNameWorker()
+{
+    delete d_ptr;
+    d_ptr = nullptr;
 }
 
 void FileNameWorker::setContext(const QString &context)
