@@ -5,14 +5,13 @@
 #ifndef FILENAMEWORKER_P_H
 #define FILENAMEWORKER_P_H
 
-#include "searcher/proxyworker.h"
+#include "filenameworker.h"
 #include "filesearchutils.h"
 
 #include "interfaces/anything_interface.h"
 
 namespace GrandSearch {
 
-class FileNameWorker;
 class FileNameWorkerPrivate
 {
 public:

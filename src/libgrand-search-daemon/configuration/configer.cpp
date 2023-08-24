@@ -36,7 +36,8 @@ UserPreferencePointer ConfigerPrivate::defaultSearcher()
         #endif
                          {GRANDSEARCH_CLASS_APP_DESKTOP, true},
                          {GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, true},
-                         {GRANDSEARCH_CLASS_WEB_STATICTEXT, true}
+                         {GRANDSEARCH_CLASS_WEB_STATICTEXT, true},
+                         {GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC, true}
                         };
 
     return UserPreferencePointer(new UserPreference(data));

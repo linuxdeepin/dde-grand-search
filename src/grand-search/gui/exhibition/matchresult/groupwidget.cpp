@@ -208,6 +208,7 @@ QString GroupWidget::convertDisplayName(const QString &searchGroupName)
         , {GRANDSEARCH_GROUP_FOLDER, GroupName_Folder}
         , {GRANDSEARCH_GROUP_FILE, GroupName_File}
         , {GRANDSEARCH_GROUP_WEB, GroupName_Web}
+        , {GRANDSEARCH_GROUP_FILE_INFERENCE, GroupName_Inference}
     };
 
     return groupDisplayName.value(searchGroupName, searchGroupName);
