@@ -129,7 +129,7 @@
 <context>
     <name>GrandSearch::GroupWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="244"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="245"/>
         <source>More</source>
         <translation>查看更多</translation>
     </message>
@@ -387,6 +387,11 @@
         <location filename="../src/grand-search/gui/datadefine.h" line="33"/>
         <source>Web</source>
         <translation>Web搜索</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/datadefine.h" line="34"/>
+        <source>AI Search</source>
+        <translation>AI搜索</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="19"/>

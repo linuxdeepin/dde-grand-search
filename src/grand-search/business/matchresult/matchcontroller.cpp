@@ -56,7 +56,7 @@ void MatchControllerPrivate::onMatched(const QString &missionId)
         for (const MatchedItems &itemValues : items.values()) {
             count += itemValues.count();
         }
-        qDebug() << "fisrt recive data count:" << count << "    limit count:" << m_firstItemLimit;
+        qDebug() << "first recive data count:" << count << "limit count:" << m_firstItemLimit;
 
         // 总数不够时，将数据放入到缓存中，并开启延迟定时器
         if (count < m_firstItemLimit) {

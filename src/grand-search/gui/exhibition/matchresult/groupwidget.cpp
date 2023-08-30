@@ -84,14 +84,14 @@ void GroupWidget::appendMatchedItems(const MatchedItems &newItems, const QString
             }
         }
 
-        // 执行按名称排序逻辑
+        // 对未展开的数据排序
         m_cacheItems << newItems;
-        Utils::sort(m_cacheItems);
+        Utils::sortByWeight(m_cacheItems);
         updateShowItems(m_cacheItems);
     } else {
         // 结果列表已展开，已经显示的数据保持不变，仅对新增数据排序，然后追加到列表末尾
         MatchedItems& tempNewItems = const_cast<MatchedItems&>(newItems);
-        Utils::sort(tempNewItems);
+        Utils::sortByWeight(tempNewItems);
         m_listView->addRows(tempNewItems);
     }
 }
@@ -310,8 +310,6 @@ void GroupWidget::onMoreBtnClicked()
 {
     Q_ASSERT(m_listView);
     Q_ASSERT(m_viewMoreButton);
-
-    Utils::sort(m_cacheItems);
 
     // 将缓存中的数据转移到剩余显示结果中
     m_restShowItems << m_cacheWeightItems;

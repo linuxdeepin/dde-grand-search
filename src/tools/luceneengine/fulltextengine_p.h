@@ -6,12 +6,30 @@
 #define FULLTEXTENGINE_P_H
 
 #include "fulltextengine.h"
+#include "keyformatter.h"
 
 #include <lucene++/LuceneHeaders.h>
+#include <SimpleFragmenter.h>
+#include <QueryScorer.h>
+#include <Highlighter.h>
+
+#include <QSet>
 
 namespace GrandSearch {
+
 class FullTextEnginePrivate
 {
+public:
+    struct KeyContext
+    {
+        Lucene::AnalyzerPtr analyzer;
+        Lucene::FormatterPtr format;
+        Lucene::HighlighterPtr lighter;
+        Lucene::DocumentPtr doc;
+        KeyFormatter *keyFormatter() const {
+            return dynamic_cast<KeyFormatter *>(format.get());
+        }
+    };
 public:
     explicit FullTextEnginePrivate(FullTextEngine *qq);
     Lucene::IndexReaderPtr createReader(const QString &cache);

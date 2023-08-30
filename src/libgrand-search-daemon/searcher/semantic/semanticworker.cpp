@@ -31,15 +31,15 @@ SemanticWorkerPrivate::~SemanticWorkerPrivate()
 
 }
 
-void SemanticWorkerPrivate::tryNotify()
-{
-    int cur = m_time.elapsed();
-    if (q->hasItem() && (cur - m_lastEmit) > 100) {
-        m_lastEmit = cur;
-        qDebug() << "unearthed, current spend:" << cur;
-        emit q->unearthed(q);
-    }
-}
+//void SemanticWorkerPrivate::tryNotify()
+//{
+//    int cur = m_time.elapsed();
+//    if (q->hasItem() && (cur - m_lastEmit) > 50) {
+//        m_lastEmit = cur;
+//        qDebug() << "semantic unearthed, current spend:" << cur;
+//        emit q->unearthed(q);
+//    }
+//}
 
 bool SemanticWorkerPrivate::pushItem(const MatchedItemMap &items, void *ptr)
 {
@@ -48,7 +48,7 @@ bool SemanticWorkerPrivate::pushItem(const MatchedItemMap &items, void *ptr)
         return false;
 
     // lock and append item
-    bool hasItem = false;
+    //bool hasItem = false;
     {
         QMutexLocker lk(&d->m_mtx);
         for(auto it = items.begin(); it != items.end(); ++it) {
@@ -56,11 +56,11 @@ bool SemanticWorkerPrivate::pushItem(const MatchedItemMap &items, void *ptr)
                 continue;
             d->m_items[it.key()].append(it.value());
         }
-        hasItem = !d->m_items.isEmpty();
+        //hasItem = !d->m_items.isEmpty();
     }
-
-    if (hasItem)
-        d->tryNotify();
+// 搜索完再推数据
+//    if (hasItem)
+//        d->tryNotify();
 
     return true;
 }
@@ -68,6 +68,39 @@ bool SemanticWorkerPrivate::pushItem(const MatchedItemMap &items, void *ptr)
 void SemanticWorkerPrivate::run(const QueryFunction &func)
 {
     func.function(func.object, &SemanticWorkerPrivate::pushItem, func.worker);
+}
+
+void SemanticWorkerPrivate::sortItems(MatchedItemMap &items, const QHash<QString, int> &weight)
+{
+    auto setExt = [](const MatchedItem &t, int w){
+        if (t.extra.isValid() &&
+            t.extra.toHash().contains(GRANDSEARCH_PROPERTY_ITEM_WEIGHT))
+            return;
+
+        auto var = t.extra.toHash();
+        var.insert(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, w);
+        const_cast<MatchedItem *>(&t)->extra = QVariant::fromValue(var);
+    };
+
+    for (auto it = items.begin(); it != items.end(); ++it) {
+        MatchedItems &list = it.value();
+
+        if (list.size() == 1) {
+            MatchedItem &item = list.first();
+            setExt(item, weight.value(item.item, 0));
+        } else {
+            std::stable_sort(list.begin(), list.end(), [&weight, setExt](const MatchedItem &t1, const MatchedItem &t2) {
+                int w1 = weight.value(t1.item, 0);
+                int w2 = weight.value(t2.item, 0);
+                setExt(t1, w1);
+                setExt(t2, w2);
+
+                if (w1 == w2)
+                    return t1.name > t2.name;
+                return w1 > w2;
+            });
+        }
+    }
 }
 
 SemanticWorker::SemanticWorker(const QString &name, const QString &service, QObject *parent)
@@ -106,6 +139,7 @@ bool SemanticWorker::working(void *context)
         count--;
     }
 
+    d->m_time.start();
     SemanticEntity entity;
     // get entity
     {
@@ -116,7 +150,7 @@ bool SemanticWorker::working(void *context)
         checkRuning();
 
         QString ret = parser.analyze(d->m_context);
-        qDebug() << "get reply" << ret;
+        qDebug() << "get reply" << ret << d->m_time.elapsed();
 
         checkRuning();
 
@@ -132,9 +166,8 @@ bool SemanticWorker::working(void *context)
         }
     }
 
-    FileResultsHandler fileHandler;
     QList<SemanticWorkerPrivate::QueryFunction> querys;
-
+    FileResultsHandler fileHandler;
     AnythingQuery anything;
     {
         SemanticWorkerPrivate::QueryFunction func = {&anything, &AnythingQuery::run, d};
@@ -161,11 +194,36 @@ bool SemanticWorker::working(void *context)
 
     checkRuning();
 
-    d->m_time.start();
+    d->m_time.restart();
     auto future = QtConcurrent::map(querys, &SemanticWorkerPrivate::run);
     future.waitForFinished();
 
-    // 发送遗留的数据
+    // sort and set weight
+    {
+        QMutexLocker lk(&d->m_mtx);
+        d->sortItems(d->m_items, fileHandler.allItemWeight());
+
+        // Keep the top 100 files
+        MatchedItemMap top;
+        for (auto it = d->m_items.begin(); it != d->m_items.end(); ++it) {
+            MatchedItems &items = it.value();
+            if (items.size() > 100) {
+                MatchedItems tmp;
+                for (int i = 0; i < 100; ++i)
+                    tmp.append(items[i]);
+                top.insert(it.key(), items);
+            } else {
+                top.insert(it.key(), items);
+            }
+        }
+
+        d->m_items = top;
+    }
+
+    checkRuning();
+
+    qInfo() << "semantic worker is finished, total spend:" << d->m_time.elapsed() << "ms found:" << fileHandler.resultCount();
+    // 发送所有数据
     if (!d->m_items.isEmpty())
         emit unearthed(this);
 

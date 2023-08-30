@@ -6,8 +6,12 @@
 #define FEATURELIBENGINE_P_H
 
 #include "featurelibengine.h"
+#include "keyformatter.h"
 
 #include <lucene++/LuceneHeaders.h>
+#include <SimpleFragmenter.h>
+#include <QueryScorer.h>
+#include <Highlighter.h>
 
 namespace GrandSearch {
 class FeatureLibEnginePrivate
