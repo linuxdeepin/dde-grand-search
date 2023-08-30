@@ -17,7 +17,7 @@ FeatureQueryPrivate::FeatureQueryPrivate(FeatureQuery *qq) : q(qq)
 
 }
 
-bool FeatureQueryPrivate::processResult(const QString &file, void *pdata)
+bool FeatureQueryPrivate::processResult(const QString &file, const QSet<QString> &match, void *pdata)
 {
     FeatureQueryPrivate::Context *ctx = static_cast<FeatureQueryPrivate::Context *>(pdata);
     Q_ASSERT(ctx);
@@ -41,14 +41,15 @@ bool FeatureQueryPrivate::processResult(const QString &file, void *pdata)
     if (SpecialTools::isHiddenFile(file, hiddenFilters, QDir::homePath()))
         return true;
 
+    d->m_count++;
     if (d->m_handler) {
         d->m_handler->appendTo(file, d->m_results);
-        if (d->m_handler->isResultLimit())
+        d->m_handler->setItemWeight(file, d->m_handler->itemWeight(file) + d->matchedWeight(match));
+        if (d->m_handler->isResultLimit() || d->m_count >= 100)
             return false;
     } else {
         auto item = FileSearchUtils::packItem(file, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC);
-        auto group = FileSearchUtils::getGroupByName(file);
-        d->m_results[FileSearchUtils::groupKey(group)].append(item);
+        d->m_results[GRANDSEARCH_GROUP_FILE_INFERENCE].append(item);
     }
 
     return true;
@@ -131,6 +132,25 @@ bool FeatureQueryPrivate::timeToPush() const
     return (m_time.elapsed() - m_lastPush) > 100;
 }
 
+int FeatureQueryPrivate::matchedWeight(const QSet<QString> &back)
+{
+    int w = 0;
+    auto keys = m_entity.keys;
+    for (const QString &str : back) {
+        if (keys.isEmpty())
+            break;
+        for (auto it = keys.begin(); it != keys.end();) {
+            if (str.contains(*it)) {
+                it = keys.erase(it);
+                w += 20;
+            } else {
+                ++it;
+            }
+        }
+    }
+    return w;
+}
+
 FeatureQuery::FeatureQuery(QObject *parent)
     : QObject(parent)
     , d(new FeatureQueryPrivate(this))
@@ -175,6 +195,8 @@ void FeatureQuery::run(void *ptr, PushItemCallBack callBack, void *pdata)
     engine.query(path, cond, &FeatureQueryPrivate::processResult, &ctx);
 
     callBack(d->m_results, pdata);
+
+    qDebug() << "feature is finished spend:" << d->m_time.elapsed() << "found:" << d->m_count;;
 }
 
 void FeatureQuery::setEntity(const SemanticEntity &entity)

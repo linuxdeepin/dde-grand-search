@@ -8,18 +8,18 @@
 #include <QObject>
 
 namespace GrandSearch {
-
-typedef bool (*CheckAndPushItem)(const QString &file, void *pdata);
-
 class FullTextEnginePrivate;
 class FullTextEngine : public QObject
 {
     Q_OBJECT
 public:
+    typedef bool (*CheckAndPushItem)(const QString &file, void *pdata, void *ctx);
+public:
     explicit FullTextEngine(QObject *parent = nullptr);
     ~FullTextEngine();
     bool init(const QString &cache);
     void query(const QString &searchPath, const QStringList &keys, CheckAndPushItem func, void *pdata);
+    QSet<QString> matchedKeys(void *ctx) const;
 private:
     FullTextEnginePrivate *d;
 };

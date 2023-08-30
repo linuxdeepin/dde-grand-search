@@ -18,7 +18,7 @@ public:
     // 排序算法 用于搜索结果排序 规则为：中文 > 英文 > 其他语言 > 标点符号
     static bool sort(MatchedItems &list, Qt::SortOrder order = Qt::AscendingOrder);
 
-    static bool compareByString(QString &str1, QString &str2, Qt::SortOrder order = Qt::AscendingOrder);
+    static bool compareByString(QString str1, QString str2, Qt::SortOrder order = Qt::AscendingOrder);
     static bool startWithSymbol(const QString &text);
     static bool startWithHanzi(const QString &text);
     static bool startWithLatin(const QString &text);
@@ -27,7 +27,15 @@ public:
 
     // 通过权重进行排序
     static bool sortByWeight(MatchedItemMap &map, Qt::SortOrder order = Qt::DescendingOrder);
-    static bool compareByWeight(MatchedItem &node1, MatchedItem &node2, Qt::SortOrder order = Qt::DescendingOrder);
+    static inline bool sortByWeight(MatchedItems &list, Qt::SortOrder order = Qt::DescendingOrder) {
+        std::stable_sort(list.begin(), list.end(), [order](const MatchedItem &node1, const MatchedItem &node2){
+            return compareByWeight(node1, node2, order);
+        });
+
+        return true;
+    }
+
+    static bool compareByWeight(const MatchedItem &node1, const MatchedItem &node2, Qt::SortOrder order = Qt::DescendingOrder);
 
     // 更新结果项的权重
     static void updateItemsWeight(MatchedItemMap &map, const QString &content);

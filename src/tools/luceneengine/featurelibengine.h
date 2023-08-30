@@ -9,14 +9,13 @@
 #include <QVariant>
 
 namespace GrandSearch {
-
-typedef bool (*CheckAndPushItem)(const QString &file, void *pdata);
 class FeatureLibEnginePrivate;
 class FeatureLibEngine : public QObject
 {
     Q_OBJECT
     friend class FeatureLibEnginePrivate;
 public:
+    typedef bool (*CheckAndPushItem)(const QString &file, const QSet<QString> &match, void *pdata);
     enum Property {
         And,
         Or,

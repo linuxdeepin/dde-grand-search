@@ -74,8 +74,16 @@ void FullTextEngine::query(const QString &searchPath, const QStringList &keys, C
         QueryPtr query = parser->parse(key.toStdWString());
         String filterPath = searchPath.endsWith("/") ? (searchPath + "*").toStdWString() : (searchPath + "/*").toStdWString();
         FilterPtr filter = newLucene<QueryWrapperFilter>(newLucene<WildcardQuery>(newLucene<Term>(L"path", filterPath)));
-        TopDocsPtr topDocs = searcher->search(query, filter, 100);
+        TopDocsPtr topDocs = searcher->search(query, filter, 200);
         Collection<ScoreDocPtr> scoreDocs = topDocs->scoreDocs;
+
+        // for get matched keys
+        FormatterPtr simple(new KeyFormatter);
+        QueryScorerPtr score(new QueryScorer(query));
+        HighlighterPtr lighter(new Highlighter(simple, score));
+        FragmenterPtr frag(new SimpleFragmenter(0));
+        lighter->setTextFragmenter(frag);
+
         for (auto scoreDoc : scoreDocs) {
             DocumentPtr doc = searcher->doc(scoreDoc->doc);
             String resultPath = doc->get(L"path");
@@ -83,7 +91,11 @@ void FullTextEngine::query(const QString &searchPath, const QStringList &keys, C
 
             if (!QFile::exists(filePath))
                 continue;
-            if (!func(filePath, pdata))
+
+            FullTextEnginePrivate::KeyContext ctx {
+                analyzer, simple, lighter, doc
+            };
+            if (!func(filePath, pdata, &ctx))
                 return; // 中断
         }
     } catch (const LuceneException &e) {
@@ -95,3 +107,14 @@ void FullTextEngine::query(const QString &searchPath, const QStringList &keys, C
     }
 }
 
+QSet<QString> FullTextEngine::matchedKeys(void *ctx) const
+{
+    if (!ctx)
+        return {};
+    FullTextEnginePrivate::KeyContext *kctx =
+            static_cast<FullTextEnginePrivate::KeyContext *>(ctx);
+    auto format = kctx->keyFormatter();
+    format->clear();
+    kctx->lighter->getBestFragments(kctx->analyzer, L"contents", kctx->doc->get(L"contents"), 50);
+    return format->keys();
+}

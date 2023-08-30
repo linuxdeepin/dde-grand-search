@@ -8,6 +8,8 @@
 #include "fulltextquery.h"
 #include "searcher/semantic/fileresultshandler.h"
 
+#include "luceneengine/fulltextengine.h"
+
 namespace GrandSearch {
 
 class FullTextQueryPrivate
@@ -15,6 +17,7 @@ class FullTextQueryPrivate
 public:
     struct Context
     {
+       FullTextEngine *eng;
        FullTextQuery *query;
        PushItemCallBack callBack;
        void *callBackData;
@@ -28,14 +31,16 @@ public:
                 + "/deepin/dde-file-manager/index";
         return path;
     }
-    static bool processResult(const QString &file, void *pdata);
+    static bool processResult(const QString &file, void *pdata, void *ctx);
     bool timeToPush() const;
+    int matchedWeight(const QSet<QString> &back);
 public:
     SemanticEntity m_entity;
     FileResultsHandler *m_handler = nullptr;
     QTime m_time;
     int m_lastPush = 0;
     MatchedItemMap m_results;
+    int m_count = 0;
 private:
     FullTextQuery *q;
 };

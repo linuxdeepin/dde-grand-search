@@ -22,15 +22,17 @@ public:
 public:
     explicit SemanticWorkerPrivate(SemanticWorker *parent);
     ~SemanticWorkerPrivate();
-    void tryNotify();
+    //void tryNotify();
     static bool pushItem(const MatchedItemMap &items, void *ptr);
     static void run(const QueryFunction &func);
+    static void sortItems(MatchedItemMap &items, const QHash<QString, int> &weight);
 public:
     QString m_serviceName;
     QString m_context;
     QAtomicInt m_status = ProxyWorker::Ready;
     mutable QMutex m_mtx;
     MatchedItemMap m_items;
+
     //计时
     QTime m_time;
     int m_lastEmit = 0;
