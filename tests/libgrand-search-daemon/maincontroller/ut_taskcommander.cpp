@@ -253,7 +253,7 @@ TEST(TaskCommanderPrivate, ut_onUnearthed)
     TaskCommander tc("test");
     auto worker = new TestWorker("test1");
     worker->item = true;
-    worker->items.insert("test", {});
+    worker->items.insert("test", {MatchedItem()});
     tc.d->m_allWorkers.append(worker);
 
     bool matched = false;

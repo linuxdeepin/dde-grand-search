@@ -196,6 +196,7 @@ set(SRCS
 set(QRCS
     gui/searchconfig/resource.qrc
     gui/exhibition/preview/resource.qrc
+    gui/exhibition/matchresult/resource.qrc
     )
 
 add_executable(${BIN_NAME} ${SRCS} ${QRCS})
