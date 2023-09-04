@@ -31,13 +31,24 @@ MatchWidgetPrivate::MatchWidgetPrivate(MatchWidget *parent)
 
 }
 
+void MatchWidgetPrivate::setGroupIcon(GroupWidget *wid)
+{
+    if (!wid)
+        return;
+
+    if (wid->searchGroupName() == GRANDSEARCH_GROUP_FILE_INFERENCE) {
+        wid->setIcon(QIcon(":/icons/aisearch.svg"));
+    }
+}
+
 MatchWidget::MatchWidget(QWidget *parent)
     : DWidget(parent)
     , d_p(new MatchWidgetPrivate(this))
 {
-    m_groupHashShowOrder << GRANDSEARCH_GROUP_BEST << GRANDSEARCH_GROUP_APP << GRANDSEARCH_GROUP_SETTING
-                         << GRANDSEARCH_GROUP_WEB << GRANDSEARCH_GROUP_FILE_INFERENCE
-                         << GRANDSEARCH_GROUP_FILE_VIDEO << GRANDSEARCH_GROUP_FILE_AUDIO << GRANDSEARCH_GROUP_FILE_PICTURE
+    m_groupHashShowOrder << GRANDSEARCH_GROUP_BEST << GRANDSEARCH_GROUP_FILE_INFERENCE
+                         << GRANDSEARCH_GROUP_APP << GRANDSEARCH_GROUP_SETTING
+                         << GRANDSEARCH_GROUP_WEB << GRANDSEARCH_GROUP_FILE_VIDEO
+                         << GRANDSEARCH_GROUP_FILE_AUDIO << GRANDSEARCH_GROUP_FILE_PICTURE
                          << GRANDSEARCH_GROUP_FILE_DOCUMNET << GRANDSEARCH_GROUP_FOLDER << GRANDSEARCH_GROUP_FILE;
     initUi();
     initConnect();
@@ -57,7 +68,6 @@ void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
     // 数据处理
     MatchedItemMap::ConstIterator itData = matchedData.begin();
     while (itData != matchedData.end()) {
-
         // 根据groupHash创建对应类目列表，若已存在，直接返回已有类目列表
         GroupWidget* groupWidget = createGroupWidget(itData.key());
         if (!groupWidget) {
@@ -68,8 +78,9 @@ void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
         // 追加匹配数据到类目列表中
         groupWidget->appendMatchedItems(itData.value(), itData.key());
 
-        // 列表中有数据，显示类目列表
-        groupWidget->setVisible(groupWidget->itemCount() > 0);
+        // 列表中没有数据，显示等待效果
+        groupWidget->setVisible(true);
+        groupWidget->showSpinner(groupWidget->itemCount() < 1);
 
         // 有新增匹配结果，需要调整重新布局
         if (!bNeedRelayout && itData.value().size() > 0)
@@ -115,6 +126,21 @@ void MatchWidget::clearMatchedData()
 
 void MatchWidget::onSearchCompleted()
 {
+    // 搜索结束关闭等待动画
+    bool need = false;
+    for (GroupWidget *wid : m_groupWidgetMap.values()) {
+        if (wid) {
+            wid->showSpinner(false);
+            if (wid->itemCount() == 0) {
+                wid->showLabel(true);
+                need = true;
+            }
+        }
+    }
+
+    if (need)
+        reLayout();
+
     if (!m_vGroupWidgets.isEmpty())
         return;
 
@@ -165,7 +191,7 @@ void MatchWidget::selectNextItem()
                     listView->setCurrentIndex(QModelIndex());
                     m_customSelected = true;
                 } else {
-                    qWarning() << "select next failed";
+                    qDebug() << "select next failed";
                 }
                 break;
             } else {
@@ -333,7 +359,7 @@ bool MatchWidget::selectFirstItem(int groupNumber)
 
 bool MatchWidget::selectLastItem(int groupNumber)
 {
-    for (int i = groupNumber; i < m_vGroupWidgets.count(); --i) {
+    for (int i = groupNumber; i > -1 && i < m_vGroupWidgets.count(); --i) {
 
         GroupWidget *group = m_vGroupWidgets.at(i);
         Q_ASSERT(group);
@@ -572,6 +598,7 @@ GroupWidget *MatchWidget::createGroupWidget(const QString &searchGroupName)
         connect(listView, &GrandSearchListView::sigItemClicked, this, &MatchWidget::sigCloseWindow);
 
         groupWidget->setSearchGroupName(searchGroupName);
+        d_p->setGroupIcon(groupWidget);
 
         const QString &groupName = GroupWidget::convertDisplayName(searchGroupName);
         groupWidget->setGroupName(groupName);

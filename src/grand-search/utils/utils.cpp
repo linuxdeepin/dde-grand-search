@@ -559,6 +559,12 @@ void Utils::packageBestMatch(MatchedItemMap &map, int maxQuantity)
         // 在原分组中移除最佳匹配项
         map[list.second].removeOne(list.first);
         bestList.append(list.first);
+
+        // 原分组为空，移除分组
+        if (map[list.second].isEmpty()) {
+            qDebug() << "group" << list.second << "is empty, remove it";
+            map.remove(list.second);
+        }
     }
 
     qDebug() << "find best match count:" << bestList.count() << QString(".cost [%1]ms").arg(time.elapsed());
