@@ -149,7 +149,7 @@ void ImageView::initUI()
     titleLayout->addWidget(m_titleLabel);
 
     m_mainLayout = new QVBoxLayout(this);
-    m_mainLayout->setContentsMargins(35, 12, 35, 0);
+    m_mainLayout->setContentsMargins(35, 5, 35, 0);
     m_mainLayout->setSpacing(0);
 
     m_mainLayout->addStretch();
@@ -227,4 +227,3 @@ void ImageView::showErrorPage()
     auto errorPixmap = getRoundPixmap(QPixmap::fromImage(errorImg));
     m_imageLabel->setPixmap(errorPixmap);
 }
-

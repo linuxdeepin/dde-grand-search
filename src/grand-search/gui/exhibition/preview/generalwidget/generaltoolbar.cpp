@@ -41,7 +41,7 @@ IconButton::IconButton(QWidget *parent)
 
     if (this->font().pixelSize() < TOOLBTN_MAX_PIXELSIZE) {
         setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-        setIconSize(QSize(18, 18));
+        setIconSize(QSize(24, 24));
     } else {
         setToolButtonStyle(Qt::ToolButtonIconOnly);
         setIconSize(size());
@@ -65,7 +65,6 @@ void GeneralToolBar::initUi()
     m_hMainLayout->setSpacing(0);
 
     QString suffix = Utils::iconThemeSuffix();
-
     m_openBtn = new IconButton(this);
     m_openBtn->setText(tr("Open"));
     m_openBtn->setIcon(QIcon(QString(":/icons/open%1.svg").arg(suffix)));
@@ -79,7 +78,7 @@ void GeneralToolBar::initUi()
     m_copyPathBtn = new IconButton(this);
     m_copyPathBtn->setText(tr("Copy Path"));
     m_copyPathBtn->setIcon(QIcon(QString(":/icons/copypath%1.svg").arg(suffix)));
-    m_openPathBtn->setFixedWidth(TOOLBTN_WIDTH_WIDE);
+    m_copyPathBtn->setFixedWidth(TOOLBTN_WIDTH_WIDE);
 
     m_vLine1 = new DVerticalLine(this);
     m_vLine1->setFixedHeight(30);

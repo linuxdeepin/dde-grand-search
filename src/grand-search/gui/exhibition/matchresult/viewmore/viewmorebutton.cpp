@@ -73,7 +73,9 @@ void ViewMoreButton::paintEvent(QPaintEvent *event)
             if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
                 backgroundColor = QColor(255, 255, 255, static_cast<int>(255 * 0.1));
 
-            textColor = QColor(0, 129, 255);
+            // 获取活动色
+            DStyleHelper helper(style());
+            textColor = helper.getColor(&opt, foregroundRole());
             break;
         }
         default:

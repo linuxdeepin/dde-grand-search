@@ -32,9 +32,9 @@ void VideoView::initUI()
 
     QVBoxLayout *lay = new QVBoxLayout(this);
     lay->setSpacing(0);
-    // 左边距35，view外有10的上边距，内部只需22-10=12的上边距
+    // 左边距35，view外有10的上边距，内部只需15-10=5的上边距
     // 右边距35,view外下边距已有15,内部为0
-    lay->setContentsMargins(35, 12, 35, 0);
+    lay->setContentsMargins(35, 5, 35, 0);
 
     //现实缩略图
     m_picFrame = new ThumbnailLabel(this);
