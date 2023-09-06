@@ -18,7 +18,7 @@
 
 DCORE_USE_NAMESPACE
 
-#define MaxWidth 476
+#define MaxWidth SWITCHWIDGETWIDTH
 #define MaxHeight 272
 
 #define IconSize   24

@@ -206,6 +206,13 @@ void EntranceWidget::initUI()
     d_p->m_lineEdit->addAction(d_p->m_appIconAction, QLineEdit::TrailingPosition);
     d_p->m_searchEdit->setRightWidgets(QList<QWidget*>() << d_p->m_appIconLabel);
 
+#if (QT_VERSION_MAJOR == 5) && (QT_VERSION_MINOR == 11)
+    // 临时解决图标间距问题， 详见QLineEditPrivate::sideWidgetParameters
+    d_p->m_lineEdit->setProperty("_d_dtk_lineeditActionMargin", 5);
+    d_p->m_lineEdit->setProperty("_d_dtk_lineeditActionWidth", 1);
+    qInfo() << "set _d_dtk_lineeditActionMargin 5 _d_dtk_lineeditActionWidth 1";
+#endif
+
     // 搜索框界面布局设置
     // 必须对搜索框控件的边距和间隔设置为0,否则其内含的LineEdit不满足大小显示要求
     {

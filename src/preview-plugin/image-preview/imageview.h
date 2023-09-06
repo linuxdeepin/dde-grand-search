@@ -40,7 +40,6 @@ private:
 private slots:
     void onMovieFrameChanged(int frameNumber);
     void showErrorPage();
-
 private:
     QVBoxLayout *m_mainLayout = nullptr;
 

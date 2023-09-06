@@ -12,6 +12,7 @@
 #include <DSwitchButton>
 #include <DScrollArea>
 #include <DTitlebar>
+#include <DFrame>
 
 #include <QLabel>
 #include <QPushButton>
@@ -47,11 +48,18 @@ void ConfigWidget::initUI()
     QIcon tmpIcon = QIcon(QString(":/icons/%1.svg").arg("dde-grand-search-setting"));
     this->titlebar()->setIcon(tmpIcon);
     setWindowIcon(tmpIcon);
-    QWidget *mainWidget = new QWidget(this);
-    setCentralWidget(mainWidget);
+
+    QWidget *central = new QWidget(this);
+    setCentralWidget(central);
+    auto centralLayout = new QVBoxLayout(central);
+    centralLayout->setContentsMargins(10, 10, 10, 10);
+
+    DFrame *mainWidget = new DFrame(this);
+    mainWidget->setFrameRounded(true);
+    centralLayout->addWidget(mainWidget);
 
     m_mainLayout = new QVBoxLayout(mainWidget);
-    m_mainLayout->setContentsMargins(0, 10, 0, 10);
+    m_mainLayout->setContentsMargins(10, 10, 10, 10); // 设置10px用于画圆角
     m_mainLayout->setSpacing(0);
     mainWidget->setLayout(m_mainLayout);
 
@@ -64,7 +72,8 @@ void ConfigWidget::initUI()
 
     m_scrollAreaContent = new QWidget(m_scrollArea);
     m_scrollLayout = new QVBoxLayout(m_scrollAreaContent);
-    m_scrollLayout->setContentsMargins(109, 20, 109, 20);
+    // 左右边距100px，上面圆角用了10px，因此这里是90px
+    m_scrollLayout->setContentsMargins(90, 10, 90, 10);
     m_scrollLayout->setSpacing(20);
     m_scrollAreaContent->setLayout(m_scrollLayout);
 
