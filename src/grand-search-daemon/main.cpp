@@ -10,6 +10,7 @@
 #include <DApplication>
 
 #include <QDebug>
+#include <QDir>
 
 #include <unistd.h>
 #include <signal.h>
