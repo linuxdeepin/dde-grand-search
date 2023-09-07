@@ -13,6 +13,7 @@
 #include <QDBusConnection>
 #include <QDBusError>
 #include <QDebug>
+#include <QThread>
 
 GRANDSEARCH_USE_NAMESPACE
 DCORE_USE_NAMESPACE

@@ -19,6 +19,7 @@
 #define MARGIN_SIZE             15
 
 DWIDGET_USE_NAMESPACE
+DGUI_USE_NAMESPACE
 GRANDSEARCH_USE_NAMESPACE
 using namespace GrandSearch::audio_preview;
 

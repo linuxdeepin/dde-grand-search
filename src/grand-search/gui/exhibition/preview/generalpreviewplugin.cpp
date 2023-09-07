@@ -25,6 +25,7 @@
 using namespace GrandSearch;
 
 DWIDGET_USE_NAMESPACE
+DGUI_USE_NAMESPACE
 
 NameLabel::NameLabel(const QString &text, QWidget *parent, Qt::WindowFlags f):
     QLabel(text, parent, f)
