@@ -33,6 +33,7 @@ Recommends:
  deepin-desktop-schemas (>=5.8.0.34),
  dde-daemon (>=5.12.0.31),
  startdde (>=5.6.0.34),
- libimageeditor (>=1.0.19)
+ libimageeditor (>=1.0.19),
+ deepin-ai-daemon
 Description: deepin desktop-environment - search module
  Search module of deepin desktop-environment
