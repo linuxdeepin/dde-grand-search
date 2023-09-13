@@ -48,7 +48,9 @@ PlanWidget::PlanWidget(QWidget *parent)
     QString content = tr("Joining the search experience program means that "
                          "you grant and authorize us to collect the information of "
                          "your device and system, file icons, content and properties, "
-                         "applications and their configurations. If you refuse our collection "
+                         "applications and their configurations, the contents you search while using the Application, "
+                         "the time of search, the type of requested large model."
+                         "If you refuse our collection "
                          "and use of the aforementioned information, do not join the program.");
     m_contentLabel = new QLabel(content, this);
     m_contentLabel->setWordWrap(true);

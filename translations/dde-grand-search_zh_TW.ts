@@ -67,12 +67,12 @@
 <context>
     <name>GrandSearch::EntranceWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="225"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="232"/>
         <source>Search</source>
         <translation>搜尋</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="226"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="233"/>
         <source>What would you like to search for?</source>
         <translation>搜尋想要尋找的內容</translation>
     </message>
@@ -111,17 +111,17 @@
 <context>
     <name>GrandSearch::GeneralToolBar</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="70"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="69"/>
         <source>Open</source>
         <translation>開啟</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="75"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="74"/>
         <source>Open Path</source>
         <translation>打開路徑</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="80"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="79"/>
         <source>Copy Path</source>
         <translation>複製路徑</translation>
     </message>
@@ -129,9 +129,14 @@
 <context>
     <name>GrandSearch::GroupWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="244"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="288"/>
         <source>More</source>
         <translation>查看更多</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="324"/>
+        <source>No search results</source>
+        <translation type="unfinished">無搜尋結果</translation>
     </message>
 </context>
 <context>
@@ -164,26 +169,26 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="48"/>
-        <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations. If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation>開啟搜尋體驗計劃，視為您授權我們收集與您的裝置、系統、文件圖示、部分文件內容、文件屬性、應用軟體及配置等訊息，您可以關閉搜尋體驗計劃，以拒絕我們對前述訊息的收集與使用。</translation>
+        <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations, the contents you search while using the Application, the time of search, the type of requested large model.If you refuse our collection and use of the aforementioned information, do not join the program.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="57"/>
+        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="59"/>
         <source>To know more about the management of your data, please refer to the UnionTech Software Privacy Policy (</source>
         <translation>了解對資料的管理與使用方式，請參考統信軟體隱私政策（</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="59"/>
+        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="61"/>
         <source>https://www.uniontech.com/agreement/privacy-en</source>
         <translation>https://www.uniontech.com/agreement/privacy-tw</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="60"/>
+        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="62"/>
         <source>https://www.deepin.org/en/agreement/privacy/</source>
         <translation>https://www.deepin.org/zh/agreement/privacy/</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="62"/>
+        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="64"/>
         <source>).</source>
         <translation>）。</translation>
     </message>
@@ -387,6 +392,11 @@
         <location filename="../src/grand-search/gui/datadefine.h" line="33"/>
         <source>Web</source>
         <translation>Web搜尋</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/datadefine.h" line="34"/>
+        <source>AI Search</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="19"/>
