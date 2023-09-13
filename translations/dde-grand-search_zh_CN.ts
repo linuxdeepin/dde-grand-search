@@ -67,12 +67,12 @@
 <context>
     <name>GrandSearch::EntranceWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="225"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="232"/>
         <source>Search</source>
         <translation>搜索</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="226"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="233"/>
         <source>What would you like to search for?</source>
         <translation>搜索想要查找的内容</translation>
     </message>
@@ -111,17 +111,17 @@
 <context>
     <name>GrandSearch::GeneralToolBar</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="70"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="69"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="75"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="74"/>
         <source>Open Path</source>
         <translation>打开路径</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="80"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="79"/>
         <source>Copy Path</source>
         <translation>复制路径</translation>
     </message>
@@ -169,26 +169,26 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="48"/>
-        <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations. If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation>开启搜索体验计划，视为您授权我们收集与您的设备、系统、文件图标、部分文件内容、文件属性、应用软件及配置等信息，您可以关闭搜索体验计划，以拒绝我们对前述信息的收集与使用。</translation>
+        <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations, the contents you search while using the Application, the time of search, the type of requested large model.If you refuse our collection and use of the aforementioned information, do not join the program.</source>
+        <translation>开启搜索体验计划，视为您授权我们收集与您的设备、系统、文件图标、部分文件内容、文件属性、应用软件及配置、搜索内容、搜索发起时间、搜索使用的AI模型名称等信息，您可以关闭搜索体验计划，以拒绝我们对前述信息的收集与使用。</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="57"/>
+        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="59"/>
         <source>To know more about the management of your data, please refer to the UnionTech Software Privacy Policy (</source>
         <translation>了解对数据的管理与使用方式，请参考统信软件隐私政策（</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="59"/>
+        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="61"/>
         <source>https://www.uniontech.com/agreement/privacy-en</source>
         <translation>https://www.uniontech.com/agreement/privacy-cn</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="60"/>
+        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="62"/>
         <source>https://www.deepin.org/en/agreement/privacy/</source>
         <translation>https://www.deepin.org/zh/agreement/privacy/</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="62"/>
+        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="64"/>
         <source>).</source>
         <translation>）。</translation>
     </message>

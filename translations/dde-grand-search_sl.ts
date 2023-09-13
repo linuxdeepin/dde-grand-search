@@ -67,12 +67,12 @@
 <context>
     <name>GrandSearch::EntranceWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="225"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="232"/>
         <source>Search</source>
         <translation>Iskanje</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="226"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="233"/>
         <source>What would you like to search for?</source>
         <translation>Kaj bi radi posikali?</translation>
     </message>
@@ -111,17 +111,17 @@
 <context>
     <name>GrandSearch::GeneralToolBar</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="70"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="69"/>
         <source>Open</source>
         <translation>Odpri</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="75"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="74"/>
         <source>Open Path</source>
         <translation>Odpri pot</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="80"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="79"/>
         <source>Copy Path</source>
         <translation>Kopiraj pot</translation>
     </message>
@@ -129,9 +129,14 @@
 <context>
     <name>GrandSearch::GroupWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="244"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="288"/>
         <source>More</source>
         <translation>Več</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="324"/>
+        <source>No search results</source>
+        <translation type="unfinished">Ni rezultatov iskanja</translation>
     </message>
 </context>
 <context>
@@ -164,26 +169,26 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="48"/>
-        <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations. If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation>Pridružitev programu uporabniške izkušnje iskanja pomeni, da dovolite zbiranje podatkov o napravi in sistemu, ikonah datotek, vsebini in lastnostih, programih in njihovih nastavitvah. Če nam ne dovolite zbiranja naštetih podatkov, se temu programu ne pridružite.</translation>
+        <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations, the contents you search while using the Application, the time of search, the type of requested large model.If you refuse our collection and use of the aforementioned information, do not join the program.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="57"/>
+        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="59"/>
         <source>To know more about the management of your data, please refer to the UnionTech Software Privacy Policy (</source>
         <translation>Če želite izvedeti več o upravljanju vaših podatkov, preverite UnionTech Software pravilnik zasebnosti (</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="59"/>
+        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="61"/>
         <source>https://www.uniontech.com/agreement/privacy-en</source>
         <translation>https://www.uniontech.com/agreement/privacy-en</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="60"/>
+        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="62"/>
         <source>https://www.deepin.org/en/agreement/privacy/</source>
         <translation>https://www.deepin.org/en/agreement/privacy/</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="62"/>
+        <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="64"/>
         <source>).</source>
         <translation>).</translation>
     </message>
@@ -387,6 +392,11 @@
         <location filename="../src/grand-search/gui/datadefine.h" line="33"/>
         <source>Web</source>
         <translation>Splet</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/datadefine.h" line="34"/>
+        <source>AI Search</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="19"/>
