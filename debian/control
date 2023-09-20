@@ -34,6 +34,9 @@ Recommends:
  dde-daemon (>=5.12.0.31),
  startdde (>=5.6.0.34),
  libimageeditor (>=1.0.19),
- deepin-ai-daemon
+Conflicts:
+ deepin-ai-daemon (<= 1.0.5)
+Replaces:
+ deepin-ai-daemon (<= 1.0.5)
 Description: deepin desktop-environment - search module
  Search module of deepin desktop-environment
