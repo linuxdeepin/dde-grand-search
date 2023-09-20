@@ -20,6 +20,7 @@
 #define TOOLBAR_LEFT_MARGIN     30
 #define TOOLBAR_RIGHT_MARGIN    30
 #define TOOLBAR_BOTTOM_MARGIN   10
+#define ICON_SIZE 24
 
 using namespace GrandSearch;
 DWIDGET_USE_NAMESPACE
@@ -38,13 +39,23 @@ IconButton::IconButton(QWidget *parent)
     setPalette(pa);
 
     DFontSizeManager::instance()->bind(this, DFontSizeManager::T6);
+}
 
-    if (this->font().pixelSize() < TOOLBTN_MAX_PIXELSIZE) {
+bool IconButton::enableShowText() const
+{
+    int textWidth = fontMetrics().width(text());
+    return textWidth + ICON_SIZE + 19 < width();
+}
+
+void IconButton::updateStyle(bool st)
+{
+    if (st) {
         setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
         setIconSize(QSize(24, 24));
     } else {
         setToolButtonStyle(Qt::ToolButtonIconOnly);
         setIconSize(size());
+        setToolTip(text());
     }
 }
 
@@ -79,6 +90,15 @@ void GeneralToolBar::initUi()
     m_copyPathBtn->setText(tr("Copy Path"));
     m_copyPathBtn->setIcon(QIcon(QString(":/icons/copypath%1.svg").arg(suffix)));
     m_copyPathBtn->setFixedWidth(TOOLBTN_WIDTH_WIDE);
+
+
+    // update style
+    {
+        bool showText = m_openBtn->enableShowText() && m_openPathBtn->enableShowText() && m_copyPathBtn->enableShowText();
+        m_openBtn->updateStyle(showText);
+        m_openPathBtn->updateStyle(showText);
+        m_copyPathBtn->updateStyle(showText);
+    }
 
     m_vLine1 = new DVerticalLine(this);
     m_vLine1->setFixedHeight(30);

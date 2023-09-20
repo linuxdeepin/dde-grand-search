@@ -20,6 +20,8 @@ class IconButton: public QToolButton
     Q_OBJECT
 public:
     explicit IconButton(QWidget *parent = nullptr);
+    bool enableShowText() const;
+    void updateStyle(bool st);
 };
 
 class GeneralToolBar : public Dtk::Widget::DWidget
