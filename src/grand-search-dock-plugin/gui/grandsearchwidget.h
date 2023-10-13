@@ -5,6 +5,8 @@
 #ifndef GRANDSEARCHWIDGET_H
 #define GRANDSEARCHWIDGET_H
 
+#include <DLabel>
+
 #include <QWidget>
 #include <QIcon>
 #include <QPixmap>
@@ -39,11 +41,20 @@ private:
     bool m_hover = false;       // 鼠标是否悬浮
     bool m_pressed = false;     // 鼠标是否按下
     QIcon m_icon;
-    QPixmap m_pixmap;
     bool m_grandSearchVisible = false;
     GrandSearchInterface *m_grandSearchInterface = nullptr;
 };
 
+class QuickPanel : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit QuickPanel(const QString &desc, QWidget *parent = nullptr);
+public slots:
+    void updateIcon();
+private:
+    DTK_WIDGET_NAMESPACE::DLabel *iconLabel = nullptr;
+};
 }
 
 #endif // GRANDSEARCHWIDGET_H

@@ -18,6 +18,7 @@
 #define HOR_MARGIN_SIZE         10
 #define MARGIN_SIZE             15
 
+DGUI_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
 GRANDSEARCH_USE_NAMESPACE
 using namespace GrandSearch::audio_preview;

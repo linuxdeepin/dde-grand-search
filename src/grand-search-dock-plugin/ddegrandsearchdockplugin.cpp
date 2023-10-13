@@ -22,6 +22,8 @@
 using namespace GrandSearch;
 DWIDGET_USE_NAMESPACE
 
+#define QUICK_ITEM_KEY QStringLiteral("quick_item_key")
+
 DdeGrandSearchDockPlugin::DdeGrandSearchDockPlugin(QObject *parent)
     : QObject(parent)
     , m_searchWidget(nullptr)
@@ -58,6 +60,11 @@ void DdeGrandSearchDockPlugin::init(PluginProxyInterface *proxyInter)
     if (m_tipsWidget.isNull())
         m_tipsWidget.reset(new TipsWidget);
 
+#ifdef USE_DOCK_2_0
+    if (m_quickWidget.isNull())
+        m_quickWidget.reset(new QuickPanel(pluginDisplayName()));
+#endif
+
     // 如果插件没有被禁用则在初始化插件时才添加主控件到面板上
     if (!pluginIsDisable()) {
         m_proxyInter->itemAdded(this, pluginName());
@@ -73,14 +80,17 @@ void DdeGrandSearchDockPlugin::init(PluginProxyInterface *proxyInter)
 
 QWidget *DdeGrandSearchDockPlugin::itemWidget(const QString &itemKey)
 {
-    Q_UNUSED(itemKey);
-    return m_searchWidget.data();
+    if (itemKey == QUICK_ITEM_KEY)
+        return m_quickWidget.data();
+    else if (itemKey == GrandSearchPlugin)
+        return m_searchWidget.data();
+
+    return nullptr;
 }
 
 QWidget *DdeGrandSearchDockPlugin::itemTipsWidget(const QString &itemKey)
 {
     Q_UNUSED(itemKey);
-
     // 设置/刷新 tips 中的信息
     m_tipsWidget->setText(tr("Grand Search"));
     return m_tipsWidget.data();
@@ -116,7 +126,7 @@ void DdeGrandSearchDockPlugin::pluginStateSwitched()
 
 const QString DdeGrandSearchDockPlugin::itemCommand(const QString &itemKey)
 {
-    if (GrandSearchPlugin == itemKey)
+    if (GrandSearchPlugin == itemKey || itemKey == QUICK_ITEM_KEY)
         return m_searchWidget->itemCommand(itemKey);
 
     return QString();
@@ -136,7 +146,7 @@ void DdeGrandSearchDockPlugin::setSortKey(const QString &itemKey, const int orde
 
 const QString DdeGrandSearchDockPlugin::itemContextMenu(const QString &itemKey)
 {
-    if (itemKey != GrandSearchPlugin) {
+    if (itemKey != GrandSearchPlugin && itemKey != QUICK_ITEM_KEY) {
         return QString();
     }
 
@@ -161,7 +171,7 @@ void DdeGrandSearchDockPlugin::invokedMenuItem(const QString &itemKey, const QSt
 {
     Q_UNUSED(checked)
 
-    if (itemKey != GrandSearchPlugin)
+    if (itemKey != GrandSearchPlugin && itemKey != QUICK_ITEM_KEY)
         return;
 
     if (menuId == MenuOpenSetting) {

@@ -8,6 +8,7 @@
 
 #include <DLog>
 #include <DApplication>
+#include <QDir>
 
 #include <QDebug>
 

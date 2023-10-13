@@ -2,18 +2,20 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "grandsearchwidget.h"
+#include "versiondefine.h"
 
+#include "grandsearchwidget.h"
 #include "interfaces/grandsearchinterface.h"
 
-#include "constants.h"
 #include <DGuiApplicationHelper>
 #include <DApplicationHelper>
 #include <DStyleHelper>
+#include <DFontSizeManager>
 
 #include <QPainter>
 #include <QPainterPath>
 #include <QDebug>
+#include <QVBoxLayout>
 
 using namespace GrandSearch;
 DWIDGET_USE_NAMESPACE
@@ -67,7 +69,7 @@ void GrandSearchWidget::paintEvent(QPaintEvent *event)
      */
     QPixmap pixmap;
     QString iconName = "grand-search-light";
-    int iconSize = PLUGIN_ICON_MAX_SIZE;
+    int iconSize = ITEM_ICON_SIZE;
 
     QPainter painter(this);
 
@@ -166,4 +168,42 @@ const QPixmap GrandSearchWidget::loadSvg(const QString &fileName, const QSize &s
     QPixmap pixmap = QIcon::fromTheme(fileName, m_icon).pixmap(pixmapSize);
 
     return pixmap;
+}
+
+QuickPanel::QuickPanel(const QString &desc, QWidget *parent) : QWidget(parent)
+{
+    QVBoxLayout *lay = new QVBoxLayout;
+    lay->setMargin(10);
+    lay->setSpacing(0);
+    lay->addStretch(1);
+
+    iconLabel = new DLabel;
+    iconLabel->setFixedSize(PANEL_ICON_SIZE, PANEL_ICON_SIZE);
+    iconLabel->setAlignment(Qt::AlignCenter);
+    lay->addWidget(iconLabel, 0, Qt::AlignHCenter);
+
+    DLabel *textLabel = new DLabel;
+    textLabel->setText(desc);
+    textLabel->setElideMode(Qt::ElideRight);
+    textLabel->setAlignment(Qt::AlignCenter);
+    DFontSizeManager::instance()->bind(textLabel, DFontSizeManager::T10);
+    lay->addSpacing(15);
+    lay->addWidget(textLabel, 0, Qt::AlignHCenter);
+    lay->addStretch(1);
+
+    setLayout(lay);
+
+    updateIcon();
+
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &QuickPanel::updateIcon);
+}
+
+void QuickPanel::updateIcon()
+{
+    const QString name = DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType ?
+                QString("grand-search-dark") : QString("grand-search-light");
+    auto icon = QIcon(QString(":/icons/%1.svg").arg(name));
+    iconLabel->setPixmap(icon.pixmap(PANEL_ICON_SIZE, PANEL_ICON_SIZE));
+
+    update();
 }
