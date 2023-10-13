@@ -12,6 +12,7 @@
 #define ICONLABELSIZE   36
 
 DWIDGET_USE_NAMESPACE
+DGUI_USE_NAMESPACE
 using namespace GrandSearch;
 
 SwitchWidget::SwitchWidget(const QString &title, QWidget *parent)
