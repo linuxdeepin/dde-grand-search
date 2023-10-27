@@ -46,6 +46,8 @@
 #define GRANDSEARCH_WEB_SEARCHENGINE_YAHOO          "Yahoo"
 #define GRANDSEARCH_WEB_SEARCHENGINE_360            "360"
 #define GRANDSEARCH_WEB_SEARCHENGINE_SOGOU          "Sogou"
+#define GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM         "Custom"
+#define GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM_ADDR    "web.searchEngine.customAddr"
 
 // 配置切换界面参数
 #define SWITCHWIDGETWIDTH       476
