@@ -237,6 +237,9 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
     if (UserPreferencePointer conf = m_root->group(GRANDSEARCH_WEB_GROUP)) {
         auto searchEngine = set->value(GRANDSEARCH_WEB_SEARCHENGINE).toString();
         conf->setValue(GRANDSEARCH_WEB_SEARCHENGINE, searchEngine);
+
+        auto searchEngineCustomAddr = set->value(GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM_ADDR).toString();
+        conf->setValue(GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM_ADDR, searchEngineCustomAddr);
     } else {
         qWarning() << "no shuch config:" << GRANDSEARCH_WEB_SEARCHENGINE;
     }
