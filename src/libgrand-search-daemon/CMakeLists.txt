@@ -80,7 +80,6 @@ set(SEARCHER
     searcher/extend/extendsearcher.cpp
     searcher/extend/extendworker.h
     searcher/extend/extendworker.cpp
-    ${SEMANTIC_FILES}
 )
 
 #文件搜索
@@ -123,6 +122,13 @@ else ()
         searcher/file/filesearchutils.cpp
         ${PROJECT_3RDPARTY_PATH}/interfaces/anything_interface.h
         ${PROJECT_3RDPARTY_PATH}/interfaces/anything_interface.cpp
+        ${SEMANTIC_FILES}
+    )
+
+    set(LINK_LIBS
+        ${LINK_LIBS}
+        semanticparser
+        luceneengine
     )
 endif()
 
@@ -215,8 +221,6 @@ target_include_directories(${LIB_NAME} PUBLIC
 
 target_link_libraries(${LIB_NAME} PRIVATE
     ${LINK_LIBS}
-    semanticparser
-    luceneengine
 )
 
 # lib
