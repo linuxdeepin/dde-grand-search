@@ -126,8 +126,10 @@ void DdeGrandSearchDockPlugin::pluginStateSwitched()
 
 const QString DdeGrandSearchDockPlugin::itemCommand(const QString &itemKey)
 {
-    if (GrandSearchPlugin == itemKey || itemKey == QUICK_ITEM_KEY)
+    if (GrandSearchPlugin == itemKey || itemKey == QUICK_ITEM_KEY) {
+        m_proxyInter->requestSetAppletVisible(this, pluginName(), false);
         return m_searchWidget->itemCommand(itemKey);
+    }
 
     return QString();
 }
@@ -177,6 +179,8 @@ void DdeGrandSearchDockPlugin::invokedMenuItem(const QString &itemKey, const QSt
     if (menuId == MenuOpenSetting) {
         QProcess::startDetached("dde-grand-search", QStringList() << "--setting");
     }
+
+    m_proxyInter->requestSetAppletVisible(this, pluginName(), false);
 }
 
 void DdeGrandSearchDockPlugin::onGsettingsChanged(const QString &key)
