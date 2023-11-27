@@ -838,6 +838,10 @@ bool Utils::launchAppByDBus(const QString &desktopFile, const QStringList &fileP
     QDBusPendingCall call = interface.asyncCallWithArgumentList("LaunchApp", args);
 
     QDBusReply<QString> reply = call.reply();
+    if (!reply.isValid()) {
+            qCritical() << "Launch app by DBus failed:" << reply.error();
+            return false;
+    }
 
     return true;
 }
