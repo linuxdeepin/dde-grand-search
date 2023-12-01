@@ -771,7 +771,7 @@ bool Utils::openMatchedItemWithCtrl(const MatchedItem &item)
 
 bool Utils::openInFileManager(const MatchedItem &item)
 {
-    return DDesktopServices::showFileItem(item.item);
+    return DTK_GUI_NAMESPACE::DDesktopServices::showFileItem(item.item);
 }
 
 bool Utils::openExtendSearchMatchedItem(const MatchedItem &item)
