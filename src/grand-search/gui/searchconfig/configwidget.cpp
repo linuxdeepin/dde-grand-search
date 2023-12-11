@@ -45,7 +45,7 @@ void ConfigWidget::initUI()
     this->titlebar()->setMenuVisible(false);
 
     // 设置图标
-    QIcon tmpIcon = QIcon(QString(":/icons/%1.svg").arg("dde-grand-search-setting"));
+    QIcon tmpIcon = QIcon::fromTheme("dde-grand-search-setting");
     this->titlebar()->setIcon(tmpIcon);
     setWindowIcon(tmpIcon);
 

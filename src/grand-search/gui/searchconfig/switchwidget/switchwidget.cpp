@@ -25,7 +25,6 @@ SwitchWidget::SwitchWidget(QWidget *parent, QWidget *leftWidget)
     : QWidget (parent)
     , m_leftWidget(leftWidget)
 {
-
     m_iconLabel = new QLabel(this);
     m_iconLabel->setFixedSize(ICONLABELSIZE, ICONLABELSIZE);
 

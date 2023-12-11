@@ -62,18 +62,9 @@ void BlackListDelegate::drawPathsText(QPainter *painter, const QStyleOptionViewI
       QFontMetrics pathFontMetrics(pathFont);
       QString elidedPath = pathFontMetrics.elidedText(path, Qt::ElideMiddle, ListTextMaxWidth);
 
-      const BlackListView *listView = qobject_cast<const BlackListView *>(option.widget);
-      auto selected = listView->selectionModel();
-      QColor pathColor;
-      if (selected->isSelected(index)) {
-          pathColor = QColor("#FFFFFF");
-      } else {
-          if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
-              pathColor = QColor("#414D68");
-          } else {
-              pathColor = QColor("#C0C6D4");
-          }
-      }
+      QBrush pathColor = option.state & QStyle::State_Selected
+              ? option.palette.highlightedText()
+              : option.palette.text();
 
       QTextDocument pathDocument;
       pathDocument.setDocumentMargin(0);

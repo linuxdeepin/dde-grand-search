@@ -48,6 +48,7 @@ protected:
 private:
     QColor getTagColor();
     QColor getContentColor();
+    QColor getDefalutBackground();
 protected:
     bool m_topRound = false;
     bool m_bottomRound = false;

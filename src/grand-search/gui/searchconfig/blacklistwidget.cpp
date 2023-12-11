@@ -38,9 +38,9 @@ BlackListWidget::BlackListWidget(QWidget *parent)
 
     m_contentLabel->setWordWrap(true);
     DFontSizeManager::instance()->bind(m_contentLabel, DFontSizeManager::T8);
-    QPalette p(m_contentLabel->palette());
-    p.setColor(QPalette::Active, QPalette::WindowText, QColor("#526A7F"));
-    m_contentLabel->setPalette(p);
+//    QPalette p(m_contentLabel->palette());
+//    p.setColor(QPalette::Active, QPalette::WindowText, QColor("#526A7F"));
+//    m_contentLabel->setPalette(p);
 
     m_childHLayout->addStretch();
 
