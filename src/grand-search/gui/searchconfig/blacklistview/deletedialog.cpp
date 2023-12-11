@@ -13,7 +13,7 @@ DeleteDialog::DeleteDialog(QWidget *parent)
 {
     const QString content(tr("Do you want to remove the path from the exclusion list?"));
     setMessage(content);
-    setIcon(QIcon(QString(":/icons/%1.svg").arg("dde-grand-search-setting")));
+    setIcon(QIcon::fromTheme("dde-grand-search-setting"));
 
     // the cancel button
     {

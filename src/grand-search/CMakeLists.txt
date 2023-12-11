@@ -194,7 +194,7 @@ set(SRCS
 
 # 指定资源文件
 set(QRCS
-    gui/searchconfig/resource.qrc
+    gui/searchconfig/icons/images.qrc
     gui/exhibition/preview/resource.qrc
     gui/exhibition/matchresult/resource.qrc
     )

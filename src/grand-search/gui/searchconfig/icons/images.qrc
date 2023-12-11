@@ -1,0 +1,27 @@
+<RCC>
+    <qresource prefix="/icons/deepin/builtin/">
+        <file>dark/texts/appsearch_36px.svg</file>
+        <file>dark/texts/documentsearch_36px.svg</file>
+        <file>dark/texts/foldersearch_36px.svg</file>
+        <file>dark/texts/videosearch_36px.svg</file>
+        <file>dark/texts/audiosearch_36px.svg</file>
+        <file>dark/texts/experienceplan_36px.svg</file>
+        <file>dark/texts/picturesearch_36px.svg</file>
+        <file>dark/texts/bestmatch_36px.svg</file>
+        <file>dark/texts/filesearch_36px.svg</file>
+        <file>dark/texts/settingsearch_36px.svg</file>
+        <file>dark/texts/websearch_36px.svg</file>
+        <file>light/texts/appsearch_36px.svg</file>
+        <file>light/texts/documentsearch_36px.svg</file>
+        <file>light/texts/foldersearch_36px.svg</file>
+        <file>light/texts/videosearch_36px.svg</file>
+        <file>light/texts/audiosearch_36px.svg</file>
+        <file>light/texts/experienceplan_36px.svg</file>
+        <file>light/texts/picturesearch_36px.svg</file>
+        <file>light/texts/bestmatch_36px.svg</file>
+        <file>light/texts/filesearch_36px.svg</file>
+        <file>light/texts/settingsearch_36px.svg</file>
+        <file>light/texts/websearch_36px.svg</file>
+        <file>icons/dde-grand-search-setting_32px.svg</file>
+    </qresource>
+</RCC>

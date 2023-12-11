@@ -21,13 +21,9 @@ DetailItem::DetailItem(QWidget *parent)
     : QWidget(parent)
 {
     setFixedSize(360, 36);
-
-    m_backgroundColor = QColor(0, 0, 0, int(255*0.05));
-
     setContentsMargins(20, 0, 10, 0);
 
     m_radius = 8;
-
     m_tagLabel = new DLabel(this);
     m_tagLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
@@ -150,7 +146,10 @@ void DetailItem::paintEvent(QPaintEvent *event)
 {
     QPainter p(this);
     p.setPen(Qt::NoPen);
-    p.setBrush(m_backgroundColor);
+    if (m_backgroundColor.isValid())
+        p.setBrush(m_backgroundColor);
+    else
+        p.setBrush(getDefalutBackground());
 
     QRect roundRect(0, 0, m_radius * 2, m_radius * 2);
     QPainterPath path;
@@ -195,7 +194,7 @@ void DetailItem::paintEvent(QPaintEvent *event)
 
 QColor DetailItem::getTagColor()
 {
-    static  QColor tagTextColor;
+    static QColor tagTextColor;
     if (!tagTextColor.isValid()) {
         tagTextColor = QColor(0, 0, 0, int(255*0.7));
         if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
@@ -206,11 +205,23 @@ QColor DetailItem::getTagColor()
 
 QColor DetailItem::getContentColor()
 {
-    static  QColor contentTextColor;
+    static QColor contentTextColor;
     if (!contentTextColor.isValid()) {
         contentTextColor = QColor(0, 0, 0, int(255*0.9));
         if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
             contentTextColor = QColor(255, 255, 255, int(255*0.9));
     }
     return contentTextColor;
+}
+
+QColor DetailItem::getDefalutBackground()
+{
+    static QColor bkgColor;
+    if (!bkgColor.isValid()) {
+        if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
+            bkgColor = QColor(255, 255, 255, int(255 * 0.05));
+        else
+            bkgColor = QColor(0, 0, 0, int(255 * 0.05));
+    }
+    return bkgColor;
 }
