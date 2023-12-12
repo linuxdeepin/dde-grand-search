@@ -243,6 +243,21 @@
         <source>Sogou</source>
         <translation>搜狗</translation>
     </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="87"/>
+        <source>Custom</source>
+        <translation>自定义</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="87"/>
+        <source>You need to use &quot;%0&quot; to replace the keyword in the URL</source>
+        <translation>需要使用 “%0” 来替换URL中关键词</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="87"/>
+        <source>Invalid URL</source>
+        <translation>URL格式错误</translation>
+    </message>
 </context>
 <context>
     <name>GrandSearch::StaticTextWorker</name>
