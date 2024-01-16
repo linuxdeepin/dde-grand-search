@@ -40,7 +40,6 @@ private:
 private:
     bool m_hover = false;       // 鼠标是否悬浮
     bool m_pressed = false;     // 鼠标是否按下
-    QIcon m_icon;
     bool m_grandSearchVisible = false;
     GrandSearchInterface *m_grandSearchInterface = nullptr;
 };

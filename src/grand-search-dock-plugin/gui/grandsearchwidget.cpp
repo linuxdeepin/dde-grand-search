@@ -24,8 +24,6 @@ GrandSearchWidget::GrandSearchWidget(QWidget *parent)
     : QWidget(parent)
 {
     setMouseTracking(true);
-    QString iconName("grand-search-light");
-    m_icon = QIcon::fromTheme(iconName, QIcon(QString(":/icons/%1.svg").arg(iconName)));
 
     m_grandSearchInterface = new GrandSearchInterface(this);
     connect(m_grandSearchInterface, &GrandSearchInterface::VisibleChanged, this, &GrandSearchWidget::grandSearchVisibleChanged);
@@ -165,7 +163,7 @@ const QPixmap GrandSearchWidget::loadSvg(const QString &fileName, const QSize &s
 
     // 高分辨率下不缩放
     auto pixmapSize = QCoreApplication::testAttribute(Qt::AA_UseHighDpiPixmaps) ? size : (size * ratio);
-    QPixmap pixmap = QIcon::fromTheme(fileName, m_icon).pixmap(pixmapSize);
+    QPixmap pixmap =  QIcon::fromTheme(fileName, QIcon(QString(":/icons/%1.svg").arg(fileName))).pixmap(pixmapSize);
 
     return pixmap;
 }
@@ -202,7 +200,7 @@ void QuickPanel::updateIcon()
 {
     const QString name = DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType ?
                 QString("grand-search-dark") : QString("grand-search-light");
-    auto icon = QIcon(QString(":/icons/%1.svg").arg(name));
+    auto icon = QIcon::fromTheme(name, QIcon(QString(":/icons/%1.svg").arg(name)));
     iconLabel->setPixmap(icon.pixmap(PANEL_ICON_SIZE, PANEL_ICON_SIZE));
 
     update();
