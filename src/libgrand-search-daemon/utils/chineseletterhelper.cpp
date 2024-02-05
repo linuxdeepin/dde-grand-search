@@ -24,6 +24,8 @@ ChineseLetterHelper::ChineseLetterHelper()
 
 bool ChineseLetterHelper::chinese2Pinyin(const QString &words, QString &result)
 {
+    QReadLocker lk(&m_lock);
+
     int ok = false;
     for (int i = 0; i < words.length(); ++i) {
         const uint key = words.at(i).unicode();
@@ -42,6 +44,13 @@ bool ChineseLetterHelper::chinese2Pinyin(const QString &words, QString &result)
 
 void ChineseLetterHelper::initDict()
 {
+    // fast check
+    if (m_inited)
+        return;
+
+    QWriteLocker lk(&m_lock);
+
+    // check again, m_inited may be setted to true in other thread.
     if (m_inited)
         return;
 
