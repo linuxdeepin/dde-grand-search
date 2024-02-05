@@ -7,6 +7,7 @@
 
 #include <QHash>
 #include <QObject>
+#include <QReadWriteLock>
 
 #define Ch2PyIns GrandSearch::ChineseLetterHelper::instance()
 
@@ -24,6 +25,7 @@ private:
     void initDict();
     volatile bool m_inited = false;
     QHash<uint, QString> m_dict;
+    QReadWriteLock m_lock;
 };
 
 }
