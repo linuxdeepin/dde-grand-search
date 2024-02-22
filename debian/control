@@ -23,7 +23,8 @@ Build-Depends: debhelper (>= 9),
  libgsettings-qt-dev,
  libpcre3-dev,
  libdeepin-pdfium-dev,
- libjpeg62-turbo-dev
+ libjpeg62-turbo-dev,
+ deepin-desktop-base
 Standards-Version: 3.9.8
 Homepage: http://www.deepin.org/
 
