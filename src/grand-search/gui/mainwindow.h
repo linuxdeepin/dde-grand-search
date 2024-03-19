@@ -5,14 +5,21 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <DBlurEffectWidget>
-
 #include <QScopedPointer>
+#include <dtkwidget_config.h>
+
+#ifdef DTKWIDGET_CLASS_DBlurEffectWithBorderWidget
+#include <DBlurEffectWithBorderWidget>
+typedef Dtk::Widget::DBlurEffectWithBorderWidget DEffectWidget;
+#else
+#include <DBlurEffectWidget>
+typedef Dtk::Widget::DBlurEffectWidget DEffectWidget;
+#endif
 
 namespace GrandSearch {
 
 class MainWindowPrivate;
-class MainWindow : public Dtk::Widget::DBlurEffectWidget
+class MainWindow : public DEffectWidget
 {
     Q_OBJECT
 public:

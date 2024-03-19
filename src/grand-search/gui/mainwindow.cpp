@@ -36,7 +36,7 @@ MainWindowPrivate::MainWindowPrivate(MainWindow *parent)
 }
 
 MainWindow::MainWindow(QWidget *parent)
-    : DBlurEffectWidget(parent)
+    : DEffectWidget(parent)
     , d_p(new MainWindowPrivate(this))
 {
     initUI();
@@ -46,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
     activeMainWindow();
-    return DBlurEffectWidget::mousePressEvent(event);
+    return DEffectWidget::mousePressEvent(event);
 }
 
 MainWindow::~MainWindow()
@@ -194,7 +194,7 @@ void MainWindow::initUI()
     onPrimaryScreenChanged(screen);
 
     // 模糊模式
-    setBlendMode(DBlurEffectWidget::BehindWindowBlend);
+    setBlendMode(DEffectWidget::BehindWindowBlend);
 
     // 搜索入口界面
     d_p->m_entranceWidget = new EntranceWidget(this);
@@ -275,7 +275,7 @@ void MainWindow::showEvent(QShowEvent *event)
 
     d_p->m_handleVisibility->registerRegion(true);
 
-    return DBlurEffectWidget::showEvent(event);
+    return DEffectWidget::showEvent(event);
 }
 
 void MainWindow::hideEvent(QHideEvent *event)
@@ -284,12 +284,12 @@ void MainWindow::hideEvent(QHideEvent *event)
 
     d_p->m_handleVisibility->registerRegion(false);
 
-    return DBlurEffectWidget::hideEvent(event);
+    return DEffectWidget::hideEvent(event);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     // 通知查询控制器停止搜索
     emit terminateSearch();
-    return DBlurEffectWidget::closeEvent(event);
+    return DEffectWidget::closeEvent(event);
 }
