@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     bool isSetting = false;
 
     if (argc > 1) {
-        QCommandLineOption option_setting({"s", "setting"}, "Start grand search config.");
+        QCommandLineOption option_setting({ "s", "setting" }, "Start grand search config.");
 
         parser.addOption(option_setting);
         parser.addHelpOption();
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
         isSetting = parser.isSet(option_setting);
     }
     // 根据要求，通过启动参数决定显示界面
-    if (isSetting) { // 设置界面
+    if (isSetting) {   // 设置界面
         // 设置单例运行程序
         if (!app.setSingleInstance("dde-grand-search-config")) {
             qWarning() << "set single instance failed!I (pid:" << getpid() << ") will exit.";
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
         QObject::connect(&app, &DApplication::newInstanceStarted, &w, &ConfigWidget::activateWindow);
 
         return app.exec();
-    } else {    // 搜索界面
+    } else {   // 搜索界面
         // 设置单例运行程序
         if (!app.setSingleInstance("dde-grand-search")) {
             qWarning() << "set single instance failed!I (pid:" << getpid() << ") will exit.";
@@ -102,13 +102,6 @@ int main(int argc, char *argv[])
         QObject::connect(&app, &QCoreApplication::aboutToQuit, AccessRecord::instance(), &AccessRecord::sync);
 
         MainWindow mainWindow;
-        mainWindow.show();
-
-        QTimer::singleShot(0, &mainWindow, [&mainWindow](){
-            // 界面初始化完成后，再处理与业务有关的连接
-            mainWindow.connectToController();
-        });
-
         // 注册dbus服务
         QDBusConnection conn = QDBusConnection::sessionBus();
         if (!conn.isConnected()) {
@@ -127,10 +120,16 @@ int main(int argc, char *argv[])
             qWarning() << "registerObject Failed:" << conn.lastError();
             return -1;
         }
+        // 如果mainwindow在Server构造前show，那么VisibleChanged将失效
+        mainWindow.show();
+        QTimer::singleShot(0, &mainWindow, [&mainWindow]() {
+            // 界面初始化完成后，再处理与业务有关的连接
+            mainWindow.connectToController();
+        });
 
         {
             QScopedPointer<GrandSearch::burying_point::BasicPoint> p(GrandSearch::burying_point::BuryingPointFactory::instance()
-                                                                     ->createData(GrandSearch::burying_point::BuryingPointEventId::Launch));
+                                                                             ->createData(GrandSearch::burying_point::BuryingPointEventId::Launch));
             auto data = p->assemblingData();
             GrandSearch::burying_point::EventLogUtil::instance()->writeEvent(data);
         }

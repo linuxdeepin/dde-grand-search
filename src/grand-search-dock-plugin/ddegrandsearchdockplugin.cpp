@@ -25,8 +25,7 @@ DWIDGET_USE_NAMESPACE
 #define QUICK_ITEM_KEY QStringLiteral("quick_item_key")
 
 DdeGrandSearchDockPlugin::DdeGrandSearchDockPlugin(QObject *parent)
-    : QObject(parent)
-    , m_searchWidget(nullptr)
+    : QObject(parent), m_searchWidget(nullptr)
 {
 }
 
@@ -54,9 +53,11 @@ void DdeGrandSearchDockPlugin::init(PluginProxyInterface *proxyInter)
 
     m_proxyInter = proxyInter;
 
-    if (m_searchWidget.isNull())
+    if (m_searchWidget.isNull()) {
         m_searchWidget.reset(new GrandSearchWidget);
-
+        connect(m_searchWidget.data(), &GrandSearchWidget::visibleChanged, this,
+                &DdeGrandSearchDockPlugin::onVisibleChanged);
+    }
     if (m_tipsWidget.isNull())
         m_tipsWidget.reset(new TipsWidget);
 
@@ -192,4 +193,21 @@ void DdeGrandSearchDockPlugin::onGsettingsChanged(const QString &key)
         bool enable = m_gsettings->get(key).toBool();
         qInfo() << "The status of whether the grand search right-click menu is enabled changes to:" << enable;
     }
+}
+
+void DdeGrandSearchDockPlugin::onVisibleChanged(bool visible)
+{
+#ifdef USE_DOCK_2_0
+    if (!m_messageCallback) {
+        qWarning() << "Message callback function is nullptr";
+        return;
+    }
+
+    QJsonObject obj;
+    obj[Dock::MSG_TYPE] = Dock::MSG_ITEM_ACTIVE_STATE;
+    obj[Dock::MSG_DATA] = visible;
+    QJsonDocument doc;
+    doc.setObject(obj);
+    m_messageCallback(this, doc.toJson());
+#endif
 }

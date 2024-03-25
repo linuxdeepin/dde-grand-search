@@ -24,6 +24,9 @@ public:
 
     QString itemCommand(const QString &itemKey);
 
+Q_SIGNALS:
+    void visibleChanged(bool);
+
 private slots:
     void grandSearchVisibleChanged(bool visible);
 
@@ -38,8 +41,8 @@ private:
     const QPixmap loadSvg(const QString &fileName, const QSize &size) const;
 
 private:
-    bool m_hover = false;       // 鼠标是否悬浮
-    bool m_pressed = false;     // 鼠标是否按下
+    bool m_hover = false;   // 鼠标是否悬浮
+    bool m_pressed = false;   // 鼠标是否按下
     bool m_grandSearchVisible = false;
     GrandSearchInterface *m_grandSearchInterface = nullptr;
 };
@@ -51,9 +54,10 @@ public:
     explicit QuickPanel(const QString &desc, QWidget *parent = nullptr);
 public slots:
     void updateIcon();
+
 private:
     DTK_WIDGET_NAMESPACE::DLabel *iconLabel = nullptr;
 };
 }
 
-#endif // GRANDSEARCHWIDGET_H
+#endif   // GRANDSEARCHWIDGET_H

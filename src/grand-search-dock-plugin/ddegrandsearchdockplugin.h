@@ -88,16 +88,22 @@ public:
     {
         return Dock::Type_Quick | Dock::Quick_Panel_Single | Dock::Attribute_Normal;
     }
+    virtual void setMessageCallback(MessageCallbackFunc cb) override { m_messageCallback = cb; }
 #endif
 
 private slots:
     void onGsettingsChanged(const QString &key);
+    void onVisibleChanged(bool visible);
 
 private:
     QScopedPointer<GrandSearchWidget> m_searchWidget;
     QScopedPointer<QGSettings> m_gsettings;
     QScopedPointer<TipsWidget> m_tipsWidget;
     QScopedPointer<QWidget> m_quickWidget;
+
+#ifdef USE_DOCK_2_0
+    MessageCallbackFunc m_messageCallback = nullptr;
+#endif
 };
 
 }
