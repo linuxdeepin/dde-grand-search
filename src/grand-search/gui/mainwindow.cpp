@@ -15,6 +15,7 @@
 #include <DApplication>
 #include <DLabel>
 #include <DRegionMonitor>
+#include <DPlatformWindowHandle>
 
 #include <QDebug>
 #include <QTimer>
@@ -187,6 +188,9 @@ void MainWindow::initUI()
         setWindowFlags(Qt::BypassWindowManagerHint | Qt::WindowStaysOnTopHint);
     }
     qDebug() << "current platform name:" << QApplication::platformName() << "   flags:" << this->windowFlags();
+
+    DPlatformWindowHandle *windowHandle = new DPlatformWindowHandle(this);
+    windowHandle->setWindowStartUpEffect(DPlatformHandle::EffectType::EffectNormal);
 
     // 控制界面大小和位置
     setFixedSize(MainWindowWidth, MainWindowHeight);
