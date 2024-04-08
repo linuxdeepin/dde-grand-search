@@ -23,6 +23,8 @@
 #include <QScreen>
 #include <QKeyEvent>
 
+#include <dtkgui_config.h>
+
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
 
@@ -189,8 +191,12 @@ void MainWindow::initUI()
     }
     qDebug() << "current platform name:" << QApplication::platformName() << "   flags:" << this->windowFlags();
 
-    DPlatformWindowHandle *windowHandle = new DPlatformWindowHandle(this);
-    windowHandle->setWindowStartUpEffect(DPlatformHandle::EffectType::EffectNormal);
+    #ifdef DTKGUI_VERSION_STR
+        #if (DTK_VERSION_CHECK(DTKGUI_VERSION_MAJOR, DTKGUI_VERSION_MINOR, DTKGUI_VERSION_PATCH, DTKGUI_VERSION_BUILD) > DTK_VERSION_CHECK(5, 6, 9, 4))
+            DPlatformWindowHandle *windowHandle = new DPlatformWindowHandle(this, this);
+            windowHandle->setWindowStartUpEffect(DPlatformHandle::EffectType::EffectNormal);
+        #endif
+    #endif
 
     // 控制界面大小和位置
     setFixedSize(MainWindowWidth, MainWindowHeight);
