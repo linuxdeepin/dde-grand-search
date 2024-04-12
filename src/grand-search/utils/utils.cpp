@@ -38,9 +38,9 @@ DGUI_USE_NAMESPACE
 using namespace GrandSearch;
 
 #ifdef COMPILE_ON_V23
-static const QString SessionManagerService = "org.deepin.dde.Application1.Manager";
-static const QString StartManagerPath = "/org/deepin/dde/Application1/Manager";
-static const QString StartManagerInterface = "org.deepin.dde.Application1.Manager";
+static const QString SessionManagerService = "org.desktopspec.ApplicationManager1";
+static const QString StartManagerPath = "/org/desktopspec/ApplicationManager1";
+static const QString StartManagerInterface = "org.desktopspec.ApplicationManager1.Application";
 #else
 static const QString SessionManagerService = "com.deepin.SessionManager";
 static const QString StartManagerPath = "/com/deepin/StartManager";
@@ -66,6 +66,26 @@ public:
 
 QMap<QString, QString> Utils::m_appIconNameMap;
 QMimeDatabase Utils::m_mimeDb;
+
+static QString escapeToObjectPath(const QString &str)
+{
+    if (str.isEmpty()) {
+        return "_";
+    }
+
+    auto ret = str;
+    QRegularExpression re{R"([^a-zA-Z0-9])"};
+    auto matcher = re.globalMatch(ret);
+    while (matcher.hasNext()) {
+        auto replaceList = matcher.next().capturedTexts();
+        replaceList.removeDuplicates();
+        for (const auto &c : replaceList) {
+            auto hexStr = QString::number(static_cast<uint>(c.front().toLatin1()), 16);
+            ret.replace(c, QString{R"(_%1)"}.arg(hexStr));
+        }
+    }
+    return ret;
+}
 
 bool Utils::sort(MatchedItems &list, Qt::SortOrder order/* = Qt::AscendingOrder*/)
 {
@@ -824,6 +844,30 @@ bool Utils::launchApp(const QString& desktopFile, const QStringList &filePaths)
 
 bool Utils::launchAppByDBus(const QString &desktopFile, const QStringList &filePaths)
 {
+#ifdef COMPILE_ON_V23
+    const auto &components = desktopFile.split('/', Qt::SkipEmptyParts);
+    const auto &file = components.last();
+    constexpr auto kDesktopSuffix { u8".desktop" };
+
+    if (!file.endsWith(kDesktopSuffix)) {
+        qWarning() << "invalid desktop file:" << desktopFile << file;
+        return false;
+    }
+
+    const auto &desktopId = file.chopped(sizeof(kDesktopSuffix) - 1);
+    const auto &DBusAppId = escapeToObjectPath(desktopId);
+    const auto &currentAppPath = QString { StartManagerPath } + "/" + DBusAppId;
+    qWarning() << "app object path:" << currentAppPath;
+    QDBusInterface appManager(SessionManagerService,
+                              currentAppPath,
+                              StartManagerInterface,
+                              QDBusConnection::sessionBus());
+
+    auto reply = appManager.callWithArgumentList(QDBus::Block, QStringLiteral("Launch"), { QVariant::fromValue(QString {}), QVariant::fromValue(filePaths), QVariant::fromValue(QVariantMap {}) });
+
+    return reply.type() == QDBusMessage::ReplyMessage;
+
+#else
     QDBusInterface interface(SessionManagerService,
                              StartManagerPath,
                              StartManagerInterface,
@@ -844,6 +888,7 @@ bool Utils::launchAppByDBus(const QString &desktopFile, const QStringList &fileP
     }
 
     return true;
+#endif
 }
 
 bool Utils::launchAppByGio(const QString &desktopFile, const QStringList &filePaths)
@@ -880,9 +925,11 @@ bool Utils::launchAppByGio(const QString &desktopFile, const QStringList &filePa
     g_object_unref(appInfo);
     g_list_free(g_files);
 
-    for (auto filePath : filePaths) {
-        if (!filePath.isEmpty())
-            QProcess::startDetached("gio", QStringList() << "open" << filePath);
+    if (!ok) {
+        for (auto filePath : filePaths) {
+            if (!filePath.isEmpty())
+                QProcess::startDetached("gio", QStringList() << "open" << filePath);
+        }
     }
 
     return ok;
