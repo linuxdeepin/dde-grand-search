@@ -31,6 +31,7 @@ extern "C" {
 #include <QDateTime>
 #include <QIcon>
 #include <QApplication>
+#include <DUtil>
 
 DCORE_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
@@ -38,9 +39,10 @@ DGUI_USE_NAMESPACE
 using namespace GrandSearch;
 
 #ifdef COMPILE_ON_V23
-static const QString SessionManagerService = "org.deepin.dde.Application1.Manager";
-static const QString StartManagerPath = "/org/deepin/dde/Application1/Manager";
-static const QString StartManagerInterface = "org.deepin.dde.Application1.Manager";
+static const QString AppManagerService = "org.desktopspec.ApplicationManager1";
+static const QString AppManagerPathPrefix = "/org/desktopspec/ApplicationManager1";
+static const QString AppInterface = "org.desktopspec.ApplicationManager1.Application";
+
 #else
 static const QString SessionManagerService = "com.deepin.SessionManager";
 static const QString StartManagerPath = "/com/deepin/StartManager";
@@ -824,6 +826,28 @@ bool Utils::launchApp(const QString& desktopFile, const QStringList &filePaths)
 
 bool Utils::launchAppByDBus(const QString &desktopFile, const QStringList &filePaths)
 {
+#ifdef COMPILE_ON_V23
+    const auto &file = QFileInfo{desktopFile};
+    constexpr auto kDesktopSuffix { u8"desktop" };
+
+    if (file.suffix() != kDesktopSuffix) {
+        qDebug() << "invalid desktop file:" << desktopFile << file;
+        return false;
+    }
+
+    const auto &DBusAppId = DUtil::escapeToObjectPath(file.completeBaseName());
+    const auto &currentAppPath = QString { AppManagerPathPrefix } + "/" + DBusAppId;
+    qDebug() << "app object path:" << currentAppPath;
+    QDBusInterface appManager(AppManagerService,
+                              currentAppPath,
+                              AppInterface,
+                              QDBusConnection::sessionBus());
+
+    auto reply = appManager.callWithArgumentList(QDBus::Block, QStringLiteral("Launch"), { QVariant::fromValue(QString {}), QVariant::fromValue(filePaths), QVariant::fromValue(QVariantMap {}) });
+
+    return reply.type() == QDBusMessage::ReplyMessage;
+
+#else
     QDBusInterface interface(SessionManagerService,
                              StartManagerPath,
                              StartManagerInterface,
@@ -842,6 +866,7 @@ bool Utils::launchAppByDBus(const QString &desktopFile, const QStringList &fileP
             qCritical() << "Launch app by DBus failed:" << reply.error();
             return false;
     }
+#endif
 
     return true;
 }
