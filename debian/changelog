@@ -1,3 +1,9 @@
+dde-grand-search (5.4.9) unstable; urgency=medium
+
+  * update dde-grand-search V23 5.4.9 baseline version
+
+ -- zhanghongyuan <zhanghongyuan@uniontech.com>  Thu, 25 Apr 2024 10:36:46 +0800
+
 dde-grand-search (5.4.8) unstable; urgency=medium
 
   * fix issue about launch app.
