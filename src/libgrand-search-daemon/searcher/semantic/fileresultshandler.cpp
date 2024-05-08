@@ -8,7 +8,7 @@
 
 using namespace GrandSearch;
 
-#define MAX_SEARCH_NUM 100
+#define MAX_SEARCH_NUM 300
 
 FileResultsHandler::FileResultsHandler()
 {

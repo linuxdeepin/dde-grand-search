@@ -73,7 +73,7 @@ bool Utils::sort(MatchedItems &list, Qt::SortOrder order/* = Qt::AscendingOrder*
 {
     QTime time;
     time.start();
-    qStableSort(list.begin(), list.end(), [order](MatchedItem node1, MatchedItem node2) {
+    qStableSort(list.begin(), list.end(), [order](const MatchedItem &node1, const MatchedItem &node2) {
         return compareByString(node1.name, node2.name, order);
     });
 
@@ -81,7 +81,7 @@ bool Utils::sort(MatchedItems &list, Qt::SortOrder order/* = Qt::AscendingOrder*
     return true;
 }
 
-bool Utils::compareByString(QString &str1, QString &str2, Qt::SortOrder order)
+bool Utils::compareByString(QString str1, QString str2, Qt::SortOrder order)
 {
     thread_local static DCollator sortCollator;
 
@@ -223,10 +223,7 @@ bool Utils::sortByWeight(MatchedItemMap &map, Qt::SortOrder order)
 
     for (const QString &searchGroupName : map.keys()) {
         MatchedItems &list = map[searchGroupName];
-
-        qStableSort(list.begin(), list.end(), [order](MatchedItem node1, MatchedItem node2){
-            return compareByWeight(node1, node2, order);
-        });
+        sortByWeight(list, order);
     }
 
     qDebug() << QString("sort matchItems by weight done.cost %1ms").arg(time.elapsed());
@@ -240,7 +237,7 @@ bool Utils::sortByWeight(MatchedItemMap &map, Qt::SortOrder order)
  * @param order 排序规则，升序/降序
  * @return 类目1>类目2返回true，否则返回false
  */
-bool Utils::compareByWeight(MatchedItem &node1, MatchedItem &node2, Qt::SortOrder order)
+bool Utils::compareByWeight(const MatchedItem &node1, const MatchedItem &node2, Qt::SortOrder order)
 {
     bool hasWeight1 = node1.extra.toHash().contains(GRANDSEARCH_PROPERTY_ITEM_WEIGHT);
     bool hasWeight2 = node2.extra.toHash().contains(GRANDSEARCH_PROPERTY_ITEM_WEIGHT);

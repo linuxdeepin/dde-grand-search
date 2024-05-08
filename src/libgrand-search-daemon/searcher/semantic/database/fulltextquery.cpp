@@ -5,7 +5,6 @@
 #include "fulltextquery_p.h"
 
 #include "utils/specialtools.h"
-#include "luceneengine/fulltextengine.h"
 #include "global/searchhelper.h"
 #include "global/builtinsearch.h"
 
@@ -16,7 +15,7 @@ FullTextQueryPrivate::FullTextQueryPrivate(FullTextQuery *qq) : q(qq)
 
 }
 
-bool FullTextQueryPrivate::processResult(const QString &file, void *pdata)
+bool FullTextQueryPrivate::processResult(const QString &file, void *pdata, void *ctx)
 {
     FullTextQueryPrivate::Context *context = static_cast<FullTextQueryPrivate::Context *>(pdata);
     Q_ASSERT(context);
@@ -51,14 +50,18 @@ bool FullTextQueryPrivate::processResult(const QString &file, void *pdata)
    if (SpecialTools::isHiddenFile(file, hiddenFilters, QDir::homePath()))
        return true;
 
+   d->m_count++;
    if (d->m_handler) {
        d->m_handler->appendTo(file, d->m_results);
-       if (d->m_handler->isResultLimit())
+       if (ctx && context->eng) {
+           auto keys = context->eng->matchedKeys(ctx);
+           d->m_handler->setItemWeight(file, d->m_handler->itemWeight(file) + d->matchedWeight(keys));
+       }
+       if (d->m_handler->isResultLimit() || d->m_count > 100)
            return false;
    } else {
        auto item = FileSearchUtils::packItem(file, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC);
-       auto group = FileSearchUtils::getGroupByName(file);
-       d->m_results[FileSearchUtils::groupKey(group)].append(item);
+       d->m_results[GRANDSEARCH_GROUP_FILE_INFERENCE].append(item);
    }
 
    return true;
@@ -67,6 +70,25 @@ bool FullTextQueryPrivate::processResult(const QString &file, void *pdata)
 bool FullTextQueryPrivate::timeToPush() const
 {
     return (m_time.elapsed() - m_lastPush) > 100;
+}
+
+int FullTextQueryPrivate::matchedWeight(const QSet<QString> &back)
+{
+    int w = 0;
+    auto keys = m_entity.keys;
+    for (const QString &str : back) {
+        if (keys.isEmpty())
+            break;
+        for (auto it = keys.begin(); it != keys.end();) {
+            if (str.contains(*it)) {
+                it = keys.erase(it);
+                w += 20;
+            } else {
+                ++it;
+            }
+        }
+    }
+    return w;
 }
 
 FullTextQuery::FullTextQuery(QObject *parent)
@@ -84,7 +106,7 @@ FullTextQuery::~FullTextQuery()
 
 void FullTextQuery::run(void *ptr, PushItemCallBack callBack, void *pdata)
 {
-    qDebug() << "query by full text";
+    qDebug() << "query by fulltext";
     Q_ASSERT(callBack);
 
     FullTextQuery *self = static_cast<FullTextQuery *>(ptr);
@@ -97,6 +119,7 @@ void FullTextQuery::run(void *ptr, PushItemCallBack callBack, void *pdata)
         return;
 
     FullTextQueryPrivate::Context context;
+    context.eng = &engine;
     context.query = self;
     context.callBack = callBack;
     context.callBackData = pdata;
@@ -109,6 +132,8 @@ void FullTextQuery::run(void *ptr, PushItemCallBack callBack, void *pdata)
     engine.query(path, d->m_entity.keys, &FullTextQueryPrivate::processResult, &context);
 
     callBack(d->m_results, pdata);
+
+    qDebug() << "fulltext is finished spend:" << d->m_time.elapsed() << "found:" << d->m_count;
 }
 
 void FullTextQuery::setEntity(const SemanticEntity &entity)

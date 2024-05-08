@@ -404,7 +404,12 @@
         <translation>Web搜索</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="42"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="34"/>
+        <source>AI Search</source>
+        <translation>AI搜索</translation>
+    </message>
+    <message>
+        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="19"/>
         <source>Dimensions:</source>
         <translation>尺寸：</translation>
     </message>

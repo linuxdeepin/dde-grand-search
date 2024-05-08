@@ -171,7 +171,7 @@ bool FeatureLibEngine::init(const QString &cache)
     return d->m_reader.get() != nullptr;
 }
 
-void FeatureLibEngine::query(const QString &searchPath, const GrandSearch::FeatureLibEngine::QueryConditons &cond, CheckAndPushItem func, void *pdata)
+void FeatureLibEngine::query(const QString &searchPath, const QueryConditons &cond, CheckAndPushItem func, void *pdata)
 {
     if (d->m_reader.get() == nullptr || func == nullptr || searchPath.isEmpty())
         return;
@@ -192,14 +192,30 @@ void FeatureLibEngine::query(const QString &searchPath, const GrandSearch::Featu
         FilterPtr filter = newLucene<QueryWrapperFilter>(newLucene<WildcardQuery>(newLucene<Term>(L"path", filterPath)));
         TopDocsPtr topDocs = searcher->search(query, filter, 100);
         Collection<ScoreDocPtr> scoreDocs = topDocs->scoreDocs;
+
+        // for get matched keys
+#if 0
+        FormatterPtr simple(new KeyFormatter);
+        auto format = dynamic_cast<KeyFormatter *>(simple.get());
+        QueryScorerPtr score(new QueryScorer(query));
+        HighlighterPtr lighter(new Highlighter(simple, score));
+        FragmenterPtr frag(new SimpleFragmenter(0));
+        lighter->setTextFragmenter(frag);
+#endif
         for (auto scoreDoc : scoreDocs) {
             DocumentPtr doc = searcher->doc(scoreDoc->doc);
             String resultPath = doc->get(L"path");
             QString filePath = StringUtils::toUTF8(resultPath).c_str();
 
+            QSet<QString> match;
+#if 0
+            format->clear();
+            lighter->getBestFragments(analyzer, L"contents", doc->get(L"contents"), 50);
+            match = format->keys();
+#endif
             if (!QFile::exists(filePath))
                 continue;
-            if (!func(filePath, pdata))
+            if (!func(filePath, match, pdata))
                 return; // 中断
         }
     } catch (const LuceneException &e) {
