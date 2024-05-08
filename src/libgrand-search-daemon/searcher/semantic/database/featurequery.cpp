@@ -1,0 +1,188 @@
+// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+#include "featurequery_p.h"
+#include "utils/specialtools.h"
+#include "searcher/semantic/semantichelper.h"
+#include "global/searchhelper.h"
+#include "global/builtinsearch.h"
+
+using namespace GrandSearch;
+
+Q_DECLARE_METATYPE(FeatureLibEngine::QueryConditons)
+
+FeatureQueryPrivate::FeatureQueryPrivate(FeatureQuery *qq) : q(qq)
+{
+
+}
+
+bool FeatureQueryPrivate::processResult(const QString &file, void *pdata)
+{
+    FeatureQueryPrivate::Context *ctx = static_cast<FeatureQueryPrivate::Context *>(pdata);
+    Q_ASSERT(ctx);
+
+    auto d = ctx->query->d;
+    // 检查是否需要推送数据与中断
+    if (d->timeToPush()) {
+        auto it = std::move(d->m_results);
+        bool ret = ctx->callBack(it, ctx->callBackData);
+        // 有数据放入，更新时间
+        if (!it.isEmpty())
+            d->m_lastPush = d->m_time.elapsed();
+
+        // 中断
+        if (!ret)
+            return false;
+    }
+
+    // 过滤文管设置的隐藏文件
+    QHash<QString, QSet<QString>> hiddenFilters;
+    if (SpecialTools::isHiddenFile(file, hiddenFilters, QDir::homePath()))
+        return true;
+
+    if (d->m_handler) {
+        d->m_handler->appendTo(file, d->m_results);
+        if (d->m_handler->isResultLimit())
+            return false;
+    } else {
+        auto item = FileSearchUtils::packItem(file, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC);
+        auto group = FileSearchUtils::getGroupByName(file);
+        d->m_results[FileSearchUtils::groupKey(group)].append(item);
+    }
+
+    return true;
+}
+
+FeatureLibEngine::QueryConditons FeatureQueryPrivate::translateConditons()
+{
+    FeatureLibEngine::QueryConditons cond;
+    if (m_entity.keys.isEmpty())
+        return cond;
+
+    // 图片
+    if (m_entity.types.contains(PICTURE_GROUP)) {
+        FeatureLibEngine::QueryConditons tmp;
+        QStringList suffix = SearchHelper::instance()->getSuffixByGroupName(PICTURE_GROUP);
+        tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::FileType, suffix));
+        tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
+        tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Text, m_entity.keys));
+
+        cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(tmp)));
+    }
+
+    // 音乐
+    if (m_entity.types.contains(AUDIO_GROUP)) {
+        if (!cond.isEmpty())
+            cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Or));
+
+        FeatureLibEngine::QueryConditons tmp;
+        QStringList suffix = SearchHelper::instance()->getSuffixByGroupName(AUDIO_GROUP);
+        tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::FileType, suffix));
+
+        {
+            FeatureLibEngine::QueryConditons subTmp;
+            subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Author, m_entity.keys));
+            subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Or));
+            subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Album, m_entity.keys));
+
+            tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
+            tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(subTmp)));
+        }
+
+        cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(tmp)));
+    }
+
+    if (cond.isEmpty())
+        return cond;
+
+#if 0
+    // 视频
+    if (m_entity.types.contains(VIDEO_GROUP)) {
+        if (!cond.isEmpty())
+            cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Or));
+
+        QStringList suffix = SearchHelper::instance()->getSuffixByGroupName(VIDEO_GROUP);
+        cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::FileType, suffix));
+    }
+
+    // 文档
+    if (m_entity.types.contains(DOCUMENT_GROUP)) {
+        if (!cond.isEmpty())
+            cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Or));
+
+        QStringList suffix = SearchHelper::instance()->getSuffixByGroupName(DOCUMENT_GROUP);
+        cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::FileType, suffix));
+    }
+#endif
+
+    // 修改时间
+    if (!m_entity.times.isEmpty()) {
+        if (!cond.isEmpty())
+            cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
+        cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::ModifiedTime, QVariant::fromValue(m_entity.times)));
+    }
+
+    return cond;
+}
+
+bool FeatureQueryPrivate::timeToPush() const
+{
+    return (m_time.elapsed() - m_lastPush) > 100;
+}
+
+FeatureQuery::FeatureQuery(QObject *parent)
+    : QObject(parent)
+    , d(new FeatureQueryPrivate(this))
+{
+
+}
+
+FeatureQuery::~FeatureQuery()
+{
+    delete d;
+    d = nullptr;
+}
+
+void FeatureQuery::run(void *ptr, PushItemCallBack callBack, void *pdata)
+{
+    qDebug() << "query by feature library";
+    Q_ASSERT(callBack);
+
+    FeatureQuery *self = static_cast<FeatureQuery *>(ptr);
+    Q_ASSERT(self);
+
+    auto d = self->d;
+
+    FeatureLibEngine engine;
+    if (!engine.init(d->indexStorePath()))
+        return;
+
+    auto cond = d->translateConditons();
+    if (cond.isEmpty()) {
+        qInfo() << "no valid condition to query.";
+        return;
+    }
+
+    QString path = QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first();
+
+    FeatureQueryPrivate::Context ctx;
+    ctx.callBack = callBack;
+    ctx.callBackData = pdata;
+    ctx.query = self;
+
+    d->m_time.start();
+    engine.query(path, cond, &FeatureQueryPrivate::processResult, &ctx);
+
+    callBack(d->m_results, pdata);
+}
+
+void FeatureQuery::setEntity(const SemanticEntity &entity)
+{
+    d->m_entity = entity;
+}
+
+void FeatureQuery::setFileHandler(FileResultsHandler *handler)
+{
+    d->m_handler = handler;
+}

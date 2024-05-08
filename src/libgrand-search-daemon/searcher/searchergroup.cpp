@@ -40,6 +40,10 @@ void SearcherGroupPrivate::initBuiltin()
     qInfo() << "create StaticTextEchoer.";
     auto stWebSearcher = new StaticTextEchoer(this);
     m_builtin << stWebSearcher;
+
+    qInfo() << "create SemanticSearcher.";
+    auto semanticSearcher = new SemanticSearcher(this);
+    m_builtin << semanticSearcher;
 }
 
 bool SearcherGroupPrivate::addExtendSearcher(const SearchPluginInfo &pluginInfo)
