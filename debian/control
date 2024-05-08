@@ -24,6 +24,8 @@ Build-Depends: debhelper (>= 9),
  libpcre3-dev,
  libdeepin-pdfium-dev,
  libjpeg62-turbo-dev
+ liblucene++-dev,
+ libboost-dev
 Standards-Version: 3.9.8
 Homepage: http://www.deepin.org/
 
