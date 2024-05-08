@@ -31,7 +31,7 @@
 #define GroupName_Folder            QObject::tr("Folders")
 #define GroupName_File              QObject::tr("Files")
 #define GroupName_Web               QObject::tr("Web")
-#define GroupName_Inference         QObject::tr("Inference")
+#define GroupName_Inference         QObject::tr("AI Search")
 
 #define GROUP_MAX_SHOW              5   // 每组默认显示数量
 

@@ -82,15 +82,15 @@ bool AnythingQueryPrivate::searchUserPath(PushItemCallBack callBack, void *pdata
         // 去除掉添加的data前缀
         if (m_hasAddDataPrefix && absoluteFilePath.startsWith("/data"))
             absoluteFilePath = absoluteFilePath.mid(5);
-
+        m_count++;
         if (m_handler) {
             m_handler->appendTo(absoluteFilePath, items);
-            if (m_handler->isResultLimit())
+            m_handler->setItemWeight(absoluteFilePath, m_handler->itemWeight(absoluteFilePath) + calcItemWeight(info.fileName()));
+            if (m_handler->isResultLimit() || m_count >= 100)
                 break;
         } else {
             auto item = FileSearchUtils::packItem(absoluteFilePath, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC);
-            auto group = FileSearchUtils::getGroupByName(absoluteFilePath);
-            items[FileSearchUtils::groupKey(group)].append(item);
+            items[GRANDSEARCH_GROUP_FILE_INFERENCE].append(item);
         }
     }
 
@@ -107,7 +107,6 @@ bool AnythingQueryPrivate::searchByAnything(PushItemCallBack callBack, void *pda
     quint32 searchEndOffset = 0;
 
     QStringList dirs = m_searchDirList;
-
     MatchedItemMap items;
     while (!dirs.isEmpty()) {
         if (m_handler && m_handler->isResultLimit())
@@ -116,7 +115,7 @@ bool AnythingQueryPrivate::searchByAnything(PushItemCallBack callBack, void *pda
         QDBusPendingReply<QStringList, uint, uint> result;
         {
             QStringList rules;
-            rules << "0x02100"  // 搜索做大数量，100
+            rules << "0x02100"  // 搜索最大数量，100
                   << "0x40."    // 过滤系统隐藏文件
                   << "0x011"    // 支持正则表达式
                   << "0x031";    // 忽略大小写
@@ -171,15 +170,15 @@ bool AnythingQueryPrivate::searchByAnything(PushItemCallBack callBack, void *pda
             QHash<QString, QSet<QString>> hiddenFilters;
             if (SpecialTools::isHiddenFile(path, hiddenFilters, QDir::homePath()))
                 continue;
-
+            m_count++;
             if (m_handler) {
                 m_handler->appendTo(path, items);
-                if (m_handler->isResultLimit())
+                m_handler->setItemWeight(path, m_handler->itemWeight(path) + calcItemWeight(info.fileName()));
+                if (m_handler->isResultLimit() || m_count >= 100)
                     break;
             } else {
                 auto item = FileSearchUtils::packItem(path, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC);
-                auto group = FileSearchUtils::getGroupByName(path);
-                items[FileSearchUtils::groupKey(group)].append(item);
+                items[GRANDSEARCH_GROUP_FILE_INFERENCE].append(item);
             }
         }
     }
@@ -234,6 +233,17 @@ bool AnythingQueryPrivate::timeToPush() const
     return (m_time.elapsed() - m_lastPush) > 100;
 }
 
+int AnythingQueryPrivate::calcItemWeight(const QString &name)
+{
+    int w = 0;
+    for ( const QString &key : m_entity.keys) {
+        if (name.contains(key))
+            w += 20;
+    }
+
+    return w;
+}
+
 AnythingQuery::AnythingQuery(QObject *parent)
     : QObject(parent)
     , d(new AnythingQueryPrivate(this))
@@ -283,6 +293,8 @@ void AnythingQuery::run(void *ptr, PushItemCallBack callBack, void *pdata)
         if (!d->searchByAnything(callBack, pdata))
             return; //中断
     }
+
+    qDebug() << "deepin anything is finished spend:" << d->m_time.elapsed() << "found:" << d->m_count;;
 }
 
 void AnythingQuery::setEntity(const SemanticEntity &entity)

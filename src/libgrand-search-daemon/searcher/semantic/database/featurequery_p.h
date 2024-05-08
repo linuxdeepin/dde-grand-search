@@ -26,15 +26,17 @@ public:
                 + "/deepin/deepin-ai-daemon/index";
         return path;
     }
-    static bool processResult(const QString &file, void *pdata);
+    static bool processResult(const QString &file, const QSet<QString> &match, void *pdata);
     FeatureLibEngine::QueryConditons translateConditons();
     bool timeToPush() const;
+    int matchedWeight(const QSet<QString> &back);
 public:
     SemanticEntity m_entity;
     FileResultsHandler *m_handler = nullptr;
     QTime m_time;
     int m_lastPush = 0;
     MatchedItemMap m_results;
+    int m_count = 0;
 private:
     FeatureQuery *q;
 };
