@@ -32,12 +32,21 @@ find_package(Qt5 COMPONENTS
 REQUIRED)
 
 set(PROJECT_DAEMONSRC_PATH "${PROJECT_SOURCE_PATH}/libgrand-search-daemon")
+set(PROJECT_TOOLS_PATH "${PROJECT_SOURCE_PATH}/tools")
 include_directories(${PROJECT_DAEMONSRC_PATH})
+include_directories(${PROJECT_TOOLS_PATH})
 
 ADD_DEFINITIONS(-DENABLE_FSEARCH)
-FILE(GLOB 3RD_FSEARCH_SRC ${PROJECT_3RDPARTY_PATH}/fsearch/*)
+
+qt5_add_dbus_interface(IFS_SRC ${PROJECT_3RDPARTY_PATH}/interfaces/org.deepin.ai.daemon.AnalyzeServer.xml analyzeserver)
+
+FILE(GLOB 3RD_FSEARCH_SRC
+    ${PROJECT_3RDPARTY_PATH}/fsearch/*
+    ${PROJECT_3RDPARTY_PATH}/lucene/*
+    )
 pkg_check_modules(GLIB REQUIRED glib-2.0)
 pkg_check_modules(PCRE REQUIRED libpcre)
+pkg_check_modules(Lucene REQUIRED IMPORTED_TARGET liblucene++ liblucene++-contrib)
 
 if (NOT (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "sw"))
     ADD_DEFINITIONS(-DENABLE_DEEPINANYTHING)
@@ -55,6 +64,11 @@ FILE(GLOB_RECURSE PRO_SRC
     "${PROJECT_DAEMONSRC_PATH}/*/*.cpp"
     "${PROJECT_SOURCE_PATH}/grand-search-daemon/daemonlibrary.h"
     "${PROJECT_SOURCE_PATH}/grand-search-daemon/daemonlibrary.cpp"
+    )
+
+FILE(GLOB_RECURSE TOOL_SRC
+    "${PROJECT_TOOLS_PATH}/*/*.h"
+    "${PROJECT_TOOLS_PATH}/*/*.cpp"
     )
 
 # 移除未编写的文件
@@ -78,6 +92,8 @@ set(SRCS
     ut_commontools.cpp
     ${GLOBAL_SRC}
     ${PRO_SRC}
+    ${TOOL_SRC}
+    ${IFS_SRC}
     ${UT_SRC}
     ${CPP_STUB_SRC}
     ${3RD_FSEARCH_SRC}
@@ -93,6 +109,7 @@ target_include_directories(${BIN_NAME} PUBLIC
     ${PROJECT_3RDPARTY_PATH}/fsearch
     ${GLIB_INCLUDE_DIRS}
     ${PCRE_INCLUDE_DIRS}
+    ${Lucene_INCLUDE_DIRS}
 )
 
 target_link_libraries(${BIN_NAME} PRIVATE
@@ -102,5 +119,7 @@ target_link_libraries(${BIN_NAME} PRIVATE
     ${Qt5Test_LIBRARIES}
     ${GLIB_LIBRARIES}
     ${PCRE_LIBRARIES}
+    ${Lucene_LIBRARIES}
     -lpthread
+    -lboost_system
 )

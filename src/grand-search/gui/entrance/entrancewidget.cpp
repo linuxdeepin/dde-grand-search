@@ -259,7 +259,6 @@ void EntranceWidget::onAppIconChanged(const QString &searchGroupName, const Matc
         return;
     }
 
-
     if (appIconName == d_p->m_appIconName)
         return;
 

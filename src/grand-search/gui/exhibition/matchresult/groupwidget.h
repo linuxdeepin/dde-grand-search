@@ -15,6 +15,7 @@
 DWIDGET_BEGIN_NAMESPACE
 class DLabel;
 class DHorizontalLine;
+class DSpinner;
 DWIDGET_END_NAMESPACE
 
 class QVBoxLayout;
@@ -39,6 +40,10 @@ public:
 
     void setGroupName(const QString &groupName);
     QString groupName() const;
+
+    void setIcon(const QIcon &icon);
+    void showSpinner(bool bShow = true);
+    void showLabel(bool bShow = true);
 
     void showHorLine(bool bShow = true);
     bool isHorLineVisilbe();
@@ -86,7 +91,10 @@ private:
     QVBoxLayout *m_vContentLayout = nullptr;        // 内容垂直布局，用于限定列表和横线间距10个像素间隙
 
     Dtk::Widget::DLabel *m_groupLabel = nullptr;
+    Dtk::Widget::DLabel *m_groupIcon = nullptr;
+    Dtk::Widget::DLabel *m_resultLabel = nullptr;
     Dtk::Widget::DHorizontalLine *m_line = nullptr;
+    DTK_WIDGET_NAMESPACE::DSpinner *m_spinner = nullptr;
 };
 
 typedef QMap<QString, GroupWidget *> GroupWidgetMap;

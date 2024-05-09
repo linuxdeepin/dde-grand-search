@@ -13,7 +13,7 @@ class MatchWidgetPrivate
 {
 public:
     explicit MatchWidgetPrivate(MatchWidget *parent = nullptr);
-
+    void setGroupIcon(GroupWidget *wid);
     MatchWidget *q_p = nullptr;
 };
 

@@ -80,9 +80,9 @@ int FullTextQueryPrivate::matchedWeight(const QSet<QString> &back)
         if (keys.isEmpty())
             break;
         for (auto it = keys.begin(); it != keys.end();) {
-            if (str.contains(*it)) {
+            if (str.contains(*it, Qt::CaseInsensitive)) {
                 it = keys.erase(it);
-                w += 20;
+                w += 15;
             } else {
                 ++it;
             }

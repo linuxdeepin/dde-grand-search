@@ -129,9 +129,14 @@
 <context>
     <name>GrandSearch::GroupWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="261"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="288"/>
         <source>More</source>
         <translation>更多</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="324"/>
+        <source>No search results</source>
+        <translation>暂无搜索结果</translation>
     </message>
 </context>
 <context>
