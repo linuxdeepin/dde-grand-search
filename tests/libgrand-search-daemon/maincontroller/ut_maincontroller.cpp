@@ -81,6 +81,8 @@ TEST(MainControllerTest, ut_init_2)
     EXPECT_TRUE(mc.d->m_searchers != nullptr);
 }
 
+typedef void (MainControllerPrivate::*BuildWorker)(TaskCommander *, const QSet<QString> &);
+
 TEST(MainControllerTest, ut_newSearch_0)
 {
     MainController mc;
@@ -94,7 +96,7 @@ TEST(MainControllerTest, ut_newSearch_0)
     });
 
     bool buildWorker = false;
-    st.set_lamda(&MainControllerPrivate::buildWorker, [&buildWorker]() {
+    st.set_lamda((BuildWorker)&MainControllerPrivate::buildWorker, [&buildWorker]() {
         buildWorker = true;
     });
 
@@ -124,7 +126,7 @@ TEST(MainControllerTest, ut_newSearch_1)
     mc.d->m_currentTask = cmd;
 
     bool buildWorker = false;
-    st.set_lamda(&MainControllerPrivate::buildWorker, [&buildWorker]() {
+    st.set_lamda((BuildWorker)&MainControllerPrivate::buildWorker, [&buildWorker]() {
         buildWorker = true;
     });
 

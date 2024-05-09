@@ -43,16 +43,26 @@ void TaskCommanderPrivate::working(ProxyWorker *worker)
 void TaskCommanderPrivate::onUnearthed(ProxyWorker *worker)
 {
     Q_ASSERT(worker);
+    auto isEmpty = [](const MatchedItemMap &map) {
+        for (const MatchedItems &it : map.values()) {
+            if (!it.isEmpty())
+                return false;
+        }
+        return true;
+    };
+
     if (m_allWorkers.contains(worker) && worker->hasItem()) {
         auto results = worker->takeAll();
         QWriteLocker lk(&m_lock);
-        bool emptyBuffer = m_buffer.isEmpty();
+        // check buffer has real item.
+        bool emptyBuffer = isEmpty(m_buffer);
 
         merge(m_results, results);
         merge(m_buffer, results);
 
+        bool emptyBuffer2 = isEmpty(m_buffer);
         //回到主线程发送信号
-        if (emptyBuffer)
+        if (emptyBuffer && !emptyBuffer2)
             QMetaObject::invokeMethod(q, "matched", Qt::QueuedConnection);
     }
 }

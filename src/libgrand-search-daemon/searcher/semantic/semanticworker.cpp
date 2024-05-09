@@ -131,6 +131,10 @@ bool SemanticWorker::working(void *context)
     if (!d->m_status.testAndSetRelease(Ready, Runing))
         return false;
 
+    // 发送空数据用于提前显示分组
+    d->m_items.insert(GRANDSEARCH_GROUP_FILE_INFERENCE, {});
+    emit unearthed(this);
+
     // 等待2秒确认无输入后再执行。
     int count = 10;
     while (count > 0) {

@@ -13,6 +13,7 @@
 #include <DPushButton>
 #include <DHorizontalLine>
 #include <DApplicationHelper>
+#include <DSpinner>
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -65,7 +66,7 @@ void GroupWidget::appendMatchedItems(const MatchedItems &newItems, const QString
 {
     Q_UNUSED(searchGroupName)
 
-    if (Q_UNLIKELY(newItems.isEmpty()))
+    if (newItems.isEmpty())
         return;
 
     // 结果列表未展开
@@ -150,7 +151,12 @@ void GroupWidget::reLayout()
 
     int nHeight = 0;
     nHeight += m_groupLabel->height();
-    nHeight += m_listView->height();
+
+    if (m_listView->isVisible())
+        nHeight += m_listView->height();
+
+    if (m_resultLabel->isVisible())
+        nHeight += m_resultLabel->height();
 
     if (!m_line->isHidden()) {
         nHeight += m_line->height();
@@ -175,6 +181,9 @@ void GroupWidget::clear()
     m_bListExpanded = false;
 
     m_listView->clear();
+    m_viewMoreButton->hide();
+
+    showLabel(false);
     setVisible(false);
 }
 
@@ -193,6 +202,33 @@ QString GroupWidget::groupName() const
     Q_ASSERT(m_groupLabel);
 
     return m_groupLabel->text();
+}
+
+void GroupWidget::setIcon(const QIcon &icon)
+{
+    if (icon.isNull()) {
+       m_groupIcon->hide();
+    } else {
+       m_groupIcon->setPixmap(icon.pixmap(QSize(18, 18)));
+       m_groupIcon->show();
+    }
+}
+
+void GroupWidget::showSpinner(bool bShow)
+{
+    if (bShow) {
+        m_spinner->parentWidget()->show();
+        m_spinner->start();
+    } else {
+        m_spinner->parentWidget()->hide();
+        m_spinner->stop();
+    }
+}
+
+void GroupWidget::showLabel(bool bShow)
+{
+    m_listView->setVisible(!bShow);
+    m_resultLabel->setVisible(bShow);
 }
 
 QString GroupWidget::convertDisplayName(const QString &searchGroupName)
@@ -236,6 +272,13 @@ void GroupWidget::initUi()
     m_groupLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
     m_groupLabel->setContentsMargins(0, 0, 0, 0);
 
+    // 组名图标
+    m_groupIcon = new DLabel("", this);
+    m_groupIcon->setFixedSize(QSize(23, GroupLabelHeight)); // 18px of icon and 5px space
+    m_groupIcon->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
+    m_groupLabel->setContentsMargins(0, 5, 5, 5);
+    m_groupIcon->hide();
+
     QFont groupLabelFont = m_groupLabel->font();
     groupLabelFont.setWeight(QFont::Normal);
     groupLabelFont = DFontSizeManager::instance()->get(DFontSizeManager::T8, groupLabelFont);
@@ -252,17 +295,47 @@ void GroupWidget::initUi()
     m_viewMoreButton->setFont(fontMoreBtn);
     m_viewMoreButton->hide();
 
+    QWidget *spinnerContainer = new QWidget(this);
+    {
+        spinnerContainer->setFixedSize(38, 18); //20px space on right.
+        m_spinner = new DSpinner(spinnerContainer);
+        m_spinner->setAttribute(Qt::WA_TransparentForMouseEvents);
+        m_spinner->setFocusPolicy(Qt::NoFocus);
+        m_spinner->setFixedSize(QSize(18, 18));
+        m_spinner->setGeometry(0, 0, 18, 18);
+        spinnerContainer->hide();
+    }
+
     // 组列表标题栏布局
     m_hTitelLayout = new QHBoxLayout();
-    m_hTitelLayout->setContentsMargins(LayoutMagrinSize,0,0,0);
+    m_hTitelLayout->setContentsMargins(LayoutMagrinSize, 0, 0, 0);
     m_hTitelLayout->setSpacing(0);
+    m_hTitelLayout->addWidget(m_groupIcon);
     m_hTitelLayout->addWidget(m_groupLabel);
     m_hTitelLayout->addSpacerItem(new QSpacerItem(SpacerWidth,SpacerHeight,QSizePolicy::Expanding, QSizePolicy::Minimum));
     m_hTitelLayout->addWidget(m_viewMoreButton);
+    m_hTitelLayout->addWidget(spinnerContainer);
 
     // 组内结果列表
     m_listView = new GrandSearchListView(this);
     m_listView->setFocusPolicy(Qt::NoFocus);
+
+    // 无结果提示
+    m_resultLabel = new DLabel(tr("No search results"), this);
+    DFontSizeManager::instance()->bind(m_resultLabel, DFontSizeManager::T8, QFont::Normal);
+    // color
+    {
+        QColor colorText = DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType ?
+                    Qt::white : Qt::black;
+        colorText.setAlphaF(0.5);
+        auto pal = m_resultLabel->palette();
+        pal.setColor(m_resultLabel->foregroundRole(), colorText);
+        m_resultLabel->setPalette(pal);
+    }
+    m_resultLabel->setFixedHeight(14 + DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T8));
+    m_resultLabel->setAlignment(Qt::AlignBottom | Qt::AlignLeft);
+    m_resultLabel->setContentsMargins(LayoutMagrinSize, 12, 0, 0);
+    m_resultLabel->hide();
 
     // 分割线
     m_line = new DHorizontalLine;
@@ -272,6 +345,7 @@ void GroupWidget::initUi()
     m_vContentLayout->setMargin(0);
     m_vContentLayout->setSpacing(0);
     m_vContentLayout->addWidget(m_listView);
+    m_vContentLayout->addWidget(m_resultLabel);
     m_vContentLayout->addWidget(m_line);
 
     // 标题栏布局和内容布局放到主布局内
