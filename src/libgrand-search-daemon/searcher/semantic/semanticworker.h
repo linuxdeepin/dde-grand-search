@@ -14,7 +14,7 @@ class SemanticWorker : public ProxyWorker
     Q_OBJECT
     friend class SemanticWorkerPrivate;
 public:
-    explicit SemanticWorker(const QString &name, const QString &service, QObject *parent = nullptr);
+    explicit SemanticWorker(const QString &name, QObject *parent = nullptr);
     ~SemanticWorker();
     void setContext(const QString &context) Q_DECL_OVERRIDE;
     bool isAsync() const Q_DECL_OVERRIDE;
@@ -23,6 +23,7 @@ public:
     Status status() Q_DECL_OVERRIDE;
     bool hasItem() const Q_DECL_OVERRIDE;
     MatchedItemMap takeAll() Q_DECL_OVERRIDE;
+    void setEngineState(bool e, bool v);
 private:
     SemanticWorkerPrivate *d;
 };

@@ -143,6 +143,14 @@ set(GUISRC
     gui/searchconfig/blacklistwidget.h
     gui/searchconfig/indexwidget.cpp
     gui/searchconfig/indexwidget.h
+    gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.h
+    gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp
+    gui/searchconfig/roundedbackground.h
+    gui/searchconfig/roundedbackground.cpp
+    gui/searchconfig/intelligentretrieval/detailcheckbox.cpp
+    gui/searchconfig/intelligentretrieval/detailcheckbox.h
+    gui/searchconfig/intelligentretrieval/autoindexstatus.cpp
+    gui/searchconfig/intelligentretrieval/autoindexstatus.h
     )
 
 # business

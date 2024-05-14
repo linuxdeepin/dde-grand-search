@@ -11,6 +11,7 @@
 #include "database/anythingquery.h"
 #include "database/fulltextquery.h"
 #include "database/featurequery.h"
+#include "database/vectorquery.h"
 
 #include <QDebug>
 #include <QtConcurrent>
@@ -103,11 +104,26 @@ void SemanticWorkerPrivate::sortItems(MatchedItemMap &items, const QHash<QString
     }
 }
 
-SemanticWorker::SemanticWorker(const QString &name, const QString &service, QObject *parent)
+void SemanticWorkerPrivate::mergeExtra(MatchedItemMap &items, const QHash<QString, QVariantHash> &extra)
+{
+    for (auto it = items.begin(); it != items.end(); ++it) {
+        MatchedItems &list = it.value();
+        for (auto mi = list.begin(); mi != list.end(); ++mi) {
+            auto ex = extra.find(mi->item);
+            if (ex != extra.end()) {
+                QVariantHash vh =  mi->extra.value<QVariantHash>();
+                for (auto ev = ex->begin(); ev != ex->end(); ++ev)
+                    vh.insert(ev.key(), ev.value());
+                mi->extra = QVariant::fromValue(vh);
+            }
+        }
+    }
+}
+
+SemanticWorker::SemanticWorker(const QString &name, QObject *parent)
     : ProxyWorker(name, parent)
     , d(new SemanticWorkerPrivate(this))
 {
-    d->m_serviceName = service;
 }
 
 SemanticWorker::~SemanticWorker()
@@ -143,37 +159,51 @@ bool SemanticWorker::working(void *context)
         count--;
     }
 
+    bool canSemantic = false;
+    bool canVector = false;
+
     d->m_time.start();
     SemanticEntity entity;
+    SemanticParser parser;
+
     // get entity
-    {
-        SemanticParser parser;;
-        if (!parser.connectToHost(d->m_serviceName))
-            return false;
+    if (d->m_doSemantic) {
+        if (parser.connectToAnalyze(SemanticHelper::analyzeServiceName())){
+            checkRuning();
 
-        checkRuning();
+            QString ret = parser.analyze(d->m_context);
+            qDebug() << "get reply" << ret << d->m_time.elapsed();
 
-        QString ret = parser.analyze(d->m_context);
-        qDebug() << "get reply" << ret << d->m_time.elapsed();
+            checkRuning();
 
-        checkRuning();
-
-        if (!SemanticHelper::entityFromJson(ret, entity)) {
-            qWarning() << "invild entity json.";
-            return false;
-        }
-
-        // 无效的搜索信息
-        if (entity.keys.isEmpty() && entity.types.isEmpty() && entity.times.isEmpty()) {
-            qDebug() << "invaild entity to search.";
-            return false;
+            if (!SemanticHelper::entityFromJson(ret, entity)) {
+                qWarning() << "invild entity json.";
+            } else {
+                // 无效的搜索信息
+                if (entity.keys.isEmpty() && entity.types.isEmpty() && entity.times.isEmpty()) {
+                    qDebug() << "invaild entity to search.";
+                } else {
+                    canSemantic = true;
+                }
+            }
         }
     }
 
+    if (d->m_doVector) {
+        if (parser.connectToVector(SemanticHelper::vectorServiceName())){
+            checkRuning();
+            canVector = true;
+        }
+    }
+
+    if (!canSemantic && !canVector)
+        return false;
+
     QList<SemanticWorkerPrivate::QueryFunction> querys;
     FileResultsHandler fileHandler;
+
     AnythingQuery anything;
-    {
+    if (canSemantic) {
         SemanticWorkerPrivate::QueryFunction func = {&anything, &AnythingQuery::run, d};
         querys.append(func);
         anything.setEntity(entity);
@@ -181,7 +211,7 @@ bool SemanticWorker::working(void *context)
     }
 
     FullTextQuery fuletext;
-    {
+    if (canSemantic) {
         SemanticWorkerPrivate::QueryFunction func = {&fuletext, &FullTextQuery::run, d};
         querys.append(func);
         fuletext.setEntity(entity);
@@ -189,11 +219,20 @@ bool SemanticWorker::working(void *context)
     }
 
     FeatureQuery feature;
-    {
+    if (canSemantic) {
         SemanticWorkerPrivate::QueryFunction func = {&feature, &FeatureQuery::run, d};
         querys.append(func);
         feature.setEntity(entity);
         feature.setFileHandler(&fileHandler);
+    }
+
+    VectorQuery vector;
+    if (canVector /*&& d->m_context.size() > 5*/) {
+        SemanticWorkerPrivate::QueryFunction func = {&vector, &VectorQuery::run, d};
+        querys.append(func);
+        vector.setParser(&parser);
+        vector.setFileHandler(&fileHandler);
+        vector.setQuery(d->m_context);
     }
 
     checkRuning();
@@ -206,6 +245,7 @@ bool SemanticWorker::working(void *context)
     {
         QMutexLocker lk(&d->m_mtx);
         d->sortItems(d->m_items, fileHandler.allItemWeight());
+        d->mergeExtra(d->m_items, fileHandler.allItemExtra());
 
         // Keep the top 100 files
         MatchedItemMap top;
@@ -257,4 +297,10 @@ MatchedItemMap SemanticWorker::takeAll()
     lk.unlock();
 
     return items;
+}
+
+void SemanticWorker::setEngineState(bool e, bool v)
+{
+    d->m_doSemantic = e;
+    d->m_doVector = v;
 }

@@ -6,6 +6,8 @@
 #include "global/builtinsearch.h"
 #include "semanticworker.h"
 #include "semantichelper.h"
+#include "configuration/configer.h"
+#include "tools/semanticparser/semanticparser.h"
 
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
@@ -42,7 +44,23 @@ QString SemanticSearcher::name() const
 
 bool SemanticSearcher::isActive() const
 {
-    return QDBusConnection::sessionBus().interface()->isServiceRegistered(SemanticHelper::serviceName()).value();
+    auto config = ConfigerIns->group(GRANDSEARCH_SEMANTIC_GROUP);
+    Q_ASSERT(config);
+
+    SemanticParser paser;
+    if (config->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, true)) {
+        if (paser.connectToAnalyze(SemanticHelper::analyzeServiceName())) {
+            d->m_semantic  = paser.isAnalayzeSupported();
+        }
+    }
+
+    if (config->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR, true)) {
+        if (paser.connectToVector(SemanticHelper::vectorServiceName())) {
+            d->m_vector = paser.isVectorSupported();
+        }
+    }
+
+    return d->m_semantic || d->m_vector;
 }
 
 bool SemanticSearcher::activate()
@@ -52,7 +70,9 @@ bool SemanticSearcher::activate()
 
 ProxyWorker *SemanticSearcher::createWorker() const
 {
-    return new SemanticWorker(name(), SemanticHelper::serviceName());
+    auto worker = new SemanticWorker(name());
+    worker->setEngineState(d->m_semantic, d->m_vector);
+    return worker;
 }
 
 bool SemanticSearcher::action(const QString &action, const QString &item)

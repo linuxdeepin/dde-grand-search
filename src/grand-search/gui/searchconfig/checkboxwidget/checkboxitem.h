@@ -5,12 +5,12 @@
 #ifndef CHECKBOXITEM_H
 #define CHECKBOXITEM_H
 
-#include <DWidget>
+#include "gui/searchconfig/roundedbackground.h"
 #include <DCheckBox>
 
 namespace GrandSearch {
 
-class CheckBoxItem : public Dtk::Widget::DWidget
+class CheckBoxItem : public RoundedBackground
 {
     Q_OBJECT
 public:
@@ -18,20 +18,13 @@ public:
     ~CheckBoxItem();
 
     void setChecked(bool checked);
-    void setTopRound(bool round);
-    void setBottomRound(bool round);
     QString text() const;
 
 signals:
     void toggled(bool checked);
 
-protected:
-    void paintEvent(QPaintEvent *event);
-
 private:
     Dtk::Widget::DCheckBox *m_checkBox = nullptr;
-    bool m_topRound = false;
-    bool m_bottomRound = false;
 };
 
 }

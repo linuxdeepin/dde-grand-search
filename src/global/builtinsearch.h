@@ -13,6 +13,10 @@
 #define GRANDSEARCH_CLASS_WEB_STATICTEXT "com.deepin.dde-grand-search.web-statictext"
 #define GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC "com.deepin.dde-grand-search.generalfile-semantic"
 
+// AI搜索子项
+#define GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC".analysis"
+#define GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC".vector"
+
 // 搜索项所属组
 #define GRANDSEARCH_GROUP_BEST               "com.deepin.dde-grand-search.group.best-match"
 #define GRANDSEARCH_GROUP_APP                "com.deepin.dde-grand-search.group.application"
@@ -47,6 +51,9 @@
 
 // 拖尾数据
 #define GRANDSEARCH_PROPERTY_ITEM_TAILER    "itemTailer"
+
+// 匹配的到具体信息
+#define GRANDSEARCH_PROPERTY_ITEM_MATCHEDCONTEXT    "itemMatchedContext"
 
 /****************** 扩展数据 END ******************************/
 

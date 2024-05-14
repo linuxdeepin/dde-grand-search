@@ -26,6 +26,7 @@ public:
     static UserPreferencePointer tailerData();
     static UserPreferencePointer blacklist();
     static UserPreferencePointer webSearchEngine();
+    static UserPreferencePointer semanticEngine();
     bool updateConfig1(QSettings *);
     void resetPath(QString &path) const;
 private:

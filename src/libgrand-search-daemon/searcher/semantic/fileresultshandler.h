@@ -36,12 +36,19 @@ public:
         QReadLocker lk(&m_lock);
         return m_tmpSearchResults.size();
     }
+
+    void appendExtra(const QString &file, const QString &key, const QVariant &value);
+    inline QHash<QString, QVariantHash> allItemExtra() const {
+        QReadLocker lk(&m_lock);
+        return m_resultExtra;
+    }
 private:
     void initConfig();
 protected:
     mutable QReadWriteLock m_lock;
     QSet<QString> m_tmpSearchResults;     // 存储所有的搜索结果，用于去重
     QHash<QString, int> m_resultWeight;
+    QHash<QString, QVariantHash> m_resultExtra;
     QHash<FileSearchUtils::Group, quint32> m_resultCountHash; // 记录各类型文件搜索结果数量
 };
 
