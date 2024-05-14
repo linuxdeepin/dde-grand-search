@@ -6,6 +6,7 @@
 #define PREFERENCEITEM_H
 
 #include "global/builtinsearch.h"
+#include "global/searchconfigdefine.h"
 
 #define GRANDSEARCH_PREF_SEARCHERENABLED "com.deepin.dde-grand-search.preference.searcherenabled"
 

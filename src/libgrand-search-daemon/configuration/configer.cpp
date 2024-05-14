@@ -83,6 +83,14 @@ UserPreferencePointer ConfigerPrivate::webSearchEngine()
     return UserPreferencePointer(new UserPreference(data));
 }
 
+UserPreferencePointer ConfigerPrivate::semanticEngine()
+{
+    QVariantHash data{{GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, true}
+                     , {GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR, true}};
+
+    return UserPreferencePointer(new UserPreference(data));
+}
+
 bool ConfigerPrivate::updateConfig1(QSettings *set)
 {
     if (!set || m_root.isNull())
@@ -90,7 +98,6 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
 
     set->beginGroup(GRANDSEARCH_SEARCH_GROUP);
     UserPreferencePointer searcherConfig = m_root->group(GRANDSEARCH_PREF_SEARCHERENABLED);
-    Q_ASSERT(searcherConfig);
 
     //文件搜索相关配置
     {
@@ -191,6 +198,28 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
     }
 
     set->endGroup();
+
+    // AI搜索子项开关
+    {
+        set->beginGroup(GRANDSEARCH_SEMANTIC_GROUP);
+        if (UserPreferencePointer conf = m_root->group(GRANDSEARCH_SEMANTIC_GROUP)) {
+            bool on = false;
+            bool ret = set->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, true).toBool();
+            conf->setValue(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, ret);
+            on |= ret;
+
+            ret = set->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR, true).toBool();
+            conf->setValue(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR, ret);
+            on |= ret;
+
+            //设置是否启用AI搜索项
+            searcherConfig->setValue(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC, on);
+        } else {
+            qWarning() << "no shuch config:" << GRANDSEARCH_SEMANTIC_GROUP;
+        }
+
+        set->endGroup();
+    }
 
     // 拖尾
     set->beginGroup(GRANDSEARCH_TAILER_GROUP);
@@ -350,6 +379,9 @@ void Configer::initDefault()
 
     // 搜索引擎
     rootData.insert(GRANDSEARCH_WEB_GROUP, QVariant::fromValue(d->webSearchEngine()));
+
+    // AI搜索子项
+    rootData.insert(GRANDSEARCH_SEMANTIC_GROUP, QVariant::fromValue(d->semanticEngine()));
 
     {
         UserPreferencePointer root(new UserPreference(rootData));

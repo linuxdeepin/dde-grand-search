@@ -15,6 +15,9 @@ class SemanticSearcherPrivate
 public:
     explicit SemanticSearcherPrivate(SemanticSearcher *parent);
     ~SemanticSearcherPrivate();
+public:
+    bool m_semantic = false;
+    bool m_vector = false;
 private:
     SemanticSearcher *q;
 };

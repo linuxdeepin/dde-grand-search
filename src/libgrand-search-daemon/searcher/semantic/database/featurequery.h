@@ -6,7 +6,6 @@
 #define FEATUREQUERY_H
 
 #include "searcher/semantic/semantichelper.h"
-#include "searcher/semantic/fileresultshandler.h"
 
 #include <QObject>
 

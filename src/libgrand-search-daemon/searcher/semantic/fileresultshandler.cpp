@@ -96,7 +96,20 @@ bool FileResultsHandler::isResultLimit() const
     QReadLocker lk(&m_lock);
     return m_tmpSearchResults.size() >= MAX_SEARCH_NUM;
 }
+
 #endif
+
+void FileResultsHandler::appendExtra(const QString &file, const QString &key, const QVariant &value)
+{
+    QReadLocker lk(&m_lock);
+    auto it = m_resultExtra.find(file);
+    if (it != m_resultExtra.end()) {
+        it.value().insert(key, value);
+    } else {
+        QVariantHash tmp = {{key, value}};
+        m_resultExtra.insert(file, tmp);
+    }
+}
 
 void FileResultsHandler::initConfig()
 {

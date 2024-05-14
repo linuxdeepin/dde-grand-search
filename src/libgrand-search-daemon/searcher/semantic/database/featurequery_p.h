@@ -7,6 +7,7 @@
 
 #include "featurequery.h"
 #include "luceneengine/featurelibengine.h"
+#include "searcher/semantic/fileresultshandler.h"
 
 namespace GrandSearch {
 

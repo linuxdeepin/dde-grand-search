@@ -26,8 +26,8 @@ public:
     static bool pushItem(const MatchedItemMap &items, void *ptr);
     static void run(const QueryFunction &func);
     static void sortItems(MatchedItemMap &items, const QHash<QString, int> &weight);
+    static void mergeExtra(MatchedItemMap &items, const QHash<QString, QVariantHash> &extra);
 public:
-    QString m_serviceName;
     QString m_context;
     QAtomicInt m_status = ProxyWorker::Ready;
     mutable QMutex m_mtx;
@@ -36,6 +36,9 @@ public:
     //计时
     QTime m_time;
     int m_lastEmit = 0;
+
+    bool m_doSemantic = false;
+    bool m_doVector = false;
 private:
     SemanticWorker *q;
 };

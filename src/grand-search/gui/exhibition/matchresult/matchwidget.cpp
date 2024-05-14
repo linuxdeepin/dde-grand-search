@@ -75,6 +75,13 @@ void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
             continue;
         }
 
+        // ai搜索有结果后修改显示名称
+        if (groupWidget->searchGroupName() == GRANDSEARCH_GROUP_FILE_INFERENCE
+                && groupWidget->itemCount() == 0
+                && !itData.value().isEmpty()) {
+            groupWidget->setGroupName(tr("Guess you want to search the following"));
+        }
+
         // 追加匹配数据到类目列表中
         groupWidget->appendMatchedItems(itData.value(), itData.key());
 

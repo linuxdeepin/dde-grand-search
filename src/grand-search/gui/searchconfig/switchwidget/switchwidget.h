@@ -5,6 +5,8 @@
 #ifndef SWITCHWIDGET_H
 #define SWITCHWIDGET_H
 
+#include "gui/searchconfig/roundedbackground.h"
+
 #include <DSwitchButton>
 
 #include <QWidget>
@@ -13,7 +15,7 @@
 
 namespace GrandSearch {
 
-class SwitchWidget : public QWidget
+class SwitchWidget : public RoundedBackground
 {
     Q_OBJECT
 public:
@@ -26,6 +28,7 @@ public:
     void setTitle(const QString &title);
     QString title() const;
 
+    void setIconEnable(bool e);
     void setIcon(const QIcon &icon, const QSize &size);
 
     void setEnableBackground(const bool enable = true);

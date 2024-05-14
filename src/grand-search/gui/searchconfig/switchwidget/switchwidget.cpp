@@ -22,7 +22,7 @@ SwitchWidget::SwitchWidget(const QString &title, QWidget *parent)
 }
 
 SwitchWidget::SwitchWidget(QWidget *parent, QWidget *leftWidget)
-    : QWidget (parent)
+    : RoundedBackground (parent)
     , m_leftWidget(leftWidget)
 {
 
@@ -47,6 +47,9 @@ SwitchWidget::SwitchWidget(QWidget *parent, QWidget *leftWidget)
     setLayout(m_mainLayout);
 
     connect(m_switchBtn, &DSwitchButton::toggled, this, &SwitchWidget::checkedChanged);
+
+    setTopRound(true);
+    setBottomRound(true);
 }
 
 void SwitchWidget::setChecked(const bool checked)
@@ -81,6 +84,11 @@ QString SwitchWidget::title() const
     return QString();
 }
 
+void SwitchWidget::setIconEnable(bool e)
+{
+    m_iconLabel->setVisible(e);
+}
+
 void SwitchWidget::setIcon(const QIcon &icon, const QSize &size)
 {
     m_iconLabel->setPixmap(icon.pixmap(size));
@@ -104,11 +112,12 @@ bool SwitchWidget::enableBackground() const
 void SwitchWidget::paintEvent(QPaintEvent *event)
 {
     if (m_hasBack) {
-        const DPalette &dp = DApplicationHelper::instance()->palette(this);
-        QPainter p(this);
-        p.setPen(Qt::NoPen);
-        p.setBrush(dp.brush(DPalette::ItemBackground));
-        p.drawRoundedRect(rect(), 8, 8);
+        return RoundedBackground::paintEvent(event);
+//        const DPalette &dp = DApplicationHelper::instance()->palette(this);
+//        QPainter p(this);
+//        p.setPen(Qt::NoPen);
+//        p.setBrush(dp.brush(DPalette::ItemBackground));
+//        p.drawRoundedRect(rect(), 8, 8);
     }
     return QWidget::paintEvent(event);
 }
