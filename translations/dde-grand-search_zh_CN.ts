@@ -142,9 +142,67 @@
 <context>
     <name>GrandSearch::IndexWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/indexwidget.cpp" line="22"/>
+        <location filename="../src/grand-search/gui/searchconfig/indexwidget.cpp" line="25"/>
         <source>Index</source>
         <translation>索引</translation>
+    </message>
+</context>
+<context>
+    <name>GrandSearch::IntelligentRetrievalWidget</name>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="49"/>
+        <source>Smart Search</source>
+        <translation>智能检索</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="63"/>
+        <source>Enable AI Smart Search</source>
+        <translation>开启AI智能搜索</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="68"/>
+        <source>Intelligent semantic search</source>
+        <translation>智能语义搜索</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="70"/>
+        <source>When turned on, you can try to search for local documents using natural language descriptions, such as &quot;last week&apos;s documents&quot;.</source>
+        <translation>开启后您可以尝试使用自然语言描述搜索本地文件，例如搜索“上周的文档”。</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="78"/>
+        <source>Intelligent full text search</source>
+        <translation>智能全文检索</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="91"/>
+        <source>Automatic index update</source>
+        <translation>自动更新索引</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="132"/>
+        <source>When enabled, you can search the text of articles using disjointed and incomplete keywords.</source>
+        <translation>开启后您可以使用不连贯、不完整的关键词搜索文章文本内容。</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="154"/>
+        <source>Please install %0 in &lt;a href=&quot;%0&quot;&gt;the app store&lt;/a&gt; before turning on this configuration.</source>
+        <translation>请先到 &lt;a href=&quot;%0&quot;&gt;应用商店&lt;/a&gt; 安装%0模型后再开启该配置。</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="192"/>
+        <source>Intelligent search indexing is being updated, which may take up more resources, please keep the power access.</source>
+        <translation>正在更新智能搜索索引编制，可能占用较多资源，请保持电源接入。</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="196"/>
+        <source>Smart Search indexing update is complete. Last update time: %0</source>
+        <translation>智能搜索索引编制更新完成。上次更新时间：%0</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="199"/>
+        <source>Indexing error!</source>
+        <translation>索引编制出错！</translation>
     </message>
 </context>
 <context>
@@ -153,6 +211,14 @@
         <location filename="../src/grand-search/gui/mainwindow.cpp" line="208"/>
         <source>No search results</source>
         <translation>无搜索结果</translation>
+    </message>
+</context>
+<context>
+    <name>GrandSearch::MatchWidget</name>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="83"/>
+        <source>Guess you want to search the following</source>
+        <translation>猜您想搜以下内容</translation>
     </message>
 </context>
 <context>
