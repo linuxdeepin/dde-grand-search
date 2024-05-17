@@ -21,6 +21,13 @@ bool VectorQueryPrivate::timeToPush() const
     return (m_time.elapsed() - m_lastPush) > 100;
 }
 
+int VectorQueryPrivate::matchedWeight(qreal distance)
+{
+    if (distance < 0 || distance >= 1)
+        return 0;
+
+    return 40 * (1 - distance);
+}
 
 VectorQuery::VectorQuery(QObject *parent)
     : QObject(parent)
@@ -50,6 +57,7 @@ void VectorQuery::run(void *ptr, PushItemCallBack callBack, void *pdata)
     //qDebug() << "vector search result" << vr;
 
     QHash<QString, QSet<QString>> filter;
+    QSet<QString> duped; // the result contaions duplicate files.
 
     QVariantHash varRet = QJsonDocument::fromJson(vr.toUtf8()).object().toVariantHash();
     auto jitems = varRet["result"].value<QVariantList>();
@@ -72,8 +80,12 @@ void VectorQuery::run(void *ptr, PushItemCallBack callBack, void *pdata)
         QVariantHash hIt = varIt->value<QVariantHash>();
         QString absoluteFilePath = hIt["source"].toString();
         QString matchedInfo = hIt["content"].toString();
-        if (absoluteFilePath.isEmpty())
+        qreal distance = hIt.value("distance", -1).toDouble();
+        if (absoluteFilePath.isEmpty() || duped.contains(absoluteFilePath))
             continue;
+
+        duped.insert(absoluteFilePath);
+
         // 过滤文管设置的隐藏文件
         if (!QFileInfo::exists(absoluteFilePath) ||
                 SpecialTools::isHiddenFile(absoluteFilePath, filter, QDir::homePath()))
@@ -82,7 +94,7 @@ void VectorQuery::run(void *ptr, PushItemCallBack callBack, void *pdata)
         d->m_count++;
         if (d->m_handler) {
             d->m_handler->appendTo(absoluteFilePath, items);
-            d->m_handler->setItemWeight(absoluteFilePath, d->m_handler->itemWeight(absoluteFilePath) + 20); // todo 设计权重算法
+            d->m_handler->setItemWeight(absoluteFilePath, d->m_handler->itemWeight(absoluteFilePath) + d->matchedWeight(distance));
             // 匹配的上下文
             if (!matchedInfo.isEmpty())
                 d->m_handler->appendExtra(absoluteFilePath, GRANDSEARCH_PROPERTY_ITEM_MATCHEDCONTEXT, matchedInfo);

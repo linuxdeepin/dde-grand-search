@@ -334,7 +334,7 @@ void GroupWidget::initUi()
     }
     m_resultLabel->setFixedHeight(14 + DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T8));
     m_resultLabel->setAlignment(Qt::AlignBottom | Qt::AlignLeft);
-    m_resultLabel->setContentsMargins(LayoutMagrinSize, 12, 0, 0);
+    m_resultLabel->setContentsMargins(LayoutMagrinSize, 10, 0, 0);
     m_resultLabel->hide();
 
     // 分割线

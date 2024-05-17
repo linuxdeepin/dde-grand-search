@@ -15,6 +15,7 @@ class VectorQueryPrivate
 public:
     explicit VectorQueryPrivate(VectorQuery *qq);
     bool timeToPush() const;
+    int matchedWeight(qreal distance);
 public:
     FileResultsHandler *m_handler = nullptr;
     SemanticParser *m_parser = nullptr;
