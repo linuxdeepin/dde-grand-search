@@ -72,9 +72,9 @@ bool FullTextQueryPrivate::timeToPush() const
     return (m_time.elapsed() - m_lastPush) > 100;
 }
 
-int FullTextQueryPrivate::matchedWeight(const QSet<QString> &back)
+double FullTextQueryPrivate::matchedWeight(const QSet<QString> &back)
 {
-    int w = 0;
+    double w = 0;
     auto keys = m_entity.keys;
     for (const QString &str : back) {
         if (keys.isEmpty())

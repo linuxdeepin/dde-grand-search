@@ -30,7 +30,7 @@ public:
     static bool processResult(const QString &file, const QSet<QString> &match, void *pdata);
     FeatureLibEngine::QueryConditons translateConditons();
     bool timeToPush() const;
-    int matchedWeight(const QSet<QString> &back);
+    double matchedWeight(const QSet<QString> &back);
 public:
     SemanticEntity m_entity;
     FileResultsHandler *m_handler = nullptr;

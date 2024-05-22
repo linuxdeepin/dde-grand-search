@@ -132,9 +132,9 @@ bool FeatureQueryPrivate::timeToPush() const
     return (m_time.elapsed() - m_lastPush) > 100;
 }
 
-int FeatureQueryPrivate::matchedWeight(const QSet<QString> &back)
+double FeatureQueryPrivate::matchedWeight(const QSet<QString> &back)
 {
-    int w = 0;
+    double w = 0;
     auto keys = m_entity.keys;
     for (const QString &str : back) {
         if (keys.isEmpty())

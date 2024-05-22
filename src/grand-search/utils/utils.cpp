@@ -349,9 +349,9 @@ bool Utils::setWeightMethod(MatchedItem &item)
  * @param keys 输入关键字列表
  * @return 文件权重
  */
-int Utils::calcFileWeight(const QString &path, const QString &name, const QStringList &keys)
+double Utils::calcFileWeight(const QString &path, const QString &name, const QStringList &keys)
 {
-    int weight = 0;
+    double weight = 0;
     for (const QString &key : keys) {
         if (name.contains(key)) {
             weight += 43;
@@ -396,7 +396,7 @@ qint64 Utils::calcDateDiff(const QDateTime &date1, const QDateTime &date2)
  * @param type 计算类型，创建/修改/访问
  * @return 天数的权重
  */
-int Utils::calcWeightByDateDiff(const qint64 &diff, const int &type)
+double Utils::calcWeightByDateDiff(const qint64 &diff, const int &type)
 {
     switch (type) {
     case CreateDateType :

@@ -44,9 +44,9 @@ public:
     static bool setWeightMethod(MatchedItem &item);
 
     // 计算文件类的权重
-    static int calcFileWeight(const QString &path, const QString &name, const QStringList &keys);
+    static double calcFileWeight(const QString &path, const QString &name, const QStringList &keys);
     static qint64 calcDateDiff(const QDateTime &date1, const QDateTime &date2);
-    static int calcWeightByDateDiff(const qint64 &diff, const int &type);
+    static double calcWeightByDateDiff(const qint64 &diff, const int &type);
 
     // 计算应用和设置的权重
     static double calcAppWeight(const MatchedItem &item, const QStringList &keys);
