@@ -25,7 +25,7 @@ public:
     //void tryNotify();
     static bool pushItem(const MatchedItemMap &items, void *ptr);
     static void run(const QueryFunction &func);
-    static void sortItems(MatchedItemMap &items, const QHash<QString, int> &weight);
+    static void sortItems(MatchedItemMap &items, const QHash<QString, double> &weight);
     static void mergeExtra(MatchedItemMap &items, const QHash<QString, QVariantHash> &extra);
 public:
     QString m_context;

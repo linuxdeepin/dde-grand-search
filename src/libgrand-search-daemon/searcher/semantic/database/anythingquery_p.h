@@ -21,7 +21,7 @@ public:
     QFileInfoList traverseDirAndFile(const QString &path);
     QString getRegExp() const;
     bool timeToPush() const;
-    int calcItemWeight(const QString &name);
+    double calcItemWeight(const QString &name);
 public:
     ComDeepinAnythingInterface *m_anythingInterface = nullptr;
     SemanticEntity m_entity;

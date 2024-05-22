@@ -21,12 +21,12 @@ bool VectorQueryPrivate::timeToPush() const
     return (m_time.elapsed() - m_lastPush) > 100;
 }
 
-int VectorQueryPrivate::matchedWeight(qreal distance)
+double VectorQueryPrivate::matchedWeight(qreal distance)
 {
-    if (distance < 0 || distance >= 1)
+    if (distance < 0 || distance >= 2)
         return 0;
 
-    return 40 * (1 - distance);
+    return 80 * (1 - distance / 2.0);
 }
 
 VectorQuery::VectorQuery(QObject *parent)

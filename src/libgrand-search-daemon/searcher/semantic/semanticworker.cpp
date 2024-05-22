@@ -71,7 +71,7 @@ void SemanticWorkerPrivate::run(const QueryFunction &func)
     func.function(func.object, &SemanticWorkerPrivate::pushItem, func.worker);
 }
 
-void SemanticWorkerPrivate::sortItems(MatchedItemMap &items, const QHash<QString, int> &weight)
+void SemanticWorkerPrivate::sortItems(MatchedItemMap &items, const QHash<QString, double> &weight)
 {
     auto setExt = [](const MatchedItem &t, int w){
         if (t.extra.isValid() &&
@@ -91,8 +91,8 @@ void SemanticWorkerPrivate::sortItems(MatchedItemMap &items, const QHash<QString
             setExt(item, weight.value(item.item, 0));
         } else {
             std::stable_sort(list.begin(), list.end(), [&weight, setExt](const MatchedItem &t1, const MatchedItem &t2) {
-                int w1 = weight.value(t1.item, 0);
-                int w2 = weight.value(t2.item, 0);
+                double w1 = weight.value(t1.item, 0.0);
+                double w2 = weight.value(t2.item, 0.0);
                 setExt(t1, w1);
                 setExt(t2, w2);
 

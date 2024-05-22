@@ -33,7 +33,7 @@ public:
     }
     static bool processResult(const QString &file, void *pdata, void *ctx);
     bool timeToPush() const;
-    int matchedWeight(const QSet<QString> &back);
+    double matchedWeight(const QSet<QString> &back);
 public:
     SemanticEntity m_entity;
     FileResultsHandler *m_handler = nullptr;

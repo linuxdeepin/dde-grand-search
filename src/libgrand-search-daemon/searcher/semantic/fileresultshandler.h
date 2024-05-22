@@ -17,17 +17,17 @@ public:
     explicit FileResultsHandler();
     bool appendTo(const QString &file, MatchedItemMap &container);
     bool isResultLimit() const;
-    inline int itemWeight(const QString &file) const{
+    inline double itemWeight(const QString &file) const{
         QReadLocker lk(&m_lock);
         return m_resultWeight.value(file, 0);
     }
 
-    inline void setItemWeight(const QString &file, int w) {
+    inline void setItemWeight(const QString &file, double w) {
         QWriteLocker lk(&m_lock);
         m_resultWeight[file] = w;
     }
 
-    inline QHash<QString, int> allItemWeight() const {
+    inline QHash<QString, double> allItemWeight() const {
         QReadLocker lk(&m_lock);
         return m_resultWeight;
     }
@@ -47,7 +47,7 @@ private:
 protected:
     mutable QReadWriteLock m_lock;
     QSet<QString> m_tmpSearchResults;     // 存储所有的搜索结果，用于去重
-    QHash<QString, int> m_resultWeight;
+    QHash<QString, double> m_resultWeight;
     QHash<QString, QVariantHash> m_resultExtra;
     QHash<FileSearchUtils::Group, quint32> m_resultCountHash; // 记录各类型文件搜索结果数量
 };

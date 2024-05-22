@@ -233,9 +233,9 @@ bool AnythingQueryPrivate::timeToPush() const
     return (m_time.elapsed() - m_lastPush) > 100;
 }
 
-int AnythingQueryPrivate::calcItemWeight(const QString &name)
+double AnythingQueryPrivate::calcItemWeight(const QString &name)
 {
-    int w = 0;
+    double w = 0;
     for ( const QString &key : m_entity.keys) {
         if (name.contains(key, Qt::CaseInsensitive))
             w += 20;
