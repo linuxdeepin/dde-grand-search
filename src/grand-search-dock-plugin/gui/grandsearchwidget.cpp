@@ -172,21 +172,21 @@ QuickPanel::QuickPanel(const QString &desc, QWidget *parent)
     : QWidget(parent)
 {
     QVBoxLayout *lay = new QVBoxLayout;
-    lay->setMargin(10);
+    lay->setMargin(8);
     lay->setSpacing(0);
     lay->addStretch(1);
 
     iconLabel = new DLabel;
     iconLabel->setFixedSize(PANEL_ICON_SIZE, PANEL_ICON_SIZE);
     iconLabel->setAlignment(Qt::AlignCenter);
-    lay->addWidget(iconLabel, 0, Qt::AlignHCenter);
+    lay->addWidget(iconLabel, 0, Qt::AlignCenter);
 
     DLabel *textLabel = new DLabel;
     textLabel->setText(desc);
     textLabel->setElideMode(Qt::ElideRight);
     textLabel->setAlignment(Qt::AlignCenter);
     DFontSizeManager::instance()->bind(textLabel, DFontSizeManager::T10);
-    lay->addSpacing(15);
+    lay->addSpacing(8);
     lay->addWidget(textLabel, 0, Qt::AlignHCenter);
     lay->addStretch(1);
 
