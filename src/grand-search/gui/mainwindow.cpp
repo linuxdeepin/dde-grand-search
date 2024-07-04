@@ -268,7 +268,7 @@ void MainWindow::updateMainWindowHeight()
 
 void MainWindow::showEvent(QShowEvent *event)
 {
-    emit visibleChanged(true);
+    QMetaObject::invokeMethod(this, "visibleChanged", Qt::QueuedConnection, Q_ARG(bool, true));
 
     // 已禁用窗口管理器，在窗口被显示后，需要激活该窗口
     QTimer::singleShot(1, this, &MainWindow::activeMainWindow);
