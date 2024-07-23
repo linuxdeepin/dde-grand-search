@@ -26,9 +26,9 @@ static const QHash<int, QString> searchEngineEnglish{{0, GRANDSEARCH_WEB_SEARCHE
                           {2, GRANDSEARCH_WEB_SEARCHENGINE_BING}, {3, GRANDSEARCH_WEB_SEARCHENGINE_BAIDU}, 
                           {4, GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM}};
 static const QHash<int, QString> searchEngineChinese{{0, GRANDSEARCH_WEB_SEARCHENGINE_BAIDU}, {1, GRANDSEARCH_WEB_SEARCHENGINE_SOGOU},
-                                 {2, GRANDSEARCH_WEB_SEARCHENGINE_360}, {3, GRANDSEARCH_WEB_SEARCHENGINE_GOOGLE},
-                                 {4, GRANDSEARCH_WEB_SEARCHENGINE_YAHOO}, {5, GRANDSEARCH_WEB_SEARCHENGINE_BING}, 
-                                 {6, GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM}};
+                                 {2, GRANDSEARCH_WEB_SEARCHENGINE_360}, {3, GRANDSEARCH_WEB_SEARCHENGINE_360AI}, {4, GRANDSEARCH_WEB_SEARCHENGINE_GOOGLE},
+                                 {5, GRANDSEARCH_WEB_SEARCHENGINE_YAHOO}, {6, GRANDSEARCH_WEB_SEARCHENGINE_BING}, 
+                                 {7, GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM}};
 
 SearchEngineWidget::SearchEngineWidget(QWidget *parent)
     :DWidget(parent)
@@ -71,10 +71,12 @@ SearchEngineWidget::SearchEngineWidget(QWidget *parent)
         const QString searchEngineBing = tr("Bing");
         const QString searchEngineYahoo = tr("Yahoo");
         const QString searchEngine360 = tr("360");
+        const QString searchEngine360AI = tr("360 AI Search");
         const QString searchEngineSogou = tr("Sogou");
         const QString searchEngineCustom = tr("Custom");
         if (searchHelper->isSimplifiedChinese()) {
-            list << searchEngineBaidu << searchEngineSogou << searchEngine360 << searchEngineGoogle << searchEngineYahoo << searchEngineBing << searchEngineCustom;
+            list << searchEngineBaidu << searchEngineSogou << searchEngine360 << searchEngine360AI
+            << searchEngineGoogle << searchEngineYahoo << searchEngineBing << searchEngineCustom;
         } else {
             list << searchEngineGoogle<< searchEngineYahoo << searchEngineBing << searchEngineBaidu << searchEngineCustom;
         }

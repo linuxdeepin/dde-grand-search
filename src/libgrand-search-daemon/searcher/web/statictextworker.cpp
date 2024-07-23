@@ -117,7 +117,8 @@ QString StaticTextWorker::createUrl(const QString &searchEngine) const
                                                 {GRANDSEARCH_WEB_SEARCHENGINE_BING, "https://bing.com/search?q=%0"},
                                                 {GRANDSEARCH_WEB_SEARCHENGINE_YAHOO, "https://search.yahoo.com/search?p=%0"},
                                                 {GRANDSEARCH_WEB_SEARCHENGINE_360, "https://www.so.com/s?&q=%0"},
-                                                {GRANDSEARCH_WEB_SEARCHENGINE_SOGOU, "https://www.sogou.com/web?query=%0"}};
+                                                {GRANDSEARCH_WEB_SEARCHENGINE_SOGOU, "https://www.sogou.com/web?query=%0"},
+                                                {GRANDSEARCH_WEB_SEARCHENGINE_360AI, "https://www.sou.com/?q=%0&src=ec_tongxin"}};
     static const QHash<QString, QString> searchEngineEnglish{{GRANDSEARCH_WEB_SEARCHENGINE_BING, "https://bing.com/search?q=%0"},
                                                 {GRANDSEARCH_WEB_SEARCHENGINE_YAHOO, "https://search.yahoo.com/search?p=%0"},
                                                 {GRANDSEARCH_WEB_SEARCHENGINE_BAIDU, "https://www.baidu.com/s?&wd=%0"}};
