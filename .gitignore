@@ -6,3 +6,5 @@ CMakeLists.txt.user
 build-ut/
 
 *.qm
+
+.unioncode

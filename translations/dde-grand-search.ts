@@ -311,21 +311,26 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="74"/>
+        <source>360 AI Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="75"/>
         <source>Sogou</source>
         <translation>Sogou</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="75"/>
+        <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="76"/>
         <source>Custom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="95"/>
+        <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="97"/>
         <source>You need to use &quot;%0&quot; to replace the keyword in the URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="159"/>
+        <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="161"/>
         <source>Invalid URL</source>
         <translation type="unfinished"></translation>
     </message>
