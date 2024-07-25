@@ -170,6 +170,7 @@ void DdeGrandSearchDockPlugin::invokedMenuItem(const QString &itemKey, const QSt
     }
 }
 
+#ifdef COMPILE_ON_V23
 QIcon DdeGrandSearchDockPlugin::icon(const DockPart &dockPart, DGuiApplicationHelper::ColorType themeType)
 {
     if (dockPart == DockPart::DCCSetting) {
@@ -183,6 +184,7 @@ QIcon DdeGrandSearchDockPlugin::icon(const DockPart &dockPart, DGuiApplicationHe
 
     return m_searchWidget->iconPixmap(QSize(18, 16), themeType);;
 }
+#endif
 
 void DdeGrandSearchDockPlugin::onGsettingsChanged(const QString &key)
 {

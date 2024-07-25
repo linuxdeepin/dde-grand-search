@@ -47,6 +47,11 @@ bool SemanticSearcher::isActive() const
     auto config = ConfigerIns->group(GRANDSEARCH_SEMANTIC_GROUP);
     Q_ASSERT(config);
 
+    // DSL test
+    if (false) {
+        return true;
+    }
+
     SemanticParser paser;
     if (config->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, true)) {
         if (paser.connectToAnalyze(SemanticHelper::analyzeServiceName())) {
