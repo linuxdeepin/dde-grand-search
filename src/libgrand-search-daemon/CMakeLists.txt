@@ -129,6 +129,8 @@ else ()
         ${LINK_LIBS}
         semanticparser
         luceneengine
+        dslparser
+        antlr4_static
     )
 endif()
 
@@ -217,6 +219,8 @@ target_include_directories(${LIB_NAME} PUBLIC
     ${PROJECT_3RDPARTY_PATH}/fsearch
     ${GLIB_INCLUDE_DIRS}
     ${PCRE_INCLUDE_DIRS}
+    ${PROJECT_3RDPARTY_PATH}/antlr4/querylang
+    ${PROJECT_3RDPARTY_PATH}/antlr4/antlr4-runtime/runtime/src
 )
 
 target_link_libraries(${LIB_NAME} PRIVATE

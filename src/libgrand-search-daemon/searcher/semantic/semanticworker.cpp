@@ -5,6 +5,7 @@
 #include "semanticworker_p.h"
 #include "global/builtinsearch.h"
 #include "semanticparser/semanticparser.h"
+#include "dslparser/dslparser.h"
 #include "semantichelper.h"
 #include "fileresultshandler.h"
 
@@ -157,6 +158,17 @@ bool SemanticWorker::working(void *context)
         checkRuning();
         QThread::msleep(200);
         count--;
+    }
+
+    // DSL test
+    if (false) {
+        d->m_time.start();
+        DslParser parser("(PATH IS \"音乐目录\" OR PATH IS \"周杰伦\") AND (TYPE IS NOT \"歌曲\")");
+        parser.isMatch("音乐目录/music.mp3");
+        //parser.isMatch("周杰伦/music.mp3");
+        //parser.isMatch("音乐目录/music.mp4");
+        qInfo() << "semantic worker is finished, total spend:" << d->m_time.elapsed() << "ms found:" << 0;
+        return false;
     }
 
     bool canSemantic = false;

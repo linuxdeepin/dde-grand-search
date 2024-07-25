@@ -1,0 +1,150 @@
+<|im_start|>system
+You are a helpful assistant.<|im_end|>
+<|im_start|>user
+
+#角色
+你是一个DSL语法专家，你熟悉antlr设计的一种名为querylang的语言，这种语言用于描述使用各种文件属性来查询操作系统中的文件或文件内容的操作。
+
+#任务
+在下面的任务中将会提供一个自然语言问题，需要将这些自然语言转化为满足querylang语法的DSL语句
+
+下面是querylang的语法:
+```antlr
+
+grammar querylang;
+query: primary | invalideQuery ;
+
+invalideQuery: 'ERROR' string;
+
+primary:
+    binaryExpression ('AND' binaryExpression | 'OR' binaryExpression)*
+    ;
+
+binaryExpression:
+    '(' primary ')'
+    | searchCondition
+    ;
+
+
+searchCondition:
+        dateSearch
+        | pathSearch
+        | nameSearch
+        | sizeSearch
+        | typeSearch
+        | durationSearch
+        | metaSearch
+        | quantityCondition
+        | contentSearch;
+
+
+dateSearch: 
+    binaryDateSearch ('AND' binaryDateSearch | 'OR' binaryDateSearch)*
+    ;
+
+binaryDateSearch:
+    '(' dateSearch ')'
+    | dateSearchinfo
+    ;
+
+dateSearchinfo: 
+    'DATE' comparison_type absolutedate
+    | 'DATE' comparison_type relativelydate
+    ;
+
+absolutedate: string;
+relativelydate: 'CURRENT' '-' string;
+
+pathSearch: 'PATH' is_or_not string;
+nameSearch: 'NAME CONTAINS' string;
+sizeSearch:
+        'SIZE' comparison_type string
+        | 'SIZE' comparison_type 'FILE_SIZE' filename ;
+typeSearch: 'TYPE' is_or_not string;
+durationSearch: 'DURATION' comparison_type string;
+metaSearch:
+        'META_TYPE' 'IS' string 'AND' 'META_VALUE' is_or_not string;
+quantityCondition: 'QUANTITY' '=' NUMBER_VALUE;
+contentSearch:
+        'CONTENT CONTAINS' string
+        | 'CONTENT EQUALS FILE' filename;
+
+comparison_type: '=' | '<' | '>' | '!=' | '<=' | '>=';
+
+filename: string;
+string: STRING_VALUE;
+STRING_VALUE: '"' .*? '"';
+
+is_or_not: 'IS' | 'IS NOT';
+NUMBER_VALUE: [0-9]+;
+
+WS : [ \t\n\r]+ -> skip ;
+
+
+```
+
+#要求：
+1.ROOT是根目录，HOME是家目录或者主目录，Download是下载目录，Pictures是图片目录，以此类推。
+2.请严格按照上面的querylang语法规范来生成DSL代码。
+3.SIZE 可以是各种模糊的表达，例如：超级大，很小，微型等。
+4.如果用户文件查询请求不是一个文件查询，那么就返回ERROR语句。
+5.DATE可以是模糊的表达，也可以是具体的时间，如果自然问题中是绝对时间信息则不使用CURRENT，如果自然语言问题中是相对时间信息则将相对位置信息修改为以CURRENT为标准的绝对时间信息；。
+相对时间信息参考如下：
+
+今天/今天内：(DATE >= CURRENT - "1 day") AND (DATE <= "CURRENT")
+今天前/早于今天：(DATE < "CURRENT")
+昨天：(DATE >= CURRENT - "2 day") AND (DATE <= CURRENT - "1 day")
+昨天前/早于昨天：(DATE < CURRENT - "1 day")
+前天: (DATE >= CURRENT - "3 day") AND (DATE <= CURRENT - "2 day")
+前天前/早于前天：(DATE < CURRENT - "2 day")
+本周/本周内：(DATE >= CURRENT - "1 week") AND (DATE <= "CURRENT")
+本周前/早于本周：(DATE < CURRENT - "1 week")
+上周/上周内：(DATE >= CURRENT - "2 week") AND (DATE <= CURRENT - "1 week")
+上周前/早于上周: (DATE < CURRENT - "2 week")
+上上周内/上上周：(DATE >= CURRENT - "3 week") AND (DATE <= CURRENT - "2 week")
+上上周前/早于上上周: (DATE < CURRENT - "3 week")
+本月/本月内：(DATE >= CURRENT - "1 month") AND (DATE <= "CURRENT")
+本月前/早于本月: (DATE < CURRENT - "1 month")
+上个月：(DATE >= CURRENT - "2 month") AND (DATE <= CURRENT - "1 month")
+上个月前/早于上个月: (DATE < CURRENT - "1 month")
+上上个月：(DATE >= CURRENT - "3 month") AND (DATE <= CURRENT - "2 month")
+上上个月前/早于上上个月: (DATE < CURRENT - "2 month")
+今年/今年内：(DATE > CURRENT - "1 year") AND (DATE <= "CURRENT")
+今年前/早于今年: (DATE < CURRENT - "1 year")
+去年：(DATE >= CURRENT - "2 year") AND (DATE <= CURRENT - "1 year")
+去年前/早于去年: (DATE < CURRENT - "1 year")
+前年：(DATE >= CURRENT - "3 year") AND (DATE <= CURRENT - "2 year")
+前年前/早于前年: (DATE < CURRENT - "2 year")
+
+30分钟内/近30分钟：(DATE > CURRENT - "30 minute") AND (DATE <= "CURRENT")
+16小时内/近16小时：(DATE > CURRENT - "16 hour") AND (DATE <= "CURRENT")
+3天内/近3天：(DATE > CURRENT - "3 day") AND (DATE <= "CURRENT")
+2周内/近两周：(DATE > CURRENT - "2 week") AND (DATE <= "CURRENT")
+3个月内/近3个月：(DATE > CURRENT - "3 month") AND (DATE <= "CURRENT")
+前2年/2年内/最近两年：(DATE > CURRENT - "2 year") AND (DATE <= "CURRENT")
+
+30分钟前/30分钟之前/早于30分钟之前：(DATE > CURRENT - "31 minute") AND (DATE <= CURRENT - "30 minute")
+16小时前/16小时之前/早于16小时之前：(DATE > CURRENT - "17 hour") AND (DATE <= CURRENT - "16 hour")
+3天前/3天之前/早于3天之前：(DATE > CURRENT - "4 day") AND (DATE <= CURRENT - "3 day")
+2周前/2周之前/早于两周：(DATE > CURRENT - "3 week") AND (DATE <= CURRENT - "2 week")   
+3个月前/3个月之前/早于3个月之前：(DATE > CURRENT - "4 month") AND (DATE <= CURRENT - "3 month")
+2年前：(DATE > CURRENT - "3 year") AND (DATE <= CURRENT - "2 year")
+
+很多分钟前/几分钟前：(DATE > CURRENT - "24 min") AND (DATE <= CURRENT - "5 min")
+很多小时前/几小时前：(DATE > CURRENT - "24 hour") AND (DATE <= CURRENT - "5 hour")
+好几天前/几天前：(DATE > CURRENT - "24 day") AND (DATE <= CURRENT - "5 day")
+好几周前/(几周前)：(DATE > CURRENT - "24 week") AND (DATE <= CURRENT - "5 week")
+好几个月前/几个月前：(DATE > CURRENT - "24 month") AND (DATE <= CURRENT - "5 month")
+很久之前/很多年前/几年前：(DATE > CURRENT - "24 year") AND (DATE <= CURRENT - "5 year")
+
+最近几分钟：(DATE >= CURRENT - "5 min") AND (DATE <= "CURRENT")
+近几小时：(DATE >= CURRENT - "5 hour") AND (DATE <= "CURRENT")
+近几天：(DATE >= CURRENT - "5 day") AND (DATE <= "CURRENT")
+近几周：(DATE >= CURRENT - "5 week") AND (DATE <= "CURRENT")
+近几个月：(DATE >= CURRENT - "5 month") AND (DATE <= "CURRENT")
+近几年：(DATE >= CURRENT - "5 year") AND (DATE <= "CURRENT")
+
+6、请一定注意，输出结果只能是DSL语句，不可以包含任何其他内容。
+
+帮我找一下前年在北京拍摄的视频和照片<|im_end|>
+<|im_start|>assistant
