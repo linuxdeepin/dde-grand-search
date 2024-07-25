@@ -6,3 +6,6 @@ CMakeLists.txt.user
 build-ut/
 
 *.qm
+
+dist/
+3rdparty/antlr4/antlr4-runtime/dist/
