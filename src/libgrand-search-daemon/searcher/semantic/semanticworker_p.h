@@ -10,6 +10,7 @@
 #include "semanticparser/semanticparser.h"
 
 namespace GrandSearch {
+class BaseCond;
 class SemanticWorkerPrivate
 {
 public:
@@ -17,7 +18,7 @@ public:
     {
         void *object;
         void (*function)(void *object, PushItemCallBack, void *worker);
-        SemanticWorkerPrivate *worker;
+        void *worker;
     };
 public:
     explicit SemanticWorkerPrivate(SemanticWorker *parent);

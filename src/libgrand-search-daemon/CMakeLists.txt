@@ -56,6 +56,8 @@ set(MAINCTRL
 FILE(GLOB_RECURSE SEMANTIC_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/searcher/semantic/*.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/searcher/semantic/*.cpp"
+    "${PROJECT_3RDPARTY_PATH}/antlr4/querylang/*.h"
+    "${PROJECT_3RDPARTY_PATH}/antlr4/querylang/*.cpp"
 )
 
 set(SEARCHER
@@ -129,7 +131,6 @@ else ()
         ${LINK_LIBS}
         semanticparser
         luceneengine
-        dslparser
         antlr4_static
     )
 endif()

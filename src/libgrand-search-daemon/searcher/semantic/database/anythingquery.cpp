@@ -66,12 +66,47 @@ bool AnythingQueryPrivate::searchUserPath(PushItemCallBack callBack, void *pdata
             m_searchDirList << info.absoluteFilePath();
 
         // 检查文件名
-        if (!info.fileName().contains(reg))
-            continue;
+        if (!m_entity.absolutePath.isEmpty()) {
+            bool isMatch;
+            if (m_hasAddDataPrefix) {
+                isMatch = info.canonicalFilePath().mid(5) == m_entity.absolutePath;
+            } else {
+                isMatch = info.canonicalFilePath() == m_entity.absolutePath;
+            }
+            //qDebug() << QString("(%1) vs (%2) isMatch(%3) vs require(%4)").arg(info.canonicalFilePath())
+            //            .arg(m_entity.absolutePath).arg(isMatch).arg(m_entity.isTrue);
+            if ((!m_entity.isTrue && isMatch) || (m_entity.isTrue && !isMatch)) {
+                continue;
+            }
+        } else {
+            if (!info.fileName().contains(reg))
+                continue;
+        }
 
         // 检查时间
         if (!SemanticHelper::isMatchTime(info.lastModified().toSecsSinceEpoch(), m_entity.times))
             continue;
+
+        // 检查文件大小
+        if (!m_entity.compType.isEmpty()) {
+            if (m_entity.compType == ">") {
+                if (!(info.size() > m_entity.fileSize)) {
+                    continue;
+                }
+            } else if (m_entity.compType == "<") {
+                if (!(info.size() < m_entity.fileSize)) {
+                    continue;
+                }
+            } else if (m_entity.compType == "!=") {
+                if (!(info.size() != m_entity.fileSize)) {
+                    continue;
+                }
+            } else {
+                if (!(info.size() == m_entity.fileSize)) {
+                    continue;
+                }
+            }
+        }
 
         auto absoluteFilePath = info.absoluteFilePath();
 
@@ -161,10 +196,40 @@ bool AnythingQueryPrivate::searchByAnything(PushItemCallBack callBack, void *pda
             if (m_hasAddDataPrefix && path.startsWith("/data"))
                 path = path.mid(5);
 
+            if (!m_entity.absolutePath.isEmpty()) {
+                bool isMatch = path == m_entity.absolutePath;
+                //qDebug() << QString("(%1) vs (%2) isMatch(%3) vs require(%4)").arg(path)
+                //            .arg(m_entity.absolutePath).arg(isMatch).arg(m_entity.isTrue);
+                if ((!m_entity.isTrue && isMatch) || (m_entity.isTrue && !isMatch)) {
+                    continue;
+                }
+            }
+
             // 检查时间
             QFileInfo info(path);
             if (!SemanticHelper::isMatchTime(info.lastModified().toSecsSinceEpoch(), m_entity.times))
                 continue;
+
+            // 检查文件大小
+            if (!m_entity.compType.isEmpty()) {
+                if (m_entity.compType == ">") {
+                    if (!(info.size() > m_entity.fileSize)) {
+                        continue;
+                    }
+                } else if (m_entity.compType == "<") {
+                    if (!(info.size() < m_entity.fileSize)) {
+                        continue;
+                    }
+                } else if (m_entity.compType == "!=") {
+                    if (!(info.size() != m_entity.fileSize)) {
+                        continue;
+                    }
+                } else {
+                    if (!(info.size() == m_entity.fileSize)) {
+                        continue;
+                    }
+                }
+            }
 
             // 过滤文管设置的隐藏文件
             QHash<QString, QSet<QString>> hiddenFilters;
@@ -224,6 +289,14 @@ QString AnythingQueryPrivate::getRegExp() const
     QStringList suffixs = SemanticHelper::typeTosuffix(m_entity.types);
     if (!suffixs.isEmpty())
         regStr += QString(R"(\.(%0))").arg(suffixs.join('|'));
+
+    if (!m_entity.suffix.isEmpty()) {
+        if (m_entity.isTrue) {
+            regStr += QString(R"(\.(%0))").arg(m_entity.suffix);
+        } else {
+            regStr += QString(R"(\.[^(%0)])").arg(m_entity.suffix);
+        }
+    }
 
     return regStr;
 }

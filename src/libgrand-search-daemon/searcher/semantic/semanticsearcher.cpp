@@ -48,7 +48,7 @@ bool SemanticSearcher::isActive() const
     Q_ASSERT(config);
 
     // DSL test
-    if (false) {
+    if (DSLPARSER) {
         return true;
     }
 

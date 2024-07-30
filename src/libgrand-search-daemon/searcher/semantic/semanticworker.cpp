@@ -45,6 +45,18 @@ SemanticWorkerPrivate::~SemanticWorkerPrivate()
 
 bool SemanticWorkerPrivate::pushItem(const MatchedItemMap &items, void *ptr)
 {
+    if (DSLPARSER) {
+        BaseCond *cond = static_cast<BaseCond *>(ptr);
+        if (!items.isEmpty()) {
+            cond->addMatchedItems(items.constBegin().value());
+        }
+
+        SemanticWorkerPrivate *d = cond->m_worker;
+        if (d->m_status.loadAcquire() == ProxyWorker::Terminated)
+            return false;
+        return true;
+    }
+
     SemanticWorkerPrivate *d =  static_cast<SemanticWorkerPrivate *>(ptr);
     if (d->m_status.loadAcquire() == ProxyWorker::Terminated)
         return false;
@@ -161,14 +173,50 @@ bool SemanticWorker::working(void *context)
     }
 
     // DSL test
-    if (false) {
+    if (DSLPARSER) {
+        // AI
         d->m_time.start();
-        DslParser parser("(PATH IS \"音乐目录\" OR PATH IS \"周杰伦\") AND (TYPE IS NOT \"歌曲\")");
-        parser.isMatch("音乐目录/music.mp3");
-        //parser.isMatch("周杰伦/music.mp3");
-        //parser.isMatch("音乐目录/music.mp4");
-        qInfo() << "semantic worker is finished, total spend:" << d->m_time.elapsed() << "ms found:" << 0;
-        return false;
+        qInfo() << QString("query(%1)").arg(d->m_context);
+        // get AI engine output
+        QString dslStr = d->m_context;
+        qInfo() << QString("query(%1) => dsl(%2), spend(%3 ms)").arg(d->m_context).arg(dslStr).arg(d->m_time.elapsed());
+        // parse DSL
+        d->m_time.restart();
+        QList<SemanticWorkerPrivate::QueryFunction> querys;
+        FileResultsHandler fileHandler;
+        DslParser parser(dslStr, &querys, &fileHandler, d);
+        auto future = QtConcurrent::map(querys, &SemanticWorkerPrivate::run);
+        future.waitForFinished();
+        if (parser.getMatchedItems().isEmpty()) {
+            qInfo() << "semantic worker is finished, total spend: " << d->m_time.elapsed() << " ms found: " << 0;
+            return true;
+        }
+
+        d->m_items[GRANDSEARCH_GROUP_FILE_INFERENCE].append(parser.getMatchedItems());
+
+        // Keep the top 100 files
+        MatchedItemMap top;
+        for (auto it = d->m_items.begin(); it != d->m_items.end(); ++it) {
+            MatchedItems &items = it.value();
+            if (items.size() > 100) {
+                MatchedItems tmp;
+                for (int i = 0; i < 100; ++i)
+                    tmp.append(items[i]);
+                top.insert(it.key(), tmp);
+            } else {
+                top.insert(it.key(), items);
+            }
+        }
+
+        d->m_items = top;
+
+        checkRuning();
+
+        qInfo() << "semantic worker is finished, total spend: " << d->m_time.elapsed() << " ms found: " << d->m_items.begin().value().size();
+        // 发送所有数据
+        if (!d->m_items.isEmpty())
+            emit unearthed(this);
+        return true;
     }
 
     bool canSemantic = false;

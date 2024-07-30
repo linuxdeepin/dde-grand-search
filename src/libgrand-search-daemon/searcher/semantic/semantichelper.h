@@ -15,6 +15,11 @@ struct SemanticEntity
 {
     QStringList types;
     QStringList keys;
+    QString absolutePath;
+    QString suffix;
+    bool isTrue = true;
+    QString compType;
+    qint64 fileSize;
     QList<QPair<qint64, qint64>> times;
 };
 
