@@ -73,6 +73,39 @@ _EXIT:
     return ret;
 }
 
+void BaseCond::adjust() {
+    if (m_condType == querylangParser::RulePrimary || m_condType == querylangParser::RuleBinaryExpression) {
+        if (!m_andCondList.isEmpty()) {
+            for (int i = m_andCondList.size() - 1; i >= 0; i--) {
+                m_andCondList[i]->adjust();
+            }
+        } else {
+            for (int i = m_orCondList.size() - 1; i >= 0; i--) {
+                m_orCondList[i]->adjust();
+            }
+        }
+    }
+
+    if (m_condType != querylangParser::RuleBinaryExpression && getParent() && getParent()->getCondType() == querylangParser::RuleBinaryExpression) {
+        BaseCond *parent       = getParent();
+        BaseCond *adviseParent = parent->getParent();
+        int idx = adviseParent->m_andCondList.indexOf(parent);
+        if (idx != -1) {
+            adviseParent->m_andCondList[idx] = this;
+        } else {
+            idx = adviseParent->m_orCondList.indexOf(parent);
+            if (idx == -1) {
+                return;
+            }
+
+            adviseParent->m_orCondList[idx] = this;
+        }
+        setParent(adviseParent);
+        parent->m_andCondList.clear();
+        delete parent;
+    }
+}
+
 bool BaseCond::addMatchedItems(const MatchedItems &items) {
     m_matchedItems.append(items);
 }
@@ -83,8 +116,21 @@ const MatchedItems &BaseCond::getMatchedItems() {
     }
 
     if (!m_andCondList.isEmpty()) {
-        m_matchedItems = m_andCondList[0]->getMatchedItems();
-        for (int i = 1; i < m_andCondList.size(); i++) {
+        int quantity = -1;
+        bool isGetItems = false;
+        for (int i = 0; i < m_andCondList.size(); i++) {
+            if (m_andCondList[i]->getCondType() == querylangParser::RuleQuantityCondition) {
+                quantity = dynamic_cast<QuantityCond *>(m_andCondList[i])->getQuantity();
+                continue;
+            }
+
+            if (!isGetItems) {
+                m_matchedItems = m_andCondList[i]->getMatchedItems();
+                isGetItems = true;
+                continue;
+            }
+
+            // 存在删除操作，所以采用倒序
             for (int j = m_matchedItems.size() - 1; j >= 0; j--) {
                 if (m_andCondList[i]->getMatchedItems().contains(m_matchedItems[j])) {
                     continue;
@@ -93,11 +139,15 @@ const MatchedItems &BaseCond::getMatchedItems() {
                 m_matchedItems.removeAt(j);
             }
         }
+        if (quantity > 0 && m_matchedItems.size() > quantity) {
+            while (m_matchedItems.size() > quantity) {
+                m_matchedItems.removeLast();
+            }
+        }
         return m_matchedItems;
     }
 
-    m_matchedItems = m_orCondList[0]->getMatchedItems();
-    for (int i = 1; i < m_orCondList.size(); i++) {
+    for (int i = 0; i < m_orCondList.size(); i++) {
         const MatchedItems &items = m_orCondList[i]->getMatchedItems();
         for (int j = 0; j < items.size(); j++) {
             if (m_matchedItems.contains(items[j])) {
@@ -133,14 +183,23 @@ QString BaseCond::toString(int spaceCounts) {
 DateInfoCond::DateInfoCond(const QString &text, QList<SemanticWorkerPrivate::QueryFunction> *querys,
                    SemanticWorkerPrivate *worker, QObject *parent) : BaseCond(text, querys, worker, parent) {
     m_condType = querylangParser::RuleDateSearchinfo;
+    const qint64 _NOW = QDateTime::currentSecsSinceEpoch();
+
     int pos = m_cond.indexOf("\"") + 1;
+    if (pos == 0) {
+        m_entity.times.append(QPair<qint64, qint64>(0, _NOW));
+        m_anything.setEntity(m_entity);
+        SemanticWorkerPrivate::QueryFunction func = {&m_anything, &AnythingQuery::run, this};
+        m_querys->append(func);
+        return;
+    }
+
     QString temp = m_cond.mid(pos, m_cond.length() - pos - 1);
     if (m_cond.contains(">")) {
         m_compType = ">";
     } else {
         m_compType = "<";
     }
-    const qint64 _NOW = QDateTime::currentSecsSinceEpoch();
     QRegExp reg("([\\d\\.]+) ?year", Qt::CaseInsensitive);
     QRegExp reg1("([\\d\\.]+) ?mouth", Qt::CaseInsensitive);
     QRegExp reg2("([\\d\\.]+) ?week", Qt::CaseInsensitive);
@@ -261,6 +320,15 @@ TypeCond::TypeCond(const QString &text, QList<SemanticWorkerPrivate::QueryFuncti
     m_querys->append(func);
 }
 
+QuantityCond::QuantityCond(const QString &text, QList<SemanticWorkerPrivate::QueryFunction> *querys,
+                          SemanticWorkerPrivate *worker, QObject *parent) : BaseCond(text, querys, worker, parent) {
+    m_condType = querylangParser::RuleQuantityCondition;
+    int pos = m_cond.indexOf("=") + 1;
+    QString temp = m_cond.mid(pos);
+    m_quantity = temp.toInt();
+    qDebug() << QString("QuantityCond(%1): temp(%2) m_quantity(%3)").arg(m_cond).arg(temp).arg(m_quantity);
+}
+
 ContentCond::ContentCond(const QString &text, QList<SemanticWorkerPrivate::QueryFunction> *querys,
                          SemanticWorkerPrivate *worker, QObject *parent) : BaseCond(text, querys, worker, parent) {
     m_condType = querylangParser::RuleContentSearch;
@@ -290,7 +358,7 @@ void DslParserListener::enterEveryRule(antlr4::ParserRuleContext *ctx) {
     case querylangParser::RuleContentSearch:
     case querylangParser::RuleFilename:
         m_prefix += "  ";
-        qDebug() << QString("%1=> enter(%2): %3").arg(m_prefix).arg(ruleContextId2String((int)ctx->getRuleIndex())).arg(text);
+        //qDebug() << QString("%1=> enter(%2): %3").arg(m_prefix).arg(ruleContextId2String((int)ctx->getRuleIndex())).arg(text);
         break;
     }
 
@@ -392,7 +460,7 @@ void DslParserListener::exitEveryRule(antlr4::ParserRuleContext *ctx) {
     case querylangParser::RuleQuantityCondition:
     case querylangParser::RuleContentSearch:
     case querylangParser::RuleFilename:
-        qDebug() << QString("%1<= exit(%2): %3").arg(m_prefix).arg(ruleContextId2String((int)ctx->getRuleIndex())).arg(text);
+        //qDebug() << QString("%1<= exit(%2): %3").arg(m_prefix).arg(ruleContextId2String((int)ctx->getRuleIndex())).arg(text);
         if (m_prefix.length() >= 2) {
             m_prefix = m_prefix.mid(0, m_prefix.length() - 2);
         }
@@ -415,6 +483,8 @@ DslParser::DslParser(const QString &text, QList<SemanticWorkerPrivate::QueryFunc
     DslParserListener listener(&m_cond);
     tree::ParseTreeWalker walker;
     walker.walk(&listener, parser.query());
+    //qInfo() << QString("BaseCond:\n%1").arg(m_cond.toString()).toUtf8().toStdString().c_str();
+    m_cond.adjust();
     qInfo() << QString("BaseCond:\n%1").arg(m_cond.toString()).toUtf8().toStdString().c_str();
 }
 

@@ -36,11 +36,12 @@ public:
     BaseCond *getParent() { return m_parent; }
     void addAndCond(BaseCond *cond);
     void addOrCond(BaseCond *cond);
+    // 调试使用
     virtual bool isMatch(const QString &text);
     // 某些条件没有存在的必要
     virtual bool isValid() { return m_isValid; }
     // 结构优化调整
-    virtual void adjust() {}
+    virtual void adjust();
     virtual bool addMatchedItems(const MatchedItems &items);
     virtual const MatchedItems &getMatchedItems();
     virtual QString toString(int spaceCounts = 0);
@@ -144,11 +145,15 @@ public:
                       SemanticWorkerPrivate *worker, QObject *parent = nullptr) : BaseCond(text, querys, worker, parent) {}
 };
 
-// 对应RuleQuantityCondition
+// 对应RuleQuantityCondition  QUANTITY = 10
 class QuantityCond : public BaseCond {
 public:
     explicit QuantityCond(const QString &text, QList<SemanticWorkerPrivate::QueryFunction> *querys,
-                          SemanticWorkerPrivate *worker, QObject *parent = nullptr) : BaseCond(text, querys, worker, parent) {}
+                          SemanticWorkerPrivate *worker, QObject *parent = nullptr);
+    int getQuantity() { return m_quantity; }
+
+private:
+    int m_quantity = 0;
 };
 
 // 对应RuleContentSearch  CONTENT CONTAINS "read"
