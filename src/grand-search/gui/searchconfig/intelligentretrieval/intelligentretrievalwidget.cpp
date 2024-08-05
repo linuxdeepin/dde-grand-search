@@ -117,7 +117,7 @@ void IntelligentRetrievalWidget::updateState()
 
     auto cfg = SearchConfig::instance();
     if (isAnalayzeSupported()) {
-        bool checked = cfg->getConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, true).toBool();
+        bool checked = cfg->getConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, false).toBool();
         m_semantic->checkBox()->setChecked(checked);
         m_semantic->checkBox()->setEnabled(true);
     } else {
@@ -226,6 +226,12 @@ void IntelligentRetrievalWidget::checkBoxChanged()
     if (sd == m_semantic->checkBox()) {
         bool on = m_semantic->checkBox()->isChecked();
         cfg->setConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, on);
+
+        QDBusMessage msg = createAnalayzeMsg("SetSemanticOn");
+        QVariantList argvs;
+        argvs.append(on);
+        msg.setArguments(argvs);
+        QDBusConnection::sessionBus().asyncCall(msg, 500);
     } else if (sd == m_vector->checkBox()){
         bool on = m_vector->checkBox()->isChecked();
         cfg->setConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR, on);

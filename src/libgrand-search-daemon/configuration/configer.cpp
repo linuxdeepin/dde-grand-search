@@ -85,7 +85,7 @@ UserPreferencePointer ConfigerPrivate::webSearchEngine()
 
 UserPreferencePointer ConfigerPrivate::semanticEngine()
 {
-    QVariantHash data{{GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, true}
+    QVariantHash data{{GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, false}
                      , {GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR, true}};
 
     return UserPreferencePointer(new UserPreference(data));
@@ -204,7 +204,7 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
         set->beginGroup(GRANDSEARCH_SEMANTIC_GROUP);
         if (UserPreferencePointer conf = m_root->group(GRANDSEARCH_SEMANTIC_GROUP)) {
             bool on = false;
-            bool ret = set->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, true).toBool();
+            bool ret = set->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, false).toBool();
             conf->setValue(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, ret);
             on |= ret;
 
