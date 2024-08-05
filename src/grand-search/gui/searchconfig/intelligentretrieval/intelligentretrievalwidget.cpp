@@ -227,15 +227,11 @@ void IntelligentRetrievalWidget::checkBoxChanged()
         bool on = m_semantic->checkBox()->isChecked();
         cfg->setConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, on);
 
-        QDBusMessage msg = createAnalayzeMsg("ServiceOn");
+        QDBusMessage msg = createAnalayzeMsg("SetSemanticOn");
         QVariantList argvs;
         argvs.append(on);
         msg.setArguments(argvs);
-        QDBusPendingReply<void> ret = QDBusConnection::sessionBus().asyncCall(msg, 500);
-        ret.waitForFinished();
-        if (ret.error().type() != QDBusError::NoError) {
-            qWarning() << "error: " << msg.service() << ": " << QDBusError::errorString(ret.error().type());
-        }
+        QDBusConnection::sessionBus().asyncCall(msg, 500);
     } else if (sd == m_vector->checkBox()){
         bool on = m_vector->checkBox()->isChecked();
         cfg->setConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR, on);

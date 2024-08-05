@@ -25,7 +25,7 @@ endif()
 #Indentify the version
 find_package(DtkCMake REQUIRED)
 
-if (${DEEPIN_OS_VERSION} MATCHES "23")
+if (1 OR ${DEEPIN_OS_VERSION} MATCHES "23")
     add_definitions(-DCOMPILE_ON_V23)
     set(COMPLIE_ON_V23 TRUE)
     message("COMPILE ON v23")
