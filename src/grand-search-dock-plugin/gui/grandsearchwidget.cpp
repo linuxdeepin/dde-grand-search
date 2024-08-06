@@ -2,29 +2,28 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "grandsearchwidget.h"
+#include "versiondefine.h"
 
+#include "grandsearchwidget.h"
 #include "interfaces/grandsearchinterface.h"
 
-#include "constants.h"
 #include <DGuiApplicationHelper>
 #include <DApplicationHelper>
 #include <DStyleHelper>
+#include <DFontSizeManager>
 
 #include <QPainter>
 #include <QPainterPath>
 #include <QDebug>
+#include <QVBoxLayout>
 
 using namespace GrandSearch;
 DWIDGET_USE_NAMESPACE
-DGUI_USE_NAMESPACE
 
 GrandSearchWidget::GrandSearchWidget(QWidget *parent)
     : QWidget(parent)
 {
     setMouseTracking(true);
-    QString iconName("grand-search-light");
-    m_icon = QIcon::fromTheme(iconName, QIcon(QString(":/icons/%1.svg").arg(iconName)));
 
     m_grandSearchInterface = new GrandSearchInterface(this);
     connect(m_grandSearchInterface, &GrandSearchInterface::VisibleChanged, this, &GrandSearchWidget::grandSearchVisibleChanged);
@@ -39,7 +38,6 @@ GrandSearchWidget::GrandSearchWidget(QWidget *parent)
 
 GrandSearchWidget::~GrandSearchWidget()
 {
-
 }
 
 QString GrandSearchWidget::itemCommand(const QString &itemKey)
@@ -52,19 +50,10 @@ QString GrandSearchWidget::itemCommand(const QString &itemKey)
     return QString();
 }
 
-QPixmap GrandSearchWidget::iconPixmap(QSize iconSize, DGuiApplicationHelper::ColorType themeType) const
-{
-    QString iconName = "grand-search-light";
-    if (std::min(width(), height()) <= PLUGIN_BACKGROUND_MIN_SIZE
-            || themeType == DGuiApplicationHelper::LightType)
-        iconName.replace("-light", PLUGIN_MIN_ICON_NAME);
-
-    return loadSvg(iconName, iconSize);
-}
-
 void GrandSearchWidget::grandSearchVisibleChanged(bool visible)
 {
     m_grandSearchVisible = visible;
+    Q_EMIT visibleChanged(visible);
 }
 
 void GrandSearchWidget::paintEvent(QPaintEvent *event)
@@ -78,7 +67,7 @@ void GrandSearchWidget::paintEvent(QPaintEvent *event)
      */
     QPixmap pixmap;
     QString iconName = "grand-search-light";
-    int iconSize = PLUGIN_ICON_MAX_SIZE;
+    int iconSize = ITEM_ICON_SIZE;
 
     QPainter painter(this);
 
@@ -172,10 +161,47 @@ const QPixmap GrandSearchWidget::loadSvg(const QString &fileName, const QSize &s
 {
     const auto ratio = devicePixelRatioF();
 
-    QSize pixmapSize = QCoreApplication::testAttribute(Qt::AA_UseHighDpiPixmaps) ? size : (size * ratio);
-    QPixmap pixmap = QIcon::fromTheme(fileName, m_icon).pixmap(pixmapSize);
-    pixmap.setDevicePixelRatio(ratio);
-    pixmap.scaled(size * ratio);
+    // 高分辨率下不缩放
+    auto pixmapSize = QCoreApplication::testAttribute(Qt::AA_UseHighDpiPixmaps) ? size : (size * ratio);
+    QPixmap pixmap = QIcon::fromTheme(fileName, QIcon(QString(":/icons/%1.svg").arg(fileName))).pixmap(pixmapSize);
 
     return pixmap;
+}
+
+QuickPanel::QuickPanel(const QString &desc, QWidget *parent)
+    : QWidget(parent)
+{
+    QVBoxLayout *lay = new QVBoxLayout;
+    lay->setMargin(10);
+    lay->setSpacing(0);
+    lay->addStretch(1);
+
+    iconLabel = new DLabel;
+    iconLabel->setFixedSize(PANEL_ICON_SIZE, PANEL_ICON_SIZE);
+    iconLabel->setAlignment(Qt::AlignCenter);
+    lay->addWidget(iconLabel, 0, Qt::AlignHCenter);
+
+    DLabel *textLabel = new DLabel;
+    textLabel->setText(desc);
+    textLabel->setElideMode(Qt::ElideRight);
+    textLabel->setAlignment(Qt::AlignCenter);
+    DFontSizeManager::instance()->bind(textLabel, DFontSizeManager::T10);
+    lay->addSpacing(15);
+    lay->addWidget(textLabel, 0, Qt::AlignHCenter);
+    lay->addStretch(1);
+
+    setLayout(lay);
+
+    updateIcon();
+
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &QuickPanel::updateIcon);
+}
+
+void QuickPanel::updateIcon()
+{
+    const QString name = DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType ? QString("grand-search-dark") : QString("grand-search-light");
+    auto icon = QIcon::fromTheme(name, QIcon(QString(":/icons/%1.svg").arg(name)));
+    iconLabel->setPixmap(icon.pixmap(PANEL_ICON_SIZE, PANEL_ICON_SIZE));
+
+    update();
 }
