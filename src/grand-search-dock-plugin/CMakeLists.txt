@@ -17,6 +17,7 @@ project(${PLUGIN_NAME})
 set(SRCS
     ddegrandsearchdockplugin.h
     ddegrandsearchdockplugin.cpp
+    versiondefine.h
     gui/grandsearchwidget.h
     gui/grandsearchwidget.cpp
     gui/tipswidget.h

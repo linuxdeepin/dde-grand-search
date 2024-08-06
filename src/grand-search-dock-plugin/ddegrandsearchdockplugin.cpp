@@ -22,9 +22,10 @@
 using namespace GrandSearch;
 DWIDGET_USE_NAMESPACE
 
+#define QUICK_ITEM_KEY QStringLiteral("quick_item_key")
+
 DdeGrandSearchDockPlugin::DdeGrandSearchDockPlugin(QObject *parent)
-    : QObject(parent)
-    , m_searchWidget(nullptr)
+    : QObject(parent), m_searchWidget(nullptr)
 {
 }
 
@@ -52,11 +53,18 @@ void DdeGrandSearchDockPlugin::init(PluginProxyInterface *proxyInter)
 
     m_proxyInter = proxyInter;
 
-    if (m_searchWidget.isNull())
+    if (m_searchWidget.isNull()) {
         m_searchWidget.reset(new GrandSearchWidget);
-
+        connect(m_searchWidget.data(), &GrandSearchWidget::visibleChanged, this,
+                &DdeGrandSearchDockPlugin::onVisibleChanged);
+    }
     if (m_tipsWidget.isNull())
         m_tipsWidget.reset(new TipsWidget);
+
+#ifdef USE_DOCK_2_0
+    if (m_quickWidget.isNull())
+        m_quickWidget.reset(new QuickPanel(pluginDisplayName()));
+#endif
 
     // 如果插件没有被禁用则在初始化插件时才添加主控件到面板上
     if (!pluginIsDisable()) {
@@ -73,15 +81,17 @@ void DdeGrandSearchDockPlugin::init(PluginProxyInterface *proxyInter)
 
 QWidget *DdeGrandSearchDockPlugin::itemWidget(const QString &itemKey)
 {
-    Q_UNUSED(itemKey);
+    if (itemKey == QUICK_ITEM_KEY)
+        return m_quickWidget.data();
+    else if (itemKey == GrandSearchPlugin)
+        return m_searchWidget.data();
 
     return nullptr;
 }
 
 QWidget *DdeGrandSearchDockPlugin::itemTipsWidget(const QString &itemKey)
 {
-    Q_UNUSED(itemKey);    
-
+    Q_UNUSED(itemKey);
     // 设置/刷新 tips 中的信息
     m_tipsWidget->setText(tr("Grand Search"));
     return m_tipsWidget.data();
@@ -117,8 +127,10 @@ void DdeGrandSearchDockPlugin::pluginStateSwitched()
 
 const QString DdeGrandSearchDockPlugin::itemCommand(const QString &itemKey)
 {
-    if (GrandSearchPlugin == itemKey)
+    if (GrandSearchPlugin == itemKey || itemKey == QUICK_ITEM_KEY) {
+        m_proxyInter->requestSetAppletVisible(this, pluginName(), false);
         return m_searchWidget->itemCommand(itemKey);
+    }
 
     return QString();
 }
@@ -137,7 +149,7 @@ void DdeGrandSearchDockPlugin::setSortKey(const QString &itemKey, const int orde
 
 const QString DdeGrandSearchDockPlugin::itemContextMenu(const QString &itemKey)
 {
-    if (itemKey != GrandSearchPlugin) {
+    if (itemKey != GrandSearchPlugin && itemKey != QUICK_ITEM_KEY) {
         return QString();
     }
 
@@ -162,26 +174,14 @@ void DdeGrandSearchDockPlugin::invokedMenuItem(const QString &itemKey, const QSt
 {
     Q_UNUSED(checked)
 
-    if (itemKey != GrandSearchPlugin)
+    if (itemKey != GrandSearchPlugin && itemKey != QUICK_ITEM_KEY)
         return;
 
     if (menuId == MenuOpenSetting) {
         QProcess::startDetached("dde-grand-search", QStringList() << "--setting");
     }
-}
 
-QIcon DdeGrandSearchDockPlugin::icon(const DockPart &dockPart, DGuiApplicationHelper::ColorType themeType)
-{
-    if (dockPart == DockPart::DCCSetting) {
-        if (themeType == DGuiApplicationHelper::ColorType::LightType)
-            return QIcon(":/icons/grand-search-dark.svg");
-
-        return QIcon(":/icons/grand-search-light.svg");
-    } else if (dockPart == DockPart::QuickPanel) {
-        return m_searchWidget->iconPixmap(QSize(24, 24), themeType);
-    }
-
-    return m_searchWidget->iconPixmap(QSize(18, 16), themeType);;
+    m_proxyInter->requestSetAppletVisible(this, pluginName(), false);
 }
 
 void DdeGrandSearchDockPlugin::onGsettingsChanged(const QString &key)
@@ -193,4 +193,21 @@ void DdeGrandSearchDockPlugin::onGsettingsChanged(const QString &key)
         bool enable = m_gsettings->get(key).toBool();
         qInfo() << "The status of whether the grand search right-click menu is enabled changes to:" << enable;
     }
+}
+
+void DdeGrandSearchDockPlugin::onVisibleChanged(bool visible)
+{
+#ifdef USE_DOCK_2_0
+    if (!m_messageCallback) {
+        qWarning() << "Message callback function is nullptr";
+        return;
+    }
+
+    QJsonObject obj;
+    obj[Dock::MSG_TYPE] = Dock::MSG_ITEM_ACTIVE_STATE;
+    obj[Dock::MSG_DATA] = visible;
+    QJsonDocument doc;
+    doc.setObject(obj);
+    m_messageCallback(this, doc.toJson());
+#endif
 }
