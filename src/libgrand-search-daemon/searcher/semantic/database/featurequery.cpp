@@ -58,16 +58,16 @@ bool FeatureQueryPrivate::processResult(const QString &file, const QSet<QString>
 FeatureLibEngine::QueryConditons FeatureQueryPrivate::translateConditons()
 {
     FeatureLibEngine::QueryConditons cond;
-    if (m_entity.keys.isEmpty())
-        return cond;
 
     // 图片
     if (m_entity.types.contains(PICTURE_GROUP)) {
         FeatureLibEngine::QueryConditons tmp;
         QStringList suffix = SearchHelper::instance()->getSuffixByGroupName(PICTURE_GROUP);
         tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::FileType, suffix));
-        tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
-        tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Text, m_entity.keys));
+        if (!m_entity.keys.isEmpty()) {
+            tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
+            tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Text, m_entity.keys));
+        }
 
         cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(tmp)));
     }
@@ -81,7 +81,7 @@ FeatureLibEngine::QueryConditons FeatureQueryPrivate::translateConditons()
         QStringList suffix = SearchHelper::instance()->getSuffixByGroupName(AUDIO_GROUP);
         tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::FileType, suffix));
 
-        {
+        if (!m_entity.keys.isEmpty()) {
             FeatureLibEngine::QueryConditons subTmp;
             subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Author, m_entity.keys));
             subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Or));

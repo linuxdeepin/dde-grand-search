@@ -71,8 +71,13 @@ bool SemanticHelper::entityFromJson(const QString &json, SemanticEntity &out)
     for (auto ro = entityObj.begin(); ro != entityObj.end(); ++ro) {
         if (ro->isString()){
             QString key = ro->toString().trimmed();
-            if (!key.isEmpty())
+            if (!key.isEmpty()) {
+                int pos = key.indexOf("[");
+                if (pos != -1) {
+                    key = key.mid(0, pos);
+                }
                 out.keys.append(key);
+            }
         }
     }
 
@@ -112,6 +117,15 @@ bool SemanticHelper::entityFromJson(const QString &json, SemanticEntity &out)
     // remove text of time;
     for (const QString &txt : timeOfKey)
         out.keys.removeOne(txt);
+
+    QString types, keys;
+    for (const QString &str : out.types) {
+        types.append(str).append(", ");
+    }
+    for (const QString &str : out.keys) {
+        keys.append(str).append(", ");
+    }
+    qInfo() << QString("types(%1) keys(%2)").arg(types).arg(keys);
 
     return true;
 }
