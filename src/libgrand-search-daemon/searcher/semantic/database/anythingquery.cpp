@@ -8,6 +8,7 @@
 #include "searcher/file/filesearchutils.h"
 #include "global/builtinsearch.h"
 #include "searcher/semantic/fileresultshandler.h"
+#include "global/commontools.h"
 
 using namespace GrandSearch;
 
@@ -80,8 +81,9 @@ bool AnythingQueryPrivate::searchUserPath(PushItemCallBack callBack, void *pdata
             continue;
 
         // 去除掉添加的data前缀
-        if (m_hasAddDataPrefix && absoluteFilePath.startsWith("/data"))
-            absoluteFilePath = absoluteFilePath.mid(5);
+        if (m_hasTransformed && absoluteFilePath.startsWith(m_searchPath))
+            absoluteFilePath.replace(m_searchPath, m_originalSearchPath);
+
         m_count++;
         if (m_handler) {
             m_handler->appendTo(absoluteFilePath, items);
@@ -158,8 +160,8 @@ bool AnythingQueryPrivate::searchByAnything(PushItemCallBack callBack, void *pda
             }
 
             // 去除掉添加的data前缀
-            if (m_hasAddDataPrefix && path.startsWith("/data"))
-                path = path.mid(5);
+            if (m_hasTransformed && path.startsWith(m_searchPath))
+                path.replace(m_searchPath, m_originalSearchPath);
 
             // 检查时间
             QFileInfo info(path);
@@ -223,7 +225,7 @@ QString AnythingQueryPrivate::getRegExp() const
     // 后缀名
     QStringList suffixs = SemanticHelper::typeTosuffix(m_entity.types);
     if (!suffixs.isEmpty())
-        regStr += QString(R"(\.(%0))").arg(suffixs.join('|'));
+        regStr += QString(R"(\.(%0)$)").arg(suffixs.join('|'));
 
     return regStr;
 }
@@ -270,17 +272,14 @@ void AnythingQuery::run(void *ptr, PushItemCallBack callBack, void *pdata)
     bool useAnything = true;
     if (!d->m_anythingInterface->hasLFT(d->m_searchPath)) {
         // 有可能 anything 不支持/home目录，但是支持/data/home
-        if (QFile("/data/home").exists()) {
-            d->m_searchPath.prepend("/data");
-            if (!d->m_anythingInterface->hasLFT(d->m_searchPath)) {
-                qWarning() << "Do not support quick search for " << d->m_searchPath;
-                useAnything = false;
-            } else {
-                d->m_hasAddDataPrefix = true;
-            }
-        } else {
-            qWarning() << "Data path is not exist!";
+        const QString &tmpPath = CommonTools::bindPathTransform(d->m_searchPath, true);
+        if (!d->m_anythingInterface->hasLFT(tmpPath)) {
+            qWarning() << "Do not support quick search for " << tmpPath;
             useAnything = false;
+        } else {
+            d->m_originalSearchPath = d->m_searchPath;
+            d->m_searchPath = tmpPath;
+            d->m_hasTransformed = true;
         }
     }
     d->m_time.start();
