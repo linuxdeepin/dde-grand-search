@@ -26,8 +26,10 @@ public:
     ComDeepinAnythingInterface *m_anythingInterface = nullptr;
     SemanticEntity m_entity;
     QString m_searchPath;
+    QString m_originalSearchPath;
+    bool m_hasTransformed = false;
+
     QStringList m_searchDirList;
-    bool m_hasAddDataPrefix = false;
     FileResultsHandler *m_handler = nullptr;
     QTime m_time;
     int m_lastPush = 0;
