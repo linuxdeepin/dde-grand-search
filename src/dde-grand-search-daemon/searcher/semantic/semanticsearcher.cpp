@@ -48,6 +48,9 @@ bool SemanticSearcher::isActive() const
     Q_ASSERT(config);
 
     SemanticParser paser;
+    d->m_semantic = false;
+    d->m_vector   = false;
+
     if (config->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, false)) {
         if (paser.connectToAnalyze(SemanticHelper::analyzeServiceName())) {
             d->m_semantic  = paser.isAnalayzeSupported();
