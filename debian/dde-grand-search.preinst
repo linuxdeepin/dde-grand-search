@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# 进程名称
+PROCESS_NAME="dde-grand-search-daemon"
+
+# 获取进程ID
+PID=$(pgrep -f "$PROCESS_NAME")
+
+if [ -z "$PID" ]; then
+    echo "Process $PROCESS_NAME is not running."
+    exit 0
+fi
+
+echo "Process $PROCESS_NAME (PID: $PID) found. Attempting to terminate..."
+
+# 发送 SIGTERM 信号
+kill -TERM "$PID"
+sleep 2  # 等待进程响应 SIGTERM
+
+# 再次检查进程是否仍在运行
+if pgrep -f "$PROCESS_NAME" > /dev/null; then
+    echo "Process did not terminate. Sending SIGKILL..."
+    # 发送 SIGKILL 信号
+    kill -KILL "$PID"
+    echo "Process $PROCESS_NAME has been killed."
+else
+    echo "Process $PROCESS_NAME terminated successfully."
+fi
