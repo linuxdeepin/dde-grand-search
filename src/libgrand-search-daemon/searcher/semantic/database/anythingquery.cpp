@@ -69,9 +69,9 @@ bool AnythingQueryPrivate::searchUserPath(PushItemCallBack callBack, void *pdata
         if (!m_entity.absolutePath.isEmpty()) {
             bool isMatch;
             if (m_hasAddDataPrefix) {
-                isMatch = info.canonicalFilePath().mid(5) == m_entity.absolutePath;
+                isMatch = info.canonicalFilePath().mid(5).contains(m_entity.absolutePath);
             } else {
-                isMatch = info.canonicalFilePath() == m_entity.absolutePath;
+                isMatch = info.canonicalFilePath().contains(m_entity.absolutePath);
             }
             //qDebug() << QString("(%1) vs (%2) isMatch(%3) vs require(%4)").arg(info.canonicalFilePath())
             //            .arg(m_entity.absolutePath).arg(isMatch).arg(m_entity.isTrue);
@@ -197,7 +197,7 @@ bool AnythingQueryPrivate::searchByAnything(PushItemCallBack callBack, void *pda
                 path = path.mid(5);
 
             if (!m_entity.absolutePath.isEmpty()) {
-                bool isMatch = path == m_entity.absolutePath;
+                bool isMatch = path.contains(m_entity.absolutePath);
                 //qDebug() << QString("(%1) vs (%2) isMatch(%3) vs require(%4)").arg(path)
                 //            .arg(m_entity.absolutePath).arg(isMatch).arg(m_entity.isTrue);
                 if ((!m_entity.isTrue && isMatch) || (m_entity.isTrue && !isMatch)) {

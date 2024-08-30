@@ -178,7 +178,41 @@ bool SemanticWorker::working(void *context)
         d->m_time.start();
         qInfo() << QString("query(%1)").arg(d->m_context);
         // get AI engine output
-        QString dslStr = d->m_context;
+        QString dslStr;
+        QString cmd = QString("curl http://127.0.0.1:38275/chat/completions -H \"Content-Type: application/json\" -d '{\"messages\": [{\"role\": \"user\", \"content\": \"%1\"}]}'")
+                .arg(d->m_context);
+        qInfo() << QString("cmd(%1)").arg(cmd);
+        if (true) {
+            FILE* pipe = popen(cmd.toStdString().c_str(), "r");
+            if (!pipe) {
+                qCritical() << "fail to popen: " << cmd;
+                return false;
+            }
+
+            char buffer[10240] = {0};
+            bool ok = fgets(buffer, sizeof(buffer), pipe) != nullptr;
+            if (!ok) {
+                pclose(pipe);
+                qWarning() << "no output for popen: " << cmd;
+                return false;
+            }
+
+            pclose(pipe);
+            pipe = nullptr;
+
+            dslStr = QString(buffer);
+        } else {
+            dslStr = "{\"choices\":[{\"index\":0, \"message\":{\"role\":\"assistant\",\"content\":\"(META_TYPE IS \\\"ARTIST\\\" AND META_VALUE IS \\\"周杰伦\\\")\"}}]}";
+        }
+        qInfo() << QString("cmd ret(%1)").arg(dslStr).toStdString().c_str();
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(dslStr.toUtf8());
+        if (jsonDoc.isNull() || !jsonDoc.isObject()) {
+            return false;
+        }
+        QJsonObject rootJson = QJsonDocument::fromJson(dslStr.toUtf8()).object();
+        QJsonArray choicesArr = rootJson["choices"].toArray();
+        QJsonObject msgJson = choicesArr[0].toObject()["message"].toObject();
+        dslStr = msgJson["content"].toString();
         qInfo() << QString("query(%1) => dsl(%2), spend(%3 ms)").arg(d->m_context).arg(dslStr).arg(d->m_time.elapsed());
         // parse DSL
         d->m_time.restart();
