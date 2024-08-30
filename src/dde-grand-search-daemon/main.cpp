@@ -14,10 +14,15 @@
 #include <QDBusError>
 #include <QDebug>
 #include <QThread>
+#include <QDir>
+
+#include <unistd.h>
+#include <signal.h>
 
 GRANDSEARCH_USE_NAMESPACE
 DCORE_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
+DGUI_USE_NAMESPACE
 
 static GrandSearchInterface *instance = nullptr;
 
@@ -51,7 +56,7 @@ int startGrandSearchDaemon(int argc, char *argv[])
 
     //注册DBus服务
     {
-        QDBusConnection session = QDBusConnection::sessionBus();
+        QDBusConnection session = interface->qDbusConnection();
         if (!session.registerService(GrandSearchServiceName)) {
             qCritical() << "registerService Failed, maybe service exist" << GrandSearchServiceName << QDBusError::errorString(session.lastError().type());
             delete interface;
@@ -104,6 +109,49 @@ const char *grandSearchDaemonAppVersion()
 int grandSearchDaemonLibVersion()
 {
     return QT_VERSION_CHECK(DGSLIB_VERSION_MAJOR, DGSLIB_VERSION_MINOR, DGSLIB_VERSION_PATCH);
+}
+
+static void appExitHandler(int sig) {
+    qInfo() << "signal" << sig << "exit.";
+
+    //释放资源，退出插件子进程。
+    qApp->quit();
+}
+
+int main(int argc, char *argv[])
+{
+    //安全退出
+    signal(SIGINT, appExitHandler);
+    signal(SIGQUIT, appExitHandler);
+    signal(SIGTERM, appExitHandler);
+
+    DApplication app(argc, argv);
+
+    {
+        QString dateTime = QDateTime::currentDateTime().toString(Qt::ISODateWithMs);
+        //设置应用信息
+        app.setOrganizationName("deepin");
+        app.setApplicationName("dde-grand-search-daemon");
+        app.setApplicationVersion(VERSION);
+
+        // 设置终端和文件记录日志
+        const QString logFormat = "%{time}{yyyyMMdd.HH:mm:ss.zzz}[%{type:1}][%{function:-35} %{line:-4} %{threadid} ] %{message}\n";
+        DLogManager::setLogFormat(logFormat);
+        DLogManager::registerConsoleAppender();
+        DLogManager::registerFileAppender();
+        qInfo() << dateTime << "starting " << app.applicationName() << app.applicationVersion() << getpid();
+    }
+
+    //初始化
+    int ret = startGrandSearchDaemon(argc, argv);
+    if (ret != 0) {
+        qCritical() << "initialization failed.";
+        return ret;
+    }
+    ret = app.exec();
+    stopGrandSearchDaemon();
+
+    return ret;
 }
 
 #ifdef __cplusplus
