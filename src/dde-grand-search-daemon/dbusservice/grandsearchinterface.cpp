@@ -91,10 +91,10 @@ void GrandSearchInterfacePrivate::onSearchCompleted()
 }
 
 GrandSearchInterface::GrandSearchInterface(QObject *parent)
-    : QObject(parent)
+    : QDBusService(parent)
     , d(new GrandSearchInterfacePrivate(this))
 {
-
+    initPolicy(QDBusConnection::SessionBus, QString(SERVICE_CONFIG_DIR) + "other/grand-search-daemon.json");
 }
 
 GrandSearchInterface::~GrandSearchInterface()

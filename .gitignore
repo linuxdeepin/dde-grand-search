@@ -4,6 +4,7 @@ src/environments.h
 CMakeLists.txt.user
 
 build-ut/
+build/
 
 *.qm
 Build

@@ -7,8 +7,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIE -pie")
 
-# 设置库名
-set(LIB_NAME ${DAEMON_LIB_NAME})
+# 设置名称
+set(BIN_NAME ${DAEMON_BIN_NAME})
 
 # 依赖包
 find_package(PkgConfig REQUIRED)
@@ -21,6 +21,9 @@ find_package(Qt5 COMPONENTS
     Concurrent
     DBus
 REQUIRED)
+find_package(deepin-qdbus-service REQUIRED)
+
+add_definitions(-DSERVICE_CONFIG_DIR="${CMAKE_INSTALL_PREFIX}/share/deepin-service-manager/")
 
 set(Qt_LIBS
     Qt5::Core
@@ -35,6 +38,7 @@ set(LINK_LIBS
     ${Qt_LIBS}
     ${DtkCore_LIBRARIES}
     ${DtkWidget_LIBRARIES}
+    ${deepin-qdbus-service_LIBRARIES}
 )
 
 # 源文件
@@ -190,6 +194,7 @@ set(UTILS
 
 set(SRCS
     main.cpp
+
     ${GLOBAL_SRC}
     ${UTILS}
     ${DBUS}
@@ -202,29 +207,27 @@ set(SRCS
 # 资源文件
 qt5_add_resources(QRC_FILES utils/dict.qrc)
 
-# 库
-add_library(${LIB_NAME}
-    SHARED
+# 执行程序
+add_executable(${BIN_NAME}
     ${SRCS} ${QRC_FILES}
-    )
+)
 
-# 默认会生成liblib开头的库，这里重命名生成lib开头
-set_target_properties(${LIB_NAME} PROPERTIES OUTPUT_NAME ${DAEMON_BIN_NAME})
-
-target_include_directories(${LIB_NAME} PUBLIC
+target_include_directories(${BIN_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${DtkWidget_INCLUDE_DIRS}
     ${PROJECT_3RDPARTY_PATH}/fsearch
     ${GLIB_INCLUDE_DIRS}
     ${PCRE_INCLUDE_DIRS}
+    ${deepin-qdbus-service_INCLUDE_DIR}
 )
 
-target_link_libraries(${LIB_NAME} PRIVATE
+target_link_libraries(${BIN_NAME} PRIVATE
     ${LINK_LIBS}
 )
 
-# lib
-install(TARGETS ${LIB_NAME} LIBRARY DESTINATION ${DAEMON_LIB_BASE_DIR})
+install(TARGETS ${BIN_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(FILES grand-search-daemon.json DESTINATION share/deepin-service-manager/other/)
+install(FILES org.deepin.dde.GrandSearchDaemon.service DESTINATION ${CMAKE_INSTALL_FULL_DATADIR}/dbus-1/services)
 
 # 扩展搜索插件目录
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/.readme DESTINATION ${PLUGIN_SEARCHER_DIR})

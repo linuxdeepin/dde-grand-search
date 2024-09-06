@@ -22,6 +22,19 @@ if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -z noexecstack -z relro")
 endif()
 
+#Indentify the version
+find_package(DtkCMake REQUIRED)
+
+if (1 OR ${DEEPIN_OS_VERSION} MATCHES "^(23|25)$")
+    add_definitions(-DCOMPILE_ON_V23)
+    set(COMPLIE_ON_V23 TRUE)
+    message("COMPILE ON v2x")
+else()
+    add_definitions(-DCOMPILE_ON_V20)
+    set(COMPLIE_ON_V20 TRUE)
+    message("COMPILE ON v20")
+endif()
+
 configure_file(${CMAKE_SOURCE_DIR}/src/environments.h.in ${CMAKE_SOURCE_DIR}/src/environments.h @ONLY)
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
@@ -81,8 +94,8 @@ set(PLUGIN_SEARCHER_DIR "${DAEMON_PLUGIN_DIR}/searcher")
 add_definitions(-DPLUGIN_SEARCHER_DIR="${PLUGIN_SEARCHER_DIR}")
 
 add_subdirectory(src/grand-search)
-add_subdirectory(src/libgrand-search-daemon)
-add_subdirectory(src/grand-search-daemon)
+add_subdirectory(src/dde-grand-search-daemon)
+# add_subdirectory(src/grand-search-daemon)
 add_subdirectory(src/grand-search-dock-plugin)
 add_subdirectory(src/preview-plugin)
 add_subdirectory(src/tools/semanticparser)
