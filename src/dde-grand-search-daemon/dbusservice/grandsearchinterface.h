@@ -5,19 +5,21 @@
 #ifndef GRANDSEARCHINTERFACE_H
 #define GRANDSEARCHINTERFACE_H
 
+#include <qdbusservice.h>
+
 #include <QObject>
 #include <QDBusContext>
 #include <QMap>
 
 //后端程序DBus服务
-#define GrandSearchServiceName          "com.deepin.dde.daemon.GrandSearch"
-#define GrandSearchServicePath          "/com/deepin/dde/daemon/GrandSearch"
-#define GrandSearchServiceInterface     "com.deepin.dde.daemon.GrandSearch"
+#define GrandSearchServiceName          "org.deepin.dde.GrandSearchDaemon"
+#define GrandSearchServicePath          "/org/deepin/dde/GrandSearchDaemon"
+#define GrandSearchServiceInterface     "org.deepin.dde.GrandSearchDaemon"
 
 namespace GrandSearch {
 
 class GrandSearchInterfacePrivate;
-class GrandSearchInterface : public QObject, public QDBusContext
+class GrandSearchInterface : public QDBusService, public QDBusContext
 {
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", GrandSearchServiceInterface)
