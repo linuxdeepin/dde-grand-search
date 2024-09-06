@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.deepin.dde.GrandSearchDaemon
+Exec=/usr/bin/dde-grand-search-daemon

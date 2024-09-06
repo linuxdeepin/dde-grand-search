@@ -1,0 +1,10 @@
+{
+    "name": "org.deepin.dde.GrandSearchDaemon",
+    "policyStartType": "OnDemand",
+    "idleTime": 10,
+    "policy": [
+        {
+            "path": "/org/deepin/dde/GrandSearchDaemon"
+        }
+    ]
+}
