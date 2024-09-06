@@ -59,7 +59,7 @@ TEST(PreviewPluginManagerTest, getPreviewPlugin_item)
     PreviewPlugin *p = m.getPreviewPlugin(item);
     EXPECT_EQ(p, nullptr);
 
-    m.m_paths.removeLast();
+    m.m_plugins.removeLast();
     infoB.mimeTypes.append("inode/*");
     m.m_plugins.append(infoB);
 
