@@ -238,7 +238,7 @@ TEST_F(FileNameWorkerTest, ut_searchByAnything_2)
 {
     worker_ptr->m_searchDirList << "/home";
     worker_ptr->m_status.storeRelease(ProxyWorker::Runing);
-    worker_ptr->m_hasAddDataPrefix = true;
+    worker_ptr->m_hasTransformed = true;
 
     using SearchType = QDBusPendingReply<QStringList, uint, uint>;
     stub_ext::StubExt st;

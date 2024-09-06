@@ -33,6 +33,7 @@ public:
     FileNameWorker *q_ptr = nullptr;
     QAtomicInt m_status = ProxyWorker::Ready;
     QString m_searchPath;
+    QString m_originalSearchPath;
     FileSearchUtils::SearchInfo m_searchInfo;                  // 搜索信息
     QHash<FileSearchUtils::Group, quint32> m_resultCountHash; // 记录各类型文件搜索结果数量
 
@@ -41,7 +42,7 @@ public:
     ComDeepinAnythingInterface *m_anythingInterface = nullptr;
     QStringList m_searchDirList;
     QSet<QString> m_tmpSearchResults;     // 存储所有的搜索结果，用于去重
-    bool m_hasAddDataPrefix = false;
+    bool m_hasTransformed = false;
     QHash<QString, QSet<QString>> m_hiddenFilters;
 
     //计时

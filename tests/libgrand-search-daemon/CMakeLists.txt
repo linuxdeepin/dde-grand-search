@@ -89,6 +89,7 @@ set(Qt_LIBS
 
 set(SRCS
     main.cpp
+    ut_commontools.cpp
     ${GLOBAL_SRC}
     ${PRO_SRC}
     ${TOOL_SRC}

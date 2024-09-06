@@ -5,6 +5,7 @@
 #include "configer_p.h"
 #include "preferenceitem.h"
 #include "global/searchconfigdefine.h"
+#include "global/commontools.h"
 
 #include <QStandardPaths>
 #include <QCoreApplication>
@@ -251,14 +252,9 @@ void ConfigerPrivate::resetPath(QString &path) const
     if (path == QString("/"))
         path = QString("");
 
-    // If the path is "/data", "/data/home" or "/home", all of them treated as "/home/"
-    if (path == QString("/data") || path == QString("/data/home") || path == QString("/home"))
-        path = QString("/home");
-
-    // If the path starts with "/data/home", remove the beginning "/data"
-    if (path.startsWith("/data/home")) {
-        path.remove(0, 5);
-    }
+    const auto &homeBindPath = CommonTools::bindPathTransform("/home", true);
+    if (path.startsWith(homeBindPath))
+        path.replace(homeBindPath, "/home");
 
     // Add "/" at the end of path to distinguish the paths with the same URL part
     path += "/";

@@ -30,6 +30,9 @@ FILE(GLOB BURYINGPOINT_SRC
     "${PROJECT_SOURCE_PATH}/buryingpoint/eventlogutil/*.h"
     "${PROJECT_SOURCE_PATH}/buryingpoint/eventlogutil/*.cpp"
 )
+# 扩展搜索插件目录
+set(PLUGIN_SEARCHER_DIR "${PLUGIN_BASE_DIR}/searcher")
+add_definitions(-DPLUGIN_SEARCHER_DIR="${PLUGIN_SEARCHER_DIR}")
 
 # 预览插件目录
 set(PLUGIN_PREVIEW_DIR "${PLUGIN_BASE_DIR}/preview")
