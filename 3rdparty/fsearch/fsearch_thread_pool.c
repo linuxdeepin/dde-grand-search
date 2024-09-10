@@ -17,7 +17,7 @@
    */
 
 #include <stdio.h>
-
+#include <unistd.h>
 #include "fsearch_thread_pool.h"
 #include <sys/time.h>
 struct _FsearchThreadPool {
