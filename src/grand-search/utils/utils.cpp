@@ -36,15 +36,22 @@ extern "C" {
 #include <QDateTime>
 #include <QIcon>
 #include <QApplication>
+#include <DUtil>
 
 DCORE_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
 DGUI_USE_NAMESPACE
 using namespace GrandSearch;
 
+#ifdef COMPILE_ON_V23
+static const QString AppManagerService = "org.desktopspec.ApplicationManager1";
+static const QString AppManagerPathPrefix = "/org/desktopspec/ApplicationManager1";
+static const QString AppInterface = "org.desktopspec.ApplicationManager1.Application";
+#else
 static const QString SessionManagerService = "com.deepin.SessionManager";
 static const QString StartManagerPath = "/com/deepin/StartManager";
 static const QString StartManagerInterface = "com.deepin.StartManager";
+#endif
 
 static const int WeightDiffLimit = 21;
 
@@ -57,7 +64,8 @@ static const double TimesWeight = 0.5;
 class DCollator : public QCollator
 {
 public:
-    DCollator() : QCollator()
+    DCollator()
+        : QCollator()
     {
         setCaseSensitivity(Qt::CaseInsensitive);
     }
@@ -66,7 +74,7 @@ public:
 QMap<QString, QString> Utils::m_appIconNameMap;
 QMimeDatabase Utils::m_mimeDb;
 
-bool Utils::sort(MatchedItems &list, Qt::SortOrder order/* = Qt::AscendingOrder*/)
+bool Utils::sort(MatchedItems &list, Qt::SortOrder order /* = Qt::AscendingOrder*/)
 {
     QTime time;
     time.start();
@@ -92,8 +100,8 @@ bool Utils::compareByString(QString str1, QString str2, Qt::SortOrder order)
         }
     }
     if (nMidIndex > 0) {
-        str1=str1.mid(nMidIndex);
-        str2=str2.mid(nMidIndex);
+        str1 = str1.mid(nMidIndex);
+        str2 = str2.mid(nMidIndex);
     }
 
     // 其他符号要排在最后
@@ -318,8 +326,7 @@ bool Utils::setWeightMethod(MatchedItem &item)
         return true;
 
     const QString &search = item.searcher;
-    if (search == GRANDSEARCH_CLASS_FILE_DEEPIN ||
-            search == GRANDSEARCH_CLASS_FILE_FSEARCH) {
+    if (search == GRANDSEARCH_CLASS_FILE_DEEPIN || search == GRANDSEARCH_CLASS_FILE_FSEARCH) {
 
         ext.insert(GRANDSEARCH_PROPERTY_WEIGHT_METHOD,
                    GRANDSEARCH_PROPERTY_WEIGHT_METHOD_LOCALFILE);
@@ -396,8 +403,8 @@ qint64 Utils::calcDateDiff(const QDateTime &date1, const QDateTime &date2)
 int Utils::calcWeightByDateDiff(const qint64 &diff, const int &type)
 {
     switch (type) {
-    case CreateDateType :
-    case ModifyDateType : {
+    case CreateDateType:
+    case ModifyDateType: {
         switch (diff) {
         case 0:
             return 24;
@@ -412,9 +419,8 @@ int Utils::calcWeightByDateDiff(const qint64 &diff, const int &type)
         default:
             return 0;
         }
-    }
-        break;
-    case ReadDateType : {
+    } break;
+    case ReadDateType: {
         switch (diff) {
         case 0:
             return 9;
@@ -429,8 +435,7 @@ int Utils::calcWeightByDateDiff(const qint64 &diff, const int &type)
         default:
             return 0;
         }
-    }
-        break;
+    } break;
     default:
         return 0;
     }
@@ -486,19 +491,19 @@ void Utils::packageBestMatch(MatchedItemMap &map, int maxQuantity)
     time.start();
 
     static const QMap<QString, bool> supprotedSeracher = {
-        {GRANDSEARCH_CLASS_FILE_DEEPIN, true},
-        {GRANDSEARCH_CLASS_FILE_FSEARCH, true},
-        {GRANDSEARCH_CLASS_APP_DESKTOP, true},
-        {GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, true},
+        { GRANDSEARCH_CLASS_FILE_DEEPIN, true },
+        { GRANDSEARCH_CLASS_FILE_FSEARCH, true },
+        { GRANDSEARCH_CLASS_APP_DESKTOP, true },
+        { GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, true },
     };
 
     // 待文件搜索各组去重后删除该黑名单
     static const QMap<QString, bool> blackGroup = {
-        {GRANDSEARCH_GROUP_FILE_VIDEO, false},
-        {GRANDSEARCH_GROUP_FILE_AUDIO, false},
-        {GRANDSEARCH_GROUP_FILE_PICTURE, false},
-        {GRANDSEARCH_GROUP_FILE_DOCUMNET, false},
-        {GRANDSEARCH_GROUP_FOLDER, false}
+        { GRANDSEARCH_GROUP_FILE_VIDEO, false },
+        { GRANDSEARCH_GROUP_FILE_AUDIO, false },
+        { GRANDSEARCH_GROUP_FILE_PICTURE, false },
+        { GRANDSEARCH_GROUP_FILE_DOCUMNET, false },
+        { GRANDSEARCH_GROUP_FOLDER, false }
     };
 
     MatchedItems bestList;
@@ -630,7 +635,7 @@ QString Utils::appIconName(const MatchedItem &item)
         if (strAppIconName.isEmpty())
             strAppIconName = "preferences-system";
     } else {
-    // 搜索结果为文件，查询该文件对应默认打开应用图标的名称
+        // 搜索结果为文件，查询该文件对应默认打开应用图标的名称
         QString mimetype = item.type;
         if (mimetype.isEmpty())
             mimetype = getFileMimetype(item.item);
@@ -652,7 +657,7 @@ bool Utils::isShowAppIcon(const MatchedItem &item)
 {
     //特殊搜索项
     static QHash<QString, bool> extendSearcher = {
-        {GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, true}
+        { GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, true }
     };
     return isResultFromBuiltSearch(item) || extendSearcher.value(item.searcher, false);
 }
@@ -705,13 +710,13 @@ QString Utils::getFileMimetypeByQt(const QString &path)
 
 QString Utils::getDefaultAppDesktopFileByMimeType(const QString &mimeType)
 {
-    GAppInfo* defaultApp = g_app_info_get_default_for_type(mimeType.toLocal8Bit().constData(), FALSE);
-    if(!defaultApp)
+    GAppInfo *defaultApp = g_app_info_get_default_for_type(mimeType.toLocal8Bit().constData(), FALSE);
+    if (!defaultApp)
         return "";
 
-    const char* desktop_id = g_app_info_get_id(defaultApp);
-    GDesktopAppInfo* desktopAppInfo = g_desktop_app_info_new(desktop_id);
-    if(!desktopAppInfo) {
+    const char *desktop_id = g_app_info_get_id(defaultApp);
+    GDesktopAppInfo *desktopAppInfo = g_desktop_app_info_new(desktop_id);
+    if (!desktopAppInfo) {
         g_object_unref(defaultApp);
         return "";
     }
@@ -751,9 +756,9 @@ bool Utils::openMatchedItem(const MatchedItem &item)
     bool result = false;
     if (item.searcher == GRANDSEARCH_CLASS_APP_DESKTOP) {   // 启动应用
         result = Utils::launchApp(item.item);
-    } else if (item.searcher == GRANDSEARCH_CLASS_WEB_STATICTEXT) { // 跳转浏览器
+    } else if (item.searcher == GRANDSEARCH_CLASS_WEB_STATICTEXT) {   // 跳转浏览器
         result = Utils::openWithBrowser(item.item);
-    } else {    // 打开文件
+    } else {   // 打开文件
         result = openFile(item);
     }
 
@@ -806,7 +811,7 @@ bool Utils::openFile(const MatchedItem &item)
     // 获取对应默认打开应用
     QString defaultDesktopFile = getDefaultAppDesktopFileByMimeType(mimetype);
     if (defaultDesktopFile.isEmpty()) {
-        result = QProcess::startDetached(QString("dde-file-manager"), {QString("-o"), fileUrlString});
+        result = QProcess::startDetached(QString("dde-file-manager"), { QString("-o"), fileUrlString });
         qDebug() << "open file dialog" << result;
     } else {
         QStringList filePaths(fileUrlString);
@@ -816,7 +821,7 @@ bool Utils::openFile(const MatchedItem &item)
     return result;
 }
 
-bool Utils::launchApp(const QString& desktopFile, const QStringList &filePaths)
+bool Utils::launchApp(const QString &desktopFile, const QStringList &filePaths)
 {
     bool ok = launchAppByDBus(desktopFile, filePaths);
     if (!ok) {
@@ -828,6 +833,28 @@ bool Utils::launchApp(const QString& desktopFile, const QStringList &filePaths)
 
 bool Utils::launchAppByDBus(const QString &desktopFile, const QStringList &filePaths)
 {
+#ifdef COMPILE_ON_V23
+    const auto &file = QFileInfo { desktopFile };
+    constexpr auto kDesktopSuffix { u8"desktop" };
+
+    if (file.suffix() != kDesktopSuffix) {
+        qDebug() << "invalid desktop file:" << desktopFile << file;
+        return false;
+    }
+
+    const auto &DBusAppId = DUtil::escapeToObjectPath(file.completeBaseName());
+    const auto &currentAppPath = QString { AppManagerPathPrefix } + "/" + DBusAppId;
+    qDebug() << "app object path:" << currentAppPath;
+    QDBusInterface appManager(AppManagerService,
+                              currentAppPath,
+                              AppInterface,
+                              QDBusConnection::sessionBus());
+
+    auto reply = appManager.callWithArgumentList(QDBus::Block, QStringLiteral("Launch"), { QVariant::fromValue(QString {}), QVariant::fromValue(filePaths), QVariant::fromValue(QVariantMap {}) });
+
+    return reply.type() == QDBusMessage::ReplyMessage;
+
+#else
     QDBusInterface interface(SessionManagerService,
                              StartManagerPath,
                              StartManagerInterface,
@@ -841,7 +868,12 @@ bool Utils::launchAppByDBus(const QString &desktopFile, const QStringList &fileP
 
     QDBusPendingCall call = interface.asyncCallWithArgumentList("LaunchApp", args);
 
-    QDBusReply<QString> reply = call.reply();
+    QDBusReply<void> reply = call.reply();
+    if (!reply.isValid()) {
+        qCritical() << "Launch app by DBus failed:" << reply.error();
+        return false;
+    }
+#endif
 
     return true;
 }
@@ -901,7 +933,7 @@ bool Utils::openWithBrowser(const QString &words)
     }
     //默认浏览器
     qDebug() << "open with" << defaultDesktopFile;
-    return launchApp(defaultDesktopFile, {words});
+    return launchApp(defaultDesktopFile, { words });
 }
 
 QIcon Utils::defaultIcon(const MatchedItem &item)
@@ -941,12 +973,8 @@ bool Utils::isLevelItem(const MatchedItem &item, int &level)
 
 bool Utils::isLevelGroup(const QString &searchGroupName)
 {
-    static const QStringList containLevelGroup{
-        GRANDSEARCH_GROUP_FILE_VIDEO
-      , GRANDSEARCH_GROUP_FILE_AUDIO
-      , GRANDSEARCH_GROUP_FILE_PICTURE
-      , GRANDSEARCH_GROUP_FILE_DOCUMNET
-      , GRANDSEARCH_GROUP_FILE
+    static const QStringList containLevelGroup {
+        GRANDSEARCH_GROUP_FILE_VIDEO, GRANDSEARCH_GROUP_FILE_AUDIO, GRANDSEARCH_GROUP_FILE_PICTURE, GRANDSEARCH_GROUP_FILE_DOCUMNET, GRANDSEARCH_GROUP_FILE
     };
 
     return containLevelGroup.contains(searchGroupName);
@@ -954,14 +982,8 @@ bool Utils::isLevelGroup(const QString &searchGroupName)
 
 bool Utils::canPreview(const QString &searchGroupName)
 {
-    static const QStringList containPreviewGroup{
-        GRANDSEARCH_GROUP_FOLDER
-      , GRANDSEARCH_GROUP_FILE
-      , GRANDSEARCH_GROUP_FILE_VIDEO
-      , GRANDSEARCH_GROUP_FILE_AUDIO
-      , GRANDSEARCH_GROUP_FILE_PICTURE
-      , GRANDSEARCH_GROUP_FILE_DOCUMNET
-      , GRANDSEARCH_GROUP_FILE_INFERENCE
+    static const QStringList containPreviewGroup {
+        GRANDSEARCH_GROUP_FOLDER, GRANDSEARCH_GROUP_FILE, GRANDSEARCH_GROUP_FILE_VIDEO, GRANDSEARCH_GROUP_FILE_AUDIO, GRANDSEARCH_GROUP_FILE_PICTURE, GRANDSEARCH_GROUP_FILE_DOCUMNET, GRANDSEARCH_GROUP_FILE_INFERENCE
     };
 
     return containPreviewGroup.contains(searchGroupName);
@@ -987,13 +1009,13 @@ bool Utils::isWayland()
 void Utils::clickItemPoint(const MatchedItem &item)
 {
     QScopedPointer<burying_point::BasicPoint> p(burying_point::BuryingPointFactory::instance()
-                                                ->createData(burying_point::BuryingPointEventId::ClickItem));
+                                                        ->createData(burying_point::BuryingPointEventId::ClickItem));
     QVariantMap data;
     if (item.searcher == GRANDSEARCH_CLASS_APP_DESKTOP) {   // 应用
         data.insert("category", "app");
-    } else if (item.searcher == GRANDSEARCH_CLASS_WEB_STATICTEXT) { // web
+    } else if (item.searcher == GRANDSEARCH_CLASS_WEB_STATICTEXT) {   // web
         data.insert("category", "web");
-    } else if (item.searcher == GRANDSEARCH_CLASS_SETTING_CONTROLCENTER) {  // 设置
+    } else if (item.searcher == GRANDSEARCH_CLASS_SETTING_CONTROLCENTER) {   // 设置
         data.insert("category", "setting");
     } else {
         data.insert("category", item.type);
