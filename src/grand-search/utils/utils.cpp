@@ -866,8 +866,8 @@ bool Utils::launchAppByDBus(const QString &desktopFile, const QStringList &fileP
 
     QDBusReply<void> reply = call.reply();
     if (!reply.isValid()) {
-            qCritical() << "Launch app by DBus failed:" << reply.error();
-            return false;
+        qCritical() << "Launch app by DBus failed:" << reply.error();
+        return false;
     }
 #endif
 
@@ -904,14 +904,15 @@ bool Utils::launchAppByGio(const QString &desktopFile, const QStringList &filePa
 
     if (!ok) {
         qWarning() << "Failed to open desktop file with gio: g_app_info_launch returns false";
+        for (auto filePath : filePaths) {
+            if (!filePath.isEmpty()) {
+                QProcess::startDetached("gio", QStringList() << "open" << filePath);
+            }
+        }
+        ok = true;
     }
     g_object_unref(appInfo);
     g_list_free(g_files);
-
-    for (auto filePath : filePaths) {
-        if (!filePath.isEmpty())
-            QProcess::startDetached("gio", QStringList() << "open" << filePath);
-    }
 
     return ok;
 }
