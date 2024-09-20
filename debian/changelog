@@ -1,3 +1,10 @@
+dde-grand-search (5.5.4) unstable; urgency=medium
+
+  * move daemon to deepin-service-manage
+  * 
+
+ -- zhangsheng <zhangsheng@uniontech.com>  Fri, 20 Sep 2024 18:05:58 +0800
+
 dde-grand-search (5.5.2) unstable; urgency=medium
 
   * update dde-grand-search V23 5.5.2 baseline version
