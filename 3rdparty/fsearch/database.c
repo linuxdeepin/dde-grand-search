@@ -44,7 +44,7 @@
 // add py index,update database version to 1.0
 #define DATABASE_MAJOR_VERSION 1
 #define DATABASE_MINOR_VERSION 0
-
+#define MAX_DIR_DEPTH 100
 
 struct _DatabaseLocation
 {
@@ -438,7 +438,8 @@ db_location_walk_tree_recursive (DatabaseLocation *location,
                                  GTimer *timer,
                                  void (*callback)(const char *),
                                  BTreeNode *parent,
-                                 int spec)
+                                 int spec,
+                                 const int depth)
 {
     int len = strlen (dname);
     if (len >= FILENAME_MAX - 1) {
@@ -504,7 +505,7 @@ db_location_walk_tree_recursive (DatabaseLocation *location,
                                           is_dir);
         btree_node_prepend (parent, node);
         location->num_items++;
-        if (is_dir) {
+        if (is_dir && depth <= MAX_DIR_DEPTH) {
             db_location_walk_tree_recursive (location,
                                              excludes,
                                              exclude_files,
@@ -512,7 +513,8 @@ db_location_walk_tree_recursive (DatabaseLocation *location,
                                              timer,
                                              callback,
                                              node,
-                                             spec);
+                                             spec,
+                                             depth + 1);
 
         }
     }
@@ -552,7 +554,8 @@ db_location_build_tree (const char *dname, void (*callback)(const char *))
                                                     timer,
                                                     callback,
                                                     root,
-                                                    spec);
+                                                    spec,
+                                                    0);
     config_free(config);
     g_timer_destroy (timer);
     if (res == WALK_OK) {
