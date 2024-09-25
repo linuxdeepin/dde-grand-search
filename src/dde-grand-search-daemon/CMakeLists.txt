@@ -60,6 +60,8 @@ set(MAINCTRL
 FILE(GLOB_RECURSE SEMANTIC_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/searcher/semantic/*.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/searcher/semantic/*.cpp"
+    "${PROJECT_3RDPARTY_PATH}/antlr4/querylang/*.h"
+    "${PROJECT_3RDPARTY_PATH}/antlr4/querylang/*.cpp"
 )
 
 set(SEARCHER
@@ -133,6 +135,7 @@ else ()
         ${LINK_LIBS}
         semanticparser
         luceneengine
+        antlr4_static
     )
 endif()
 
@@ -219,6 +222,8 @@ target_include_directories(${BIN_NAME} PUBLIC
     ${GLIB_INCLUDE_DIRS}
     ${PCRE_INCLUDE_DIRS}
     ${deepin-qdbus-service_INCLUDE_DIR}
+    ${PROJECT_3RDPARTY_PATH}/antlr4/querylang
+    ${PROJECT_3RDPARTY_PATH}/antlr4/antlr4-runtime/runtime/src
 )
 
 target_link_libraries(${BIN_NAME} PRIVATE

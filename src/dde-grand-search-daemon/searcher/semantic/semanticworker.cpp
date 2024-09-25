@@ -5,6 +5,7 @@
 #include "semanticworker_p.h"
 #include "global/builtinsearch.h"
 #include "semanticparser/semanticparser.h"
+#include "dslparser/dslparser.h"
 #include "semantichelper.h"
 #include "fileresultshandler.h"
 
@@ -44,6 +45,18 @@ SemanticWorkerPrivate::~SemanticWorkerPrivate()
 
 bool SemanticWorkerPrivate::pushItem(const MatchedItemMap &items, void *ptr)
 {
+    if (DSLPARSER) {
+        BaseCond *cond = static_cast<BaseCond *>(ptr);
+        if (!items.isEmpty()) {
+            cond->addMatchedItems(items.constBegin().value());
+        }
+
+        SemanticWorkerPrivate *d = cond->m_worker;
+        if (d->m_status.loadAcquire() == ProxyWorker::Terminated)
+            return false;
+        return true;
+    }
+
     SemanticWorkerPrivate *d =  static_cast<SemanticWorkerPrivate *>(ptr);
     if (d->m_status.loadAcquire() == ProxyWorker::Terminated)
         return false;
@@ -159,12 +172,70 @@ bool SemanticWorker::working(void *context)
         count--;
     }
 
+    // DSL
+    qInfo() << QString("query(%1)").arg(d->m_context);
+    d->m_time.start();
+    SemanticParser parser;
+
+    if (d->m_doQueryLang && parser.connectToQueryLang(SemanticHelper::querylangServiceName())) {
+        checkRuning();
+        // get AI engine output
+        QString dslStr = parser.query(d->m_context);
+        // 处理语法差异
+        dslStr.replace("'", "\"");
+        dslStr.replace("WITH META_VALUE", "AND META_VALUE");
+        dslStr.replace("DIRECTORY_NAME IS", "PATH IS");
+        qInfo() << QString("query(%1) => dsl(%2), spend(%3 ms)").arg(d->m_context).arg(dslStr).arg(d->m_time.elapsed());
+
+        // parse DSL
+        d->m_time.restart();
+        QList<SemanticWorkerPrivate::QueryFunction> querys;
+        FileResultsHandler fileHandler;
+        DslParser parser(dslStr, &querys, &fileHandler, d);
+        auto future = QtConcurrent::map(querys, &SemanticWorkerPrivate::run);
+        future.waitForFinished();
+        if (parser.getMatchedItems().isEmpty()) {
+            qInfo() << "semantic worker is finished, total spend: " << d->m_time.elapsed() << " ms found: " << 0;
+            return true;
+        }
+
+        d->m_items[GRANDSEARCH_GROUP_FILE_INFERENCE].append(parser.getMatchedItems());
+
+        // Keep the top 100 files
+        MatchedItemMap top;
+        for (auto it = d->m_items.begin(); it != d->m_items.end(); ++it) {
+            MatchedItems &items = it.value();
+            if (items.size() > 100) {
+                MatchedItems tmp;
+                for (int i = 0; i < 100; ++i)
+                    tmp.append(items[i]);
+                top.insert(it.key(), tmp);
+            } else {
+                top.insert(it.key(), items);
+            }
+        }
+
+        d->m_items = top;
+
+        checkRuning();
+
+        qInfo() << "semantic worker is finished, total spend: " << d->m_time.elapsed() << " ms found: " << d->m_items.begin().value().size();
+        // 发送所有数据
+        if (!d->m_items.isEmpty())
+            emit unearthed(this);
+        return true;
+    }
+
+    if (DSLPARSER) {
+        return true;
+    }
+
     bool canSemantic = false;
     bool canVector = false;
 
     d->m_time.start();
     SemanticEntity entity;
-    SemanticParser parser;
+    //SemanticParser parser;
 
     // get entity
     if (d->m_doSemantic) {
@@ -299,8 +370,9 @@ MatchedItemMap SemanticWorker::takeAll()
     return items;
 }
 
-void SemanticWorker::setEngineState(bool e, bool v)
+void SemanticWorker::setEngineState(bool e, bool v, bool isQuerylang)
 {
     d->m_doSemantic = e;
     d->m_doVector = v;
+    d->m_doQueryLang = isQuerylang;
 }

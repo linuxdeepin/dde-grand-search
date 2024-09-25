@@ -7,6 +7,8 @@
 
 #include "searcher/proxyworker.h"
 
+#define DSLPARSER true
+
 namespace GrandSearch {
 class SemanticWorkerPrivate;
 class SemanticWorker : public ProxyWorker
@@ -23,7 +25,7 @@ public:
     Status status() Q_DECL_OVERRIDE;
     bool hasItem() const Q_DECL_OVERRIDE;
     MatchedItemMap takeAll() Q_DECL_OVERRIDE;
-    void setEngineState(bool e, bool v);
+    void setEngineState(bool e, bool v, bool isQuerylang);
 private:
     SemanticWorkerPrivate *d;
 };

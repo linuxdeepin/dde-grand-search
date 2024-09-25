@@ -17,6 +17,7 @@ FILE(GLOB_RECURSE SRC_FILES
 
 qt5_add_dbus_interface(IFS_SRC ${PROJECT_3RDPARTY_PATH}/interfaces/org.deepin.ai.daemon.AnalyzeServer.xml analyzeserver)
 qt5_add_dbus_interface(IFS_SRC ${PROJECT_3RDPARTY_PATH}/interfaces/org.deepin.ai.daemon.VectorIndex.xml vectorindex)
+qt5_add_dbus_interface(IFS_SRC ${PROJECT_3RDPARTY_PATH}/interfaces/org.deepin.ai.daemon.QueryLang.xml querylang)
 
 add_library(${LIB_NAME} STATIC ${SRC_FILES} ${IFS_SRC})
 

@@ -142,6 +142,11 @@ QString SemanticHelper::vectorServiceName()
     return "org.deepin.ai.daemon.VectorIndex";
 }
 
+QString SemanticHelper::querylangServiceName()
+{
+    return "org.deepin.ai.daemon.QueryLang";
+}
+
 bool SemanticHelper::isMatchTime(qint64 time, const QList<QPair<qint64, qint64> > &intervals)
 {
     bool match = intervals.isEmpty();

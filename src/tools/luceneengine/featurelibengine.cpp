@@ -69,10 +69,10 @@ int FeatureLibEnginePrivate::conditonsToString(const FeatureLibEngine::QueryCond
             chain.append(packageString("Author", prop.second.toStringList()));
             break;
         case FeatureLibEngine::Duration:
-
+            chain.append(packageString("duration", prop.second.toStringList()));
             break;
         case FeatureLibEngine::Resolution:
-
+            chain.append(packageString("resolution", prop.second.toStringList()));
             break;
         case FeatureLibEngine::Text:
             chain.append(packageString("contents", prop.second.toStringList()));

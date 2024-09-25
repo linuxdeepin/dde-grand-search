@@ -67,12 +67,43 @@ bool AnythingQueryPrivate::searchUserPath(PushItemCallBack callBack, void *pdata
             m_searchDirList << info.absoluteFilePath();
 
         // 检查文件名
-        if (!info.fileName().contains(reg))
-            continue;
+        if (!m_entity.partPath.isEmpty()) {
+            bool isMatch = info.canonicalFilePath().contains(m_entity.partPath);
+            //qDebug() << QString("(%1) vs (%2) isMatch(%3) vs require(%4)").arg(info.canonicalFilePath())
+            //            .arg(m_entity.partPath).arg(isMatch).arg(m_entity.isTrue);
+            if ((!m_entity.isTrue && isMatch) || (m_entity.isTrue && !isMatch)) {
+                continue;
+            }
+        } else {
+            if (!info.fileName().contains(reg))
+                continue;
+        }
 
         // 检查时间
-        if (!SemanticHelper::isMatchTime(info.lastModified().toSecsSinceEpoch(), m_entity.times))
+        if (!SemanticHelper::isMatchTime(info.lastModified().toSecsSinceEpoch(), m_entity.times)
+                && !SemanticHelper::isMatchTime(info.birthTime().toSecsSinceEpoch(), m_entity.times))
             continue;
+
+        // 检查文件大小
+        if (!m_entity.compType.isEmpty()) {
+            if (m_entity.compType == ">") {
+                if (!(info.size() > m_entity.fileSize)) {
+                    continue;
+                }
+            } else if (m_entity.compType == "<") {
+                if (!(info.size() < m_entity.fileSize)) {
+                    continue;
+                }
+            } else if (m_entity.compType == "!=") {
+                if (!(info.size() != m_entity.fileSize)) {
+                    continue;
+                }
+            } else {
+                if (!(info.size() == m_entity.fileSize)) {
+                    continue;
+                }
+            }
+        }
 
         auto absoluteFilePath = info.absoluteFilePath();
 
@@ -163,10 +194,41 @@ bool AnythingQueryPrivate::searchByAnything(PushItemCallBack callBack, void *pda
             if (m_hasTransformed && path.startsWith(m_searchPath))
                 path.replace(m_searchPath, m_originalSearchPath);
 
-            // 检查时间
+            if (!m_entity.partPath.isEmpty()) {
+                bool isMatch = path.contains(m_entity.partPath);
+                //qDebug() << QString("(%1) vs (%2) isMatch(%3) vs require(%4)").arg(path)
+                //            .arg(m_entity.partPath).arg(isMatch).arg(m_entity.isTrue);
+                if ((!m_entity.isTrue && isMatch) || (m_entity.isTrue && !isMatch)) {
+                    continue;
+                }
+            }
+
+            // 检查时间（创建时间和修改时间的并集）
             QFileInfo info(path);
-            if (!SemanticHelper::isMatchTime(info.lastModified().toSecsSinceEpoch(), m_entity.times))
+            if (!SemanticHelper::isMatchTime(info.lastModified().toSecsSinceEpoch(), m_entity.times)
+                    && !SemanticHelper::isMatchTime(info.birthTime().toSecsSinceEpoch(), m_entity.times))
                 continue;
+
+            // 检查文件大小
+            if (!m_entity.compType.isEmpty()) {
+                if (m_entity.compType == ">") {
+                    if (!(info.size() > m_entity.fileSize)) {
+                        continue;
+                    }
+                } else if (m_entity.compType == "<") {
+                    if (!(info.size() < m_entity.fileSize)) {
+                        continue;
+                    }
+                } else if (m_entity.compType == "!=") {
+                    if (!(info.size() != m_entity.fileSize)) {
+                        continue;
+                    }
+                } else {
+                    if (!(info.size() == m_entity.fileSize)) {
+                        continue;
+                    }
+                }
+            }
 
             // 过滤文管设置的隐藏文件
             QHash<QString, QSet<QString>> hiddenFilters;
@@ -224,8 +286,15 @@ QString AnythingQueryPrivate::getRegExp() const
 
     // 后缀名
     QStringList suffixs = SemanticHelper::typeTosuffix(m_entity.types);
-    if (!suffixs.isEmpty())
+    if (!suffixs.isEmpty()) {
         regStr += QString(R"(\.(%0)$)").arg(suffixs.join('|'));
+    } else if (!m_entity.suffix.isEmpty()) {
+        if (m_entity.isTrue) {
+            regStr += QString(R"(\.(%0)$)").arg(m_entity.suffix);
+        } else {
+            regStr += QString(R"(\.[^(%0)]$)").arg(m_entity.suffix);
+        }
+    }
 
     return regStr;
 }
