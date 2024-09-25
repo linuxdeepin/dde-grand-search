@@ -58,11 +58,11 @@ bool FeatureQueryPrivate::processResult(const QString &file, const QSet<QString>
 FeatureLibEngine::QueryConditons FeatureQueryPrivate::translateConditons()
 {
     FeatureLibEngine::QueryConditons cond;
-    if (m_entity.keys.isEmpty())
+    if (m_entity.keys.isEmpty() && m_entity.author.isEmpty() && m_entity.album.isEmpty() && m_entity.duration.isEmpty() && m_entity.resolution.isEmpty())
         return cond;
 
     // 图片
-    if (m_entity.types.contains(PICTURE_GROUP)) {
+    if (m_entity.types.contains(PICTURE_GROUP) && !m_entity.keys.isEmpty()) {
         FeatureLibEngine::QueryConditons tmp;
         QStringList suffix = SearchHelper::instance()->getSuffixByGroupName(PICTURE_GROUP);
         tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::FileType, suffix));
@@ -73,7 +73,7 @@ FeatureLibEngine::QueryConditons FeatureQueryPrivate::translateConditons()
     }
 
     // 音乐
-    if (m_entity.types.contains(AUDIO_GROUP)) {
+    if (m_entity.types.contains(AUDIO_GROUP) && !(m_entity.keys.isEmpty() && m_entity.author.isEmpty() && m_entity.album.isEmpty() && m_entity.duration.isEmpty())) {
         if (!cond.isEmpty())
             cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Or));
 
@@ -83,12 +83,38 @@ FeatureLibEngine::QueryConditons FeatureQueryPrivate::translateConditons()
 
         {
             FeatureLibEngine::QueryConditons subTmp;
-            subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Author, m_entity.keys));
-            subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Or));
-            subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Album, m_entity.keys));
+            if (!m_entity.author.isEmpty()) {
+                subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Author, m_entity.author));
+            } else if (!m_entity.album.isEmpty()) {
+                subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Album, m_entity.album));
+            } else if (!m_entity.duration.isEmpty()) {
+                subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Duration, m_entity.duration));
+            } else {
+                subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Author, m_entity.keys));
+                subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Or));
+                subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Album, m_entity.keys));
+            }
 
             tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
             tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(subTmp)));
+        }
+
+        cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(tmp)));
+    }
+
+    // 视频
+    if (m_entity.types.contains(VIDEO_GROUP) && !(m_entity.duration.isEmpty() && m_entity.resolution.isEmpty())) {
+        if (!cond.isEmpty())
+            cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Or));
+
+        FeatureLibEngine::QueryConditons tmp;
+        QStringList suffix = SearchHelper::instance()->getSuffixByGroupName(VIDEO_GROUP);
+        tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::FileType, suffix));
+        tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
+        if (!m_entity.duration.isEmpty()) {
+            tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Duration, m_entity.duration));
+        } else {
+            tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Resolution, m_entity.resolution));
         }
 
         cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(tmp)));
@@ -98,15 +124,6 @@ FeatureLibEngine::QueryConditons FeatureQueryPrivate::translateConditons()
         return cond;
 
 #if 0
-    // 视频
-    if (m_entity.types.contains(VIDEO_GROUP)) {
-        if (!cond.isEmpty())
-            cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Or));
-
-        QStringList suffix = SearchHelper::instance()->getSuffixByGroupName(VIDEO_GROUP);
-        cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::FileType, suffix));
-    }
-
     // 文档
     if (m_entity.types.contains(DOCUMENT_GROUP)) {
         if (!cond.isEmpty())

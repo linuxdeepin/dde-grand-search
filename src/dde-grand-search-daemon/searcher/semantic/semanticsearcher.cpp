@@ -63,7 +63,13 @@ bool SemanticSearcher::isActive() const
         }
     }
 
-    return d->m_semantic || d->m_vector;
+    if (config->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_QUERYLANG, true)) {
+        if (paser.connectToQueryLang(SemanticHelper::querylangServiceName())) {
+            d->m_querylang = paser.isQueryLangSupported();
+        }
+    }
+
+    return d->m_querylang;
 }
 
 bool SemanticSearcher::activate()
@@ -74,7 +80,7 @@ bool SemanticSearcher::activate()
 ProxyWorker *SemanticSearcher::createWorker() const
 {
     auto worker = new SemanticWorker(name());
-    worker->setEngineState(d->m_semantic, d->m_vector);
+    worker->setEngineState(d->m_semantic, d->m_vector, d->m_querylang);
     return worker;
 }
 

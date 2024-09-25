@@ -36,6 +36,20 @@ QString SemanticParser::vectorSearch(const QString &context)
     return ret;
 }
 
+QString SemanticParser::query(const QString &text)
+{
+    Q_ASSERT(d->m_querylang);
+
+    QString ret;
+    auto reply = d->m_querylang->Query(text);
+    ret = reply.value();
+    if (reply.isError()) {
+        qWarning() << "the parser server return error" << reply.error().message();
+        ret.clear();
+    }
+    return ret;
+}
+
 bool SemanticParser::isAnalayzeSupported()
 {
     if (!d->m_analyze)
@@ -50,6 +64,14 @@ bool SemanticParser::isVectorSupported()
         return false;
 
     return d->m_vector->Enable();
+}
+
+bool SemanticParser::isQueryLangSupported()
+{
+    if (!d->m_querylang)
+        return false;
+
+    return d->m_querylang->Enable();
 }
 
 SemanticParser::SemanticParser(QObject *parent)
@@ -85,4 +107,15 @@ bool SemanticParser::connectToVector(const QString &service)
                                     QDBusConnection::sessionBus(), this);
     d->m_vector->setTimeout(60 * 1000);
     return d->m_vector->isValid();
+}
+
+bool SemanticParser::connectToQueryLang(const QString &service)
+{
+    if (d->m_querylang)
+        return false;
+
+    d->m_querylang = new QueryLang(service, "/org/deepin/ai/daemon/QueryLang",
+                                    QDBusConnection::sessionBus(), this);
+    d->m_querylang->setTimeout(60 * 1000);
+    return d->m_querylang->isValid();
 }
