@@ -7,6 +7,7 @@
 #include "generalpreviewplugin.h"
 #include "generalwidget/detailwidget.h"
 #include "generalwidget/generaltoolbar.h"
+#include "generalwidget/aitoolbar.h"
 #include "pluginproxy.h"
 
 #include <DScrollArea>
@@ -86,6 +87,9 @@ bool PreviewWidget::previewItem(const MatchedItem &item)
         // 2. 添加详情属性部件到预览界面
         m_vMainLayout->addWidget(m_detailInfoWidget);
 
+        // 文档类型的文件添加AI工具栏到预览界面
+        m_vMainLayout->addWidget(m_aiToolBar);
+
         // 3. 添加垂直弹簧条，将工具栏部件置底到底部显示
         m_vMainLayout->addSpacerItem(m_vSpaceItem);
 
@@ -101,7 +105,27 @@ bool PreviewWidget::previewItem(const MatchedItem &item)
         m_preview = preview;
     }
 
+    // 文档类型的文件添加AI工具栏到预览界面
+    bool isShowAiToolBar = item.name.endsWith(".txt") || item.name.endsWith(".doc") || item.name.endsWith(".docx")  || item.name.endsWith(".xls")
+            || item.name.endsWith(".xlsx") || item.name.endsWith(".ppt") || item.name.endsWith(".pptx") || item.name.endsWith(".pdf");
+    isShowAiToolBar = isShowAiToolBar && AiToolBar::checkUosAiInstalled();
+    m_aiToolBar->setVisible(isShowAiToolBar);
+    m_aiToolBar->setFilePath(item.item);
+
     m_detailInfoWidget->setDetailInfoList(preview->getAttributeDetailInfo());
+    if (isShowAiToolBar) {
+        if (preview->getAttributeDetailInfo().isEmpty()) {
+            m_detailInfoWidget->setVisible(false);
+            m_aiToolBar->setTopSpace(10);
+            m_aiToolBar->adjustSize();
+        } else {
+            m_detailInfoWidget->setVisible(true);
+            m_aiToolBar->setTopSpace(0);
+            m_aiToolBar->adjustSize();
+        }
+    } else {
+        m_detailInfoWidget->setVisible(true);
+    }
 
     this->show();
 
@@ -117,6 +141,7 @@ void PreviewWidget::initUi()
 
     m_detailInfoWidget = new DetailWidget(this);
     m_generalToolBar = new GeneralToolBar(this);
+    m_aiToolBar = new AiToolBar(this);
 
     m_vSpaceItem = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -148,6 +173,7 @@ void PreviewWidget::clearLayoutWidgets()
     }
 
     m_vMainLayout->removeWidget(m_detailInfoWidget);
+    m_vMainLayout->removeWidget(m_aiToolBar);
     m_vMainLayout->removeItem(m_vSpaceItem);
 
     if (m_generalPreview) {

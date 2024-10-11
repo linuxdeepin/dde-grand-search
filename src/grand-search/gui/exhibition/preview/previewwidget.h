@@ -16,6 +16,7 @@ class QSpacerItem;
 namespace GrandSearch {
 
 class GeneralToolBar;
+class AiToolBar;
 class DetailWidget;
 class PluginProxy;
 class PreviewWidget : public Dtk::Widget::DWidget
@@ -49,6 +50,7 @@ private:
 
     DetailWidget* m_detailInfoWidget = nullptr; // 通用属性详情部件
     GeneralToolBar *m_generalToolBar = nullptr;     // 通用工具栏部件
+    AiToolBar *m_aiToolBar = nullptr;     // AI工具栏部件
     PluginProxy *m_proxy = nullptr; //用于预览插件回调预览框架的接口
 
 
