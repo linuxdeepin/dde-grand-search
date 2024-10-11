@@ -2,6 +2,86 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN">
 <context>
+    <name>GrandSearch::AiToolBar</name>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="46"/>
+        <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
+        <translation>无法使用%1，请先到应用商店更新UOS AI版本</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="47"/>
+        <source>Cancel</source>
+        <translation>取 消</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="48"/>
+        <source>Open App Stroe</source>
+        <translation>打开商店</translation>
+    </message>
+</context>
+<context>
+    <name>GrandSearch::AiToolBarInner</name>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="102"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="152"/>
+        <source>Summary</source>
+        <translation>文档总结</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="103"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="153"/>
+        <source>Translation</source>
+        <translation>文档翻译</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="104"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="154"/>
+        <source>Extension</source>
+        <translation>文档扩写</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="105"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="155"/>
+        <source>Add to knowledge base</source>
+        <translation>添加到知识库</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="116"/>
+        <source>Summarize document content with UOS AI</source>
+        <translation>用UOS AI总结文档内容</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="117"/>
+        <source>Translate document content with UOS AI</source>
+        <translation>用UOS AI翻译文档内容</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="118"/>
+        <source>Extend document content with UOS AI</source>
+        <translation>用UOS AI扩写文档内容</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="119"/>
+        <source>Add document to UOS AI knowledge base</source>
+        <translation>将文档添加到UOS AI知识库</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="390"/>
+        <source>DDE Grand Search</source>
+        <translation>全局搜索</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="393"/>
+        <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
+        <translation>无法使用%1，请先到应用商店更新UOS AI版本</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="394"/>
+        <source>Open App Stroe</source>
+        <translation>打开商店</translation>
+    </message>
+</context>
+<context>
     <name>GrandSearch::BestMatchWidget</name>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/bestmatchwidget.cpp" line="23"/>

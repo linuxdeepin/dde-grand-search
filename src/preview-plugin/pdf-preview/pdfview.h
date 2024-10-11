@@ -21,6 +21,8 @@ class PDFView : public QWidget
 {
     Q_OBJECT
 public:
+    static bool checkUosAiInstalled();
+
     explicit PDFView(const QString &file, QWidget *parent = nullptr);
     ~PDFView() Q_DECL_OVERRIDE;
 

@@ -28,6 +28,8 @@ class TextView : public QWidget
 {
     Q_OBJECT
 public:
+    static bool checkUosAiInstalled();
+
     explicit TextView(QWidget *parent = nullptr);
     void initUI();
     void setSource(const QString &path);
@@ -39,6 +41,7 @@ private:
      PlainTextEdit *m_browser = nullptr;
      QLabel *m_errLabel = nullptr;
      QStackedWidget *m_stackedWidget = nullptr;
+     bool m_isShowAiToolBar = false;
 };
 
 }}

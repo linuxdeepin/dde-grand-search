@@ -103,6 +103,14 @@ set(GUISRC
     gui/exhibition/preview/generalwidget/detailitem.cpp
     gui/exhibition/preview/generalwidget/detailwidget.h
     gui/exhibition/preview/generalwidget/detailwidget.cpp
+    gui/exhibition/preview/generalwidget/transbutton.h
+    gui/exhibition/preview/generalwidget/transbutton.cpp
+    gui/exhibition/preview/generalwidget/linkbutton.h
+    gui/exhibition/preview/generalwidget/linkbutton.cpp
+    gui/exhibition/preview/generalwidget/omitbutton.h
+    gui/exhibition/preview/generalwidget/omitbutton.cpp
+    gui/exhibition/preview/generalwidget/aitoolbar.h
+    gui/exhibition/preview/generalwidget/aitoolbar.cpp
     gui/exhibition/preview/pluginproxy.h
     gui/exhibition/preview/pluginproxy.cpp
     gui/exhibition/preview/previewproxyinterface.h
