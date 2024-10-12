@@ -19,7 +19,6 @@ public:
     explicit SemanticParserPrivate(SemanticParser *parent);
     //~SemanticParserPrivate();
 public:
-    AnalyzeServer *m_analyze = nullptr;
     VectorIndex *m_vector = nullptr;
     QueryLang *m_querylang = nullptr;
 

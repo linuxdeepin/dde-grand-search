@@ -132,11 +132,6 @@ bool SemanticHelper::entityFromJson(const QString &json, SemanticEntity &out)
     return true;
 }
 
-QString SemanticHelper::analyzeServiceName()
-{
-    return "org.deepin.ai.daemon.AnalyzeServer";
-}
-
 QString SemanticHelper::vectorServiceName()
 {
     return "org.deepin.ai.daemon.VectorIndex";

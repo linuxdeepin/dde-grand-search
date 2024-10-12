@@ -16,13 +16,11 @@ class SemanticParser : public QObject
 public:
     explicit SemanticParser(QObject *parent = nullptr);
     ~SemanticParser();
-    bool connectToAnalyze(const QString &service);
     bool connectToVector(const QString &service);
     bool connectToQueryLang(const QString &service);
     QString analyze(const QString &text);
     QString vectorSearch(const QString &prompt);
     QString query(const QString &text);
-    bool isAnalayzeSupported();
     bool isVectorSupported();
     bool isQueryLangSupported();
 public slots:
