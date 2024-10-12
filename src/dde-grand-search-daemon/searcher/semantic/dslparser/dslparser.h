@@ -93,7 +93,7 @@ private:
     SemanticEntity m_entity;
 };
 
-// 对应RuleNameSearch  NAME CONTAINS "周杰伦"
+// 对应RuleNameSearch  NAME CONTAINS "名字"
 class NameCond : public BaseCond {
 public:
     explicit NameCond(const QString &text, QList<SemanticWorkerPrivate::QueryFunction> *querys,

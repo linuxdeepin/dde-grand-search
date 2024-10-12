@@ -173,11 +173,10 @@ bool SemanticWorker::working(void *context)
     }
 
     // DSL
-    qInfo() << QString("query(%1)").arg(d->m_context);
     d->m_time.start();
     SemanticParser parser;
 
-    if (d->m_doQueryLang && parser.connectToQueryLang(SemanticHelper::querylangServiceName())) {
+    if (d->m_doSemantic && parser.connectToQueryLang(SemanticHelper::querylangServiceName())) {
         checkRuning();
         // get AI engine output
         QString dslStr = parser.query(d->m_context);
@@ -185,7 +184,7 @@ bool SemanticWorker::working(void *context)
         dslStr.replace("'", "\"");
         dslStr.replace("WITH META_VALUE", "AND META_VALUE");
         dslStr.replace("DIRECTORY_NAME IS", "PATH IS");
-        qInfo() << QString("query(%1) => dsl(%2), spend(%3 ms)").arg(d->m_context).arg(dslStr).arg(d->m_time.elapsed());
+        qDebug() << QString("query(%1) => dsl(%2), spend(%3 ms)").arg(d->m_context).arg(dslStr).arg(d->m_time.elapsed());
 
         // parse DSL
         d->m_time.restart();
@@ -225,11 +224,8 @@ bool SemanticWorker::working(void *context)
             emit unearthed(this);
         return true;
     }
-
-    if (DSLPARSER) {
-        return true;
-    }
-
+    return false;
+#if 0
     bool canSemantic = false;
     bool canVector = false;
 
@@ -239,7 +235,7 @@ bool SemanticWorker::working(void *context)
 
     // get entity
     if (d->m_doSemantic) {
-        if (parser.connectToAnalyze(SemanticHelper::analyzeServiceName())){
+        if (parser.connectToAnalyze(SemanticHelper::querylangServiceName())){
             checkRuning();
 
             QString ret = parser.analyze(d->m_context);
@@ -343,6 +339,7 @@ bool SemanticWorker::working(void *context)
         emit unearthed(this);
 
     return true;
+#endif
 }
 
 void SemanticWorker::terminate()

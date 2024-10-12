@@ -33,7 +33,6 @@ class SemanticHelper
 {
 public:
     static bool entityFromJson(const QString &json, SemanticEntity &out);
-    static QString analyzeServiceName();
     static QString vectorServiceName();
     static QString querylangServiceName();
     static bool isMatchTime(qint64 time, const QList<QPair<qint64, qint64>> &intervals);

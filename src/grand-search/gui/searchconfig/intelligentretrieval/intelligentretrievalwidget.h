@@ -25,7 +25,7 @@ public slots:
     void openAppStore(const QString &app);
 protected:
     void updateStatusContent(const QVariantHash &status);
-    bool isAnalayzeSupported();
+    bool isQueryLangSupported();
     bool isVectorSupported();
     void checkBoxChanged();
     void setAutoIndex(bool on);

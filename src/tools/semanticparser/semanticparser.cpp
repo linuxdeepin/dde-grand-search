@@ -13,20 +13,6 @@ SemanticParserPrivate::SemanticParserPrivate(SemanticParser *parent) : q(parent)
 
 }
 
-QString SemanticParser::analyze(const QString &text)
-{
-    Q_ASSERT(d->m_analyze);
-
-    QString ret;
-    auto reply = d->m_analyze->Analyze(text);
-    ret = reply.value();
-    if (reply.isError()) {
-        qWarning() << "the parser server return error" << reply.error().message();
-        ret.clear();
-    }
-    return ret;
-}
-
 QString SemanticParser::vectorSearch(const QString &context)
 {
     QString ret;
@@ -48,14 +34,6 @@ QString SemanticParser::query(const QString &text)
         ret.clear();
     }
     return ret;
-}
-
-bool SemanticParser::isAnalayzeSupported()
-{
-    if (!d->m_analyze)
-        return false;
-
-    return true;
 }
 
 bool SemanticParser::isVectorSupported()
@@ -85,17 +63,6 @@ SemanticParser::~SemanticParser()
 {
     delete d;
     d = nullptr;
-}
-
-bool SemanticParser::connectToAnalyze(const QString &service)
-{
-    if (d->m_analyze)
-        return false;
-
-    d->m_analyze = new AnalyzeServer(service, "/org/deepin/ai/daemon/AnalyzeServer",
-                                    QDBusConnection::sessionBus(), this);
-    d->m_analyze->setTimeout(60 * 1000);
-    return d->m_analyze->isValid();
 }
 
 bool SemanticParser::connectToVector(const QString &service)
