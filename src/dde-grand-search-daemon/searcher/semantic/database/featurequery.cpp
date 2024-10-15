@@ -83,16 +83,24 @@ FeatureLibEngine::QueryConditons FeatureQueryPrivate::translateConditons()
 
         {
             FeatureLibEngine::QueryConditons subTmp;
+            bool isFirst = true;
             if (!m_entity.author.isEmpty()) {
                 subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Author, m_entity.author));
-            } else if (!m_entity.album.isEmpty()) {
+                isFirst = false;
+            }
+            if (!m_entity.album.isEmpty()) {
+                if (!isFirst) {
+                    subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
+                }
                 subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Album, m_entity.album));
-            } else if (!m_entity.duration.isEmpty()) {
+                isFirst = false;
+            }
+            if (!m_entity.duration.isEmpty()) {
+                if (!isFirst) {
+                    subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
+                }
                 subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Duration, m_entity.duration));
-            } else {
-                subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Author, m_entity.keys));
-                subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Or));
-                subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Album, m_entity.keys));
+                isFirst = false;
             }
 
             tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
@@ -110,11 +118,24 @@ FeatureLibEngine::QueryConditons FeatureQueryPrivate::translateConditons()
         FeatureLibEngine::QueryConditons tmp;
         QStringList suffix = SearchHelper::instance()->getSuffixByGroupName(VIDEO_GROUP);
         tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::FileType, suffix));
-        tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
-        if (!m_entity.duration.isEmpty()) {
-            tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Duration, m_entity.duration));
-        } else {
-            tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Resolution, m_entity.resolution));
+
+        {
+            FeatureLibEngine::QueryConditons subTmp;
+            bool isFirst = true;
+            if (!m_entity.duration.isEmpty()) {
+                subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Duration, m_entity.duration));
+                isFirst = false;
+            }
+            if (!m_entity.resolution.isEmpty()) {
+                if (!isFirst) {
+                    subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
+                }
+                subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Resolution, m_entity.resolution));
+                isFirst = false;
+            }
+
+            tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
+            tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(subTmp)));
         }
 
         cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(tmp)));

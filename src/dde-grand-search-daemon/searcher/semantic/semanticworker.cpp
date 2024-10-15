@@ -367,9 +367,8 @@ MatchedItemMap SemanticWorker::takeAll()
     return items;
 }
 
-void SemanticWorker::setEngineState(bool e, bool v, bool isQuerylang)
+void SemanticWorker::setEngineState(bool e, bool v)
 {
     d->m_doSemantic = e;
     d->m_doVector = v;
-    d->m_doQueryLang = isQuerylang;
 }

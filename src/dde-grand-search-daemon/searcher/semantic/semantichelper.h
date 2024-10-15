@@ -21,7 +21,8 @@ struct SemanticEntity
     QString resolution; // 分辨率
     QString partPath;
     QString suffix;
-    bool isTrue = true;
+    bool isTruePath = true; // Path包含与否
+    bool isTrueType = true; // Type包含与否
     QString compType;
     qint64 fileSize;
     QList<QPair<qint64, qint64>> times;

@@ -6,7 +6,6 @@
 #define SEMANTICPARSER_P_H
 
 #include "semanticparser.h"
-#include "analyzeserver.h"
 #include "vectorindex.h"
 #include "querylang.h"
 

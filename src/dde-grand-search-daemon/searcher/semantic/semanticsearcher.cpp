@@ -74,7 +74,7 @@ bool SemanticSearcher::activate()
 ProxyWorker *SemanticSearcher::createWorker() const
 {
     auto worker = new SemanticWorker(name());
-    worker->setEngineState(d->m_semantic, d->m_vector, d->m_querylang);
+    worker->setEngineState(d->m_semantic, d->m_vector);
     return worker;
 }
 
