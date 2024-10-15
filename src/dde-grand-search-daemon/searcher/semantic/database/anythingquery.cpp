@@ -71,7 +71,7 @@ bool AnythingQueryPrivate::searchUserPath(PushItemCallBack callBack, void *pdata
             bool isMatch = info.canonicalFilePath().contains(m_entity.partPath);
             //qDebug() << QString("(%1) vs (%2) isMatch(%3) vs require(%4)").arg(info.canonicalFilePath())
             //            .arg(m_entity.partPath).arg(isMatch).arg(m_entity.isTrue);
-            if ((!m_entity.isTrue && isMatch) || (m_entity.isTrue && !isMatch)) {
+            if ((!m_entity.isTruePath && isMatch) || (m_entity.isTruePath && !isMatch)) {
                 continue;
             }
         } else {
@@ -198,7 +198,7 @@ bool AnythingQueryPrivate::searchByAnything(PushItemCallBack callBack, void *pda
                 bool isMatch = path.contains(m_entity.partPath);
                 //qDebug() << QString("(%1) vs (%2) isMatch(%3) vs require(%4)").arg(path)
                 //            .arg(m_entity.partPath).arg(isMatch).arg(m_entity.isTrue);
-                if ((!m_entity.isTrue && isMatch) || (m_entity.isTrue && !isMatch)) {
+                if ((!m_entity.isTruePath && isMatch) || (m_entity.isTruePath && !isMatch)) {
                     continue;
                 }
             }
@@ -289,7 +289,7 @@ QString AnythingQueryPrivate::getRegExp() const
     if (!suffixs.isEmpty()) {
         regStr += QString(R"(\.(%0)$)").arg(suffixs.join('|'));
     } else if (!m_entity.suffix.isEmpty()) {
-        if (m_entity.isTrue) {
+        if (m_entity.isTrueType) {
             regStr += QString(R"(\.(%0)$)").arg(m_entity.suffix);
         } else {
             regStr += QString(R"(\.[^(%0)]$)").arg(m_entity.suffix);

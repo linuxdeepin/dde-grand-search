@@ -40,7 +40,6 @@ public:
 
     bool m_doSemantic = false;
     bool m_doVector = false;
-    bool m_doQueryLang = false;
 private:
     SemanticWorker *q;
 };
