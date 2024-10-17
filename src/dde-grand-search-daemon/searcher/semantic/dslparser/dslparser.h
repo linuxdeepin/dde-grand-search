@@ -48,8 +48,12 @@ public:
     virtual void mergeBase();
     // 合并各引擎的条件
     virtual void merge4Engine();
+    // 为OR条件调整条件组合
+    void adjust4OrCond();
     // 装载检索条件进入检索引擎
     virtual void loadCond();
+
+    virtual QList<SemanticEntity> entityList();
     virtual void addMatchedItems(const MatchedItems &items);
     virtual const MatchedItems &getMatchedItems();
     virtual QString toString(int spaceCounts = 0);
@@ -64,6 +68,7 @@ public:
     QList<BaseCond *> m_andCondList;
     QList<BaseCond *> m_orCondList;
     bool m_isValid = true;
+    SemanticEntity m_entity;
 
 public:
     enum {
@@ -96,7 +101,6 @@ public:
 
 private:
     AnythingQuery m_anything;
-    SemanticEntity m_entity;
 };
 
 // 对应RulePathSearch  PATH IS "Downloads"
@@ -112,7 +116,6 @@ public:
 
 private:
     AnythingQuery m_anything;
-    SemanticEntity m_entity;
 };
 
 // 对应RuleNameSearch  NAME CONTAINS "名字"
@@ -127,7 +130,6 @@ public:
 
 private:
     AnythingQuery m_anything;
-    SemanticEntity m_entity;
 };
 
 // 对应RuleSizeSearch  SIZE <= "4GB"
@@ -143,7 +145,6 @@ public:
 
 private:
     AnythingQuery m_anything;
-    SemanticEntity m_entity;
 };
 
 // 对应RuleTypeSearch  TYPE IS "txt"
@@ -159,7 +160,6 @@ public:
 
 private:
     AnythingQuery m_anything;
-    SemanticEntity m_entity;
 };
 
 // 对应RuleDurationSearch  DURATION > \"3 minute\"
@@ -176,7 +176,6 @@ public:
 
 private:
     FeatureQuery m_feature;
-    SemanticEntity m_entity;
 };
 
 // 对应RuleMetaSearch  META_TYPE IS \"ARTIST\" AND META_VALUE IS \"xxx\"
@@ -193,7 +192,6 @@ public:
 
 private:
     FeatureQuery m_feature;
-    SemanticEntity m_entity;
 };
 
 // 对应RuleQuantityCondition  QUANTITY = 10
@@ -219,7 +217,6 @@ public:
 
 private:
     FullTextQuery m_fulltext;
-    SemanticEntity m_entity;
 };
 
 // 对应RuleFilename
@@ -234,11 +231,11 @@ class AnythingCond : public BaseCond {
 public:
     explicit AnythingCond(QList<BaseCond *> *andList, QList<SemanticWorkerPrivate::QueryFunction> *querys,
                           SemanticWorkerPrivate *worker, QObject *parent = nullptr);
+    bool copyCondOut(BaseCond *cond);
     void loadCond() override;
 
 private:
     AnythingQuery m_anything;
-    SemanticEntity m_entity;
 };
 
 // 对应合并后的Feature
@@ -246,11 +243,11 @@ class FeatureCond : public BaseCond {
 public:
     explicit FeatureCond(QList<BaseCond *> *andList, QList<SemanticWorkerPrivate::QueryFunction> *querys,
                           SemanticWorkerPrivate *worker, QObject *parent = nullptr);
+    bool copyCondOut(BaseCond *cond);
     void loadCond() override;
 
 private:
     FeatureQuery m_feature;
-    SemanticEntity m_entity;
 };
 
 // 对应合并后的Fulltext
@@ -258,11 +255,11 @@ class FulltextCond : public BaseCond {
 public:
     explicit FulltextCond(QList<BaseCond *> *andList, QList<SemanticWorkerPrivate::QueryFunction> *querys,
                           SemanticWorkerPrivate *worker, QObject *parent = nullptr);
+    bool copyCondOut(BaseCond *cond);
     void loadCond() override;
 
 private:
     FullTextQuery m_fulltext;
-    SemanticEntity m_entity;
 };
 
 class DslParserListener : public antlr4::tree::ParseTreeListener {
@@ -340,6 +337,7 @@ public:
                        SemanticWorkerPrivate *worker, QObject *parent = nullptr);
     ~DslParser() {}
     bool isMatch(const QString &text);
+    QList<SemanticEntity> entityList() { return m_cond.entityList(); }
     const MatchedItems &getMatchedItems() { return m_cond.getMatchedItems(); }
 
 private:

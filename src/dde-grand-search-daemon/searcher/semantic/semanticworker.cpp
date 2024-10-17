@@ -175,6 +175,7 @@ bool SemanticWorker::working(void *context)
     // DSL
     d->m_time.start();
     SemanticParser parser;
+    QList<SemanticEntity> entityList;
 
     if (d->m_doSemantic && parser.connectToQueryLang(SemanticHelper::querylangServiceName())) {
         checkRuning();
@@ -191,6 +192,12 @@ bool SemanticWorker::working(void *context)
         QList<SemanticWorkerPrivate::QueryFunction> querys;
         FileResultsHandler fileHandler;
         DslParser parser(dslStr, &querys, &fileHandler, d);
+        entityList = parser.entityList();
+        qDebug() << "entityList size:" << entityList.size();
+        for (int i = 0; i < entityList.size(); i++) {
+            qDebug() << entityList[i].toString();
+        }
+
         auto future = QtConcurrent::map(querys, &SemanticWorkerPrivate::run);
         future.waitForFinished();
         if (parser.getMatchedItems().isEmpty()) {
