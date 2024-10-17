@@ -17,15 +17,21 @@ struct SemanticEntity
     QStringList keys;
     QString author; // 歌手
     QString album; // 专辑名
+    QString durationCompType;
     QString duration; // 时长
     QString resolution; // 分辨率
     QString partPath;
     QString suffix;
-    bool isTruePath = true; // Path包含与否
-    bool isTrueType = true; // Type包含与否
-    QString compType;
-    qint64 fileSize;
+    bool isContainPath = true; // Path包含与否
+    bool isContainType = true; // Type包含与否
+    QString fileCompType;
+    qint64 fileSize = 0;
     QList<QPair<qint64, qint64>> times;
+
+    QString toString() {
+        return QString("%1 | %2 | %3 | %4 | %5 | %6 | %7 | %8 | %9").arg(types.size()).arg(keys.size())
+                .arg(author).arg(album).arg(duration).arg(resolution).arg(partPath).arg(suffix).arg(fileSize);
+    }
 };
 
 typedef bool (*PushItemCallBack)(const MatchedItemMap &items, void *pdata);
