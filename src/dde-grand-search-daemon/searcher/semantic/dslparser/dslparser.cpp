@@ -104,7 +104,7 @@ void BaseCond::mergeBinary() {
                     allCond->m_timestamp = cond->m_timestamp;
                     allCond->m_cond     += cond->m_cond + "  ";
                 } else {
-                    allCond->m_timestamp2 = cond->m_timestamp2;
+                    allCond->m_timestamp2 = cond->m_timestamp;
                     allCond->m_cond      += cond->m_cond + "  ";
                 }
                 delete m_andCondList[i];
