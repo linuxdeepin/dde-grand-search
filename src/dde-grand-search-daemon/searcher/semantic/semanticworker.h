@@ -7,8 +7,6 @@
 
 #include "searcher/proxyworker.h"
 
-#define DSLPARSER true
-
 namespace GrandSearch {
 class SemanticWorkerPrivate;
 class SemanticWorker : public ProxyWorker

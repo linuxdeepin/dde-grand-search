@@ -437,11 +437,12 @@ QString BaseCond::toString(int spaceCounts) {
 
 DateInfoCond::DateInfoCond(const QString &text, QList<SemanticWorkerPrivate::QueryFunction> *querys,
                    SemanticWorkerPrivate *worker, QObject *parent) : BaseCond(text, querys, worker, parent) {
-    const qint64 _NOW = QDateTime::currentSecsSinceEpoch();
     m_condType = querylangParser::RuleDateSearchinfo;
-    m_timestamp  = 0;
-    m_timestamp2 = _NOW;
 
+    const QDateTime curDT = QDateTime::currentDateTime();
+    const QDate curDate = curDT.date();
+
+    m_timestamp = 0;
     int pos = m_cond.indexOf("\"") + 1;
     if (pos == 0) {
         m_compType = ">";
@@ -455,37 +456,53 @@ DateInfoCond::DateInfoCond(const QString &text, QList<SemanticWorkerPrivate::Que
         m_compType = "<";
     }
     static QRegExp reg("([\\d\\.]+) ?year", Qt::CaseInsensitive);
-    static QRegExp reg1("([\\d\\.]+) ?mouth", Qt::CaseInsensitive);
+    static QRegExp reg1("([\\d\\.]+) ?month", Qt::CaseInsensitive);
     static QRegExp reg2("([\\d\\.]+) ?week", Qt::CaseInsensitive);
     static QRegExp reg3("([\\d\\.]+) ?day", Qt::CaseInsensitive);
     static QRegExp reg4("([\\d\\.]+) ?hour", Qt::CaseInsensitive);
     static QRegExp reg5("([\\d\\.]+) ?(min|minute)", Qt::CaseInsensitive);
-    if (reg.indexIn(temp) != -1) {
-        m_timestamp = _NOW - static_cast<qint64>(reg.cap(1).toFloat() * 60 * 60 * 24 * 365);
-    } else if (reg1.indexIn(temp) != -1) {
-        m_timestamp = _NOW - static_cast<qint64>(reg1.cap(1).toFloat() * 60 * 60 * 24 * 30);
-    } else if (reg2.indexIn(temp) != -1) {
-        m_timestamp = _NOW - static_cast<qint64>(reg2.cap(1).toFloat() * 60 * 60 * 24 * 7);
-    } else if (reg3.indexIn(temp) != -1) {
-        m_timestamp = _NOW - static_cast<qint64>(reg3.cap(1).toFloat() * 60 * 60 * 24);
-    } else if (reg4.indexIn(temp) != -1) {
-        m_timestamp = _NOW - static_cast<qint64>(reg4.cap(1).toFloat() * 60 * 60);
-    } else if (reg5.indexIn(temp) != -1) {
-        m_timestamp = _NOW - static_cast<qint64>(reg5.cap(1).toFloat() * 60);
+    if (reg.indexIn(temp) != -1) { // 年
+        int offset = reg.cap(1).toInt() - 1;
+        auto anchor = QDateTime(QDate(curDate.year(), 1, 1), QTime(0, 0, 0));
+        m_timestamp2 = anchor.addSecs(-1).toSecsSinceEpoch();
+        m_timestamp = anchor.addYears(-1 * offset).toSecsSinceEpoch();
+    } else if (reg1.indexIn(temp) != -1) { // 月
+        int offset = reg1.cap(1).toInt() - 1;
+        auto anchor = QDateTime(QDate(curDate.year(), curDate.month(), 1), QTime(0, 0, 0));
+        m_timestamp2 = anchor.addSecs(-1).toSecsSinceEpoch();
+        m_timestamp = anchor.addMonths(-1 * offset).toSecsSinceEpoch();
+    } else if (reg2.indexIn(temp) != -1) {// 周
+        int offset = reg2.cap(1).toInt() - 1;
+        auto anchor = QDateTime(QDate(curDate.addDays(1 - curDate.dayOfWeek())), QTime(0, 0, 0));
+        m_timestamp2 = anchor.addSecs(-1).toSecsSinceEpoch();
+        m_timestamp = anchor.addDays(-1 * offset * 7).toSecsSinceEpoch();
+    } else if (reg3.indexIn(temp) != -1) { // 天
+        int offset = reg3.cap(1).toInt() - 1;
+        auto anchor = QDateTime(curDate, QTime(0, 0, 0));
+        m_timestamp2 = anchor.addSecs(-1).toSecsSinceEpoch();
+        m_timestamp = anchor.addDays(-1 * offset).toSecsSinceEpoch();
+    } else if (reg4.indexIn(temp) != -1) { // 时
+        int offset = reg4.cap(1).toInt();
+        m_timestamp2 = curDT.toSecsSinceEpoch();
+        m_timestamp = curDT.addSecs(-1 * offset * 60 * 60).toSecsSinceEpoch();
+    } else if (reg5.indexIn(temp) != -1) { // 分
+        int offset = reg5.cap(1).toInt();
+        m_timestamp2 = curDT.toSecsSinceEpoch();
+        m_timestamp = curDT.addSecs(-1 * offset * 60).toSecsSinceEpoch();
     } else {
-        m_timestamp = _NOW;
+        m_timestamp = curDT.toSecsSinceEpoch();
     }
     qDebug() << QString("DateInfoCond(%1): temp(%2) m_compType(%3) m_timestamp(%4)").arg(m_cond).arg(temp).arg(m_compType).arg(m_timestamp);
 
     if (m_compType == ">") {
-        m_entity.times.append(QPair<qint64, qint64>(m_timestamp, _NOW));
+        m_entity.times.append(QPair<qint64, qint64>(m_timestamp, m_timestamp2));
     } else {
         m_entity.times.append(QPair<qint64, qint64>(0, m_timestamp));
     }
 }
 
 void DateInfoCond::loadCond() {
-    m_anything.setEntity(m_entity);
+    m_anything.setEntity({m_entity});
     SemanticWorkerPrivate::QueryFunction func = {&m_anything, &AnythingQuery::run, this};
     m_querys->append(func);
 }
@@ -515,7 +532,7 @@ PathCond::PathCond(const QString &text, QList<SemanticWorkerPrivate::QueryFuncti
 }
 
 void PathCond::loadCond() {
-    m_anything.setEntity(m_entity);
+    m_anything.setEntity({m_entity});
     SemanticWorkerPrivate::QueryFunction func = {&m_anything, &AnythingQuery::run, this};
     m_querys->append(func);
 }
@@ -531,7 +548,7 @@ NameCond::NameCond(const QString &text, QList<SemanticWorkerPrivate::QueryFuncti
 }
 
 void NameCond::loadCond() {
-    m_anything.setEntity(m_entity);
+    m_anything.setEntity({m_entity});
     SemanticWorkerPrivate::QueryFunction func = {&m_anything, &AnythingQuery::run, this};
     m_querys->append(func);
 }
@@ -572,7 +589,7 @@ SizeCond::SizeCond(const QString &text, QList<SemanticWorkerPrivate::QueryFuncti
 }
 
 void SizeCond::loadCond() {
-    m_anything.setEntity(m_entity);
+    m_anything.setEntity({m_entity});
     SemanticWorkerPrivate::QueryFunction func = {&m_anything, &AnythingQuery::run, this};
     m_querys->append(func);
 }
@@ -615,7 +632,7 @@ TypeCond::TypeCond(const QString &text, QList<SemanticWorkerPrivate::QueryFuncti
 }
 
 void TypeCond::loadCond() {
-    m_anything.setEntity(m_entity);
+    m_anything.setEntity({m_entity});
     SemanticWorkerPrivate::QueryFunction func = {&m_anything, &AnythingQuery::run, this};
     m_querys->append(func);
 }
@@ -677,7 +694,7 @@ QString DurationCond::formatTime(qint64 msec) {
 }
 
 void DurationCond::loadCond() {
-    m_feature.setEntity(m_entity);
+    m_feature.setEntity({m_entity});
     SemanticWorkerPrivate::QueryFunction func = {&m_feature, &FeatureQuery::run, this};
     m_querys->append(func);
 }
@@ -735,7 +752,7 @@ void MetaCond::loadCond() {
         return;
     }
 
-    m_feature.setEntity(m_entity);
+    m_feature.setEntity({m_entity});
     SemanticWorkerPrivate::QueryFunction func = {&m_feature, &FeatureQuery::run, this};
     m_querys->append(func);
 }
@@ -760,7 +777,7 @@ ContentCond::ContentCond(const QString &text, QList<SemanticWorkerPrivate::Query
 }
 
 void ContentCond::loadCond() {
-    m_fulltext.setEntity(m_entity);
+    m_fulltext.setEntity({m_entity});
     SemanticWorkerPrivate::QueryFunction func = {&m_fulltext, &FullTextQuery::run, this};
     m_querys->append(func);
 }
@@ -884,7 +901,7 @@ void AnythingCond::loadCond() {
         return;
     }
 
-    m_anything.setEntity(m_entity);
+    m_anything.setEntity({m_entity});
     SemanticWorkerPrivate::QueryFunction func = {&m_anything, &AnythingQuery::run, this};
     m_querys->append(func);
 }
@@ -1044,7 +1061,7 @@ void FeatureCond::loadCond() {
         return;
     }
 
-    m_feature.setEntity(m_entity);
+    m_feature.setEntity({m_entity});
     SemanticWorkerPrivate::QueryFunction func = {&m_feature, &FeatureQuery::run, this};
     m_querys->append(func);
 }
@@ -1178,7 +1195,7 @@ void FulltextCond::loadCond() {
         return;
     }
 
-    m_fulltext.setEntity(m_entity);
+    m_fulltext.setEntity({m_entity});
     SemanticWorkerPrivate::QueryFunction func = {&m_fulltext, &FullTextQuery::run, this};
     m_querys->append(func);
 }
