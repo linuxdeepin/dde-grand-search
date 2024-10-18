@@ -45,18 +45,6 @@ SemanticWorkerPrivate::~SemanticWorkerPrivate()
 
 bool SemanticWorkerPrivate::pushItem(const MatchedItemMap &items, void *ptr)
 {
-    if (DSLPARSER) {
-        BaseCond *cond = static_cast<BaseCond *>(ptr);
-        if (!items.isEmpty()) {
-            cond->addMatchedItems(items.constBegin().value());
-        }
-
-        SemanticWorkerPrivate *d = cond->m_worker;
-        if (d->m_status.loadAcquire() == ProxyWorker::Terminated)
-            return false;
-        return true;
-    }
-
     SemanticWorkerPrivate *d =  static_cast<SemanticWorkerPrivate *>(ptr);
     if (d->m_status.loadAcquire() == ProxyWorker::Terminated)
         return false;
@@ -176,6 +164,7 @@ bool SemanticWorker::working(void *context)
     d->m_time.start();
     SemanticParser parser;
     QList<SemanticEntity> entityList;
+    bool canSemantic = false;
 
     if (d->m_doSemantic && parser.connectToQueryLang(SemanticHelper::querylangServiceName())) {
         checkRuning();
@@ -188,16 +177,16 @@ bool SemanticWorker::working(void *context)
         qDebug() << QString("query(%1) => dsl(%2), spend(%3 ms)").arg(d->m_context).arg(dslStr).arg(d->m_time.elapsed());
 
         // parse DSL
-        d->m_time.restart();
         QList<SemanticWorkerPrivate::QueryFunction> querys;
         FileResultsHandler fileHandler;
         DslParser parser(dslStr, &querys, &fileHandler, d);
         entityList = parser.entityList();
-        qDebug() << "entityList size:" << entityList.size();
         for (int i = 0; i < entityList.size(); i++) {
-            qDebug() << entityList[i].toString();
+            qDebug() << "entityList" << i << entityList[i].toString();
         }
-
+        canSemantic = !entityList.isEmpty();
+    }
+#if 0
         auto future = QtConcurrent::map(querys, &SemanticWorkerPrivate::run);
         future.waitForFinished();
         if (parser.getMatchedItems().isEmpty()) {
@@ -232,46 +221,9 @@ bool SemanticWorker::working(void *context)
         return true;
     }
     return false;
-#if 0
-    bool canSemantic = false;
-    bool canVector = false;
+#else
 
-    d->m_time.start();
-    SemanticEntity entity;
-    //SemanticParser parser;
-
-    // get entity
-    if (d->m_doSemantic) {
-        if (parser.connectToAnalyze(SemanticHelper::querylangServiceName())){
-            checkRuning();
-
-            QString ret = parser.analyze(d->m_context);
-            qDebug() << "get reply" << ret << d->m_time.elapsed();
-
-            checkRuning();
-
-            if (!SemanticHelper::entityFromJson(ret, entity)) {
-                qWarning() << "invild entity json.";
-            } else {
-                // 无效的搜索信息
-                if (entity.keys.isEmpty() && entity.types.isEmpty() && entity.times.isEmpty()) {
-                    qDebug() << "invaild entity to search.";
-                } else {
-                    canSemantic = true;
-                }
-            }
-        }
-    }
-
-    if (d->m_doVector) {
-        if (parser.connectToVector(SemanticHelper::vectorServiceName())){
-            checkRuning();
-            canVector = true;
-        }
-    }
-
-    if (!canSemantic && !canVector)
-        return false;
+    d->m_time.restart();
 
     QList<SemanticWorkerPrivate::QueryFunction> querys;
     FileResultsHandler fileHandler;
@@ -280,7 +232,7 @@ bool SemanticWorker::working(void *context)
     if (canSemantic) {
         SemanticWorkerPrivate::QueryFunction func = {&anything, &AnythingQuery::run, d};
         querys.append(func);
-        anything.setEntity(entity);
+        anything.setEntity(entityList);
         anything.setFileHandler(&fileHandler);
     }
 
@@ -288,7 +240,7 @@ bool SemanticWorker::working(void *context)
     if (canSemantic) {
         SemanticWorkerPrivate::QueryFunction func = {&fuletext, &FullTextQuery::run, d};
         querys.append(func);
-        fuletext.setEntity(entity);
+        fuletext.setEntity(entityList);
         fuletext.setFileHandler(&fileHandler);
     }
 
@@ -296,17 +248,8 @@ bool SemanticWorker::working(void *context)
     if (canSemantic) {
         SemanticWorkerPrivate::QueryFunction func = {&feature, &FeatureQuery::run, d};
         querys.append(func);
-        feature.setEntity(entity);
+        feature.setEntity(entityList);
         feature.setFileHandler(&fileHandler);
-    }
-
-    VectorQuery vector;
-    if (canVector /*&& d->m_context.size() > 5*/) {
-        SemanticWorkerPrivate::QueryFunction func = {&vector, &VectorQuery::run, d};
-        querys.append(func);
-        vector.setParser(&parser);
-        vector.setFileHandler(&fileHandler);
-        vector.setQuery(d->m_context);
     }
 
     checkRuning();

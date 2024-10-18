@@ -19,12 +19,12 @@ public:
     bool searchUserPath(PushItemCallBack callBack, void *pdata);
     bool searchByAnything(PushItemCallBack callBack, void *pdata);
     QFileInfoList traverseDirAndFile(const QString &path);
-    QString getRegExp() const;
+    QString getRegExp(const SemanticEntity &entity) const;
     bool timeToPush() const;
     double calcItemWeight(const QString &name);
 public:
     ComDeepinAnythingInterface *m_anythingInterface = nullptr;
-    SemanticEntity m_entity;
+    QList<SemanticEntity> m_entity;
     QString m_searchPath;
     QString m_originalSearchPath;
     bool m_hasTransformed = false;

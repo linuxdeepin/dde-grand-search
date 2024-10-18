@@ -21,7 +21,7 @@ public:
     explicit FeatureQuery(QObject *parent = nullptr);
     ~FeatureQuery();
     static void run(void *ptr, PushItemCallBack callBack, void *pdata);
-    void setEntity(const SemanticEntity &entity);
+    void setEntity(const QList<SemanticEntity> &entity);
     void setFileHandler(FileResultsHandler *handler);
 signals:
 
