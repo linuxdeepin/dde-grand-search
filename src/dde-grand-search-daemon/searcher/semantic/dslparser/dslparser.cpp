@@ -11,6 +11,8 @@
 using namespace GrandSearch;
 using namespace antlr4;
 
+bool BaseCond::kIsNeedAdjustBase = false;
+
 BaseCond::BaseCond(const QString &text, QList<SemanticWorkerPrivate::QueryFunction> *querys,
                    SemanticWorkerPrivate *worker, QObject *parent) : QObject(parent) {
     setCond(text);
@@ -75,9 +77,15 @@ _EXIT:
 }
 
 void BaseCond::adjust() {
+    // 消除冗余的Binary层级
     this->mergeBinary();
-    this->mergeBase();
+    // 消除冗余的Base层级，因为Base层级可以嵌套，所以可能要多次调用（如果存在层级变化，使用kIsNeedAdjustBase进行标记，直到不需变化）
+    do {
+        BaseCond::kIsNeedAdjustBase = false;
+        this->mergeBase();
+    } while (BaseCond::kIsNeedAdjustBase);
     qInfo() << QString("after merge:\n%1").arg(this->toString()).toUtf8().toStdString().c_str();
+
     this->merge4Engine();
     this->adjust4OrCond();
     //this->loadCond();
@@ -154,6 +162,37 @@ void BaseCond::mergeBinary() {
 }
 
 void BaseCond::mergeBase() {
+    // 合并DateInfo类型，原理：一般都是成对出现的
+    if (m_condType == querylangParser::RulePrimary && m_andCondList.size() >= 2
+            && m_andCondList[0]->getCondType() == querylangParser::RuleDateSearchinfo) {
+        bool isAllDate = true;
+        for (int i = 0; i < m_andCondList.size(); i++) {
+            if (m_andCondList[i]->getCondType() != querylangParser::RuleDateSearchinfo) {
+                isAllDate = false;
+                break;
+            }
+        }
+
+        if (isAllDate) {
+            DateInfoCond *allCond = new DateInfoCond("", this->m_querys, this->m_worker);
+            allCond->m_compType = "==";
+            for (int i = m_andCondList.size() - 1; i >= 0; i--) {
+                DateInfoCond *cond = dynamic_cast<DateInfoCond *>(m_andCondList[i]);
+                if (cond->m_compType.contains(">")) {
+                    allCond->m_timestamp = cond->m_timestamp;
+                    allCond->m_cond     += cond->m_cond + "  ";
+                } else {
+                    allCond->m_timestamp2 = cond->m_timestamp;
+                    allCond->m_cond      += cond->m_cond + "  ";
+                }
+                delete m_andCondList[i];
+                m_andCondList.removeAt(i);
+            }
+            m_andCondList.append(allCond);
+            allCond->setParent(this);
+        }
+    }
+
     if (m_condType == querylangParser::RulePrimary) {
         if (!m_andCondList.isEmpty()) {
             for (int i = m_andCondList.size() - 1; i >= 0; i--) {
@@ -190,6 +229,7 @@ void BaseCond::mergeBase() {
         setParent(adviseParent);
         parent->m_andCondList.clear();
         delete parent;
+        BaseCond::kIsNeedAdjustBase = true;
     }
 }
 

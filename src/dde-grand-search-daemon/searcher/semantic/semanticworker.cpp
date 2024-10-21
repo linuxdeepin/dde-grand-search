@@ -175,6 +175,7 @@ bool SemanticWorker::working(void *context)
         dslStr.replace("WITH META_VALUE", "AND META_VALUE");
         dslStr.replace("DIRECTORY_NAME IS", "PATH IS");
         qDebug() << QString("query(%1) => dsl(%2), spend(%3 ms)").arg(d->m_context).arg(dslStr).arg(d->m_time.elapsed());
+        //dslStr = "((DATE >= CURRENT -\"5 minute\") AND (DATE <= \"CURRENT\")) AND (TYPE IS \"document\")";
 
         // parse DSL
         QList<SemanticWorkerPrivate::QueryFunction> querys;
