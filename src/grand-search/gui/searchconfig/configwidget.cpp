@@ -79,6 +79,11 @@ void ConfigWidget::initUI()
     m_scrollArea->setWidget(m_scrollAreaContent);
 }
 
+void ConfigWidget::closeEvent(QCloseEvent *event)
+{
+    m_indexWidget->onCloseEvent();
+}
+
 void ConfigWidget::initData()
 {
 }

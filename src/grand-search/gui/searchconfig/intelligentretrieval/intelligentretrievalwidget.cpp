@@ -6,6 +6,7 @@
 #include "detailcheckbox.h"
 #include "autoindexstatus.h"
 #include "gui/searchconfig/switchwidget/switchwidget.h"
+#include "gui/searchconfig/llmwidget/llmwidget.h"
 #include "business/config/searchconfig.h"
 #include "global/searchconfigdefine.h"
 #include "global/builtinsearch.h"
@@ -97,6 +98,24 @@ IntelligentRetrievalWidget::IntelligentRetrievalWidget(QWidget *parent)
         m_indexStatus = new AutoIndexStatus(bkg);
         m_indexStatus->setMinimumSize(SWITCHWIDGETWIDTH, DETAILSWITCHWIDGETHEIGHT / 2);
         vl->addWidget(m_indexStatus);
+
+        m_mainLayout->addSpacing(8);
+        m_mainLayout->addWidget(bkg);
+    }
+
+    //UOS AI大模型
+    {
+        RoundedBackground *bkg = new RoundedBackground(this);
+        bkg->setMinimumSize(CHECKBOXITEMWIDTH, SWITCHWIDGETHEIGHT);
+        bkg->setTopRound(true);
+        bkg->setBottomRound(true);
+        QVBoxLayout *vl = new QVBoxLayout(bkg);
+        vl->setContentsMargins(0, 2, 0, 5);
+
+        m_llmWidget = new LLMWidget(this);
+        m_llmWidget->setText(tr("UOS AI LLM"),tr("After installing the UOS AI large model, you can use the AI intelligent search function without an internet connection."));
+        m_llmWidget->checkInstallStatus();
+        vl->addWidget(m_llmWidget);
 
         m_mainLayout->addSpacing(8);
         m_mainLayout->addWidget(bkg);
@@ -279,4 +298,9 @@ bool IntelligentRetrievalWidget::getIndexStatus(QVariantHash &statuts)
     QString json = ret;
     statuts = QJsonDocument::fromJson(json.toUtf8()).object().toVariantHash();
     return statuts.value("enable", false).toBool();
+}
+
+void IntelligentRetrievalWidget::onCloseEvent()
+{
+    m_llmWidget->onCloseEvent();
 }

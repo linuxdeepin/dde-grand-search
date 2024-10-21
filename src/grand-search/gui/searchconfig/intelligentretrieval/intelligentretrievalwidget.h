@@ -13,6 +13,7 @@
 
 namespace GrandSearch {
 class SwitchWidget;
+class LLMWidget;
 class DetailCheckBox;
 class AutoIndexStatus;
 class IntelligentRetrievalWidget : public Dtk::Widget::DWidget
@@ -20,6 +21,7 @@ class IntelligentRetrievalWidget : public Dtk::Widget::DWidget
     Q_OBJECT
 public:
     explicit IntelligentRetrievalWidget(QWidget *parent = nullptr);
+    void onCloseEvent();
 public slots:
     void updateState();
     void openAppStore(const QString &app);
@@ -40,6 +42,7 @@ private:
     DetailCheckBox *m_vector = nullptr;
     QLabel *m_vectorDetail = nullptr;
     SwitchWidget *m_enableIndex = nullptr;
+    LLMWidget *m_llmWidget = nullptr;
     AutoIndexStatus *m_indexStatus = nullptr;
     QTimer m_timer;
     bool m_ignoreSigal = false;

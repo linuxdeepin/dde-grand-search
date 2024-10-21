@@ -125,6 +125,10 @@ set(GUISRC
     gui/searchconfig/checkboxwidget/checkboxitem.h
     gui/searchconfig/switchwidget/switchwidget.cpp
     gui/searchconfig/switchwidget/switchwidget.h
+    gui/searchconfig/llmwidget/llmwidget.cpp
+    gui/searchconfig/llmwidget/llmwidget.h
+    gui/searchconfig/llmwidget/modelmanagebutton.cpp
+    gui/searchconfig/llmwidget/modelmanagebutton.h
     gui/searchconfig/hyperlinklabel/hyperlinklabel.cpp
     gui/searchconfig/hyperlinklabel/hyperlinklabel.h
     gui/searchconfig/comboboxwidget/comboboxwidget.h
