@@ -26,6 +26,9 @@ private:
     void initUI();
     void initData();
 
+protected:
+    void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
+
 private:
     QVBoxLayout *m_mainLayout                       = nullptr;      // 界面主体布局
     Dtk::Widget::DScrollArea *m_scrollArea          = nullptr;      // 滚动区域部件

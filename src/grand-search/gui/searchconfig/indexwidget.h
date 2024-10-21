@@ -21,6 +21,8 @@ public:
     explicit IndexWidget(QWidget *parent = nullptr);
     ~IndexWidget();
 
+    void onCloseEvent();
+
 private:
     QVBoxLayout *m_mainLayout = nullptr;
     QLabel *m_groupLabel = nullptr;
