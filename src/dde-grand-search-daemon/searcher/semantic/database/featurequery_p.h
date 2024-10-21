@@ -28,11 +28,11 @@ public:
         return path;
     }
     static bool processResult(const QString &file, const QSet<QString> &match, void *pdata);
-    FeatureLibEngine::QueryConditons translateConditons();
+    FeatureLibEngine::QueryConditons translateConditons(const SemanticEntity &entity);
     bool timeToPush() const;
     double matchedWeight(const QSet<QString> &back);
 public:
-    SemanticEntity m_entity;
+    QList<SemanticEntity> m_entity;
     FileResultsHandler *m_handler = nullptr;
     QTime m_time;
     int m_lastPush = 0;

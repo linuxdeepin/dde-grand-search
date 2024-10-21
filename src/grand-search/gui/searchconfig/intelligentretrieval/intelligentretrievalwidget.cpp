@@ -25,9 +25,9 @@ DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
 
 #define INER_APP_NAME "dde-grand-search"
-static QDBusMessage createAnalayzeMsg(const QString &method) {
-    QDBusMessage msg = QDBusMessage::createMethodCall("org.deepin.ai.daemon.AnalyzeServer", "/org/deepin/ai/daemon/AnalyzeServer",
-                                                      "org.deepin.ai.daemon.AnalyzeServer", method);
+static QDBusMessage createQueryLangMsg(const QString &method) {
+    QDBusMessage msg = QDBusMessage::createMethodCall("org.deepin.ai.daemon.QueryLang", "/org/deepin/ai/daemon/QueryLang",
+                                                      "org.deepin.ai.daemon.QueryLang", method);
     return msg;
 }
 
@@ -135,7 +135,7 @@ void IntelligentRetrievalWidget::updateState()
     m_ignoreSigal = true;
 
     auto cfg = SearchConfig::instance();
-    if (isAnalayzeSupported()) {
+    if (isQueryLangSupported()) {
         bool checked = cfg->getConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, false).toBool();
         m_semantic->checkBox()->setChecked(checked);
         m_semantic->checkBox()->setEnabled(true);
@@ -219,9 +219,9 @@ void IntelligentRetrievalWidget::updateStatusContent(const QVariantHash &status)
     }
 }
 
-bool IntelligentRetrievalWidget::isAnalayzeSupported()
+bool IntelligentRetrievalWidget::isQueryLangSupported()
 {
-    auto msg = createAnalayzeMsg("Enable");
+    auto msg = createQueryLangMsg("Enable");
     QDBusPendingReply<bool> ret = QDBusConnection::sessionBus().asyncCall(msg, 500);
     ret.waitForFinished();
     return ret.isValid() && ret;
@@ -246,7 +246,7 @@ void IntelligentRetrievalWidget::checkBoxChanged()
         bool on = m_semantic->checkBox()->isChecked();
         cfg->setConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, on);
 
-        QDBusMessage msg = createAnalayzeMsg("SetSemanticOn");
+        QDBusMessage msg = createQueryLangMsg("SetSemanticOn");
         QVariantList argvs;
         argvs.append(on);
         msg.setArguments(argvs);

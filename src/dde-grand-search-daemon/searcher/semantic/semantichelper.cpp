@@ -132,14 +132,14 @@ bool SemanticHelper::entityFromJson(const QString &json, SemanticEntity &out)
     return true;
 }
 
-QString SemanticHelper::analyzeServiceName()
-{
-    return "org.deepin.ai.daemon.AnalyzeServer";
-}
-
 QString SemanticHelper::vectorServiceName()
 {
     return "org.deepin.ai.daemon.VectorIndex";
+}
+
+QString SemanticHelper::querylangServiceName()
+{
+    return "org.deepin.ai.daemon.QueryLang";
 }
 
 bool SemanticHelper::isMatchTime(qint64 time, const QList<QPair<qint64, qint64> > &intervals)
@@ -168,4 +168,52 @@ QStringList SemanticHelper::typeTosuffix(const QStringList &type)
     }
 
     return ret;
+}
+
+QString SemanticEntity::toString() const
+{
+    QString content;
+    if (!types.isEmpty())
+        content.append(" Types:").append(types.join(","));
+
+    if (!keys.isEmpty())
+        content.append(" Keys:").append(keys.join(","));
+
+    if (!author.isEmpty())
+        content.append(" Author:").append(author);
+
+    if (!album.isEmpty())
+        content.append(" Album:").append(album);
+
+    if (!durationCompType.isEmpty())
+        content.append("; DurationCompType:").append(durationCompType);
+
+    if (!duration.isEmpty())
+        content.append(" Duration:").append(duration);
+
+    if (!resolution.isEmpty())
+        content.append(" Resolution:").append(resolution);
+
+    if (!partPath.isEmpty())
+        content.append(" partPath:").append(partPath);
+
+    if (!suffix.isEmpty())
+        content.append(" suffix:").append(suffix);
+
+    content.append(" IsContainPath:").append(QString::number(isContainPath ? 1 : 0));
+    content.append(" IsContainType:").append(QString::number(isContainType ? 1 : 0));
+
+    if (!fileCompType.isEmpty())
+        content.append(" FileCompType:").append(fileCompType);
+
+    if (fileSize != 0)
+        content.append(" FileSize:").append(QString::number(fileSize));
+
+    if (!times.isEmpty()) {
+        content.append(" Times:");
+        for (const QPair<qint64, qint64> &t : times)
+            content.append(QString("(%0,%1)").arg(t.first).arg(t.second));
+    }
+
+    return content;
 }

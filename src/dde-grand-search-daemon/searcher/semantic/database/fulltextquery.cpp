@@ -36,9 +36,8 @@ bool FullTextQueryPrivate::processResult(const QString &file, void *pdata, void 
     }
 
    QFileInfo info(file);
-
    // 检查后缀
-   if (!context->suffix.isEmpty() && !context->suffix.contains(info.suffix()))
+   if (!context->suffix.isEmpty() && !context->suffix.contains(info.suffix(), Qt::CaseInsensitive))
        return true;
 
    // 检查时间
@@ -75,14 +74,20 @@ bool FullTextQueryPrivate::timeToPush() const
 double FullTextQueryPrivate::matchedWeight(const QSet<QString> &back)
 {
     double w = 0;
-    auto keys = m_entity.keys;
+    QSet<QString> mergedKeys;
+    for (const SemanticEntity &e: m_entity) {
+        auto keys = e.keys;
+        for (const QString &key : keys)
+            mergedKeys.insert(key);
+    }
+
     for (const QString &str : back) {
-        if (keys.isEmpty())
+        if (mergedKeys.isEmpty())
             break;
-        for (auto it = keys.begin(); it != keys.end();) {
+        for (auto it = mergedKeys.begin(); it != mergedKeys.end();) {
             if (str.contains(*it, Qt::CaseInsensitive)) {
-                it = keys.erase(it);
-                w += 15;
+                it = mergedKeys.erase(it);
+                w += 10;
             } else {
                 ++it;
             }
@@ -106,39 +111,51 @@ FullTextQuery::~FullTextQuery()
 
 void FullTextQuery::run(void *ptr, PushItemCallBack callBack, void *pdata)
 {
-    qDebug() << "query by fulltext";
     Q_ASSERT(callBack);
 
     FullTextQuery *self = static_cast<FullTextQuery *>(ptr);
     Q_ASSERT(self);
 
     auto d = self->d;
+    qDebug() << "query by fulltext" << d->m_entity.size();
 
     FullTextEngine engine;
     if (!engine.init(d->indexStorePath()))
         return;
 
-    FullTextQueryPrivate::Context context;
-    context.eng = &engine;
-    context.query = self;
-    context.callBack = callBack;
-    context.callBackData = pdata;
-    context.suffix = SemanticHelper::typeTosuffix(d->m_entity.types);
-    context.times = d->m_entity.times;
-
-    QString path = QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first();
-
     d->m_time.start();
-    engine.query(path, d->m_entity.keys, &FullTextQueryPrivate::processResult, &context);
+
+    for (const SemanticEntity &entity : d->m_entity) {
+        FullTextQueryPrivate::Context context;
+        context.eng = &engine;
+        context.query = self;
+        context.callBack = callBack;
+        context.callBackData = pdata;
+        context.suffix = SemanticHelper::typeTosuffix(entity.types);
+        if (!entity.suffix.isEmpty())
+            context.suffix.append(entity.suffix);
+
+        context.times = entity.times;
+
+        QString path = QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first();
+
+        engine.query(path, entity.keys, &FullTextQueryPrivate::processResult, &context);
+    }
 
     callBack(d->m_results, pdata);
 
     qDebug() << "fulltext is finished spend:" << d->m_time.elapsed() << "found:" << d->m_count;
 }
 
-void FullTextQuery::setEntity(const SemanticEntity &entity)
+void FullTextQuery::setEntity(const QList<GrandSearch::SemanticEntity> &entity)
 {
-    d->m_entity = entity;
+    d->m_entity.clear();
+    for (const SemanticEntity &e : entity) {
+        if (e.keys.isEmpty())
+            continue;
+
+        d->m_entity.append(e);
+    }
 }
 
 void FullTextQuery::setFileHandler(FileResultsHandler *handler)

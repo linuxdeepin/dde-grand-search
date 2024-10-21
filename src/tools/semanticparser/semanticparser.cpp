@@ -13,20 +13,6 @@ SemanticParserPrivate::SemanticParserPrivate(SemanticParser *parent) : q(parent)
 
 }
 
-QString SemanticParser::analyze(const QString &text)
-{
-    Q_ASSERT(d->m_analyze);
-
-    QString ret;
-    auto reply = d->m_analyze->Analyze(text);
-    ret = reply.value();
-    if (reply.isError()) {
-        qWarning() << "the parser server return error" << reply.error().message();
-        ret.clear();
-    }
-    return ret;
-}
-
 QString SemanticParser::vectorSearch(const QString &context)
 {
     QString ret;
@@ -36,12 +22,18 @@ QString SemanticParser::vectorSearch(const QString &context)
     return ret;
 }
 
-bool SemanticParser::isAnalayzeSupported()
+QString SemanticParser::query(const QString &text)
 {
-    if (!d->m_analyze)
-        return false;
+    Q_ASSERT(d->m_querylang);
 
-    return true;
+    QString ret;
+    auto reply = d->m_querylang->Query(text);
+    ret = reply.value();
+    if (reply.isError()) {
+        qWarning() << "the parser server return error" << reply.error().message();
+        ret.clear();
+    }
+    return ret;
 }
 
 bool SemanticParser::isVectorSupported()
@@ -50,6 +42,14 @@ bool SemanticParser::isVectorSupported()
         return false;
 
     return d->m_vector->Enable();
+}
+
+bool SemanticParser::isQueryLangSupported()
+{
+    if (!d->m_querylang)
+        return false;
+
+    return d->m_querylang->Enable();
 }
 
 SemanticParser::SemanticParser(QObject *parent)
@@ -65,17 +65,6 @@ SemanticParser::~SemanticParser()
     d = nullptr;
 }
 
-bool SemanticParser::connectToAnalyze(const QString &service)
-{
-    if (d->m_analyze)
-        return false;
-
-    d->m_analyze = new AnalyzeServer(service, "/org/deepin/ai/daemon/AnalyzeServer",
-                                    QDBusConnection::sessionBus(), this);
-    d->m_analyze->setTimeout(60 * 1000);
-    return d->m_analyze->isValid();
-}
-
 bool SemanticParser::connectToVector(const QString &service)
 {
     if (d->m_vector)
@@ -85,4 +74,15 @@ bool SemanticParser::connectToVector(const QString &service)
                                     QDBusConnection::sessionBus(), this);
     d->m_vector->setTimeout(60 * 1000);
     return d->m_vector->isValid();
+}
+
+bool SemanticParser::connectToQueryLang(const QString &service)
+{
+    if (d->m_querylang)
+        return false;
+
+    d->m_querylang = new QueryLang(service, "/org/deepin/ai/daemon/QueryLang",
+                                    QDBusConnection::sessionBus(), this);
+    d->m_querylang->setTimeout(60 * 1000);
+    return d->m_querylang->isValid();
 }

@@ -52,18 +52,18 @@ bool SemanticSearcher::isActive() const
     d->m_vector   = false;
 
     if (config->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, false)) {
-        if (paser.connectToAnalyze(SemanticHelper::analyzeServiceName())) {
-            d->m_semantic  = paser.isAnalayzeSupported();
+        if (paser.connectToQueryLang(SemanticHelper::querylangServiceName())) {
+            d->m_semantic  = paser.isQueryLangSupported();
         }
     }
 
-    if (config->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR, true)) {
-        if (paser.connectToVector(SemanticHelper::vectorServiceName())) {
-            d->m_vector = paser.isVectorSupported();
-        }
-    }
+//    if (config->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR, true)) {
+//        if (paser.connectToVector(SemanticHelper::vectorServiceName())) {
+//            d->m_vector = paser.isVectorSupported();
+//        }
+//    }
 
-    return d->m_semantic || d->m_vector;
+    return d->m_semantic;
 }
 
 bool SemanticSearcher::activate()

@@ -6,8 +6,8 @@
 #define SEMANTICPARSER_P_H
 
 #include "semanticparser.h"
-#include "analyzeserver.h"
 #include "vectorindex.h"
+#include "querylang.h"
 
 using namespace org::deepin::ai::daemon;
 
@@ -18,8 +18,8 @@ public:
     explicit SemanticParserPrivate(SemanticParser *parent);
     //~SemanticParserPrivate();
 public:
-    AnalyzeServer *m_analyze = nullptr;
     VectorIndex *m_vector = nullptr;
+    QueryLang *m_querylang = nullptr;
 
 private:
     SemanticParser *q;

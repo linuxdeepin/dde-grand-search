@@ -9,3 +9,6 @@ build/
 *.qm
 
 .unioncode
+
+dist/
+3rdparty/antlr4

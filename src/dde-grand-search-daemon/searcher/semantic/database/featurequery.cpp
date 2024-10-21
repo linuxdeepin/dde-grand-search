@@ -55,60 +55,145 @@ bool FeatureQueryPrivate::processResult(const QString &file, const QSet<QString>
     return true;
 }
 
-FeatureLibEngine::QueryConditons FeatureQueryPrivate::translateConditons()
+FeatureLibEngine::QueryConditons FeatureQueryPrivate::translateConditons(const SemanticEntity &entity)
 {
     FeatureLibEngine::QueryConditons cond;
-    if (m_entity.keys.isEmpty())
+    if (entity.keys.isEmpty() && entity.author.isEmpty() && entity.album.isEmpty() && entity.duration.isEmpty() && entity.resolution.isEmpty())
         return cond;
 
     // 图片
-    if (m_entity.types.contains(PICTURE_GROUP)) {
-        FeatureLibEngine::QueryConditons tmp;
-        QStringList suffix = SearchHelper::instance()->getSuffixByGroupName(PICTURE_GROUP);
-        tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::FileType, suffix));
-        tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
-        tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Text, m_entity.keys));
+    if (!entity.keys.isEmpty()) {
+        const QStringList suffix = SearchHelper::instance()->getSuffixByGroupName(PICTURE_GROUP);
+        QStringList picSuffix;
+        if (entity.types.contains(PICTURE_GROUP))
+            picSuffix = suffix;
 
-        cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(tmp)));
+        if (!entity.suffix.isEmpty()) {
+            picSuffix.clear();
+            if (suffix.contains(entity.suffix, Qt::CaseInsensitive))
+                picSuffix.append(entity.suffix.toLower());
+        }
+
+        if (!picSuffix.isEmpty()) {
+            FeatureLibEngine::QueryConditons tmp;
+            tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::FileType, picSuffix));
+            tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
+            tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Text, entity.keys));
+
+            cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(tmp)));
+        }
     }
 
     // 音乐
-    if (m_entity.types.contains(AUDIO_GROUP)) {
-        if (!cond.isEmpty())
-            cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Or));
+    if (!(entity.keys.isEmpty() && entity.author.isEmpty() && entity.album.isEmpty() && entity.duration.isEmpty())) {
+        const QStringList suffix = SearchHelper::instance()->getSuffixByGroupName(AUDIO_GROUP);
+        QStringList mscSuffix;
+        if (entity.types.contains(AUDIO_GROUP))
+            mscSuffix = suffix;
 
-        FeatureLibEngine::QueryConditons tmp;
-        QStringList suffix = SearchHelper::instance()->getSuffixByGroupName(AUDIO_GROUP);
-        tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::FileType, suffix));
-
-        {
-            FeatureLibEngine::QueryConditons subTmp;
-            subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Author, m_entity.keys));
-            subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Or));
-            subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Album, m_entity.keys));
-
-            tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
-            tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(subTmp)));
+        if (!entity.suffix.isEmpty()) {
+            mscSuffix.clear();;
+            if (suffix.contains(entity.suffix, Qt::CaseInsensitive))
+                mscSuffix.append(entity.suffix.toLower());
         }
 
-        cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(tmp)));
+        if (!mscSuffix.isEmpty()) {
+            if (!cond.isEmpty())
+                cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Or));
+
+            FeatureLibEngine::QueryConditons tmp;
+            tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::FileType, mscSuffix));
+
+            {
+                FeatureLibEngine::QueryConditons subTmp;
+                bool isFirst = true;
+                if (!entity.author.isEmpty()) {
+                    subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Author, entity.author));
+                    isFirst = false;
+                }
+                if (!entity.album.isEmpty()) {
+                    if (!isFirst) {
+                        subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
+                    }
+                    subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Album, entity.album));
+                    isFirst = false;
+                }
+
+                if (isFirst && !entity.keys.isEmpty()) {
+                    FeatureLibEngine::QueryConditons guess;
+                    guess.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Author, entity.keys.first()));
+                    guess.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Or));
+                    guess.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Album, entity.keys.first()));
+
+                    subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(guess)));
+                    isFirst = false;
+                }
+
+                if (!entity.duration.isEmpty()) {
+                    if (!isFirst) {
+                        subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
+                    }
+                    subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Duration, entity.duration));
+                    isFirst = false;
+                }
+
+                tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
+                tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(subTmp)));
+            }
+
+            cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(tmp)));
+        }
+    }
+
+    // 视频
+    if (!(entity.duration.isEmpty() && entity.resolution.isEmpty())) {
+        const QStringList suffix = SearchHelper::instance()->getSuffixByGroupName(VIDEO_GROUP);
+        QStringList vidSuffix;
+        if (entity.types.contains(VIDEO_GROUP))
+            vidSuffix = suffix;
+
+        if (!entity.suffix.isEmpty()) {
+            vidSuffix.clear();;
+            if (suffix.contains(entity.suffix, Qt::CaseInsensitive))
+                vidSuffix.append(entity.suffix.toLower());
+        }
+
+        if (!vidSuffix.isEmpty()) {
+            if (!cond.isEmpty())
+                cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Or));
+
+            FeatureLibEngine::QueryConditons tmp;
+            tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::FileType, vidSuffix));
+
+            {
+                FeatureLibEngine::QueryConditons subTmp;
+                bool isFirst = true;
+                if (!entity.duration.isEmpty()) {
+                    subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Duration, entity.duration));
+                    isFirst = false;
+                }
+                if (!entity.resolution.isEmpty()) {
+                    if (!isFirst) {
+                        subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
+                    }
+                    subTmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Resolution, entity.resolution));
+                    isFirst = false;
+                }
+
+                tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
+                tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(subTmp)));
+            }
+
+            cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(tmp)));
+        }
     }
 
     if (cond.isEmpty())
         return cond;
 
 #if 0
-    // 视频
-    if (m_entity.types.contains(VIDEO_GROUP)) {
-        if (!cond.isEmpty())
-            cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Or));
-
-        QStringList suffix = SearchHelper::instance()->getSuffixByGroupName(VIDEO_GROUP);
-        cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::FileType, suffix));
-    }
-
     // 文档
-    if (m_entity.types.contains(DOCUMENT_GROUP)) {
+    if (entity.types.contains(DOCUMENT_GROUP)) {
         if (!cond.isEmpty())
             cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Or));
 
@@ -118,10 +203,10 @@ FeatureLibEngine::QueryConditons FeatureQueryPrivate::translateConditons()
 #endif
 
     // 修改时间
-    if (!m_entity.times.isEmpty()) {
+    if (!entity.times.isEmpty()) {
         if (!cond.isEmpty())
             cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
-        cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::ModifiedTime, QVariant::fromValue(m_entity.times)));
+        cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::ModifiedTime, QVariant::fromValue(entity.times)));
     }
 
     return cond;
@@ -135,14 +220,26 @@ bool FeatureQueryPrivate::timeToPush() const
 double FeatureQueryPrivate::matchedWeight(const QSet<QString> &back)
 {
     double w = 0;
-    auto keys = m_entity.keys;
+    QSet<QString> mergedKeys;
+    for (const SemanticEntity &e: m_entity) {
+        auto keys = e.keys;
+        for (const QString &key : keys)
+            mergedKeys.insert(key);
+
+        if (!e.album.isEmpty())
+            mergedKeys.insert(e.album);
+
+        if (!e.author.isEmpty())
+            mergedKeys.insert(e.author);
+    }
+
     for (const QString &str : back) {
-        if (keys.isEmpty())
+        if (mergedKeys.isEmpty())
             break;
-        for (auto it = keys.begin(); it != keys.end();) {
+        for (auto it = mergedKeys.begin(); it != mergedKeys.end();) {
             if (str.contains(*it, Qt::CaseInsensitive)) {
-                it = keys.erase(it);
-                w += 15;
+                it = mergedKeys.erase(it);
+                w += 10;
             } else {
                 ++it;
             }
@@ -166,42 +263,49 @@ FeatureQuery::~FeatureQuery()
 
 void FeatureQuery::run(void *ptr, PushItemCallBack callBack, void *pdata)
 {
-    qDebug() << "query by feature library";
     Q_ASSERT(callBack);
 
     FeatureQuery *self = static_cast<FeatureQuery *>(ptr);
     Q_ASSERT(self);
 
     auto d = self->d;
+    qDebug() << "query by feature library" << d->m_entity.size();
 
     FeatureLibEngine engine;
     if (!engine.init(d->indexStorePath()))
         return;
 
-    auto cond = d->translateConditons();
-    if (cond.isEmpty()) {
-        qInfo() << "no valid condition to query.";
-        return;
-    }
-
     QString path = QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first();
 
-    FeatureQueryPrivate::Context ctx;
-    ctx.callBack = callBack;
-    ctx.callBackData = pdata;
-    ctx.query = self;
-
     d->m_time.start();
-    engine.query(path, cond, &FeatureQueryPrivate::processResult, &ctx);
+    for (const SemanticEntity &entity : d->m_entity) {
+        auto cond = d->translateConditons(entity);
+        if (cond.isEmpty()) {
+            qInfo() << "no valid condition to query.";
+            continue;
+        }
+
+        FeatureQueryPrivate::Context ctx;
+        ctx.callBack = callBack;
+        ctx.callBackData = pdata;
+        ctx.query = self;
+
+        engine.query(path, cond, &FeatureQueryPrivate::processResult, &ctx);
+    }
 
     callBack(d->m_results, pdata);
-
-    qDebug() << "feature is finished spend:" << d->m_time.elapsed() << "found:" << d->m_count;;
+    qDebug() << "feature is finished spend:" << d->m_time.elapsed() << "found:" << d->m_count;
 }
 
-void FeatureQuery::setEntity(const SemanticEntity &entity)
+void FeatureQuery::setEntity(const QList<SemanticEntity> &entity)
 {
-    d->m_entity = entity;
+    d->m_entity.clear();
+    for (const SemanticEntity &e : entity) {
+        if (e.keys.isEmpty() && e.author.isEmpty() && e.album.isEmpty() && e.duration.isEmpty() && e.resolution.isEmpty())
+            continue;
+
+        d->m_entity.append(e);
+    }
 }
 
 void FeatureQuery::setFileHandler(FileResultsHandler *handler)

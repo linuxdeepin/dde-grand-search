@@ -5,6 +5,7 @@
 #include "semanticworker_p.h"
 #include "global/builtinsearch.h"
 #include "semanticparser/semanticparser.h"
+#include "dslparser/dslparser.h"
 #include "semantichelper.h"
 #include "fileresultshandler.h"
 
@@ -159,45 +160,70 @@ bool SemanticWorker::working(void *context)
         count--;
     }
 
-    bool canSemantic = false;
-    bool canVector = false;
-
+    // DSL
     d->m_time.start();
-    SemanticEntity entity;
     SemanticParser parser;
+    QList<SemanticEntity> entityList;
+    bool canSemantic = false;
 
-    // get entity
-    if (d->m_doSemantic) {
-        if (parser.connectToAnalyze(SemanticHelper::analyzeServiceName())){
-            checkRuning();
+    if (d->m_doSemantic && parser.connectToQueryLang(SemanticHelper::querylangServiceName())) {
+        checkRuning();
+        // get AI engine output
+        QString dslStr = parser.query(d->m_context);
+        // 处理语法差异
+        dslStr.replace("'", "\"");
+        dslStr.replace("WITH META_VALUE", "AND META_VALUE");
+        dslStr.replace("DIRECTORY_NAME IS", "PATH IS");
+        qDebug() << QString("query(%1) => dsl(%2), spend(%3 ms)").arg(d->m_context).arg(dslStr).arg(d->m_time.elapsed());
 
-            QString ret = parser.analyze(d->m_context);
-            qDebug() << "get reply" << ret << d->m_time.elapsed();
+        // parse DSL
+        QList<SemanticWorkerPrivate::QueryFunction> querys;
+        FileResultsHandler fileHandler;
+        DslParser parser(dslStr, &querys, &fileHandler, d);
+        entityList = parser.entityList();
+        for (int i = 0; i < entityList.size(); i++) {
+            qDebug() << "entityList" << i << entityList[i].toString();
+        }
+        canSemantic = !entityList.isEmpty();
+    }
+#if 0
+        auto future = QtConcurrent::map(querys, &SemanticWorkerPrivate::run);
+        future.waitForFinished();
+        if (parser.getMatchedItems().isEmpty()) {
+            qInfo() << "semantic worker is finished, total spend: " << d->m_time.elapsed() << " ms found: " << 0;
+            return true;
+        }
 
-            checkRuning();
+        d->m_items[GRANDSEARCH_GROUP_FILE_INFERENCE].append(parser.getMatchedItems());
 
-            if (!SemanticHelper::entityFromJson(ret, entity)) {
-                qWarning() << "invild entity json.";
+        // Keep the top 100 files
+        MatchedItemMap top;
+        for (auto it = d->m_items.begin(); it != d->m_items.end(); ++it) {
+            MatchedItems &items = it.value();
+            if (items.size() > 100) {
+                MatchedItems tmp;
+                for (int i = 0; i < 100; ++i)
+                    tmp.append(items[i]);
+                top.insert(it.key(), tmp);
             } else {
-                // 无效的搜索信息
-                if (entity.keys.isEmpty() && entity.types.isEmpty() && entity.times.isEmpty()) {
-                    qDebug() << "invaild entity to search.";
-                } else {
-                    canSemantic = true;
-                }
+                top.insert(it.key(), items);
             }
         }
-    }
 
-    if (d->m_doVector) {
-        if (parser.connectToVector(SemanticHelper::vectorServiceName())){
-            checkRuning();
-            canVector = true;
-        }
-    }
+        d->m_items = top;
 
-    if (!canSemantic && !canVector)
-        return false;
+        checkRuning();
+
+        qInfo() << "semantic worker is finished, total spend: " << d->m_time.elapsed() << " ms found: " << d->m_items.begin().value().size();
+        // 发送所有数据
+        if (!d->m_items.isEmpty())
+            emit unearthed(this);
+        return true;
+    }
+    return false;
+#else
+
+    d->m_time.restart();
 
     QList<SemanticWorkerPrivate::QueryFunction> querys;
     FileResultsHandler fileHandler;
@@ -206,7 +232,7 @@ bool SemanticWorker::working(void *context)
     if (canSemantic) {
         SemanticWorkerPrivate::QueryFunction func = {&anything, &AnythingQuery::run, d};
         querys.append(func);
-        anything.setEntity(entity);
+        anything.setEntity(entityList);
         anything.setFileHandler(&fileHandler);
     }
 
@@ -214,7 +240,7 @@ bool SemanticWorker::working(void *context)
     if (canSemantic) {
         SemanticWorkerPrivate::QueryFunction func = {&fuletext, &FullTextQuery::run, d};
         querys.append(func);
-        fuletext.setEntity(entity);
+        fuletext.setEntity(entityList);
         fuletext.setFileHandler(&fileHandler);
     }
 
@@ -222,17 +248,8 @@ bool SemanticWorker::working(void *context)
     if (canSemantic) {
         SemanticWorkerPrivate::QueryFunction func = {&feature, &FeatureQuery::run, d};
         querys.append(func);
-        feature.setEntity(entity);
+        feature.setEntity(entityList);
         feature.setFileHandler(&fileHandler);
-    }
-
-    VectorQuery vector;
-    if (canVector /*&& d->m_context.size() > 5*/) {
-        SemanticWorkerPrivate::QueryFunction func = {&vector, &VectorQuery::run, d};
-        querys.append(func);
-        vector.setParser(&parser);
-        vector.setFileHandler(&fileHandler);
-        vector.setQuery(d->m_context);
     }
 
     checkRuning();
@@ -272,6 +289,7 @@ bool SemanticWorker::working(void *context)
         emit unearthed(this);
 
     return true;
+#endif
 }
 
 void SemanticWorker::terminate()
