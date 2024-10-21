@@ -59,6 +59,8 @@ public:
     virtual QString toString(int spaceCounts = 0);
 
 public:
+    // mergeBase环节，用于记录收敛情况
+    static bool kIsNeedAdjustBase;
     QString m_cond;
     int m_condType = querylangParser::RulePrimary;
     QList<SemanticWorkerPrivate::QueryFunction> *m_querys = nullptr;
