@@ -24,7 +24,7 @@ enum ModelStatus {
   Uninstall,
   InstallAndUpdate
 };
-
+class Downloader;
 class LLMWidget: public Dtk::Widget::DWidget
 {
     Q_OBJECT
@@ -64,10 +64,10 @@ private:
     QAction *m_uninstallAction = nullptr;
 
     QProcess *m_pProcess = nullptr;
-//    QTimer *m_timer = nullptr;
-//    int m_timerCount = 0;
-
     QString m_installPath;
+    QString m_baseUrl;
+    QStringList m_modelFileList;
+    Downloader *downloader = nullptr;
 };
 }
 

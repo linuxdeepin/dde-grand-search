@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "llmwidget.h"
+#include "downloader.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -18,7 +19,7 @@
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
 
-static constexpr int TIMERBEGIN = 720;//5秒轮询安装和更新状态60分钟
+//static constexpr int TIMERBEGIN = 720;//5秒轮询安装和更新状态60分钟
 
 static constexpr char MODELNAME[] = "/yourong1.5B-Instruct-GGUF";
 
@@ -31,6 +32,13 @@ LLMWidget::LLMWidget(DWidget *parent)
     installEventFilter(this);
     QString homePath = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
     m_installPath = homePath + "/.local/share/deepin-modelhub/models";
+    m_baseUrl = "https://www.modelscope.cn/models/uniontech-yourong";
+    m_modelFileList << "/modelhub/config.json"
+                    << "/modelhub/LICENSE"
+                    << "/modelhub/template"
+                    << "/modelhub/template_dsl"
+                    << "/modelhub/template_func"
+                    << "/yourong_1.5B_bf16_Q4_K_M.gguf";
 }
 
 LLMWidget::~LLMWidget()
@@ -97,6 +105,7 @@ void LLMWidget::initConnect()
     connect(m_pMenu, &QMenu::triggered, this, &LLMWidget::onMoreMenuTriggered);
 
     connect(m_pProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onProcessFinished(int, QProcess::ExitStatus)));
+
 }
 
 void LLMWidget::paintEvent(QPaintEvent* e)
@@ -133,9 +142,12 @@ void LLMWidget::onClickedStatusBtn()
     case Install:
         onUninstall();
         break;
-    case Uninstall:
+    case Uninstall: {
+        m_pManageModel->setText(tr("Installing"));
+        m_pManageModel->setEnabled(false);
         onInstall();
         break;
+    }
     case InstallAndUpdate:
         m_pMenu->exec(m_pManageModel->mapToGlobal(m_pManageModel->rect().bottomLeft() + QPoint(0, 5)));
         break;
@@ -155,18 +167,40 @@ void LLMWidget::onMoreMenuTriggered(const QAction *action)
 
 void LLMWidget::onInstall()
 {
-    if (!m_pProcess->atEnd()) return;
-    if (m_pProcess->state() == QProcess::Running)
-        m_pProcess->waitForFinished();
+    //git下载
+//    if (!m_pProcess->atEnd()) return;
+//    if (m_pProcess->state() == QProcess::Running)
+//        m_pProcess->waitForFinished();
 
-    QString program = "git";
-    QStringList arguments;
-    arguments << "clone" << "https://www.modelscope.cn/uniontech-yourong/yourong1.5B-Instruct-GGUF.git";
+//    QString program = "git";
+//    QStringList arguments;
+//    arguments << "clone" << "https://www.modelscope.cn/uniontech-yourong/yourong1.5B-Instruct-GGUF.git";
 
-    m_pProcess->setWorkingDirectory(m_installPath);
-    m_pProcess->start(program, arguments);
+//    m_pProcess->setWorkingDirectory(m_installPath);
+//    m_pProcess->start(program, arguments);
 
-    onDealInstalledModel();
+//    onDealInstalledModel();
+
+    //http请求下载
+    QDir destinationDir(m_installPath + MODELNAME);
+
+    if (destinationDir.mkpath("gguf")) {
+        qInfo() << "Directory created successfully:";
+    } else {
+        qWarning() << "Failed to create directory:" ;
+        return;
+    }
+
+    destinationDir.cd("gguf");
+
+    QString downloadDir = "/path/to/download/directory";
+    downloader = new Downloader(destinationDir.absolutePath());
+    connect(downloader, &Downloader::downloadFinished, this, &LLMWidget::checkInstallStatus);
+
+    foreach (const QString &fileUrl, m_modelFileList) {
+        QString url = m_baseUrl + MODELNAME + "/resolve/master" + fileUrl;
+        downloader->addDownloadTask(QUrl(url));
+    }
 }
 
 void LLMWidget::onUninstall()
@@ -254,7 +288,7 @@ void LLMWidget::checkInstallStatus()
 
 void LLMWidget::onCloseEvent()
 {
-    if (m_pProcess->state() == QProcess::Running && Uninstall == m_pManageModel->property("modelStatus").toInt())
+    if ((m_pProcess->state() == QProcess::Running || !downloader->isFinished()) && Uninstall == m_pManageModel->property("modelStatus").toInt())
         onUninstall();
 }
 
@@ -269,12 +303,14 @@ void LLMWidget::changeInstallStatus()
         }
     case Uninstall: {
         m_pManageModel->setText(tr("Install Model"));
-        m_pLabelStatus->setText(tr("NotInstalled"));
+        m_pLabelStatus->setText(tr("Not Installed"));
         break;
         }
     default:
         break;
     }
+    m_pManageModel->setEnabled(true);
+    m_pManageModel->updateRectSize();
 }
 
 void LLMWidget::setText(const QString &theme, const QString &summary)
