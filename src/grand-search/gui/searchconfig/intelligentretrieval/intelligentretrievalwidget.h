@@ -28,20 +28,29 @@ public slots:
 protected:
     void updateStatusContent(const QVariantHash &status);
     bool isQueryLangSupported();
+#ifdef VECTOR_SEARCH
     bool isVectorSupported();
-    void checkBoxChanged();
+#endif
     void setAutoIndex(bool on);
-    bool getIndexStatus(QVariantHash &statuts);
+    //bool getIndexStatus(QVariantHash &statuts);
 signals:
 
 public slots:
+protected slots:
+    void checkChanged();
 private:
-    QLabel *m_groupLabel = nullptr;
     QVBoxLayout *m_mainLayout = nullptr;
-    DetailCheckBox *m_semantic = nullptr;
+    SwitchWidget *m_semantic = nullptr;
+    QLabel *m_detailLabel = nullptr;
+    QWidget *m_indexWidget = nullptr;
+    QVBoxLayout *m_indexLayout = nullptr;
+#ifdef VECTOR_SEARCH
     DetailCheckBox *m_vector = nullptr;
     QLabel *m_vectorDetail = nullptr;
-    SwitchWidget *m_enableIndex = nullptr;
+#endif
+    SwitchWidget *m_featIndex = nullptr;
+    SwitchWidget *m_fullTextIndex = nullptr;
+    QLabel *m_fullTextLabel = nullptr;
     LLMWidget *m_llmWidget = nullptr;
     AutoIndexStatus *m_indexStatus = nullptr;
     QTimer m_timer;

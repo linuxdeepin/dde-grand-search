@@ -163,6 +163,8 @@ set(GUISRC
     gui/searchconfig/intelligentretrieval/detailcheckbox.h
     gui/searchconfig/intelligentretrieval/autoindexstatus.cpp
     gui/searchconfig/intelligentretrieval/autoindexstatus.h
+    gui/searchconfig/tipslabel.h
+    gui/searchconfig/tipslabel.cpp
     )
 
 # business

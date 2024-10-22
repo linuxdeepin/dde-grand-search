@@ -5,6 +5,7 @@
 #include "tailerwidget.h"
 #include "business/config/searchconfig.h"
 #include "global/searchconfigdefine.h"
+#include "tipslabel.h"
 
 #include <DFontSizeManager>
 #include <DDialog>
@@ -28,12 +29,8 @@ TailerWidget::TailerWidget(QWidget *parent)
     QString content = tr("It is displayed at the end of search results for better "
                          "identification and distinction of items with duplicate names.");
 
-    m_contentLabel = new QLabel(content, this);
+    m_contentLabel = new TipsLabel(content, this);
     m_contentLabel->setWordWrap(true);
-    DFontSizeManager::instance()->bind(m_contentLabel, DFontSizeManager::T8);
-    QPalette p(m_contentLabel->palette());
-    p.setColor(QPalette::Active, QPalette::WindowText, QColor("#526A7F"));
-    m_contentLabel->setPalette(p);
     m_mainLayout->addWidget(m_contentLabel);
     m_mainLayout->addSpacerItem(new QSpacerItem(10, 10));
 

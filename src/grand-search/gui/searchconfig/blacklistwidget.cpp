@@ -6,6 +6,7 @@
 #include "blacklistview/blacklistview.h"
 #include "blacklistview/deletedialog.h"
 #include "blacklistview/blacklistmodel.h"
+#include "tipslabel.h"
 
 #include <DWidget>
 #include <DFontSizeManager>
@@ -34,14 +35,8 @@ BlackListWidget::BlackListWidget(QWidget *parent)
     m_childHLayout = new QHBoxLayout();
     m_childHLayout->addWidget(m_groupLabel);
 
-    m_contentLabel = new QLabel(tr("Add paths to the exclusion list to prevent searching in them."), this);
-
+    m_contentLabel = new TipsLabel(tr("Add paths to the exclusion list to prevent searching in them."), this);
     m_contentLabel->setWordWrap(true);
-    DFontSizeManager::instance()->bind(m_contentLabel, DFontSizeManager::T8);
-    QPalette p(m_contentLabel->palette());
-    p.setColor(QPalette::Active, QPalette::WindowText, QColor("#526A7F"));
-    m_contentLabel->setPalette(p);
-
     m_childHLayout->addStretch();
 
     m_deleteButton = new DIconButton(this);
