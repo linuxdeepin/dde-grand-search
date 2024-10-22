@@ -24,6 +24,7 @@ find_package(Qt5 COMPONENTS
     Widgets
     Concurrent
     DBus
+    Network
 REQUIRED)
 
 set(DBUSSRC
@@ -41,6 +42,7 @@ set(Qt_LIBS
     Qt5::Widgets
     Qt5::DBus
     Qt5::Concurrent
+    Qt5::Network
 )
 
 # gio 打开功能需要依赖的库
@@ -137,6 +139,8 @@ set(GUISRC
     gui/searchconfig/llmwidget/llmwidget.h
     gui/searchconfig/llmwidget/modelmanagebutton.cpp
     gui/searchconfig/llmwidget/modelmanagebutton.h
+    gui/searchconfig/llmwidget/downloader.h
+    gui/searchconfig/llmwidget/downloader.cpp
     gui/searchconfig/hyperlinklabel/hyperlinklabel.cpp
     gui/searchconfig/hyperlinklabel/hyperlinklabel.h
     gui/searchconfig/comboboxwidget/comboboxwidget.h
