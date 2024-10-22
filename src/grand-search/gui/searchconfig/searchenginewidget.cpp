@@ -8,6 +8,7 @@
 #include "global/searchconfigdefine.h"
 #include "global/searchhelper.h"
 #include "comboboxwidget/comboboxwidget.h"
+#include "tipslabel.h"
 
 #include <DWidget>
 #include <DComboBox>
@@ -43,12 +44,8 @@ SearchEngineWidget::SearchEngineWidget(QWidget *parent)
 
     QString content = tr("Search for keywords by the default search engine.");
 
-    m_contentLabel = new QLabel(content, this);
+    m_contentLabel = new TipsLabel(content, this);
     m_contentLabel->setWordWrap(true);
-    DFontSizeManager::instance()->bind(m_contentLabel, DFontSizeManager::T8);
-    QPalette p(m_contentLabel->palette());
-    p.setColor(QPalette::Active, QPalette::WindowText, QColor("#526A7F"));
-    m_contentLabel->setPalette(p);
     m_mainLayout->addWidget(m_contentLabel);
 
     m_comboboxWidget = new ComboboxWidget(this);

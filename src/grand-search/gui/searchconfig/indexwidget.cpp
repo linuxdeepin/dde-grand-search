@@ -28,7 +28,7 @@ IndexWidget::IndexWidget(QWidget *parent)
     m_intelligent = new IntelligentRetrievalWidget(this);
     m_mainLayout->addWidget(m_groupLabel);
     m_mainLayout->addWidget(m_intelligent);
-    m_mainLayout->addSpacing(20);
+    m_mainLayout->addSpacing(10);
     m_mainLayout->addWidget(m_blackListWidget);
 }
 

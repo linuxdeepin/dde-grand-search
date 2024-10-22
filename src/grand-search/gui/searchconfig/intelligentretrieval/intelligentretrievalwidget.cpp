@@ -10,6 +10,7 @@
 #include "business/config/searchconfig.h"
 #include "global/searchconfigdefine.h"
 #include "global/builtinsearch.h"
+#include "gui/searchconfig/tipslabel.h"
 
 #include <DFontSizeManager>
 
@@ -31,11 +32,13 @@ static QDBusMessage createQueryLangMsg(const QString &method) {
     return msg;
 }
 
+#ifdef VECTOR_SEARCH
 static QDBusMessage createVectorMsg(const QString &method) {
     QDBusMessage msg = QDBusMessage::createMethodCall("org.deepin.ai.daemon.VectorIndex", "/org/deepin/ai/daemon/VectorIndex",
                                                       "org.deepin.ai.daemon.VectorIndex", method);
     return msg;
 }
+#endif
 
 IntelligentRetrievalWidget::IntelligentRetrievalWidget(QWidget *parent)
     : DWidget(parent)
@@ -47,30 +50,86 @@ IntelligentRetrievalWidget::IntelligentRetrievalWidget(QWidget *parent)
     m_mainLayout->setContentsMargins(0, 0, 0, 0);
     m_mainLayout->setSpacing(1);
 
-    m_groupLabel = new QLabel(tr("Smart Search"), this);
-    m_groupLabel->adjustSize();
-
-    m_mainLayout->addWidget(m_groupLabel);
-    m_mainLayout->addSpacing(9); // 1 + 9
-
-    {
-        RoundedBackground *bkg = new RoundedBackground(this);
-        bkg->setFixedSize(SWITCHWIDGETWIDTH, SWITCHWIDGETHEIGHT);
-        bkg->setTopRound(true);
-        QVBoxLayout *vl = new QVBoxLayout(bkg);
-        vl->setContentsMargins(10, 0, 10, 0);
-        bkg->setLayout(vl);
-
-        QLabel *subLabel = new QLabel(tr("Enable AI Smart Search"), bkg);
-        vl->addWidget(subLabel);
-        m_mainLayout->addWidget(bkg);
-    }
-
-    m_semantic = new DetailCheckBox(tr("Intelligent semantic search"), this);
+    m_semantic = new SwitchWidget(tr("AI Smart Search"), this);
+    m_semantic->setIconEnable(false);
     m_semantic->setMinimumSize(CHECKBOXITEMWIDTH, DETAILCHECKBOXITEMHEIGHT);
-    m_semantic->setDetail(tr("When turned on, you can try to search for local documents using natural language descriptions, such as \"last week's documents\"."));
+    bool turnOn = false;
+    {
+        auto cfg = SearchConfig::instance();
+        turnOn = cfg->getConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, false).toBool();
+        m_semantic->setChecked(turnOn);
+        m_semantic->layout()->setContentsMargins(0, 0, 10, 0);
+        m_semantic->setFixedHeight(SWITCHWIDGETHEIGHT);
+    }
     m_mainLayout->addWidget(m_semantic);
 
+    m_detailLabel = new TipsLabel(tr("When turned on, you can try to search for local documents using natural language descriptions, such as \"last week's documents\".")
+                               , this);
+    m_detailLabel->setWordWrap(true);
+    m_mainLayout->addWidget(m_detailLabel);
+
+    m_indexWidget = new QWidget(this);
+    m_mainLayout->addWidget(m_indexWidget);
+    m_indexWidget->setVisible(turnOn);
+
+    m_indexLayout = new QVBoxLayout();
+    m_indexLayout->setContentsMargins(0, 0, 0, 0);
+    m_indexLayout->setSpacing(0);
+    m_indexLayout->addSpacing(10);
+    m_indexWidget->setLayout(m_indexLayout);
+
+    // feat
+    {
+        m_featIndex = new SwitchWidget(tr("Automatic index update"), m_indexWidget);
+        m_featIndex->setEnableBackground(true);
+        m_featIndex->setFixedSize(SWITCHWIDGETWIDTH, DETAILSWITCHWIDGETHEIGHT / 2);
+        m_featIndex->setIconEnable(false);
+
+        m_indexLayout->addWidget(m_featIndex);
+        m_indexLayout->addSpacing(10);
+
+        m_indexStatus = new AutoIndexStatus(m_indexWidget);
+        m_indexStatus->setMinimumSize(SWITCHWIDGETWIDTH, DETAILSWITCHWIDGETHEIGHT / 2);
+        m_indexLayout->addWidget(m_indexStatus);
+        m_indexStatus->setVisible(false);
+    }
+
+    // model
+    {
+        RoundedBackground *bkg = new RoundedBackground(m_indexWidget);
+        bkg->setMinimumSize(CHECKBOXITEMWIDTH, SWITCHWIDGETHEIGHT);
+        bkg->setTopRound(true);
+        bkg->setBottomRound(true);
+
+        QVBoxLayout *vl = new QVBoxLayout(bkg);
+        bkg->setLayout(vl);
+        vl->setContentsMargins(0, 2, 0, 5);
+        m_llmWidget = new LLMWidget(bkg);
+        m_llmWidget->setText(tr("UOS AI LLM"),tr("After installing the UOS AI large model, you can use the AI intelligent search function without an internet connection."));
+        m_llmWidget->checkInstallStatus();
+        vl->addWidget(m_llmWidget);
+        m_indexLayout->addWidget(bkg);
+    }
+
+    // full text
+    {
+        m_indexLayout->addSpacing(10);
+        m_fullTextIndex = new SwitchWidget(tr("Full Text Search"), m_indexWidget);
+        m_fullTextIndex->setEnableBackground(true);
+        m_fullTextIndex->setFixedSize(SWITCHWIDGETWIDTH, DETAILSWITCHWIDGETHEIGHT / 2);
+        m_fullTextIndex->setIconEnable(false);
+        m_indexLayout->addWidget(m_fullTextIndex);
+
+        m_indexLayout->addSpacing(5);
+        m_fullTextLabel = new TipsLabel(tr("When turned on, full text search can be used in the file manager and grand search.")
+                                   , this);
+        auto margin = m_fullTextLabel->contentsMargins();
+        margin.setLeft(10);
+        m_fullTextLabel->setContentsMargins(margin);
+        m_indexLayout->addWidget(m_fullTextLabel);
+    }
+
+#ifdef VECTOR_SEARCH
     // 超链接
     m_vectorDetail = new QLabel;
     m_vectorDetail->setContextMenuPolicy(Qt::NoContextMenu);
@@ -80,70 +139,33 @@ IntelligentRetrievalWidget::IntelligentRetrievalWidget(QWidget *parent)
     m_vector->setMinimumSize(CHECKBOXITEMWIDTH, DETAILCHECKBOXITEMHEIGHT);
     m_vector->setBottomRound(true);
     m_mainLayout->addWidget(m_vector);
-
-    {
-        RoundedBackground *bkg = new RoundedBackground(this);
-        bkg->setMinimumSize(CHECKBOXITEMWIDTH, SWITCHWIDGETHEIGHT);
-        bkg->setTopRound(true);
-        bkg->setBottomRound(true);
-        QVBoxLayout *vl = new QVBoxLayout(bkg);
-        vl->setContentsMargins(0, 2, 0, 5);
-
-        m_enableIndex = new SwitchWidget(tr("Automatic index update"), this);
-        m_enableIndex->setEnableBackground(false);
-        m_enableIndex->setFixedSize(SWITCHWIDGETWIDTH, DETAILSWITCHWIDGETHEIGHT / 2);
-        m_enableIndex->setIconEnable(false);
-        vl->addWidget(m_enableIndex);
-
-        m_indexStatus = new AutoIndexStatus(bkg);
-        m_indexStatus->setMinimumSize(SWITCHWIDGETWIDTH, DETAILSWITCHWIDGETHEIGHT / 2);
-        vl->addWidget(m_indexStatus);
-
-        m_mainLayout->addSpacing(8);
-        m_mainLayout->addWidget(bkg);
-    }
-
-    //UOS AI大模型
-    {
-        RoundedBackground *bkg = new RoundedBackground(this);
-        bkg->setMinimumSize(CHECKBOXITEMWIDTH, SWITCHWIDGETHEIGHT);
-        bkg->setTopRound(true);
-        bkg->setBottomRound(true);
-        QVBoxLayout *vl = new QVBoxLayout(bkg);
-        vl->setContentsMargins(0, 2, 0, 5);
-
-        m_llmWidget = new LLMWidget(this);
-        m_llmWidget->setText(tr("UOS AI LLM"),tr("After installing the UOS AI large model, you can use the AI intelligent search function without an internet connection."));
-        m_llmWidget->checkInstallStatus();
-        vl->addWidget(m_llmWidget);
-
-        m_mainLayout->addSpacing(8);
-        m_mainLayout->addWidget(bkg);
-    }
+#endif
 
     updateState();
 
     connect(&m_timer, &QTimer::timeout, this, &IntelligentRetrievalWidget::updateState);
     m_timer.start(5000);
-    connect(m_semantic->checkBox(), &QCheckBox::stateChanged, this, &IntelligentRetrievalWidget::checkBoxChanged);
-    connect(m_vector->checkBox(), &QCheckBox::stateChanged, this, &IntelligentRetrievalWidget::checkBoxChanged);
-    connect(m_enableIndex, &SwitchWidget::checkedChanged, this, &IntelligentRetrievalWidget::checkBoxChanged);
+    connect(m_semantic, &SwitchWidget::checkedChanged, this, &IntelligentRetrievalWidget::checkChanged);
+#ifdef VECTOR_SEARCH
+    connect(m_vector->checkBox(), &QCheckBox::stateChanged, this, &IntelligentRetrievalWidget::checkChanged);
+#endif
+    connect(m_featIndex, &SwitchWidget::checkedChanged, this, &IntelligentRetrievalWidget::checkChanged);
 }
 
 void IntelligentRetrievalWidget::updateState()
 {
     m_ignoreSigal = true;
 
-    auto cfg = SearchConfig::instance();
-    if (isQueryLangSupported()) {
-        bool checked = cfg->getConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, false).toBool();
-        m_semantic->checkBox()->setChecked(checked);
-        m_semantic->checkBox()->setEnabled(true);
-    } else {
-        m_semantic->checkBox()->setChecked(false);
-        m_semantic->checkBox()->setEnabled(false);
-    }
+//    if (isQueryLangSupported()) {
 
+//        m_semantic->checkBox()->setChecked(checked);
+//        m_semantic->checkBox()->setEnabled(true);
+//    } else {
+//        m_semantic->checkBox()->setChecked(false);
+//        m_semantic->checkBox()->setEnabled(false);
+//    }
+
+#ifdef VECTOR_SEARCH
     if (isVectorSupported()) {
         bool checked = cfg->getConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR, true).toBool();
         m_vector->checkBox()->setEnabled(true);
@@ -177,6 +199,7 @@ void IntelligentRetrievalWidget::updateState()
         m_enableIndex->setEnabled(false);
         m_indexStatus->hide();
     }
+#endif
     m_ignoreSigal = false;
 }
 
@@ -227,6 +250,7 @@ bool IntelligentRetrievalWidget::isQueryLangSupported()
     return ret.isValid() && ret;
 }
 
+#ifdef VECTOR_SEARCH
 bool IntelligentRetrievalWidget::isVectorSupported()
 {
     auto msg = createVectorMsg("Enable");
@@ -234,36 +258,47 @@ bool IntelligentRetrievalWidget::isVectorSupported()
     ret.waitForFinished();
     return ret.isValid() && ret;
 }
+#endif
 
-void IntelligentRetrievalWidget::checkBoxChanged()
+void IntelligentRetrievalWidget::checkChanged()
 {
     if (m_ignoreSigal)
         return;
 
     auto sd = sender();
     auto cfg = SearchConfig::instance();
-    if (sd == m_semantic->checkBox()) {
-        bool on = m_semantic->checkBox()->isChecked();
+    if (sd == m_semantic) {
+        bool on = m_semantic->checked();
         cfg->setConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, on);
-
-        QDBusMessage msg = createQueryLangMsg("SetSemanticOn");
-        QVariantList argvs;
-        argvs.append(on);
-        msg.setArguments(argvs);
-        QDBusConnection::sessionBus().asyncCall(msg, 500);
-    } else if (sd == m_vector->checkBox()){
+        m_indexWidget->setVisible(on);
+        adjustSize();
+    }
+#ifdef VECTOR_SEARCH
+    else if (sd == m_vector->checkBox()){
         bool on = m_vector->checkBox()->isChecked();
         cfg->setConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR, on);
         // 关闭搜索时联动关闭索引
         if (!on)
             setAutoIndex(false);
-    } else if (sd == m_enableIndex) {
-        setAutoIndex(m_enableIndex->checked());
+    }
+#endif
+    else if (sd == m_featIndex) {
+        setAutoIndex(m_featIndex->checked());
     }
 
     updateState();
 }
 
+void IntelligentRetrievalWidget::setAutoIndex(bool on)
+{
+    QDBusMessage msg = createQueryLangMsg("SetSemanticOn");
+    QVariantList argvs;
+    argvs.append(on);
+    msg.setArguments(argvs);
+    QDBusConnection::sessionBus().asyncCall(msg, 500);
+}
+
+#ifdef VECTOR_SEARCH
 void IntelligentRetrievalWidget::setAutoIndex(bool on)
 {
     auto msg = createVectorMsg("setAutoIndex");
@@ -299,6 +334,7 @@ bool IntelligentRetrievalWidget::getIndexStatus(QVariantHash &statuts)
     statuts = QJsonDocument::fromJson(json.toUtf8()).object().toVariantHash();
     return statuts.value("enable", false).toBool();
 }
+#endif
 
 void IntelligentRetrievalWidget::onCloseEvent()
 {
