@@ -238,7 +238,7 @@ bool SemanticWorker::working(void *context)
     }
 
     FullTextQuery fuletext;
-    if (canSemantic) {
+    if (canSemantic && d->m_doFulltext) {
         SemanticWorkerPrivate::QueryFunction func = {&fuletext, &FullTextQuery::run, d};
         querys.append(func);
         fuletext.setEntity(entityList);
@@ -318,8 +318,9 @@ MatchedItemMap SemanticWorker::takeAll()
     return items;
 }
 
-void SemanticWorker::setEngineState(bool e, bool v)
+void SemanticWorker::setEngineState(bool e, bool v, bool f)
 {
     d->m_doSemantic = e;
     d->m_doVector = v;
+    d->m_doFulltext = f;
 }

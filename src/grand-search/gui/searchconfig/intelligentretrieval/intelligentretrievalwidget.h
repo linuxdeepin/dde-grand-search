@@ -32,7 +32,9 @@ protected:
     bool isVectorSupported();
 #endif
     void setAutoIndex(bool on);
-    //bool getIndexStatus(QVariantHash &statuts);
+    QVariantHash getIndexStatus();
+    void updateIndexStatusContent(const QVariantHash &statuts);
+    void setFulltextQuery(bool on);
 signals:
 
 public slots:

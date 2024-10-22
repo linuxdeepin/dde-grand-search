@@ -13,10 +13,12 @@
 #include "gui/searchconfig/tipslabel.h"
 
 #include <DFontSizeManager>
+#include <DDialog>
 
 #include <QDBusConnection>
 #include <QDBusMessage>
 #include <QDBusPendingReply>
+#include <QDBusInterface>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QDateTime>
@@ -56,7 +58,7 @@ IntelligentRetrievalWidget::IntelligentRetrievalWidget(QWidget *parent)
     bool turnOn = false;
     {
         auto cfg = SearchConfig::instance();
-        turnOn = cfg->getConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, false).toBool();
+        turnOn = cfg->getConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, true).toBool();
         m_semantic->setChecked(turnOn);
         m_semantic->layout()->setContentsMargins(0, 0, 10, 0);
         m_semantic->setFixedHeight(SWITCHWIDGETHEIGHT);
@@ -118,6 +120,7 @@ IntelligentRetrievalWidget::IntelligentRetrievalWidget(QWidget *parent)
         m_fullTextIndex->setEnableBackground(true);
         m_fullTextIndex->setFixedSize(SWITCHWIDGETWIDTH, DETAILSWITCHWIDGETHEIGHT / 2);
         m_fullTextIndex->setIconEnable(false);
+        m_fullTextIndex->setChecked(SearchConfig::instance()->getConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_FULLTEXT, false).toBool());
         m_indexLayout->addWidget(m_fullTextIndex);
 
         m_indexLayout->addSpacing(5);
@@ -144,26 +147,23 @@ IntelligentRetrievalWidget::IntelligentRetrievalWidget(QWidget *parent)
     updateState();
 
     connect(&m_timer, &QTimer::timeout, this, &IntelligentRetrievalWidget::updateState);
-    m_timer.start(5000);
+    m_timer.start(10000);
     connect(m_semantic, &SwitchWidget::checkedChanged, this, &IntelligentRetrievalWidget::checkChanged);
 #ifdef VECTOR_SEARCH
     connect(m_vector->checkBox(), &QCheckBox::stateChanged, this, &IntelligentRetrievalWidget::checkChanged);
 #endif
     connect(m_featIndex, &SwitchWidget::checkedChanged, this, &IntelligentRetrievalWidget::checkChanged);
+    connect(m_fullTextIndex, &SwitchWidget::checkedChanged, this, &IntelligentRetrievalWidget::checkChanged);
 }
 
 void IntelligentRetrievalWidget::updateState()
 {
     m_ignoreSigal = true;
 
-//    if (isQueryLangSupported()) {
-
-//        m_semantic->checkBox()->setChecked(checked);
-//        m_semantic->checkBox()->setEnabled(true);
-//    } else {
-//        m_semantic->checkBox()->setChecked(false);
-//        m_semantic->checkBox()->setEnabled(false);
-//    }
+    // update index status
+    if (m_semantic->checked()) {
+        this->updateIndexStatusContent(this->getIndexStatus());
+    }
 
 #ifdef VECTOR_SEARCH
     if (isVectorSupported()) {
@@ -272,6 +272,31 @@ void IntelligentRetrievalWidget::checkChanged()
         cfg->setConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, on);
         m_indexWidget->setVisible(on);
         adjustSize();
+
+        m_featIndex->setChecked(on);
+        m_fullTextIndex->setChecked(on);
+        this->setAutoIndex(on);
+        this->setFulltextQuery(on);
+
+        // 检测是否安装大模型，未安装就提醒弹窗
+        if (false && on && !this->isQueryLangSupported()) {
+            DDialog *warningDlg = new DDialog();
+            warningDlg->setWindowFlags((warningDlg->windowFlags() | Qt::WindowType::WindowStaysOnTopHint));
+            //warningDlg->setFixedWidth(380);
+            warningDlg->setIcon(QIcon(":icons/dde-grand-search-setting.svg"));
+            warningDlg->setMessage(QString(tr("To use AI smart search, you need to install the UOS AI large model. Please go to the App Store to install the model.")));
+            warningDlg->addButton(tr("Not yet"), false, DDialog::ButtonNormal);
+            warningDlg->addButton(tr("Install the model"), true, DDialog::ButtonRecommend);
+            connect(warningDlg, &DDialog::accepted, warningDlg, [&] {
+                QDBusInterface iface("com.home.appstore.client", "/com/home/appstore/client", "com.home.appstore.client");
+                iface.call("openBusinessUri", "");
+            });
+            connect(warningDlg, &DDialog::finished, warningDlg, [&] {
+                warningDlg->deleteLater();
+            });
+            warningDlg->moveToCenter();
+            warningDlg->exec();
+        }
     }
 #ifdef VECTOR_SEARCH
     else if (sd == m_vector->checkBox()){
@@ -283,7 +308,9 @@ void IntelligentRetrievalWidget::checkChanged()
     }
 #endif
     else if (sd == m_featIndex) {
-        setAutoIndex(m_featIndex->checked());
+        this->setAutoIndex(m_featIndex->checked());
+    } else if (sd == m_fullTextIndex) {
+        this->setFulltextQuery(m_fullTextIndex->checked());
     }
 
     updateState();
@@ -296,6 +323,48 @@ void IntelligentRetrievalWidget::setAutoIndex(bool on)
     argvs.append(on);
     msg.setArguments(argvs);
     QDBusConnection::sessionBus().asyncCall(msg, 500);
+}
+
+QVariantHash IntelligentRetrievalWidget::getIndexStatus()
+{
+    auto msg = createQueryLangMsg("GetSemanticStatus");
+    QDBusPendingReply<QString> ret = QDBusConnection::sessionBus().asyncCall(msg, 500);
+
+    ret.waitForFinished();
+    if (ret.error().type() != QDBusError::NoError) {
+        qWarning() << "error: " << msg.service() << QDBusError::errorString(ret.error().type()) << ret;
+        return QVariantHash();
+    }
+
+    QString json = ret;
+    return QJsonDocument::fromJson(json.toUtf8()).object().toVariantHash();
+}
+
+void IntelligentRetrievalWidget::updateIndexStatusContent(const QVariantHash &status)
+{
+    if (!status.value("enable", false).toBool()) {
+        m_featIndex->setChecked(false);
+        m_indexStatus->setVisible(false);
+        return;
+    }
+
+    m_featIndex->setChecked(true);
+    m_indexStatus->setVisible(true);
+
+    bool ok = (status.value("completion", 0).toInt() == 1);
+    if (!ok) {
+        m_indexStatus->updateContent(AutoIndexStatus::Updating,
+                    tr("Intelligent search indexing is being updated, which may take up more resources, please keep the power access."));
+    } else {
+        auto dt = QDateTime::fromSecsSinceEpoch(status.value("updatetime", 0).toLongLong());
+        m_indexStatus->updateContent(AutoIndexStatus::Success,
+                    tr("Smart Search indexing update is complete. Last update time: %0").arg(dt.toString("yyyy-MM-dd hh:mm:ss")));
+    }
+}
+
+void IntelligentRetrievalWidget::setFulltextQuery(bool on)
+{
+    SearchConfig::instance()->setConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_FULLTEXT, on);
 }
 
 #ifdef VECTOR_SEARCH

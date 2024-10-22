@@ -14,6 +14,7 @@
 #include <QSettings>
 #include <QReadLocker>
 #include <QDebug>
+#include <QDBusInterface>
 
 using namespace GrandSearch;
 
@@ -85,7 +86,7 @@ UserPreferencePointer ConfigerPrivate::webSearchEngine()
 
 UserPreferencePointer ConfigerPrivate::semanticEngine()
 {
-    QVariantHash data{{GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, false}
+    QVariantHash data{{GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, true}
                      , {GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR, true}};
 
     return UserPreferencePointer(new UserPreference(data));
@@ -204,13 +205,16 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
         set->beginGroup(GRANDSEARCH_SEMANTIC_GROUP);
         if (UserPreferencePointer conf = m_root->group(GRANDSEARCH_SEMANTIC_GROUP)) {
             bool on = false;
-            bool ret = set->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, false).toBool();
+            bool ret = set->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, true).toBool();
             conf->setValue(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, ret);
             on |= ret;
 
             ret = set->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR, true).toBool();
             conf->setValue(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR, ret);
             on |= ret;
+
+            ret = set->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_FULLTEXT, false).toBool();
+            conf->setValue(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_FULLTEXT, ret);
 
             //设置是否启用AI搜索项
             searcherConfig->setValue(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC, on);
