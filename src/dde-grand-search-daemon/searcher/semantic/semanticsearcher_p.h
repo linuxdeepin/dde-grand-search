@@ -18,6 +18,7 @@ public:
 public:
     bool m_semantic = false;
     bool m_vector = false;
+    bool m_fulltext = false;
 private:
     SemanticSearcher *q;
 };

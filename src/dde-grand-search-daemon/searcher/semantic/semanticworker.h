@@ -23,7 +23,7 @@ public:
     Status status() Q_DECL_OVERRIDE;
     bool hasItem() const Q_DECL_OVERRIDE;
     MatchedItemMap takeAll() Q_DECL_OVERRIDE;
-    void setEngineState(bool e, bool v);
+    void setEngineState(bool e, bool v, bool f);
 private:
     SemanticWorkerPrivate *d;
 };
