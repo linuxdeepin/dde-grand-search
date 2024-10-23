@@ -315,14 +315,10 @@ void AiToolBarInner::onExtension() {
 }
 
 void AiToolBarInner::onKnowledge() {
-    qDBusRegisterMetaType<QMap<QString, QString>>();
-    QMap<QString, QString> params;
-    params.insert("file", m_filePath);
-    params.insert("defaultPrompt", "将这篇文档添加到知识库");
     QDBusInterface notification("com.deepin.copilot", "/org/deepin/copilot/chat", "org.deepin.copilot.chat", QDBusConnection::sessionBus());
-    QString error = notification.call(QDBus::Block, "inputPrompt", "", QVariant::fromValue(params)).errorMessage();
+    QString error = notification.call(QDBus::Block, "sendToKnowledgeBase", QStringList(m_filePath)).errorMessage();
     if (!error.isEmpty()) {
-        qWarning() << QString("inputPrompt ERROR(%1)").arg(error);
+        qWarning() << QString("sendToKnowledgeBase ERROR(%1)").arg(error);
         this->showWarningDialog(m_knowledgeAction->text());
     }
 }
