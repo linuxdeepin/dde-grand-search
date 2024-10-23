@@ -35,6 +35,7 @@ public:
 //    void checkUpdateStatus();
     void setText(const QString &theme, const QString &summary);
     void onCloseEvent();
+    void onClickedStatusBtn();
 
 private:
     void initUI();
@@ -47,7 +48,6 @@ private:
     bool onDealInstalledModel();
 
 private slots:
-    void onClickedStatusBtn();
     void onMoreMenuTriggered(const QAction *action);
     void onProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
