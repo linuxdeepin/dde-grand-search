@@ -114,6 +114,7 @@ IntelligentRetrievalWidget::IntelligentRetrievalWidget(QWidget *parent)
     }
 
     // full text
+    if (0)
     {
         m_indexLayout->addSpacing(10);
         m_fullTextIndex = new SwitchWidget(tr("Full Text Search"), m_indexWidget);
@@ -274,9 +275,9 @@ void IntelligentRetrievalWidget::checkChanged()
         adjustSize();
 
         m_featIndex->setChecked(on);
-        m_fullTextIndex->setChecked(on);
+        //m_fullTextIndex->setChecked(on);
         this->setAutoIndex(on);
-        this->setFulltextQuery(on);
+        //setFulltextQuery(on);
 
         // 检测是否安装大模型，未安装就提醒弹窗
         if (on && !this->isQueryLangSupported()) {
