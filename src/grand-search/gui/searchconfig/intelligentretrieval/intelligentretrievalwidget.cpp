@@ -279,17 +279,18 @@ void IntelligentRetrievalWidget::checkChanged()
         this->setFulltextQuery(on);
 
         // 检测是否安装大模型，未安装就提醒弹窗
-        if (false && on && !this->isQueryLangSupported()) {
+        if (on && !this->isQueryLangSupported()) {
             DDialog *warningDlg = new DDialog();
             warningDlg->setWindowFlags((warningDlg->windowFlags() | Qt::WindowType::WindowStaysOnTopHint));
-            //warningDlg->setFixedWidth(380);
+            warningDlg->setFixedWidth(380);
             warningDlg->setIcon(QIcon(":icons/dde-grand-search-setting.svg"));
-            warningDlg->setMessage(QString(tr("To use AI smart search, you need to install the UOS AI large model. Please go to the App Store to install the model.")));
+            warningDlg->setMessage(QString(tr("To use AI smart search, you need to install the UOS AI large model. Please install the model.")));
             warningDlg->addButton(tr("Not yet"), false, DDialog::ButtonNormal);
             warningDlg->addButton(tr("Install the model"), true, DDialog::ButtonRecommend);
             connect(warningDlg, &DDialog::accepted, warningDlg, [&] {
-                QDBusInterface iface("com.home.appstore.client", "/com/home/appstore/client", "com.home.appstore.client");
-                iface.call("openBusinessUri", "");
+                m_llmWidget->onClickedStatusBtn();
+                //QDBusInterface iface("com.home.appstore.client", "/com/home/appstore/client", "com.home.appstore.client");
+                //iface.call("openBusinessUri", "");
             });
             connect(warningDlg, &DDialog::finished, warningDlg, [&] {
                 warningDlg->deleteLater();

@@ -144,6 +144,7 @@ void LLMWidget::onClickedStatusBtn()
     case Uninstall: {
         m_pManageModel->setText(tr("Installing"));
         m_pManageModel->setEnabled(false);
+        m_pManageModel->updateRectSize();
         onInstall();
         break;
     }
