@@ -31,6 +31,17 @@ bool AiToolBar::checkUosAiInstalled() {
     QDBusReply<QStringList> reply = iface.call("ListActivatableNames");
     if (reply.isValid()) {
         if (reply.value().contains("com.deepin.copilot")) {
+            // 拉起UOS AI进程
+            QDBusInterface notification("com.deepin.copilot", "/com/deepin/copilot", "com.deepin.copilot");
+            QDBusMessage reply = notification.call(QDBus::CallMode::Block, "version");
+            if (!reply.errorMessage().isEmpty()) {
+                qDebug() << "first time:" << reply.errorMessage();
+                QThread::usleep(500 * 1000);
+                reply = notification.call(QDBus::CallMode::Block, "version");
+                if (!reply.errorMessage().isEmpty()) {
+                    qWarning() << "second time:" << reply.errorMessage();
+                }
+            }
             return true;
         }
     }
