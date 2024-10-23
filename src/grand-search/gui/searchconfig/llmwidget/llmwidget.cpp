@@ -15,6 +15,7 @@
 #include <DGuiApplicationHelper>
 #include <DMenu>
 #include <DToolButton>
+#include <DDialog>
 
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
@@ -204,16 +205,25 @@ void LLMWidget::onInstall()
 
 void LLMWidget::onUninstall()
 {
-    QDir installFile(m_installPath + "/YouRong-1.5B");
+    DDialog dlg(this);
+    dlg.setIcon(QIcon(":icons/dde-grand-search-setting.svg"));
+    dlg.setMaximumWidth(380);
+    dlg.setTitle(tr("Are you sure you want to delete this model?"));
+    dlg.setMessage(tr("After uninstallation, functions such as AI Search and UOS AI Assistant will not work properly."));
+    dlg.addButton(tr("Cancel", "button"), false, DDialog::ButtonNormal);
+    dlg.addButton(tr("Confirm", "button"), true, DDialog::ButtonRecommend);
 
-    if (installFile.exists()) {
-        if (installFile.removeRecursively())
-            qInfo() << "Directory removed successfully.";
-        else
-            qWarning() << "Failed to remove directory.";
+    if (DDialog::Accepted == dlg.exec()) {
+        QDir installFile(m_installPath + "/YouRong-1.5B");
+
+        if (installFile.exists()) {
+            if (installFile.removeRecursively())
+                qInfo() << "Directory removed successfully.";
+            else
+                qWarning() << "Failed to remove directory.";
+        }
+        checkInstallStatus();
     }
-    checkInstallStatus();
-
 }
 
 void LLMWidget::onProcessFinished(int exitCode, QProcess::ExitStatus exitStatus)
