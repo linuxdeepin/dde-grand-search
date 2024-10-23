@@ -193,7 +193,6 @@ void LLMWidget::onInstall()
 
     destinationDir.cd("gguf");
 
-    QString downloadDir = "/path/to/download/directory";
     downloader = new Downloader(destinationDir.absolutePath());
     connect(downloader, &Downloader::downloadFinished, this, &LLMWidget::checkInstallStatus);
 
@@ -288,7 +287,7 @@ void LLMWidget::checkInstallStatus()
 
 void LLMWidget::onCloseEvent()
 {
-    if ((m_pProcess->state() == QProcess::Running || !downloader->isFinished()) && Uninstall == m_pManageModel->property("modelStatus").toInt())
+    if ((m_pProcess->state() == QProcess::Running || (downloader && !downloader->isFinished())) && Uninstall == m_pManageModel->property("modelStatus").toInt())
         onUninstall();
 }
 
