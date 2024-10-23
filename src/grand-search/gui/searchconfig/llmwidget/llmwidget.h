@@ -50,6 +50,7 @@ private slots:
     void onClickedStatusBtn();
     void onMoreMenuTriggered(const QAction *action);
     void onProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void onDownloadFinished();
 
 protected:
     void paintEvent(QPaintEvent* e) Q_DECL_OVERRIDE;

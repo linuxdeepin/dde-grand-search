@@ -21,7 +21,7 @@ using namespace GrandSearch;
 
 //static constexpr int TIMERBEGIN = 720;//5秒轮询安装和更新状态60分钟
 
-static constexpr char MODELNAME[] = "/yourong1.5B-Instruct-GGUF";
+static constexpr char MODELNAME[] = "yourong1.5B-Instruct-GGUF";
 
 LLMWidget::LLMWidget(DWidget *parent)
     : DWidget(parent),
@@ -64,7 +64,6 @@ void LLMWidget::initUI()
     topLayout->addWidget(m_pLabelTheme, 0, Qt::AlignLeft);
     topLayout->addStretch();
     topLayout->addWidget(m_pLabelStatus, 0, Qt::AlignRight);
-
 
     m_pLabelSummary = new DLabel;
     m_pLabelSummary->setForegroundRole(QPalette::Text);
@@ -182,7 +181,7 @@ void LLMWidget::onInstall()
 //    onDealInstalledModel();
 
     //http请求下载
-    QDir destinationDir(m_installPath + MODELNAME);
+    QDir destinationDir(m_installPath + "/." + MODELNAME);
 
     if (destinationDir.mkpath("gguf")) {
         qInfo() << "Directory created successfully:";
@@ -194,17 +193,17 @@ void LLMWidget::onInstall()
     destinationDir.cd("gguf");
 
     downloader = new Downloader(destinationDir.absolutePath());
-    connect(downloader, &Downloader::downloadFinished, this, &LLMWidget::checkInstallStatus);
+    connect(downloader, &Downloader::downloadFinished, this, &LLMWidget::onDownloadFinished);
 
     foreach (const QString &fileUrl, m_modelFileList) {
-        QString url = m_baseUrl + MODELNAME + "/resolve/master" + fileUrl;
+        QString url = m_baseUrl + "/" + MODELNAME + "/resolve/master" + fileUrl;
         downloader->addDownloadTask(QUrl(url));
     }
 }
 
 void LLMWidget::onUninstall()
 {
-    QDir installFile(m_installPath + MODELNAME);
+    QDir installFile(m_installPath + "/YouRong-1.5B");
 
     if (installFile.exists()) {
         if (installFile.removeRecursively())
@@ -276,9 +275,27 @@ bool LLMWidget::onDealInstalledModel()
     return true;
 }
 
+void LLMWidget::onDownloadFinished()
+{
+    QString originalFolderPath = m_installPath + "/." + MODELNAME;
+    QString targetFolderPath = m_installPath + "/YouRong-1.5B";
+
+    QDir dir(originalFolderPath);
+
+    if (dir.exists()) {
+        if (dir.rename(originalFolderPath, targetFolderPath)) {
+            qDebug() << "文件夹重命名成功";
+        } else {
+            qDebug() << "文件夹重命名失败";
+        }
+    }
+
+    checkInstallStatus();
+}
+
 void LLMWidget::checkInstallStatus()
 {
-    QDir installFile(m_installPath + MODELNAME);
+    QDir installFile(m_installPath + "/YouRong-1.5B");
 
     m_pManageModel->setProperty("modelStatus", installFile.exists() ? Install : Uninstall);
 
@@ -287,8 +304,18 @@ void LLMWidget::checkInstallStatus()
 
 void LLMWidget::onCloseEvent()
 {
-    if ((m_pProcess->state() == QProcess::Running || (downloader && !downloader->isFinished())) && Uninstall == m_pManageModel->property("modelStatus").toInt())
-        onUninstall();
+    if ((m_pProcess->state() == QProcess::Running || (downloader && !downloader->isFinished())) && Uninstall == m_pManageModel->property("modelStatus").toInt()) {
+        QDir installFile(m_installPath + "/." + MODELNAME);
+
+        if (installFile.exists()) {
+            if (installFile.removeRecursively())
+                qInfo() << "Directory removed successfully.";
+            else
+                qWarning() << "Failed to remove directory.";
+        }
+        checkInstallStatus();
+    }
+
 }
 
 void LLMWidget::changeInstallStatus()
