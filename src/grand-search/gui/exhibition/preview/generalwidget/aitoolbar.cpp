@@ -29,22 +29,8 @@ using namespace GrandSearch;
 bool AiToolBar::checkUosAiInstalled() {
     QDBusInterface iface("org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus");
     QDBusReply<QStringList> reply = iface.call("ListActivatableNames");
-    if (reply.isValid()) {
-        if (reply.value().contains("com.deepin.copilot")) {
-            // 拉起UOS AI进程
-            QDBusInterface notification("com.deepin.copilot", "/com/deepin/copilot", "com.deepin.copilot");
-            QDBusMessage reply = notification.call(QDBus::CallMode::Block, "version");
-            if (!reply.errorMessage().isEmpty()) {
-                qDebug() << "first time:" << reply.errorMessage();
-                QThread::usleep(500 * 1000);
-                reply = notification.call(QDBus::CallMode::Block, "version");
-                if (!reply.errorMessage().isEmpty()) {
-                    qWarning() << "second time:" << reply.errorMessage();
-                }
-            }
-            return true;
-        }
-    }
+    if (reply.isValid())
+        return reply.value().contains("com.deepin.copilot");
 
     return false;
 }
