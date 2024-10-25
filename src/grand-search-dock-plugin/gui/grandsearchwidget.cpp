@@ -17,6 +17,10 @@
 #include <QDebug>
 #include <QVBoxLayout>
 
+#ifdef  DTKWIDGET_CLASS_DToolTip
+#include <DToolTip>
+#endif
+
 using namespace GrandSearch;
 DWIDGET_USE_NAMESPACE
 
@@ -185,6 +189,14 @@ QuickPanel::QuickPanel(const QString &desc, QWidget *parent)
     textLabel->setText(desc);
     textLabel->setElideMode(Qt::ElideRight);
     textLabel->setAlignment(Qt::AlignCenter);
+
+#ifdef DTKWIDGET_CLASS_DToolTip
+    #if DTK_VERSION >= DTK_VERSION_CHECK(5, 6, 4, 0)
+    // 此接口和枚举在5.6.4及之后提供
+    DToolTip::setToolTipShowMode(textLabel, DToolTip::ShowWhenElided);
+    #endif
+#endif
+
     DFontSizeManager::instance()->bind(textLabel, DFontSizeManager::T10);
     lay->addSpacing(8);
     lay->addWidget(textLabel, 0, Qt::AlignHCenter);
