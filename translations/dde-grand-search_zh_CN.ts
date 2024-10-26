@@ -315,13 +315,13 @@
 <context>
     <name>GrandSearch::LLMWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="58"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="59"/>
         <source>NotInstalled</source>
         <translation>未安装</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="74"/>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="305"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="342"/>
         <source>Install Model</source>
         <translation>安装模型</translation>
     </message>
@@ -341,17 +341,39 @@
         <translation>安装中</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="300"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="211"/>
+        <source>Are you sure you want to delete this model?</source>
+        <translation>确定卸载UOS AI大模型？</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="212"/>
+        <source>After uninstallation, functions such as AI Search and UOS AI Assistant will not work properly.</source>
+        <translation>卸载后将导致AI搜索、UOS AI助手等功能无法正常使用</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="213"/>
+        <source>Cancel</source>
+        <comment>button</comment>
+        <translation>暂不卸载</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="214"/>
+        <source>Confirm</source>
+        <comment>button</comment>
+        <translation>确定卸载</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="337"/>
         <source>UnInstall Model</source>
         <translation>卸载模型</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="301"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="338"/>
         <source>Installed</source>
         <translation>已安装</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="306"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="343"/>
         <source>Not Installed</source>
         <translation>未安装</translation>
     </message>
