@@ -59,6 +59,7 @@ class AiToolBarInner : public Dtk::Widget::DWidget
 public:
     explicit AiToolBarInner(QWidget *parent = nullptr);
     void setFilePath(QString filePath) { m_filePath = filePath; }
+    void closeMainWindow();
 
 protected:
     void paintEvent(QPaintEvent *event) override;

@@ -282,6 +282,8 @@ void AiToolBarInner::onSummary() {
     if (!error.isEmpty()) {
         qWarning() << QString("inputPrompt ERROR(%1)").arg(error);
         this->showWarningDialog(m_summaryAction->text());
+    } else {
+        this->closeMainWindow();
     }
 }
 
@@ -295,6 +297,8 @@ void AiToolBarInner::onTranslation() {
     if (!error.isEmpty()) {
         qWarning() << QString("inputPrompt ERROR(%1)").arg(error);
         this->showWarningDialog(m_translationAction->text());
+    } else {
+        this->closeMainWindow();
     }
 }
 
@@ -308,6 +312,8 @@ void AiToolBarInner::onExtension() {
     if (!error.isEmpty()) {
         qWarning() << QString("inputPrompt ERROR(%1)").arg(error);
         this->showWarningDialog(m_extensionAction->text());
+    } else {
+        this->closeMainWindow();
     }
 }
 
@@ -317,6 +323,8 @@ void AiToolBarInner::onKnowledge() {
     if (!error.isEmpty()) {
         qWarning() << QString("sendToKnowledgeBase ERROR(%1)").arg(error);
         this->showWarningDialog(m_knowledgeAction->text());
+    } else {
+        this->closeMainWindow();
     }
 }
 
@@ -396,4 +404,13 @@ void AiToolBarInner::showWarningDialog(QString name) {
     notify.hints(hints);
     notify.timeOut(3000);
     notify.call();
+}
+
+void AiToolBarInner::closeMainWindow() {
+    if (this->parent()->parent() && this->parent()->parent()->parent()) {
+        ExhibitionWidget *ptr = dynamic_cast<ExhibitionWidget *>(this->parent()->parent()->parent());
+        if (ptr) {
+            emit ptr->sigCloseWindow();
+        }
+    }
 }
