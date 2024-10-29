@@ -82,18 +82,25 @@ IntelligentRetrievalWidget::IntelligentRetrievalWidget(QWidget *parent)
 
     // feat
     {
-        m_featIndex = new SwitchWidget(tr("Automatic index update"), m_indexWidget);
-        m_featIndex->setEnableBackground(true);
+        RoundedBackground *bkg = new RoundedBackground(m_indexWidget);
+        bkg->setMinimumSize(CHECKBOXITEMWIDTH, SWITCHWIDGETHEIGHT);
+        bkg->setTopRound(true);
+        bkg->setBottomRound(true);
+
+        m_featIndex = new SwitchWidget(tr("Automatic index update"), bkg);
+        //m_featIndex->setEnableBackground(true);
         m_featIndex->setFixedSize(SWITCHWIDGETWIDTH, DETAILSWITCHWIDGETHEIGHT / 2);
         m_featIndex->setIconEnable(false);
 
-        m_indexLayout->addWidget(m_featIndex);
-        m_indexLayout->addSpacing(10);
-
-        m_indexStatus = new AutoIndexStatus(m_indexWidget);
+        m_indexStatus = new AutoIndexStatus(bkg);
         m_indexStatus->setMinimumSize(SWITCHWIDGETWIDTH, DETAILSWITCHWIDGETHEIGHT / 2);
-        m_indexLayout->addWidget(m_indexStatus);
-        m_indexStatus->setVisible(false);
+
+        QVBoxLayout *vl = new QVBoxLayout(bkg);
+        bkg->setLayout(vl);
+        vl->setContentsMargins(0, 2, 0, 5);
+        vl->addWidget(m_featIndex);
+        vl->addWidget(m_indexStatus);
+        m_indexLayout->addWidget(bkg);
     }
 
     // model
@@ -110,6 +117,7 @@ IntelligentRetrievalWidget::IntelligentRetrievalWidget(QWidget *parent)
         m_llmWidget->setText(tr("UOS AI LLM"),tr("After installing the UOS AI large model, you can use the AI intelligent search function without an internet connection."));
         m_llmWidget->checkInstallStatus();
         vl->addWidget(m_llmWidget);
+        m_indexLayout->addSpacing(10);
         m_indexLayout->addWidget(bkg);
     }
 

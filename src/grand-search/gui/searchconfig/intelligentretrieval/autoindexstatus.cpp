@@ -13,7 +13,7 @@ using namespace GrandSearch;
 AutoIndexStatus::AutoIndexStatus(QWidget *parent) : QWidget(parent)
 {
     m_layout = new QHBoxLayout(this);
-    m_layout->setContentsMargins(10, 0, 10, 0);
+    m_layout->setContentsMargins(5, 0, 10, 0);
     m_layout->setSpacing(0);
     setLayout(m_layout);
 
@@ -33,7 +33,7 @@ AutoIndexStatus::AutoIndexStatus(QWidget *parent) : QWidget(parent)
         m_spinner->setAttribute(Qt::WA_TransparentForMouseEvents);
         m_spinner->setFocusPolicy(Qt::NoFocus);
         m_spinner->setFixedSize(QSize(20, 20));
-        m_spinner->setGeometry(0, 0, 20, 20);
+        m_spinner->setGeometry(5, 0, 20, 20);
         spinnerContainer->hide();
     }
 
