@@ -348,7 +348,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="212"/>
         <source>After uninstallation, functions such as AI Search and UOS AI Assistant will not work properly.</source>
-        <translation>卸载后将导致AI搜索、UOS AI助手等功能无法正常使用</translation>
+        <translation>卸载后将导致AI搜索、UOS AI助手等功能无法正常使用。</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="213"/>

@@ -211,8 +211,12 @@ void LLMWidget::onUninstall()
     dlg.setTitle(tr("Are you sure you want to delete this model?"));
     dlg.setMessage(tr("After uninstallation, functions such as AI Search and UOS AI Assistant will not work properly."));
     dlg.addButton(tr("Cancel", "button"), false, DDialog::ButtonNormal);
-    dlg.addButton(tr("Confirm", "button"), true, DDialog::ButtonRecommend);
-
+    dlg.addButton(tr("Confirm", "button"), true, DDialog::ButtonWarning);
+    auto labelList = dlg.findChildren<QLabel *>();
+    for (auto messageLabel : labelList) {
+        if ("MessageLabel" == messageLabel->objectName())
+            messageLabel->setFixedWidth(dlg.width() - 20);
+    }
     if (DDialog::Accepted == dlg.exec()) {
         QDir installFile(m_installPath + "/YouRong-1.5B");
 
