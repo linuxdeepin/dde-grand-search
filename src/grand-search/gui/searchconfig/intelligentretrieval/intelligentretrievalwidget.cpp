@@ -282,7 +282,7 @@ void IntelligentRetrievalWidget::checkChanged()
         m_indexWidget->setVisible(on);
         adjustSize();
 
-        m_featIndex->setChecked(on);
+        //m_featIndex->setChecked(on);
         //m_fullTextIndex->setChecked(on);
         if (!on) {
             this->setAutoIndex(on);
