@@ -160,8 +160,16 @@ void GroupWidget::reLayout()
 
     if (!m_line->isHidden()) {
         nHeight += m_line->height();
-        nHeight += LayoutMagrinSize;
-        m_vContentLayout->setSpacing(10);
+        if (m_resultLabel->isVisible()) {
+            m_vContentLayout->setSpacing(5);
+            nHeight += 5;
+        } else if (m_listView->rowCount() == 0) {
+            m_vContentLayout->setSpacing(1);
+            nHeight += 1;
+        } else {
+            m_vContentLayout->setSpacing(10);
+            nHeight += 10;
+        }
     } else {
         m_vContentLayout->setSpacing(0);
     }
