@@ -284,7 +284,9 @@ void IntelligentRetrievalWidget::checkChanged()
 
         m_featIndex->setChecked(on);
         //m_fullTextIndex->setChecked(on);
-        //this->setAutoIndex(on);
+        if (!on) {
+            this->setAutoIndex(on);
+        }
         //setFulltextQuery(on);
 
         // 检测是否安装大模型，未安装就提醒弹窗
