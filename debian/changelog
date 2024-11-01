@@ -1,4 +1,10 @@
-dde-grand-search (5.5.6) unstable; urgency=medium
+dde-grand-search (5.5.7) unstable; urgency=medium
+
+  * Disable auto index.
+
+ -- Zhang Yu <zhangyub@uniontech.com>  Fri, 1 Nov 2024 15:20:14 +0800
+
+ dde-grand-search (5.5.6) unstable; urgency=medium
 
   * DSL search
 
