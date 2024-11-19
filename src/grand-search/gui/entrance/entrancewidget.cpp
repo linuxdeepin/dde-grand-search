@@ -189,15 +189,17 @@ void EntranceWidget::initUI()
 
     QPalette palette;
     QColor colorText(0, 0, 0);
-    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
+    QColor colorBkg(0, 0, 0, 25);
+    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType) {
         colorText = QColor(255, 255, 255);
-
-    palette.setColor(QPalette::Button, Qt::transparent);
+       colorBkg =  QColor(255, 255, 255, 25);
+    }
+    palette.setColor(QPalette::Button, colorBkg); // 背景色
     palette.setColor(QPalette::Text, colorText);
     palette.setColor(QPalette::ButtonText, colorText);
 
     d_p->m_lineEdit->setPalette(palette);
-    DStyle::setFocusRectVisible(d_p->m_lineEdit, true);
+    DStyle::setFocusRectVisible(d_p->m_lineEdit, false);
 
     d_p->m_appIconLabel = new DLabel(d_p->m_searchEdit);
     d_p->m_appIconLabel->setFixedSize(LabelSize, LabelSize);
