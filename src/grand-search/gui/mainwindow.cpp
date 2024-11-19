@@ -15,6 +15,7 @@
 #include <DApplication>
 #include <DLabel>
 #include <DRegionMonitor>
+#include <DPlatformHandle>
 
 #include <QDebug>
 #include <QTimer>
@@ -219,6 +220,10 @@ void MainWindow::initUI()
     d_p->m_mainLayout->setMargin(0);
 
     this->setLayout(d_p->m_mainLayout);
+
+    this->winId();
+    DPlatformHandle handle(this->windowHandle());
+    handle.setWindowRadius(18);
 }
 
 void MainWindow::initConnect()
