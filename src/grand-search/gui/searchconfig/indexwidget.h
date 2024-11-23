@@ -21,7 +21,7 @@ public:
     explicit IndexWidget(QWidget *parent = nullptr);
     ~IndexWidget();
 
-    void onCloseEvent();
+    bool onCloseEvent();
 
 private:
     QVBoxLayout *m_mainLayout = nullptr;

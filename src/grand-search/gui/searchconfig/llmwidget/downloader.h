@@ -26,17 +26,18 @@ public:
     ~Downloader();
 
     void addDownloadTask(const QUrl &url);
+    void cancelDownloads();
     bool isFinished() { return m_finished; }
 
 signals:
     void downloadFinished();
+    void onDownloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 
 private slots:
     void onDownloadFinished(QNetworkReply *reply);
+    void onReadyRead();
 
 private:
-    void saveFile(QNetworkReply *reply, const QString &filename);
-
     QNetworkAccessManager *m_manager;
     QString m_downloadDirectory;
     QList<QNetworkReply*> m_activeDownloads;
@@ -44,6 +45,7 @@ private:
 
     QMutex mutex;
     QWaitCondition waitCondition;
+    QHash<QNetworkReply*, QFile*> m_openFiles;
 };
 }
 
