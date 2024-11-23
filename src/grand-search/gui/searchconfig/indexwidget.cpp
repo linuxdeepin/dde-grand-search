@@ -32,9 +32,9 @@ IndexWidget::IndexWidget(QWidget *parent)
     m_mainLayout->addWidget(m_blackListWidget);
 }
 
-void IndexWidget::onCloseEvent()
+bool IndexWidget::onCloseEvent()
 {
-    m_intelligent->onCloseEvent();
+    return m_intelligent->onCloseEvent();
 }
 
 IndexWidget::~IndexWidget()

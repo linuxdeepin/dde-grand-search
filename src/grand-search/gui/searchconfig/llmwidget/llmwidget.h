@@ -15,6 +15,7 @@
 
 #include <DLabel>
 #include <DSwitchButton>
+#include <DSpinner>
 
 namespace GrandSearch {
 
@@ -34,7 +35,7 @@ public:
     void checkInstallStatus();
 //    void checkUpdateStatus();
     void setText(const QString &theme, const QString &summary);
-    void onCloseEvent();
+    bool onCloseEvent();
     void onClickedStatusBtn();
 
 private:
@@ -51,6 +52,7 @@ private slots:
     void onMoreMenuTriggered(const QAction *action);
     void onProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void onDownloadFinished();
+    void onDownloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 
 protected:
     void paintEvent(QPaintEvent* e) Q_DECL_OVERRIDE;
@@ -59,6 +61,7 @@ private:
     Dtk::Widget::DLabel *m_pLabelTheme = nullptr;
     Dtk::Widget::DLabel *m_pLabelSummary = nullptr;
     Dtk::Widget::DLabel *m_pLabelStatus = nullptr;
+    Dtk::Widget::DSpinner *m_spinner = nullptr;
     ModelManageButton *m_pManageModel = nullptr;
     Dtk::Widget::DMenu *m_pMenu = nullptr;
     QAction *m_updateAction = nullptr;
@@ -68,7 +71,8 @@ private:
     QString m_installPath;
     QString m_baseUrl;
     QStringList m_modelFileList;
-    Downloader *downloader = nullptr;
+    QSharedPointer<Downloader> m_downloader;
+    double m_lastProgress = 0.0;
 };
 }
 

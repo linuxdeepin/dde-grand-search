@@ -21,7 +21,7 @@ class IntelligentRetrievalWidget : public Dtk::Widget::DWidget
     Q_OBJECT
 public:
     explicit IntelligentRetrievalWidget(QWidget *parent = nullptr);
-    void onCloseEvent();
+    bool onCloseEvent();
 public slots:
     void updateState();
     void openAppStore(const QString &app);

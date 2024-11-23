@@ -15,6 +15,7 @@
 
 #include <QLabel>
 #include <QPushButton>
+#include <QCloseEvent>
 
 #define MAINWINDOW_WIDTH    696
 #define MAINWINDOW_HEIGHT   529
@@ -81,7 +82,8 @@ void ConfigWidget::initUI()
 
 void ConfigWidget::closeEvent(QCloseEvent *event)
 {
-    m_indexWidget->onCloseEvent();
+    if (!m_indexWidget->onCloseEvent())
+        event->ignore();
 }
 
 void ConfigWidget::initData()

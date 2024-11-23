@@ -417,7 +417,7 @@ bool IntelligentRetrievalWidget::getIndexStatus(QVariantHash &statuts)
 }
 #endif
 
-void IntelligentRetrievalWidget::onCloseEvent()
+bool IntelligentRetrievalWidget::onCloseEvent()
 {
-    m_llmWidget->onCloseEvent();
+    return m_llmWidget->onCloseEvent();
 }

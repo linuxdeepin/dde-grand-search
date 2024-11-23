@@ -56,6 +56,10 @@ void LLMWidget::initUI()
     DFontSizeManager::instance()->bind(m_pLabelTheme, DFontSizeManager::T6, QFont::Medium);
     m_pLabelTheme->setElideMode(Qt::ElideRight);
 
+    m_spinner = new DSpinner(this);
+    m_spinner->setFixedSize(12, 12);
+    m_spinner->hide();
+
     m_pLabelStatus = new DLabel(tr("NotInstalled"));
     m_pLabelStatus->setForegroundRole(QPalette::Text);
     DFontSizeManager::instance()->bind(m_pLabelStatus, DFontSizeManager::T8, QFont::Medium);
@@ -64,6 +68,7 @@ void LLMWidget::initUI()
     topLayout->setContentsMargins(0, 0, 0, 0);
     topLayout->addWidget(m_pLabelTheme, 0, Qt::AlignLeft);
     topLayout->addStretch();
+    topLayout->addWidget(m_spinner, 0, Qt::AlignRight);
     topLayout->addWidget(m_pLabelStatus, 0, Qt::AlignRight);
 
     m_pLabelSummary = new DLabel;
@@ -120,7 +125,7 @@ void LLMWidget::paintEvent(QPaintEvent* e)
     m_pLabelSummary->setPalette(pl);
 
     pl = m_pLabelStatus->palette();
-    if (m_pManageModel->property("modelStatus").toInt() != Uninstall) {
+    if (m_pManageModel->property("modelStatus").toInt() == Install) {
         color = QColor(21, 190, 76);
         color.setAlphaF(1);
     } else
@@ -146,6 +151,8 @@ void LLMWidget::onClickedStatusBtn()
         m_pManageModel->setText(tr("Installing"));
         m_pManageModel->setEnabled(false);
         m_pManageModel->updateRectSize();
+        m_spinner->show();
+        m_spinner->start();
         onInstall();
         break;
     }
@@ -194,12 +201,13 @@ void LLMWidget::onInstall()
 
     destinationDir.cd("gguf");
 
-    downloader = new Downloader(destinationDir.absolutePath());
-    connect(downloader, &Downloader::downloadFinished, this, &LLMWidget::onDownloadFinished);
+    m_downloader.reset(new Downloader(destinationDir.absolutePath()));
+    connect(m_downloader.data(), &Downloader::downloadFinished, this, &LLMWidget::onDownloadFinished);
+    connect(m_downloader.data(), &Downloader::onDownloadProgress, this, &LLMWidget::onDownloadProgress);
 
     foreach (const QString &fileUrl, m_modelFileList) {
         QString url = m_baseUrl + "/" + MODELNAME + "/resolve/master" + fileUrl;
-        downloader->addDownloadTask(QUrl(url));
+        m_downloader->addDownloadTask(QUrl(url));
     }
 }
 
@@ -299,13 +307,27 @@ void LLMWidget::onDownloadFinished()
 
     if (dir.exists()) {
         if (dir.rename(originalFolderPath, targetFolderPath)) {
-            qDebug() << "文件夹重命名成功";
+            qDebug() << "File downloaded successfully";
         } else {
-            qDebug() << "文件夹重命名失败";
+            qDebug() << "The folder failed to download.";
         }
     }
 
     checkInstallStatus();
+}
+
+void LLMWidget::onDownloadProgress(qint64 bytesReceived, qint64 bytesTotal)
+{
+    if (bytesTotal == 0)
+        return;
+
+    double progress = static_cast<double>(bytesReceived) / static_cast<double>(bytesTotal) * 100.0;
+    progress = round(progress * 100) / 100;
+
+    if (progress >= m_lastProgress) {
+        m_pLabelStatus->setText(tr("Installing ") + QString::number(progress, 'f', 1) + "%");
+        m_lastProgress = progress;
+    }
 }
 
 void LLMWidget::checkInstallStatus()
@@ -317,19 +339,39 @@ void LLMWidget::checkInstallStatus()
     changeInstallStatus();
 }
 
-void LLMWidget::onCloseEvent()
+bool LLMWidget::onCloseEvent()
 {
-    if ((m_pProcess->state() == QProcess::Running || (downloader && !downloader->isFinished())) && Uninstall == m_pManageModel->property("modelStatus").toInt()) {
-        QDir installFile(m_installPath + "/." + MODELNAME);
-
-        if (installFile.exists()) {
-            if (installFile.removeRecursively())
-                qInfo() << "Directory removed successfully.";
-            else
-                qWarning() << "Failed to remove directory.";
+    if (m_pProcess->state() == QProcess::Running || (m_downloader && !m_downloader->isFinished())) {
+        DDialog dlg(this);
+        dlg.setIcon(QIcon(":icons/dde-grand-search-setting.svg"));
+        dlg.setMaximumWidth(380);
+        dlg.setTitle(tr("Installing the UOS AI Large Language Model"));
+        dlg.setMessage(tr("Exiting will cause the installation to fail, do you still want to exit?"));
+        dlg.addButton(tr("Exit", "button"), false, DDialog::ButtonNormal);
+        dlg.addButton(tr("Continue", "button"), true, DDialog::ButtonRecommend);
+        auto labelList = dlg.findChildren<QLabel *>();
+        for (auto messageLabel : labelList) {
+            if ("MessageLabel" == messageLabel->objectName())
+                messageLabel->setFixedWidth(dlg.width() - 20);
         }
-        checkInstallStatus();
+        if (DDialog::Rejected != dlg.exec())
+            return false;
+
+        if (Uninstall == m_pManageModel->property("modelStatus").toInt()) {
+            m_downloader->cancelDownloads();
+            QDir installFile(m_installPath + "/." + MODELNAME);
+
+            if (installFile.exists()) {
+                if (installFile.removeRecursively())
+                    qInfo() << "Directory removed successfully.";
+                else
+                    qWarning() << "Failed to remove directory.";
+            }
+            checkInstallStatus();
+        }
     }
+
+    return true;
 
 }
 
@@ -350,6 +392,8 @@ void LLMWidget::changeInstallStatus()
     default:
         break;
     }
+    m_spinner->hide();
+    m_spinner->stop();
     m_pManageModel->setEnabled(true);
     m_pManageModel->updateRectSize();
 }
