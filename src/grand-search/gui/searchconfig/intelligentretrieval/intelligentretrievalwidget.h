@@ -20,6 +20,11 @@ class IntelligentRetrievalWidget : public Dtk::Widget::DWidget
 {
     Q_OBJECT
 public:
+    static bool isQueryLangSupported();
+    static QVariantHash getIndexStatus();
+    static bool isUpdateIndex();
+    static void setAutoIndex(bool on);
+
     explicit IntelligentRetrievalWidget(QWidget *parent = nullptr);
     bool onCloseEvent();
 public slots:
@@ -27,12 +32,9 @@ public slots:
     void openAppStore(const QString &app);
 protected:
     void updateStatusContent(const QVariantHash &status);
-    bool isQueryLangSupported();
 #ifdef VECTOR_SEARCH
     bool isVectorSupported();
 #endif
-    void setAutoIndex(bool on);
-    QVariantHash getIndexStatus();
     void updateIndexStatusContent(const QVariantHash &statuts);
     void setFulltextQuery(bool on);
 signals:

@@ -50,15 +50,19 @@ int main(int argc, char *argv[])
     QCommandLineParser parser;
 
     bool isSetting = false;
+    QString position;
 
     if (argc > 1) {
         QCommandLineOption option_setting({"s", "setting"}, "Start grand search config.");
+        QCommandLineOption option_position("position", "Start grand search config, and scroll to one position.", "value");
 
         parser.addOption(option_setting);
+        parser.addOption(option_position);
         parser.addHelpOption();
 
         parser.process(app);
         isSetting = parser.isSet(option_setting);
+        position  = parser.value(option_position);
     }
     // 根据要求，通过启动参数决定显示界面
     if (isSetting) { // 设置界面
@@ -75,6 +79,9 @@ int main(int argc, char *argv[])
 
         ConfigWidget w;
         w.show();
+        if (position == "aiconfig") {
+            w.scrollToAiConfig();
+        }
         Dtk::Widget::moveToCenter(&w);
 
         // 重复启动时，激活已有窗口
