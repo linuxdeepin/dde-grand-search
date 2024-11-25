@@ -209,12 +209,40 @@
 <context>
     <name>GrandSearch::GroupWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="288"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="254"/>
+        <source>Please go to %1 to install the UOS AI large model, and %2 Automatic index update.</source>
+        <translation>请先前往%1安装UOS AI大模型，并%2自动更新索引</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="255"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="264"/>
+        <source>Search configration</source>
+        <translation>搜索配置</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="256"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="260"/>
+        <source>turn on</source>
+        <translation>开启</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="259"/>
+        <source>Please %1 Automatic index update.</source>
+        <translation>请先%1自动更新索引</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="263"/>
+        <source>Please go to %1 to install the UOS AI large model.</source>
+        <translation>请先前往%1安装UOS AI大模型</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="325"/>
         <source>More</source>
         <translation>更多</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="324"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="266"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="361"/>
         <source>No search results</source>
         <translation>暂无搜索结果</translation>
     </message>

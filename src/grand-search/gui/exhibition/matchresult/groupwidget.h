@@ -66,6 +66,7 @@ private:
     void initUi();
     void initConnect();
     void updateShowItems(MatchedItems &items);
+    void onOpenConfig(const QString& link);
 
 signals:
     void showMore();

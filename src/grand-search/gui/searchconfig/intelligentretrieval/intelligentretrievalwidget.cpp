@@ -14,6 +14,7 @@
 
 #include <DFontSizeManager>
 #include <DDialog>
+#include <DConfig>
 
 #include <QDBusConnection>
 #include <QDBusMessage>
@@ -24,6 +25,7 @@
 #include <QDateTime>
 
 DWIDGET_USE_NAMESPACE
+DCORE_USE_NAMESPACE
 
 using namespace GrandSearch;
 
@@ -122,15 +124,23 @@ IntelligentRetrievalWidget::IntelligentRetrievalWidget(QWidget *parent)
     }
 
     // full text
-    if (0)
     {
         m_indexLayout->addSpacing(10);
         m_fullTextIndex = new SwitchWidget(tr("Full Text Search"), m_indexWidget);
         m_fullTextIndex->setEnableBackground(true);
         m_fullTextIndex->setFixedSize(SWITCHWIDGETWIDTH, DETAILSWITCHWIDGETHEIGHT / 2);
         m_fullTextIndex->setIconEnable(false);
-        m_fullTextIndex->setChecked(SearchConfig::instance()->getConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_FULLTEXT, false).toBool());
         m_indexLayout->addWidget(m_fullTextIndex);
+        if (turnOn) {
+            // 默认状态下读取文管接口作为默认值
+            DConfig *dcfg = DConfig::create("org.deepin.dde.file-manager", "org.deepin.dde.file-manager.search");
+            bool isFileManagerTrue = dcfg->value("enableFullTextSearch").toBool();
+            delete dcfg;
+
+            bool isTrue = SearchConfig::instance()->getConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_FULLTEXT, isFileManagerTrue).toBool();
+            SearchConfig::instance()->setConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_FULLTEXT, isTrue);
+            m_fullTextIndex->setChecked(isTrue);
+        }
 
         m_indexLayout->addSpacing(5);
         m_fullTextLabel = new TipsLabel(tr("When turned on, full text search can be used in the file manager and grand search.")
@@ -156,7 +166,7 @@ IntelligentRetrievalWidget::IntelligentRetrievalWidget(QWidget *parent)
     updateState();
 
     connect(&m_timer, &QTimer::timeout, this, &IntelligentRetrievalWidget::updateState);
-    m_timer.start(10000);
+    m_timer.start(5000);
     connect(m_semantic, &SwitchWidget::checkedChanged, this, &IntelligentRetrievalWidget::checkChanged);
 #ifdef VECTOR_SEARCH
     connect(m_vector->checkBox(), &QCheckBox::stateChanged, this, &IntelligentRetrievalWidget::checkChanged);
@@ -286,8 +296,8 @@ void IntelligentRetrievalWidget::checkChanged()
         //m_fullTextIndex->setChecked(on);
         if (!on) {
             this->setAutoIndex(on);
+            this->setFulltextQuery(on);
         }
-        //setFulltextQuery(on);
 
         // 检测是否安装大模型，未安装就提醒弹窗
         if (on && !this->isQueryLangSupported()) {
@@ -352,6 +362,12 @@ QVariantHash IntelligentRetrievalWidget::getIndexStatus()
     return QJsonDocument::fromJson(json.toUtf8()).object().toVariantHash();
 }
 
+bool IntelligentRetrievalWidget::isUpdateIndex()
+{
+    const QVariantHash &status = IntelligentRetrievalWidget::getIndexStatus();
+    return status.value("enable", false).toBool();
+}
+
 void IntelligentRetrievalWidget::updateIndexStatusContent(const QVariantHash &status)
 {
     if (!status.value("enable", false).toBool()) {
@@ -377,6 +393,16 @@ void IntelligentRetrievalWidget::updateIndexStatusContent(const QVariantHash &st
 void IntelligentRetrievalWidget::setFulltextQuery(bool on)
 {
     SearchConfig::instance()->setConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_FULLTEXT, on);
+    // 调用文管接口，没开就打开
+    if (on) {
+        DConfig *dcfg = DConfig::create("org.deepin.dde.file-manager", "org.deepin.dde.file-manager.search");
+        bool isTrue = dcfg->value("enableFullTextSearch").toBool();
+        if (!isTrue) {
+            qDebug() << "DCONFIG enableFullTextSearch(false => true)";
+            dcfg->setValue("enableFullTextSearch", true);
+        }
+        delete dcfg;
+    }
 }
 
 #ifdef VECTOR_SEARCH

@@ -22,6 +22,8 @@ public:
     explicit ConfigWidget(QWidget *parent = nullptr);
     ~ConfigWidget();
 
+    void scrollToAiConfig();
+
 private:
     void initUI();
     void initData();

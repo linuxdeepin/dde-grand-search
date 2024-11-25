@@ -16,6 +16,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QCloseEvent>
+#include <QScrollBar>
 
 #define MAINWINDOW_WIDTH    696
 #define MAINWINDOW_HEIGHT   529
@@ -88,4 +89,10 @@ void ConfigWidget::closeEvent(QCloseEvent *event)
 
 void ConfigWidget::initData()
 {
+}
+
+void ConfigWidget::scrollToAiConfig()
+{
+    QPoint targetPos = m_indexWidget->mapTo(m_scrollArea->viewport(), QPoint(0, 0));
+    m_scrollArea->verticalScrollBar()->setValue(targetPos.y());
 }

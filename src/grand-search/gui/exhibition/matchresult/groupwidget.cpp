@@ -8,6 +8,7 @@
 #include "viewmore/viewmorebutton.h"
 #include "utils/utils.h"
 #include "global/accessibility/acintelfunctions.h"
+#include "gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.h"
 
 #include <DLabel>
 #include <DPushButton>
@@ -160,8 +161,16 @@ void GroupWidget::reLayout()
 
     if (!m_line->isHidden()) {
         nHeight += m_line->height();
-        nHeight += LayoutMagrinSize;
-        m_vContentLayout->setSpacing(10);
+        if (m_resultLabel->isVisible()) {
+            m_vContentLayout->setSpacing(5);
+            nHeight += 5;
+        } else if (m_listView->rowCount() == 0) {
+            m_vContentLayout->setSpacing(1);
+            nHeight += 1;
+        } else {
+            m_vContentLayout->setSpacing(10);
+            nHeight += 10;
+        }
     } else {
         m_vContentLayout->setSpacing(0);
     }
@@ -229,6 +238,34 @@ void GroupWidget::showLabel(bool bShow)
 {
     m_listView->setVisible(!bShow);
     m_resultLabel->setVisible(bShow);
+    if (bShow && m_searchGroupName == GRANDSEARCH_GROUP_FILE_INFERENCE) {
+        // 有无索引文件
+        QString idxDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + "/.cache/deepin/deepin-ai-daemon/index";
+        bool hasIdx = QFile::exists(idxDir);
+        // 有无自动更新索引
+        bool isUpdateIdx = IntelligentRetrievalWidget::isUpdateIndex();
+        // 有无安装大模型
+        bool hasModel = IntelligentRetrievalWidget::isQueryLangSupported();
+        qDebug() << QString("idxDir(%1) hasIdx(%2) isUpdateIdx(%3) hasModel(%4)").arg(idxDir).arg(hasIdx).arg(isUpdateIdx).arg(hasModel);
+
+        const QColor &color = DApplicationHelper::instance()->palette(m_resultLabel).color(DPalette::Normal, DPalette::Highlight);
+        if (!hasIdx && !isUpdateIdx && !hasModel) {
+            // 请先前往搜索配置安装UOS AI大模型，并开启自动更新索引 Please go to Search configration to install the UOS AI large model, and turn on Automatic index update.
+            m_resultLabel->setText(tr("Please go to %1 to install the UOS AI large model, and %2 Automatic index update.")
+                                   .arg(QString("<a href=\"config\" style=\"color:%1; text-decoration: none;\">%2</a>").arg(color.name()).arg(tr("Search configration")))
+                                   .arg(QString("<a href=\"update index\" style=\"color:%1; text-decoration: none;\">%2</a>").arg(color.name()).arg(tr("turn on"))));
+        } else if (!hasIdx && !isUpdateIdx) {
+            // 请先开启自动更新索引 Please turn on Automatic index update.
+            m_resultLabel->setText(tr("Please %1 Automatic index update.")
+                                   .arg(QString("<a href=\"update index\" style=\"color:%1; text-decoration: none;\">%2</a>").arg(color.name()).arg(tr("turn on"))));
+        } else if (!hasModel) {
+            // 请先前往搜索配置安装UOS AI大模型 Please go to Search configration to install the UOS AI large model.
+            m_resultLabel->setText(tr("Please go to %1 to install the UOS AI large model.")
+                                   .arg(QString("<a href=\"config\" style=\"color:%1; text-decoration: none;\">%2</a>").arg(color.name()).arg(tr("Search configration"))));
+        } else {
+            m_resultLabel->setText(tr("No search results"));
+        }
+    }
 }
 
 QString GroupWidget::convertDisplayName(const QString &searchGroupName)
@@ -358,6 +395,7 @@ void GroupWidget::initConnect()
     Q_ASSERT(m_viewMoreButton);
 
     connect(m_viewMoreButton, &DPushButton::clicked, this, &GroupWidget::onMoreBtnClicked);
+    connect(m_resultLabel, &DLabel::linkActivated, this, &GroupWidget::onOpenConfig);
 }
 
 void GroupWidget::updateShowItems(MatchedItems &items)
@@ -415,4 +453,12 @@ void GroupWidget::onMoreBtnClicked()
     m_bListExpanded = true;
 }
 
-
+void GroupWidget::onOpenConfig(const QString& link)
+{
+    if (link == "update index") {
+        IntelligentRetrievalWidget::setAutoIndex(true);
+        QProcess::startDetached("dde-grand-search -s --position aiconfig");
+    } else if (link == "config") {
+        QProcess::startDetached("dde-grand-search -s --position aiconfig");
+    }
+}

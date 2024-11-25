@@ -53,9 +53,10 @@ bool SemanticSearcher::isActive() const
     d->m_fulltext = false;
 
     if (config->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, true)) {
-        if (paser.connectToQueryLang(SemanticHelper::querylangServiceName())) {
+        /*if (paser.connectToQueryLang(SemanticHelper::querylangServiceName())) {
             d->m_semantic  = paser.isQueryLangSupported();
-        }
+        }*/
+        d->m_semantic = true;
     }
 
 //    if (config->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR, true)) {

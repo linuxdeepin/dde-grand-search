@@ -238,7 +238,7 @@ bool SemanticWorker::working(void *context)
     }
 
     FullTextQuery fuletext;
-    if (canSemantic /*&& d->m_doFulltext*/) {
+    if (canSemantic && d->m_doFulltext) {
         SemanticWorkerPrivate::QueryFunction func = {&fuletext, &FullTextQuery::run, d};
         querys.append(func);
         fuletext.setEntity(entityList);
