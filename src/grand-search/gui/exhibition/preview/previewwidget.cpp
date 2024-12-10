@@ -106,8 +106,9 @@ bool PreviewWidget::previewItem(const MatchedItem &item)
     }
 
     // 文档类型的文件添加AI工具栏到预览界面
-    bool isShowAiToolBar = item.name.endsWith(".txt") || item.name.endsWith(".doc") || item.name.endsWith(".docx")  || item.name.endsWith(".xls")
-            || item.name.endsWith(".xlsx") || item.name.endsWith(".ppt") || item.name.endsWith(".pptx") || item.name.endsWith(".pdf");
+    QString lowerName = item.name.toLower();
+    bool isShowAiToolBar = lowerName.endsWith(".txt") || lowerName.endsWith(".doc") || lowerName.endsWith(".docx")  || lowerName.endsWith(".xls")
+            || lowerName.endsWith(".xlsx") || lowerName.endsWith(".ppt") || lowerName.endsWith(".pptx") || lowerName.endsWith(".pdf");
     isShowAiToolBar = isShowAiToolBar && AiToolBar::checkUosAiInstalled();
     m_aiToolBar->setVisible(isShowAiToolBar);
     m_aiToolBar->setFilePath(item.item);
