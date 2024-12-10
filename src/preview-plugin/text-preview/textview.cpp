@@ -167,8 +167,9 @@ void TextView::initUI()
 void TextView::setSource(const QString &path)
 {
     m_browser->clear();
-    m_isShowAiToolBar = path.endsWith(".txt") || path.endsWith(".doc") || path.endsWith(".docx")  || path.endsWith(".xls")
-            || path.endsWith(".xlsx") || path.endsWith(".ppt") || path.endsWith(".pptx") || path.endsWith(".pdf");
+    QString lowerPath = path.toLower();
+    m_isShowAiToolBar = lowerPath.endsWith(".txt") || lowerPath.endsWith(".doc") || lowerPath.endsWith(".docx")  || lowerPath.endsWith(".xls")
+            || lowerPath.endsWith(".xlsx") || lowerPath.endsWith(".ppt") || lowerPath.endsWith(".pptx") || lowerPath.endsWith(".pdf");
     m_isShowAiToolBar = m_isShowAiToolBar && TextView::checkUosAiInstalled();
     this->setMinimumHeight(m_isShowAiToolBar ? 350 : 386);
 
