@@ -9,8 +9,8 @@
 
 #include <QtDebug>
 
-#define SessionManagerService "com.deepin.SessionManager"
-#define SessionManagerPath "/com/deepin/SessionManager"
+#define SessionManagerService "org.deepin.dde.SessionManager1"
+#define SessionManagerPath "/org/deepin/dde/SessionManager1"
 
 using namespace GrandSearch;
 DWIDGET_USE_NAMESPACE
@@ -18,7 +18,7 @@ DWIDGET_USE_NAMESPACE
 HandleVisibility::HandleVisibility(MainWindow *mainWindow, QObject *parent)
     : QObject(parent)
     , m_mainWindow(mainWindow)
-    , m_sessionManagerInter(new com::deepin::SessionManager(SessionManagerService, SessionManagerPath, QDBusConnection::sessionBus(), this))
+    // , m_sessionManagerInter(new com::deepin::SessionManager(SessionManagerService, SessionManagerPath, QDBusConnection::sessionBus(), this))
 {
     init();
 }
@@ -35,7 +35,8 @@ void HandleVisibility::init()
     connect(qApp, &QGuiApplication::applicationStateChanged, this, &HandleVisibility::onApplicationStateChanged);
 
     // 锁屏状态改变
-    connect(m_sessionManagerInter, &com::deepin::SessionManager::LockedChanged, this, &HandleVisibility::onLockedChanged);
+    // FIXME: how to replace this feature on V25
+    // connect(m_sessionManagerInter, &com::deepin::SessionManager::LockedChanged, this, &HandleVisibility::onLockedChanged);
 }
 
 void HandleVisibility::onApplicationStateChanged(const Qt::ApplicationState state)
@@ -72,10 +73,13 @@ void HandleVisibility::registerRegion(const bool isRegister)
 
     if (isRegister == m_regionMonitor->registered())
         return;
+    // FIXME: how to fix blocked 25s issue on treeland
+    /*
     if (isRegister)
         m_regionMonitor->registerRegion();
     else
         m_regionMonitor->unregisterRegion();
+    */
 }
 
 void HandleVisibility::regionMousePress(const QPoint &p, const int flag)

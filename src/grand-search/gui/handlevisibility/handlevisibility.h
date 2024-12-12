@@ -34,7 +34,7 @@ private:
 private:
     MainWindow *m_mainWindow = nullptr;
     Dtk::Gui::DRegionMonitor *m_regionMonitor = nullptr;
-    __SessionManager *m_sessionManagerInter = nullptr;
+    // __SessionManager *m_sessionManagerInter = nullptr;
 };
 
 }

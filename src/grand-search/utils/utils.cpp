@@ -44,9 +44,9 @@ static const QString AppManagerPathPrefix = "/org/desktopspec/ApplicationManager
 static const QString AppInterface = "org.desktopspec.ApplicationManager1.Application";
 
 #else
-static const QString SessionManagerService = "com.deepin.SessionManager";
-static const QString StartManagerPath = "/com/deepin/StartManager";
-static const QString StartManagerInterface = "com.deepin.StartManager";
+static const QString SessionManagerService = "org.deepin.dde.SessionManager1";
+static const QString StartManagerPath = "/org/deepin/StartManager1";
+static const QString StartManagerInterface = "org.deepin.dde.StartManager1";
 #endif
 
 static const int WeightDiffLimit = 21;
@@ -851,6 +851,8 @@ bool Utils::launchAppByDBus(const QString &desktopFile, const QStringList &fileP
     return reply.type() == QDBusMessage::ReplyMessage;
 
 #else
+    // FIXME: how to launch app on V25
+    /*
     QDBusInterface interface(SessionManagerService,
                              StartManagerPath,
                              StartManagerInterface,
@@ -869,6 +871,7 @@ bool Utils::launchAppByDBus(const QString &desktopFile, const QStringList &fileP
             qCritical() << "Launch app by DBus failed:" << reply.error();
             return false;
     }
+    */
 #endif
 
     return true;
