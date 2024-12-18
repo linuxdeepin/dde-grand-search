@@ -9,7 +9,6 @@
 #include "modelmanagebutton.h"
 #include "dcommandlinkbutton.h"
 
-#include <QProcess>
 #include <QFutureWatcher>
 #include <QtConcurrent>
 
@@ -18,13 +17,6 @@
 #include <DSpinner>
 
 namespace GrandSearch {
-
-enum ModelStatus {
-  None = 0,
-  Install,
-  Uninstall,
-  InstallAndUpdate
-};
 class Downloader;
 class LLMWidget: public Dtk::Widget::DWidget
 {
@@ -37,14 +29,14 @@ public:
     void setText(const QString &theme, const QString &summary);
     bool onCloseEvent();
     void onClickedStatusBtn();
-
+    bool isInstalled();
+public slots:
+    void pluginStateChanged(bool enable);
 private:
     void initUI();
     void initConnect();
     void onInstall();
     void onUninstall();
-    void beginTimer(const int &time);
-    void checkStatusOntime();
     void changeInstallStatus();
     bool onDealInstalledModel();
 
@@ -67,12 +59,12 @@ private:
     QAction *m_updateAction = nullptr;
     QAction *m_uninstallAction = nullptr;
 
-    QProcess *m_pProcess = nullptr;
     QString m_installPath;
     QString m_baseUrl;
     QStringList m_modelFileList;
     QSharedPointer<Downloader> m_downloader;
     double m_lastProgress = 0.0;
+    bool m_pluginInstalled = false;
 };
 }
 

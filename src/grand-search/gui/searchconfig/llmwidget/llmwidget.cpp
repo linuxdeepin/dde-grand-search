@@ -25,8 +25,7 @@ using namespace GrandSearch;
 static constexpr char MODELNAME[] = "yourong1.5B-Instruct-GGUF";
 
 LLMWidget::LLMWidget(DWidget *parent)
-    : DWidget(parent),
-      m_pProcess(new QProcess)
+    : DWidget(parent)
 {
     initUI();
     initConnect();
@@ -44,10 +43,6 @@ LLMWidget::LLMWidget(DWidget *parent)
 
 LLMWidget::~LLMWidget()
 {
-    if (m_pProcess) {
-        m_pProcess->terminate();
-        m_pProcess->deleteLater();
-    }
 }
 
 void LLMWidget::initUI()
@@ -60,7 +55,7 @@ void LLMWidget::initUI()
     m_spinner->setFixedSize(12, 12);
     m_spinner->hide();
 
-    m_pLabelStatus = new DLabel(tr("NotInstalled"));
+    m_pLabelStatus = new DLabel(tr("Not Installed"));
     m_pLabelStatus->setForegroundRole(QPalette::Text);
     DFontSizeManager::instance()->bind(m_pLabelStatus, DFontSizeManager::T8, QFont::Medium);
 
@@ -108,9 +103,6 @@ void LLMWidget::initConnect()
 {
     connect(m_pManageModel, &DCommandLinkButton::clicked, this, &LLMWidget::onClickedStatusBtn);
     connect(m_pMenu, &QMenu::triggered, this, &LLMWidget::onMoreMenuTriggered);
-
-    connect(m_pProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onProcessFinished(int, QProcess::ExitStatus)));
-
 }
 
 void LLMWidget::paintEvent(QPaintEvent* e)
@@ -164,6 +156,18 @@ void LLMWidget::onClickedStatusBtn()
     }
 }
 
+bool LLMWidget::isInstalled()
+{
+    return m_pManageModel->property("modelStatus").toInt() != Uninstall;
+}
+
+void LLMWidget::pluginStateChanged(bool enable)
+{
+    m_pluginInstalled = enable;
+    if (m_downloader.isNull() || m_downloader->isFinished())
+        checkInstallStatus();
+}
+
 void LLMWidget::onMoreMenuTriggered(const QAction *action)
 {
     if (action == m_uninstallAction) {
@@ -175,20 +179,6 @@ void LLMWidget::onMoreMenuTriggered(const QAction *action)
 
 void LLMWidget::onInstall()
 {
-    //git下载
-//    if (!m_pProcess->atEnd()) return;
-//    if (m_pProcess->state() == QProcess::Running)
-//        m_pProcess->waitForFinished();
-
-//    QString program = "git";
-//    QStringList arguments;
-//    arguments << "clone" << "https://www.modelscope.cn/uniontech-yourong/yourong1.5B-Instruct-GGUF.git";
-
-//    m_pProcess->setWorkingDirectory(m_installPath);
-//    m_pProcess->start(program, arguments);
-
-//    onDealInstalledModel();
-
     //http请求下载
     QDir destinationDir(m_installPath + "/." + MODELNAME);
 
@@ -341,7 +331,7 @@ void LLMWidget::checkInstallStatus()
 
 bool LLMWidget::onCloseEvent()
 {
-    if (m_pProcess->state() == QProcess::Running || (m_downloader && !m_downloader->isFinished())) {
+    if (m_downloader && !m_downloader->isFinished()) {
         DDialog dlg(this);
         dlg.setIcon(QIcon(":icons/dde-grand-search-setting.svg"));
         dlg.setMaximumWidth(380);
@@ -376,17 +366,23 @@ bool LLMWidget::onCloseEvent()
 }
 
 void LLMWidget::changeInstallStatus()
-{
+{   
     int modelStatus = m_pManageModel->property("modelStatus").toInt();
     switch (modelStatus) {
     case Install: {
         m_pManageModel->setText(tr("UnInstall Model"));
         m_pLabelStatus->setText(tr("Installed"));
+        m_pManageModel->setEnabled(true);
         break;
         }
     case Uninstall: {
         m_pManageModel->setText(tr("Install Model"));
         m_pLabelStatus->setText(tr("Not Installed"));
+        m_pManageModel->setEnabled(m_pluginInstalled);
+        if (m_pluginInstalled)
+            m_pManageModel->setToolTip("");
+        else
+            m_pManageModel->setToolTip(tr("Please install the \"Embedding Plugins\" first before installing this model."));
         break;
         }
     default:
@@ -394,7 +390,6 @@ void LLMWidget::changeInstallStatus()
     }
     m_spinner->hide();
     m_spinner->stop();
-    m_pManageModel->setEnabled(true);
     m_pManageModel->updateRectSize();
 }
 

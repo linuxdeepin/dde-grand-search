@@ -9,6 +9,13 @@
 
 namespace GrandSearch {
 
+enum ModelStatus {
+  None = 0,
+  Install,
+  Uninstall,
+  InstallAndUpdate
+};
+
 class ModelManageButton : public DTK_WIDGET_NAMESPACE::DPushButton
 {
     Q_OBJECT

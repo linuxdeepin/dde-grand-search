@@ -37,12 +37,8 @@ void ModelManageButton::paintEvent(QPaintEvent* e)
     QPainter pa(this);
     pa.setRenderHint(QPainter::Antialiasing, true);
     DPalette parentPb = DGuiApplicationHelper::instance()->applicationPalette();
-    QColor textColor = parentPb.color(DPalette::Normal, DPalette::Highlight);
-
-    bool isDarkType = false;
-    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
-        isDarkType = true;
-
+    QColor textColor =  parentPb.color(DPalette::Normal, DPalette::Highlight);
+    bool isDarkType = DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType;
     if (isDarkType)
         textColor.setAlphaF(0.7);
 

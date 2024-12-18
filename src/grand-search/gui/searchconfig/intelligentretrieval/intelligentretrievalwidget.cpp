@@ -7,6 +7,7 @@
 #include "autoindexstatus.h"
 #include "gui/searchconfig/switchwidget/switchwidget.h"
 #include "gui/searchconfig/llmwidget/llmwidget.h"
+#include "gui/searchconfig/llmwidget/embeddingpluginwidget.h"
 #include "business/config/searchconfig.h"
 #include "global/searchconfigdefine.h"
 #include "global/builtinsearch.h"
@@ -105,24 +106,6 @@ IntelligentRetrievalWidget::IntelligentRetrievalWidget(QWidget *parent)
         m_indexLayout->addWidget(bkg);
     }
 
-    // model
-    {
-        RoundedBackground *bkg = new RoundedBackground(m_indexWidget);
-        bkg->setMinimumSize(CHECKBOXITEMWIDTH, SWITCHWIDGETHEIGHT);
-        bkg->setTopRound(true);
-        bkg->setBottomRound(true);
-
-        QVBoxLayout *vl = new QVBoxLayout(bkg);
-        bkg->setLayout(vl);
-        vl->setContentsMargins(0, 2, 0, 5);
-        m_llmWidget = new LLMWidget(bkg);
-        m_llmWidget->setText(tr("UOS AI LLM"),tr("After installing the UOS AI large model, you can use the AI intelligent search function without an internet connection."));
-        m_llmWidget->checkInstallStatus();
-        vl->addWidget(m_llmWidget);
-        m_indexLayout->addSpacing(10);
-        m_indexLayout->addWidget(bkg);
-    }
-
     // full text
     {
         m_indexLayout->addSpacing(10);
@@ -151,6 +134,42 @@ IntelligentRetrievalWidget::IntelligentRetrievalWidget(QWidget *parent)
         m_indexLayout->addWidget(m_fullTextLabel);
     }
 
+    // plugin
+    {
+        RoundedBackground *bkg = new RoundedBackground(m_indexWidget);
+        bkg->setMinimumSize(CHECKBOXITEMWIDTH, SWITCHWIDGETHEIGHT);
+        bkg->setTopRound(true);
+        bkg->setBottomRound(true);
+
+        QVBoxLayout *vl = new QVBoxLayout(bkg);
+        bkg->setLayout(vl);
+        vl->setContentsMargins(0, 2, 0, 5);
+        m_embWidget = new EmbeddingPluginWidget(bkg);
+        m_embWidget->setText(tr("Embedding Plugins"),tr("After installing the model, you can use services such as AI Search and UOS AI Assistant.."));
+        m_embWidget->checkInstallStatus();
+        vl->addWidget(m_embWidget);
+        m_indexLayout->addSpacing(10);
+        m_indexLayout->addWidget(bkg);
+    }
+
+    // model
+    {
+        RoundedBackground *bkg = new RoundedBackground(m_indexWidget);
+        bkg->setMinimumSize(CHECKBOXITEMWIDTH, SWITCHWIDGETHEIGHT);
+        bkg->setTopRound(true);
+        bkg->setBottomRound(true);
+
+        QVBoxLayout *vl = new QVBoxLayout(bkg);
+        bkg->setLayout(vl);
+        vl->setContentsMargins(0, 2, 0, 5);
+        m_llmWidget = new LLMWidget(bkg);
+        m_llmWidget->setText(tr("UOS AI LLM"),tr("After installing the UOS AI large model, you can use the AI intelligent search function without an internet connection."));
+        m_llmWidget->checkInstallStatus();
+        vl->addWidget(m_llmWidget);
+        m_indexLayout->addSpacing(10);
+        m_indexLayout->addWidget(bkg);
+        connect(m_embWidget, &EmbeddingPluginWidget::pluginStateChanged, m_llmWidget, &LLMWidget::pluginStateChanged);
+    }
 #ifdef VECTOR_SEARCH
     // 超链接
     m_vectorDetail = new QLabel;
@@ -183,6 +202,8 @@ void IntelligentRetrievalWidget::updateState()
     if (m_semantic->checked()) {
         this->updateIndexStatusContent(this->getIndexStatus());
     }
+
+    m_embWidget->checkInstallStatus();
 
 #ifdef VECTOR_SEARCH
     if (isVectorSupported()) {
@@ -300,24 +321,15 @@ void IntelligentRetrievalWidget::checkChanged()
         }
 
         // 检测是否安装大模型，未安装就提醒弹窗
-        if (on && !this->isQueryLangSupported()) {
-            DDialog *warningDlg = new DDialog();
-            warningDlg->setWindowFlags((warningDlg->windowFlags() | Qt::WindowType::WindowStaysOnTopHint));
-            warningDlg->setFixedWidth(380);
-            warningDlg->setIcon(QIcon(":icons/dde-grand-search-setting.svg"));
-            warningDlg->setMessage(QString(tr("To use AI smart search, you need to install the UOS AI large model. Please install the model.")));
-            warningDlg->addButton(tr("Not yet"), false, DDialog::ButtonNormal);
-            warningDlg->addButton(tr("Install the model"), true, DDialog::ButtonRecommend);
-            connect(warningDlg, &DDialog::accepted, warningDlg, [&] {
-                m_llmWidget->onClickedStatusBtn();
-                //QDBusInterface iface("com.home.appstore.client", "/com/home/appstore/client", "com.home.appstore.client");
-                //iface.call("openBusinessUri", "");
-            });
-            connect(warningDlg, &DDialog::finished, warningDlg, [&] {
-                warningDlg->deleteLater();
-            });
-            warningDlg->moveToCenter();
-            warningDlg->exec();
+        if (on && (!m_llmWidget->isInstalled() || !m_embWidget->isInstalled())) {
+            DDialog warningDlg;
+            warningDlg.setWindowFlags((warningDlg.windowFlags() | Qt::WindowType::WindowStaysOnTopHint));
+            warningDlg.setFixedWidth(380);
+            warningDlg.setIcon(QIcon(":icons/dde-grand-search-setting.svg"));
+            warningDlg.setMessage(QString(tr("To use AI Smart Search, you need to install the Embedding Plugins and UOS AI LLM first.")));
+            warningDlg.addButton(tr("OK"), true, DDialog::ButtonNormal);
+            warningDlg.moveToCenter();
+            warningDlg.exec();
         }
     }
 #ifdef VECTOR_SEARCH

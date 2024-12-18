@@ -18,9 +18,9 @@ if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips"
         OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "sw"
         OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "loongarch64"
         )
-    message(${CMAKE_SYSTEM_PROCESSOR} ": disable ai search")
+    message("${CMAKE_SYSTEM_PROCESSOR} : disable ai search")
 else()
-    message(${CMAKE_SYSTEM_PROCESSOR} ": enable ai search")
+    message("${CMAKE_SYSTEM_PROCESSOR} : enable ai search")
     ADD_DEFINITIONS(-DENABLE_AI_SEARCH)
 endif()
 
@@ -152,6 +152,8 @@ set(GUISRC
     gui/searchconfig/llmwidget/modelmanagebutton.h
     gui/searchconfig/llmwidget/downloader.h
     gui/searchconfig/llmwidget/downloader.cpp
+    gui/searchconfig/llmwidget/embeddingpluginwidget.cpp
+    gui/searchconfig/llmwidget/embeddingpluginwidget.h
     gui/searchconfig/hyperlinklabel/hyperlinklabel.cpp
     gui/searchconfig/hyperlinklabel/hyperlinklabel.h
     gui/searchconfig/comboboxwidget/comboboxwidget.h
