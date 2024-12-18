@@ -25,16 +25,25 @@ IndexWidget::IndexWidget(QWidget *parent)
     m_groupLabel = new QLabel(tr("Index"));
     DFontSizeManager::instance()->bind(m_groupLabel, DFontSizeManager::T5, QFont::Bold);
 
-    m_intelligent = new IntelligentRetrievalWidget(this);
     m_mainLayout->addWidget(m_groupLabel);
+
+#ifdef ENABLE_AI_SEARCH
+    // 目前非amd64架构，用不了AI搜索
+    m_intelligent = new IntelligentRetrievalWidget(this);
     m_mainLayout->addWidget(m_intelligent);
+#endif
+
     m_mainLayout->addSpacing(10);
     m_mainLayout->addWidget(m_blackListWidget);
 }
 
 bool IndexWidget::onCloseEvent()
 {
+#ifdef ENABLE_AI_SEARCH
     return m_intelligent->onCloseEvent();
+#else
+    return true;
+#endif
 }
 
 IndexWidget::~IndexWidget()
