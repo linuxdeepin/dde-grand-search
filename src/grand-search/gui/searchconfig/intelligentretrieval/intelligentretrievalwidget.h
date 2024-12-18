@@ -14,6 +14,7 @@
 namespace GrandSearch {
 class SwitchWidget;
 class LLMWidget;
+class EmbeddingPluginWidget;
 class DetailCheckBox;
 class AutoIndexStatus;
 class IntelligentRetrievalWidget : public Dtk::Widget::DWidget
@@ -56,6 +57,7 @@ private:
     SwitchWidget *m_fullTextIndex = nullptr;
     QLabel *m_fullTextLabel = nullptr;
     LLMWidget *m_llmWidget = nullptr;
+    EmbeddingPluginWidget *m_embWidget = nullptr;
     AutoIndexStatus *m_indexStatus = nullptr;
     QTimer m_timer;
     bool m_ignoreSigal = false;

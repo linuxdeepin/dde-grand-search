@@ -28,12 +28,10 @@ IndexWidget::IndexWidget(QWidget *parent)
     m_mainLayout->addWidget(m_groupLabel);
 
 #ifdef ENABLE_AI_SEARCH
-    // 目前非amd64架构，用不了AI搜索
     m_intelligent = new IntelligentRetrievalWidget(this);
     m_mainLayout->addWidget(m_intelligent);
-#endif
-
     m_mainLayout->addSpacing(10);
+#endif
     m_mainLayout->addWidget(m_blackListWidget);
 }
 
