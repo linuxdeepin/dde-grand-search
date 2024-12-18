@@ -30,6 +30,11 @@ IndexWidget::IndexWidget(QWidget *parent)
     m_mainLayout->addWidget(m_intelligent);
     m_mainLayout->addSpacing(10);
     m_mainLayout->addWidget(m_blackListWidget);
+
+#ifdef ENABLE_FSEARCH
+    // 非amd64架构，用不了AI搜索
+    m_intelligent->setVisible(false);
+#endif
 }
 
 bool IndexWidget::onCloseEvent()
