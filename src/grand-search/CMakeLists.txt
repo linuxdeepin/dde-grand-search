@@ -13,6 +13,17 @@ set(BIN_NAME ${SEARCH_BIN_NAME})
 # 集成测试标签
 ADD_DEFINITIONS(-DENABLE_ACCESSIBILITY)
 
+if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips"
+        OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64"
+        OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "sw"
+        OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "loongarch64"
+        )
+    message(${CMAKE_SYSTEM_PROCESSOR} ": disable ai search")
+else()
+    message(${CMAKE_SYSTEM_PROCESSOR} ": enable ai search")
+    ADD_DEFINITIONS(-DENABLE_AI_SEARCH)
+endif()
+
 # 依赖包
 find_package(PkgConfig REQUIRED)
 find_package(DtkWidget REQUIRED)
