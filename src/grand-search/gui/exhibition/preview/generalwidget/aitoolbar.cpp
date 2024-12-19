@@ -348,6 +348,11 @@ void AiToolBarInner::adjustBts() {
     m_omitBt->setVisible(false);
 
     if (sumWidth <= MAX_WIDTH) {
+#ifndef ENABLE_AI_SEARCH
+        if (m_knowledgeBt->isVisible()) {
+            m_knowledgeBt->setVisible(false);
+        }
+#endif
         return;
     }
 
@@ -385,6 +390,18 @@ void AiToolBarInner::adjustBts() {
             m_omitBt->setVisible(false);
         }
     }
+
+#ifndef ENABLE_AI_SEARCH
+    if (m_knowledgeBt->isVisible()) {
+        m_knowledgeBt->setVisible(false);
+    } else {
+        if (actionCounts == 1) {
+            m_omitBt->setVisible(false);
+        } else if (actionCounts > 1) {
+            m_knowledgeAction->setVisible(false);
+        }
+    }
+#endif
 }
 
 void AiToolBarInner::showWarningDialog(QString name) {
