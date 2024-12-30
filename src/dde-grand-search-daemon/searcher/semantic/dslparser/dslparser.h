@@ -11,23 +11,14 @@
 #include <antlr4-runtime.h>
 #include <querylangParser.h>
 #include <querylangLexer.h>
-
-#include "../fileresultshandler.h"
 #include "../semanticworker_p.h"
 
-#include "../database/anythingquery.h"
-#include "../database/fulltextquery.h"
-#include "../database/featurequery.h"
-#include "../database/vectorquery.h"
-
 namespace GrandSearch {
-class SemanticWorkerPrivate;
 // 对应RulePrimary
 class BaseCond : public QObject {
     Q_OBJECT
 public:
-    explicit BaseCond(const QString &text, QList<SemanticWorkerPrivate::QueryFunction> *querys,
-                      SemanticWorkerPrivate *worker, QObject *parent = nullptr);
+    explicit BaseCond(const QString &text, QObject *parent = nullptr);
     virtual ~BaseCond();
     void setCond(const QString &text) { m_cond = text; }
     QString getCond() { return m_cond; }
@@ -36,26 +27,20 @@ public:
     BaseCond *getParent() { return m_parent; }
     void addAndCond(BaseCond *cond);
     void addOrCond(BaseCond *cond);
-    // 调试使用
-    virtual bool isMatch(const QString &text);
     // 某些条件没有存在的必要
     virtual bool isValid() { return m_isValid; }
     // 结构优化调整
     void adjust();
     // 合并Binary层级的条件
     virtual void mergeBinary();
-    // 合并Base层级的条件
+    // 合并Base层级的条件（Binary层级之上）
     virtual void mergeBase();
-    // 合并各引擎的条件
+    // 为搜索引擎，合并各条件
     virtual void merge4Engine();
     // 为OR条件调整条件组合
     void adjust4OrCond();
-    // 装载检索条件进入检索引擎
-    virtual void loadCond();
 
     virtual QList<SemanticEntity> entityList();
-    virtual void addMatchedItems(const MatchedItems &items);
-    virtual const MatchedItems &getMatchedItems();
     virtual QString toString(int spaceCounts = 0);
 
 public:
@@ -63,10 +48,7 @@ public:
     static bool kIsNeedAdjustBase;
     QString m_cond;
     int m_condType = querylangParser::RulePrimary;
-    QList<SemanticWorkerPrivate::QueryFunction> *m_querys = nullptr;
-    SemanticWorkerPrivate *m_worker = nullptr;
     BaseCond *m_parent = nullptr;
-    MatchedItems m_matchedItems;
     QList<BaseCond *> m_andCondList;
     QList<BaseCond *> m_orCondList;
     bool m_isValid = true;
@@ -74,7 +56,8 @@ public:
 
 public:
     enum {
-        RuleAnything = 100,
+        RuleEngine = 100,
+        RuleAnything,
         RuleFeature,
         RuleFulltext,
     };
@@ -83,8 +66,7 @@ public:
 // 对应RuleBinaryExpression
 class BinaryCond : public BaseCond {
 public:
-    explicit BinaryCond(const QString &text, QList<SemanticWorkerPrivate::QueryFunction> *querys,
-                        SemanticWorkerPrivate *worker, QObject *parent = nullptr) : BaseCond(text, querys, worker, parent) {
+    explicit BinaryCond(const QString &text, QObject *parent = nullptr) : BaseCond(text, parent) {
         m_condType = querylangParser::RuleBinaryExpression;
     }
 };
@@ -92,115 +74,79 @@ public:
 // 对应RuleDateSearchinfo  DATE <= CURRENT - "16 hour"
 class DateInfoCond : public BaseCond {
 public:
-    explicit DateInfoCond(const QString &text, QList<SemanticWorkerPrivate::QueryFunction> *querys,
-                          SemanticWorkerPrivate *worker, QObject *parent = nullptr);
-    void loadCond() override;
+    explicit DateInfoCond(const QString &text, QObject *parent = nullptr);
 
 public:
     QString m_compType;
     qint64 m_timestamp;
     qint64 m_timestamp2;
-
-private:
-    AnythingQuery m_anything;
 };
 
 // 对应RulePathSearch  PATH IS "Downloads"
 class PathCond : public BaseCond {
 public:
-    explicit PathCond(const QString &text, QList<SemanticWorkerPrivate::QueryFunction> *querys,
-                      SemanticWorkerPrivate *worker, QObject *parent = nullptr);
-    void loadCond() override;
+    explicit PathCond(const QString &text, QObject *parent = nullptr);
 
 public:
     bool m_isTruePath = true;
     QString m_pathName;
-
-private:
-    AnythingQuery m_anything;
 };
 
 // 对应RuleNameSearch  NAME CONTAINS "名字"
 class NameCond : public BaseCond {
 public:
-    explicit NameCond(const QString &text, QList<SemanticWorkerPrivate::QueryFunction> *querys,
-                      SemanticWorkerPrivate *worker, QObject *parent = nullptr);
-    void loadCond() override;
+    explicit NameCond(const QString &text, QObject *parent = nullptr);
 
 public:
     QString m_name;
-
-private:
-    AnythingQuery m_anything;
 };
 
 // 对应RuleSizeSearch  SIZE <= "4GB"
 class SizeCond : public BaseCond {
 public:
-    explicit SizeCond(const QString &text, QList<SemanticWorkerPrivate::QueryFunction> *querys,
-                      SemanticWorkerPrivate *worker, QObject *parent = nullptr);
-    void loadCond() override;
+    explicit SizeCond(const QString &text, QObject *parent = nullptr);
 
 public:
     QString m_compType;
     qint64 m_fileSize;
-
-private:
-    AnythingQuery m_anything;
 };
 
 // 对应RuleTypeSearch  TYPE IS "txt"
 class TypeCond : public BaseCond {
 public:
-    explicit TypeCond(const QString &text, QList<SemanticWorkerPrivate::QueryFunction> *querys,
-                      SemanticWorkerPrivate *worker, QObject *parent = nullptr);
-    void loadCond() override;
+    explicit TypeCond(const QString &text, QObject *parent = nullptr);
 
 public:
     bool m_isTrueType = true;
     QString m_typeName;
-
-private:
-    AnythingQuery m_anything;
 };
 
 // 对应RuleDurationSearch  DURATION > \"3 minute\"
 class DurationCond : public BaseCond {
 public:
-    explicit DurationCond(const QString &text, QList<SemanticWorkerPrivate::QueryFunction> *querys,
-                          SemanticWorkerPrivate *worker, QObject *parent = nullptr);
+    explicit DurationCond(const QString &text, QObject *parent = nullptr);
     static QString formatTime(qint64 msec);
-    void loadCond() override;
 
 public:
     QString m_compType;
     QString m_duration;
-
-private:
-    FeatureQuery m_feature;
 };
 
 // 对应RuleMetaSearch  META_TYPE IS \"ARTIST\" AND META_VALUE IS \"xxx\"
 class MetaCond : public BaseCond {
 public:
-    explicit MetaCond(const QString &text, QList<SemanticWorkerPrivate::QueryFunction> *querys,
-                      SemanticWorkerPrivate *worker, QObject *parent = nullptr);
-    void loadCond() override;
+    explicit MetaCond(const QString &text, QObject *parent = nullptr);
 
 public:
     bool m_isTrue = true;
     QString m_metaType;
     QString m_metaValue;
-
-private:
-    FeatureQuery m_feature;
 };
 
 // 对应RuleQuantityCondition  QUANTITY = 10
 class QuantityCond : public BaseCond {
 public:
-    explicit QuantityCond(const QString &text, QList<SemanticWorkerPrivate::QueryFunction> *querys,
-                          SemanticWorkerPrivate *worker, QObject *parent = nullptr);
+    explicit QuantityCond(const QString &text, QObject *parent = nullptr);
     int getQuantity() { return m_quantity; }
 
 private:
@@ -210,58 +156,24 @@ private:
 // 对应RuleContentSearch  CONTENT CONTAINS "read"
 class ContentCond : public BaseCond {
 public:
-    explicit ContentCond(const QString &text, QList<SemanticWorkerPrivate::QueryFunction> *querys,
-                         SemanticWorkerPrivate *worker, QObject *parent = nullptr);
-    void loadCond() override;
+    explicit ContentCond(const QString &text, QObject *parent = nullptr);
 
 public:
     QString m_content;
-
-private:
-    FullTextQuery m_fulltext;
 };
 
 // 对应RuleFilename
 class FileNameCond : public BaseCond {
 public:
-    explicit FileNameCond(const QString &text, QList<SemanticWorkerPrivate::QueryFunction> *querys,
-                          SemanticWorkerPrivate *worker, QObject *parent = nullptr) : BaseCond(text, querys, worker, parent) {}
+    explicit FileNameCond(const QString &text, QObject *parent = nullptr) : BaseCond(text, parent) {}
 };
 
-// 对应合并后的Anything
-class AnythingCond : public BaseCond {
+// 对应合并后的Engine
+class EngineCond : public BaseCond {
 public:
-    explicit AnythingCond(QList<BaseCond *> *andList, QList<SemanticWorkerPrivate::QueryFunction> *querys,
-                          SemanticWorkerPrivate *worker, QObject *parent = nullptr);
-    bool copyCondOut(BaseCond *cond);
-    void loadCond() override;
-
-private:
-    AnythingQuery m_anything;
-};
-
-// 对应合并后的Feature
-class FeatureCond : public BaseCond {
-public:
-    explicit FeatureCond(QList<BaseCond *> *andList, QList<SemanticWorkerPrivate::QueryFunction> *querys,
-                          SemanticWorkerPrivate *worker, QObject *parent = nullptr);
-    bool copyCondOut(BaseCond *cond);
-    void loadCond() override;
-
-private:
-    FeatureQuery m_feature;
-};
-
-// 对应合并后的Fulltext
-class FulltextCond : public BaseCond {
-public:
-    explicit FulltextCond(QList<BaseCond *> *andList, QList<SemanticWorkerPrivate::QueryFunction> *querys,
-                          SemanticWorkerPrivate *worker, QObject *parent = nullptr);
-    bool copyCondOut(BaseCond *cond);
-    void loadCond() override;
-
-private:
-    FullTextQuery m_fulltext;
+    explicit EngineCond(QList<BaseCond *> *andList, QObject *parent = nullptr);
+    // 吸收目标条件至自身
+    bool absorbCond(BaseCond *cond);
 };
 
 class DslParserListener : public antlr4::tree::ParseTreeListener {
@@ -335,12 +247,9 @@ private:
 class DslParser : public QObject {
     Q_OBJECT
 public:
-    explicit DslParser(const QString &text, QList<SemanticWorkerPrivate::QueryFunction> *querys, FileResultsHandler *fileHandler,
-                       SemanticWorkerPrivate *worker, QObject *parent = nullptr);
+    explicit DslParser(const QString &text, QObject *parent = nullptr);
     ~DslParser() {}
-    bool isMatch(const QString &text);
     QList<SemanticEntity> entityList() { return m_cond.entityList(); }
-    const MatchedItems &getMatchedItems() { return m_cond.getMatchedItems(); }
 
 private:
     BaseCond m_cond;
