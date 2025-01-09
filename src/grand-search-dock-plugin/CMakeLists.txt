@@ -45,9 +45,9 @@ find_package(PkgConfig REQUIRED)
 
 # 加载需要的库
 pkg_check_modules(DdeDockInterface REQUIRED dde-dock)
-#if (QT_VERSION_MAJOR < 6)
+if (QT_VERSION_MAJOR LESS 6)
     pkg_check_modules(QGSettings REQUIRED gsettings-qt)
-#endif
+endif()
 
 # 编译目标
 add_library(${PLUGIN_NAME} SHARED ${SRCS} ${QRCS})
@@ -61,9 +61,7 @@ set_target_properties(${PLUGIN_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ./)
 # 当出现编译失败提示找不到某些库的头文件时应该检查此处是否将所有需要的头文件都包含了
 target_include_directories(${PLUGIN_NAME} PUBLIC
     ${DdeDockInterface_INCLUDE_DIRS}
-#if (QT_VERSION_MAJOR < 6)
-    ${QGSettings_INCLUDE_DIRS}
-#endif
+    $<$<VERSION_LESS:${QT_VERSION_MAJOR},6>:${QGSettings_INCLUDE_DIRS}>
 )
 
 # 设置目标要使用的链接库
@@ -73,9 +71,7 @@ target_link_libraries(${PLUGIN_NAME} PRIVATE
     ${QT_NS}::Widgets
     ${DTK_NS}::Widget
     ${DdeDockInterface_LIBRARIES}
-#if (QT_VERSION_MAJOR < 6)
-    ${QGSettings_LIBRARIES}
-#endif
+    $<$<VERSION_LESS:${QT_VERSION_MAJOR},6>:${QGSettings_LIBRARIES}>
 )
 
 # 设置安装路径的前缀(默认为"/usr/local")
@@ -87,5 +83,3 @@ install(TARGETS ${PLUGIN_NAME} LIBRARY DESTINATION lib/dde-dock/plugins/)
 
 # gsettings
 install(FILES gschema/com.deepin.dde.dock.module.grand-search.gschema.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/glib-2.0/schemas)
-
-
