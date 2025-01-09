@@ -31,7 +31,11 @@ void TipsWidget::setText(const QString &text)
     m_text = "བོད་སྐད་ཡིག་གཟུགས་ཚད་ལེན་ཚོད་ལྟའི་སྐོར་གྱི་རྗོད་ཚིག";
 #endif
 
-    setFixedSize(fontMetrics().width(m_text), fontMetrics().boundingRect(m_text).height());
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    setFixedSize(fontMetrics().horizontalAdvance(m_text), fontMetrics().boundingRect(m_text).height());
+#else
+    setFixedSize(fontMetrics().width(m_text), fontMetrics().height());
+#endif
 
     update();
 
@@ -51,8 +55,13 @@ void TipsWidget::setTextList(const QStringList &textList)
     int width = 0;
     int height = 0;
     for (QString text : m_textList) {
-        width = qMax(width, fontMetrics().width(text));
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        width = qMax(width, fontMetrics().horizontalAdvance(text));
         height += fontMetrics().boundingRect(text).height();
+#else
+        width = qMax(width, fontMetrics().width(text));
+        height += fontMetrics().height();
+#endif
     }
 
     setFixedSize(width, height);

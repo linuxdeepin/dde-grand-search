@@ -8,7 +8,11 @@
 #include "interfaces/grandsearchinterface.h"
 
 #include <DGuiApplicationHelper>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <DGuiApplicationHelper>
+#else
 #include <DApplicationHelper>
+#endif
 #include <DStyleHelper>
 #include <DFontSizeManager>
 
@@ -172,7 +176,7 @@ QuickPanel::QuickPanel(const QString &desc, QWidget *parent)
     : QWidget(parent)
 {
     QVBoxLayout *lay = new QVBoxLayout;
-    lay->setMargin(10);
+    lay->setContentsMargins(10, 10, 10, 10);
     lay->setSpacing(0);
     lay->addStretch(1);
 

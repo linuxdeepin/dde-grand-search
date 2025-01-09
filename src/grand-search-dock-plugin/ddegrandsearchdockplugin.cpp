@@ -8,7 +8,9 @@
 
 #include <DApplication>
 
+#if (QT_VERSION_MAJOR < 6)
 #include <QGSettings>
+#endif
 #include <QLabel>
 
 #define GrandSearchPlugin "grand-search"
@@ -70,13 +72,14 @@ void DdeGrandSearchDockPlugin::init(PluginProxyInterface *proxyInter)
     if (!pluginIsDisable()) {
         m_proxyInter->itemAdded(this, pluginName());
     }
-
+#if (QT_VERSION_MAJOR < 6)
     if (QGSettings::isSchemaInstalled(SchemaId)) {
         m_gsettings.reset(new QGSettings(SchemaId, SchemaPath));
         connect(m_gsettings.data(), &QGSettings::changed, this, &DdeGrandSearchDockPlugin::onGsettingsChanged);
     } else {
         qWarning() << "no such schema id" << SchemaId;
     }
+#endif
 }
 
 QWidget *DdeGrandSearchDockPlugin::itemWidget(const QString &itemKey)
@@ -184,6 +187,7 @@ void DdeGrandSearchDockPlugin::invokedMenuItem(const QString &itemKey, const QSt
     m_proxyInter->requestSetAppletVisible(this, pluginName(), false);
 }
 
+#if (QT_VERSION_MAJOR < 6)
 void DdeGrandSearchDockPlugin::onGsettingsChanged(const QString &key)
 {
     Q_ASSERT(m_gsettings);
@@ -194,7 +198,7 @@ void DdeGrandSearchDockPlugin::onGsettingsChanged(const QString &key)
         qInfo() << "The status of whether the grand search right-click menu is enabled changes to:" << enable;
     }
 }
-
+#endif
 void DdeGrandSearchDockPlugin::onVisibleChanged(bool visible)
 {
 #ifdef USE_DOCK_2_0
