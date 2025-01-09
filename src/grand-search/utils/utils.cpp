@@ -71,11 +71,17 @@ QMimeDatabase Utils::m_mimeDb;
 
 bool Utils::sort(MatchedItems &list, Qt::SortOrder order/* = Qt::AscendingOrder*/)
 {
-    QTime time;
+    QElapsedTimer time;
     time.start();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     qStableSort(list.begin(), list.end(), [order](const MatchedItem &node1, const MatchedItem &node2) {
         return compareByString(node1.name, node2.name, order);
     });
+#else
+    std::stable_sort(list.begin(), list.end(), [order](const MatchedItem &node1, const MatchedItem &node2) {
+        return compareByString(node1.name, node2.name, order);
+    });
+#endif
 
     qDebug() << QString("sort matchItems done. cost [%1]ms").arg(time.elapsed());
     return true;
@@ -154,8 +160,8 @@ bool Utils::startWithSymbol(const QString &text)
 
     bool bRet = false;
     // 先匹配中文标点符号
-    QRegExp regExp("^[\u3002\uff1b\uff0c\uff1a\u201c\u201d\uff08\uff09\u3001\uff1f\u300a\u300b].*$");
-    bRet = regExp.exactMatch(text.at(0));
+    QRegularExpression regExp("^[\u3002\uff1b\uff0c\uff1a\u201c\u201d\uff08\uff09\u3001\uff1f\u300a\u300b].*$");
+    bRet = regExp.match(text.at(0)).hasMatch();
 
     // 若不是中文标点符号，再判断是否为其他符号
     if (!bRet)
@@ -170,8 +176,8 @@ bool Utils::startWithHanzi(const QString &text)
         return false;
 
     // 匹配中文
-    QRegExp regExp("^[\u4e00-\u9fa5].*$");
-    bool bRet = regExp.exactMatch(text.at(0));
+    QRegularExpression regExp("^[\u4e00-\u9fa5].*$");
+    bool bRet = regExp.match(text.at(0)).hasMatch();
 
     return bRet;
 }
@@ -182,8 +188,8 @@ bool Utils::startWithLatin(const QString &text)
         return false;
 
     // 匹配英文
-    QRegExp regExp("^[a-zA-Z].*$");
-    bool bRet = regExp.exactMatch(text.at(0));
+    QRegularExpression regExp("^[a-zA-Z].*$");
+    bool bRet = regExp.match(text.at(0)).hasMatch();
 
     return bRet;
 }
@@ -210,15 +216,15 @@ bool Utils::startWidthNum(const QString &text)
         return false;
 
     // 匹配数字
-    QRegExp regExp("^[0-9].*$");
-    bool bRet = regExp.exactMatch(text.at(0));
+    QRegularExpression regExp("^[0-9].*$");
+    bool bRet = regExp.match(text.at(0)).hasMatch();
 
     return bRet;
 }
 
 bool Utils::sortByWeight(MatchedItemMap &map, Qt::SortOrder order)
 {
-    QTime time;
+    QElapsedTimer time;
     time.start();
 
     for (const QString &searchGroupName : map.keys()) {
@@ -362,7 +368,11 @@ double Utils::calcFileWeight(const QString &path, const QString &name, const QSt
     QFileInfo fileInfo(path);
 
     const QDateTime &currentDateTime = QDateTime::currentDateTime();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    const QDateTime &createDateTime = fileInfo.birthTime();
+#else
     const QDateTime &createDateTime = fileInfo.created();
+#endif
     const QDateTime &lastModifyTime = fileInfo.lastModified();
     const QDateTime &lastReadTime = fileInfo.lastRead();
 
@@ -485,7 +495,7 @@ void Utils::packageBestMatch(MatchedItemMap &map, int maxQuantity)
     if (map.isEmpty() || maxQuantity <= 0)
         return;
 
-    QTime time;
+    QElapsedTimer time;
     time.start();
 
     static const QMap<QString, bool> supprotedSeracher = {
@@ -560,7 +570,16 @@ void Utils::packageBestMatch(MatchedItemMap &map, int maxQuantity)
 
     for (auto list : tempBestList) {
         // 在原分组中移除最佳匹配项
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        auto& items = map[list.second];
+        auto it = std::find(items.begin(), items.end(), list.first);
+        if (it != items.end()) {
+            items.erase(it);
+        }
+#else
         map[list.second].removeOne(list.first);
+#endif
+
         bestList.append(list.first);
 
         // 原分组为空，移除分组

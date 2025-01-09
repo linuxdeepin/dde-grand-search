@@ -10,7 +10,11 @@
 #include "gui/datadefine.h"
 
 #include <DScrollArea>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <DGuiApplicationHelper>
+#else
 #include <DApplicationHelper>
+#endif
 
 #include <QDebug>
 #include <QVBoxLayout>
@@ -520,7 +524,11 @@ void MatchWidget::initUi()
     m_scrollArea->setWidget(m_scrollAreaContent);
 
     QPalette palette = m_scrollArea->palette();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    palette.setColor(QPalette::Window, Qt::transparent);
+#else
     palette.setColor(QPalette::Background, Qt::transparent);
+#endif
     m_scrollArea->setPalette(palette);
     m_scrollArea->setLineWidth(0);
 

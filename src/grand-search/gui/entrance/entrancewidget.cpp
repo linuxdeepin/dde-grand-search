@@ -213,7 +213,7 @@ void EntranceWidget::initUI()
     {
         auto slayout = d_p->m_searchEdit->layout();
         slayout->setSpacing(0);
-        slayout->setMargin(0);
+        slayout->setContentsMargins(0, 0, 0, 0);
 
         // 增加默认应用图标的右边距
         auto conMar = slayout->contentsMargins();
@@ -232,7 +232,7 @@ void EntranceWidget::initUI()
     d_p->m_mainLayout->addWidget(d_p->m_searchEdit);
     // 根据设计图要求，设置边距和间隔
     d_p->m_mainLayout->setSpacing(0);
-    d_p->m_mainLayout->setMargin(WidgetMargins);
+    d_p->m_mainLayout->setContentsMargins(WidgetMargins, WidgetMargins, WidgetMargins, WidgetMargins);
 
     this->setLayout(d_p->m_mainLayout);
 }

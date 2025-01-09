@@ -217,7 +217,7 @@ void MainWindow::initUI()
 
     // 根据设计图调整主界面布局，限制边距和内容间距为0
     d_p->m_mainLayout->setSpacing(0);
-    d_p->m_mainLayout->setMargin(0);
+    d_p->m_mainLayout->setContentsMargins(0, 0, 0, 0);
 
     this->setLayout(d_p->m_mainLayout);
 
