@@ -128,7 +128,11 @@ inline QString lineFeed(const QString &text, int nWidth, const QFont &font, int 
 
     if (!strText.isEmpty()) {
         for (int i = 1; i <= strText.size(); i++) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
             if (fm.width(strText.left(i)) >= nWidth) {
+#else
+            if (fm.horizontalAdvance(strText.left(i)) >= nWidth) {
+#endif
                 if (strListLine.size() + 1 == nElidedRow)
                     break;
 
