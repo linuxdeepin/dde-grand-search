@@ -8,6 +8,7 @@
 
 #include <QDebug>
 #include <QTextCodec>
+#include <QLocale>
 
 #include <unicode/ucnv.h>
 #include <unicode/ucsdet.h>

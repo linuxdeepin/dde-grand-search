@@ -17,6 +17,7 @@
 #include <QLabel>
 #include <QDBusInterface>
 #include <QDBusReply>
+#include <QFile>
 
 GRANDSEARCH_USE_NAMESPACE
 using namespace GrandSearch::text_preview;
