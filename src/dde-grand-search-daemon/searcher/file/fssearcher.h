@@ -12,7 +12,7 @@ extern "C" {
 }
 
 #include <QFuture>
-#include <QTime>
+#include <QElapsedTimer>
 
 namespace GrandSearch {
 
@@ -39,11 +39,11 @@ private:
 
     FsearchApplication *m_app = nullptr;
     mutable Database *m_databaseForUpdate = nullptr;
-    mutable QTime m_updateTime;
+    mutable QElapsedTimer m_updateTime;
     mutable bool m_isUpdating = false;
     mutable QFuture<void> m_updateFuture;
 
-    QTime m_databaseSaveTime;   // 索引保存计时
+    QElapsedTimer m_databaseSaveTime;   // 索引保存计时
     int m_lastSaveTime = 0;
 };
 

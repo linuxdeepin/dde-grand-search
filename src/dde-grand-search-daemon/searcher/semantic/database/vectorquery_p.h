@@ -21,7 +21,7 @@ public:
     SemanticParser *m_parser = nullptr;
     QString m_query;
     int m_count = 0;
-    QTime m_time;
+    QElapsedTimer m_time;
     int m_lastPush = 0;
 private:
     VectorQuery *q;
