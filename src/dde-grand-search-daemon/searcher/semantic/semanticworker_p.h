@@ -35,7 +35,7 @@ public:
     MatchedItemMap m_items;
 
     //计时
-    QTime m_time;
+    QElapsedTimer m_time;
     int m_lastEmit = 0;
 
     bool m_doSemantic = false;

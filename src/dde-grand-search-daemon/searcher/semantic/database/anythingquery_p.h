@@ -31,7 +31,7 @@ public:
 
     QStringList m_searchDirList;
     FileResultsHandler *m_handler = nullptr;
-    QTime m_time;
+    QElapsedTimer m_time;
     int m_lastPush = 0;
     int m_count = 0;
 private:

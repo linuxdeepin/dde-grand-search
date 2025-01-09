@@ -77,7 +77,7 @@ QFileInfoList FileNameWorkerPrivate::traverseDirAndFile(const QString &path)
     dir.setFilter(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
     auto result = dir.entryInfoList();
     // 排序
-    qSort(result.begin(), result.end(), [](const QFileInfo &info1, const QFileInfo &info2) {
+    std::sort(result.begin(), result.end(), [](const QFileInfo &info1, const QFileInfo &info2) {
         static QStringList sortList{"Desktop", "Music", "Downloads", "Documents", "Pictures", "Videos"};
         int index1 = sortList.indexOf(info1.fileName());
         int index2 = sortList.indexOf(info2.fileName());
@@ -154,7 +154,7 @@ bool FileNameWorkerPrivate::searchUserPath()
         if (info.isDir())
             m_searchDirList << info.absoluteFilePath();
 
-        QRegExp reg(m_searchInfo.keyword, Qt::CaseInsensitive);
+        QRegularExpression reg(m_searchInfo.keyword, QRegularExpression::CaseInsensitiveOption);
         if (info.fileName().contains(reg)) {
             auto absoluteFilePath = info.absoluteFilePath();
 
@@ -190,7 +190,7 @@ bool FileNameWorkerPrivate::searchByAnything()
     quint32 searchStartOffset = 0;
     quint32 searchEndOffset = 0;
     // 过滤系统隐藏文件
-    QRegExp hiddenFileFilter("^(?!.*/\\..*).+$");
+    QRegularExpression hiddenFileFilter("^(?!.*/\\..*).+$");
     while (!isResultLimit() && !m_searchDirList.isEmpty()) {
         //中断
         if (m_status.loadAcquire() != ProxyWorker::Runing)

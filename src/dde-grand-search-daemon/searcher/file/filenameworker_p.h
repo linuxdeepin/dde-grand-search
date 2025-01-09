@@ -46,7 +46,7 @@ public:
     QHash<QString, QSet<QString>> m_hiddenFilters;
 
     //计时
-    QTime m_time;
+    QElapsedTimer m_time;
     int m_lastEmit = 0;
 
     // anything新特性

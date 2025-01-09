@@ -49,7 +49,7 @@ bool AnythingQueryPrivate::searchUserPath(PushItemCallBack callBack, void *pdata
 
     // 先对user目录下进行搜索
     for (const SemanticEntity &entity : m_entity) {
-        QRegExp reg(getRegExp(entity), Qt::CaseInsensitive);
+        QRegularExpression reg(getRegExp(entity), QRegularExpression::CaseInsensitiveOption);
         for (const auto &info : fileInfoList) {
             // 检查是否需要推送数据与中断
             if (timeToPush()) {
@@ -265,7 +265,7 @@ QFileInfoList AnythingQueryPrivate::traverseDirAndFile(const QString &path)
     dir.setFilter(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
     auto result = dir.entryInfoList();
     // 排序
-    qSort(result.begin(), result.end(), [](const QFileInfo &info1, const QFileInfo &info2) {
+    std::sort(result.begin(), result.end(), [](const QFileInfo &info1, const QFileInfo &info2) {
         static QStringList sortList{"Desktop", "Music", "Downloads", "Documents", "Pictures", "Videos"};
         int index1 = sortList.indexOf(info1.fileName());
         int index2 = sortList.indexOf(info2.fileName());

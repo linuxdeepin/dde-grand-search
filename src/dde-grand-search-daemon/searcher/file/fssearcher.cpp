@@ -139,7 +139,7 @@ void FsSearcher::loadDataBase(FsSearcher *fs)
 
 void FsSearcher::updateDataBase(FsSearcher *fs)
 {
-    QTime time;
+    QElapsedTimer time;
     time.start();
 
     fs->m_isUpdating = true;

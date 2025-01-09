@@ -305,38 +305,39 @@ DateInfoCond::DateInfoCond(const QString &text, QObject *parent) : BaseCond(text
     } else {
         m_compType = "<";
     }
-    static QRegExp reg("([\\d\\.]+) ?year", Qt::CaseInsensitive);
-    static QRegExp reg1("([\\d\\.]+) ?month", Qt::CaseInsensitive);
-    static QRegExp reg2("([\\d\\.]+) ?week", Qt::CaseInsensitive);
-    static QRegExp reg3("([\\d\\.]+) ?day", Qt::CaseInsensitive);
-    static QRegExp reg4("([\\d\\.]+) ?hour", Qt::CaseInsensitive);
-    static QRegExp reg5("([\\d\\.]+) ?(min|minute)", Qt::CaseInsensitive);
-    if (reg.indexIn(temp) != -1) { // 年
-        int offset = reg.cap(1).toInt() - 1;
+    static QRegularExpression reg("([\\d\\.]+) ?year", QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression reg1("([\\d\\.]+) ?month", QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression reg2("([\\d\\.]+) ?week", QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression reg3("([\\d\\.]+) ?day", QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression reg4("([\\d\\.]+) ?hour", QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression reg5("([\\d\\.]+) ?(min|minute)", QRegularExpression::CaseInsensitiveOption);
+    QRegularExpressionMatch match;
+    if ((match = reg.match(temp)).hasMatch()) { // 年
+        int offset = match.captured(1).toInt() - 1;
         auto anchor = QDateTime(QDate(curDate.year(), 1, 1), QTime(0, 0, 0));
         m_timestamp2 = anchor.addSecs(-1).toSecsSinceEpoch();
         m_timestamp = anchor.addYears(-1 * offset).toSecsSinceEpoch();
-    } else if (reg1.indexIn(temp) != -1) { // 月
-        int offset = reg1.cap(1).toInt() - 1;
+    } else if ((match = reg1.match(temp)).hasMatch()) { // 月
+        int offset = match.captured(1).toInt() - 1;
         auto anchor = QDateTime(QDate(curDate.year(), curDate.month(), 1), QTime(0, 0, 0));
         m_timestamp2 = anchor.addSecs(-1).toSecsSinceEpoch();
         m_timestamp = anchor.addMonths(-1 * offset).toSecsSinceEpoch();
-    } else if (reg2.indexIn(temp) != -1) {// 周
-        int offset = reg2.cap(1).toInt() - 1;
-        auto anchor = QDateTime(QDate(curDate.addDays(1 - curDate.dayOfWeek())), QTime(0, 0, 0));
+    } else if ((match = reg2.match(temp)).hasMatch()) { // 周
+        int offset = match.captured(1).toInt() - 1;
+        auto anchor = QDateTime(curDate.addDays(1 - curDate.dayOfWeek()), QTime(0, 0, 0));
         m_timestamp2 = anchor.addSecs(-1).toSecsSinceEpoch();
         m_timestamp = anchor.addDays(-1 * offset * 7).toSecsSinceEpoch();
-    } else if (reg3.indexIn(temp) != -1) { // 天
-        int offset = reg3.cap(1).toInt() - 1;
+    } else if ((match = reg3.match(temp)).hasMatch()) { // 天
+        int offset = match.captured(1).toInt() - 1;
         auto anchor = QDateTime(curDate, QTime(0, 0, 0));
         m_timestamp2 = anchor.addSecs(-1).toSecsSinceEpoch();
         m_timestamp = anchor.addDays(-1 * offset).toSecsSinceEpoch();
-    } else if (reg4.indexIn(temp) != -1) { // 时
-        int offset = reg4.cap(1).toInt();
+    } else if ((match = reg4.match(temp)).hasMatch()) { // 时
+        int offset = match.captured(1).toInt();
         m_timestamp2 = curDT.toSecsSinceEpoch();
         m_timestamp = curDT.addSecs(-1 * offset * 60 * 60).toSecsSinceEpoch();
-    } else if (reg5.indexIn(temp) != -1) { // 分
-        int offset = reg5.cap(1).toInt();
+    } else if ((match = reg5.match(temp)).hasMatch()) { // 分
+        int offset = match.captured(1).toInt();
         m_timestamp2 = curDT.toSecsSinceEpoch();
         m_timestamp = curDT.addSecs(-1 * offset * 60).toSecsSinceEpoch();
     } else {
@@ -396,18 +397,19 @@ SizeCond::SizeCond(const QString &text, QObject *parent) : BaseCond(text, parent
     } else {
         m_compType = "=";
     }
-    static QRegExp reg("([\\d\\.]+) ?gb", Qt::CaseInsensitive);
-    static QRegExp reg1("([\\d\\.]+) ?mb", Qt::CaseInsensitive);
-    static QRegExp reg2("([\\d\\.]+) ?kb", Qt::CaseInsensitive);
-    static QRegExp reg3("([\\d\\.]+) ?(b|byte|bytes)", Qt::CaseInsensitive);
-    if (reg.indexIn(temp) != -1) {
-        m_fileSize = static_cast<qint64>(reg.cap(1).toFloat() * 1024 * 1024 * 1024);
-    } else if (reg1.indexIn(temp) != -1) {
-        m_fileSize = static_cast<qint64>(reg1.cap(1).toFloat() * 1024 * 1024);
-    } else if (reg2.indexIn(temp) != -1) {
-        m_fileSize = static_cast<qint64>(reg2.cap(1).toFloat() * 1024);
-    } else if (reg3.indexIn(temp) != -1) {
-        m_fileSize = static_cast<qint64>(reg3.cap(1).toFloat());
+    static QRegularExpression reg("([\\d\\.]+) ?gb", QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression reg1("([\\d\\.]+) ?mb", QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression reg2("([\\d\\.]+) ?kb", QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression reg3("([\\d\\.]+) ?(b|byte|bytes)", QRegularExpression::CaseInsensitiveOption);
+    QRegularExpressionMatch match;
+    if ((match = reg.match(temp)).hasMatch()) {
+        m_fileSize = static_cast<qint64>(match.captured(1).toFloat() * 1024 * 1024 * 1024);
+    } else if ((match = reg1.match(temp)).hasMatch()) {
+        m_fileSize = static_cast<qint64>(match.captured(1).toFloat() * 1024 * 1024);
+    } else if ((match = reg2.match(temp)).hasMatch()) {
+        m_fileSize = static_cast<qint64>(match.captured(1).toFloat() * 1024);
+    } else if ((match = reg3.match(temp)).hasMatch()) {
+        m_fileSize = static_cast<qint64>(match.captured(1).toFloat());
     } else {
         m_fileSize = 0;
     }
@@ -465,29 +467,30 @@ DurationCond::DurationCond(const QString &text, QObject *parent) : BaseCond(text
     } else {
         m_compType = "=";
     }
-    static QRegExp reg("([\\d\\.]+) ?year", Qt::CaseInsensitive);
-    static QRegExp reg1("([\\d\\.]+) ?mouth", Qt::CaseInsensitive);
-    static QRegExp reg2("([\\d\\.]+) ?week", Qt::CaseInsensitive);
-    static QRegExp reg3("([\\d\\.]+) ?day", Qt::CaseInsensitive);
-    static QRegExp reg4("([\\d\\.]+) ?hour", Qt::CaseInsensitive);
-    static QRegExp reg5("([\\d\\.]+) ?(min|minute)", Qt::CaseInsensitive);
-    static QRegExp reg6("([\\d\\.]+) ?(sec|second)", Qt::CaseInsensitive);
+    static QRegularExpression reg("([\\d\\.]+) ?year", QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression reg1("([\\d\\.]+) ?mouth", QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression reg2("([\\d\\.]+) ?week", QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression reg3("([\\d\\.]+) ?day", QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression reg4("([\\d\\.]+) ?hour", QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression reg5("([\\d\\.]+) ?(min|minute)", QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression reg6("([\\d\\.]+) ?(sec|second)", QRegularExpression::CaseInsensitiveOption);
     int pos = m_cond.indexOf("\"") + 1;
     QString temp = m_cond.mid(pos, m_cond.length() - pos - 1);
-    if (reg.indexIn(temp) != -1) {
-        m_duration = formatTime(static_cast<qint64>(reg.cap(1).toFloat() * 60 * 60 * 24 * 365) * 1000);
-    } else if (reg1.indexIn(temp) != -1) {
-        m_duration = formatTime(static_cast<qint64>(reg1.cap(1).toFloat() * 60 * 60 * 24 * 30) * 1000);
-    } else if (reg2.indexIn(temp) != -1) {
-        m_duration = formatTime(static_cast<qint64>(reg2.cap(1).toFloat() * 60 * 60 * 24 * 7) * 1000);
-    } else if (reg3.indexIn(temp) != -1) {
-        m_duration = formatTime(static_cast<qint64>(reg3.cap(1).toFloat() * 60 * 60 * 24) * 1000);
-    } else if (reg4.indexIn(temp) != -1) {
-        m_duration = formatTime(static_cast<qint64>(reg4.cap(1).toFloat() * 60 * 60) * 1000);
-    } else if (reg5.indexIn(temp) != -1) {
-        m_duration = formatTime(static_cast<qint64>(reg5.cap(1).toFloat() * 60) * 1000);
+    QRegularExpressionMatch match;
+    if ((match = reg.match(temp)).hasMatch()) {
+        m_duration = formatTime(static_cast<qint64>(match.captured(1).toFloat() * 60 * 60 * 24 * 365) * 1000);
+    } else if ((match = reg1.match(temp)).hasMatch()) {
+        m_duration = formatTime(static_cast<qint64>(match.captured(1).toFloat() * 60 * 60 * 24 * 30) * 1000);
+    } else if ((match = reg2.match(temp)).hasMatch()) {
+        m_duration = formatTime(static_cast<qint64>(match.captured(1).toFloat() * 60 * 60 * 24 * 7) * 1000);
+    } else if ((match = reg3.match(temp)).hasMatch()) {
+        m_duration = formatTime(static_cast<qint64>(match.captured(1).toFloat() * 60 * 60 * 24) * 1000);
+    } else if ((match = reg4.match(temp)).hasMatch()) {
+        m_duration = formatTime(static_cast<qint64>(match.captured(1).toFloat() * 60 * 60) * 1000);
+    } else if ((match = reg5.match(temp)).hasMatch()) {
+        m_duration = formatTime(static_cast<qint64>(match.captured(1).toFloat() * 60) * 1000);
     } else {
-        m_duration = formatTime(static_cast<qint64>(reg5.cap(1).toFloat()) * 1000);
+        m_duration = formatTime(static_cast<qint64>(match.captured(1).toFloat()) * 1000);
     }
     qDebug() << QString("DurationCond(%1): temp(%2) compType(%3) duration(%4)").arg(m_cond).arg(temp).arg(m_compType).arg(m_duration);
 
@@ -517,17 +520,24 @@ MetaCond::MetaCond(const QString &text, QObject *parent) : BaseCond(text, parent
         m_isTrue = false;
     }
 
-    static QRegExp reg("META_TYPEIS\"(.+)\"ANDMETA_VALUEIS\"(.+)\"", Qt::CaseInsensitive);
-    static QRegExp reg1("META_TYPEIS\"(.+)\"ANDMETA_VALUEIS NOT\"(.+)\"", Qt::CaseInsensitive);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    static QRegularExpression reg("META_TYPEIS\"(.+)\"ANDMETA_VALUEIS\"(.+)\"", QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression reg1("META_TYPEIS\"(.+)\"ANDMETA_VALUEIS NOT\"(.+)\"", QRegularExpression::CaseInsensitiveOption);
+#else
+    static QRegularExpression reg("META_TYPEIS\"(.+)\"ANDMETA_VALUEIS\"(.+)\"", Qt::CaseInsensitive);
+    static QRegularExpression reg1("META_TYPEIS\"(.+)\"ANDMETA_VALUEIS NOT\"(.+)\"", Qt::CaseInsensitive);
+#endif
     if (m_isTrue) {
-        if (reg.indexIn(m_cond) != -1) {
-            m_metaType  = reg.cap(1);
-            m_metaValue = reg.cap(2);
+        QRegularExpressionMatch match = reg.match(m_cond);
+        if (match.hasMatch()) {
+            m_metaType = match.captured(1);
+            m_metaValue = match.captured(2);
         }
     } else {
-        if (reg1.indexIn(m_cond) != -1) {
-            m_metaType  = reg1.cap(1);
-            m_metaValue = reg1.cap(2);
+        QRegularExpressionMatch match = reg1.match(m_cond);
+        if (match.hasMatch()) {
+            m_metaType = match.captured(1);
+            m_metaValue = match.captured(2);
         }
     }
     if (m_metaType == "RESOLUTION") {
