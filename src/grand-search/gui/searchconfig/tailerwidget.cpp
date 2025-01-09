@@ -18,7 +18,7 @@ TailerWidget::TailerWidget(QWidget *parent)
 {
     m_groupLabel = new QLabel(tr("Tailer settings"), this);
     m_groupLabel->adjustSize();
-    m_groupLabel->setMargin(0);
+    m_groupLabel->setContentsMargins(0, 0, 0, 0);
 
     m_mainLayout = new QVBoxLayout(this);
     m_mainLayout->setSpacing(0);

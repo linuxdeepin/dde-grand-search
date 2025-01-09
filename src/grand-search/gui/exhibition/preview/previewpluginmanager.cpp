@@ -164,7 +164,11 @@ bool PreviewPluginManager::readInfo(const QString &path, PreviewPluginInfo &info
         return false;
 
     // 支持预览的mimetype列表
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     info.mimeTypes = conf.value(PREVIEW_PLUGINIFACE_CONF_MIMETYPES, "").toString().split(':', QString::SkipEmptyParts);
+#else
+    info.mimeTypes = conf.value(PREVIEW_PLUGINIFACE_CONF_MIMETYPES, "").toString().split(':', Qt::SkipEmptyParts);
+#endif
     if (info.mimeTypes.isEmpty())
         return false;
 

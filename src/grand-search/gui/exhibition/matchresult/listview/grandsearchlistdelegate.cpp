@@ -60,7 +60,9 @@ void GrandSearchListDelegate::paint(QPainter *painter, const QStyleOptionViewIte
     QStyledItemDelegate::paint(painter, option, index);
 
     painter->setRenderHint(QPainter::Antialiasing);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     painter->setRenderHint(QPainter::HighQualityAntialiasing);
+#endif
 
     // 绘制选中状态(UI设计图暂无选择外框线）
     drawSelectState(painter, option, index);

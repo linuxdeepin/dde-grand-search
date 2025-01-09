@@ -26,10 +26,13 @@ endif()
 
 # 依赖包
 find_package(PkgConfig REQUIRED)
-find_package(DtkWidget REQUIRED)
-find_package(DtkGui REQUIRED)
-find_package(DtkCMake REQUIRED)
-find_package(Qt5 COMPONENTS
+find_package(${DTK_NS} COMPONENTS
+    Core
+    Gui
+    Widget
+    CMake
+REQUIRED)
+find_package(${QT_NS} COMPONENTS
     Core
     Gui
     Widgets
@@ -48,12 +51,17 @@ set(DBUSSRC
 )
 
 set(Qt_LIBS
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Widgets
-    Qt5::DBus
-    Qt5::Concurrent
-    Qt5::Network
+    ${QT_NS}::Core
+    ${QT_NS}::Gui
+    ${QT_NS}::Widgets
+    ${QT_NS}::DBus
+    ${QT_NS}::Concurrent
+    ${QT_NS}::Network
+)
+set(DTK_LIBS
+    ${DTK_NS}::Core
+    ${DTK_NS}::Gui
+    ${DTK_NS}::Widget
 )
 
 # gio 打开功能需要依赖的库
@@ -241,16 +249,13 @@ add_executable(${BIN_NAME} ${SRCS} ${QRCS})
 
 target_include_directories(${BIN_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include
-    ${DtkWidget_INCLUDE_DIRS}
-    ${DtkGUI_INCLUDE_DIRS}
     ${DFrameworkDBus_INCLUDE_DIRS}
     ${GIO_LIB_INCLUDE_DIRS}
 )
 
 target_link_libraries(${BIN_NAME} PRIVATE
     ${Qt_LIBS}
-    ${DtkWidget_LIBRARIES}
-    ${DtkGUI_LIBRARIES}
+    ${DTK_LIBS}
     ${DFrameworkDBus_LIBRARIES}
     ${GIO_LIB_LIBRARIES}
 )

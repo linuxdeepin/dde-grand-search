@@ -42,7 +42,11 @@ void OmitButton::paintEvent(QPaintEvent* e)
 
     pa.setPen(Qt::NoPen);
     pa.setBrush(QBrush(backgroundColor));
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     pa.drawRoundRect(rect, 40, 40);
+#else
+    pa.drawRoundedRect(rect, 40, 40);
+#endif
     pa.drawPixmap(0, 0, this->icon().pixmap(this->iconSize()));
 }
 
@@ -64,7 +68,11 @@ void OmitButton::mouseReleaseEvent(QMouseEvent *e)
     return DPushButton::mouseReleaseEvent(e);
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 void OmitButton::enterEvent(QEvent *event)
+#else
+void OmitButton::enterEvent(QEnterEvent *event)
+#endif
 {
     m_isHover = true;
     update();

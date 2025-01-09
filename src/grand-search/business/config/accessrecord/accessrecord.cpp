@@ -11,7 +11,7 @@
 #include <QJsonParseError>
 #include <QJsonObject>
 #include <QJsonArray>
-#include <QTime>
+#include <QElapsedTimer>
 #include <QString>
 #include <QApplication>
 #include <QtConcurrent>

@@ -91,7 +91,11 @@ void BlackListWidget::deleteButtonClicked()
         for (auto index : selectedRows) {
             rowList << index.row();
         }
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         qStableSort(rowList.begin(), rowList.end(), qGreater<int>());
+#else
+        std::stable_sort(rowList.begin(), rowList.end(), std::greater<int>());
+#endif
         for (auto index : rowList) {
             m_listWrapper->removeRows(index, 1);
         }

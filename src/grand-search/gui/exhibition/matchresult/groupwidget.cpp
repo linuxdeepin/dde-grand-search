@@ -13,7 +13,14 @@
 #include <DLabel>
 #include <DPushButton>
 #include <DHorizontalLine>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <DGuiApplicationHelper>
+#else
 #include <DApplicationHelper>
+#endif
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <DPaletteHelper>
+#endif
 #include <DSpinner>
 
 #include <QHBoxLayout>
@@ -248,7 +255,11 @@ void GroupWidget::showLabel(bool bShow)
         bool hasModel = IntelligentRetrievalWidget::isQueryLangSupported();
         qDebug() << QString("idxDir(%1) hasIdx(%2) isUpdateIdx(%3) hasModel(%4)").arg(idxDir).arg(hasIdx).arg(isUpdateIdx).arg(hasModel);
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        const QColor &color = DPaletteHelper::instance()->palette(m_resultLabel).color(DPalette::Normal, DPalette::Highlight);
+#else
         const QColor &color = DApplicationHelper::instance()->palette(m_resultLabel).color(DPalette::Normal, DPalette::Highlight);
+#endif
         if (!hasIdx && !isUpdateIdx && !hasModel) {
             // 请先前往搜索配置安装UOS AI大模型，并开启自动更新索引 Please go to Search configration to install the UOS AI large model, and turn on Automatic index update.
             m_resultLabel->setText(tr("Please go to %1 to install the UOS AI large model, and %2 Automatic index update.")
@@ -379,7 +390,7 @@ void GroupWidget::initUi()
 
     // 列表和分割线放到内容布局内
     m_vContentLayout = new QVBoxLayout();
-    m_vContentLayout->setMargin(0);
+    m_vContentLayout->setContentsMargins(0, 0, 0, 0);
     m_vContentLayout->setSpacing(0);
     m_vContentLayout->addWidget(m_listView);
     m_vContentLayout->addWidget(m_resultLabel);

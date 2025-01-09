@@ -14,7 +14,7 @@ CheckBoxWidget::CheckBoxWidget(QWidget *parent)
 {
     m_mainLayout = new QVBoxLayout;
     m_mainLayout->setSpacing(1);
-    m_mainLayout->setMargin(0);
+    m_mainLayout->setContentsMargins(0, 0, 0, 0);
 
     setLayout(m_mainLayout);
 }

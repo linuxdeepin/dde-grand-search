@@ -375,10 +375,18 @@ void AiToolBarInner::adjustBts() {
     if (actionCounts == 1) {
         QFontMetrics fm(m_knowledgeBt->font());
         QString displayStr = m_knowledgeBt->text().left(2) + "…";
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         if (fm.width(displayStr) + 2 + 5 < MAX_WIDTH - sumWidth) {
+#else
+        if (fm.horizontalAdvance(displayStr) + 2 + 5 < MAX_WIDTH - sumWidth) {
+#endif
             for (int i = 3; i < m_knowledgeBt->text().length(); i++) {
                 displayStr = m_knowledgeBt->text().left(i) + "…";
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
                 if (!(fm.width(displayStr) + 2 + 5 < MAX_WIDTH - sumWidth)) {
+#else
+                if (!(fm.horizontalAdvance(displayStr) + 2 + 5 < MAX_WIDTH - sumWidth)) {
+#endif
                     displayStr = m_knowledgeBt->text().left(i - 1) + "…";
                     break;
                 }
