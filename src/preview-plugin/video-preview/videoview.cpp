@@ -46,7 +46,7 @@ void VideoView::initUI()
     m_title->setFixedWidth(CONTENT_WIDTH);
     m_title->setAlignment(Qt::AlignCenter);
     m_title->setElideMode(Qt::ElideMiddle);
-    m_title->setMargin(0);
+    m_title->setContentsMargins(0, 0, 0, 0);
 
     QFont titleFont = m_title->font();
     titleFont.setWeight(QFont::Medium);
@@ -91,10 +91,10 @@ ThumbnailLabel::ThumbnailLabel(QWidget *parent) : QWidget(parent)
 {
     //图片，水平居中
     m_picLabel = new QLabel(this);
-    m_picLabel->setMargin(0);
+    m_picLabel->setContentsMargins(0, 0, 0, 0);
     QHBoxLayout *lay = new QHBoxLayout(this);
     lay->addWidget(m_picLabel);
-    lay->setMargin(0);
+    lay->setContentsMargins(0, 0, 0, 0);
 }
 
 void ThumbnailLabel::setPixmap(const QPixmap &pixmap)

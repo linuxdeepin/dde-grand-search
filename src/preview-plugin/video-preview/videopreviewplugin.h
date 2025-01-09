@@ -8,6 +8,7 @@
 #include <previewplugin.h>
 
 #include <QFuture>
+#include <QSharedPointer>
 
 namespace GrandSearch {
 namespace video_preview {
