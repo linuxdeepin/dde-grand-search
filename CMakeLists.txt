@@ -22,8 +22,14 @@ if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -z noexecstack -z relro")
 endif()
 
+if (NOT DEFINED QT_VERSION_MAJOR)
+    set(QT_VERSION_MAJOR 6)
+endif()
+set(QT_NS Qt${QT_VERSION_MAJOR})
+set(DTK_NS Dtk${QT_VERSION_MAJOR})
+
 #Indentify the version
-find_package(DtkCMake REQUIRED)
+find_package(${DTK_NS}CMake REQUIRED)
 
 if (1 OR ${DEEPIN_OS_VERSION} MATCHES "^(23|25)$")
     add_definitions(-DCOMPILE_ON_V23)
