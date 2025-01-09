@@ -32,8 +32,12 @@ set(QRCS
     )
 
 # 指定要用到的库
-find_package(Qt5Widgets REQUIRED)
-find_package(DtkWidget REQUIRED)
+find_package(${DTK_NS} COMPONENTS
+    Widget
+REQUIRED)
+find_package(${QT_NS} COMPONENTS
+    Widgets
+REQUIRED)
 
 
 # 加载 FindPkgConfig 模块
@@ -41,7 +45,9 @@ find_package(PkgConfig REQUIRED)
 
 # 加载需要的库
 pkg_check_modules(DdeDockInterface REQUIRED dde-dock)
-pkg_check_modules(QGSettings REQUIRED gsettings-qt)
+#if (QT_VERSION_MAJOR < 6)
+    pkg_check_modules(QGSettings REQUIRED gsettings-qt)
+#endif
 
 # 编译目标
 add_library(${PLUGIN_NAME} SHARED ${SRCS} ${QRCS})
@@ -54,20 +60,22 @@ set_target_properties(${PLUGIN_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ./)
 # 变量 ${DtkWidget_INCLUDE_DIRS} 是在前面执行 find_package 命令时引入的
 # 当出现编译失败提示找不到某些库的头文件时应该检查此处是否将所有需要的头文件都包含了
 target_include_directories(${PLUGIN_NAME} PUBLIC
-    ${Qt5Widgets_INCLUDE_DIRS}
-    ${DtkWidget_INCLUDE_DIRS}
     ${DdeDockInterface_INCLUDE_DIRS}
+#if (QT_VERSION_MAJOR < 6)
     ${QGSettings_INCLUDE_DIRS}
+#endif
 )
 
 # 设置目标要使用的链接库
 # 变量 ${DtkWidget_LIBRARIES} 和 ${Qt5Widgets_LIBRARIES} 是在前面执行 find_package 命令时引入的
 # 当出现运行时错误提示某些符号没有定义时应该检查此处是否将所有用的库都写在了这里
 target_link_libraries(${PLUGIN_NAME} PRIVATE
-    ${Qt5Widgets_LIBRARIES}
-    ${DtkWidget_LIBRARIES}
+    ${QT_NS}::Widgets
+    ${DTK_NS}::Widget
     ${DdeDockInterface_LIBRARIES}
+#if (QT_VERSION_MAJOR < 6)
     ${QGSettings_LIBRARIES}
+#endif
 )
 
 # 设置安装路径的前缀(默认为"/usr/local")
