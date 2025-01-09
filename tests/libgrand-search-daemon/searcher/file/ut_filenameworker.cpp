@@ -245,7 +245,7 @@ TEST_F(FileNameWorkerTest, ut_searchByAnything_2)
     SearchType (ComDeepinAnythingInterface::*search_addr)(int, qlonglong, uint, uint, const QString &, const QString &, bool) = &ComDeepinAnythingInterface::search;
     st.set_lamda(search_addr, [](){ return SearchType(); });
     st.set_lamda(&QDBusPendingCall::error, [](){ return QDBusError(QDBusError::NoError, ""); });
-    QStringList (QStringList::*filter_addr)(const QRegExp &) const = &QStringList::filter;
+    QStringList (QStringList::*filter_addr)(const QRegularExpression &) const = &QStringList::filter;
     st.set_lamda(filter_addr, [](){ return QStringList{"/data/home/test.txt", "/home/test.png", "/home/test.mp4", "/home/test.mp3"}; });
     st.set_lamda(&Configer::group, [](){ return ConfigerPrivate::tailerData(); });
 
