@@ -520,13 +520,8 @@ MetaCond::MetaCond(const QString &text, QObject *parent) : BaseCond(text, parent
         m_isTrue = false;
     }
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     static QRegularExpression reg("META_TYPEIS\"(.+)\"ANDMETA_VALUEIS\"(.+)\"", QRegularExpression::CaseInsensitiveOption);
     static QRegularExpression reg1("META_TYPEIS\"(.+)\"ANDMETA_VALUEIS NOT\"(.+)\"", QRegularExpression::CaseInsensitiveOption);
-#else
-    static QRegularExpression reg("META_TYPEIS\"(.+)\"ANDMETA_VALUEIS\"(.+)\"", Qt::CaseInsensitive);
-    static QRegularExpression reg1("META_TYPEIS\"(.+)\"ANDMETA_VALUEIS NOT\"(.+)\"", Qt::CaseInsensitive);
-#endif
     if (m_isTrue) {
         QRegularExpressionMatch match = reg.match(m_cond);
         if (match.hasMatch()) {
