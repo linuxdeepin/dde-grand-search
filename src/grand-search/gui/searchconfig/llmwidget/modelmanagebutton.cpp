@@ -68,7 +68,11 @@ void ModelManageButton::paintEvent(QPaintEvent* e)
         DDrawUtils::drawArrowDown(&pa, rect);
 }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+void ModelManageButton::enterEvent(QEnterEvent *event)
+#else
 void ModelManageButton::enterEvent(QEvent *event)
+#endif
 {
     m_isHover = true;
     update();
@@ -94,7 +98,11 @@ void ModelManageButton::updateRectSize()
 {
     QFont font = this->font();
     QFontMetrics fm(font);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     int textWidth = fm.width(text());
+#else
+    int textWidth = fm.horizontalAdvance(text());
+#endif
     this->setFixedWidth(textWidth + 20);
     this->setFixedHeight(fm.height());
     adjustSize();

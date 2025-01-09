@@ -39,7 +39,11 @@ QSize TransButton::sizeHint() const {
     QSize size;
     QFont font = this->font();
     QFontMetrics fm(font);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     int textWidth = fm.width(text());
+#else
+    int textWidth = fm.horizontalAdvance(text());
+#endif
     if (this->icon().isNull()) {
         size.setWidth(textWidth + 10);
     } else if (this->text().isEmpty()) {
@@ -163,7 +167,11 @@ void TransButton::mouseReleaseEvent(QMouseEvent *e)
     return DPushButton::mouseReleaseEvent(e);
 }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+void TransButton::enterEvent(QEnterEvent *event)
+#else
 void TransButton::enterEvent(QEvent *event)
+#endif
 {
     m_isHover = true;
     update();

@@ -11,7 +11,11 @@
 #include "pluginproxy.h"
 
 #include <DScrollArea>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <DGuiApplicationHelper>
+#else
 #include <DApplicationHelper>
+#endif
 #include <DFrame>
 
 #include <QDebug>

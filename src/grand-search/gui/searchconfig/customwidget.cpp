@@ -25,7 +25,7 @@ CustomWidget::CustomWidget(QWidget *parent)
 {
     m_groupLabel = new QLabel(tr("Custom search"), this);
     DFontSizeManager::instance()->bind(m_groupLabel, DFontSizeManager::T5, QFont::Bold);
-    m_groupLabel->setMargin(0);
+    m_groupLabel->setContentsMargins(0, 0, 0, 0);
 
     m_mainLayout = new QVBoxLayout();
     setLayout(m_mainLayout);

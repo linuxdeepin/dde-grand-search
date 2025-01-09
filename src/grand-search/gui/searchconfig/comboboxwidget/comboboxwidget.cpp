@@ -6,7 +6,14 @@
 #include "global/searchhelper.h"
 
 #include <DPalette>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <DGuiApplicationHelper>
+#else
 #include <DApplicationHelper>
+#endif
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <DPaletteHelper>
+#endif
 
 #include <QPainter>
 
@@ -97,7 +104,11 @@ DComboBox *ComboboxWidget::getComboBox()
 void ComboboxWidget::paintEvent(QPaintEvent *event)
 {
     if (m_hasBack) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        const DPalette &dp = DPaletteHelper::instance()->palette(this);
+#else
         const DPalette &dp = DApplicationHelper::instance()->palette(this);
+#endif
         QPainter p(this);
         p.setPen(Qt::NoPen);
         p.setBrush(dp.brush(DPalette::ItemBackground));
