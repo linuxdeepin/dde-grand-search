@@ -19,16 +19,13 @@ set(SRCS
 add_library(${LIB_NAME} SHARED ${SRCS} ${QRCS})
 
 target_include_directories(${LIB_NAME} PUBLIC
-    ${DtkWidget_INCLUDE_DIRS}
-    ${DtkGUI_INCLUDE_DIRS}
     ${Avformat_INCLUDE_DIRS}
     ${Ffm_INCLUDE_DIRS}
 )
 
 target_link_libraries(${LIB_NAME} PRIVATE
     ${Qt_LIBS}
-    ${DtkWidget_LIBRARIES}
-    ${DtkGUI_LIBRARIES}
+    ${DTK_LIBS}
     ${Avformat_LIBRARIES}
     ${Ffm_LIBRARIES}
 )

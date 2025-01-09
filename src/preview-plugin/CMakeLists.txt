@@ -18,10 +18,12 @@ add_definitions(-DPLUGIN_PREVIEW_DIR="${PLUGIN_PREVIEW_DIR}")
 
 # 依赖包
 find_package(PkgConfig REQUIRED)
-find_package(DtkWidget REQUIRED)
-find_package(DtkGui REQUIRED)
-find_package(DtkCMake REQUIRED)
-find_package(Qt5 COMPONENTS
+find_package(${DTK_NS} COMPONENTS
+    Gui
+    Widget
+    CMake
+REQUIRED)
+find_package(${QT_NS} COMPONENTS
     Core
     Gui
     Widgets
@@ -29,11 +31,16 @@ find_package(Qt5 COMPONENTS
 REQUIRED)
 
 set(Qt_LIBS
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Widgets
-    Qt5::Concurrent
+    ${QT_NS}::Core
+    ${QT_NS}::Gui
+    ${QT_NS}::Widgets
+    ${QT_NS}::Concurrent
 )
+set(DTK_LIBS
+    ${DTK_NS}::Gui
+    ${DTK_NS}::Widget
+)
+
 
 set(QRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/resource.qrc
