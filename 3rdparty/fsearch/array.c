@@ -159,5 +159,9 @@ darray_sort (DynamicArray *array, int (*comp_func)(const void *, const void *))
     assert (array->data != NULL);
     assert (comp_func != NULL);
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     qsort (array->data, array->num_items, sizeof (void *), comp_func);
+#else
+    std::sort(array->data, array->data + array->num_items, comp_func);
+#endif
 }

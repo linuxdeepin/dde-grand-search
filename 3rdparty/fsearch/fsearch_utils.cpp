@@ -5,13 +5,13 @@
 #include "fsearch_utils.h"
 #include "utils/chineseletterhelper.h"
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include <stdio.h>
 
 bool convert_chinese_2_pinyin(const char *in_str, char *out_first_py, char *out_full_py)
 {
-    QRegExp reg("[\u4e00-\u9fa5]");
+    QRegularExpression reg("[\u4e00-\u9fa5]");
     QString str(in_str);
     if (!str.contains(reg))
         return false;
