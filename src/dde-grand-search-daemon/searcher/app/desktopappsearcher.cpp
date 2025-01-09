@@ -40,7 +40,7 @@ DesktopAppSearcherPrivate::~DesktopAppSearcherPrivate()
 
 void DesktopAppSearcherPrivate::createIndex(DesktopAppSearcherPrivate *d)
 {
-    QTime time;
+    QElapsedTimer time;
     time.start();
 
     QHash<QString, QList<DesktopAppPointer>> indexTable;
@@ -161,7 +161,11 @@ bool DesktopAppSearcherPrivate::isHidden(DesktopEntryPointer pointer)
     if (!desktop.isEmpty()) {
         // NotShowIn
         {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
             QStringList notShows = pointer->stringValue("NotShowIn").split(';', QString::SkipEmptyParts);
+#else
+            QStringList notShows = pointer->stringValue("NotShowIn").split(';', Qt::SkipEmptyParts);
+#endif
             if (notShows.contains(desktop, Qt::CaseInsensitive))
                 return true;
         }

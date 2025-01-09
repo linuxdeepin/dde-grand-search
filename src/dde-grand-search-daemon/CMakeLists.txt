@@ -12,9 +12,11 @@ set(BIN_NAME ${DAEMON_BIN_NAME})
 
 # 依赖包
 find_package(PkgConfig REQUIRED)
-find_package(DtkCore REQUIRED)
-find_package(DtkWidget REQUIRED)
-find_package(Qt5 COMPONENTS
+find_package(${DTK_NS} COMPONENTS
+    Gui
+    Widget
+REQUIRED)
+find_package(${QT_NS} COMPONENTS
     Core
     Gui
     Widgets
@@ -26,18 +28,22 @@ find_package(deepin-qdbus-service REQUIRED)
 add_definitions(-DSERVICE_CONFIG_DIR="${CMAKE_INSTALL_PREFIX}/share/deepin-service-manager/")
 
 set(Qt_LIBS
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Widgets
-    Qt5::DBus
-    Qt5::Concurrent
+    ${QT_NS}::Core
+    ${QT_NS}::Gui
+    ${QT_NS}::Widgets
+    ${QT_NS}::DBus
+    ${QT_NS}::Concurrent
+)
+
+set(DTK_LIBS
+    ${DTK_NS}::Gui
+    ${DTK_NS}::Widget
 )
 
 # 依赖库
 set(LINK_LIBS
     ${Qt_LIBS}
-    ${DtkCore_LIBRARIES}
-    ${DtkWidget_LIBRARIES}
+    ${DTK_LIBS}
     ${deepin-qdbus-service_LIBRARIES}
 )
 
@@ -208,7 +214,11 @@ set(SRCS
 )
 
 # 资源文件
-qt5_add_resources(QRC_FILES utils/dict.qrc)
+if (QT_VERSION_MAJOR EQUAL 6)
+    qt6_add_resources(QRC_FILES utils/dict.qrc)
+else()
+    qt5_add_resources(QRC_FILES utils/dict.qrc)
+endif()
 
 # 执行程序
 add_executable(${BIN_NAME}
@@ -217,7 +227,6 @@ add_executable(${BIN_NAME}
 
 target_include_directories(${BIN_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include
-    ${DtkWidget_INCLUDE_DIRS}
     ${PROJECT_3RDPARTY_PATH}/fsearch
     ${GLIB_INCLUDE_DIRS}
     ${PCRE_INCLUDE_DIRS}

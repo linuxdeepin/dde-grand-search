@@ -162,7 +162,7 @@ void PluginProcess::processStateChanged()
         return;
 
     auto state = process->state();
-    qInfo() << "process state:" << m_processes.key(process) << state << process->pid();
+    qInfo() << "process state:" << m_processes.key(process) << state << process->processId();
     if (state == QProcess::Running) {
         //校验启动成功的时间
         addChecklist(process);
@@ -210,7 +210,7 @@ void PluginProcess::checkStability(QProcess *process)
     Q_ASSERT(process);
     if (process->state() == QProcess::Running) {
         qInfo() << "process" << m_processes.key(process)
-                << "is stable. pid:" << process->pid()
+                << "is stable. pid:" << process->processId()
                 << m_restartCount.value(process);
         m_restartCount.remove(process);
     } else {

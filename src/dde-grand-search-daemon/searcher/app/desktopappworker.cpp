@@ -40,7 +40,7 @@ bool DesktopAppWorker::working(void *context)
     }
 
     //计时
-    QTime time;
+    QElapsedTimer time;
     time.start();
     int lastEmit = 0;
 
@@ -52,7 +52,7 @@ bool DesktopAppWorker::working(void *context)
             return false;
 
         //匹配
-        QRegExp regExp(m_context, Qt::CaseInsensitive);
+        QRegularExpression regExp(m_context, QRegularExpression::CaseInsensitiveOption);
         if (iter.key().contains(regExp)) {
             //遍历该关键词匹配的项目检查是否已经被添加
             for (const QSharedPointer<MatchedItem> &item : iter.value()) {
