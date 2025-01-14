@@ -66,17 +66,17 @@
         <translation>将文档添加到UOS AI知识库</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="397"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="414"/>
         <source>DDE Grand Search</source>
         <translation>全局搜索</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="400"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="417"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
         <translation>无法使用%1，请先到应用商店更新UOS AI版本</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="401"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="418"/>
         <source>Open App Stroe</source>
         <translation>打开商店</translation>
     </message>
@@ -229,8 +229,8 @@
     <name>GrandSearch::GroupWidget</name>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="254"/>
-        <source>Please go to %1 to install the UOS AI large model, and %2 Automatic index update.</source>
-        <translation>请先前往%1安装UOS AI大模型，并%2自动更新索引</translation>
+        <source>Please go to %1 to install the ULLM, and %2 Automatic index update.</source>
+        <translation>请先前往%1安装统信有容大模型，并%2自动更新索引</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="255"/>
@@ -251,8 +251,8 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="263"/>
-        <source>Please go to %1 to install the UOS AI large model.</source>
-        <translation>请先前往%1安装UOS AI大模型</translation>
+        <source>Please go to %1 to install the ULLM.</source>
+        <translation>请先前往%1安装统信有容大模型</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="325"/>
@@ -298,13 +298,13 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="166"/>
-        <source>UOS AI LLM</source>
-        <translation>UOS AI大模型</translation>
+        <source>ULLM</source>
+        <translation>统信有容大模型</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="166"/>
-        <source>After installing the UOS AI large model, you can use the AI intelligent search function without an internet connection.</source>
-        <translation>安装UOS AI大模型后，无需联网即可使用AI智能搜索功能</translation>
+        <source>After installing the ULLM, you can use the AI intelligent search function without an internet connection.</source>
+        <translation>安装统信有容大模型后，无需联网即可使用AI智能搜索功能</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="112"/>
@@ -355,7 +355,7 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="329"/>
-        <source>To use AI Smart Search, you need to install the Embedding Plugins and UOS AI LLM first.</source>
+        <source>To use AI Smart Search, you need to install the Embedding Plugins and ULLM first.</source>
         <translation>使用AI智能搜索需要先安装“向量化模型插件”和“统信有容大模型”。</translation>
     </message>
     <message>
@@ -390,7 +390,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="209"/>
         <source>Are you sure you want to delete this model?</source>
-        <translation>确定卸载UOS AI大模型？</translation>
+        <translation>确定卸载模型？</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="210"/>
@@ -416,8 +416,8 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="338"/>
-        <source>Installing the UOS AI Large Language Model</source>
-        <translation>正在安装UOS AI大模型</translation>
+        <source>Installing the ULLM</source>
+        <translation>正在安装统信有容大模型</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="339"/>
