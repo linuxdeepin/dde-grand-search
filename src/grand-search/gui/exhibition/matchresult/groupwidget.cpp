@@ -250,8 +250,8 @@ void GroupWidget::showLabel(bool bShow)
 
         const QColor &color = DApplicationHelper::instance()->palette(m_resultLabel).color(DPalette::Normal, DPalette::Highlight);
         if (!hasIdx && !isUpdateIdx && !hasModel) {
-            // 请先前往搜索配置安装UOS AI大模型，并开启自动更新索引 Please go to Search configration to install the UOS AI large model, and turn on Automatic index update.
-            m_resultLabel->setText(tr("Please go to %1 to install the UOS AI large model, and %2 Automatic index update.")
+            // 请先前往搜索配置安装UOS AI大模型，并开启自动更新索引 Please go to Search configration to install the ULLM, and turn on Automatic index update.
+            m_resultLabel->setText(tr("Please go to %1 to install the ULLM, and %2 Automatic index update.")
                                    .arg(QString("<a href=\"config\" style=\"color:%1; text-decoration: none;\">%2</a>").arg(color.name()).arg(tr("Search configration")))
                                    .arg(QString("<a href=\"update index\" style=\"color:%1; text-decoration: none;\">%2</a>").arg(color.name()).arg(tr("turn on"))));
         } else if (!hasIdx && !isUpdateIdx) {
@@ -260,7 +260,7 @@ void GroupWidget::showLabel(bool bShow)
                                    .arg(QString("<a href=\"update index\" style=\"color:%1; text-decoration: none;\">%2</a>").arg(color.name()).arg(tr("turn on"))));
         } else if (!hasModel) {
             // 请先前往搜索配置安装UOS AI大模型 Please go to Search configration to install the UOS AI large model.
-            m_resultLabel->setText(tr("Please go to %1 to install the UOS AI large model.")
+            m_resultLabel->setText(tr("Please go to %1 to install the ULLM.")
                                    .arg(QString("<a href=\"config\" style=\"color:%1; text-decoration: none;\">%2</a>").arg(color.name()).arg(tr("Search configration"))));
         } else {
             m_resultLabel->setText(tr("No search results"));

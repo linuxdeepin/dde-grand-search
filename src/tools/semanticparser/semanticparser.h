@@ -18,7 +18,6 @@ public:
     ~SemanticParser();
     bool connectToVector(const QString &service);
     bool connectToQueryLang(const QString &service);
-    QString analyze(const QString &text);
     QString vectorSearch(const QString &prompt);
     QString query(const QString &text);
     bool isVectorSupported();
