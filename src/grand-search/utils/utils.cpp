@@ -32,22 +32,12 @@ extern "C" {
 #include <QIcon>
 #include <QApplication>
 #include <DUtil>
+#include <DSysInfo>
 
 DCORE_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
 DGUI_USE_NAMESPACE
 using namespace GrandSearch;
-
-#ifdef COMPILE_ON_V23
-static const QString AppManagerService = "org.desktopspec.ApplicationManager1";
-static const QString AppManagerPathPrefix = "/org/desktopspec/ApplicationManager1";
-static const QString AppInterface = "org.desktopspec.ApplicationManager1.Application";
-
-#else
-static const QString SessionManagerService = "org.deepin.dde.SessionManager1";
-static const QString StartManagerPath = "/org/deepin/StartManager1";
-static const QString StartManagerInterface = "org.deepin.dde.StartManager1";
-#endif
 
 static const int WeightDiffLimit = 21;
 
@@ -848,7 +838,6 @@ bool Utils::launchApp(const QString& desktopFile, const QStringList &filePaths)
 
 bool Utils::launchAppByDBus(const QString &desktopFile, const QStringList &filePaths)
 {
-#ifdef COMPILE_ON_V23
     const auto &file = QFileInfo{desktopFile};
     constexpr auto kDesktopSuffix { u8"desktop" };
 
@@ -857,41 +846,48 @@ bool Utils::launchAppByDBus(const QString &desktopFile, const QStringList &fileP
         return false;
     }
 
-    const auto &DBusAppId = DUtil::escapeToObjectPath(file.completeBaseName());
-    const auto &currentAppPath = QString { AppManagerPathPrefix } + "/" + DBusAppId;
-    qDebug() << "app object path:" << currentAppPath;
-    QDBusInterface appManager(AppManagerService,
-                              currentAppPath,
-                              AppInterface,
-                              QDBusConnection::sessionBus());
+    auto ver = DSysInfo::majorVersion().toInt();
+    if (ver > 20) {
 
-    auto reply = appManager.callWithArgumentList(QDBus::Block, QStringLiteral("Launch"), { QVariant::fromValue(QString {}), QVariant::fromValue(filePaths), QVariant::fromValue(QVariantMap {}) });
+        const QString AppManagerService = "org.desktopspec.ApplicationManager1";
+        const QString AppManagerPathPrefix = "/org/desktopspec/ApplicationManager1";
+        const QString AppInterface = "org.desktopspec.ApplicationManager1.Application";
 
-    return reply.type() == QDBusMessage::ReplyMessage;
+        const auto &DBusAppId = DUtil::escapeToObjectPath(file.completeBaseName());
+        const auto &currentAppPath = QString { AppManagerPathPrefix } + "/" + DBusAppId;
+        qDebug() << "app object path:" << currentAppPath;
 
-#else
-    // FIXME: how to launch app on V25
-    /*
-    QDBusInterface interface(SessionManagerService,
-                             StartManagerPath,
-                             StartManagerInterface,
-                             QDBusConnection::sessionBus(),
-                             qApp);
+        QDBusInterface appManager(AppManagerService,
+                                currentAppPath,
+                                AppInterface,
+                                QDBusConnection::sessionBus());
 
-    QList<QVariant> args;
-    args << desktopFile
-         << QDateTime::currentDateTime().toTime_t()
-         << filePaths;
+        auto reply = appManager.callWithArgumentList(QDBus::Block, QStringLiteral("Launch"), { QVariant::fromValue(QString {}), QVariant::fromValue(filePaths), QVariant::fromValue(QVariantMap {}) });
 
-    QDBusPendingCall call = interface.asyncCallWithArgumentList("LaunchApp", args);
+        return reply.type() == QDBusMessage::ReplyMessage;
+    } else {
+        // V20 Use the SessionManager to launch app
+        const QString SessionManagerService = "com.deepin.SessionManager";
+        const QString StartManagerPath = "/com/deepin/StartManager";
+        const QString StartManagerInterface = "com.deepin.StartManager";
+        QDBusInterface interface(SessionManagerService,
+                                StartManagerPath,
+                                StartManagerInterface,
+                                QDBusConnection::sessionBus());
 
-    QDBusReply<void> reply = call.reply();
-    if (!reply.isValid()) {
-            qCritical() << "Launch app by DBus failed:" << reply.error();
-            return false;
+        QList<QVariant> args;
+        args << desktopFile
+            << QDateTime::currentDateTime().toSecsSinceEpoch()
+            << filePaths;
+
+        QDBusPendingCall call = interface.asyncCallWithArgumentList("LaunchApp", args);
+
+        QDBusReply<void> reply = call.reply();
+        if (!reply.isValid()) {
+                qCritical() << "Launch app by DBus failed:" << reply.error();
+                return false;
+        }
     }
-    */
-#endif
 
     return true;
 }
