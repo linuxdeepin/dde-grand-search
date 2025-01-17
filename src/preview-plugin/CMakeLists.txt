@@ -21,7 +21,6 @@ find_package(PkgConfig REQUIRED)
 find_package(${DTK_NS} COMPONENTS
     Gui
     Widget
-    CMake
 REQUIRED)
 find_package(${QT_NS} COMPONENTS
     Core

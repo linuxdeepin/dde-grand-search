@@ -30,7 +30,6 @@ find_package(${DTK_NS} COMPONENTS
     Core
     Gui
     Widget
-    CMake
 REQUIRED)
 find_package(${QT_NS} COMPONENTS
     Core
