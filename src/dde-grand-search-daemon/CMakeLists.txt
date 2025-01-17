@@ -1,6 +1,9 @@
 # 定义需要的cmake版本
 cmake_minimum_required(VERSION 3.10)
 
+set(QT_NS Qt5)
+set(DTK_NS Dtk)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
@@ -213,12 +216,9 @@ set(SRCS
     ${GDCONFIGURATION}
 )
 
-# 资源文件
-if (QT_VERSION_MAJOR EQUAL 6)
-    qt6_add_resources(QRC_FILES utils/dict.qrc)
-else()
-    qt5_add_resources(QRC_FILES utils/dict.qrc)
-endif()
+
+qt5_add_resources(QRC_FILES utils/dict.qrc)
+
 
 # 执行程序
 add_executable(${BIN_NAME}
