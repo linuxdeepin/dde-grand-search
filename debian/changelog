@@ -1,3 +1,10 @@
+dde-grand-search (5.5.12) unstable; urgency=medium
+
+  * update dde-grand-search V25 5.5.12 baseline version
+  * fix issue about launch app and CI build.
+
+ -- re2zero <yangwu@uniontech.com>  Fri, 17 Jan 2025 14:15:36 +0800
+
 dde-grand-search (5.5.11) unstable; urgency=medium
 
   * update dde-grand-search V25 5.5.11 baseline version
