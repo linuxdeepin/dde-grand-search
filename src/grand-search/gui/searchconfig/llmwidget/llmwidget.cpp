@@ -335,7 +335,7 @@ bool LLMWidget::onCloseEvent()
         DDialog dlg(this);
         dlg.setIcon(QIcon(":icons/dde-grand-search-setting.svg"));
         dlg.setMaximumWidth(380);
-        dlg.setTitle(tr("Installing the UOS AI Large Language Model"));
+        dlg.setTitle(tr("Installing the ULLM"));
         dlg.setMessage(tr("Exiting will cause the installation to fail, do you still want to exit?"));
         dlg.addButton(tr("Exit", "button"), false, DDialog::ButtonNormal);
         dlg.addButton(tr("Continue", "button"), true, DDialog::ButtonRecommend);

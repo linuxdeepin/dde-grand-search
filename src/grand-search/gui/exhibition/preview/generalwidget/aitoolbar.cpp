@@ -276,7 +276,7 @@ void AiToolBarInner::onSummary() {
     qDBusRegisterMetaType<QMap<QString, QString>>();
     QMap<QString, QString> params;
     params.insert("file", m_filePath);
-    params.insert("defaultPrompt", "帮我总结这篇文档，直接给我清晰的结果，不用多余内容");
+    params.insert("defaultPrompt", tr("Summarize this document for me and provide me with a clear result directly, without any unnecessary content."));
     QDBusInterface notification("com.deepin.copilot", "/org/deepin/copilot/chat", "org.deepin.copilot.chat", QDBusConnection::sessionBus());
     QString error = notification.call(QDBus::Block, "inputPrompt", "", QVariant::fromValue(params)).errorMessage();
     if (!error.isEmpty()) {
@@ -291,7 +291,7 @@ void AiToolBarInner::onTranslation() {
     qDBusRegisterMetaType<QMap<QString, QString>>();
     QMap<QString, QString> params;
     params.insert("file", m_filePath);
-    params.insert("defaultPrompt", "帮我翻译这篇文档，直接给我清晰的结果，不用多余内容");
+    params.insert("defaultPrompt", tr("Translate this document for me and provide me with a clear result directly, without any unnecessary content."));
     QDBusInterface notification("com.deepin.copilot", "/org/deepin/copilot/chat", "org.deepin.copilot.chat", QDBusConnection::sessionBus());
     QString error = notification.call(QDBus::Block, "inputPrompt", "", QVariant::fromValue(params)).errorMessage();
     if (!error.isEmpty()) {
@@ -306,7 +306,7 @@ void AiToolBarInner::onExtension() {
     qDBusRegisterMetaType<QMap<QString, QString>>();
     QMap<QString, QString> params;
     params.insert("file", m_filePath);
-    params.insert("defaultPrompt", "帮我扩写这篇文档，直接给我清晰的结果，不用多余内容");
+    params.insert("defaultPrompt", tr("Expand this document for me and provide me with a clear and expanded result directly, without any unnecessary content."));
     QDBusInterface notification("com.deepin.copilot", "/org/deepin/copilot/chat", "org.deepin.copilot.chat", QDBusConnection::sessionBus());
     QString error = notification.call(QDBus::Block, "inputPrompt", "", QVariant::fromValue(params)).errorMessage();
     if (!error.isEmpty()) {

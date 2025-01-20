@@ -163,7 +163,7 @@ IntelligentRetrievalWidget::IntelligentRetrievalWidget(QWidget *parent)
         bkg->setLayout(vl);
         vl->setContentsMargins(0, 2, 0, 5);
         m_llmWidget = new LLMWidget(bkg);
-        m_llmWidget->setText(tr("UOS AI LLM"),tr("After installing the UOS AI large model, you can use the AI intelligent search function without an internet connection."));
+        m_llmWidget->setText(tr("ULLM"),tr("After installing the ULLM, you can use the AI intelligent search function without an internet connection."));
         m_llmWidget->checkInstallStatus();
         vl->addWidget(m_llmWidget);
         m_indexLayout->addSpacing(10);
@@ -326,7 +326,7 @@ void IntelligentRetrievalWidget::checkChanged()
             warningDlg.setWindowFlags((warningDlg.windowFlags() | Qt::WindowType::WindowStaysOnTopHint));
             warningDlg.setFixedWidth(380);
             warningDlg.setIcon(QIcon(":icons/dde-grand-search-setting.svg"));
-            warningDlg.setMessage(QString(tr("To use AI Smart Search, you need to install the Embedding Plugins and UOS AI LLM first.")));
+            warningDlg.setMessage(QString(tr("To use AI Smart Search, you need to install the Embedding Plugins and ULLM first.")));
             warningDlg.addButton(tr("OK"), true, DDialog::ButtonNormal);
             warningDlg.moveToCenter();
             warningDlg.exec();
