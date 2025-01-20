@@ -66,6 +66,21 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="279"/>
+        <source>Summarize this document for me and provide me with a clear result directly, without any unnecessary content.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="294"/>
+        <source>Translate this document for me and provide me with a clear result directly, without any unnecessary content.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="309"/>
+        <source>Expand this document for me and provide me with a clear and expanded result directly, without any unnecessary content.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="414"/>
         <source>DDE Grand Search</source>
         <translation type="unfinished"></translation>
