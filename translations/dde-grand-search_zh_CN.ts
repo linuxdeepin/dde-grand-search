@@ -66,6 +66,21 @@
         <translation>将文档添加到UOS AI知识库</translation>
     </message>
     <message>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="279"/>
+        <source>Summarize this document for me and provide me with a clear result directly, without any unnecessary content.</source>
+        <translation>帮我总结这篇文档，直接给我清晰的结果，不用多余内容</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="294"/>
+        <source>Translate this document for me and provide me with a clear result directly, without any unnecessary content.</source>
+        <translation>帮我翻译这篇文档，直接给我清晰的结果，不用多余内容</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="309"/>
+        <source>Expand this document for me and provide me with a clear and expanded result directly, without any unnecessary content.</source>
+        <translation>帮我扩写这篇文档，直接给我清晰的结果，不用多余内容</translation>
+    </message>
+    <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="414"/>
         <source>DDE Grand Search</source>
         <translation>全局搜索</translation>
