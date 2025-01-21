@@ -294,6 +294,7 @@ void MainWindow::hideEvent(QHideEvent *event)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+    emit visibleChanged(false);
     // 通知查询控制器停止搜索
     emit terminateSearch();
     // FIXME: DBlurEffectWidget close abort on treeland
