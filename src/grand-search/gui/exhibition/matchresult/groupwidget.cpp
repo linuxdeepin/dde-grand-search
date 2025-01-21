@@ -466,10 +466,11 @@ void GroupWidget::onMoreBtnClicked()
 
 void GroupWidget::onOpenConfig(const QString& link)
 {
+    const QStringList args = {"-s", "--position", "aiconfig"};
     if (link == "update index") {
         IntelligentRetrievalWidget::setAutoIndex(true);
-        QProcess::startDetached("dde-grand-search -s --position aiconfig");
+        QProcess::startDetached("dde-grand-search", args);
     } else if (link == "config") {
-        QProcess::startDetached("dde-grand-search -s --position aiconfig");
+        QProcess::startDetached("dde-grand-search", args);
     }
 }
