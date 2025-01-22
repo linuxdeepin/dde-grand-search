@@ -259,6 +259,21 @@ target_link_libraries(${BIN_NAME} PRIVATE
     ${GIO_LIB_LIBRARIES}
 )
 
+set(SRCS_SETTING
+    setting_main.cpp
+    contacts/services/grandsearchsettingservice_p.h
+    contacts/services/grandsearchsettingservice.h
+    contacts/services/grandsearchsettingservice.cpp
+    ${PROJECT_3RDPARTY_PATH}/services/grandsearchsettingserviceadaptor.h
+    ${PROJECT_3RDPARTY_PATH}/services/grandsearchsettingserviceadaptor.cpp
+)
+
+add_executable(${BIN_NAME}-setting ${SRCS_SETTING})
+target_link_libraries(${BIN_NAME}-setting PRIVATE
+    ${Qt_LIBS}
+    ${DTK_LIBS}
+)
+
 # Install settings
 if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set(CMAKE_INSTALL_PREFIX /usr)
@@ -266,7 +281,7 @@ endif ()
 
 # bin
 install(TARGETS ${BIN_NAME} DESTINATION bin)
-
+install(TARGETS ${BIN_NAME}-setting DESTINATION bin)
 # ts
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/translations
     DESTINATION share/${BIN_NAME}
@@ -275,3 +290,7 @@ install(DIRECTORY ${PROJECT_SOURCE_DIR}/translations
 # dbus
 install(FILES contacts/services/com.deepin.dde.GrandSearch.service DESTINATION ${CMAKE_INSTALL_DATADIR}/dbus-1/services)
 install(FILES contacts/services/com.deepin.dde.GrandSearch.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/dbus-1/interfaces)
+
+# setting
+install(FILES contacts/services/com.deepin.dde.GrandSearchSetting.service DESTINATION ${CMAKE_INSTALL_DATADIR}/dbus-1/services)
+install(FILES contacts/services/com.deepin.dde.GrandSearchSetting.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/dbus-1/interfaces)
