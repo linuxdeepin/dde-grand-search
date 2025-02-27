@@ -1,3 +1,9 @@
+dde-grand-search (6.0.4) unstable; urgency=medium
+
+  * fix: improve plugin item opening with async dbus call(Bug: 305007)
+
+ -- renbin <renbin@uniontech.com>  Thu, 27 Feb 2025 19:12:56 +0800
+
 dde-grand-search (6.0.3) unstable; urgency=medium
 
   * New version 6.0.3
