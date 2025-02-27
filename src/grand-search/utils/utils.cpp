@@ -792,7 +792,8 @@ bool Utils::openExtendSearchMatchedItem(const MatchedItem &item)
 {
     // 搜索结果来自扩展插件，使用Dbus通知主控调用扩展插件打开接口打开搜索结果
     DaemonGrandSearchInterface daemonDbus;
-    daemonDbus.OpenWithPlugin(item.searcher, item.item);
+    auto reply = daemonDbus.OpenWithPlugin(item.searcher, item.item);
+    reply.waitForFinished();
 
     return true;
 }
