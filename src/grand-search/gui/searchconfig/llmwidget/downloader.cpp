@@ -1,6 +1,8 @@
 #include "downloader.h"
+
 #include <QEventLoop>
 #include <QDir>
+#include <QRegularExpression>
 
 using namespace GrandSearch;
 
@@ -33,11 +35,14 @@ void Downloader::addDownloadTask(const QUrl &url)
 {
     QNetworkRequest request(url);
     QNetworkReply *reply = m_manager->get(request);
+
     {
         QMutexLocker locker(&mutex);
         m_finished = false;
         m_activeDownloads.append(reply);
+        urlToFileName.insert(url.toString(), url.fileName());
     }
+
     if (url.fileName().contains(".gguf"))
         connect(reply, &QNetworkReply::downloadProgress, this, &Downloader::onDownloadProgress);
     connect(reply, &QNetworkReply::readyRead, this, &Downloader::onReadyRead);
@@ -54,7 +59,21 @@ void Downloader::onDownloadFinished(QNetworkReply *reply)
         if (file->isOpen()) {
             file->close();
         }
+
+        if (reply->url().fileName().endsWith("gguf")) {
+            auto newUrl = checkCDN(file);
+            if (!newUrl.isEmpty()) {
+                QNetworkRequest request(newUrl);
+                QNetworkReply *nreply = m_manager->get(request);
+                m_activeDownloads.append(nreply);
+                urlToFileName.insert(nreply->request().url().toString(), reply->url().fileName());
+                connect(nreply, &QNetworkReply::downloadProgress, this, &Downloader::onDownloadProgress);
+                connect(nreply, &QNetworkReply::readyRead, this, &Downloader::onReadyRead);
+            }
+        }
+
         file->deleteLater();
+        m_openFiles.remove(reply);
     }
 
     if (m_activeDownloads.isEmpty() && !m_finished) {
@@ -71,7 +90,7 @@ void Downloader::onReadyRead()
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
     if (!reply) return;
 
-    QString filename = reply->request().url().fileName();
+    QString filename = urlToFileName.value(reply->request().url().toString(), reply->request().url().fileName());
     QString localFilePath = m_downloadDirectory + "/" + filename;
     QFile *file = m_openFiles.value(reply);
     if (!file) {
@@ -109,4 +128,32 @@ void Downloader::cancelDownloads()
     m_activeDownloads.clear();
     m_openFiles.clear();
 
+}
+
+QString Downloader::checkCDN(QFile *file)
+{
+    QString urlStr;
+    const QString prefix = R"(<a href=")";
+    if (!file->open(QFile::ReadOnly))
+        return urlStr;
+
+    QString data = QString::fromUtf8(file->read(prefix.toUtf8().size() + 5));
+    if (data.startsWith(prefix)) {
+        file->seek(0);
+        data = QString::fromUtf8(file->readAll());
+        file->close();
+
+        QRegularExpression regex(R"(https?://[^\s"]+)");
+        QRegularExpressionMatch match = regex.match(data);
+
+        if (match.hasMatch()) {
+            urlStr = match.captured(0);
+            urlStr.replace("&amp;", "&");
+            qInfo() << file->fileName() << "dowloand url turn to cdn:" << urlStr;
+        } else {
+            qWarning() << "No URL found in the data: " << data;
+        }
+    }
+
+    return urlStr;
 }
