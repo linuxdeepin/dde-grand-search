@@ -308,7 +308,7 @@ void LLMWidget::onDownloadFinished()
 
 void LLMWidget::onDownloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
-    if (bytesTotal == 0)
+    if (bytesTotal <= 1024)
         return;
 
     double progress = static_cast<double>(bytesReceived) / static_cast<double>(bytesTotal) * 100.0;

@@ -28,6 +28,7 @@ public:
     void addDownloadTask(const QUrl &url);
     void cancelDownloads();
     bool isFinished() { return m_finished; }
+    static QString checkCDN(QFile *file);
 
 signals:
     void downloadFinished();
@@ -41,6 +42,7 @@ private:
     QNetworkAccessManager *m_manager;
     QString m_downloadDirectory;
     QList<QNetworkReply*> m_activeDownloads;
+    QHash<QString, QString> urlToFileName;
     bool m_finished;
 
     QMutex mutex;
