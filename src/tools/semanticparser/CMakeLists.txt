@@ -6,7 +6,7 @@ set(CMAKE_AUTOMOC ON)
 
 set(LIB_NAME semanticparser)
 
-find_package(Qt5 COMPONENTS Gui DBus REQUIRED)
+find_package(${QT_NS} COMPONENTS Gui DBus REQUIRED)
 find_package(PkgConfig REQUIRED)
 
 
@@ -15,8 +15,13 @@ FILE(GLOB_RECURSE SRC_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
 )
 
-qt5_add_dbus_interface(IFS_SRC ${PROJECT_3RDPARTY_PATH}/interfaces/org.deepin.ai.daemon.VectorIndex.xml vectorindex)
-qt5_add_dbus_interface(IFS_SRC ${PROJECT_3RDPARTY_PATH}/interfaces/org.deepin.ai.daemon.QueryLang.xml querylang)
+if (${QT_VERSION_MAJOR} EQUAL 6)
+    qt6_add_dbus_interface(IFS_SRC ${PROJECT_3RDPARTY_PATH}/interfaces/org.deepin.ai.daemon.VectorIndex.xml vectorindex)
+    qt6_add_dbus_interface(IFS_SRC ${PROJECT_3RDPARTY_PATH}/interfaces/org.deepin.ai.daemon.QueryLang.xml querylang)
+else()
+    qt5_add_dbus_interface(IFS_SRC ${PROJECT_3RDPARTY_PATH}/interfaces/org.deepin.ai.daemon.VectorIndex.xml vectorindex)
+    qt5_add_dbus_interface(IFS_SRC ${PROJECT_3RDPARTY_PATH}/interfaces/org.deepin.ai.daemon.QueryLang.xml querylang)
+endif()
 
 add_library(${LIB_NAME} STATIC ${SRC_FILES} ${IFS_SRC})
 
@@ -27,5 +32,5 @@ target_include_directories(${LIB_NAME}
 
 target_link_libraries(
     ${LIB_NAME}
-    Qt5::Gui
+    ${QT_NS}::Gui
 )
