@@ -23,7 +23,6 @@ if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips")
 endif()
 
 # Find Qt version
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
 if (NOT DEFINED QT_VERSION_MAJOR)
     set(QT_VERSION_MAJOR 6)
 endif()
