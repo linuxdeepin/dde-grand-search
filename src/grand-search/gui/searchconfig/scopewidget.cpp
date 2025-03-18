@@ -54,7 +54,7 @@ ScopeWidget::ScopeWidget(QWidget *parent)
                              , "videosearch", "audiosearch", "picturesearch", "websearch"};
 
     // 如果控制中心提供的设置搜索插件不存在，则从配置界面删除
-    if (!isValid(GRANDSEARCH_CLASS_SETTING_CONTROLCENTER)) {
+    if (!isValid(GRANDSEARCH_CLASS_SETTING_CONTROLCENTER_V1) && !isValid(GRANDSEARCH_CLASS_SETTING_CONTROLCENTER_V2)) {
         m_groupName.remove(GRANDSEARCH_GROUP_SETTING);
         displayOrder.removeOne(GRANDSEARCH_GROUP_SETTING);
         m_displayIcons.removeOne("settingsearch");
