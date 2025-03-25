@@ -176,7 +176,7 @@ QuickPanel::QuickPanel(const QString &desc, QWidget *parent)
     : QWidget(parent)
 {
     QVBoxLayout *lay = new QVBoxLayout;
-    lay->setContentsMargins(10, 10, 10, 10);
+    lay->setContentsMargins(8, 8, 8, 8);
     lay->setSpacing(0);
     lay->addStretch(1);
 
@@ -190,7 +190,7 @@ QuickPanel::QuickPanel(const QString &desc, QWidget *parent)
     textLabel->setElideMode(Qt::ElideRight);
     textLabel->setAlignment(Qt::AlignCenter);
     DFontSizeManager::instance()->bind(textLabel, DFontSizeManager::T10);
-    lay->addSpacing(15);
+    lay->addSpacing(10);
     lay->addWidget(textLabel, 0, Qt::AlignHCenter);
     lay->addStretch(1);
 
