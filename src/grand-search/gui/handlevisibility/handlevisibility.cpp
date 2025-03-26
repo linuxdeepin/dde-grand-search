@@ -8,6 +8,7 @@
 #include <DApplication>
 
 #include <QtDebug>
+#include <QTimer>
 
 #define SessionManagerService "org.deepin.dde.SessionManager1"
 #define SessionManagerPath "/org/deepin/dde/SessionManager1"

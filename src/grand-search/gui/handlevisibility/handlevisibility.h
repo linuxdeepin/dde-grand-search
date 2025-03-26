@@ -5,8 +5,6 @@
 #ifndef HANDLEVISIBILITY_H
 #define HANDLEVISIBILITY_H
 
-#include <com_deepin_sessionmanager.h>
-
 #include <DRegionMonitor>
 
 #include <QObject>

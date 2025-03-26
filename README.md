@@ -6,7 +6,6 @@ Deepin Grand Search is a basic search tool developed by Deepin Technology,featur
 
   * Qt
   * DTK
-  * libdframeworkdbus2
   * libgsettings-qt1
   * libicu63
   * libpoppler-qt5-1 
@@ -28,7 +27,6 @@ _The **master** branch is current development branch, build dependencies may cha
  * libdtkcore-dev
  * libdtkgui-dev
  * libdtkcore5-bin
- * libdframeworkdbus-dev
  * qttools5-dev-tools
  * cmake
  * dde-dock-dev
