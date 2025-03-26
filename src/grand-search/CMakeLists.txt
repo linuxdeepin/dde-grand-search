@@ -69,8 +69,6 @@ pkg_check_modules(GIO_LIB REQUIRED
         glib-2.0
 )
 
-pkg_check_modules(DFrameworkDBus REQUIRED dframeworkdbus)
-
 # gui
 set(GUISRC
     gui/mainwindow_p.h
@@ -248,14 +246,12 @@ add_executable(${BIN_NAME} ${SRCS} ${QRCS})
 
 target_include_directories(${BIN_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include
-    ${DFrameworkDBus_INCLUDE_DIRS}
     ${GIO_LIB_INCLUDE_DIRS}
 )
 
 target_link_libraries(${BIN_NAME} PRIVATE
     ${Qt_LIBS}
     ${DTK_LIBS}
-    ${DFrameworkDBus_LIBRARIES}
     ${GIO_LIB_LIBRARIES}
 )
 

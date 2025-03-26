@@ -6,7 +6,6 @@
 
   * Qt
   * DTK
-  * libdframeworkdbus2
   * libgsettings-qt1
   * libicu63
   * libpoppler-qt5-1 
@@ -28,7 +27,6 @@ _当前的开发分支为**master**，编译依赖可能会在没有更新本说
  * libdtkcore-dev
  * libdtkgui-dev
  * libdtkcore5-bin
- * libdframeworkdbus-dev
  * qttools5-dev-tools
  * cmake
  * dde-dock-dev
