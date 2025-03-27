@@ -9,7 +9,8 @@
 #define GRANDSEARCH_CLASS_FILE_DEEPIN "com.deepin.dde-grand-search.file-deepin"
 #define GRANDSEARCH_CLASS_FILE_FSEARCH "com.deepin.dde-grand-search.file-fsearch"
 #define GRANDSEARCH_CLASS_APP_DESKTOP "com.deepin.dde-grand-search.app-desktop"
-#define GRANDSEARCH_CLASS_SETTING_CONTROLCENTER "com.deepin.dde-grand-search.dde-control-center-setting"
+#define GRANDSEARCH_CLASS_SETTING_CONTROLCENTER_V1 "com.deepin.dde-grand-search.dde-control-center-setting"
+#define GRANDSEARCH_CLASS_SETTING_CONTROLCENTER_V2 "org.deepin.dde-grand-search.dde-control-center-setting"
 #define GRANDSEARCH_CLASS_WEB_STATICTEXT "com.deepin.dde-grand-search.web-statictext"
 #define GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC "com.deepin.dde-grand-search.generalfile-semantic"
 
