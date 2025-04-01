@@ -222,6 +222,13 @@ set(UTILSSRC
     utils/previewpluginconf.h
     utils/filestatisticsthread.h
     utils/filestatisticsthread.cpp
+    utils/report/basicpoint.h
+    utils/report/basicpoint.cpp
+    utils/report/committhread.h
+    utils/report/committhread.cpp
+    utils/report/eventlogutil.h
+    utils/report/eventlogutil.cpp
+    utils/report/aisearchpoint.h
     )
 
 # 源文件
