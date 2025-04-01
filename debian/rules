@@ -29,5 +29,5 @@ override_dh_auto_configure:
 	dh_auto_configure -- \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DVERSION=$(DEB_VERSION_UPSTREAM) -DVERSION=$(VERSION) \
+		-DVERSION=$(DEB_VERSION_UPSTREAM) \
 		-DQT_DIR=$(QT_DIR)

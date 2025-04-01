@@ -12,6 +12,8 @@
 #include "global/searchconfigdefine.h"
 #include "global/builtinsearch.h"
 #include "gui/searchconfig/tipslabel.h"
+#include <utils/report/aisearchpoint.h>
+#include <utils/report/eventlogutil.h>
 
 #include <DFontSizeManager>
 #include <DDialog>
@@ -310,6 +312,7 @@ void IntelligentRetrievalWidget::checkChanged()
     if (sd == m_semantic) {
         bool on = m_semantic->checked();
         cfg->setConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, on);
+        ReportIns()->writeEvent(report::AiSearchPoint(on).assemblingData());
         m_indexWidget->setVisible(on);
         adjustSize();
 

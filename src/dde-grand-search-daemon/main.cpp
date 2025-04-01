@@ -75,12 +75,12 @@ int startGrandSearchDaemon(int argc, char *argv[])
 
     //初始化
     if (!interface->init()) {
-        qCritical() << "failed to initialize grand search deamon." << VERSION;
+        qCritical() << "failed to initialize grand search deamon." << APP_VERSION;
         return -1;
     }
 
     instance = interface;
-    qInfo() << "grand search deamon is started." << VERSION;
+    qInfo() << "grand search deamon is started." << APP_VERSION;
 
     // 加载翻译
     QString appName = qApp->applicationName();
@@ -103,7 +103,7 @@ int stopGrandSearchDaemon()
 
 const char *grandSearchDaemonAppVersion()
 {
-    return VERSION;
+    return APP_VERSION;
 }
 
 int grandSearchDaemonLibVersion()
@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
         //设置应用信息
         app.setOrganizationName("deepin");
         app.setApplicationName("dde-grand-search-daemon");
-        app.setApplicationVersion(VERSION);
+        app.setApplicationVersion(APP_VERSION);
 
         // 设置终端和文件记录日志
         const QString logFormat = "%{time}{yyyyMMdd.HH:mm:ss.zzz}[%{type:1}][%{function:-35} %{line:-4} %{threadid} ] %{message}\n";

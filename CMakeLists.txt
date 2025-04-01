@@ -1,5 +1,6 @@
 # 定义需要的cmake版本
 cmake_minimum_required(VERSION 3.10)
+add_compile_definitions(APP_VERSION="${VERSION}")
 
 # 显示编译过程
 set(CMAKE_VERBOSE_MAKEFILE ON)

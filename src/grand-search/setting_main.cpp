@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     app.setOrganizationName("deepin");
     app.setApplicationName("dde-grand-search-setting");
     app.setApplicationDisplayName("DDE Grand Search Setting");
-    app.setApplicationVersion(VERSION);
+    app.setApplicationVersion(APP_VERSION);
 
     if (!app.setSingleInstance("dde-grand-search-setting")) {
         return -1;

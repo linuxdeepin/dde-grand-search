@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     app.setOrganizationName("deepin");
     app.setApplicationName("dde-grand-search");
     app.setApplicationDisplayName("DDE Grand Search");
-    app.setApplicationVersion(VERSION);
+    app.setApplicationVersion(APP_VERSION);
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     app.setAttribute(Qt::AA_UseHighDpiPixmaps);
 #endif
