@@ -8,6 +8,7 @@
 
 #include <QDBusInterface>
 #include <QDBusReply>
+#include <QDBusConnectionInterface>
 
 using namespace GrandSearch;
 
@@ -22,38 +23,10 @@ QString FileNameSearcher::name() const
 
 bool FileNameSearcher::isActive() const
 {
-    QDBusInterface interface("com.deepin.anything",
-                             "/com/deepin/anything",
-                             "com.deepin.anything",
-                             QDBusConnection::systemBus());
-    interface.setTimeout(500);
-    if (!interface.isValid()) {
-        qWarning() << QDBusConnection::systemBus().lastError().message();
-        return false;
-    }
+    QDBusConnectionInterface *cif = QDBusConnection::systemBus().interface();
+    Q_ASSERT(cif);
 
-    // fix bug 90645
-    // 如果allPath返回为空，则调用refresh刷新一次
-    static bool isAvailable = false;
-    if (!isAvailable) {
-        QDBusReply<QStringList> reply = interface.call("allPath");
-        if (reply.isValid()) {
-            auto paths = reply.value();
-            if (paths.isEmpty()) {
-                QDBusReply<QStringList> re = interface.call("refresh", QByteArray());
-                if (re.isValid()) {
-                    isAvailable = true;
-                    qInfo() << "refresh result:" << re.value();
-                } else {
-                    qWarning() << "refresh method called failed," << re.error().message();
-                }
-            }
-        } else {
-            qWarning() << "allPath method called failed," << reply.error().message();
-        }
-    }
-
-    return true;
+    return cif->isServiceRegistered("com.deepin.anything");
 }
 
 bool FileNameSearcher::activate()
