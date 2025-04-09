@@ -108,6 +108,25 @@ set(PROJECT_3RDPARTY_PATH "${CMAKE_SOURCE_DIR}/3rdparty")
 set(PLUGIN_SEARCHER_DIR "${DAEMON_PLUGIN_DIR}/searcher")
 add_definitions(-DPLUGIN_SEARCHER_DIR="${PLUGIN_SEARCHER_DIR}")
 
+# 获取系统版本
+if (NOT DEFINED BUILD_OS_VERSION OR BUILD_OS_VERSION STREQUAL "")
+    # 读取文件并提取Version值
+    file(STRINGS "/etc/deepin-version" FILE_CONTENTS REGEX "^Version=")
+
+    # 遍历文件内容，查找Version行
+    foreach(LINE ${FILE_CONTENTS})
+        # 检查是否是Version行
+        if(LINE MATCHES "Version=([0-9]+)")
+            # 提取版本号
+            set(BUILD_OS_VERSION "${CMAKE_MATCH_1}")
+        endif()
+    endforeach()
+
+    message("Get BUILD_OS_VERSION from deepin-version ${BUILD_OS_VERSION}")
+else()
+    message("catch BUILD_OS_VERSION ${BUILD_OS_VERSION}")
+endif()
+
 add_subdirectory(src/grand-search)
 add_subdirectory(src/dde-grand-search-daemon)
 add_subdirectory(src/grand-search-dock-plugin)
@@ -115,3 +134,7 @@ add_subdirectory(src/preview-plugin)
 add_subdirectory(src/tools/semanticparser)
 add_subdirectory(src/tools/luceneengine)
 add_subdirectory(3rdparty/antlr4/antlr4-runtime)
+
+if (${BUILD_OS_VERSION} GREATER_EQUAL "25")
+    add_subdirectory(src/grand-search-shell-plugin)
+endif()
