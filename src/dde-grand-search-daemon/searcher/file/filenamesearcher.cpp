@@ -6,6 +6,8 @@
 #include "global/builtinsearch.h"
 #include "filenameworker.h"
 
+#include <dfm-search/dsearch_global.h>
+
 #include <QDBusInterface>
 #include <QDBusReply>
 #include <QDBusConnectionInterface>
@@ -23,10 +25,7 @@ QString FileNameSearcher::name() const
 
 bool FileNameSearcher::isActive() const
 {
-    QDBusConnectionInterface *cif = QDBusConnection::systemBus().interface();
-    Q_ASSERT(cif);
-
-    return cif->isServiceRegistered("com.deepin.anything");
+    return DFMSEARCH::Global::isFileNameIndexDirectoryAvailable();
 }
 
 bool FileNameSearcher::activate()
@@ -36,7 +35,7 @@ bool FileNameSearcher::activate()
 
 ProxyWorker *FileNameSearcher::createWorker() const
 {
-    auto worker = new FileNameWorker(name(), supportParallelSearch());
+    auto worker = new FileNameWorker(name());
     return worker;
 }
 
@@ -47,31 +46,3 @@ bool FileNameSearcher::action(const QString &action, const QString &item)
     return false;
 }
 
-bool FileNameSearcher::supportParallelSearch() const
-{
-    static QStringList methodNameList;
-    if (!methodNameList.isEmpty())
-        return methodNameList.contains("parallelsearch");
-
-    QDBusInterface introspectable("com.deepin.anything",
-                                  "/com/deepin/anything",
-                                  "org.freedesktop.DBus.Introspectable",
-                                  QDBusConnection::systemBus());
-    QDBusReply<QString> reply = introspectable.call("Introspect");
-    if (!reply.isValid())
-        return false;
-
-    QXmlStreamReader xmlReader;
-    xmlReader.addData(reply.value());
-    xmlReader.readNext();
-    while (!xmlReader.atEnd()) {
-        if (xmlReader.isStartElement() && xmlReader.name() == "method") {
-            methodNameList << xmlReader.attributes().value("name").toString();
-            xmlReader.skipCurrentElement();
-        } else {
-            xmlReader.readNext();
-        }
-    }
-
-    return methodNameList.contains("parallelsearch");
-}
