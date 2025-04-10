@@ -107,6 +107,7 @@ FileSearchUtils::SearchInfo FileSearchUtils::parseContent(const QString &content
     QJsonDocument doc = QJsonDocument::fromJson(content.toLocal8Bit(), &error);
     if (error.error != QJsonParseError::NoError || doc.isEmpty()) {
         info.keyword = searchHelper->tropeInputSymbol(content);
+        info.boolKeywords = info.keyword.simplified().split(" ");
         return info;
     }
 

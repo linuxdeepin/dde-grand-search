@@ -103,19 +103,29 @@ bool FileNameWorkerPrivate::searchByDFMSearch()
 {
     // TODO (search): 类目、bool
     const QString &keyword = m_searchInfo.keyword;
+    const QStringList &boolKeywords = m_searchInfo.boolKeywords;
     SearchEngine *engine = SearchFactory::createEngine(SearchType::FileName, q_ptr);
     SearchOptions options;
     options.setSearchPath(m_searchPath);
     options.setSearchMethod(SearchMethod::Indexed);
     options.setMaxResults(MAX_SEARCH_NUM_TOTAOL);
 
-    if (isPurePinyin(keyword)) {
-        FileNameOptionsAPI fileNameOptions(options);
+    // TODO (search): refactor
+    bool useBoolQuery = (boolKeywords.size() >= 2);
+    SearchQuery query;
+    FileNameOptionsAPI fileNameOptions(options);
+
+    if (useBoolQuery) {
+        query = SearchFactory::createQuery(boolKeywords, SearchQuery::Type::Boolean);
         fileNameOptions.setPinyinEnabled(true);
+    } else {
+        query = SearchFactory::createQuery(keyword, SearchQuery::Type::Simple);
+        if (isPurePinyin(keyword)) {   // TODO (search): remove
+            fileNameOptions.setPinyinEnabled(true);
+        }
     }
 
     engine->setSearchOptions(options);
-    SearchQuery query = SearchFactory::createQuery(keyword, SearchQuery::Type::Simple);
     const SearchResultExpected &result = engine->searchSync(query);
     if (!result.hasValue()) {
         qWarning() << "DFMSearch failed for key: " << keyword << result.error().message();
@@ -144,6 +154,7 @@ bool FileNameWorkerPrivate::searchByDFMSearch()
     qInfo() << "anything search completed, found items:" << m_resultCountHash
             << "total spend:" << m_time.elapsed()
             << "current items" << leave;
+
     return true;
 }
 
