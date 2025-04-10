@@ -16,7 +16,7 @@ class FileNameWorker : public ProxyWorker
 {
     Q_OBJECT
 public:
-    explicit FileNameWorker(const QString &name, bool supportParallelSearch, QObject *parent = nullptr);
+    explicit FileNameWorker(const QString &name, QObject *parent = nullptr);
     ~FileNameWorker();
     void setContext(const QString &context) Q_DECL_OVERRIDE;
     bool isAsync() const Q_DECL_OVERRIDE;
@@ -25,6 +25,7 @@ public:
     Status status() Q_DECL_OVERRIDE;
     bool hasItem() const Q_DECL_OVERRIDE;
     MatchedItemMap takeAll() Q_DECL_OVERRIDE;
+
 private:
     FileNameWorkerPrivate *d_ptr;
     Q_DECLARE_PRIVATE(FileNameWorker)
@@ -32,4 +33,4 @@ private:
 
 }
 
-#endif // FILENAMEWORKER_H
+#endif   // FILENAMEWORKER_H
