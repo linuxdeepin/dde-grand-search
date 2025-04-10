@@ -29,6 +29,7 @@ public:
     {
         bool isCombinationSearch = false;   // 是否是组合搜索
         QString keyword;                    // 搜索关键字
+        QStringList boolKeywords;           // 空格分词
         QStringList suffixList;             // 搜索后缀表
         QList<Group> groupList;             // 搜索类目表
     };
