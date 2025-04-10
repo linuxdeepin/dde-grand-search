@@ -1,3 +1,9 @@
+dde-grand-search (6.0.8) unstable; urgency=medium
+
+  * New version 6.0.8
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Thu, 10 Apr 2025 16:26:56 +0800
+
 dde-grand-search (6.0.7) unstable; urgency=medium
 
   * fix: improve service availability check in FileNameSearcher
