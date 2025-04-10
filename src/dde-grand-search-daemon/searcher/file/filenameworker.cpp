@@ -16,7 +16,7 @@ using namespace GrandSearch;
 DFM_SEARCH_USE_NS
 
 #define MAX_SEARCH_NUM_GROUP 100
-#define MAX_SEARCH_NUM_TOTAOL 10000
+#define MAX_SEARCH_NUM_TOTAL 10000
 #define EMIT_INTERVAL 50
 
 FileNameWorkerPrivate::FileNameWorkerPrivate(FileNameWorker *qq)
@@ -108,7 +108,7 @@ bool FileNameWorkerPrivate::searchByDFMSearch()
     SearchOptions options;
     options.setSearchPath(m_searchPath);
     options.setSearchMethod(SearchMethod::Indexed);
-    options.setMaxResults(MAX_SEARCH_NUM_TOTAOL);
+    options.setMaxResults(MAX_SEARCH_NUM_TOTAL);
 
     // TODO (search): refactor
     bool useBoolQuery = (boolKeywords.size() >= 2);
