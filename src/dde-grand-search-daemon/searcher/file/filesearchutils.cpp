@@ -222,33 +222,21 @@ QStringList FileSearchUtils::buildDFMSearchFileTypes(const QList<Group> &groupLi
         {Group::Document, "doc"}
     };
 
-    bool containFile = false;
-    bool containFolder = false;
+    const bool containFile = groupList.contains(Group::File);
+    const bool containFolder = groupList.contains(Group::Folder);
     QStringList types;
-
-    for (const auto &group : groupList) {
-        if (group == Group::File) {
-            containFile = true;
-        } else if (group == Group::Folder) {
-            containFolder = true;
-        } else if (kGroupToTypeMap.contains(group)) {
-            // 仅在不需要处理File时添加类型，避免后续覆盖
-            if (!containFile) {
-                types.append(kGroupToTypeMap.value(group));
-            }
-        }
-    }
 
     if (containFile) {
         types = kGroupToTypeMap.values();
-        types.append("app");
-        types.append("archive");
-        types.append("other");
-        if (!containFolder) {
-            types.removeOne(kGroupToTypeMap[Group::Folder]); // 正确移除文件夹类型
+        types << "app" << "archive" << "other";
+        if (!containFolder)
+            types.removeOne(kGroupToTypeMap.value(Group::Folder));
+    } else {
+        for (const auto &group : groupList) {
+            if (kGroupToTypeMap.contains(group))
+                types.append(kGroupToTypeMap.value(group));
         }
     }
-
     return types;
 }
 
