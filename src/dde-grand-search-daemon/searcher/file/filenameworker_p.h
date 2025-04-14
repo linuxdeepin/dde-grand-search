@@ -8,6 +8,9 @@
 #include "filenameworker.h"
 #include "filesearchutils.h"
 
+#include <dfm-search/searchfactory.h>
+#include <dfm-search/filenamesearchapi.h>
+
 namespace GrandSearch {
 
 class FileNameWorkerPrivate
@@ -18,11 +21,15 @@ public:
     bool appendSearchResult(const QString &fileName);
     bool searchByDFMSearch();
 
+    DFMSEARCH::SearchOptions createSearchOptions() const;
+    DFMSEARCH::SearchQuery createSearchQuery() const;
+    bool processSearchResults(const DFMSEARCH::SearchResultExpected &result);
+    void configureFileNameOptions(DFMSEARCH::FileNameOptionsAPI &fileNameOptions, const DFMSEARCH::SearchQuery &query) const;
+
     void tryNotify();
     int itemCount() const;
     // 判断所有类目的搜索结果是否达到限制数量
     bool isResultLimit();
-    bool isPurePinyin(const QString &str);
 
 public:
     FileNameWorker *q_ptr = nullptr;

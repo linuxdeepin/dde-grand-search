@@ -30,6 +30,7 @@ public:
         bool isCombinationSearch = false;   // 是否是组合搜索
         QString keyword;                    // 搜索关键字
         QStringList boolKeywords;           // 空格分词
+        QStringList typeKeywords;           // 类目搜索分词
         QStringList suffixList;             // 搜索后缀表
         QList<Group> groupList;             // 搜索类目表
     };
@@ -43,6 +44,8 @@ public:
     static bool fileShouldVisible(const QString &fileName, Group &group, const SearchInfo &info);
     static bool filterByBlacklist(const QString &fileName);
     static QVariantHash tailerData(const QFileInfo &info);
+    static QStringList buildDFMSearchFileTypes(const QList<Group> &groupList);
+    static bool isPinyin(const QString &str);
 };
 
 }
