@@ -7,8 +7,6 @@
 
 #include "searcher/proxyworker.h"
 
-class ComDeepinAnythingInterface;
-
 namespace GrandSearch {
 
 class FileNameWorkerPrivate;

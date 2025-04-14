@@ -7,9 +7,6 @@
 #include "utils/specialtools.h"
 #include "configuration/configer.h"
 
-#include <dfm-search/searchfactory.h>
-#include <dfm-search/filenamesearchapi.h>
-
 #include <QStandardPaths>
 
 using namespace GrandSearch;
@@ -99,37 +96,65 @@ bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName)
     return true;
 }
 
-bool FileNameWorkerPrivate::searchByDFMSearch()
+SearchOptions FileNameWorkerPrivate::createSearchOptions() const
 {
-    // TODO (search): 类目、bool
-    const QString &keyword = m_searchInfo.keyword;
-    const QStringList &boolKeywords = m_searchInfo.boolKeywords;
-    QObject holder;
-    SearchEngine *engine = SearchFactory::createEngine(SearchType::FileName, &holder);
     SearchOptions options;
     options.setSearchPath(m_searchPath);
     options.setSearchMethod(SearchMethod::Indexed);
     options.setMaxResults(MAX_SEARCH_NUM_TOTAL);
+    return options;
+}
 
-    // TODO (search): refactor
+SearchQuery FileNameWorkerPrivate::createSearchQuery() const
+{
+    const QString &keyword = m_searchInfo.keyword;
+    const QStringList &boolKeywords = m_searchInfo.boolKeywords;
+    const QStringList &typeKeywords = m_searchInfo.typeKeywords;
+    
     bool useBoolQuery = (boolKeywords.size() >= 2);
+    bool useTypeSearch = (typeKeywords.size() >= 2) || m_searchInfo.isCombinationSearch;
     SearchQuery query;
-    FileNameOptionsAPI fileNameOptions(options);
-
-    if (useBoolQuery) {
+    
+    if (useTypeSearch) {
+        if (typeKeywords.size() >= 2) {
+            query = SearchFactory::createQuery(typeKeywords, SearchQuery::Type::Boolean);
+            query.setBooleanOperator(SearchQuery::BooleanOperator::OR);
+        } else if (typeKeywords.size() == 1){
+            query = SearchFactory::createQuery(typeKeywords.first(), SearchQuery::Type::Simple);
+        } else {
+            query = SearchFactory::createQuery(m_searchInfo.keyword, SearchQuery::Type::Simple);
+        }
+    } else if (useBoolQuery) {
         query = SearchFactory::createQuery(boolKeywords, SearchQuery::Type::Boolean);
-        fileNameOptions.setPinyinEnabled(true);
     } else {
         query = SearchFactory::createQuery(keyword, SearchQuery::Type::Simple);
-        if (isPurePinyin(keyword)) {   // TODO (search): remove
-            fileNameOptions.setPinyinEnabled(true);
-        }
     }
+    
+    return query;
+}
 
-    engine->setSearchOptions(options);
-    const SearchResultExpected &result = engine->searchSync(query);
+void FileNameWorkerPrivate::configureFileNameOptions(FileNameOptionsAPI &fileNameOptions, const SearchQuery &query) const
+{
+    const QString &keyword = m_searchInfo.keyword;
+    const QStringList &typeKeywords = m_searchInfo.typeKeywords;
+    
+    bool useTypeSearch = (typeKeywords.size() >= 2) || m_searchInfo.isCombinationSearch;
+    
+    if (useTypeSearch) {
+        fileNameOptions.setPinyinEnabled(true);
+        fileNameOptions.setFileTypes(FileSearchUtils::buildDFMSearchFileTypes(m_searchInfo.groupList));
+        // TODO (search): add suffix filter
+    } else if (query.type() == SearchQuery::Type::Boolean) {
+        fileNameOptions.setPinyinEnabled(true);
+    } else if (FileSearchUtils::isPinyin(keyword)) {
+        fileNameOptions.setPinyinEnabled(true);
+    }
+}
+
+bool FileNameWorkerPrivate::processSearchResults(const SearchResultExpected &result)
+{
     if (!result.hasValue()) {
-        qWarning() << "DFMSearch failed for key: " << keyword << result.error().message();
+        qWarning() << "DFMSearch failed for key: " << m_searchInfo.keyword << result.error().message();
         return false;
     }
 
@@ -157,6 +182,28 @@ bool FileNameWorkerPrivate::searchByDFMSearch()
             << "current items" << leave;
 
     return true;
+}
+
+bool FileNameWorkerPrivate::searchByDFMSearch()
+{
+    QObject holder;
+    SearchEngine *engine = SearchFactory::createEngine(SearchType::FileName, &holder);
+    
+    // 创建搜索选项
+    SearchOptions options = createSearchOptions();
+    // 创建搜索查询
+    SearchQuery query = createSearchQuery();
+    
+    // 配置文件名选项
+    FileNameOptionsAPI fileNameOptions(options);
+    configureFileNameOptions(fileNameOptions, query);
+    
+    // 设置搜索选项
+    engine->setSearchOptions(options);
+    
+    // 执行搜索并处理结果
+    const SearchResultExpected &result = engine->searchSync(query);
+    return processSearchResults(result);
 }
 
 void FileNameWorkerPrivate::tryNotify()
@@ -188,12 +235,6 @@ bool FileNameWorkerPrivate::isResultLimit()
     });
 
     return iter == m_resultCountHash.end();
-}
-
-bool FileNameWorkerPrivate::isPurePinyin(const QString &str)
-{
-    static QRegularExpression regex(R"(^[a-zA-Z]+$)");
-    return regex.match(str).hasMatch();
 }
 
 FileNameWorker::FileNameWorker(const QString &name, QObject *parent)

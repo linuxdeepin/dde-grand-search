@@ -148,6 +148,7 @@ FileSearchUtils::SearchInfo FileSearchUtils::parseContent(const QString &content
     }
 
     info.keyword = QString(R"((%1).*)").arg(keywordList.join('|'));
+    info.typeKeywords = keywordList;
     return info;
 }
 
@@ -210,3 +211,50 @@ QVariantHash FileSearchUtils::tailerData(const QFileInfo &info)
 
     return hash;
 }
+
+QStringList FileSearchUtils::buildDFMSearchFileTypes(const QList<Group> &groupList)
+{
+    static const QMap<Group, QString> kGroupToTypeMap = {
+        {Group::Folder, "dir"},
+        {Group::Picture, "pic"},
+        {Group::Audio, "audio"},
+        {Group::Video, "video"},
+        {Group::Document, "doc"}
+    };
+
+    bool containFile = false;
+    bool containFolder = false;
+    QStringList types;
+
+    for (const auto &group : groupList) {
+        if (group == Group::File) {
+            containFile = true;
+        } else if (group == Group::Folder) {
+            containFolder = true;
+        } else if (kGroupToTypeMap.contains(group)) {
+            // 仅在不需要处理File时添加类型，避免后续覆盖
+            if (!containFile) {
+                types.append(kGroupToTypeMap.value(group));
+            }
+        }
+    }
+
+    if (containFile) {
+        types = kGroupToTypeMap.values();
+        types.append("app");
+        types.append("archive");
+        types.append("other");
+        if (!containFolder) {
+            types.removeOne(kGroupToTypeMap[Group::Folder]); // 正确移除文件夹类型
+        }
+    }
+
+    return types;
+}
+
+bool FileSearchUtils::isPinyin(const QString &str)
+{
+    static QRegularExpression regex(R"(^[a-zA-Z]+$)");
+    return regex.match(str).hasMatch();
+}
+
