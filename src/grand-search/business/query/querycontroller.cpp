@@ -24,7 +24,7 @@ QueryControllerPrivate::QueryControllerPrivate(QueryController *parent)
     // 初始化防抖定时器
     m_debounceTimer = new QTimer(this);
     m_debounceTimer->setSingleShot(true);
-    m_debounceTimer->setInterval(100);
+    m_debounceTimer->setInterval(200);
 
     m_daemonDbus = new DaemonGrandSearchInterface(this);
 
@@ -115,8 +115,8 @@ void QueryController::onSearchTextChanged(const QString &txt)
     int debounceDelay = 0;
     if (txt.length() <= 2) {
         debounceDelay = 300;   // 短文本使用更长的延迟
-    } else {
-        debounceDelay = 0;
+    } else if (txt.length() >= 5) {
+        debounceDelay = 50;
     }
 
     d_p->m_debounceTimer->setInterval(debounceDelay);
