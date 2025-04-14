@@ -104,7 +104,8 @@ bool FileNameWorkerPrivate::searchByDFMSearch()
     // TODO (search): 类目、bool
     const QString &keyword = m_searchInfo.keyword;
     const QStringList &boolKeywords = m_searchInfo.boolKeywords;
-    SearchEngine *engine = SearchFactory::createEngine(SearchType::FileName, q_ptr);
+    QObject holder;
+    SearchEngine *engine = SearchFactory::createEngine(SearchType::FileName, &holder);
     SearchOptions options;
     options.setSearchPath(m_searchPath);
     options.setSearchMethod(SearchMethod::Indexed);
