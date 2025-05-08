@@ -9,7 +9,7 @@
 #include "semantichelper.h"
 #include "fileresultshandler.h"
 
-#include "database/anythingquery.h"
+#include "database/filenamequery.h"
 #include "database/fulltextquery.h"
 #include "database/featurequery.h"
 #include "database/vectorquery.h"
@@ -227,12 +227,12 @@ bool SemanticWorker::working(void *context)
     QList<SemanticWorkerPrivate::QueryFunction> querys;
     FileResultsHandler fileHandler;
 
-    AnythingQuery anything;
+    FileNameQuery fnQuery;
     if (canSemantic) {
-        SemanticWorkerPrivate::QueryFunction func = {&anything, &AnythingQuery::run, d};
+        SemanticWorkerPrivate::QueryFunction func = {&fnQuery, &FileNameQuery::run, d};
         querys.append(func);
-        anything.setEntity(entityList);
-        anything.setFileHandler(&fileHandler);
+        fnQuery.setEntity(entityList);
+        fnQuery.setFileHandler(&fileHandler);
     }
 
     FullTextQuery fuletext;

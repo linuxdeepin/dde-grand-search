@@ -143,7 +143,7 @@ void FileNameWorkerPrivate::configureFileNameOptions(FileNameOptionsAPI &fileNam
     if (useTypeSearch) {
         fileNameOptions.setPinyinEnabled(true);
         fileNameOptions.setFileTypes(FileSearchUtils::buildDFMSearchFileTypes(m_searchInfo.groupList));
-        // TODO (search): add suffix filter
+        fileNameOptions.setFileExtensions(m_searchInfo.suffixList);
     } else if (query.type() == SearchQuery::Type::Boolean) {
         fileNameOptions.setPinyinEnabled(true);
     } else if (FileSearchUtils::isPinyin(keyword)) {
