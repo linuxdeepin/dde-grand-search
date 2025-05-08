@@ -7,7 +7,6 @@
 
 // 定义内置搜索项的名称
 #define GRANDSEARCH_CLASS_FILE_DEEPIN "com.deepin.dde-grand-search.file-deepin"
-#define GRANDSEARCH_CLASS_FILE_FSEARCH "com.deepin.dde-grand-search.file-fsearch"
 #define GRANDSEARCH_CLASS_APP_DESKTOP "com.deepin.dde-grand-search.app-desktop"
 #define GRANDSEARCH_CLASS_SETTING_CONTROLCENTER "com.deepin.dde-grand-search.dde-control-center-setting"
 #define GRANDSEARCH_CLASS_WEB_STATICTEXT "com.deepin.dde-grand-search.web-statictext"
@@ -61,7 +60,6 @@
 #define DEF_BUILTISEARCH_NAMES  \
 static const QStringList predefBuiltinSearches { \
 GRANDSEARCH_CLASS_FILE_DEEPIN, \
-GRANDSEARCH_CLASS_FILE_FSEARCH, \
 GRANDSEARCH_CLASS_APP_DESKTOP, \
 GRANDSEARCH_CLASS_WEB_STATICTEXT, \
 GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC \

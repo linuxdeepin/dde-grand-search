@@ -317,9 +317,7 @@ bool Utils::setWeightMethod(MatchedItem &item)
         return true;
 
     const QString &search = item.searcher;
-    if (search == GRANDSEARCH_CLASS_FILE_DEEPIN ||
-            search == GRANDSEARCH_CLASS_FILE_FSEARCH) {
-
+    if (search == GRANDSEARCH_CLASS_FILE_DEEPIN) {
         ext.insert(GRANDSEARCH_PROPERTY_WEIGHT_METHOD,
                    GRANDSEARCH_PROPERTY_WEIGHT_METHOD_LOCALFILE);
     } else if (search == GRANDSEARCH_CLASS_APP_DESKTOP) {
@@ -490,7 +488,6 @@ void Utils::packageBestMatch(MatchedItemMap &map, int maxQuantity)
 
     static const QMap<QString, bool> supprotedSeracher = {
         {GRANDSEARCH_CLASS_FILE_DEEPIN, true},
-        {GRANDSEARCH_CLASS_FILE_FSEARCH, true},
         {GRANDSEARCH_CLASS_APP_DESKTOP, true},
         {GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, true},
     };
@@ -774,7 +771,7 @@ bool Utils::openMatchedItem(const MatchedItem &item)
 
 bool Utils::openMatchedItemWithCtrl(const MatchedItem &item)
 {
-    if (GRANDSEARCH_CLASS_FILE_DEEPIN == item.searcher || GRANDSEARCH_CLASS_FILE_FSEARCH == item.searcher) {
+    if (GRANDSEARCH_CLASS_FILE_DEEPIN == item.searcher) {
         QFileInfo fileInfo(item.item);
         if (!fileInfo.isDir())
             return openInFileManager(item);
@@ -955,7 +952,7 @@ QIcon Utils::defaultIcon(const MatchedItem &item)
 {
     if (item.searcher == GRANDSEARCH_CLASS_APP_DESKTOP)
         return QIcon::fromTheme("application-x-desktop");
-    else if (item.searcher == GRANDSEARCH_CLASS_FILE_DEEPIN || item.searcher == GRANDSEARCH_CLASS_FILE_FSEARCH) {
+    else if (item.searcher == GRANDSEARCH_CLASS_FILE_DEEPIN) {
         return QIcon::fromTheme(m_mimeDb.mimeTypeForFile(item.item).genericIconName());
     } else if (item.searcher == GRANDSEARCH_CLASS_WEB_STATICTEXT) {
         // 使用默认浏览器的图标
