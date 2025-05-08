@@ -19,18 +19,9 @@ void SearcherGroupPrivate::initBuiltin()
 {
     Q_ASSERT(m_builtin.isEmpty());
 
-#ifdef ENABLE_DEEPINANYTHING
     qInfo() << "create FileNameSearcher";
     auto fileSearcher = new FileNameSearcher(this);
     m_builtin << fileSearcher;
-#endif
-
-#ifdef ENABLE_FSEARCH
-    qInfo() << "create FsSearcher.";
-    auto fSearcher = new FsSearcher(this);
-    fSearcher->asyncInitDataBase();
-    m_builtin << fSearcher;
-#endif
 
     qInfo() << "create DesktopAppSearcher.";
     auto appSearcher = new DesktopAppSearcher(this);
@@ -41,7 +32,7 @@ void SearcherGroupPrivate::initBuiltin()
     auto stWebSearcher = new StaticTextEchoer(this);
     m_builtin << stWebSearcher;
 
-#ifdef ENABLE_DEEPINANYTHING
+#ifdef ENABLE_SEMANTIC
     qInfo() << "create SemanticSearcher.";
     auto semanticSearcher = new SemanticSearcher(this);
     m_builtin << semanticSearcher;

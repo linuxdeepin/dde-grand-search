@@ -94,46 +94,19 @@ set(SEARCHER
     searcher/extend/extendsearcher.cpp
     searcher/extend/extendworker.h
     searcher/extend/extendworker.cpp
+    searcher/file/filenamesearcher.h
+    searcher/file/filenamesearcher.cpp
+    searcher/file/filenameworker.h
+    searcher/file/filenameworker.cpp
+    searcher/file/filenameworker_p.h
+    searcher/file/filesearchutils.h
+    searcher/file/filesearchutils.cpp
 )
 
-#文件搜索
-if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips"
-        OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64"
-        OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "sw"
-        OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "loongarch64"
-        )
-    message(${CMAKE_SYSTEM_PROCESSOR} ": using fsearch")
-    ADD_DEFINITIONS(-DENABLE_FSEARCH)
-    FILE(GLOB 3RD_FSEARCH_SRC ${PROJECT_3RDPARTY_PATH}/fsearch/*)
-    pkg_check_modules(GLIB REQUIRED glib-2.0)
-    pkg_check_modules(PCRE REQUIRED libpcre)
+if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64")
+    ADD_DEFINITIONS(-DENABLE_SEMANTIC)
     set(SEARCHER
         ${SEARCHER}
-        ${3RD_FSEARCH_SRC}
-        searcher/file/fssearcher.h
-        searcher/file/fssearcher.cpp
-        searcher/file/fsworker.h
-        searcher/file/fsworker.cpp
-        searcher/file/filesearchutils.h
-        searcher/file/filesearchutils.cpp
-    )
-    set(LINK_LIBS
-        ${LINK_LIBS}
-        ${GLIB_LIBRARIES}
-        ${PCRE_LIBRARIES}
-    )
-else ()
-    message(${CMAKE_SYSTEM_PROCESSOR} ": using deepin-anything.")
-    ADD_DEFINITIONS(-DENABLE_DEEPINANYTHING)
-    set(SEARCHER
-        ${SEARCHER}
-        searcher/file/filenamesearcher.h
-        searcher/file/filenamesearcher.cpp
-        searcher/file/filenameworker.h
-        searcher/file/filenameworker.cpp
-        searcher/file/filenameworker_p.h
-        searcher/file/filesearchutils.h
-        searcher/file/filesearchutils.cpp
         ${SEMANTIC_FILES}
     )
 
@@ -226,7 +199,6 @@ add_executable(${BIN_NAME}
 
 target_include_directories(${BIN_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include
-    ${PROJECT_3RDPARTY_PATH}/fsearch
     ${GLIB_INCLUDE_DIRS}
     ${PCRE_INCLUDE_DIRS}
     ${deepin-qdbus-service_INCLUDE_DIR}

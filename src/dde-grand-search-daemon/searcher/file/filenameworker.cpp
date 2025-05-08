@@ -177,7 +177,7 @@ bool FileNameWorkerPrivate::processSearchResults(const SearchResultExpected &res
 
     int leave = itemCount();
 
-    qInfo() << "anything search completed, found items:" << m_resultCountHash
+    qInfo() << "filename search completed, found items:" << m_resultCountHash
             << "total spend:" << m_time.elapsed()
             << "current items" << leave;
 

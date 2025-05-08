@@ -115,13 +115,11 @@ QStringList MainControllerPrivate::checkSearcher(const QStringList &groupList, c
     // 后缀不为空，说明需要文件搜索项
     if (!suffixList.isEmpty()) {
         data.append(GRANDSEARCH_CLASS_FILE_DEEPIN);
-        data.append(GRANDSEARCH_CLASS_FILE_FSEARCH);
     } else {
         // 后缀、类目为空，搜索关键字不为空
         // 说明分隔符前后的字段既不是后缀也不是类目
         if (groupList.isEmpty() && !keywordList.isEmpty()) {
             data.append(GRANDSEARCH_CLASS_FILE_DEEPIN);
-            data.append(GRANDSEARCH_CLASS_FILE_FSEARCH);
             data.append(GRANDSEARCH_CLASS_APP_DESKTOP);
         }
     }
