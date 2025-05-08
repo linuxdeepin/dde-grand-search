@@ -63,11 +63,6 @@ Files: tests/cmake/modules/FindGMock.cmake
 Copyright: 2011 Matej Svec
 License: MIT
 
-# fsearch
-Files: 3rdparty/fsearch/*
-Copyright: 2020 Christian Boxdörfer
-License: GPL-2.0-or-later
-
 # interfaces
 Files: 3rdparty/interfaces/*
 Copyright: 2017 The Qt Company Ltd.

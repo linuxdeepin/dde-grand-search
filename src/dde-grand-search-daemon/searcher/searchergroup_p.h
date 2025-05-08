@@ -11,14 +11,7 @@
 #include "extend/extendsearcher.h"
 #include "web/statictextechoer.h"
 #include "semantic/semanticsearcher.h"
-
-#ifdef ENABLE_DEEPINANYTHING
-    #include "file/filenamesearcher.h"
-#endif
-
-#ifdef ENABLE_FSEARCH
-    #include "file/fssearcher.h"
-#endif
+#include "file/filenamesearcher.h"
 
 namespace GrandSearch {
 
