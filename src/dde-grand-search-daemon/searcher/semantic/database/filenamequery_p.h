@@ -16,13 +16,19 @@ namespace GrandSearch {
 class FileNameQueryPrivate
 {
 public:
+    enum ProcessResult {
+        Success = 0,
+        Terminated,
+        Invalid
+    };
+
     explicit FileNameQueryPrivate();
     void searchByDFMSearch(PushItemCallBack callBack, void *pdata);
 
     DFMSEARCH::SearchOptions createSearchOptions(const SemanticEntity &entity) const;
     DFMSEARCH::SearchQuery createSearchQuery(const SemanticEntity &entity) const;
     void configureFileNameOptions(DFMSEARCH::FileNameOptionsAPI &fileNameOptions, const DFMSEARCH::SearchQuery &query, const SemanticEntity &entity) const;
-    bool processSearchResults(const DFMSEARCH::SearchResultExpected &result, const SemanticEntity &entity, PushItemCallBack callBack, void *pdata);
+    ProcessResult processSearchResult(const QString &result, const SemanticEntity &entity, PushItemCallBack callBack, void *pdata);
     bool checkResultValid(const QString &result, const SemanticEntity &entity);
 
     bool timeToPush() const;
