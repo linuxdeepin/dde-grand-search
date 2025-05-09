@@ -1,3 +1,9 @@
+dde-grand-search (6.0.9.2) unstable; urgency=medium
+
+  * Adapt to DFM search interface
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Fri, 09 May 2025 14:13:11 +0800
+
 dde-grand-search (6.0.9.1) unstable; urgency=medium
 
   * test for new-file-search
