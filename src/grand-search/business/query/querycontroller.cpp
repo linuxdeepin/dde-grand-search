@@ -13,7 +13,7 @@
 
 using namespace GrandSearch;
 
-static const uint KeepAliveTime  = 15000;    // 搜索过程中，调用后端心跳函数间隔时间
+static const uint KeepAliveTime = 15000;   // 搜索过程中，调用后端心跳函数间隔时间
 
 QueryControllerPrivate::QueryControllerPrivate(QueryController *parent)
     : q_p(parent)
@@ -73,15 +73,12 @@ void QueryControllerPrivate::performSearch()
 }
 
 QueryController::QueryController(QObject *parent)
-    : QObject(parent)
-    , d_p(new QueryControllerPrivate(this))
+    : QObject(parent), d_p(new QueryControllerPrivate(this))
 {
-
 }
 
 QueryController::~QueryController()
 {
-
 }
 
 void QueryController::onSearchTextChanged(const QString &txt)
@@ -94,7 +91,7 @@ void QueryController::onSearchTextChanged(const QString &txt)
     d_p->m_debounceTimer->stop();
 
     if (txt.isEmpty()) {
-         // 停止搜索相关的所有活动
+        // 停止搜索相关的所有活动
         onTerminateSearch();
         qDebug() << "search terminate and missionId:" << d_p->m_missionId;
         d_p->m_searchText.clear();
@@ -111,12 +108,18 @@ void QueryController::onSearchTextChanged(const QString &txt)
     // 存储待处理的搜索文本
     d_p->m_pendingSearchText = txt;
 
-    // 设置防抖延迟，根据文本长度动态调整
+    // 设置防抖延迟，根据文本字节长度动态调整
     int debounceDelay = 0;
-    if (txt.length() <= 2) {
-        debounceDelay = 300;   // 短文本使用更长的延迟
-    } else if (txt.length() >= 5) {
-        debounceDelay = 50;
+    QByteArray bytes = txt.toUtf8();
+    int byteLength = bytes.length();
+
+    if (byteLength <= 2) {
+        debounceDelay += 150;
+
+        if (txt == ".")
+            debounceDelay += 500;
+    } else if (byteLength > 3) {
+        debounceDelay = 0;
     }
 
     d_p->m_debounceTimer->setInterval(debounceDelay);
