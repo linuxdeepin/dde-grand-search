@@ -447,6 +447,8 @@ TypeCond::TypeCond(const QString &text, QObject *parent) : BaseCond(text, parent
         m_entity.types.append(PICTURE_GROUP);
     } else if (m_typeName == "video") {
         m_entity.types.append(VIDEO_GROUP);
+    } else if (m_typeName == "folder") {
+        m_entity.types.append(FOLDER_GROUP);
     } else if (m_typeName == "file") {
         m_entity.types.clear();
     } else {
@@ -712,6 +714,8 @@ EngineCond::EngineCond(QList<BaseCond *> *andList, QObject *parent) : BaseCond("
                 m_entity.types.append(PICTURE_GROUP);
             } else if (cond->m_typeName == "video") {
                 m_entity.types.append(VIDEO_GROUP);
+            } else if (cond->m_typeName == "folder") {
+                m_entity.types.append(FOLDER_GROUP);
             } else if (cond->m_typeName == "file") {
                 m_entity.types.clear();
             } else {
