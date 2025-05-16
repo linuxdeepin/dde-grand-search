@@ -30,20 +30,17 @@ void FileNameQueryPrivate::searchByDFMSearch(PushItemCallBack callBack, void *pd
         configureFileNameOptions(fileNameOptions, query, entity);
         // 设置搜索选项
         engine->setSearchOptions(options);
-        // 执行搜索并处理结果
-        const SearchResultExpected &result = engine->searchSync(query);
-        if (!result.hasValue()) {
-            qWarning() << "DFMSearch failed for key: " << entity.keys << result.error().message();
-            continue;
-        }
+        bool terminated = false;
+        engine->searchWithCallback(query, [this, &terminated, &entity, callBack, pdata](const SearchResult &file)->bool {
+              auto ret = processSearchResult(file.path(), entity, callBack, pdata);
+              if (ret == Terminated) {
+                  terminated = true;
+              }
+              return terminated;
+        });
 
-        for (const auto &file : result.value()) {
-            auto ret = processSearchResult(file.path(), entity, callBack, pdata);
-            if (ret == Terminated)
-                break;
-            else if (ret == Invalid)
-                continue;
-        }
+        if (terminated)
+            break;
     }
 
     callBack(std::move(m_resultItems), pdata);
