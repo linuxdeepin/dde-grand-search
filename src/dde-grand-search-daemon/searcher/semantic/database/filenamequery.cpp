@@ -40,7 +40,7 @@ void FileNameQueryPrivate::searchByDFMSearch(PushItemCallBack callBack, void *pd
         for (const auto &file : result.value()) {
             auto ret = processSearchResult(file.path(), entity, callBack, pdata);
             if (ret == Terminated)
-                return;
+                break;
             else if (ret == Invalid)
                 continue;
         }
@@ -58,8 +58,13 @@ void FileNameQueryPrivate::configureFileNameOptions(FileNameOptionsAPI &fileName
                            return FileSearchUtils::getGroupByGroupName(group);
                        });
         fileNameOptions.setFileTypes(FileSearchUtils::buildDFMSearchFileTypes(groupList));
-    } else if (!entity.suffix.isEmpty() && entity.isContainType) {
-        fileNameOptions.setFileExtensions({ entity.suffix });
+    } else {
+        QList<FileSearchUtils::Group> groupList = { FileSearchUtils::Group::File };
+        fileNameOptions.setFileTypes(FileSearchUtils::buildDFMSearchFileTypes(groupList));
+        
+        if (!entity.suffix.isEmpty() && entity.isContainType) {
+            fileNameOptions.setFileExtensions({ entity.suffix });
+        }
     }
 }
 
