@@ -11,36 +11,42 @@
 #include <QJsonArray>
 #include <QJsonParseError>
 #include <QDateTime>
+#include <QLoggingCategory>
 
 #include <unistd.h>
 
+Q_DECLARE_LOGGING_CATEGORY(logDaemon)
 using namespace GrandSearch;
 
 SemanticHelper::SemanticHelper()
 {
-
 }
 
 bool SemanticHelper::entityFromJson(const QString &json, SemanticEntity &out)
 {
+    qCDebug(logDaemon) << "Parsing entity from JSON";
     QJsonParseError er;
     QJsonDocument doc = QJsonDocument::fromJson(json.toUtf8(), &er);
-    if (er.error != QJsonParseError::NoError)
+    if (er.error != QJsonParseError::NoError) {
+        qCWarning(logDaemon) << "Failed to parse JSON - Error:" << er.errorString();
         return false;
+    }
 
     auto root = doc.array();
-    if (root.isEmpty())
+    if (root.isEmpty()) {
+        qCWarning(logDaemon) << "Empty JSON array";
         return false;
+    }
 
     static QMap<QString, QString> typeTable = {
-            {"text", DOCUMENT_GROUP},
-            {"picture", PICTURE_GROUP},
-            {"music", AUDIO_GROUP},
-            {"movie", VIDEO_GROUP},
-            {"file", FILE_GROUP},
-            {"folder", FOLDER_GROUP},
-            {"appliaction", APPLICATION_GROUP},
-        };
+        { "text", DOCUMENT_GROUP },
+        { "picture", PICTURE_GROUP },
+        { "music", AUDIO_GROUP },
+        { "movie", VIDEO_GROUP },
+        { "file", FILE_GROUP },
+        { "folder", FOLDER_GROUP },
+        { "appliaction", APPLICATION_GROUP },
+    };
 
     out = {};
 
@@ -48,28 +54,27 @@ bool SemanticHelper::entityFromJson(const QString &json, SemanticEntity &out)
     const QJsonObject &obj = root.first().toObject();
     QSet<QString> typeOfKey;
     auto typeObj = obj.value("type").toArray();
-    for(auto ro = typeObj.begin(); ro != typeObj.end(); ++ro) {
-        if (ro->isObject()){
+    for (auto ro = typeObj.begin(); ro != typeObj.end(); ++ro) {
+        if (ro->isObject()) {
             auto type = ro->toObject().value("type");
             auto word = ro->toObject().value("word");
             if (type.isString()) {
                 QString text = typeTable.value(type.toString().trimmed());
                 if (!text.isEmpty() && !out.types.contains(text)) {
                     out.types.append(text);
-                    if (word.isString()){
+                    if (word.isString()) {
                         text = word.toString().trimmed();
                         if (!text.isEmpty())
                             typeOfKey.insert(text);
                     }
                 }
             }
-
         }
     }
 
     auto entityObj = obj.value("entity").toArray();
     for (auto ro = entityObj.begin(); ro != entityObj.end(); ++ro) {
-        if (ro->isString()){
+        if (ro->isString()) {
             QString key = ro->toString().trimmed();
             if (!key.isEmpty()) {
                 // 去除模型概率性带出的[SEP]...后缀
@@ -85,7 +90,7 @@ bool SemanticHelper::entityFromJson(const QString &json, SemanticEntity &out)
     QSet<QString> timeOfKey;
     auto timeObj = obj.value("time").toArray();
     for (auto ro = timeObj.begin(); ro != timeObj.end(); ++ro) {
-        if (ro->isObject()){
+        if (ro->isObject()) {
             auto detail = ro->toObject().value("detail");
             if (detail.isObject()) {
                 auto time = detail.toObject().value("time");
@@ -119,15 +124,8 @@ bool SemanticHelper::entityFromJson(const QString &json, SemanticEntity &out)
     for (const QString &txt : timeOfKey)
         out.keys.removeOne(txt);
 
-    // 组装log打印内容，方便查看
-    QString types, keys;
-    for (const QString &str : out.types) {
-        types.append(str).append(", ");
-    }
-    for (const QString &str : out.keys) {
-        keys.append(str).append(", ");
-    }
-    qInfo() << QString("types(%1) keys(%2)").arg(types).arg(keys);
+    qCInfo(logDaemon) << "Entity parsed successfully - Types:" << out.types.join(", ")
+                      << "Keys:" << out.keys.join(", ");
 
     return true;
 }
@@ -142,7 +140,7 @@ QString SemanticHelper::querylangServiceName()
     return "org.deepin.ai.daemon.QueryLang";
 }
 
-bool SemanticHelper::isMatchTime(qint64 time, const QList<QPair<qint64, qint64> > &intervals)
+bool SemanticHelper::isMatchTime(qint64 time, const QList<QPair<qint64, qint64>> &intervals)
 {
     bool match = intervals.isEmpty();
     for (const QPair<qint64, qint64> &interval : intervals) {
@@ -155,18 +153,23 @@ bool SemanticHelper::isMatchTime(qint64 time, const QList<QPair<qint64, qint64> 
         break;
     }
 
+    qCDebug(logDaemon) << "Time match check - Time:" << time
+                       << "Match:" << match
+                       << "Intervals:" << intervals.size();
     return match;
 }
 
 QStringList SemanticHelper::typeTosuffix(const QStringList &type)
 {
     QStringList ret;
-    for (const QString &t: type) {
+    for (const QString &t : type) {
         auto s = SearchHelper::instance()->getSuffixByGroupName(t);
         if (!s.isEmpty())
             ret.append(s);
     }
 
+    qCDebug(logDaemon) << "Converting types to suffixes - Types:" << type.join(", ")
+                       << "Suffixes:" << ret.join(", ");
     return ret;
 }
 

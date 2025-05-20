@@ -11,24 +11,25 @@
 
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logDaemon)
 
 using namespace GrandSearch;
 
-SemanticSearcherPrivate::SemanticSearcherPrivate(SemanticSearcher *parent): q(parent)
+SemanticSearcherPrivate::SemanticSearcherPrivate(SemanticSearcher *parent)
+    : q(parent)
 {
-
 }
 
 SemanticSearcherPrivate::~SemanticSearcherPrivate()
 {
-
 }
 
 SemanticSearcher::SemanticSearcher(QObject *parent)
-    : Searcher(parent)
-    , d(new SemanticSearcherPrivate(this))
+    : Searcher(parent),
+      d(new SemanticSearcherPrivate(this))
 {
-
 }
 
 SemanticSearcher::~SemanticSearcher()
@@ -44,12 +45,13 @@ QString SemanticSearcher::name() const
 
 bool SemanticSearcher::isActive() const
 {
+    qCDebug(logDaemon) << "Checking SemanticSearcher active status";
     auto config = ConfigerIns->group(GRANDSEARCH_SEMANTIC_GROUP);
     Q_ASSERT(config);
 
     SemanticParser paser;
     d->m_semantic = false;
-    d->m_vector   = false;
+    d->m_vector = false;
     d->m_fulltext = false;
 
     if (config->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, true)) {
@@ -57,13 +59,14 @@ bool SemanticSearcher::isActive() const
             d->m_semantic  = paser.isQueryLangSupported();
         }*/
         d->m_semantic = true;
+        qCDebug(logDaemon) << "Semantic analysis enabled";
     }
 
-//    if (config->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR, true)) {
-//        if (paser.connectToVector(SemanticHelper::vectorServiceName())) {
-//            d->m_vector = paser.isVectorSupported();
-//        }
-//    }
+    //    if (config->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR, true)) {
+    //        if (paser.connectToVector(SemanticHelper::vectorServiceName())) {
+    //            d->m_vector = paser.isVectorSupported();
+    //        }
+    //    }
 
     d->m_fulltext = config->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_FULLTEXT, false);
 
@@ -77,14 +80,18 @@ bool SemanticSearcher::activate()
 
 ProxyWorker *SemanticSearcher::createWorker() const
 {
+    qCDebug(logDaemon) << "Creating SemanticWorker";
     auto worker = new SemanticWorker(name());
     worker->setEngineState(d->m_semantic, d->m_vector, d->m_fulltext);
+    qCInfo(logDaemon) << "Created SemanticWorker with engine state - Semantic:" << d->m_semantic
+                      << "Vector:" << d->m_vector
+                      << "Fulltext:" << d->m_fulltext;
     return worker;
 }
 
 bool SemanticSearcher::action(const QString &action, const QString &item)
 {
     Q_UNUSED(item)
-    qWarning() << "no such action:" << action << ".";
+    qCWarning(logDaemon) << "Unsupported action requested:" << action;
     return false;
 }

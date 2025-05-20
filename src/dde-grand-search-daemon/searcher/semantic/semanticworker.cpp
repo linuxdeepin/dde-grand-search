@@ -16,53 +16,52 @@
 
 #include <QDebug>
 #include <QtConcurrent>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logDaemon)
 
 using namespace GrandSearch;
 
-#define checkRuning() \
-if (d->m_status.loadAcquire() != ProxyWorker::Runing) \
+#define checkRuning()                                     \
+    if (d->m_status.loadAcquire() != ProxyWorker::Runing) \
     return false
 
-SemanticWorkerPrivate::SemanticWorkerPrivate(SemanticWorker *parent) : q(parent)
+SemanticWorkerPrivate::SemanticWorkerPrivate(SemanticWorker *parent)
+    : q(parent)
 {
-
 }
 
 SemanticWorkerPrivate::~SemanticWorkerPrivate()
 {
-
 }
 
-//void SemanticWorkerPrivate::tryNotify()
+// void SemanticWorkerPrivate::tryNotify()
 //{
-//    int cur = m_time.elapsed();
-//    if (q->hasItem() && (cur - m_lastEmit) > 50) {
-//        m_lastEmit = cur;
-//        qDebug() << "semantic unearthed, current spend:" << cur;
-//        emit q->unearthed(q);
-//    }
-//}
+//     int cur = m_time.elapsed();
+//     if (q->hasItem() && (cur - m_lastEmit) > 50) {
+//         m_lastEmit = cur;
+//         qDebug() << "semantic unearthed, current spend:" << cur;
+//         emit q->unearthed(q);
+//     }
+// }
 
 bool SemanticWorkerPrivate::pushItem(const MatchedItemMap &items, void *ptr)
 {
-    SemanticWorkerPrivate *d =  static_cast<SemanticWorkerPrivate *>(ptr);
-    if (d->m_status.loadAcquire() == ProxyWorker::Terminated)
+    SemanticWorkerPrivate *d = static_cast<SemanticWorkerPrivate *>(ptr);
+    if (d->m_status.loadAcquire() == ProxyWorker::Terminated) {
+        qCDebug(logDaemon) << "Worker terminated, skipping item push";
         return false;
+    }
 
     // lock and append item
-    //bool hasItem = false;
     {
         QMutexLocker lk(&d->m_mtx);
-        for(auto it = items.begin(); it != items.end(); ++it) {
+        for (auto it = items.begin(); it != items.end(); ++it) {
             if (it.value().isEmpty())
                 continue;
             d->m_items[it.key()].append(it.value());
         }
-        //hasItem = !d->m_items.isEmpty();
     }
-// 搜索完再推数据
-//    if (hasItem)
-//        d->tryNotify();
 
     return true;
 }
@@ -74,9 +73,8 @@ void SemanticWorkerPrivate::run(const QueryFunction &func)
 
 void SemanticWorkerPrivate::sortItems(MatchedItemMap &items, const QHash<QString, double> &weight)
 {
-    auto setExt = [](const MatchedItem &t, int w){
-        if (t.extra.isValid() &&
-            t.extra.toHash().contains(GRANDSEARCH_PROPERTY_ITEM_WEIGHT))
+    auto setExt = [](const MatchedItem &t, int w) {
+        if (t.extra.isValid() && t.extra.toHash().contains(GRANDSEARCH_PROPERTY_ITEM_WEIGHT))
             return;
 
         auto var = t.extra.toHash();
@@ -112,7 +110,7 @@ void SemanticWorkerPrivate::mergeExtra(MatchedItemMap &items, const QHash<QStrin
         for (auto mi = list.begin(); mi != list.end(); ++mi) {
             auto ex = extra.find(mi->item);
             if (ex != extra.end()) {
-                QVariantHash vh =  mi->extra.value<QVariantHash>();
+                QVariantHash vh = mi->extra.value<QVariantHash>();
                 for (auto ev = ex->begin(); ev != ex->end(); ++ev)
                     vh.insert(ev.key(), ev.value());
                 mi->extra = QVariant::fromValue(vh);
@@ -122,8 +120,7 @@ void SemanticWorkerPrivate::mergeExtra(MatchedItemMap &items, const QHash<QStrin
 }
 
 SemanticWorker::SemanticWorker(const QString &name, QObject *parent)
-    : ProxyWorker(name, parent)
-    , d(new SemanticWorkerPrivate(this))
+    : ProxyWorker(name, parent), d(new SemanticWorkerPrivate(this))
 {
 }
 
@@ -145,8 +142,12 @@ bool SemanticWorker::isAsync() const
 
 bool SemanticWorker::working(void *context)
 {
-    if (!d->m_status.testAndSetRelease(Ready, Runing))
+    if (!d->m_status.testAndSetRelease(Ready, Runing)) {
+        qCWarning(logDaemon) << "Failed to start worker - Invalid state transition";
         return false;
+    }
+
+    qCDebug(logDaemon) << "Starting semantic search with context:" << d->m_context;
 
     // 发送空数据用于提前显示分组
     d->m_items.insert(GRANDSEARCH_GROUP_FILE_INFERENCE, {});
@@ -174,14 +175,15 @@ bool SemanticWorker::working(void *context)
         dslStr.replace("'", "\"");
         dslStr.replace("WITH META_VALUE", "AND META_VALUE");
         dslStr.replace("DIRECTORY_NAME IS", "PATH IS");
-        qInfo() << QString("query(%1) => dsl(%2), spend(%3 ms)").arg(d->m_context).arg(dslStr).arg(d->m_time.elapsed());
-        //dslStr = "((DATE >= CURRENT -\"5 minute\") AND (DATE <= \"CURRENT\")) AND (TYPE IS \"document\")";
+        qCInfo(logDaemon) << "Query processed - Context:" << d->m_context
+                          << "DSL:" << dslStr
+                          << "Time elapsed:" << d->m_time.elapsed() << "ms";
 
         // parse DSL
         DslParser parser(dslStr);
         entityList = parser.entityList();
         for (int i = 0; i < entityList.size(); i++) {
-            qDebug() << "entityList" << i << entityList[i].toString();
+            qCDebug(logDaemon) << "Entity" << i << ":" << entityList[i].toString();
         }
         canSemantic = !entityList.isEmpty();
     }
@@ -233,22 +235,25 @@ bool SemanticWorker::working(void *context)
         querys.append(func);
         fnQuery.setEntity(entityList);
         fnQuery.setFileHandler(&fileHandler);
+        qCDebug(logDaemon) << "Added FileNameQuery to search queue";
     }
 
     FullTextQuery fuletext;
     if (canSemantic && d->m_doFulltext) {
-        SemanticWorkerPrivate::QueryFunction func = {&fuletext, &FullTextQuery::run, d};
+        SemanticWorkerPrivate::QueryFunction func = { &fuletext, &FullTextQuery::run, d };
         querys.append(func);
         fuletext.setEntity(entityList);
         fuletext.setFileHandler(&fileHandler);
+        qCDebug(logDaemon) << "Added FullTextQuery to search queue";
     }
 
     FeatureQuery feature;
     if (canSemantic) {
-        SemanticWorkerPrivate::QueryFunction func = {&feature, &FeatureQuery::run, d};
+        SemanticWorkerPrivate::QueryFunction func = { &feature, &FeatureQuery::run, d };
         querys.append(func);
         feature.setEntity(entityList);
         feature.setFileHandler(&fileHandler);
+        qCDebug(logDaemon) << "Added FeatureQuery to search queue";
     }
 
     checkRuning();
@@ -282,7 +287,9 @@ bool SemanticWorker::working(void *context)
 
     checkRuning();
 
-    qInfo() << "semantic worker is finished, total spend:" << d->m_time.elapsed() << "ms found:" << fileHandler.resultCount();
+    qCInfo(logDaemon) << "Search completed - Time elapsed:" << d->m_time.elapsed() << "ms"
+                      << "Results found:" << fileHandler.resultCount();
+
     // 发送所有数据
     if (!d->m_items.isEmpty())
         emit unearthed(this);
@@ -293,6 +300,7 @@ bool SemanticWorker::working(void *context)
 
 void SemanticWorker::terminate()
 {
+    qCDebug(logDaemon) << "Terminating worker";
     d->m_status.storeRelease(Terminated);
 }
 

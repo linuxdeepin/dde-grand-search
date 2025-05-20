@@ -6,12 +6,15 @@
 #include "searchergroup_p.h"
 
 #include <QDebug>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logDaemon)
 
 using namespace GrandSearch;
 
 SearcherGroupPrivate::SearcherGroupPrivate(SearcherGroup *parent)
-    : QObject(parent)
-    , q(parent)
+    : QObject(parent),
+      q(parent)
 {
 }
 
@@ -19,16 +22,16 @@ void SearcherGroupPrivate::initBuiltin()
 {
     Q_ASSERT(m_builtin.isEmpty());
 
-    qInfo() << "create FileNameSearcher";
+    qCInfo(logDaemon) << "Initializing FileNameSearcher";
     auto fileSearcher = new FileNameSearcher(this);
     m_builtin << fileSearcher;
 
-    qInfo() << "create DesktopAppSearcher.";
+    qCInfo(logDaemon) << "Initializing DesktopAppSearcher";
     auto appSearcher = new DesktopAppSearcher(this);
     appSearcher->asyncInit();
     m_builtin << appSearcher;
 
-    qInfo() << "create StaticTextEchoer.";
+    qCInfo(logDaemon) << "Initializing StaticTextEchoer";
     auto stWebSearcher = new StaticTextEchoer(this);
     m_builtin << stWebSearcher;
 
@@ -37,34 +40,37 @@ void SearcherGroupPrivate::initBuiltin()
     auto semanticSearcher = new SemanticSearcher(this);
     m_builtin << semanticSearcher;
 #endif
-
 }
 
 bool SearcherGroupPrivate::addExtendSearcher(const SearchPluginInfo &pluginInfo)
 {
-    //在插件模块需对以下信息做严格的校验，此处不再做有效性检查
+    // 在插件模块需对以下信息做严格的校验，此处不再做有效性检查
     if (Q_UNLIKELY(pluginInfo.name.isEmpty() || pluginInfo.address.isEmpty()
-            || pluginInfo.service.isEmpty() || pluginInfo.interface.isEmpty()
-            || pluginInfo.ifsVersion.isEmpty()))
-        return false;
-
-    if (q->searcher(pluginInfo.name)) {
-        qWarning() << "searcher has existed." << pluginInfo.name;
+                   || pluginInfo.service.isEmpty() || pluginInfo.interface.isEmpty()
+                   || pluginInfo.ifsVersion.isEmpty())) {
+        qCWarning(logDaemon) << "Invalid plugin info - Missing required fields";
         return false;
     }
 
-    qDebug() << "cretate ExtendSearcher" << pluginInfo.name;
+    if (q->searcher(pluginInfo.name)) {
+        qCWarning(logDaemon) << "Searcher already exists:" << pluginInfo.name;
+        return false;
+    }
+
+    qCDebug(logDaemon) << "Creating ExtendSearcher:" << pluginInfo.name;
     ExtendSearcher *extend = new ExtendSearcher(pluginInfo.name, this);
     extend->setService(pluginInfo.service, pluginInfo.address,
-                         pluginInfo.interface, pluginInfo.ifsVersion);
+                       pluginInfo.interface, pluginInfo.ifsVersion);
 
-    //自动启动的插件设置为可激活
+    // 自动启动的插件设置为可激活
     if (pluginInfo.mode == SearchPluginInfo::Auto) {
+        qCDebug(logDaemon) << "Setting up auto-activation for plugin:" << pluginInfo.name;
         extend->setActivatable(ExtendSearcher::InnerActivation);
 
-        //激活操作,必须直连
+        // 激活操作,必须直连
         connect(extend, &ExtendSearcher::activateRequest, this, &SearcherGroupPrivate::onActivatePlugin, Qt::DirectConnection);
-    } else if (pluginInfo.mode == SearchPluginInfo::Trigger) { //dbus触发启动
+    } else if (pluginInfo.mode == SearchPluginInfo::Trigger) {   // dbus触发启动
+        qCDebug(logDaemon) << "Setting up trigger activation for plugin:" << pluginInfo.name;
         extend->setActivatable(ExtendSearcher::Trigger);
     }
 
@@ -75,6 +81,7 @@ bool SearcherGroupPrivate::addExtendSearcher(const SearchPluginInfo &pluginInfo)
 void SearcherGroupPrivate::onActivatePlugin(const QString &name, bool &ret)
 {
     Q_ASSERT(m_pluginManager);
+    qCDebug(logDaemon) << "Activating plugin:" << name;
     ret = m_pluginManager->activatePlugin(name);
 }
 
@@ -82,41 +89,49 @@ bool SearcherGroupPrivate::initPluinManager()
 {
     Q_ASSERT(m_pluginManager == nullptr);
 
+    qCDebug(logDaemon) << "Initializing plugin manager";
     m_pluginManager = new PluginManager(this);
-    return m_pluginManager->loadPlugin();
+    bool success = m_pluginManager->loadPlugin();
+    if (!success) {
+        qCCritical(logDaemon) << "Failed to initialize plugin manager";
+    }
+    return success;
 }
 
 void SearcherGroupPrivate::initExtendSearcher()
 {
     Q_ASSERT(m_pluginManager);
 
+    qCDebug(logDaemon) << "Initializing extended searchers";
     QList<SearchPluginInfo> plugins = m_pluginManager->plugins();
-    for (const SearchPluginInfo &info : plugins)
-        if (!addExtendSearcher(info))
-            qWarning() << "create ExtendSearcher error:" << info.name;
+    for (const SearchPluginInfo &info : plugins) {
+        if (!addExtendSearcher(info)) {
+            qCWarning(logDaemon) << "Failed to create ExtendSearcher:" << info.name;
+        }
+    }
 }
 
 SearcherGroup::SearcherGroup(QObject *parent)
-    : QObject(parent)
-    , d(new SearcherGroupPrivate(this))
+    : QObject(parent),
+      d(new SearcherGroupPrivate(this))
 {
 }
 
 bool SearcherGroup::init()
 {
-    //初始化内置搜索项
+    // 初始化内置搜索项
     d->initBuiltin();
 
-    //初始化插件
+    // 初始化插件
     if (!d->initPluinManager()) {
-        qCritical() << "error: fail to init PluinManager.";
+        qCCritical(logDaemon) << "Failed to initialize plugin manager";
         return false;
     }
 
-    //创建扩展搜索项
+    // 创建扩展搜索项
     d->initExtendSearcher();
 
-    //启动高优先级插件
+    // 启动高优先级插件
     d->m_pluginManager->autoActivate();
 
     return true;
@@ -146,12 +161,12 @@ void SearcherGroup::dormancy()
     if (d->m_pluginManager) {
         QList<SearchPluginInfo> plugins = d->m_pluginManager->plugins();
         for (const SearchPluginInfo &plugin : plugins) {
-            //停用低优先级的Auto类型插件
+            // 停用低优先级的Auto类型插件
             if (plugin.mode == SearchPluginInfo::Auto
-                    && plugin.priority == SearchPluginInfo::Low) {
+                && plugin.priority == SearchPluginInfo::Low) {
+                qCDebug(logDaemon) << "Deactivating low priority plugin:" << plugin.name;
                 d->m_pluginManager->inactivate(plugin.name);
             }
         }
     }
 }
-

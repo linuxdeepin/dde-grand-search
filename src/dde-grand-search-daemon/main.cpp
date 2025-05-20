@@ -5,6 +5,7 @@
 #include "environments.h"
 #include "dbusservice/grandsearchinterface.h"
 #include "global/grandsearch_global.h"
+#include "global/framelogmanager.h"
 
 #include <DLog>
 #include <DApplication>
@@ -18,6 +19,8 @@
 
 #include <unistd.h>
 #include <signal.h>
+
+Q_LOGGING_CATEGORY(logDaemon, "org.deepin.dde.GrandSearch.Daemon")
 
 GRANDSEARCH_USE_NAMESPACE
 DCORE_USE_NAMESPACE
@@ -37,50 +40,52 @@ extern "C" {
 int startGrandSearchDaemon(int argc, char *argv[])
 {
     if (instance) {
-        qWarning() << "repeat start: the grand search daemon is running.";
+        qCWarning(logDaemon) << "Service already running: grand search daemon instance exists";
         return 0;
     }
 
     if (qApp == nullptr) {
-        qCritical() << "the Qt Appliaction has not been initialized.";
+        qCCritical(logDaemon) << "Failed to initialize: Qt Application not initialized";
         return 1;
     }
 
     if (QThread::currentThread() != qApp->thread()) {
-        qCritical() << "startGrandSearchDaemon must be called in main thread at Qt.";
+        qCCritical(logDaemon) << "Invalid thread: startGrandSearchDaemon must be called in main thread";
         return 2;
     }
 
-    //服务接口
+    // 服务接口
     GrandSearchInterface *interface = new GrandSearchInterface();
 
-    //注册DBus服务
+    // 注册DBus服务
     {
         QDBusConnection session = interface->qDbusConnection();
         if (!session.registerService(GrandSearchServiceName)) {
-            qCritical() << "registerService Failed, maybe service exist" << GrandSearchServiceName << QDBusError::errorString(session.lastError().type());
+            qCCritical(logDaemon) << "DBus service registration failed:" << GrandSearchServiceName
+                                     << "Error:" << QDBusError::errorString(session.lastError().type());
             delete interface;
             return 3;
         }
 
         if (!session.registerObject(GrandSearchServicePath, interface,
-                                 QDBusConnection::ExportScriptableSlots |
-                                 QDBusConnection::ExportScriptableSignals |
-                                 QDBusConnection::ExportScriptableProperties)) {
-            qCritical() << "registerObject Failed" << GrandSearchServicePath << QDBusError::errorString(session.lastError().type());
+                                    QDBusConnection::ExportScriptableSlots
+                                            | QDBusConnection::ExportScriptableSignals
+                                            | QDBusConnection::ExportScriptableProperties)) {
+            qCCritical(logDaemon) << "DBus object registration failed:" << GrandSearchServicePath
+                                     << "Error:" << QDBusError::errorString(session.lastError().type());
             delete interface;
             return 4;
         }
     }
 
-    //初始化
+    // 初始化
     if (!interface->init()) {
-        qCritical() << "failed to initialize grand search deamon." << APP_VERSION;
+        qCCritical(logDaemon) << "Failed to initialize grand search daemon. Version:" << APP_VERSION;
         return -1;
     }
 
     instance = interface;
-    qInfo() << "grand search deamon is started." << APP_VERSION;
+    qCInfo(logDaemon) << "Grand search daemon started successfully. Version:" << APP_VERSION;
 
     // 加载翻译
     QString appName = qApp->applicationName();
@@ -94,7 +99,7 @@ int startGrandSearchDaemon(int argc, char *argv[])
 int stopGrandSearchDaemon()
 {
     if (instance) {
-        qInfo() << "stop grand search deamon";
+        qCInfo(logDaemon) << "Stopping grand search daemon";
         delete instance;
         instance = nullptr;
     }
@@ -111,16 +116,17 @@ int grandSearchDaemonLibVersion()
     return QT_VERSION_CHECK(DGSLIB_VERSION_MAJOR, DGSLIB_VERSION_MINOR, DGSLIB_VERSION_PATCH);
 }
 
-static void appExitHandler(int sig) {
-    qInfo() << "signal" << sig << "exit.";
+static void appExitHandler(int sig)
+{
+    qCInfo(logDaemon) << "Received exit signal:" << sig;
 
-    //释放资源，退出插件子进程。
+    // 释放资源，退出插件子进程。
     qApp->quit();
 }
 
 int main(int argc, char *argv[])
 {
-    //安全退出
+    // 安全退出
     signal(SIGINT, appExitHandler);
     signal(SIGQUIT, appExitHandler);
     signal(SIGTERM, appExitHandler);
@@ -129,23 +135,22 @@ int main(int argc, char *argv[])
 
     {
         QString dateTime = QDateTime::currentDateTime().toString(Qt::ISODateWithMs);
-        //设置应用信息
+        // 设置应用信息
         app.setOrganizationName("deepin");
         app.setApplicationName("dde-grand-search-daemon");
         app.setApplicationVersion(APP_VERSION);
 
-        // 设置终端和文件记录日志
-        const QString logFormat = "%{time}{yyyyMMdd.HH:mm:ss.zzz}[%{type:1}][%{function:-35} %{line:-4} %{threadid} ] %{message}\n";
-        DLogManager::setLogFormat(logFormat);
-        DLogManager::registerConsoleAppender();
-        DLogManager::registerFileAppender();
-        qInfo() << dateTime << "starting " << app.applicationName() << app.applicationVersion() << getpid();
+        // 日志
+        dgsLogManager->applySuggestedLogSettings();
+        qCInfo(logDaemon) << dateTime << "Starting" << app.applicationName()
+                             << "Version:" << app.applicationVersion()
+                             << "PID:" << getpid();
     }
 
-    //初始化
+    // 初始化
     int ret = startGrandSearchDaemon(argc, argv);
     if (ret != 0) {
-        qCritical() << "initialization failed.";
+        qCCritical(logDaemon) << "Daemon initialization failed with error code:" << ret;
         return ret;
     }
     ret = app.exec();

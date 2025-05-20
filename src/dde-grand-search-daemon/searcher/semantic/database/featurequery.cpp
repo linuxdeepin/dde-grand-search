@@ -8,13 +8,17 @@
 #include "global/searchhelper.h"
 #include "global/builtinsearch.h"
 
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logDaemon)
+
 using namespace GrandSearch;
 
 Q_DECLARE_METATYPE(FeatureLibEngine::QueryConditons)
 
-FeatureQueryPrivate::FeatureQueryPrivate(FeatureQuery *qq) : q(qq)
+FeatureQueryPrivate::FeatureQueryPrivate(FeatureQuery *qq)
+    : q(qq)
 {
-
 }
 
 bool FeatureQueryPrivate::processResult(const QString &file, const QSet<QString> &match, void *pdata)
@@ -32,8 +36,10 @@ bool FeatureQueryPrivate::processResult(const QString &file, const QSet<QString>
             d->m_lastPush = d->m_time.elapsed();
 
         // 中断
-        if (!ret)
+        if (!ret) {
+            qCDebug(logDaemon) << "Search interrupted by callback";
             return false;
+        }
     }
 
     // 过滤文管设置的隐藏文件
@@ -45,8 +51,10 @@ bool FeatureQueryPrivate::processResult(const QString &file, const QSet<QString>
     if (d->m_handler) {
         d->m_handler->appendTo(file, d->m_results);
         d->m_handler->setItemWeight(file, d->m_handler->itemWeight(file) + d->matchedWeight(match));
-        if (d->m_handler->isResultLimit() || d->m_count >= 100)
+        if (d->m_handler->isResultLimit() || d->m_count >= 100) {
+            qCDebug(logDaemon) << "Reached result limit - Count:" << d->m_count;
             return false;
+        }
     } else {
         auto item = FileSearchUtils::packItem(file, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC);
         d->m_results[GRANDSEARCH_GROUP_FILE_INFERENCE].append(item);
@@ -57,6 +65,12 @@ bool FeatureQueryPrivate::processResult(const QString &file, const QSet<QString>
 
 FeatureLibEngine::QueryConditons FeatureQueryPrivate::translateConditons(const SemanticEntity &entity)
 {
+    qCDebug(logDaemon) << "Translating conditions for entity - Keys:" << entity.keys
+                       << "Author:" << entity.author
+                       << "Album:" << entity.album
+                       << "Duration:" << entity.duration
+                       << "Resolution:" << entity.resolution;
+
     FeatureLibEngine::QueryConditons cond;
     if (entity.keys.isEmpty() && entity.author.isEmpty() && entity.album.isEmpty() && entity.duration.isEmpty() && entity.resolution.isEmpty())
         return cond;
@@ -75,6 +89,8 @@ FeatureLibEngine::QueryConditons FeatureQueryPrivate::translateConditons(const S
         }
 
         if (!picSuffix.isEmpty()) {
+            qCDebug(logDaemon) << "Adding picture conditions - Suffixes:" << picSuffix
+                               << "Keys:" << entity.keys;
             FeatureLibEngine::QueryConditons tmp;
             tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::FileType, picSuffix));
             tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
@@ -92,12 +108,17 @@ FeatureLibEngine::QueryConditons FeatureQueryPrivate::translateConditons(const S
             mscSuffix = suffix;
 
         if (!entity.suffix.isEmpty()) {
-            mscSuffix.clear();;
+            mscSuffix.clear();
+            ;
             if (suffix.contains(entity.suffix, Qt::CaseInsensitive))
                 mscSuffix.append(entity.suffix.toLower());
         }
 
         if (!mscSuffix.isEmpty()) {
+            qCDebug(logDaemon) << "Adding music conditions - Suffixes:" << mscSuffix
+                               << "Author:" << entity.author
+                               << "Album:" << entity.album
+                               << "Duration:" << entity.duration;
             if (!cond.isEmpty())
                 cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Or));
 
@@ -153,12 +174,16 @@ FeatureLibEngine::QueryConditons FeatureQueryPrivate::translateConditons(const S
             vidSuffix = suffix;
 
         if (!entity.suffix.isEmpty()) {
-            vidSuffix.clear();;
+            vidSuffix.clear();
+            ;
             if (suffix.contains(entity.suffix, Qt::CaseInsensitive))
                 vidSuffix.append(entity.suffix.toLower());
         }
 
         if (!vidSuffix.isEmpty()) {
+            qCDebug(logDaemon) << "Adding video conditions - Suffixes:" << vidSuffix
+                               << "Duration:" << entity.duration
+                               << "Resolution:" << entity.resolution;
             if (!cond.isEmpty())
                 cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Or));
 
@@ -204,6 +229,7 @@ FeatureLibEngine::QueryConditons FeatureQueryPrivate::translateConditons(const S
 
     // 修改时间
     if (!entity.times.isEmpty()) {
+        qCDebug(logDaemon) << "Adding time conditions - Times:" << entity.times;
         if (!cond.isEmpty())
             cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
         cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::ModifiedTime, QVariant::fromValue(entity.times)));
@@ -221,7 +247,7 @@ double FeatureQueryPrivate::matchedWeight(const QSet<QString> &back)
 {
     double w = 0;
     QSet<QString> mergedKeys;
-    for (const SemanticEntity &e: m_entity) {
+    for (const SemanticEntity &e : m_entity) {
         auto keys = e.keys;
         for (const QString &key : keys)
             mergedKeys.insert(key);
@@ -249,10 +275,9 @@ double FeatureQueryPrivate::matchedWeight(const QSet<QString> &back)
 }
 
 FeatureQuery::FeatureQuery(QObject *parent)
-    : QObject(parent)
-    , d(new FeatureQueryPrivate(this))
+    : QObject(parent),
+      d(new FeatureQueryPrivate(this))
 {
-
 }
 
 FeatureQuery::~FeatureQuery()
@@ -269,19 +294,22 @@ void FeatureQuery::run(void *ptr, PushItemCallBack callBack, void *pdata)
     Q_ASSERT(self);
 
     auto d = self->d;
-    qDebug() << "query by feature library" << d->m_entity.size();
+    qCDebug(logDaemon) << "Starting feature library query - Entity count:" << d->m_entity.size();
 
     FeatureLibEngine engine;
-    if (!engine.init(d->indexStorePath()))
+    if (!engine.init(d->indexStorePath())) {
+        qCWarning(logDaemon) << "Failed to initialize feature library engine";
         return;
+    }
 
     QString path = QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first();
+    qCDebug(logDaemon) << "Search path:" << path;
 
     d->m_time.start();
     for (const SemanticEntity &entity : d->m_entity) {
         auto cond = d->translateConditons(entity);
         if (cond.isEmpty()) {
-            qInfo() << "no valid condition to query.";
+            qCInfo(logDaemon) << "No valid conditions to query for entity";
             continue;
         }
 
@@ -290,11 +318,13 @@ void FeatureQuery::run(void *ptr, PushItemCallBack callBack, void *pdata)
         ctx.callBackData = pdata;
         ctx.query = self;
 
+        qCDebug(logDaemon) << "Executing query for entity";
         engine.query(path, cond, &FeatureQueryPrivate::processResult, &ctx);
     }
 
     callBack(d->m_results, pdata);
-    qDebug() << "feature is finished spend:" << d->m_time.elapsed() << "found:" << d->m_count;
+    qCInfo(logDaemon) << "Feature library search completed - Time elapsed:" << d->m_time.elapsed() << "ms"
+                      << "Found items:" << d->m_count;
 }
 
 void FeatureQuery::setEntity(const QList<SemanticEntity> &entity)

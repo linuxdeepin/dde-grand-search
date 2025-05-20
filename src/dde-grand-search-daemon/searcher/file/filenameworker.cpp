@@ -8,6 +8,9 @@
 #include "configuration/configer.h"
 
 #include <QStandardPaths>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logDaemon)
 
 using namespace GrandSearch;
 DFM_SEARCH_USE_NS
@@ -26,6 +29,7 @@ FileNameWorkerPrivate::FileNameWorkerPrivate(FileNameWorker *qq)
 
 void FileNameWorkerPrivate::initConfig()
 {
+    qCDebug(logDaemon) << "Initializing search configuration";
     // 获取支持的搜索类目
     auto config = ConfigerIns->group(GRANDSEARCH_CLASS_FILE_DEEPIN);
     if (config->value(GRANDSEARCH_GROUP_FOLDER, false))
@@ -45,6 +49,8 @@ void FileNameWorkerPrivate::initConfig()
 
     if (config->value(GRANDSEARCH_GROUP_FILE_DOCUMNET, false))
         m_resultCountHash.insert(FileSearchUtils::Document, 0);
+
+    qCDebug(logDaemon) << "Search groups enabled:" << m_resultCountHash.keys();
 }
 
 bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName)
@@ -110,16 +116,16 @@ SearchQuery FileNameWorkerPrivate::createSearchQuery() const
     const QString &keyword = m_searchInfo.keyword;
     const QStringList &boolKeywords = m_searchInfo.boolKeywords;
     const QStringList &typeKeywords = m_searchInfo.typeKeywords;
-    
+
     bool useBoolQuery = (boolKeywords.size() >= 2);
     bool useTypeSearch = (typeKeywords.size() >= 2) || m_searchInfo.isCombinationSearch;
     SearchQuery query;
-    
+
     if (useTypeSearch) {
         if (typeKeywords.size() >= 2) {
             query = SearchFactory::createQuery(typeKeywords, SearchQuery::Type::Boolean);
             query.setBooleanOperator(SearchQuery::BooleanOperator::OR);
-        } else if (typeKeywords.size() == 1){
+        } else if (typeKeywords.size() == 1) {
             query = SearchFactory::createQuery(typeKeywords.first(), SearchQuery::Type::Simple);
         } else {
             query = SearchFactory::createQuery(m_searchInfo.keyword, SearchQuery::Type::Simple);
@@ -129,7 +135,7 @@ SearchQuery FileNameWorkerPrivate::createSearchQuery() const
     } else {
         query = SearchFactory::createQuery(keyword, SearchQuery::Type::Simple);
     }
-    
+
     return query;
 }
 
@@ -137,9 +143,9 @@ void FileNameWorkerPrivate::configureFileNameOptions(FileNameOptionsAPI &fileNam
 {
     const QString &keyword = m_searchInfo.keyword;
     const QStringList &typeKeywords = m_searchInfo.typeKeywords;
-    
+
     bool useTypeSearch = (typeKeywords.size() >= 2) || m_searchInfo.isCombinationSearch;
-    
+
     if (useTypeSearch) {
         fileNameOptions.setPinyinEnabled(true);
         fileNameOptions.setFileTypes(FileSearchUtils::buildDFMSearchFileTypes(m_searchInfo.groupList));
@@ -154,7 +160,8 @@ void FileNameWorkerPrivate::configureFileNameOptions(FileNameOptionsAPI &fileNam
 bool FileNameWorkerPrivate::processSearchResults(const SearchResultExpected &result)
 {
     if (!result.hasValue()) {
-        qWarning() << "DFMSearch failed for key: " << m_searchInfo.keyword << result.error().message();
+        qCWarning(logDaemon) << "Search failed for keyword:" << m_searchInfo.keyword
+                             << "Error:" << result.error().message();
         return false;
     }
 
@@ -176,31 +183,31 @@ bool FileNameWorkerPrivate::processSearchResults(const SearchResultExpected &res
     }
 
     int leave = itemCount();
-
-    qInfo() << "filename search completed, found items:" << m_resultCountHash
-            << "total spend:" << m_time.elapsed()
-            << "current items" << leave;
+    qCInfo(logDaemon) << "Search completed - Results by group:" << m_resultCountHash
+                      << "Time elapsed:" << m_time.elapsed() << "ms"
+                      << "Total items:" << leave;
 
     return true;
 }
 
 bool FileNameWorkerPrivate::searchByDFMSearch()
 {
+    qCDebug(logDaemon) << "Starting DFM search with keyword:" << m_searchInfo.keyword;
     QObject holder;
     SearchEngine *engine = SearchFactory::createEngine(SearchType::FileName, &holder);
-    
+
     // 创建搜索选项
     SearchOptions options = createSearchOptions();
     // 创建搜索查询
     SearchQuery query = createSearchQuery();
-    
+
     // 配置文件名选项
     FileNameOptionsAPI fileNameOptions(options);
     configureFileNameOptions(fileNameOptions, query);
-    
+
     // 设置搜索选项
     engine->setSearchOptions(options);
-    
+
     // 执行搜索并处理结果
     const SearchResultExpected &result = engine->searchSync(query);
     return processSearchResults(result);
@@ -212,7 +219,7 @@ void FileNameWorkerPrivate::tryNotify()
     int cur = m_time.elapsed();
     if (q->hasItem() && (cur - m_lastEmit) > EMIT_INTERVAL) {
         m_lastEmit = cur;
-        qDebug() << "unearthed, current spend:" << cur;
+        qCDebug(logDaemon) << "Emitting new results - Time elapsed:" << cur << "ms";
         emit q->unearthed(q);
     }
 }
@@ -254,7 +261,7 @@ void FileNameWorker::setContext(const QString &context)
     Q_D(FileNameWorker);
 
     if (context.isEmpty())
-        qWarning() << "search key is empty.";
+        qCWarning(logDaemon) << "Search key is empty";
     d->m_searchInfo = FileSearchUtils::parseContent(context);
 }
 
@@ -268,26 +275,32 @@ bool FileNameWorker::working(void *context)
     Q_D(FileNameWorker);
     Q_UNUSED(context)
 
-    // 准备状态切运行中，否则直接返回
-    if (!d->m_status.testAndSetRelease(Ready, Runing))
+    if (!d->m_status.testAndSetRelease(Ready, Runing)) {
+        qCWarning(logDaemon) << "Failed to start worker - Invalid state transition";
         return false;
+    }
 
     if (d->m_searchInfo.keyword.isEmpty() || d->m_searchPath.isEmpty()
         || !DFMSEARCH::Global::isFileNameIndexDirectoryAvailable()) {
+        qCWarning(logDaemon) << "Search prerequisites not met - Empty keyword/path or index unavailable";
         d->m_status.storeRelease(Completed);
         return false;
     }
 
+    qCDebug(logDaemon) << "Starting file name search with keyword:" << d->m_searchInfo.keyword;
     d->m_time.start();
 
-    if (!d->searchByDFMSearch())
-        return false;   // 中断
+    if (!d->searchByDFMSearch()) {
+        qCWarning(logDaemon) << "Search operation failed";
+        return false;
+    }
 
     // 检查是否还有数据
     if (d->m_status.testAndSetRelease(Runing, Completed)) {
-        // 发送数据
-        if (hasItem())
+        if (hasItem()) {
+            qCDebug(logDaemon) << "Search completed - Emitting final results";
             emit unearthed(this);
+        }
     }
     return true;
 }
@@ -295,7 +308,7 @@ bool FileNameWorker::working(void *context)
 void FileNameWorker::terminate()
 {
     Q_D(FileNameWorker);
-
+    qCDebug(logDaemon) << "Terminating file name worker";
     d->m_status.storeRelease(Terminated);
 }
 

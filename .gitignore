@@ -9,6 +9,8 @@ build/
 *.qm
 
 .unioncode
+.cursor
+.vscode
 
 dist/
 3rdparty/antlr4

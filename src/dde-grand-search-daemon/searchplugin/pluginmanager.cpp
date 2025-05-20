@@ -8,14 +8,16 @@
 
 #include <QStandardPaths>
 #include <QDebug>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logDaemon)
 
 using namespace GrandSearch;
 
 PluginManagerPrivate::PluginManagerPrivate(PluginManager *parent)
-    : QObject(parent)
-    , q(parent)
+    : QObject(parent),
+      q(parent)
 {
-
 }
 
 bool PluginManagerPrivate::readConf()
@@ -23,16 +25,17 @@ bool PluginManagerPrivate::readConf()
     if (!m_loader) {
         m_loader = new PluginLoader(this);
 
-        //默认路径
+        // 默认路径
 #ifdef QT_DEBUG
-        char path[PATH_MAX] = {0};
+        char path[PATH_MAX] = { 0 };
         const char *defaultPath = realpath("./", path);
 #else
         auto defaultPath = PLUGIN_SEARCHER_DIR;
 #endif
         static_assert(std::is_same<decltype(defaultPath), const char *>::value, "PLUGIN_SEARCHER_DIR is not a string.");
 
-        m_loader->setPluginPath({QString(defaultPath)});
+        qCDebug(logDaemon) << "Setting plugin search path:" << defaultPath;
+        m_loader->setPluginPath({ QString(defaultPath) });
     }
 
     return m_loader->load();
@@ -45,43 +48,48 @@ void PluginManagerPrivate::prepareProcess()
 
     Q_ASSERT(m_loader);
 
-    //清除所有进程
+    // 清除所有进程
     m_process->clear();
 
     QList<SearchPluginInfo> plugins = m_loader->plugins();
+    qCDebug(logDaemon) << "Found" << plugins.size() << "plugins to process";
+
     for (const SearchPluginInfo &plugin : plugins) {
-        //Auto类型的插件需进行进程管理
+        // Auto类型的插件需进行进程管理
         if (plugin.mode == SearchPluginInfo::Auto) {
-            qDebug() << "create process" << plugin.name;
+            qCDebug(logDaemon) << "Creating process for plugin:" << plugin.name
+                               << "Priority:" << plugin.priority
+                               << "Source:" << plugin.from;
 
             if (m_process->addProgram(plugin.name, plugin.exec)) {
 
-                //高，中优先级添加守护
-                if (plugin.priority  <= SearchPluginInfo::Middle)
+                // 高，中优先级添加守护
+                if (plugin.priority <= SearchPluginInfo::Middle)
                     m_process->setWatched(plugin.name, true);
             } else {
-                qWarning() << "program error: " << plugin.name << plugin.exec << plugin.from;
+                qCWarning(logDaemon) << "Failed to create process for plugin:" << plugin.name
+                                     << "Executable:" << plugin.exec
+                                     << "Source:" << plugin.from;
             }
         }
     }
 }
 
 PluginManager::PluginManager(QObject *parent)
-    : QObject(parent)
-    , d(new PluginManagerPrivate(this))
+    : QObject(parent),
+      d(new PluginManagerPrivate(this))
 {
-
 }
 
 bool PluginManager::loadPlugin()
 {
-    //初始化数据协议
+    // 初始化数据协议
     DataConvertor::instance()->initConvetor();
 
-    //读取插件目录下的conf
+    // 读取插件目录下的conf
     bool ret = d->readConf();
 
-    //加入进程管理
+    // 加入进程管理
     d->prepareProcess();
 
     return ret;
@@ -100,11 +108,13 @@ void PluginManager::autoActivate()
     Q_ASSERT(d->m_loader);
     Q_ASSERT(d->m_process);
 
+    qCDebug(logDaemon) << "Starting auto-activation of high priority plugins";
     QList<SearchPluginInfo> plugins = d->m_loader->plugins();
     for (const SearchPluginInfo &plugin : plugins) {
-        //启动高优先级的Auto类型插件
+        // 启动高优先级的Auto类型插件
         if (plugin.mode == SearchPluginInfo::Auto
-                && plugin.priority == SearchPluginInfo::High) {
+            && plugin.priority == SearchPluginInfo::High) {
+            qCDebug(logDaemon) << "Auto-activating high priority plugin:" << plugin.name;
             d->m_process->startProgram(plugin.name);
         }
     }

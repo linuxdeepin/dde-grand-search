@@ -11,10 +11,14 @@
 #include <QDBusInterface>
 #include <QDBusReply>
 #include <QDBusConnectionInterface>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logDaemon)
 
 using namespace GrandSearch;
 
-FileNameSearcher::FileNameSearcher(QObject *parent) : Searcher(parent)
+FileNameSearcher::FileNameSearcher(QObject *parent)
+    : Searcher(parent)
 {
 }
 
@@ -42,7 +46,7 @@ ProxyWorker *FileNameSearcher::createWorker() const
 bool FileNameSearcher::action(const QString &action, const QString &item)
 {
     Q_UNUSED(item)
-    qWarning() << "no such action:" << action << ".";
+    qCWarning(logDaemon) << "Unsupported action requested - Action:" << action;
     return false;
 }
 

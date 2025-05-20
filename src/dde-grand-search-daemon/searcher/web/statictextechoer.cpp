@@ -7,12 +7,15 @@
 #include "statictextworker.h"
 
 #include <QDebug>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logDaemon)
 
 using namespace GrandSearch;
 
-StaticTextEchoer::StaticTextEchoer(QObject *parent): Searcher(parent)
+StaticTextEchoer::StaticTextEchoer(QObject *parent)
+    : Searcher(parent)
 {
-
 }
 
 QString StaticTextEchoer::name() const
@@ -38,6 +41,6 @@ ProxyWorker *StaticTextEchoer::createWorker() const
 bool StaticTextEchoer::action(const QString &action, const QString &item)
 {
     Q_UNUSED(item);
-    qWarning() << "no such action:" << action << ".";
+    qCWarning(logDaemon) << "Unsupported action requested:" << action;
     return false;
 }

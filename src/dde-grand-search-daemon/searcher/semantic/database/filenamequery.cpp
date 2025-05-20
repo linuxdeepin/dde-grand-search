@@ -6,6 +6,10 @@
 #include "filenamequery_p.h"
 #include "global/builtinsearch.h"
 
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logDaemon)
+
 using namespace GrandSearch;
 DFM_SEARCH_USE_NS
 
@@ -15,9 +19,12 @@ FileNameQueryPrivate::FileNameQueryPrivate()
 
 void FileNameQueryPrivate::searchByDFMSearch(PushItemCallBack callBack, void *pdata)
 {
+    qCDebug(logDaemon) << "Starting DFM search with" << m_entity.size() << "entities";
     for (const SemanticEntity &entity : std::as_const(m_entity)) {
-        if (m_handler && m_handler->isResultLimit())
+        if (m_handler && m_handler->isResultLimit()) {
+            qCDebug(logDaemon) << "Search terminated - Result limit reached";
             return;
+        }
 
         QObject holder;
         SearchEngine *engine = SearchFactory::createEngine(SearchType::FileName, &holder);
@@ -31,12 +38,12 @@ void FileNameQueryPrivate::searchByDFMSearch(PushItemCallBack callBack, void *pd
         // 设置搜索选项
         engine->setSearchOptions(options);
         bool terminated = false;
-        engine->searchWithCallback(query, [this, &terminated, &entity, callBack, pdata](const SearchResult &file)->bool {
-              auto ret = processSearchResult(file.path(), entity, callBack, pdata);
-              if (ret == Terminated) {
-                  terminated = true;
-              }
-              return terminated;
+        engine->searchWithCallback(query, [this, &terminated, &entity, callBack, pdata](const SearchResult &file) -> bool {
+            auto ret = processSearchResult(file.path(), entity, callBack, pdata);
+            if (ret == Terminated) {
+                terminated = true;
+            }
+            return terminated;
         });
 
         if (terminated)
@@ -58,7 +65,7 @@ void FileNameQueryPrivate::configureFileNameOptions(FileNameOptionsAPI &fileName
     } else {
         QList<FileSearchUtils::Group> groupList = { FileSearchUtils::Group::File };
         fileNameOptions.setFileTypes(FileSearchUtils::buildDFMSearchFileTypes(groupList));
-        
+
         if (!entity.suffix.isEmpty() && entity.isContainType) {
             fileNameOptions.setFileExtensions({ entity.suffix });
         }
@@ -91,8 +98,10 @@ FileNameQueryPrivate::ProcessResult FileNameQueryPrivate::processSearchResult(co
         m_handler->appendTo(result, m_resultItems);
         const auto fileName = result.mid(result.lastIndexOf('/') + 1);
         m_handler->setItemWeight(result, m_handler->itemWeight(result) + calcItemWeight(fileName));
-        if (m_handler->isResultLimit() || m_count >= 100)
+        if (m_handler->isResultLimit() || m_count >= 100) {
+            qCDebug(logDaemon) << "Search terminated - Result limit reached (count:" << m_count << ")";
             return Terminated;
+        }
     } else {
         auto item = FileSearchUtils::packItem(result, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC);
         m_resultItems[GRANDSEARCH_GROUP_FILE_INFERENCE].append(item);
@@ -210,10 +219,11 @@ void FileNameQuery::run(void *ptr, PushItemCallBack callBack, void *pdata)
     Q_ASSERT(self);
 
     auto d = self->d;
-    qDebug() << "query by dfm search" << d->m_entity.size();
+    qCInfo(logDaemon) << "Starting query with" << d->m_entity.size() << "entities";
     d->m_time.start();
     d->searchByDFMSearch(callBack, pdata);
-    qDebug() << "deepin anything is finished spend:" << d->m_time.elapsed() << "found:" << d->m_count;
+    qCInfo(logDaemon) << "Search completed - Time elapsed:" << d->m_time.elapsed()
+                      << "ms, Results found:" << d->m_count;
 }
 
 void FileNameQuery::setEntity(const QList<SemanticEntity> &entity)
@@ -222,8 +232,10 @@ void FileNameQuery::setEntity(const QList<SemanticEntity> &entity)
 
     for (const SemanticEntity &e : entity) {
         if (!e.album.isEmpty() || !e.author.isEmpty() || !e.duration.isEmpty()
-            || !e.resolution.isEmpty())
+            || !e.resolution.isEmpty()) {
+            qCDebug(logDaemon) << "Skipping entity with media metadata:" << e.keys;
             continue;
+        }
         d->m_entity.append(e);
     }
 }
