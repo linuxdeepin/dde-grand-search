@@ -359,7 +359,7 @@ void AiToolBarInner::adjustBts() {
     m_omitBt->setVisible(true);
     // 1、确定哪些显示在工具栏，哪些放入菜单
     int actionCounts = 0;
-    for (int i = m_btList.size() - 1; i >= 0; i++) {
+    for (int i = m_btList.size() - 1; i >= 0; i--) {
         sumWidth -= m_btList[i]->sizeHint().width() + 4;
         sumWidth -= 5;
         m_btList[i]->setVisible(false);
