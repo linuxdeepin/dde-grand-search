@@ -15,10 +15,15 @@
 #include <QString>
 #include <QApplication>
 #include <QtConcurrent>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 using namespace GrandSearch;
 
-class AccessRecordGlobal : public AccessRecord {};
+class AccessRecordGlobal : public AccessRecord
+{
+};
 Q_GLOBAL_STATIC(AccessRecordGlobal, accessRecordGlobal)
 
 AccessRecord *AccessRecord::instance()
@@ -28,7 +33,7 @@ AccessRecord *AccessRecord::instance()
 
 void AccessRecord::startParseRecord()
 {
-    std::call_once(m_initFlag, [](){
+    std::call_once(m_initFlag, []() {
         // 异步解析
         QtConcurrent::run(&AccessRecord::parseRecord, AccessRecord::instance()->m_recordPath);
     });
@@ -51,6 +56,10 @@ void AccessRecord::updateRecord(const MatchedItem &matchedItem, qint64 time)
 {
     const QString &seacher = matchedItem.searcher;
     const QString &item = matchedItem.item;
+
+    qCDebug(logGrandSearch) << "Updating access record - Searcher:" << seacher
+                            << "Item:" << item
+                            << "Time:" << time;
 
     QJsonObject recordObj = m_recordObj;
 
@@ -97,12 +106,14 @@ void AccessRecord::updateRecord(const MatchedItem &matchedItem, qint64 time)
 void AccessRecord::sync()
 {
     if (!m_finished) {
-        qWarning() << "parsing is not finished, do not sync.";
+        qCWarning(logGrandSearch) << "Cannot sync records - Parsing not finished";
         return;
     }
+
+    qCDebug(logGrandSearch) << "Syncing access records to file:" << m_recordPath;
     QFile file(m_recordPath);
     if (!file.open(QFile::WriteOnly)) {
-        qWarning() << "fail to open record" << m_recordPath;
+        qCWarning(logGrandSearch) << "Failed to open record file for writing:" << m_recordPath;
         return;
     }
 
@@ -110,24 +121,26 @@ void AccessRecord::sync()
     QByteArray data = doc.toJson();
     file.write(data);
     file.close();
+    qCDebug(logGrandSearch) << "Successfully synced access records - Size:" << data.size() << "bytes";
 }
 
 AccessRecord::AccessRecord()
 {
-     qRegisterMetaType<QHash<QString, QHash<QString, int>>>();
-     auto recordPath = QStandardPaths::standardLocations(QStandardPaths::GenericCacheLocation).first();
-     m_recordPath = recordPath
-             + "/" + QApplication::organizationName()
-             + "/" + GRANDSEARCH_NAME
-             +"/" + "accessrecord.json";
+    qRegisterMetaType<QHash<QString, QHash<QString, int>>>();
+    auto recordPath = QStandardPaths::standardLocations(QStandardPaths::GenericCacheLocation).first();
+    m_recordPath = recordPath
+            + "/" + QApplication::organizationName()
+            + "/" + GRANDSEARCH_NAME
+            + "/" + "accessrecord.json";
 
-     connect(this, &AccessRecord::sigParseFinished, this, [this](const QJsonObject &recordObj,
-             const QHash<QString, QHash<QString, int>> &recordHash) {
-         qInfo() << "parse finished, update data.";
-         m_recordObj = recordObj;
-         m_recordHash = recordHash;
-         m_finished = true;
-     });
+    qCDebug(logGrandSearch) << "Initializing access record manager - Path:" << m_recordPath;
+
+    connect(this, &AccessRecord::sigParseFinished, this, [this](const QJsonObject &recordObj, const QHash<QString, QHash<QString, int>> &recordHash) {
+        qCInfo(logGrandSearch) << "Record parsing completed - Updating data";
+        m_recordObj = recordObj;
+        m_recordHash = recordHash;
+        m_finished = true;
+    });
 }
 
 AccessRecord::~AccessRecord()
@@ -142,16 +155,17 @@ void AccessRecord::parseRecord(QString recordPath)
     QFileInfo recordFile(recordPath);
     // 创建文件
     if (!recordFile.exists()) {
-         recordFile.absoluteDir().mkpath(".");
-         QFile file(recordPath);
-         file.open(QFile::NewOnly);
-         QJsonObject version;
-         version.insert("version", "1.0");
-         QJsonDocument doc(version);
-         QByteArray data = doc.toJson();
-         file.write(data);
-         file.close();
-         qInfo() << "create record" << recordPath;
+        qCDebug(logGrandSearch) << "Creating new record file:" << recordPath;
+        recordFile.absoluteDir().mkpath(".");
+        QFile file(recordPath);
+        file.open(QFile::NewOnly);
+        QJsonObject version;
+        version.insert("version", "1.0");
+        QJsonDocument doc(version);
+        QByteArray data = doc.toJson();
+        file.write(data);
+        file.close();
+        qCInfo(logGrandSearch) << "Created new record file with version 1.0";
     }
     parseJson(recordPath);
 }
@@ -162,9 +176,10 @@ void AccessRecord::parseRecord(QString recordPath)
  */
 void AccessRecord::parseJson(const QString &recordPath)
 {
+    qCDebug(logGrandSearch) << "Parsing record file:" << recordPath;
     QFile file(recordPath);
     if (!file.open(QFile::ReadOnly)) {
-        qWarning() << "failed to open record file" << recordPath;
+        qCWarning(logGrandSearch) << "Failed to open record file for reading:" << recordPath;
         return;
     }
 
@@ -180,13 +195,13 @@ void AccessRecord::parseJson(const QString &recordPath)
     QHash<QString, QHash<QString, int>> searcherHash;
     QJsonObject searcherObj;
     if (jsonError.error != QJsonParseError::NoError) {
-        qWarning() << "parse json error" << jsonError.errorString();
+        qCWarning(logGrandSearch) << "JSON parsing error:" << jsonError.errorString();
         emit AccessRecord::instance()->sigParseFinished(searcherObj, searcherHash, QPrivateSignal());
         return;
     }
 
     searcherObj = doc.object();
-    for (auto searcherIt = searcherObj.begin(); searcherIt != searcherObj.end(); ) {
+    for (auto searcherIt = searcherObj.begin(); searcherIt != searcherObj.end();) {
         if (searcherIt.key() == "version") {
             ++searcherIt;
             continue;
@@ -195,7 +210,7 @@ void AccessRecord::parseJson(const QString &recordPath)
         QJsonObject itemsObj = searcherIt.value().toObject();
         // 记录计算次数的item
         QHash<QString, int> itemsHash;
-        for (auto itemIt = itemsObj.begin(); itemIt != itemsObj.end(); ) {
+        for (auto itemIt = itemsObj.begin(); itemIt != itemsObj.end();) {
             QJsonArray timeArray = itemIt.value().toArray();
             for (auto timeIt = timeArray.begin(); timeIt != timeArray.end();) {
                 qint64 timeT = (*timeIt).toDouble();
@@ -225,7 +240,7 @@ void AccessRecord::parseJson(const QString &recordPath)
             // item对象为空，删除该searcher对象
             searcherIt = searcherObj.erase(searcherIt);
         } else {
-            for (auto tempItemIt = itemsObj.begin(); tempItemIt != itemsObj.end(); ) {
+            for (auto tempItemIt = itemsObj.begin(); tempItemIt != itemsObj.end();) {
                 QJsonArray timeArray = tempItemIt.value().toArray();
                 int times = timeArray.size();
                 if (times > 20) {
@@ -242,8 +257,6 @@ void AccessRecord::parseJson(const QString &recordPath)
         }
     }
 
+    qCDebug(logGrandSearch) << "Record parsing completed - Searchers:" << searcherHash.size();
     emit AccessRecord::instance()->sigParseFinished(searcherObj, searcherHash, QPrivateSignal());
-    qDebug() << "parse json completed";
 }
-
-

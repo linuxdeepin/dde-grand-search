@@ -15,15 +15,18 @@
 #include <QFileInfo>
 #include <QDebug>
 #include <QDateTime>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logToolFullText)
 
 using namespace GrandSearch;
 using namespace Lucene;
 
 Q_DECLARE_METATYPE(FeatureLibEngine::QueryConditons)
 
-FeatureLibEnginePrivate::FeatureLibEnginePrivate(FeatureLibEngine *qq) : q(qq)
+FeatureLibEnginePrivate::FeatureLibEnginePrivate(FeatureLibEngine *qq)
+    : q(qq)
 {
-
 }
 
 int FeatureLibEnginePrivate::conditonsToString(const FeatureLibEngine::QueryConditons &cond, QString &out) const
@@ -45,8 +48,7 @@ int FeatureLibEnginePrivate::conditonsToString(const FeatureLibEngine::QueryCond
             if (conditonsToString(prop.second.value<FeatureLibEngine::QueryConditons>(), tmp) > 0)
                 tmp = QString("(%0)").arg(tmp);
             chain.append(tmp);
-        }
-            break;
+        } break;
         case FeatureLibEngine::Path:
 
             break;
@@ -110,7 +112,7 @@ QString FeatureLibEnginePrivate::packageString(const QString &key, const QString
     return ret;
 }
 
-QString FeatureLibEnginePrivate::packageTime(const QString &key, const QList<QPair<qint64, qint64> > &value) const
+QString FeatureLibEnginePrivate::packageTime(const QString &key, const QList<QPair<qint64, qint64>> &value) const
 {
     Q_ASSERT(!key.isEmpty());
     QString ret;
@@ -125,9 +127,7 @@ QString FeatureLibEnginePrivate::packageTime(const QString &key, const QList<QPa
         if (interval.second < 0)
             interval.second = QDateTime::currentSecsSinceEpoch();
 
-        ret.append(QString("%0:[%1 TO %2]").arg(key)
-                   .arg(QDateTime::fromSecsSinceEpoch(interval.first).toString(format))
-                   .arg(QDateTime::fromSecsSinceEpoch(interval.second).toString(format)));
+        ret.append(QString("%0:[%1 TO %2]").arg(key).arg(QDateTime::fromSecsSinceEpoch(interval.first).toString(format)).arg(QDateTime::fromSecsSinceEpoch(interval.second).toString(format)));
         if (i != (size - 1))
             ret.append(" OR ");
         ++count;
@@ -144,10 +144,8 @@ IndexReaderPtr FeatureLibEnginePrivate::createReader(const QString &cache)
 }
 
 FeatureLibEngine::FeatureLibEngine(QObject *parent)
-    : QObject(parent)
-    , d(new FeatureLibEnginePrivate(this))
+    : QObject(parent), d(new FeatureLibEnginePrivate(this))
 {
-
 }
 
 FeatureLibEngine::~FeatureLibEngine()
@@ -160,13 +158,13 @@ bool FeatureLibEngine::init(const QString &cache)
 {
     QFileInfo info(cache);
     if (!info.isReadable()) {
-        qWarning() << "the cahce file is not readable" << cache;
+        qCWarning(logToolFullText) << "Cache file is not readable - Path:" << cache;
         return false;
     } else if (d->m_reader) {
-        qCritical() << "duplicate initialization";
+        qCCritical(logToolFullText) << "Feature library engine already initialized";
         return false;
     }
-    qDebug() << "feature library cache" << cache;
+    qCDebug(logToolFullText) << "Initializing feature library cache - Path:" << cache;
     d->m_reader = d->createReader(cache);
     return d->m_reader.get() != nullptr;
 }
@@ -178,7 +176,7 @@ void FeatureLibEngine::query(const QString &searchPath, const QueryConditons &co
 
     QString key;
     d->conditonsToString(cond, key);
-    qDebug() << "feature search conditions" << key << "dir" << searchPath;
+    qCDebug(logToolFullText) << "Performing feature search - Conditions:" << key << "Directory:" << searchPath;
     if (key.isEmpty())
         return;
 
@@ -216,13 +214,13 @@ void FeatureLibEngine::query(const QString &searchPath, const QueryConditons &co
             if (!QFile::exists(filePath))
                 continue;
             if (!func(filePath, match, pdata))
-                return; // 中断
+                return;   // 中断
         }
     } catch (const LuceneException &e) {
-        qWarning() << QString::fromStdWString(e.getError());
+        qCWarning(logToolFullText) << "Lucene search error - Details:" << QString::fromStdWString(e.getError());
     } catch (const std::exception &e) {
-        qWarning() << QString(e.what());
+        qCWarning(logToolFullText) << "Search error - Details:" << QString(e.what());
     } catch (...) {
-        qWarning() << "Search failed! unkown error";
+        qCWarning(logToolFullText) << "Search failed - Unknown error occurred";
     }
 }

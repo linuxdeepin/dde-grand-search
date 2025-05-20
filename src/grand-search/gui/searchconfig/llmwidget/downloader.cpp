@@ -3,13 +3,17 @@
 #include <QEventLoop>
 #include <QDir>
 #include <QRegularExpression>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 using namespace GrandSearch;
 
-Downloader::Downloader(const QString &directory, QObject *parent) : QObject(parent),
-    m_manager(new QNetworkAccessManager(this)),
-    m_downloadDirectory(directory),
-    m_finished(false)
+Downloader::Downloader(const QString &directory, QObject *parent)
+    : QObject(parent),
+      m_manager(new QNetworkAccessManager(this)),
+      m_downloadDirectory(directory),
+      m_finished(false)
 {
     connect(m_manager, &QNetworkAccessManager::finished, this, &Downloader::onDownloadFinished);
 }
@@ -99,7 +103,8 @@ void Downloader::onReadyRead()
             QFile::remove(localFilePath);
         }
         if (!file->open(QIODevice::WriteOnly)) {
-            qDebug() << "Unable to open" << localFilePath << "for writing:" << file->errorString();
+            qCWarning(logGrandSearch) << "Failed to open file for writing - Path:" << localFilePath
+                                      << "Error:" << file->errorString();
             reply->abort();
             delete file;
             return;
@@ -127,7 +132,6 @@ void Downloader::cancelDownloads()
 
     m_activeDownloads.clear();
     m_openFiles.clear();
-
 }
 
 QString Downloader::checkCDN(QFile *file)
@@ -149,9 +153,11 @@ QString Downloader::checkCDN(QFile *file)
         if (match.hasMatch()) {
             urlStr = match.captured(0);
             urlStr.replace("&amp;", "&");
-            qInfo() << file->fileName() << "dowloand url turn to cdn:" << urlStr;
+            qCInfo(logGrandSearch) << "Redirecting download to CDN - File:" << file->fileName()
+                                   << "New URL:" << urlStr;
         } else {
-            qWarning() << "No URL found in the data: " << data;
+            qCWarning(logGrandSearch) << "No CDN URL found in response data - File:" << file->fileName()
+                                      << "Data:" << data;
         }
     }
 

@@ -22,6 +22,9 @@
 #include <QVBoxLayout>
 #include <QScreen>
 #include <QKeyEvent>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
@@ -187,7 +190,8 @@ void MainWindow::initUI()
         // 在Qt5.11版本、x11环境下，同时设置BypassWindowManagerHint与Tool属性之后，键盘切换大小写将会导致程序的激活状态发生改变。
         setWindowFlags(Qt::BypassWindowManagerHint | Qt::WindowStaysOnTopHint);
     }
-    qDebug() << "current platform name:" << QApplication::platformName() << "   flags:" << this->windowFlags();
+    qCInfo(logGrandSearch) << "Initializing main window - Platform:" << QApplication::platformName() 
+                          << "Window flags:" << this->windowFlags();
 
     // 控制界面大小和位置
     setFixedSize(MainWindowWidth, MainWindowHeight);

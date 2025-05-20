@@ -16,13 +16,16 @@
 #include <QFileDialog>
 #include <QStandardPaths>
 #include <QItemSelection>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 DWIDGET_USE_NAMESPACE
 
 using namespace GrandSearch;
 
 BlackListWidget::BlackListWidget(QWidget *parent)
-    :DWidget(parent)
+    : DWidget(parent)
 {
     m_groupLabel = new QLabel(tr("Excluded path"), this);
     m_groupLabel->adjustSize();
@@ -65,20 +68,20 @@ BlackListWidget::BlackListWidget(QWidget *parent)
 
 BlackListWidget::~BlackListWidget()
 {
-
 }
 
 void BlackListWidget::addButtonClicked()
 {
     QFileDialog fileDialog;
-    auto url = fileDialog.getExistingDirectoryUrl(this, QString("")
-                                                  , QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first());
+    auto url = fileDialog.getExistingDirectoryUrl(this, QString(""), QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first());
     QFileInfo info(url.toLocalFile());
     m_listWrapper->clearSelection();
     if (!url.isEmpty() && !info.isSymLink() && info.exists()) {
         m_listWrapper->addRow(info.absoluteFilePath());
     } else {
-        qInfo() << "add path failed";
+        qCWarning(logGrandSearch) << "Failed to add path to blacklist - Path:" << url.toLocalFile()
+                                  << "Is symlink:" << info.isSymLink()
+                                  << "Exists:" << info.exists();
     }
 }
 

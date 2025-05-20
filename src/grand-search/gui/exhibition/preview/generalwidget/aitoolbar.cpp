@@ -20,13 +20,17 @@
 #include <QDBusReply>
 #include <QVariantMap>
 #include <QtDBus>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 DWIDGET_USE_NAMESPACE
 DGUI_USE_NAMESPACE
 DCORE_USE_NAMESPACE
 using namespace GrandSearch;
 
-bool AiToolBar::checkUosAiInstalled() {
+bool AiToolBar::checkUosAiInstalled()
+{
     QDBusInterface iface("org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus");
     QDBusReply<QStringList> reply = iface.call("ListActivatableNames");
     if (reply.isValid())
@@ -35,7 +39,8 @@ bool AiToolBar::checkUosAiInstalled() {
     return false;
 }
 
-void AiToolBar::showWarningDialog(QString name) {
+void AiToolBar::showWarningDialog(QString name)
+{
     DDialog *warningDlg = new DDialog();
     warningDlg->setWindowFlags((warningDlg->windowFlags() | Qt::WindowType::WindowStaysOnTopHint));
     warningDlg->setFixedWidth(380);
@@ -54,38 +59,46 @@ void AiToolBar::showWarningDialog(QString name) {
     warningDlg->show();
 }
 
-AiToolBar::AiToolBar(QWidget *parent) : DWidget(parent) {
+AiToolBar::AiToolBar(QWidget *parent)
+    : DWidget(parent)
+{
     m_inner = new AiToolBarInner(this);
     this->initUi();
 }
 
-AiToolBar::~AiToolBar() {
+AiToolBar::~AiToolBar()
+{
     if (m_inner) {
         delete m_inner;
     }
 }
 
-void AiToolBar::initUi() {
+void AiToolBar::initUi()
+{
     this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     m_mainLayout = new QHBoxLayout(this);
-    m_left  = 10;
+    m_left = 10;
     m_right = 10;
     m_mainLayout->setContentsMargins(m_left, m_top, m_right, 0);
     m_mainLayout->addWidget(m_inner);
     this->setLayout(m_mainLayout);
 }
 
-void AiToolBar::setFilePath(QString filePath) {
+void AiToolBar::setFilePath(QString filePath)
+{
     m_inner->setFilePath(filePath);
 }
 
-AiToolBarInner::AiToolBarInner(QWidget *parent) : DWidget(parent) {
+AiToolBarInner::AiToolBarInner(QWidget *parent)
+    : DWidget(parent)
+{
     this->initUi();
     this->initConnect();
 }
 
-void AiToolBarInner::initUi() {
+void AiToolBarInner::initUi()
+{
     this->setFixedSize(360, 36);
 
     m_iconBt = new TransButton(this);
@@ -96,10 +109,10 @@ void AiToolBarInner::initUi() {
     m_omitBt = new OmitButton(this);
     m_omitBt->setIconSize(QSize(20, 20));
 
-    m_summaryBt     = new LinkButton(tr("Summary"), this);
+    m_summaryBt = new LinkButton(tr("Summary"), this);
     m_translationBt = new LinkButton(tr("Translation"), this);
-    m_extensionBt   = new LinkButton(tr("Extension"), this);
-    m_knowledgeBt   = new LinkButton(tr("Add to knowledge base"), this);
+    m_extensionBt = new LinkButton(tr("Extension"), this);
+    m_knowledgeBt = new LinkButton(tr("Add to knowledge base"), this);
     DFontSizeManager::instance()->bind(m_summaryBt, DFontSizeManager::T8, QFont::Normal);
     DFontSizeManager::instance()->bind(m_translationBt, DFontSizeManager::T8, QFont::Normal);
     DFontSizeManager::instance()->bind(m_extensionBt, DFontSizeManager::T8, QFont::Normal);
@@ -115,10 +128,10 @@ void AiToolBarInner::initUi() {
     m_extensionBt->setToolTip(tr("Extend document content with UOS AI"));
     m_knowledgeBt->setToolTip(tr("Add document to UOS AI knowledge base"));
 
-    m_summarySpace     = new DWidget(this);
+    m_summarySpace = new DWidget(this);
     m_translationSpace = new DWidget(this);
-    m_extensionSpace   = new DWidget(this);
-    m_knowledgeSpace   = new DWidget(this);
+    m_extensionSpace = new DWidget(this);
+    m_knowledgeSpace = new DWidget(this);
     m_translationSpace->setFixedWidth(1);
     m_extensionSpace->setFixedWidth(1);
     m_knowledgeSpace->setFixedWidth(1);
@@ -146,10 +159,10 @@ void AiToolBarInner::initUi() {
     this->setLayout(mainLayout);
 
     m_menu = new DMenu(this);
-    m_summaryAction     = new QAction(tr("Summary"));
+    m_summaryAction = new QAction(tr("Summary"));
     m_translationAction = new QAction(tr("Translation"));
-    m_extensionAction   = new QAction(tr("Extension"));
-    m_knowledgeAction   = new QAction(tr("Add to knowledge base"));
+    m_extensionAction = new QAction(tr("Extension"));
+    m_knowledgeAction = new QAction(tr("Add to knowledge base"));
     m_menu->addAction(m_summaryAction);
     m_menu->addAction(m_translationAction);
     m_menu->addAction(m_extensionAction);
@@ -161,7 +174,8 @@ void AiToolBarInner::initUi() {
     m_actionList.append(m_knowledgeAction);
 }
 
-void AiToolBarInner::initConnect() {
+void AiToolBarInner::initConnect()
+{
     connect(m_iconBt, &TransButton::clicked, this, &AiToolBarInner::onBtClicked);
     connect(m_omitBt, &OmitButton::clicked, this, &AiToolBarInner::onBtClicked);
     connect(m_summaryBt, &LinkButton::clicked, this, &AiToolBarInner::onBtClicked);
@@ -170,7 +184,8 @@ void AiToolBarInner::initConnect() {
     connect(m_knowledgeBt, &LinkButton::clicked, this, &AiToolBarInner::onBtClicked);
 }
 
-void AiToolBarInner::paintEvent(QPaintEvent *event) {
+void AiToolBarInner::paintEvent(QPaintEvent *event)
+{
     QPainter p(this);
     p.setPen(Qt::NoPen);
     p.setBrush(QColor(0, 0, 0, int(255 * 0.05)));
@@ -207,12 +222,14 @@ void AiToolBarInner::paintEvent(QPaintEvent *event) {
     return QWidget::paintEvent(event);
 }
 
-void AiToolBarInner::showEvent(QShowEvent *event) {
+void AiToolBarInner::showEvent(QShowEvent *event)
+{
     DWidget::showEvent(event);
     this->adjustBts();
 }
 
-void AiToolBarInner::onBtClicked() {
+void AiToolBarInner::onBtClicked()
+{
     if (sender() == m_iconBt) {
         this->onOpenUosAi();
         return;
@@ -245,7 +262,8 @@ void AiToolBarInner::onBtClicked() {
     }
 }
 
-void AiToolBarInner::onMenuTriggered(QAction *action) {
+void AiToolBarInner::onMenuTriggered(QAction *action)
+{
     if (action == m_summaryAction) {
         this->onSummary();
         return;
@@ -267,12 +285,14 @@ void AiToolBarInner::onMenuTriggered(QAction *action) {
     }
 }
 
-void AiToolBarInner::onOpenUosAi() {
+void AiToolBarInner::onOpenUosAi()
+{
     QDBusInterface notification("com.deepin.copilot", "/com/deepin/copilot", "com.deepin.copilot", QDBusConnection::sessionBus());
     notification.call(QDBus::Block, "launchChatPage");
 }
 
-void AiToolBarInner::onSummary() {
+void AiToolBarInner::onSummary()
+{
     qDBusRegisterMetaType<QMap<QString, QString>>();
     QMap<QString, QString> params;
     params.insert("file", m_filePath);
@@ -280,14 +300,15 @@ void AiToolBarInner::onSummary() {
     QDBusInterface notification("com.deepin.copilot", "/org/deepin/copilot/chat", "org.deepin.copilot.chat", QDBusConnection::sessionBus());
     QString error = notification.call(QDBus::Block, "inputPrompt", "", QVariant::fromValue(params)).errorMessage();
     if (!error.isEmpty()) {
-        qWarning() << QString("inputPrompt ERROR(%1)").arg(error);
+        qCWarning(logGrandSearch) << "Failed to send prompt to UOS AI - Operation:" << m_summaryAction->text() << "Error:" << error;
         this->showWarningDialog(m_summaryAction->text());
     } else {
         this->closeMainWindow();
     }
 }
 
-void AiToolBarInner::onTranslation() {
+void AiToolBarInner::onTranslation()
+{
     qDBusRegisterMetaType<QMap<QString, QString>>();
     QMap<QString, QString> params;
     params.insert("file", m_filePath);
@@ -295,14 +316,15 @@ void AiToolBarInner::onTranslation() {
     QDBusInterface notification("com.deepin.copilot", "/org/deepin/copilot/chat", "org.deepin.copilot.chat", QDBusConnection::sessionBus());
     QString error = notification.call(QDBus::Block, "inputPrompt", "", QVariant::fromValue(params)).errorMessage();
     if (!error.isEmpty()) {
-        qWarning() << QString("inputPrompt ERROR(%1)").arg(error);
+        qCWarning(logGrandSearch) << "Failed to send prompt to UOS AI - Operation:" << m_translationAction->text() << "Error:" << error;
         this->showWarningDialog(m_translationAction->text());
     } else {
         this->closeMainWindow();
     }
 }
 
-void AiToolBarInner::onExtension() {
+void AiToolBarInner::onExtension()
+{
     qDBusRegisterMetaType<QMap<QString, QString>>();
     QMap<QString, QString> params;
     params.insert("file", m_filePath);
@@ -310,26 +332,28 @@ void AiToolBarInner::onExtension() {
     QDBusInterface notification("com.deepin.copilot", "/org/deepin/copilot/chat", "org.deepin.copilot.chat", QDBusConnection::sessionBus());
     QString error = notification.call(QDBus::Block, "inputPrompt", "", QVariant::fromValue(params)).errorMessage();
     if (!error.isEmpty()) {
-        qWarning() << QString("inputPrompt ERROR(%1)").arg(error);
+        qCWarning(logGrandSearch) << "Failed to send prompt to UOS AI - Operation:" << m_extensionAction->text() << "Error:" << error;
         this->showWarningDialog(m_extensionAction->text());
     } else {
         this->closeMainWindow();
     }
 }
 
-void AiToolBarInner::onKnowledge() {
+void AiToolBarInner::onKnowledge()
+{
     QDBusInterface notification("com.deepin.copilot", "/org/deepin/copilot/chat", "org.deepin.copilot.chat", QDBusConnection::sessionBus());
     QString error = notification.call(QDBus::Block, "sendToKnowledgeBase", QStringList(m_filePath)).errorMessage();
     if (!error.isEmpty()) {
-        qWarning() << QString("sendToKnowledgeBase ERROR(%1)").arg(error);
+        qCWarning(logGrandSearch) << "Failed to add file to knowledge base - File:" << m_filePath << "Error:" << error;
         this->showWarningDialog(m_knowledgeAction->text());
     } else {
         this->closeMainWindow();
     }
 }
 
-void AiToolBarInner::adjustBts() {
-    const int MAX_WIDTH  = this->width() - 15 - 10 - m_iconBt->sizeHint().width() - 4;
+void AiToolBarInner::adjustBts()
+{
+    const int MAX_WIDTH = this->width() - 15 - 10 - m_iconBt->sizeHint().width() - 4;
     const int MAX_WIDTH1 = this->width() - 15 - 10 - m_iconBt->sizeHint().width() - 4 - m_omitBt->sizeHint().width();
 
     m_knowledgeBt->setText(m_knowledgeAction->text());
@@ -359,7 +383,7 @@ void AiToolBarInner::adjustBts() {
     m_omitBt->setVisible(true);
     // 1、确定哪些显示在工具栏，哪些放入菜单
     int actionCounts = 0;
-    for (int i = m_btList.size() - 1; i >= 0; i++) {
+    for (int i = m_btList.size() - 1; i >= 0; i--) {
         sumWidth -= m_btList[i]->sizeHint().width() + 4;
         sumWidth -= 5;
         m_btList[i]->setVisible(false);
@@ -412,12 +436,13 @@ void AiToolBarInner::adjustBts() {
 #endif
 }
 
-void AiToolBarInner::showWarningDialog(QString name) {
+void AiToolBarInner::showWarningDialog(QString name)
+{
     QString tmpPath = QString("/tmp/%1_notify.png").arg(DApplication::instance()->applicationName());
     QIcon tmpIcon(":icons/dde-grand-search-setting.svg");
     QPixmap tmpPixmap = tmpIcon.pixmap(QSize(32, 32));
     bool isSaved = tmpPixmap.save(tmpPath);
-    qDebug() << "isSaved:" << isSaved << "path:" << tmpPath;
+    qCDebug(logGrandSearch) << "Notification icon saved - Success:" << isSaved << "Path:" << tmpPath;
 
     DUtil::DNotifySender notify(tr("DDE Grand Search"));
     notify.appName(DApplication::instance()->applicationName());
@@ -425,13 +450,14 @@ void AiToolBarInner::showWarningDialog(QString name) {
     notify.appBody(QString(tr("Unable to use %1, please go to the App Store to update the UOS AI version first.").arg(name)));
     notify.actions(QStringList() << "_open" << tr("Open App Stroe"));
     QVariantMap hints;
-    hints["x-deepin-action-_open"] = QString("dbus-send,--print-reply,--dest=com.home.appstore.client,/com/home/appstore/client,com.home.appstore.client.openBusinessUri,string:app_detail_info/uos-ai"); // 通过命令定位到应用商店uos-ai页
+    hints["x-deepin-action-_open"] = QString("dbus-send,--print-reply,--dest=com.home.appstore.client,/com/home/appstore/client,com.home.appstore.client.openBusinessUri,string:app_detail_info/uos-ai");   // 通过命令定位到应用商店uos-ai页
     notify.hints(hints);
     notify.timeOut(3000);
     notify.call();
 }
 
-void AiToolBarInner::closeMainWindow() {
+void AiToolBarInner::closeMainWindow()
+{
     if (this->parent()->parent() && this->parent()->parent()->parent()) {
         ExhibitionWidget *ptr = dynamic_cast<ExhibitionWidget *>(this->parent()->parent()->parent());
         if (ptr) {

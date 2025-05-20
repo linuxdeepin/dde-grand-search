@@ -19,6 +19,9 @@
 #include <QScreen>
 #include <QDBusInterface>
 #include <QDBusReply>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logPdfPreview)
 
 GRANDSEARCH_USE_NAMESPACE
 using namespace GrandSearch::pdf_preview;
@@ -55,7 +58,7 @@ void PDFView::initDoc(const QString &file)
 {
     m_doc.reset(new DPdfDoc(file));
     if (!m_doc || m_doc->status() != DPdfDoc::SUCCESS) {
-        qWarning() << "Cannot read this pdf file: " << file;
+        qCWarning(logPdfPreview) << "Failed to load PDF document - Path:" << file << "Status:" << (m_doc ? m_doc->status() : -1);
         m_isBadDoc = true;
     }
 }

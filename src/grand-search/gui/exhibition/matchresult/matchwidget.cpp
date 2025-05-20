@@ -22,6 +22,9 @@
 #include <QPaintEvent>
 #include <QPalette>
 #include <QScrollBar>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
@@ -32,7 +35,6 @@ using namespace GrandSearch;
 MatchWidgetPrivate::MatchWidgetPrivate(MatchWidget *parent)
     : q_p(parent)
 {
-
 }
 
 void MatchWidgetPrivate::setGroupIcon(GroupWidget *wid)
@@ -46,8 +48,7 @@ void MatchWidgetPrivate::setGroupIcon(GroupWidget *wid)
 }
 
 MatchWidget::MatchWidget(QWidget *parent)
-    : DWidget(parent)
-    , d_p(new MatchWidgetPrivate(this))
+    : DWidget(parent), d_p(new MatchWidgetPrivate(this))
 {
     m_groupHashShowOrder << GRANDSEARCH_GROUP_BEST << GRANDSEARCH_GROUP_FILE_INFERENCE
                          << GRANDSEARCH_GROUP_APP << GRANDSEARCH_GROUP_SETTING
@@ -62,7 +63,6 @@ MatchWidget::MatchWidget(QWidget *parent)
 
 MatchWidget::~MatchWidget()
 {
-
 }
 
 void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
@@ -73,7 +73,7 @@ void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
     MatchedItemMap::ConstIterator itData = matchedData.begin();
     while (itData != matchedData.end()) {
         // 根据groupHash创建对应类目列表，若已存在，直接返回已有类目列表
-        GroupWidget* groupWidget = createGroupWidget(itData.key());
+        GroupWidget *groupWidget = createGroupWidget(itData.key());
         if (!groupWidget) {
             itData++;
             continue;
@@ -203,11 +203,11 @@ void MatchWidget::selectNextItem()
                     listView->setCurrentIndex(QModelIndex());
                     m_customSelected = true;
                 } else {
-                    qDebug() << "select next failed";
+                    qCWarning(logGrandSearch) << "Failed to select next item in group:" << group->searchGroupName();
                 }
                 break;
             } else {
-                qInfo() << "it's the last one";
+                qCInfo(logGrandSearch) << "Reached last item in search results";
             }
         }
     }
@@ -254,11 +254,11 @@ void MatchWidget::selectPreviousItem()
                     viewMoreBtn->setSelected(false);
                     m_customSelected = true;
                 } else {
-                    qWarning() << "select previous failed";
+                    qCWarning(logGrandSearch) << "Failed to select previous item in group:" << group->searchGroupName();
                 }
                 break;
             } else {
-                qInfo() << "it's the first one";
+                qCInfo(logGrandSearch) << "Reached first item in search results";
             }
         }
     }
@@ -291,7 +291,7 @@ void MatchWidget::handleItem()
 void MatchWidget::onPreviewStateChanged(const bool preview)
 {
     if (this->isHidden() || preview == m_isPreviewItem)
-        return ;
+        return;
 
     m_isPreviewItem = preview;
 
@@ -312,7 +312,7 @@ void MatchWidget::onSelectItemByMouse(const MatchedItem &item)
     QString searchGroupName;
 
     // 通知其他列表取消选中
-    GrandSearchListView* listView = qobject_cast<GrandSearchListView*>(sender());
+    GrandSearchListView *listView = qobject_cast<GrandSearchListView *>(sender());
     if (listView) {
         for (int i = 0; i < m_vGroupWidgets.count(); ++i) {
             if (hasSelectItem(i)) {
@@ -453,7 +453,7 @@ void MatchWidget::adjustScrollBar()
 {
     int nCurSelHeight = 0;
 
-    //计算当前选中Item在contentWidget整体高度位置
+    // 计算当前选中Item在contentWidget整体高度位置
     for (auto group : m_vGroupWidgets) {
         if (Q_UNLIKELY((!group)))
             continue;
@@ -462,7 +462,7 @@ void MatchWidget::adjustScrollBar()
         if (Q_UNLIKELY(!viewMoreBtn))
             continue;
 
-        GrandSearchListView* listView = group->getListView();
+        GrandSearchListView *listView = group->getListView();
         if (Q_UNLIKELY(!listView))
             continue;
 
@@ -474,12 +474,12 @@ void MatchWidget::adjustScrollBar()
         }
     }
 
-    int nScrollAreaHeight = m_scrollArea->height();// 滚动区域高度
-    int nCurPosValue = m_scrollArea->verticalScrollBar()->value();//滚动条当前位置
-    int nCurHeight = nScrollAreaHeight + nCurPosValue;//滚动条当前可显示的内容高度
+    int nScrollAreaHeight = m_scrollArea->height();   // 滚动区域高度
+    int nCurPosValue = m_scrollArea->verticalScrollBar()->value();   // 滚动条当前位置
+    int nCurHeight = nScrollAreaHeight + nCurPosValue;   // 滚动条当前可显示的内容高度
 
-    int nOffset = 0;// 记录需要滚动的偏移量
-    int nNewPosValue = 0;// 滚动条位置新值
+    int nOffset = 0;   // 记录需要滚动的偏移量
+    int nNewPosValue = 0;   // 滚动条位置新值
 
     // 选中行定位到当前滚动区域底部，逐个向下滚动
     if (nCurSelHeight > nCurHeight) {
@@ -496,9 +496,9 @@ void MatchWidget::adjustScrollBar()
         m_scrollArea->verticalScrollBar()->setValue(nNewPosValue);
     }
 
-//    int nMin = m_scrollArea->verticalScrollBar()->minimum();
-//    int nMax = m_scrollArea->verticalScrollBar()->maximum();
-//    qDebug() << QString("nMin:%1 nMax:%2 nCurSelHeight%3 nCurPosValue:%4 nNewPosValue:%5").arg(nMin).arg(nMax).arg(nCurSelHeight).arg(nCurPosValue).arg(nNewPosValue);
+    //    int nMin = m_scrollArea->verticalScrollBar()->minimum();
+    //    int nMax = m_scrollArea->verticalScrollBar()->maximum();
+    //    qDebug() << QString("nMin:%1 nMax:%2 nCurSelHeight%3 nCurPosValue:%4 nNewPosValue:%5").arg(nMin).arg(nMax).arg(nCurSelHeight).arg(nCurPosValue).arg(nNewPosValue);
 }
 
 void MatchWidget::currentIndexChanged(const QString &searchGroupName, const QModelIndex &index)
@@ -537,14 +537,11 @@ void MatchWidget::initUi()
     m_vScrollLayout = new QVBoxLayout(m_scrollAreaContent);
     m_vScrollLayout->setContentsMargins(0, 0, 0, 0);
     m_vScrollLayout->setSpacing(0);
-
 }
 
 void MatchWidget::initConnect()
 {
-
 }
-
 
 void MatchWidget::reLayout()
 {
@@ -638,8 +635,8 @@ void MatchWidget::sortVislibleGroupList()
     while (itemWidget != m_groupWidgetMap.end()) {
 
         if (itemWidget.value()
-                && !itemWidget.value()->isHidden()
-                && !m_vGroupWidgets.contains(itemWidget.value()))
+            && !itemWidget.value()->isHidden()
+            && !m_vGroupWidgets.contains(itemWidget.value()))
             m_vGroupWidgets.push_back(itemWidget.value());
 
         itemWidget++;
@@ -654,9 +651,9 @@ void MatchWidget::paintEvent(QPaintEvent *event)
 void MatchWidget::resizeEvent(QResizeEvent *event)
 {
     // 重写resizeEvent，手动设置类目列表宽度，保证匹配列表布局正常显示
-    for (GroupWidgetMap::Iterator it = m_groupWidgetMap.begin(); it !=m_groupWidgetMap.end(); ++it) {
+    for (GroupWidgetMap::Iterator it = m_groupWidgetMap.begin(); it != m_groupWidgetMap.end(); ++it) {
         if (it.value()) {
-            it.value()->setFixedWidth(rect().width() - ScrollBarToListRightSpace);// 滚动条与列表右侧需要有2px间隙
+            it.value()->setFixedWidth(rect().width() - ScrollBarToListRightSpace);   // 滚动条与列表右侧需要有2px间隙
         }
     }
 

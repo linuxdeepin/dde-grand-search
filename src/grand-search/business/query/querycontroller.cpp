@@ -10,6 +10,9 @@
 
 #include <QUuid>
 #include <QDebug>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 using namespace GrandSearch;
 
@@ -44,7 +47,7 @@ void QueryControllerPrivate::onSearchCompleted(const QString &missionId)
 {
     if (missionId == m_missionId) {
         m_keepAliveTimer->stop();
-        qDebug() << "search completed and missionId:" << m_missionId;
+        qCInfo(logGrandSearch) << "Search completed for mission:" << m_missionId;
     }
 }
 
@@ -62,13 +65,17 @@ void QueryControllerPrivate::performSearch()
     m_missionId = QUuid::createUuid().toString(QUuid::WithoutBraces);
     emit q_p->missionChanged(m_missionId, m_searchText);
 
-    qDebug() << QString("m_daemonDbus->Search begin missionId:%1").arg(m_missionId);
+    qCDebug(logGrandSearch) << "Starting search - Mission:" << m_missionId
+                            << "Text:" << m_searchText;
     bool started = m_daemonDbus->Search(m_missionId, m_searchText);
-    qDebug() << QString("m_daemonDbus->Search end   missionId:%1").arg(m_missionId);
+    qCDebug(logGrandSearch) << "Search request completed - Mission:" << m_missionId
+                            << "Started:" << started;
+
     if (started) {
+        qCDebug(logGrandSearch) << "Starting keep-alive timer for mission:" << m_missionId;
         m_keepAliveTimer->start();
     } else {
-        qWarning() << QString("search failed missionId:%1").arg(m_missionId);
+        qCWarning(logGrandSearch) << "Search failed to start - Mission:" << m_missionId;
     }
 }
 
@@ -93,7 +100,7 @@ void QueryController::onSearchTextChanged(const QString &txt)
     if (txt.isEmpty()) {
         // 停止搜索相关的所有活动
         onTerminateSearch();
-        qDebug() << "search terminate and missionId:" << d_p->m_missionId;
+        qCInfo(logGrandSearch) << "Search terminated - Mission:" << d_p->m_missionId;
         d_p->m_searchText.clear();
         d_p->m_pendingSearchText.clear();
         d_p->m_missionId.clear();
@@ -122,6 +129,9 @@ void QueryController::onSearchTextChanged(const QString &txt)
         debounceDelay = 0;
     }
 
+    qCDebug(logGrandSearch) << "Setting debounce delay - Text:" << txt
+                            << "Length:" << byteLength
+                            << "Delay:" << debounceDelay;
     d_p->m_debounceTimer->setInterval(debounceDelay);
     d_p->m_debounceTimer->start();
 }
@@ -130,9 +140,10 @@ void QueryController::onTerminateSearch()
 {
     if (d_p->m_missionId.isEmpty())
         return;
-    qDebug() << "m_daemonDbus->Terminate begin missionId:" << d_p->m_missionId;
+
+    qCDebug(logGrandSearch) << "Terminating search - Mission:" << d_p->m_missionId;
     d_p->m_daemonDbus->Terminate();
-    qDebug() << "m_daemonDbus->Terminate end   missionId:" << d_p->m_missionId;
+    qCDebug(logGrandSearch) << "Search termination completed - Mission:" << d_p->m_missionId;
 }
 
 QString QueryController::getMissionID() const

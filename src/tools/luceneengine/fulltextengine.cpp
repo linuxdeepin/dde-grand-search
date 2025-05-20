@@ -14,13 +14,15 @@
 
 #include <QFileInfo>
 #include <QDebug>
+#include <QLoggingCategory>
 
+Q_LOGGING_CATEGORY(logToolFullText, "org.deepin.dde.grandsearch.tool.fulltext")
 using namespace GrandSearch;
 using namespace Lucene;
 
-FullTextEnginePrivate::FullTextEnginePrivate(FullTextEngine *qq) : q(qq)
+FullTextEnginePrivate::FullTextEnginePrivate(FullTextEngine *qq)
+    : q(qq)
 {
-
 }
 
 Lucene::IndexReaderPtr FullTextEnginePrivate::createReader(const QString &cache)
@@ -29,10 +31,8 @@ Lucene::IndexReaderPtr FullTextEnginePrivate::createReader(const QString &cache)
 }
 
 FullTextEngine::FullTextEngine(QObject *parent)
-    : QObject(parent)
-    , d(new FullTextEnginePrivate(this))
+    : QObject(parent), d(new FullTextEnginePrivate(this))
 {
-
 }
 
 FullTextEngine::~FullTextEngine()
@@ -45,13 +45,13 @@ bool FullTextEngine::init(const QString &cache)
 {
     QFileInfo info(cache);
     if (!info.isReadable()) {
-        qWarning() << "the cahce file is not readable" << cache;
+        qCWarning(logToolFullText) << "Cache file is not readable - Path:" << cache;
         return false;
     } else if (d->m_reader) {
-        qCritical() << "duplicate initialization";
+        qCCritical(logToolFullText) << "Full text engine already initialized";
         return false;
     }
-    qDebug() << "full text cache" << cache;
+    qCDebug(logToolFullText) << "Initializing full text cache - Path:" << cache;
     d->m_reader = d->createReader(cache);
     return d->m_reader.get() != nullptr;
 }
@@ -62,7 +62,7 @@ void FullTextEngine::query(const QString &searchPath, const QStringList &keys, C
         return;
 
     QString key = keys.join(' ').trimmed();
-    qDebug() << "fulltext search keys" << key << "dir" << searchPath;
+    qCDebug(logToolFullText) << "Performing full text search - Keywords:" << key << "Directory:" << searchPath;
     if (key.isEmpty())
         return;
 
@@ -96,14 +96,14 @@ void FullTextEngine::query(const QString &searchPath, const QStringList &keys, C
                 analyzer, simple, lighter, doc
             };
             if (!func(filePath, pdata, &ctx))
-                return; // 中断
+                return;   // 中断
         }
     } catch (const LuceneException &e) {
-        qWarning() << QString::fromStdWString(e.getError());
+        qCWarning(logToolFullText) << "Lucene search error - Details:" << QString::fromStdWString(e.getError());
     } catch (const std::exception &e) {
-        qWarning() << QString(e.what());
+        qCWarning(logToolFullText) << "Search error - Details:" << QString(e.what());
     } catch (...) {
-        qWarning() << "Search failed! unkown error";
+        qCWarning(logToolFullText) << "Search failed - Unknown error occurred";
     }
 }
 

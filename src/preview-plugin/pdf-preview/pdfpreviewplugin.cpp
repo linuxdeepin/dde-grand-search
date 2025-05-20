@@ -7,7 +7,9 @@
 #include "pdfview.h"
 
 #include <QFileInfo>
+#include <QLoggingCategory>
 
+Q_LOGGING_CATEGORY(logPdfPreview, "org.deepin.dde.grandsearch.plugin.pdf")
 GRANDSEARCH_USE_NAMESPACE
 using namespace GrandSearch::pdf_preview;
 

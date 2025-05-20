@@ -2,6 +2,9 @@
 
 #include <QLibrary>
 #include <QDebug>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 using namespace GrandSearch;
 using namespace report;
@@ -20,7 +23,7 @@ void CommitLog::commit(const QString &data)
     if (data.isEmpty())
         return;
 
-    //qDebug() << data.toStdString().c_str();
+    // qCDebug(logGrandSearch) << "Committing event log data - Size:" << data.length();
     m_writeEventLog(data.toStdString());
 }
 
@@ -28,7 +31,7 @@ bool CommitLog::init()
 {
     QLibrary library("deepin-event-log");
     if (!library.load()) {
-        qWarning() << "Load library failed";
+        qCWarning(logGrandSearch) << "Failed to load deepin-event-log library - Error:" << library.errorString();
         return false;
     }
 
@@ -36,12 +39,13 @@ bool CommitLog::init()
     m_writeEventLog = reinterpret_cast<WriteEventLog>(library.resolve("WriteEventLog"));
 
     if (!m_initEventLog || !m_writeEventLog) {
-        qWarning() << "Library init failed";
+        qCWarning(logGrandSearch) << "Failed to resolve library functions - Initialize:" << (m_initEventLog ? "OK" : "Failed")
+                                  << "WriteEventLog:" << (m_writeEventLog ? "OK" : "Failed");
         return false;
     }
 
     if (!m_initEventLog("uos-ai", false)) {
-        qWarning() << "Initialize called failed";
+        qCWarning(logGrandSearch) << "Failed to initialize event log system - Application:uos-ai";
         return false;
     }
 
