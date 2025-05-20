@@ -11,6 +11,7 @@
 #include <QFileInfo>
 #include <QRect>
 #include <QDateTime>
+#include <QLoggingCategory>
 
 extern "C"
 {
@@ -18,6 +19,7 @@ extern "C"
 #include <libavformat/avformat.h>
 }
 
+Q_LOGGING_CATEGORY(logAudioPreview, "org.deepin.dde.grandsearch.plugin.audio")
 GRANDSEARCH_USE_NAMESPACE
 using namespace GrandSearch::audio_preview;
 

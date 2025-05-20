@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QTextCodec>
 #include <QLocale>
+#include <QLoggingCategory>
 
 #include <unicode/ucnv.h>
 #include <unicode/ucsdet.h>
@@ -17,6 +18,7 @@
 #include <taglib.h>
 #include <tpropertymap.h>
 
+Q_DECLARE_LOGGING_CATEGORY(logAudioPreview)
 GRANDSEARCH_USE_NAMESPACE
 using namespace GrandSearch::audio_preview;
 
@@ -29,13 +31,13 @@ AudioFileInfo::AudioMetaData AudioFileInfo::openAudioFile(const QString &file)
 {
     TagLib::FileRef f(file.toLocal8Bit());
     if (!f.file()) {
-        qWarning() << "TagLib: open file failed:" << file;
+        qCWarning(logAudioPreview) << "Failed to open audio file - Path:" << file;
         return {};
     }
 
     TagLib::Tag *tag = f.tag();
     if (!tag) {
-        qWarning() << "TagLib: no tag for media file" << file;
+        qCWarning(logAudioPreview) << "No metadata tags found in audio file - Path:" << file;
         return {};
     }
 

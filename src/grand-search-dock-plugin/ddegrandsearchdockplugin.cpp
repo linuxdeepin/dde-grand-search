@@ -12,6 +12,7 @@
 #include <QGSettings>
 #endif
 #include <QLabel>
+#include <QLoggingCategory>
 
 #define GrandSearchPlugin "grand-search"
 #define MenuOpenSetting "menu_open_setting"
@@ -21,6 +22,7 @@
 #define SchemaPath "/com/deepin/dde/dock/module/grand-search/"
 #define SchemaKeyMenuEnable "menuEnable"
 
+Q_LOGGING_CATEGORY(logDock, "org.deepin.dde.dock.plugin.grandsearch")
 using namespace GrandSearch;
 DWIDGET_USE_NAMESPACE
 
@@ -77,7 +79,7 @@ void DdeGrandSearchDockPlugin::init(PluginProxyInterface *proxyInter)
         m_gsettings.reset(new QGSettings(SchemaId, SchemaPath));
         connect(m_gsettings.data(), &QGSettings::changed, this, &DdeGrandSearchDockPlugin::onGsettingsChanged);
     } else {
-        qWarning() << "no such schema id" << SchemaId;
+        qCWarning(logDock) << "GSettings schema not found - Schema:" << SchemaId;
     }
 #endif
 }
@@ -108,7 +110,7 @@ bool DdeGrandSearchDockPlugin::pluginIsAllowDisable()
 
 bool DdeGrandSearchDockPlugin::pluginIsDisable()
 {
-    // 第二个参数 “disabled” 表示存储这个值的键（所有配置都是以键值对的方式存储）
+    // 第二个参数 "disabled" 表示存储这个值的键（所有配置都是以键值对的方式存储）
     // 第三个参数表示默认值，即默认不禁用
     return m_proxyInter->getValue(this, "disabled", false).toBool();
 }
@@ -192,10 +194,10 @@ void DdeGrandSearchDockPlugin::onGsettingsChanged(const QString &key)
 {
     Q_ASSERT(m_gsettings);
 
-    qDebug() << "gsettings changed,and key:" << key << "    value:" << m_gsettings->get(key);
+    qCDebug(logDock) << "GSettings value changed - Key:" << key << "Value:" << m_gsettings->get(key);
     if (key == SchemaKeyMenuEnable) {
         bool enable = m_gsettings->get(key).toBool();
-        qInfo() << "The status of whether the grand search right-click menu is enabled changes to:" << enable;
+        qCInfo(logDock) << "Grand search context menu state changed - Enabled:" << enable;
     }
 }
 #endif
@@ -203,7 +205,7 @@ void DdeGrandSearchDockPlugin::onVisibleChanged(bool visible)
 {
 #ifdef USE_DOCK_2_0
     if (!m_messageCallback) {
-        qWarning() << "Message callback function is nullptr";
+        qCWarning(logDock) << "Message callback function not initialized";
         return;
     }
 

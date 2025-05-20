@@ -4,22 +4,26 @@
 
 #include "embeddingpluginwidget.h"
 
+#include <DFontSizeManager>
+#include <DGuiApplicationHelper>
+
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QProcess>
 #include <QDBusConnection>
 #include <QDBusMessage>
 #include <QDBusPendingCall>
+#include <QLoggingCategory>
 
-#include <DFontSizeManager>
-#include <DGuiApplicationHelper>
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
 
 static constexpr char PLUGINSNAME[] = "uos-ai-rag";
 
-EmbeddingPluginWidget::EmbeddingPluginWidget(QWidget *parent) : DWidget(parent)
+EmbeddingPluginWidget::EmbeddingPluginWidget(QWidget *parent)
+    : DWidget(parent)
 {
     initUI();
 }
@@ -122,7 +126,7 @@ void EmbeddingPluginWidget::initUI()
 
 void EmbeddingPluginWidget::openAppStore()
 {
-    qInfo() << "open app store" << PLUGINSNAME;
+    qCInfo(logGrandSearch) << "Opening application store for plugin installation - Plugin:" << PLUGINSNAME;
     QDBusMessage msg = QDBusMessage::createMethodCall("com.home.appstore.client", "/com/home/appstore/client",
                                                       "com.home.appstore.client", "openBusinessUri");
     QVariantList list;

@@ -11,6 +11,7 @@
 #include <QDateTime>
 #include <QtConcurrent>
 #include <QPainterPath>
+#include <QLoggingCategory>
 
 #ifdef __cplusplus
 extern "C" {
@@ -19,6 +20,7 @@ extern "C" {
 }
 #endif
 
+Q_LOGGING_CATEGORY(logVideoPreview, "org.deepin.dde.grandsearch.plugin.video")
 GRANDSEARCH_USE_NAMESPACE
 using namespace GrandSearch::video_preview;
 
@@ -267,13 +269,13 @@ QVariantHash DecodeBridge::decode(QSharedPointer<DecodeBridge> self, const QStri
                 info.insert(kLabelDuration, QVariant::fromValue(duration));
                 info.insert(kLabelDimension, QSize(codecpar->width, codecpar->height));
             } else {
-                qWarning() << "VideoPreviewPlugin: find stream error" << videoRet;
+                qCWarning(logVideoPreview) << "Failed to find video stream - Error code:" << videoRet << "File:" << file;
             }
         }
 
         avformat_close_input(&avCtx);
     } else {
-        qWarning() << "VideoPreviewPlugin: could not open video....";
+        qCWarning(logVideoPreview) << "Failed to open video file - Path:" << file;
     }
 
     //检查一次是否停止
@@ -300,7 +302,7 @@ QVariantHash DecodeBridge::decode(QSharedPointer<DecodeBridge> self, const QStri
             info.insert(kKeyThumbnailer, QVariant::fromValue(pixmap));
         } else {
             // 预览失败
-            qWarning() << "thumbnailer create image error";
+            qCWarning(logVideoPreview) << "Failed to generate video thumbnail - File:" << file;
             QImage errorImg(":/icons/image_damaged.svg");
             errorImg = errorImg.scaled(46, 46);
             auto img = CommonTools::creatErrorImage({192, 108}, errorImg);

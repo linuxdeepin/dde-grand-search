@@ -9,6 +9,9 @@
 #include <QFileInfo>
 #include <QDirIterator>
 #include <QTimer>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 using namespace GrandSearch;
 
@@ -33,7 +36,7 @@ FileStatisticsThread::~FileStatisticsThread()
 void FileStatisticsThread::start(const QString &sourceFile)
 {
     if (isRunning()) {
-        qWarning() << "current thread is running.";
+        qCWarning(logGrandSearch) << "File statistics thread is already running - Source:" << m_sourceFile;
         return;
     }
 

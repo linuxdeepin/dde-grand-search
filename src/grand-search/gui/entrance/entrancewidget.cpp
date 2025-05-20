@@ -26,18 +26,21 @@
 #include <QContextMenuEvent>
 #include <QEvent>
 #include <QtGlobal>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
 
-static const uint DelayReponseTime          = 50;       // 输入延迟搜索时间
-static const uint EntraceWidgetWidth        = 740;      // 搜索界面宽度度
-static const uint EntraceWidgetHeight       = 48;       // 搜索界面高度
-static const uint WidgetMargins             = 10;       // 界面边距
-static const uint SearchMaxLength           = 512;      // 输入最大字符限制
+static const uint DelayReponseTime = 50;   // 输入延迟搜索时间
+static const uint EntraceWidgetWidth = 740;   // 搜索界面宽度度
+static const uint EntraceWidgetHeight = 48;   // 搜索界面高度
+static const uint WidgetMargins = 10;   // 界面边距
+static const uint SearchMaxLength = 512;   // 输入最大字符限制
 
-static const uint LabelIconSize             = 26;       // 标签应用图标显示大小
-static const uint LabelSize                 = 32;       // 标签大小
+static const uint LabelIconSize = 26;   // 标签应用图标显示大小
+static const uint LabelSize = 32;   // 标签大小
 
 EntranceWidgetPrivate::EntranceWidgetPrivate(EntranceWidget *parent)
     : q_p(parent)
@@ -61,6 +64,7 @@ void EntranceWidgetPrivate::notifyTextChanged()
     Q_ASSERT(m_searchEdit);
 
     const QString &currentSearchText = m_searchEdit->text().trimmed();
+    qCDebug(logGrandSearch) << "Search text changed:" << currentSearchText;
     emit q_p->searchTextChanged(currentSearchText);
 
     // 搜索内容改变后，清空图标显示
@@ -92,8 +96,7 @@ void EntranceWidgetPrivate::showMenu(const QPoint &pos)
 }
 
 EntranceWidget::EntranceWidget(QWidget *parent)
-    : QFrame(parent)
-    , d_p(new EntranceWidgetPrivate(this))
+    : QFrame(parent), d_p(new EntranceWidgetPrivate(this))
 {
     initUI();
     initConnections();
@@ -101,7 +104,6 @@ EntranceWidget::EntranceWidget(QWidget *parent)
 
 EntranceWidget::~EntranceWidget()
 {
-
 }
 
 void EntranceWidget::showLabelAppIcon(bool visible)
@@ -119,6 +121,7 @@ void EntranceWidget::showLabelAppIcon(bool visible)
 bool EntranceWidget::event(QEvent *event)
 {
     if (event->type() == QEvent::FocusIn) {
+        qCDebug(logGrandSearch) << "Focus in event received";
         d_p->m_lineEdit->setFocus();
         return true;
     }
@@ -134,16 +137,17 @@ void EntranceWidget::paintEvent(QPaintEvent *event)
 bool EntranceWidget::eventFilter(QObject *watched, QEvent *event)
 {
     if (watched == d_p->m_lineEdit && QEvent::KeyPress == event->type()) {
-        QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
         if (Q_LIKELY(keyEvent)) {
             int key = keyEvent->key();
+            qCDebug(logGrandSearch) << "Key press event:" << key;
             switch (key) {
-            case Qt::Key_Up : {
+            case Qt::Key_Up: {
                 emit sigSelectPreviousItem();
                 return true;
             }
-            case Qt::Key_Tab :
-            case Qt::Key_Down : {
+            case Qt::Key_Tab:
+            case Qt::Key_Down: {
                 emit sigSelectNextItem();
                 return true;
             }
@@ -152,21 +156,24 @@ bool EntranceWidget::eventFilter(QObject *watched, QEvent *event)
                 emit sigHandleItem();
                 return true;
             }
-            case Qt::Key_Escape : {
+            case Qt::Key_Escape: {
                 emit sigCloseWindow();
                 return true;
             }
-            default:break;
+            default:
+                break;
             }
         }
     } else if (watched == d_p->m_lineEdit && QEvent::ContextMenu == event->type()) {
-        QContextMenuEvent *contextMenuEvent = static_cast<QContextMenuEvent*>(event);
+        QContextMenuEvent *contextMenuEvent = static_cast<QContextMenuEvent *>(event);
         if (Q_LIKELY(contextMenuEvent)) {
+            qCDebug(logGrandSearch) << "Context menu event received";
             d_p->showMenu(contextMenuEvent->globalPos());
             return true;
         }
     } else if (watched == d_p->m_searchEdit && QEvent::FocusIn == event->type()) {
         if (Q_LIKELY(d_p->m_lineEdit)) {
+            qCDebug(logGrandSearch) << "Search edit focus in event";
             d_p->m_lineEdit->setFocus();
             return true;
         }
@@ -192,9 +199,9 @@ void EntranceWidget::initUI()
     QColor colorBkg(0, 0, 0, 25);
     if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType) {
         colorText = QColor(255, 255, 255);
-       colorBkg =  QColor(255, 255, 255, 25);
+        colorBkg = QColor(255, 255, 255, 25);
     }
-    palette.setColor(QPalette::Button, colorBkg); // 背景色
+    palette.setColor(QPalette::Button, colorBkg);   // 背景色
     palette.setColor(QPalette::Text, colorText);
     palette.setColor(QPalette::ButtonText, colorText);
 
@@ -206,7 +213,7 @@ void EntranceWidget::initUI()
 
     d_p->m_appIconAction = new QAction(this);
     d_p->m_lineEdit->addAction(d_p->m_appIconAction, QLineEdit::TrailingPosition);
-    d_p->m_searchEdit->setRightWidgets(QList<QWidget*>() << d_p->m_appIconLabel);
+    d_p->m_searchEdit->setRightWidgets(QList<QWidget *>() << d_p->m_appIconLabel);
 
     // 搜索框界面布局设置
     // 必须对搜索框控件的边距和间隔设置为0,否则其内含的LineEdit不满足大小显示要求
@@ -256,6 +263,7 @@ void EntranceWidget::onAppIconChanged(const QString &searchGroupName, const Matc
     const QString appIconName = Utils::appIconName(item);
     // app图标名称为空，隐藏appIcon显示
     if (appIconName.isEmpty()) {
+        qCDebug(logGrandSearch) << "Hiding app icon - Empty name";
         showLabelAppIcon(false);
         d_p->m_appIconName.clear();
         return;

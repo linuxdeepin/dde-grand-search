@@ -9,6 +9,9 @@
 
 #include <QtDebug>
 #include <QTimer>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 #define SessionManagerService "org.deepin.dde.SessionManager1"
 #define SessionManagerPath "/org/deepin/dde/SessionManager1"
@@ -17,9 +20,9 @@ using namespace GrandSearch;
 DWIDGET_USE_NAMESPACE
 
 HandleVisibility::HandleVisibility(MainWindow *mainWindow, QObject *parent)
-    : QObject(parent)
-    , m_mainWindow(mainWindow)
-    // , m_sessionManagerInter(new com::deepin::SessionManager(SessionManagerService, SessionManagerPath, QDBusConnection::sessionBus(), this))
+    : QObject(parent),
+      m_mainWindow(mainWindow)
+// , m_sessionManagerInter(new com::deepin::SessionManager(SessionManagerService, SessionManagerPath, QDBusConnection::sessionBus(), this))
 {
     init();
 }
@@ -46,10 +49,10 @@ void HandleVisibility::onApplicationStateChanged(const Qt::ApplicationState stat
 
     if (Qt::ApplicationInactive == state) {
         // todo 二阶段：截图导致本进程窗口变为非激活，不退出。截图退出后，主动激活本进程主窗口。
-        qDebug() << "application state change to inactive,so i will exit.";
+        qCInfo(logGrandSearch) << "Application state changed to inactive - Closing main window";
         m_mainWindow->close();
     } else if (Qt::ApplicationActive == state) {
-        qDebug() << "application state change to active.";
+        qCDebug(logGrandSearch) << "Application state changed to active - Showing main window";
         m_mainWindow->show();
     }
 }
@@ -93,7 +96,9 @@ void HandleVisibility::regionMousePress(const QPoint &p, const int flag)
         }
     }
     // 点击位置在程序窗口之外则退出
-    qDebug() << "click:" << p << "   flag:" << flag << "    and exit.";
+    qCInfo(logGrandSearch) << "Mouse click outside application window - Position:" << p
+                           << "Flag:" << flag
+                           << "Scheduling window close";
     // todo ：后期根据情况，可能需要设置为隐藏，而不能直接退出
     // 延迟退出，便于dock插件响应时能正确获取当前状态
     QTimer::singleShot(500, this, &HandleVisibility::onCloseWindow);
