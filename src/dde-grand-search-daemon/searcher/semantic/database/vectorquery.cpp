@@ -8,12 +8,15 @@
 #include "global/builtinsearch.h"
 
 #include <QJsonDocument>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logDaemon)
 
 using namespace GrandSearch;
 
-VectorQueryPrivate::VectorQueryPrivate(VectorQuery *qq) : q(qq)
+VectorQueryPrivate::VectorQueryPrivate(VectorQuery *qq)
+    : q(qq)
 {
-
 }
 
 bool VectorQueryPrivate::timeToPush() const
@@ -30,10 +33,9 @@ double VectorQueryPrivate::matchedWeight(qreal distance)
 }
 
 VectorQuery::VectorQuery(QObject *parent)
-    : QObject(parent)
-    , d(new VectorQueryPrivate(this))
+    : QObject(parent),
+      d(new VectorQueryPrivate(this))
 {
-
 }
 
 VectorQuery::~VectorQuery()
@@ -44,7 +46,7 @@ VectorQuery::~VectorQuery()
 
 void VectorQuery::run(void *ptr, PushItemCallBack callBack, void *pdata)
 {
-    qDebug() << "query by vector index";
+    qCDebug(logDaemon) << "Starting vector index query";
     Q_ASSERT(callBack);
 
     VectorQuery *self = static_cast<VectorQuery *>(ptr);
@@ -53,14 +55,15 @@ void VectorQuery::run(void *ptr, PushItemCallBack callBack, void *pdata)
     VectorQueryPrivate *d = self->d;
     d->m_time.start();
 
+    qCDebug(logDaemon) << "Executing vector search for query:" << d->m_query;
     auto vr = d->m_parser->vectorSearch(d->m_query);
-    //qDebug() << "vector search result" << vr;
 
     QHash<QString, QSet<QString>> filter;
-    QSet<QString> duped; // the result contaions duplicate files.
+    QSet<QString> duped;   // the result contains duplicate files.
 
     QVariantHash varRet = QJsonDocument::fromJson(vr.toUtf8()).object().toVariantHash();
     auto jitems = varRet["result"].value<QVariantList>();
+    qCDebug(logDaemon) << "Vector search returned" << jitems.size() << "results";
 
     MatchedItemMap items;
     for (auto varIt = jitems.begin(); varIt != jitems.end(); ++varIt) {
@@ -73,8 +76,10 @@ void VectorQuery::run(void *ptr, PushItemCallBack callBack, void *pdata)
                 d->m_lastPush = d->m_time.elapsed();
 
             // 中断
-            if (!ret)
+            if (!ret) {
+                qCDebug(logDaemon) << "Search interrupted by callback";
                 return;
+            }
         }
 
         QVariantHash hIt = varIt->value<QVariantHash>();
@@ -87,8 +92,7 @@ void VectorQuery::run(void *ptr, PushItemCallBack callBack, void *pdata)
         duped.insert(absoluteFilePath);
 
         // 过滤文管设置的隐藏文件
-        if (!QFileInfo::exists(absoluteFilePath) ||
-                SpecialTools::isHiddenFile(absoluteFilePath, filter, QDir::homePath()))
+        if (!QFileInfo::exists(absoluteFilePath) || SpecialTools::isHiddenFile(absoluteFilePath, filter, QDir::homePath()))
             continue;
 
         d->m_count++;
@@ -124,4 +128,3 @@ void VectorQuery::setQuery(const QString &query)
 {
     d->m_query = query;
 }
-

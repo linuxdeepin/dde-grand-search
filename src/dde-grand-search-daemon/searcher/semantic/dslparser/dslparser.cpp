@@ -7,17 +7,23 @@
 #include <global/searchhelper.h>
 
 #include <QDebug>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logDaemon)
 
 using namespace GrandSearch;
 using namespace antlr4;
 
 bool BaseCond::kIsNeedAdjustBase = false;
 
-BaseCond::BaseCond(const QString &text, QObject *parent) : QObject(parent) {
+BaseCond::BaseCond(const QString &text, QObject *parent)
+    : QObject(parent)
+{
     setCond(text);
 }
 
-BaseCond::~BaseCond() {
+BaseCond::~BaseCond()
+{
     for (BaseCond *cond : m_andCondList) {
         delete cond;
     }
@@ -27,19 +33,22 @@ BaseCond::~BaseCond() {
     }
 }
 
-void BaseCond::addAndCond(BaseCond *cond) {
-    //qDebug() << QString("BaseCond type(%1) add AND(%2)").arg(m_condType).arg(cond->getCondType());
+void BaseCond::addAndCond(BaseCond *cond)
+{
+    // qDebug() << QString("BaseCond type(%1) add AND(%2)").arg(m_condType).arg(cond->getCondType());
     m_andCondList.append(cond);
     cond->setParent(this);
 }
 
-void BaseCond::addOrCond(BaseCond *cond) {
-    //qDebug() << QString("BaseCond type(%1) add OR(%2)").arg(m_condType).arg(cond->getCondType());
+void BaseCond::addOrCond(BaseCond *cond)
+{
+    // qDebug() << QString("BaseCond type(%1) add OR(%2)").arg(m_condType).arg(cond->getCondType());
     m_orCondList.append(cond);
     cond->setParent(this);
 }
 
-void BaseCond::adjust() {
+void BaseCond::adjust()
+{
     // 消除冗余的Binary层级
     this->mergeBinary();
     // 消除冗余的Base层级，因为Base层级可以嵌套，所以可能要多次调用（如果存在层级变化，使用kIsNeedAdjustBase进行标记，直到不需变化）
@@ -47,16 +56,18 @@ void BaseCond::adjust() {
         BaseCond::kIsNeedAdjustBase = false;
         this->mergeBase();
     } while (BaseCond::kIsNeedAdjustBase);
-    qInfo() << QString("after merge:\n%1").arg(this->toString()).toUtf8().toStdString().c_str();
+    qCInfo(logDaemon) << "Condition tree after merge:\n"
+                      << this->toString();
 
     this->merge4Engine();
     this->adjust4OrCond();
 }
 
-void BaseCond::mergeBinary() {
+void BaseCond::mergeBinary()
+{
     // 合并DateInfo类型，原理：一般都是成对出现的
     if (m_condType == querylangParser::RuleBinaryExpression && m_andCondList.size() >= 2
-            && m_andCondList[0]->getCondType() == querylangParser::RuleDateSearchinfo) {
+        && m_andCondList[0]->getCondType() == querylangParser::RuleDateSearchinfo) {
         bool isAllDate = true;
         for (int i = 0; i < m_andCondList.size(); i++) {
             if (m_andCondList[i]->getCondType() != querylangParser::RuleDateSearchinfo) {
@@ -72,10 +83,10 @@ void BaseCond::mergeBinary() {
                 DateInfoCond *cond = dynamic_cast<DateInfoCond *>(m_andCondList[i]);
                 if (cond->m_compType.contains(">")) {
                     allCond->m_timestamp = cond->m_timestamp;
-                    allCond->m_cond     += cond->m_cond + "  ";
+                    allCond->m_cond += cond->m_cond + "  ";
                 } else {
                     allCond->m_timestamp2 = cond->m_timestamp;
-                    allCond->m_cond      += cond->m_cond + "  ";
+                    allCond->m_cond += cond->m_cond + "  ";
                 }
                 delete m_andCondList[i];
                 m_andCondList.removeAt(i);
@@ -99,7 +110,7 @@ void BaseCond::mergeBinary() {
 
     // 调整的策略是：如果parent只有一个child，就把child给parent的parent，减少一级冗余
     if (m_condType != querylangParser::RuleBinaryExpression && getParent() && getParent()->getCondType() == querylangParser::RuleBinaryExpression) {
-        BaseCond *parent       = getParent();
+        BaseCond *parent = getParent();
         BaseCond *adviseParent = parent->getParent();
         // parent下只有一个child，才可以调整
         if (parent->m_andCondList.size() != 1 && parent->m_orCondList.size() != 1) {
@@ -123,10 +134,11 @@ void BaseCond::mergeBinary() {
     }
 }
 
-void BaseCond::mergeBase() {
+void BaseCond::mergeBase()
+{
     // 合并DateInfo类型，原理：一般都是成对出现的
     if (m_condType == querylangParser::RulePrimary && m_andCondList.size() >= 2
-            && m_andCondList[0]->getCondType() == querylangParser::RuleDateSearchinfo) {
+        && m_andCondList[0]->getCondType() == querylangParser::RuleDateSearchinfo) {
         bool isAllDate = true;
         for (int i = 0; i < m_andCondList.size(); i++) {
             if (m_andCondList[i]->getCondType() != querylangParser::RuleDateSearchinfo) {
@@ -142,10 +154,10 @@ void BaseCond::mergeBase() {
                 DateInfoCond *cond = dynamic_cast<DateInfoCond *>(m_andCondList[i]);
                 if (cond->m_compType.contains(">")) {
                     allCond->m_timestamp = cond->m_timestamp;
-                    allCond->m_cond     += cond->m_cond + "  ";
+                    allCond->m_cond += cond->m_cond + "  ";
                 } else {
                     allCond->m_timestamp2 = cond->m_timestamp;
-                    allCond->m_cond      += cond->m_cond + "  ";
+                    allCond->m_cond += cond->m_cond + "  ";
                 }
                 delete m_andCondList[i];
                 m_andCondList.removeAt(i);
@@ -169,8 +181,8 @@ void BaseCond::mergeBase() {
 
     // 调整的策略是：如果parent只有一个child，就把child给parent的parent，减少一级冗余
     if (m_condType != querylangParser::RulePrimary && getParent() && getParent()->getCondType() == querylangParser::RulePrimary
-            && getParent()->getParent()) {
-        BaseCond *parent       = getParent();
+        && getParent()->getParent()) {
+        BaseCond *parent = getParent();
         BaseCond *adviseParent = parent->getParent();
         // parent下只有一个child，才可以调整
         if (parent->m_andCondList.size() != 1 && parent->m_orCondList.size() != 1) {
@@ -195,7 +207,8 @@ void BaseCond::mergeBase() {
     }
 }
 
-void BaseCond::merge4Engine() {
+void BaseCond::merge4Engine()
+{
     if (m_condType == querylangParser::RulePrimary || m_condType == querylangParser::RuleBinaryExpression) {
         if (m_andCondList.isEmpty()) {
             for (int i = 0; i < m_orCondList.size(); i++) {
@@ -214,10 +227,11 @@ void BaseCond::merge4Engine() {
     }
 }
 
-void BaseCond::adjust4OrCond() {
+void BaseCond::adjust4OrCond()
+{
     if (m_andCondList.size() == 2 && m_andCondList[0]->getCondType() == querylangParser::RulePrimary
-            && !m_andCondList[0]->m_orCondList.isEmpty()
-            && m_andCondList[1]->getCondType() == BinaryCond::RuleEngine) {
+        && !m_andCondList[0]->m_orCondList.isEmpty()
+        && m_andCondList[1]->getCondType() == BinaryCond::RuleEngine) {
         bool isAllSimpleCond = true;
         for (int i = 0; i < m_andCondList[0]->m_orCondList.size(); i++) {
             BaseCond *cond = m_andCondList[0]->m_orCondList[i];
@@ -248,7 +262,8 @@ void BaseCond::adjust4OrCond() {
     }
 }
 
-QList<SemanticEntity> BaseCond::entityList() {
+QList<SemanticEntity> BaseCond::entityList()
+{
     QList<SemanticEntity> list;
     if (m_condType == querylangParser::RulePrimary || m_condType == querylangParser::RuleBinaryExpression) {
         if (!m_andCondList.isEmpty()) {
@@ -266,7 +281,8 @@ QList<SemanticEntity> BaseCond::entityList() {
     return list;
 }
 
-QString BaseCond::toString(int spaceCounts) {
+QString BaseCond::toString(int spaceCounts)
+{
     // 控制缩进
     QString space;
     for (int i = 0; i < spaceCounts; i++) {
@@ -286,7 +302,9 @@ QString BaseCond::toString(int spaceCounts) {
     return str;
 }
 
-DateInfoCond::DateInfoCond(const QString &text, QObject *parent) : BaseCond(text, parent) {
+DateInfoCond::DateInfoCond(const QString &text, QObject *parent)
+    : BaseCond(text, parent)
+{
     m_condType = querylangParser::RuleDateSearchinfo;
 
     const QDateTime curDT = QDateTime::currentDateTime();
@@ -296,6 +314,7 @@ DateInfoCond::DateInfoCond(const QString &text, QObject *parent) : BaseCond(text
     int pos = m_cond.indexOf("\"") + 1;
     if (pos == 0) {
         m_compType = ">";
+        qCDebug(logDaemon) << "No date range specified, using default comparison type:" << m_compType;
         return;
     }
 
@@ -312,38 +331,41 @@ DateInfoCond::DateInfoCond(const QString &text, QObject *parent) : BaseCond(text
     static QRegularExpression reg4("([\\d\\.]+) ?hour", QRegularExpression::CaseInsensitiveOption);
     static QRegularExpression reg5("([\\d\\.]+) ?(min|minute)", QRegularExpression::CaseInsensitiveOption);
     QRegularExpressionMatch match;
-    if ((match = reg.match(temp)).hasMatch()) { // 年
+    if ((match = reg.match(temp)).hasMatch()) {   // 年
         int offset = match.captured(1).toInt() - 1;
         auto anchor = QDateTime(QDate(curDate.year(), 1, 1), QTime(0, 0, 0));
         m_timestamp2 = anchor.addSecs(-1).toSecsSinceEpoch();
         m_timestamp = anchor.addYears(-1 * offset).toSecsSinceEpoch();
-    } else if ((match = reg1.match(temp)).hasMatch()) { // 月
+    } else if ((match = reg1.match(temp)).hasMatch()) {   // 月
         int offset = match.captured(1).toInt() - 1;
         auto anchor = QDateTime(QDate(curDate.year(), curDate.month(), 1), QTime(0, 0, 0));
         m_timestamp2 = anchor.addSecs(-1).toSecsSinceEpoch();
         m_timestamp = anchor.addMonths(-1 * offset).toSecsSinceEpoch();
-    } else if ((match = reg2.match(temp)).hasMatch()) { // 周
+    } else if ((match = reg2.match(temp)).hasMatch()) {   // 周
         int offset = match.captured(1).toInt() - 1;
         auto anchor = QDateTime(curDate.addDays(1 - curDate.dayOfWeek()), QTime(0, 0, 0));
         m_timestamp2 = anchor.addSecs(-1).toSecsSinceEpoch();
         m_timestamp = anchor.addDays(-1 * offset * 7).toSecsSinceEpoch();
-    } else if ((match = reg3.match(temp)).hasMatch()) { // 天
+    } else if ((match = reg3.match(temp)).hasMatch()) {   // 天
         int offset = match.captured(1).toInt() - 1;
         auto anchor = QDateTime(curDate, QTime(0, 0, 0));
         m_timestamp2 = anchor.addSecs(-1).toSecsSinceEpoch();
         m_timestamp = anchor.addDays(-1 * offset).toSecsSinceEpoch();
-    } else if ((match = reg4.match(temp)).hasMatch()) { // 时
+    } else if ((match = reg4.match(temp)).hasMatch()) {   // 时
         int offset = match.captured(1).toInt();
         m_timestamp2 = curDT.toSecsSinceEpoch();
         m_timestamp = curDT.addSecs(-1 * offset * 60 * 60).toSecsSinceEpoch();
-    } else if ((match = reg5.match(temp)).hasMatch()) { // 分
+    } else if ((match = reg5.match(temp)).hasMatch()) {   // 分
         int offset = match.captured(1).toInt();
         m_timestamp2 = curDT.toSecsSinceEpoch();
         m_timestamp = curDT.addSecs(-1 * offset * 60).toSecsSinceEpoch();
     } else {
         m_timestamp = curDT.toSecsSinceEpoch();
     }
-    qDebug() << QString("DateInfoCond(%1): temp(%2) m_compType(%3) m_timestamp(%4)").arg(m_cond).arg(temp).arg(m_compType).arg(m_timestamp);
+    qCDebug(logDaemon) << "DateInfoCond parsed - Text:" << m_cond
+                       << "Temp:" << temp
+                       << "Comparison type:" << m_compType
+                       << "Timestamp:" << m_timestamp;
 
     if (m_compType == ">") {
         m_entity.times.append(QPair<qint64, qint64>(m_timestamp, m_timestamp2));
@@ -352,7 +374,9 @@ DateInfoCond::DateInfoCond(const QString &text, QObject *parent) : BaseCond(text
     }
 }
 
-PathCond::PathCond(const QString &text, QObject *parent) : BaseCond(text, parent) {
+PathCond::PathCond(const QString &text, QObject *parent)
+    : BaseCond(text, parent)
+{
     m_condType = querylangParser::RulePathSearch;
     if (m_cond.contains("IS NOT")) {
         m_isTruePath = false;
@@ -369,13 +393,17 @@ PathCond::PathCond(const QString &text, QObject *parent) : BaseCond(text, parent
     } else if (m_pathName == "Video") {
         m_pathName = "Videos";
     }
-    qDebug() << QString("PathCond(%1): m_isTrue(%2) m_pathName(%3)").arg(m_cond).arg(m_isTruePath).arg(m_pathName);
+    qCDebug(logDaemon) << "PathCond parsed - Text:" << m_cond
+                       << "Is true path:" << m_isTruePath
+                       << "Path name:" << m_pathName;
 
-    m_entity.partPath      = m_pathName;
+    m_entity.partPath = m_pathName;
     m_entity.isContainPath = m_isTruePath;
 }
 
-NameCond::NameCond(const QString &text, QObject *parent) : BaseCond(text, parent) {
+NameCond::NameCond(const QString &text, QObject *parent)
+    : BaseCond(text, parent)
+{
     m_condType = querylangParser::RuleNameSearch;
     int pos = m_cond.indexOf("\"") + 1;
     m_name = m_cond.mid(pos, m_cond.length() - pos - 1);
@@ -384,7 +412,9 @@ NameCond::NameCond(const QString &text, QObject *parent) : BaseCond(text, parent
     m_entity.keys.append(m_name);
 }
 
-SizeCond::SizeCond(const QString &text, QObject *parent) : BaseCond(text, parent) {
+SizeCond::SizeCond(const QString &text, QObject *parent)
+    : BaseCond(text, parent)
+{
     m_condType = querylangParser::RuleSizeSearch;
     int pos = m_cond.indexOf("\"") + 1;
     QString temp = m_cond.mid(pos, m_cond.length() - pos - 1);
@@ -416,10 +446,12 @@ SizeCond::SizeCond(const QString &text, QObject *parent) : BaseCond(text, parent
     qDebug() << QString("SizeCond(%1): temp(%2) m_compType(%3) m_fileSize(%4)").arg(m_cond).arg(temp).arg(m_compType).arg(m_fileSize);
 
     m_entity.fileCompType = m_compType;
-    m_entity.fileSize     = m_fileSize;
+    m_entity.fileSize = m_fileSize;
 }
 
-TypeCond::TypeCond(const QString &text, QObject *parent) : BaseCond(text, parent) {
+TypeCond::TypeCond(const QString &text, QObject *parent)
+    : BaseCond(text, parent)
+{
     m_condType = querylangParser::RuleTypeSearch;
     if (m_cond.contains("IS NOT")) {
         m_isTrueType = false;
@@ -457,7 +489,9 @@ TypeCond::TypeCond(const QString &text, QObject *parent) : BaseCond(text, parent
     m_entity.isContainType = m_isTrueType;
 }
 
-DurationCond::DurationCond(const QString &text, QObject *parent) : BaseCond(text, parent) {
+DurationCond::DurationCond(const QString &text, QObject *parent)
+    : BaseCond(text, parent)
+{
     m_condType = querylangParser::RuleDurationSearch;
     // DURATION>"3 minute"
     if (m_cond.contains(">")) {
@@ -499,10 +533,11 @@ DurationCond::DurationCond(const QString &text, QObject *parent) : BaseCond(text
     m_entity.types.append(AUDIO_GROUP);
     m_entity.types.append(VIDEO_GROUP);
     m_entity.durationCompType = m_compType;
-    m_entity.duration         = m_duration;
+    m_entity.duration = m_duration;
 }
 
-QString DurationCond::formatTime(qint64 msec) {
+QString DurationCond::formatTime(qint64 msec)
+{
     auto hours = msec / (1000 * 60 * 60);
     int minutes = (msec % (1000 * 60 * 60)) / (1000 * 60);
     int seconds = ((msec % (1000 * 60 * 60)) % (1000 * 60)) / 1000;
@@ -513,7 +548,9 @@ QString DurationCond::formatTime(qint64 msec) {
     return formattedDuration;
 }
 
-MetaCond::MetaCond(const QString &text, QObject *parent) : BaseCond(text, parent) {
+MetaCond::MetaCond(const QString &text, QObject *parent)
+    : BaseCond(text, parent)
+{
     m_condType = querylangParser::RuleMetaSearch;
     // META_TYPEIS"ARTIST"ANDMETA_VALUEIS"xxx"
     // META_TYPEIS"ALBUM"ANDMETA_VALUEIS"xxx"
@@ -562,7 +599,9 @@ MetaCond::MetaCond(const QString &text, QObject *parent) : BaseCond(text, parent
     }
 }
 
-QuantityCond::QuantityCond(const QString &text, QObject *parent) : BaseCond(text, parent) {
+QuantityCond::QuantityCond(const QString &text, QObject *parent)
+    : BaseCond(text, parent)
+{
     m_condType = querylangParser::RuleQuantityCondition;
     int pos = m_cond.indexOf("=") + 1;
     QString temp = m_cond.mid(pos);
@@ -570,7 +609,9 @@ QuantityCond::QuantityCond(const QString &text, QObject *parent) : BaseCond(text
     qDebug() << QString("QuantityCond(%1): temp(%2) m_quantity(%3)").arg(m_cond).arg(temp).arg(m_quantity);
 }
 
-ContentCond::ContentCond(const QString &text, QObject *parent) : BaseCond(text, parent) {
+ContentCond::ContentCond(const QString &text, QObject *parent)
+    : BaseCond(text, parent)
+{
     m_condType = querylangParser::RuleContentSearch;
     int pos = m_cond.indexOf("\"") + 1;
     m_content = m_cond.mid(pos, m_cond.length() - pos - 1);
@@ -579,7 +620,9 @@ ContentCond::ContentCond(const QString &text, QObject *parent) : BaseCond(text, 
     m_entity.keys.append(m_content);
 }
 
-EngineCond::EngineCond(QList<BaseCond *> *andList, QObject *parent) : BaseCond("", parent) {
+EngineCond::EngineCond(QList<BaseCond *> *andList, QObject *parent)
+    : BaseCond("", parent)
+{
     const qint64 _NOW = QDateTime::currentSecsSinceEpoch();
     m_condType = BaseCond::RuleEngine;
     m_isValid = false;
@@ -621,7 +664,7 @@ EngineCond::EngineCond(QList<BaseCond *> *andList, QObject *parent) : BaseCond("
             DurationCond *cond = dynamic_cast<DurationCond *>((*andList)[i]);
             m_cond += cond->getCond() + "  ";
             m_entity.durationCompType = cond->m_compType;
-            m_entity.duration         = cond->m_duration;
+            m_entity.duration = cond->m_duration;
             delete (*andList)[i];
             andList->removeAt(i);
             continue;
@@ -662,7 +705,7 @@ EngineCond::EngineCond(QList<BaseCond *> *andList, QObject *parent) : BaseCond("
             PathCond *cond = dynamic_cast<PathCond *>((*andList)[i]);
             m_cond += cond->getCond() + "  ";
             m_entity.isContainPath = cond->m_isTruePath;
-            m_entity.partPath      = cond->m_pathName;
+            m_entity.partPath = cond->m_pathName;
             delete (*andList)[i];
             andList->removeAt(i);
             continue;
@@ -685,7 +728,7 @@ EngineCond::EngineCond(QList<BaseCond *> *andList, QObject *parent) : BaseCond("
             SizeCond *cond = dynamic_cast<SizeCond *>((*andList)[i]);
             m_cond += cond->getCond() + "  ";
             m_entity.fileCompType = cond->m_compType;
-            m_entity.fileSize     = cond->m_fileSize;
+            m_entity.fileSize = cond->m_fileSize;
             delete (*andList)[i];
             andList->removeAt(i);
             continue;
@@ -734,21 +777,23 @@ EngineCond::EngineCond(QList<BaseCond *> *andList, QObject *parent) : BaseCond("
     }
 }
 
-bool EngineCond::absorbCond(BaseCond *cond) {
+bool EngineCond::absorbCond(BaseCond *cond)
+{
     if (cond->getCondType() == querylangParser::RuleTypeSearch) {
         cond->m_condType = BaseCond::RuleEngine;
-        cond->m_cond     = m_cond + cond->m_cond;
+        cond->m_cond = m_cond + cond->m_cond;
         SemanticEntity entity = m_entity;
         entity.types.append(cond->m_entity.types);
         entity.suffix = cond->m_entity.suffix;
-        cond->m_entity   = entity;
+        cond->m_entity = entity;
         return true;
     }
 
     return false;
 }
 
-void DslParserListener::enterEveryRule(antlr4::ParserRuleContext *ctx) {
+void DslParserListener::enterEveryRule(antlr4::ParserRuleContext *ctx)
+{
     QString text = QString().fromStdString(ctx->getText());
     switch (ctx->getRuleIndex()) {
     case querylangParser::RulePrimary:
@@ -764,7 +809,7 @@ void DslParserListener::enterEveryRule(antlr4::ParserRuleContext *ctx) {
     case querylangParser::RuleContentSearch:
     case querylangParser::RuleFilename:
         m_prefix += "  ";
-        //qDebug() << QString("%1=> enter(%2): %3").arg(m_prefix).arg(ruleContextId2String((int)ctx->getRuleIndex())).arg(text);
+        // qDebug() << QString("%1=> enter(%2): %3").arg(m_prefix).arg(ruleContextId2String((int)ctx->getRuleIndex())).arg(text);
         break;
     }
 
@@ -786,7 +831,7 @@ void DslParserListener::enterEveryRule(antlr4::ParserRuleContext *ctx) {
     case querylangParser::RuleBinaryExpression:
         ptr = new BinaryCond(text);
         isAnd = (m_cond->getCond().contains(QString("AND") + text));
-        isOr  = (m_cond->getCond().contains(QString("OR") + text));
+        isOr = (m_cond->getCond().contains(QString("OR") + text));
         if (isAnd) {
             m_tempPtr->addAndCond(ptr);
         } else if (isOr) {
@@ -851,7 +896,8 @@ void DslParserListener::enterEveryRule(antlr4::ParserRuleContext *ctx) {
     }
 }
 
-void DslParserListener::exitEveryRule(antlr4::ParserRuleContext *ctx) {
+void DslParserListener::exitEveryRule(antlr4::ParserRuleContext *ctx)
+{
     QString text = QString().fromStdString(ctx->getText());
     switch (ctx->getRuleIndex()) {
     case querylangParser::RulePrimary:
@@ -866,7 +912,7 @@ void DslParserListener::exitEveryRule(antlr4::ParserRuleContext *ctx) {
     case querylangParser::RuleQuantityCondition:
     case querylangParser::RuleContentSearch:
     case querylangParser::RuleFilename:
-        //qDebug() << QString("%1<= exit(%2): %3").arg(m_prefix).arg(ruleContextId2String((int)ctx->getRuleIndex())).arg(text);
+        // qDebug() << QString("%1<= exit(%2): %3").arg(m_prefix).arg(ruleContextId2String((int)ctx->getRuleIndex())).arg(text);
         if (m_prefix.length() >= 2) {
             m_prefix = m_prefix.mid(0, m_prefix.length() - 2);
         }
@@ -878,8 +924,10 @@ void DslParserListener::exitEveryRule(antlr4::ParserRuleContext *ctx) {
     }
 }
 
-DslParser::DslParser(const QString &text, QObject *parent) : QObject(parent), m_cond("") {
-    qDebug() << QString("DslParser DslParser(%1)").arg(text);
+DslParser::DslParser(const QString &text, QObject *parent)
+    : QObject(parent), m_cond("")
+{
+    qCDebug(logDaemon) << "Creating DslParser with text:" << text;
     ANTLRInputStream input(text.toUtf8().toStdString());
     querylangLexer lexer(&input);
     CommonTokenStream tokens(&lexer);
@@ -888,7 +936,8 @@ DslParser::DslParser(const QString &text, QObject *parent) : QObject(parent), m_
     DslParserListener listener(&m_cond);
     tree::ParseTreeWalker walker;
     walker.walk(&listener, parser.query());
-    //qInfo() << QString("before merge:\n%1").arg(m_cond.toString()).toUtf8().toStdString().c_str();
+    // qInfo() << QString("before merge:\n%1").arg(m_cond.toString()).toUtf8().toStdString().c_str();
     m_cond.adjust();
-    qInfo() << QString("after adjust:\n%1").arg(m_cond.toString()).toUtf8().toStdString().c_str();
+    qCInfo(logDaemon) << "Final condition tree:\n"
+                      << m_cond.toString();
 }

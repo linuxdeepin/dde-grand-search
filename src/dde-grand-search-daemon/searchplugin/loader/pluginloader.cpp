@@ -10,12 +10,15 @@
 #include <QDir>
 #include <QSettings>
 #include <QDebug>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logDaemon)
 
 using namespace GrandSearch;
 
-PluginLoader::PluginLoader(QObject *parent) : QObject(parent)
+PluginLoader::PluginLoader(QObject *parent)
+    : QObject(parent)
 {
-
 }
 
 void PluginLoader::setPluginPath(const QStringList &dirPaths)
@@ -24,55 +27,67 @@ void PluginLoader::setPluginPath(const QStringList &dirPaths)
     for (const QString &path : dirPaths) {
         QDir dir(path);
         if (dir.isReadable()) {
-            qDebug() << "add plugin path:" << path;
+            qCDebug(logDaemon) << "Adding plugin path:" << path;
             paths << path;
+        } else {
+            qCWarning(logDaemon) << "Invalid plugin path:" << path;
         }
-        else
-            qWarning() << "invaild plugin path:" << path;
     }
 
-    qDebug() << "update plugin paths" << paths.size();
+    qCInfo(logDaemon) << "Updated plugin paths - Total paths:" << paths.size();
     m_paths = paths;
 }
 
 bool PluginLoader::load()
 {
+    qCDebug(logDaemon) << "Starting plugin loading process";
     m_plugins.clear();
     for (const QString &path : m_paths) {
         QDir dir(path);
-        if (!dir.isReadable())
+        if (!dir.isReadable()) {
+            qCWarning(logDaemon) << "Plugin directory not readable:" << path;
             continue;
+        }
 
-        auto entrys = dir.entryInfoList({"*.conf"}, QDir::Files, QDir::Name);
+        auto entrys = dir.entryInfoList({ "*.conf" }, QDir::Files, QDir::Name);
+        qCDebug(logDaemon) << "Found" << entrys.size() << "configuration files in" << path;
+
         for (const QFileInfo &entry : entrys) {
             SearchPluginInfo info;
             if (readInfo(entry.absoluteFilePath(), info)) {
                 // 检查是否与内置的搜索项目冲突
                 DEF_BUILTISEARCH_NAMES;
                 if (predefBuiltinSearches.contains(info.name)) {
-                    qWarning() << "conflict with builtin search,plugin name" << path << info.name;
+                    qCWarning(logDaemon) << "Plugin conflicts with built-in search - Name:" << info.name
+                                         << "Path:" << path;
                     continue;
                 }
 
                 if (m_plugins.contains(info.name)) {
-                    qWarning() << "duplicate plugin name" << path << info.name;
+                    qCWarning(logDaemon) << "Duplicate plugin name found - Name:" << info.name
+                                         << "Path:" << path;
                     continue;
                 }
 
                 // 检查协议是否有效
                 if (!DataConvIns->isSupported(info.ifsVersion)) {
-                    qWarning() << "do not support this version,plugin name" << path << info.name;
+                    qCWarning(logDaemon) << "Unsupported interface version - Plugin:" << info.name
+                                         << "Version:" << info.ifsVersion;
                     continue;
                 }
 
-                qInfo() << "add plugin info" << entry.fileName() << info.name;
+                qCInfo(logDaemon) << "Added plugin - File:" << entry.fileName()
+                                  << "Name:" << info.name
+                                  << "Mode:" << (info.mode == SearchPluginInfo::Mode::Auto ? "Auto" : info.mode == SearchPluginInfo::Mode::Trigger ? "Trigger"
+                                                                                                                                                   : "Manual");
                 m_plugins.insert(info.name, info);
             } else {
-                qWarning() << "plugin info error:" << entry.absoluteFilePath();
+                qCWarning(logDaemon) << "Failed to read plugin configuration:" << entry.absoluteFilePath();
             }
         }
     }
 
+    qCInfo(logDaemon) << "Plugin loading completed - Total plugins:" << m_plugins.size();
     return true;
 }
 
@@ -93,25 +108,31 @@ bool PluginLoader::getPlugin(const QString &name, SearchPluginInfo &plugin) cons
 
 bool PluginLoader::readInfo(const QString &path, SearchPluginInfo &info)
 {
-    qDebug() << "load conf" << path;
+    qCDebug(logDaemon) << "Reading plugin configuration:" << path;
     QSettings conf(path, QSettings::IniFormat);
 
-    if (!conf.childGroups().contains(PLUGININTERFACE_CONF_ROOT))
+    if (!conf.childGroups().contains(PLUGININTERFACE_CONF_ROOT)) {
+        qCWarning(logDaemon) << "Missing root configuration group in:" << path;
         return false;
+    }
 
     conf.beginGroup(PLUGININTERFACE_CONF_ROOT);
 
-    //插件名称
+    // 插件名称
     info.name = conf.value(PLUGININTERFACE_CONF_NAME, "").toString();
-    if (info.name.isEmpty() || m_plugins.contains(info.name))
+    if (info.name.isEmpty() || m_plugins.contains(info.name)) {
+        qCWarning(logDaemon) << "Invalid or duplicate plugin name:" << info.name;
         return false;
+    }
 
-    //通信接口版本
+    // 通信接口版本
     info.ifsVersion = conf.value(PLUGININTERFACE_CONF_INTERFACEVERSION, "").toString();
-    if (info.ifsVersion.isEmpty())
+    if (info.ifsVersion.isEmpty()) {
+        qCWarning(logDaemon) << "Missing interface version for plugin:" << info.name;
         return false;
+    }
 
-    //运行方式
+    // 运行方式
     {
         info.mode = SearchPluginInfo::Mode::Manual;
         QString mode = conf.value(PLUGININTERFACE_CONF_MODE, "").toString().toLower();
@@ -122,32 +143,44 @@ bool PluginLoader::readInfo(const QString &path, SearchPluginInfo &info)
     }
 
     if (info.mode == SearchPluginInfo::Mode::Auto) {
-        //优先级
+        // 优先级
         info.priority = static_cast<SearchPluginInfo::Priority>(conf.value(PLUGININTERFACE_CONF_PRIORITY, -1).toInt());
-        if (info.priority < SearchPluginInfo::Priority::High || info.priority > SearchPluginInfo::Priority::Low)
+        if (info.priority < SearchPluginInfo::Priority::High || info.priority > SearchPluginInfo::Priority::Low) {
+            qCDebug(logDaemon) << "Using default priority (Low) for plugin:" << info.name;
             info.priority = SearchPluginInfo::Priority::Low;
+        }
 
-        //启动命令
+        // 启动命令
         info.exec = conf.value(PLUGININTERFACE_CONF_EXEC, "").toString();
-        if (info.exec.isEmpty())
+        if (info.exec.isEmpty()) {
+            qCWarning(logDaemon) << "Missing execution command for auto-mode plugin:" << info.name;
             return false;
+        }
     }
 
-    //服务名
+    // 服务名
     info.service = conf.value(PLUGININTERFACE_CONF_DBUSSERVICE, "").toString();
-    if (info.service.isEmpty())
+    if (info.service.isEmpty()) {
+        qCWarning(logDaemon) << "Missing DBus service name for plugin:" << info.name;
         return false;
+    }
 
-    //服务地址
+    // 服务地址
     info.address = conf.value(PLUGININTERFACE_CONF_DBUSADDRESS, "").toString();
-    if (info.address.isEmpty())
+    if (info.address.isEmpty()) {
+        qCWarning(logDaemon) << "Missing DBus address for plugin:" << info.name;
         return false;
+    }
 
-    //接口名
+    // 接口名
     info.interface = conf.value(PLUGININTERFACE_CONF_DBUSINTERFACE, "").toString();
-    if (info.interface.isEmpty())
+    if (info.interface.isEmpty()) {
+        qCWarning(logDaemon) << "Missing DBus interface for plugin:" << info.name;
         return false;
+    }
 
     info.from = path;
+    qCDebug(logDaemon) << "Successfully read plugin configuration - Name:" << info.name
+                       << "Version:" << info.ifsVersion;
     return true;
 }

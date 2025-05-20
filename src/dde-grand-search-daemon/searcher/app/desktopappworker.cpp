@@ -6,78 +6,82 @@
 #include "global/builtinsearch.h"
 #include "global/searchhelper.h"
 
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logDaemon)
+
 using namespace GrandSearch;
 
-DesktopAppWorker::DesktopAppWorker(const QString &name, QObject *parent) : ProxyWorker(name, parent)
+DesktopAppWorker::DesktopAppWorker(const QString &name, QObject *parent)
+    : ProxyWorker(name, parent)
 {
-
 }
 
 void DesktopAppWorker::setContext(const QString &context)
 {
     if (context.isEmpty())
-        qWarning() << "search key is empty.";
-
+        qCWarning(logDaemon) << "Search key is empty";
     m_context = buildKeyword(context);
 }
 
 bool DesktopAppWorker::isAsync() const
 {
-    //同步搜索，需分配线程资源
+    // 同步搜索，需分配线程资源
     return false;
 }
 
 bool DesktopAppWorker::working(void *context)
 {
-    //准备状态切运行中，否则直接返回
+    // 准备状态切运行中，否则直接返回
     if (!m_status.testAndSetRelease(Ready, Runing))
         return false;
 
     Q_UNUSED(context);
     if (m_context.isEmpty() || m_indexTable.isEmpty()) {
+        qCDebug(logDaemon) << "Search context or index table is empty, completing search";
         m_status.storeRelease(Completed);
         return true;
     }
 
-    //计时
+    // 计时
     QElapsedTimer time;
     time.start();
     int lastEmit = 0;
 
-    //遍历查找
+    // 遍历查找
     QHash<MatchedItem *, bool> found;
     for (auto iter = m_indexTable.begin(); iter != m_indexTable.end(); ++iter) {
-        //中断
+        // 中断
         if (m_status.loadAcquire() != Runing)
             return false;
 
-        //匹配
+        // 匹配
         QRegularExpression regExp(m_context, QRegularExpression::CaseInsensitiveOption);
         if (iter.key().contains(regExp)) {
-            //遍历该关键词匹配的项目检查是否已经被添加
+            // 遍历该关键词匹配的项目检查是否已经被添加
             for (const QSharedPointer<MatchedItem> &item : iter.value()) {
-                //检查是否已经添加过
+                // 检查是否已经添加过
                 if (found.contains(item.data()))
                     continue;
 
-                //中断
+                // 中断
                 if (m_status.loadAcquire() != Runing)
                     return false;
 
-                //加入搜索结果中
+                // 加入搜索结果中
                 {
                     QMutexLocker lk(&m_mtx);
                     m_items.append(*item);
                     found.insert(item.data(), true);
 
-                    //数据从无到有发送通知
-                    //50ms推送一次
+                    // 数据从无到有发送通知
+                    // 50ms推送一次
                     int cur = time.elapsed();
                     if ((cur - lastEmit) > 50) {
                         lastEmit = cur;
-                        qDebug() << "unearthed, current spend:" << cur;
+                        qCDebug(logDaemon) << "New results found - Time elapsed:" << cur << "ms";
 
-                        //发送信号前必须解锁
+                        // 发送信号前必须解锁
                         lk.unlock();
                         emit unearthed(this);
                     }
@@ -94,9 +98,11 @@ bool DesktopAppWorker::working(void *context)
         leave = m_items.size();
     }
 
-    qInfo() << "search completed, found items:" << found.size() << "total spend:" << time.elapsed()
-            << "current items" << leave;
-    //还有数据再发一次
+    qCInfo(logDaemon) << "Search completed - Found items:" << found.size()
+                      << "Total time:" << time.elapsed() << "ms"
+                      << "Current items:" << leave;
+
+    // 还有数据再发一次
     if (leave > 0)
         emit unearthed(this);
 
@@ -127,17 +133,17 @@ MatchedItemMap DesktopAppWorker::takeAll()
     Q_ASSERT(m_items.isEmpty());
     lk.unlock();
 
-    //添加分组
+    // 添加分组
     MatchedItemMap ret;
     ret.insert(group(), items);
 
     return ret;
 }
 
-void DesktopAppWorker::setIndexTable(const QHash<QString, QList<QSharedPointer<MatchedItem> > > &table)
+void DesktopAppWorker::setIndexTable(const QHash<QString, QList<QSharedPointer<MatchedItem>>> &table)
 {
-    qDebug() << "index table count" << table.size();
-    //搜索中不允许设置索引表, 已有数据后不允许更新
+    qCDebug(logDaemon) << "Setting index table - Entry count:" << table.size();
+    // 搜索中不允许设置索引表, 已有数据后不允许更新
     if (m_status.loadAcquire() == Runing || !m_indexTable.isEmpty())
         return;
 

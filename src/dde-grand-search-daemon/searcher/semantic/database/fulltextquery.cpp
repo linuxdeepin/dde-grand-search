@@ -8,11 +8,15 @@
 #include "global/searchhelper.h"
 #include "global/builtinsearch.h"
 
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logDaemon)
+
 using namespace GrandSearch;
 
-FullTextQueryPrivate::FullTextQueryPrivate(FullTextQuery *qq) : q(qq)
+FullTextQueryPrivate::FullTextQueryPrivate(FullTextQuery *qq)
+    : q(qq)
 {
-
 }
 
 bool FullTextQueryPrivate::processResult(const QString &file, void *pdata, void *ctx)
@@ -31,39 +35,43 @@ bool FullTextQueryPrivate::processResult(const QString &file, void *pdata, void 
             d->m_lastPush = d->m_time.elapsed();
 
         // 中断
-        if (!ret)
+        if (!ret) {
+            qCDebug(logDaemon) << "Search interrupted by callback";
             return false;
+        }
     }
 
-   QFileInfo info(file);
-   // 检查后缀
-   if (!context->suffix.isEmpty() && !context->suffix.contains(info.suffix(), Qt::CaseInsensitive))
-       return true;
+    QFileInfo info(file);
+    // 检查后缀
+    if (!context->suffix.isEmpty() && !context->suffix.contains(info.suffix(), Qt::CaseInsensitive))
+        return true;
 
-   // 检查时间
-   if (!SemanticHelper::isMatchTime(info.lastModified().toSecsSinceEpoch(), context->times))
-       return true;
+    // 检查时间
+    if (!SemanticHelper::isMatchTime(info.lastModified().toSecsSinceEpoch(), context->times))
+        return true;
 
-   // 过滤文管设置的隐藏文件
-   QHash<QString, QSet<QString>> hiddenFilters;
-   if (SpecialTools::isHiddenFile(file, hiddenFilters, QDir::homePath()))
-       return true;
+    // 过滤文管设置的隐藏文件
+    QHash<QString, QSet<QString>> hiddenFilters;
+    if (SpecialTools::isHiddenFile(file, hiddenFilters, QDir::homePath()))
+        return true;
 
-   d->m_count++;
-   if (d->m_handler) {
-       d->m_handler->appendTo(file, d->m_results);
-       if (ctx && context->eng) {
-           auto keys = context->eng->matchedKeys(ctx);
-           d->m_handler->setItemWeight(file, d->m_handler->itemWeight(file) + d->matchedWeight(keys));
-       }
-       if (d->m_handler->isResultLimit() || d->m_count > 100)
-           return false;
-   } else {
-       auto item = FileSearchUtils::packItem(file, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC);
-       d->m_results[GRANDSEARCH_GROUP_FILE_INFERENCE].append(item);
-   }
+    d->m_count++;
+    if (d->m_handler) {
+        d->m_handler->appendTo(file, d->m_results);
+        if (ctx && context->eng) {
+            auto keys = context->eng->matchedKeys(ctx);
+            d->m_handler->setItemWeight(file, d->m_handler->itemWeight(file) + d->matchedWeight(keys));
+        }
+        if (d->m_handler->isResultLimit() || d->m_count > 100) {
+            qCDebug(logDaemon) << "Reached result limit - Count:" << d->m_count;
+            return false;
+        }
+    } else {
+        auto item = FileSearchUtils::packItem(file, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC);
+        d->m_results[GRANDSEARCH_GROUP_FILE_INFERENCE].append(item);
+    }
 
-   return true;
+    return true;
 }
 
 bool FullTextQueryPrivate::timeToPush() const
@@ -75,7 +83,7 @@ double FullTextQueryPrivate::matchedWeight(const QSet<QString> &back)
 {
     double w = 0;
     QSet<QString> mergedKeys;
-    for (const SemanticEntity &e: m_entity) {
+    for (const SemanticEntity &e : m_entity) {
         auto keys = e.keys;
         for (const QString &key : keys)
             mergedKeys.insert(key);
@@ -97,10 +105,9 @@ double FullTextQueryPrivate::matchedWeight(const QSet<QString> &back)
 }
 
 FullTextQuery::FullTextQuery(QObject *parent)
-    : QObject(parent)
-    , d(new FullTextQueryPrivate(this))
+    : QObject(parent),
+      d(new FullTextQueryPrivate(this))
 {
-
 }
 
 FullTextQuery::~FullTextQuery()
@@ -117,15 +124,21 @@ void FullTextQuery::run(void *ptr, PushItemCallBack callBack, void *pdata)
     Q_ASSERT(self);
 
     auto d = self->d;
-    qDebug() << "query by fulltext" << d->m_entity.size();
+    qCDebug(logDaemon) << "Starting fulltext query - Entity count:" << d->m_entity.size();
 
     FullTextEngine engine;
-    if (!engine.init(d->indexStorePath()))
+    if (!engine.init(d->indexStorePath())) {
+        qCWarning(logDaemon) << "Failed to initialize fulltext engine";
         return;
+    }
 
     d->m_time.start();
 
     for (const SemanticEntity &entity : d->m_entity) {
+        qCDebug(logDaemon) << "Processing entity - Keys:" << entity.keys
+                           << "Types:" << entity.types
+                           << "Suffix:" << entity.suffix;
+
         FullTextQueryPrivate::Context context;
         context.eng = &engine;
         context.query = self;
@@ -138,13 +151,17 @@ void FullTextQuery::run(void *ptr, PushItemCallBack callBack, void *pdata)
         context.times = entity.times;
 
         QString path = QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first();
+        qCDebug(logDaemon) << "Search path:" << path
+                           << "Suffixes:" << context.suffix
+                           << "Times:" << context.times;
 
         engine.query(path, entity.keys, &FullTextQueryPrivate::processResult, &context);
     }
 
     callBack(d->m_results, pdata);
 
-    qDebug() << "fulltext is finished spend:" << d->m_time.elapsed() << "found:" << d->m_count;
+    qCInfo(logDaemon) << "Fulltext search completed - Time elapsed:" << d->m_time.elapsed() << "ms"
+                      << "Found items:" << d->m_count;
 }
 
 void FullTextQuery::setEntity(const QList<GrandSearch::SemanticEntity> &entity)
@@ -162,4 +179,3 @@ void FullTextQuery::setFileHandler(FileResultsHandler *handler)
 {
     d->m_handler = handler;
 }
-
