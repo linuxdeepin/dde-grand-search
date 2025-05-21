@@ -1,3 +1,9 @@
+dde-grand-search (6.0.11) unstable; urgency=medium
+
+  * new file-search
+
+ -- Zhang Sheng <zhangsheng@uniontech.com>  Wed, 21 May 2025 18:11:40 +0800
+
 dde-grand-search (6.0.10) unstable; urgency=medium
 
   * refactor search for filename 
