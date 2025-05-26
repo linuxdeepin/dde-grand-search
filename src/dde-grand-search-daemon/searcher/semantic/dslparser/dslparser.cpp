@@ -504,7 +504,7 @@ DurationCond::DurationCond(const QString &text, QObject *parent)
         m_compType = "=";
     }
     static QRegularExpression reg("([\\d\\.]+) ?year", QRegularExpression::CaseInsensitiveOption);
-    static QRegularExpression reg1("([\\d\\.]+) ?mouth", QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression reg1("([\\d\\.]+) ?month", QRegularExpression::CaseInsensitiveOption);
     static QRegularExpression reg2("([\\d\\.]+) ?week", QRegularExpression::CaseInsensitiveOption);
     static QRegularExpression reg3("([\\d\\.]+) ?day", QRegularExpression::CaseInsensitiveOption);
     static QRegularExpression reg4("([\\d\\.]+) ?hour", QRegularExpression::CaseInsensitiveOption);
