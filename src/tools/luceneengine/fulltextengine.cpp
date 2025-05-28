@@ -4,30 +4,58 @@
 
 #include "fulltextengine_p.h"
 
-#include "lucene/chineseanalyzer.h"
-
-// Lucune++ headers
-#include <FileUtils.h>
-#include <FilterIndexReader.h>
-#include <FuzzyQuery.h>
-#include <QueryWrapperFilter.h>
+#include <dfm-search/searchfactory.h>
+#include <dfm-search/contentsearchapi.h>
+#include <dfm-search/searchoptions.h>
+#include <dfm-search/searchquery.h>
+#include <dfm-search/dsearch_global.h>
 
 #include <QFileInfo>
 #include <QDebug>
 #include <QLoggingCategory>
+#include <QRegularExpression>
+#include <QDir>
 
 Q_LOGGING_CATEGORY(logToolFullText, "org.deepin.dde.grandsearch.tool.fulltext")
 using namespace GrandSearch;
-using namespace Lucene;
+using namespace DFMSEARCH;
 
 FullTextEnginePrivate::FullTextEnginePrivate(FullTextEngine *qq)
     : q(qq)
 {
 }
 
-Lucene::IndexReaderPtr FullTextEnginePrivate::createReader(const QString &cache)
+FullTextEnginePrivate::~FullTextEnginePrivate()
 {
-    return IndexReader::open(FSDirectory::open(cache.toStdWString()), true);
+    if (m_engineHolder) {
+        delete m_engineHolder;
+        m_engineHolder = nullptr;
+        m_engine = nullptr;
+    }
+}
+
+bool FullTextEnginePrivate::isContentIndexAvailable() const
+{
+    return DFMSEARCH::Global::isContentIndexAvailable();
+}
+
+QSet<QString> FullTextEnginePrivate::extractMatchedKeys(const QString &content, const QStringList &keywords) const
+{
+    QSet<QString> matchedKeys;
+
+    for (const QString &keyword : keywords) {
+        if (keyword.isEmpty())
+            continue;
+
+        // Use case-insensitive matching to find keywords in content
+        QRegularExpression regex(QRegularExpression::escape(keyword),
+                                 QRegularExpression::CaseInsensitiveOption);
+        if (regex.match(content).hasMatch()) {
+            matchedKeys.insert(keyword);
+        }
+    }
+
+    return matchedKeys;
 }
 
 FullTextEngine::FullTextEngine(QObject *parent)
@@ -43,78 +71,118 @@ FullTextEngine::~FullTextEngine()
 
 bool FullTextEngine::init(const QString &cache)
 {
-    QFileInfo info(cache);
-    if (!info.isReadable()) {
-        qCWarning(logToolFullText) << "Cache file is not readable - Path:" << cache;
-        return false;
-    } else if (d->m_reader) {
-        qCCritical(logToolFullText) << "Full text engine already initialized";
+    Q_UNUSED(cache)   // dfm-search manages its own index, cache parameter not needed
+
+    if (d->m_engine) {
+        qCWarning(logToolFullText) << "Full text engine already initialized";
         return false;
     }
-    qCDebug(logToolFullText) << "Initializing full text cache - Path:" << cache;
-    d->m_reader = d->createReader(cache);
-    return d->m_reader.get() != nullptr;
+
+    if (!d->isContentIndexAvailable()) {
+        qCWarning(logToolFullText) << "Content index is not available";
+        return false;
+    }
+
+    qCDebug(logToolFullText) << "Initializing dfm-search content engine";
+
+    // Create search engine for content search
+    d->m_engineHolder = new QObject();
+    d->m_engine = SearchFactory::createEngine(SearchType::Content, d->m_engineHolder);
+
+    if (!d->m_engine) {
+        qCWarning(logToolFullText) << "Failed to create dfm-search content engine";
+        delete d->m_engineHolder;
+        d->m_engineHolder = nullptr;
+        return false;
+    }
+
+    qCDebug(logToolFullText) << "Full text content engine initialized successfully";
+    return true;
 }
 
 void FullTextEngine::query(const QString &searchPath, const QStringList &keys, CheckAndPushItem func, void *pdata)
 {
-    if (d->m_reader.get() == nullptr || func == nullptr || searchPath.isEmpty())
+    if (!d->m_engine || !func || searchPath.isEmpty()) {
+        qCWarning(logToolFullText) << "Invalid parameters for content search - Engine:"
+                                   << (d->m_engine != nullptr) << "Func:" << (func != nullptr)
+                                   << "Path:" << searchPath;
         return;
+    }
 
-    QString key = keys.join(' ').trimmed();
-    qCDebug(logToolFullText) << "Performing full text search - Keywords:" << key << "Directory:" << searchPath;
-    if (key.isEmpty())
+    if (keys.isEmpty()) {
+        qCDebug(logToolFullText) << "No keywords provided for content search";
         return;
+    }
+
+    QString keyword = keys.join(' ').trimmed();
+    qCDebug(logToolFullText) << "Performing content search - Keywords:" << keyword
+                             << "Directory:" << searchPath;
+
+    // Create search options for content search
+    SearchOptions options;
+    options.setSearchPath(searchPath);
+    options.setSearchMethod(SearchMethod::Indexed);
+    options.setMaxResults(200);
+
+    // Set search options
+    d->m_engine->setSearchOptions(options);
+
+    // Create search query
+    SearchQuery query;
+    if (keys.size() > 1) {
+        query = SearchFactory::createQuery(keys, SearchQuery::Type::Boolean);
+        query.setBooleanOperator(SearchQuery::BooleanOperator::AND);
+    } else {
+        query = SearchFactory::createQuery(keyword, SearchQuery::Type::Simple);
+    }
 
     try {
-        SearcherPtr searcher = newLucene<IndexSearcher>(d->m_reader);
-        AnalyzerPtr analyzer = newLucene<ChineseAnalyzer>();
-        QueryParserPtr parser = newLucene<QueryParser>(LuceneVersion::LUCENE_CURRENT, L"contents", analyzer);
+        // Execute search with callback
+        d->m_engine->searchWithCallback(query, [this, func, pdata, keys](const SearchResult &result) -> bool {
+            QString filePath = result.path();
 
-        QueryPtr query = parser->parse(key.toStdWString());
-        String filterPath = searchPath.endsWith("/") ? (searchPath + "*").toStdWString() : (searchPath + "/*").toStdWString();
-        FilterPtr filter = newLucene<QueryWrapperFilter>(newLucene<WildcardQuery>(newLucene<Term>(L"path", filterPath)));
-        TopDocsPtr topDocs = searcher->search(query, filter, 200);
-        Collection<ScoreDocPtr> scoreDocs = topDocs->scoreDocs;
+            if (!QFile::exists(filePath)) {
+                qCDebug(logToolFullText) << "File not found:" << filePath;
+                return true;   // Continue search
+            }
 
-        // for get matched keys
-        FormatterPtr simple(new KeyFormatter);
-        QueryScorerPtr score(new QueryScorer(query));
-        HighlighterPtr lighter(new Highlighter(simple, score));
-        FragmenterPtr frag(new SimpleFragmenter(0));
-        lighter->setTextFragmenter(frag);
+            // Create context for matched keys
+            FullTextEnginePrivate::ContentContext context;
+            context.keywords = keys;
 
-        for (auto scoreDoc : scoreDocs) {
-            DocumentPtr doc = searcher->doc(scoreDoc->doc);
-            String resultPath = doc->get(L"path");
-            QString filePath = StringUtils::toUTF8(resultPath).c_str();
+            // Get highlighted content if available
+            ContentResultAPI contentResult(const_cast<SearchResult &>(result));
+            context.highlightedContent = contentResult.highlightedContent();
 
-            if (!QFile::exists(filePath))
-                continue;
+            // Extract matched keys from content or highlighted content
+            QString contentForMatching = context.highlightedContent.isEmpty()
+                    ? keys.first()
+                    : context.highlightedContent;
+            context.matchedKeys = d->extractMatchedKeys(contentForMatching, keys);
 
-            FullTextEnginePrivate::KeyContext ctx {
-                analyzer, simple, lighter, doc
-            };
-            if (!func(filePath, pdata, &ctx))
-                return;   // 中断
-        }
-    } catch (const LuceneException &e) {
-        qCWarning(logToolFullText) << "Lucene search error - Details:" << QString::fromStdWString(e.getError());
+            qCDebug(logToolFullText) << "Found content match - File:" << filePath
+                                     << "Matched keys:" << context.matchedKeys;
+
+            // Call the callback function
+            bool shouldContinue = func(filePath, pdata, &context);
+            return shouldContinue;
+        });
     } catch (const std::exception &e) {
-        qCWarning(logToolFullText) << "Search error - Details:" << QString(e.what());
+        qCWarning(logToolFullText) << "Content search error - Details:" << QString(e.what());
     } catch (...) {
-        qCWarning(logToolFullText) << "Search failed - Unknown error occurred";
+        qCWarning(logToolFullText) << "Content search failed - Unknown error occurred";
     }
 }
 
 QSet<QString> FullTextEngine::matchedKeys(void *ctx) const
 {
-    if (!ctx)
+    if (!ctx) {
+        qCDebug(logToolFullText) << "No context provided for matched keys";
         return {};
-    FullTextEnginePrivate::KeyContext *kctx =
-            static_cast<FullTextEnginePrivate::KeyContext *>(ctx);
-    auto format = kctx->keyFormatter();
-    format->clear();
-    kctx->lighter->getBestFragments(kctx->analyzer, L"contents", kctx->doc->get(L"contents"), 50);
-    return format->keys();
+    }
+
+    FullTextEnginePrivate::ContentContext *context =
+            static_cast<FullTextEnginePrivate::ContentContext *>(ctx);
+
+    return context->matchedKeys;
 }

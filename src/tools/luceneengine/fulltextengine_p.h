@@ -6,38 +6,40 @@
 #define FULLTEXTENGINE_P_H
 
 #include "fulltextengine.h"
-#include "keyformatter.h"
 
-#include <lucene++/LuceneHeaders.h>
-#include <SimpleFragmenter.h>
-#include <QueryScorer.h>
-#include <Highlighter.h>
+#include <dfm-search/searchfactory.h>
+#include <dfm-search/searchengine.h>
+#include <dfm-search/contentsearchapi.h>
 
 #include <QSet>
+#include <QString>
 
 namespace GrandSearch {
 
 class FullTextEnginePrivate
 {
 public:
-    struct KeyContext
+    struct ContentContext
     {
-        Lucene::AnalyzerPtr analyzer;
-        Lucene::FormatterPtr format;
-        Lucene::HighlighterPtr lighter;
-        Lucene::DocumentPtr doc;
-        KeyFormatter *keyFormatter() const {
-            return dynamic_cast<KeyFormatter *>(format.get());
-        }
+        QStringList keywords;
+        QString highlightedContent;
+        QSet<QString> matchedKeys;
     };
+
 public:
     explicit FullTextEnginePrivate(FullTextEngine *qq);
-    Lucene::IndexReaderPtr createReader(const QString &cache);
+    ~FullTextEnginePrivate();
+
+    bool isContentIndexAvailable() const;
+    QSet<QString> extractMatchedKeys(const QString &content, const QStringList &keywords) const;
+
 public:
-    Lucene::IndexReaderPtr m_reader;
+    DFMSEARCH::SearchEngine *m_engine = nullptr;
+    QObject *m_engineHolder = nullptr;
+
 private:
-   FullTextEngine *q;
+    FullTextEngine *q;
 };
 }
 
-#endif // FULLTEXTENGINE_P_H
+#endif   // FULLTEXTENGINE_P_H
