@@ -1,3 +1,9 @@
+dde-grand-search (6.0.12) unstable; urgency=medium
+
+  * fix bugs
+
+ -- Zhang Sheng <zhangsheng@uniontech.com>  Thu, 29 May 2025 19:20:34 +0800
+
 dde-grand-search (6.0.11) unstable; urgency=medium
 
   * new file-search
