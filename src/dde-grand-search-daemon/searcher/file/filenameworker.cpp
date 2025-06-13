@@ -22,8 +22,9 @@ DFM_SEARCH_USE_NS
 FileNameWorkerPrivate::FileNameWorkerPrivate(FileNameWorker *qq)
     : q_ptr(qq)
 {
-    // TODO (search): 搜索目录为user, by anything
-    m_searchPath = QDir::rootPath();
+    m_searchPath = DFMSEARCH::Global::isFileNameIndexDirectoryAvailable()
+            ? QDir::rootPath()
+            : QDir::homePath();
     initConfig();
 }
 
@@ -106,7 +107,16 @@ SearchOptions FileNameWorkerPrivate::createSearchOptions() const
 {
     SearchOptions options;
     options.setSearchPath(m_searchPath);
-    options.setSearchMethod(SearchMethod::Indexed);
+
+    // 检查文件名索引目录是否可用，如果不可用则回退到实时搜索
+    if (DFMSEARCH::Global::isFileNameIndexDirectoryAvailable()) {
+        qCDebug(logDaemon) << "Using indexed search method";
+        options.setSearchMethod(SearchMethod::Indexed);
+    } else {
+        qCWarning(logDaemon) << "File name index directory is not available, falling back to realtime search";
+        options.setSearchMethod(SearchMethod::Realtime);
+    }
+
     options.setMaxResults(MAX_SEARCH_NUM_TOTAL);
     return options;
 }
@@ -280,9 +290,8 @@ bool FileNameWorker::working(void *context)
         return false;
     }
 
-    if (d->m_searchInfo.keyword.isEmpty() || d->m_searchPath.isEmpty()
-        || !DFMSEARCH::Global::isFileNameIndexDirectoryAvailable()) {
-        qCWarning(logDaemon) << "Search prerequisites not met - Empty keyword/path or index unavailable";
+    if (d->m_searchInfo.keyword.isEmpty() || d->m_searchPath.isEmpty()) {
+        qCWarning(logDaemon) << "Search prerequisites not met - Empty keyword or path";
         d->m_status.storeRelease(Completed);
         return false;
     }

@@ -172,7 +172,16 @@ SearchOptions FileNameQueryPrivate::createSearchOptions(const SemanticEntity &en
 {
     SearchOptions options;
     options.setSearchPath(QDir::rootPath());
-    options.setSearchMethod(SearchMethod::Indexed);
+    
+    // 检查文件名索引目录是否可用，如果不可用则回退到实时搜索
+    if (DFMSEARCH::Global::isFileNameIndexDirectoryAvailable()) {
+        qCDebug(logDaemon) << "Using indexed search method for semantic query";
+        options.setSearchMethod(SearchMethod::Indexed);
+    } else {
+        qCWarning(logDaemon) << "File name index directory is not available, falling back to realtime search for semantic query";
+        options.setSearchMethod(SearchMethod::Realtime);
+    }
+    
     return options;
 }
 
