@@ -6,8 +6,6 @@
 #include "global/builtinsearch.h"
 #include "filenameworker.h"
 
-#include <dfm-search/dsearch_global.h>
-
 #include <QDBusInterface>
 #include <QDBusReply>
 #include <QDBusConnectionInterface>
@@ -29,7 +27,7 @@ QString FileNameSearcher::name() const
 
 bool FileNameSearcher::isActive() const
 {
-    return DFMSEARCH::Global::isFileNameIndexDirectoryAvailable();
+    return true;
 }
 
 bool FileNameSearcher::activate()
@@ -49,4 +47,3 @@ bool FileNameSearcher::action(const QString &action, const QString &item)
     qCWarning(logDaemon) << "Unsupported action requested - Action:" << action;
     return false;
 }
-
