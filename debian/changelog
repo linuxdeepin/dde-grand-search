@@ -1,3 +1,9 @@
+dde-grand-search (6.0.13) unstable; urgency=medium
+
+  * improve search method handling and logging in file search components
+
+ -- Zhang Sheng <zhangsheng@uniontech.com>  Fri, 13 Jun 2025 09:31:45 +0800
+
 dde-grand-search (6.0.12) unstable; urgency=medium
 
   * fix bugs
