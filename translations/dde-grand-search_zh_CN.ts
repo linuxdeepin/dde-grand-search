@@ -4,17 +4,17 @@
 <context>
     <name>GrandSearch::AiToolBar</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="43"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="48"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
         <translation>无法使用%1，请先到应用商店更新UOS AI版本</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="44"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="49"/>
         <source>Cancel</source>
         <translation>取 消</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="45"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
         <source>Open App Stroe</source>
         <translation>打开商店</translation>
     </message>
@@ -22,76 +22,72 @@
 <context>
     <name>GrandSearch::AiToolBarInner</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="99"/>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="149"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="112"/>
         <source>Summary</source>
         <translation>文档总结</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="100"/>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="150"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="113"/>
         <source>Translation</source>
         <translation>文档翻译</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="101"/>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="151"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="114"/>
         <source>Extension</source>
         <translation>文档扩写</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="102"/>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="152"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="115"/>
         <source>Add to knowledge base</source>
         <translation>添加到知识库</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="113"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="126"/>
         <source>Summarize document content with UOS AI</source>
         <translation>用UOS AI总结文档内容</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="114"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="127"/>
         <source>Translate document content with UOS AI</source>
         <translation>用UOS AI翻译文档内容</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="115"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="128"/>
         <source>Extend document content with UOS AI</source>
         <translation>用UOS AI扩写文档内容</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="116"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="129"/>
         <source>Add document to UOS AI knowledge base</source>
         <translation>将文档添加到UOS AI知识库</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="279"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="299"/>
         <source>Summarize this document for me and provide me with a clear result directly, without any unnecessary content.</source>
         <translation>帮我总结这篇文档，直接给我清晰的结果，不用多余内容</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="294"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="315"/>
         <source>Translate this document for me and provide me with a clear result directly, without any unnecessary content.</source>
         <translation>帮我翻译这篇文档，直接给我清晰的结果，不用多余内容</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="309"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="331"/>
         <source>Expand this document for me and provide me with a clear and expanded result directly, without any unnecessary content.</source>
         <translation>帮我扩写这篇文档，直接给我清晰的结果，不用多余内容</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="414"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="447"/>
         <source>DDE Grand Search</source>
         <translation>全局搜索</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="417"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="450"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
         <translation>无法使用%1，请先到应用商店更新UOS AI版本</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="418"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
         <source>Open App Stroe</source>
         <translation>打开商店</translation>
     </message>
@@ -107,12 +103,12 @@
 <context>
     <name>GrandSearch::BlackListWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="27"/>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="30"/>
         <source>Excluded path</source>
         <translation>路径黑名单</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="38"/>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="41"/>
         <source>Add paths to the exclusion list to prevent searching in them.</source>
         <translation>可将不希望被搜索到的路径添加至黑名单中。</translation>
     </message>
@@ -128,13 +124,12 @@
 <context>
     <name>GrandSearch::DdeGrandSearchDockPlugin</name>
     <message>
-        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="43"/>
-        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="96"/>
+        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="47"/>
         <source>Grand Search</source>
         <translation>全局搜索</translation>
     </message>
     <message>
-        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="161"/>
+        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="166"/>
         <source>Search settings</source>
         <translation>搜索设置</translation>
     </message>
@@ -162,18 +157,17 @@
 <context>
     <name>GrandSearch::EmbeddingPluginWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="48"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <source>Installed</source>
         <translation>已安装</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="48"/>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="86"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <source>Not Installed</source>
         <translation>未安装</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="101"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="105"/>
         <source>Install</source>
         <translation>安装</translation>
     </message>
@@ -181,12 +175,12 @@
 <context>
     <name>GrandSearch::EntranceWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="227"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="234"/>
         <source>Search</source>
         <translation>搜索</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="228"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="235"/>
         <source>What would you like to search for?</source>
         <translation>搜索想要查找的内容</translation>
     </message>
@@ -194,17 +188,17 @@
 <context>
     <name>GrandSearch::EntranceWidgetPrivate</name>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="78"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="82"/>
         <source>Cut</source>
         <translation>剪切</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="82"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="86"/>
         <source>Copy</source>
         <translation>复制</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="86"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="90"/>
         <source>Paste</source>
         <translation>粘贴</translation>
     </message>
@@ -243,40 +237,37 @@
 <context>
     <name>GrandSearch::GroupWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="254"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="269"/>
         <source>Please go to %1 to install the ULLM, and %2 Automatic index update.</source>
         <translation>请先前往%1安装统信有容大模型，并%2自动更新索引</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="255"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="264"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="270"/>
         <source>Search configration</source>
         <translation>搜索配置</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="256"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="260"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="271"/>
         <source>turn on</source>
         <translation>开启</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="259"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="274"/>
         <source>Please %1 Automatic index update.</source>
         <translation>请先%1自动更新索引</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="263"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="278"/>
         <source>Please go to %1 to install the ULLM.</source>
         <translation>请先前往%1安装统信有容大模型</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="325"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="330"/>
         <source>More</source>
         <translation>更多</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="266"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="361"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="281"/>
         <source>No search results</source>
         <translation>暂无搜索结果</translation>
     </message>
@@ -292,89 +283,87 @@
 <context>
     <name>GrandSearch::IntelligentRetrievalWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="71"/>
-        <source>When turned on, you can try to search for local documents using natural language descriptions, such as &quot;last week&apos;s documents&quot;.</source>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="78"/>
+        <source>When turned on, you can try to search for local documents using natural language descriptions, such as "last week's documents".</source>
         <translation>开启后您可以尝试使用自然语言描述搜索本地文件，例如搜索“上周的文档”。</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="179"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="184"/>
         <source>Intelligent full text search</source>
         <translation>智能全文检索</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="93"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="99"/>
         <source>Automatic index update</source>
         <translation>自动更新索引</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="58"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="65"/>
         <source>AI Smart Search</source>
         <translation>AI智能搜索</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="166"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="171"/>
         <source>ULLM</source>
         <translation>统信有容大模型</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="166"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="171"/>
         <source>After installing the ULLM, you can use the AI intelligent search function without an internet connection.</source>
         <translation>安装统信有容大模型后，无需联网即可使用AI智能搜索功能</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="112"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="118"/>
         <source>Full Text Search</source>
         <translation>全文检索</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="129"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="135"/>
         <source>When turned on, full text search can be used in the file manager and grand search.</source>
         <translation>开启后，在系统文件管理器和全局搜索内均可使用全文检索功能</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="148"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="153"/>
         <source>Embedding Plugins</source>
         <translation>向量化模型插件</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="148"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="153"/>
         <source>After installing the model, you can use services such as AI Search and UOS AI Assistant..</source>
         <translation>安装该模型后，可以使用AI搜索、UOS AI助手等服务。</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="213"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="218"/>
         <source>When enabled, you can search the text of articles using disjointed and incomplete keywords.</source>
         <translation>开启后您可以使用不连贯、不完整的关键词搜索文章文本内容。</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="235"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="240"/>
         <source>Please install %0 in &lt;a href=&quot;%0&quot;&gt;the app store&lt;/a&gt; before turning on this configuration.</source>
         <translation>请先到 &lt;a href=&quot;%0&quot;&gt;应用商店&lt;/a&gt; 安装%0模型后再开启该配置。</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="274"/>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="397"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="280"/>
         <source>Intelligent search indexing is being updated, which may take up more resources, please keep the power access.</source>
         <translation>正在更新智能搜索索引编制，可能占用较多资源，请保持电源接入。</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="278"/>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="401"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="284"/>
         <source>Smart Search indexing update is complete. Last update time: %0</source>
         <translation>智能搜索索引编制更新完成。上次更新时间：%0</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="281"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="287"/>
         <source>Indexing error!</source>
         <translation>索引编制出错！</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="329"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="336"/>
         <source>To use AI Smart Search, you need to install the Embedding Plugins and ULLM first.</source>
         <translation>使用AI智能搜索需要先安装“向量化模型插件”和“统信有容大模型”。</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="330"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="337"/>
         <source>OK</source>
         <translation>确 定</translation>
     </message>
@@ -382,93 +371,91 @@
 <context>
     <name>GrandSearch::LLMWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="74"/>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="379"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="77"/>
         <source>Install Model</source>
         <translation>安装模型</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="90"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="93"/>
         <source>Update model</source>
         <translation>更新模型</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="91"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="94"/>
         <source>Uninstall model</source>
         <translation>卸载模型</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="143"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="146"/>
         <source>Installing</source>
         <translation>安装中</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="209"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="212"/>
         <source>Are you sure you want to delete this model?</source>
         <translation>确定卸载模型？</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="210"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="213"/>
         <source>After uninstallation, functions such as AI Search and UOS AI Assistant will not work properly.</source>
         <translation>卸载后将导致AI搜索、UOS AI助手等功能无法正常使用。</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="211"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="214"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>暂不卸载</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="212"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="215"/>
         <source>Confirm</source>
         <comment>button</comment>
         <translation>确定卸载</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="318"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="324"/>
         <source>Installing </source>
         <translation>正在安装 </translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="338"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="344"/>
         <source>Installing the ULLM</source>
         <translation>正在安装统信有容大模型</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="339"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="345"/>
         <source>Exiting will cause the installation to fail, do you still want to exit?</source>
         <translation>退出将导致安装失败，仍要退出吗？</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="340"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="346"/>
         <source>Exit</source>
         <comment>button</comment>
         <translation>退 出</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="341"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="347"/>
         <source>Continue</source>
         <comment>button</comment>
         <translation>继续安装</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="373"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="378"/>
         <source>UnInstall Model</source>
         <translation>卸载模型</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="374"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="379"/>
         <source>Installed</source>
         <translation>已安装</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="385"/>
-        <source>Please install the &quot;Embedding Plugins&quot; first before installing this model.</source>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="390"/>
+        <source>Please install the "Embedding Plugins" first before installing this model.</source>
         <translation>安装此模型前请先安装“向量化模型插件”。</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="58"/>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="380"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="61"/>
         <source>Not Installed</source>
         <translation>未安装</translation>
     </message>
@@ -476,7 +463,7 @@
 <context>
     <name>GrandSearch::MainWindow</name>
     <message>
-        <location filename="../src/grand-search/gui/mainwindow.cpp" line="209"/>
+        <location filename="../src/grand-search/gui/mainwindow.cpp" line="213"/>
         <source>No search results</source>
         <translation>无搜索结果</translation>
     </message>
@@ -484,7 +471,7 @@
 <context>
     <name>GrandSearch::MatchWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="83"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="87"/>
         <source>Guess you want to search the following</source>
         <translation>猜您想搜以下内容</translation>
     </message>
@@ -594,7 +581,7 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="94"/>
-        <source>You need to use &quot;%0&quot; to replace the keyword in the URL</source>
+        <source>You need to use "%0" to replace the keyword in the URL</source>
         <translation>需要使用 “%0” 来替换URL中关键词</translation>
     </message>
     <message>
@@ -606,8 +593,8 @@
 <context>
     <name>GrandSearch::StaticTextWorker</name>
     <message>
-        <location filename="../src/dde-grand-search-daemon/searcher/web/statictextworker.cpp" line="55"/>
-        <source>Search for &quot;%1&quot;</source>
+        <location filename="../src/dde-grand-search-daemon/searcher/web/statictextworker.cpp" line="65"/>
+        <source>Search for "%1"</source>
         <translation>通过浏览器搜索“%1”</translation>
     </message>
 </context>
@@ -637,32 +624,32 @@
 <context>
     <name>GrandSearch::audio_preview::AudioPreviewPlugin</name>
     <message>
-        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="57"/>
+        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="59"/>
         <source>Artist:</source>
         <translation>歌手：</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="69"/>
+        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="71"/>
         <source>Album:</source>
         <translation>专辑：</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="94"/>
+        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="96"/>
         <source>Duration:</source>
         <translation>时长：</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="109"/>
+        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="111"/>
         <source>Type:</source>
         <translation>类型：</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="121"/>
+        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="123"/>
         <source>Location:</source>
         <translation>位置：</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="135"/>
+        <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="137"/>
         <source>Time modified:</source>
         <translation>修改时间：</translation>
     </message>
@@ -753,39 +740,52 @@
         <translation>AI搜索</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="26"/>
+        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="28"/>
         <source>Dimensions:</source>
         <translation>尺寸：</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="27"/>
+        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="29"/>
         <source>Type:</source>
         <translation>类型：</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="28"/>
+        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="30"/>
         <source>Size:</source>
         <translation>大小：</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="29"/>
+        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="31"/>
         <source>Duration:</source>
         <translation>时长：</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="30"/>
+        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="32"/>
         <source>Location:</source>
         <translation>位置：</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="31"/>
+        <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="33"/>
         <source>Time modified:</source>
         <translation>修改时间：</translation>
     </message>
     <message>
-        <location filename="../src/dde-grand-search-daemon/searcher/file/filesearchutils.cpp" line="203"/>
+        <location filename="../src/dde-grand-search-daemon/searcher/file/filesearchutils.cpp" line="205"/>
         <source>modified</source>
         <translation>修改</translation>
+    </message>
+</context>
+<context>
+    <name>searchitem</name>
+    <message>
+        <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="24"/>
+        <source>GrandSearch</source>
+        <translation>大搜索</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="81"/>
+        <source>SearchConfig</source>
+        <translation>搜索配置</translation>
     </message>
 </context>
 </TS>
