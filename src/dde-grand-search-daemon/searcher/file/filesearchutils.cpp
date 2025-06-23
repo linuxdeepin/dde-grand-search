@@ -246,3 +246,8 @@ bool FileSearchUtils::isPinyin(const QString &str)
     return regex.match(str).hasMatch();
 }
 
+bool FileSearchUtils::hasWildcard(const QString &str)
+{
+    return str.contains('*') || str.contains('?');
+}
+
