@@ -1,3 +1,9 @@
+dde-grand-search (6.0.15) unstable; urgency=medium
+
+  * wildcard support
+
+ -- Zhang Sheng <zhangsheng@uniontech.com>  Mon, 23 Jun 2025 17:41:04 +0800
+
 dde-grand-search (6.0.14) unstable; urgency=medium
 
   * update translations
