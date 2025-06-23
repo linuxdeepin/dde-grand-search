@@ -143,7 +143,10 @@ SearchQuery FileNameWorkerPrivate::createSearchQuery() const
     } else if (useBoolQuery) {
         query = SearchFactory::createQuery(boolKeywords, SearchQuery::Type::Boolean);
     } else {
-        query = SearchFactory::createQuery(keyword, SearchQuery::Type::Simple);
+        SearchQuery::Type queryType = FileSearchUtils::hasWildcard(keyword) 
+                                    ? SearchQuery::Type::Wildcard 
+                                    : SearchQuery::Type::Simple;
+        query = SearchFactory::createQuery(keyword, queryType);
     }
 
     return query;
@@ -162,6 +165,9 @@ void FileNameWorkerPrivate::configureFileNameOptions(FileNameOptionsAPI &fileNam
         fileNameOptions.setFileExtensions(m_searchInfo.suffixList);
     } else if (query.type() == SearchQuery::Type::Boolean) {
         fileNameOptions.setPinyinEnabled(true);
+    } else if (query.type() == SearchQuery::Type::Wildcard) {
+        // 通配符搜索通常不需要拼音支持，因为用户输入的是精确的模式
+        fileNameOptions.setPinyinEnabled(false);
     } else if (FileSearchUtils::isPinyin(keyword)) {
         fileNameOptions.setPinyinEnabled(true);
     }

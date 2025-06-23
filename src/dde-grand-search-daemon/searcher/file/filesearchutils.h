@@ -46,6 +46,7 @@ public:
     static QVariantHash tailerData(const QFileInfo &info);
     static QStringList buildDFMSearchFileTypes(const QList<Group> &groupList);
     static bool isPinyin(const QString &str);
+    static bool hasWildcard(const QString &str);
 };
 
 }
