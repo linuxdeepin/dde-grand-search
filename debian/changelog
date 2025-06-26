@@ -1,3 +1,9 @@
+dde-grand-search (6.0.16) unstable; urgency=medium
+
+  * fix: The search icon looks pixelated
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Thu, 26 Jun 2025 13:58:09 +0800
+
 dde-grand-search (6.0.15) unstable; urgency=medium
 
   * wildcard support
