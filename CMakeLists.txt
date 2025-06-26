@@ -23,10 +23,27 @@ if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -z noexecstack -z relro")
 endif()
 
-# Find Qt version
+# Find Qt version - auto detect Qt6 first, fallback to Qt5
 if (NOT DEFINED QT_VERSION_MAJOR)
-    set(QT_VERSION_MAJOR 6)
+    # Try to find Qt6 first
+    find_package(Qt6 QUIET COMPONENTS Core)
+    if (Qt6_FOUND)
+        set(QT_VERSION_MAJOR 6)
+        message("   >>> Auto detected Qt version: 6")
+    else()
+        # Fallback to Qt5
+        find_package(Qt5 QUIET COMPONENTS Core)
+        if (Qt5_FOUND)
+            set(QT_VERSION_MAJOR 5)
+            message("   >>> Auto detected Qt version: 5")
+        else()
+            message(FATAL_ERROR "Neither Qt6 nor Qt5 found!")
+        endif()
+    endif()
+else()
+    message("   >>> Using specified Qt version: ${QT_VERSION_MAJOR}")
 endif()
+
 if (QT_VERSION_MAJOR MATCHES 6)
     set(DTK_VERSION_MAJOR 6)
 else()
@@ -135,6 +152,7 @@ add_subdirectory(src/tools/semanticparser)
 add_subdirectory(src/tools/luceneengine)
 add_subdirectory(3rdparty/antlr4/antlr4-runtime)
 
-if (${BUILD_OS_VERSION} GREATER_EQUAL "25")
+# shell-plugin仅在Qt6下被include
+if (${BUILD_OS_VERSION} GREATER_EQUAL "25" AND QT_VERSION_MAJOR EQUAL 6)
     add_subdirectory(src/grand-search-shell-plugin)
 endif()

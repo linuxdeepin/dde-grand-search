@@ -24,7 +24,7 @@ find_package(${QT_NS} COMPONENTS
     DBus
 REQUIRED)
 find_package(deepin-qdbus-service REQUIRED)
-find_package(dfm6-search REQUIRED)
+find_package(dfm${DTK_VERSION_MAJOR}-search REQUIRED)
 
 add_definitions(-DSERVICE_CONFIG_DIR="${CMAKE_INSTALL_PREFIX}/share/deepin-service-manager/")
 
@@ -46,7 +46,7 @@ set(LINK_LIBS
     ${Qt_LIBS}
     ${DTK_LIBS}
     ${deepin-qdbus-service_LIBRARIES}
-    dfm6-search
+    dfm${DTK_VERSION_MAJOR}-search
 )
 
 # 源文件
