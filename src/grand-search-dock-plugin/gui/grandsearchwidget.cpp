@@ -9,9 +9,9 @@
 
 #include <DGuiApplicationHelper>
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-#include <DGuiApplicationHelper>
+#    include <DGuiApplicationHelper>
 #else
-#include <DApplicationHelper>
+#    include <DApplicationHelper>
 #endif
 #include <DStyleHelper>
 #include <DFontSizeManager>
@@ -23,6 +23,24 @@
 
 using namespace GrandSearch;
 DWIDGET_USE_NAMESPACE
+
+static QPixmap iconPixmap(const QString &fileName, const QSize &size, qreal ratio)
+{
+    QString iconPath = QString(":/icons/%1.dci").arg(fileName);
+    QPixmap pixmap;
+    DDciIcon dciIcon = DDciIcon::fromTheme(iconPath);
+    if (!dciIcon.isNull()) {
+        auto theme = DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType
+                ? DDciIcon::Light
+                : DDciIcon::Dark;
+        pixmap = dciIcon.pixmap(ratio, size.width(), theme);
+    } else {
+        iconPath = QString(":/icons/%1.svg").arg(fileName);
+        pixmap = QIcon::fromTheme(iconPath).pixmap(size);
+    }
+
+    return pixmap;
+}
 
 GrandSearchWidget::GrandSearchWidget(QWidget *parent)
     : QWidget(parent)
@@ -121,8 +139,8 @@ void GrandSearchWidget::paintEvent(QPaintEvent *event)
     }
 
     painter.setOpacity(1);
-
-    pixmap = loadSvg(iconName, QSize(iconSize, iconSize));
+    iconSize = QCoreApplication::testAttribute(Qt::AA_UseHighDpiPixmaps) ? iconSize : (iconSize * devicePixelRatioF());
+    pixmap = iconPixmap(iconName, QSize(iconSize, iconSize), devicePixelRatioF());
 
     const QRectF &rf = QRectF(rect());
     const QRectF &rfp = QRectF(pixmap.rect());
@@ -161,17 +179,6 @@ void GrandSearchWidget::leaveEvent(QEvent *event)
     QWidget::leaveEvent(event);
 }
 
-const QPixmap GrandSearchWidget::loadSvg(const QString &fileName, const QSize &size) const
-{
-    const auto ratio = devicePixelRatioF();
-
-    // 高分辨率下不缩放
-    auto pixmapSize = QCoreApplication::testAttribute(Qt::AA_UseHighDpiPixmaps) ? size : (size * ratio);
-    QPixmap pixmap = QIcon::fromTheme(fileName, QIcon(QString(":/icons/%1.svg").arg(fileName))).pixmap(pixmapSize);
-
-    return pixmap;
-}
-
 QuickPanel::QuickPanel(const QString &desc, QWidget *parent)
     : QWidget(parent)
 {
@@ -204,8 +211,8 @@ QuickPanel::QuickPanel(const QString &desc, QWidget *parent)
 void QuickPanel::updateIcon()
 {
     const QString name = DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType ? QString("grand-search-dark") : QString("grand-search-light");
-    auto icon = QIcon::fromTheme(name, QIcon(QString(":/icons/%1.svg").arg(name)));
-    iconLabel->setPixmap(icon.pixmap(PANEL_ICON_SIZE, PANEL_ICON_SIZE));
+    const auto &pixmap = iconPixmap(name, { PANEL_ICON_SIZE, PANEL_ICON_SIZE }, devicePixelRatioF());
+    iconLabel->setPixmap(pixmap);
 
     update();
 }
