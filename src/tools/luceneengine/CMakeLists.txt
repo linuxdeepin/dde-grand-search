@@ -8,7 +8,7 @@ set(LIB_NAME luceneengine)
 
 find_package(${QT_NS} COMPONENTS Gui REQUIRED)
 find_package(PkgConfig REQUIRED)
-find_package(dfm6-search REQUIRED)
+find_package(dfm${DTK_VERSION_MAJOR}-search REQUIRED)
 
 pkg_check_modules(Lucene REQUIRED IMPORTED_TARGET liblucene++ liblucene++-contrib)
 
@@ -33,5 +33,5 @@ target_link_libraries(
     ${LIB_NAME}
     ${QT_NS}::Gui
     PkgConfig::Lucene
-    dfm6-search
+    dfm${DTK_VERSION_MAJOR}-search
 )
