@@ -38,9 +38,6 @@ protected:
     void leaveEvent(QEvent *event) override;
 
 private:
-    const QPixmap loadSvg(const QString &fileName, const QSize &size) const;
-
-private:
     bool m_hover = false;   // 鼠标是否悬浮
     bool m_pressed = false;   // 鼠标是否按下
     bool m_grandSearchVisible = false;
