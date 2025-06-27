@@ -1,3 +1,9 @@
+dde-grand-search (6.0.17) unstable; urgency=medium
+
+  * Deleted the `dde-grand-search_en_AU.ts` translation file as it is no longer needed.
+
+ -- Zhang Sheng <zhangsheng@uniontech.com>  Fri, 27 Jun 2025 17:09:41 +0800
+
 dde-grand-search (6.0.16) unstable; urgency=medium
 
   * fix: The search icon looks pixelated
