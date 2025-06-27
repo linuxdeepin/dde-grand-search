@@ -27,7 +27,8 @@ Build-Depends: debhelper (>= 9),
  liblucene++-dev,
  libboost-dev,
  libdeepin-service-framework-dev (>1.0.9),
- libdde-shell-dev | hello
+ libdde-shell-dev | hello,
+ deepin-desktop-base
 Standards-Version: 3.9.8
 Homepage: http://www.deepin.org/
 
