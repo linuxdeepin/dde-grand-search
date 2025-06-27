@@ -143,8 +143,8 @@ SearchQuery FileNameWorkerPrivate::createSearchQuery() const
     } else if (useBoolQuery) {
         query = SearchFactory::createQuery(boolKeywords, SearchQuery::Type::Boolean);
     } else {
-        SearchQuery::Type queryType = FileSearchUtils::hasWildcard(keyword) 
-                                    ? SearchQuery::Type::Wildcard 
+        SearchQuery::Type queryType = FileSearchUtils::hasWildcard(keyword)
+                                    ? SearchQuery::Type::Wildcard
                                     : SearchQuery::Type::Simple;
         query = SearchFactory::createQuery(keyword, queryType);
     }
@@ -264,6 +264,7 @@ FileNameWorker::FileNameWorker(const QString &name, QObject *parent)
     : ProxyWorker(name, parent),
       d_ptr(new FileNameWorkerPrivate(this))
 {
+    qCDebug(logDaemon) << "FileNameWorker constructor - Name:" << name;
 }
 
 FileNameWorker::~FileNameWorker()
@@ -279,6 +280,7 @@ void FileNameWorker::setContext(const QString &context)
     if (context.isEmpty())
         qCWarning(logDaemon) << "Search key is empty";
     d->m_searchInfo = FileSearchUtils::parseContent(context);
+    qCDebug(logDaemon) << "Parsed search keyword:" << d->m_searchInfo.keyword;
 }
 
 bool FileNameWorker::isAsync() const

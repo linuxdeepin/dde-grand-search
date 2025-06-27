@@ -98,12 +98,15 @@ void EntranceWidgetPrivate::showMenu(const QPoint &pos)
 EntranceWidget::EntranceWidget(QWidget *parent)
     : QFrame(parent), d_p(new EntranceWidgetPrivate(this))
 {
+    qCDebug(logGrandSearch) << "Creating EntranceWidget";
     initUI();
     initConnections();
+    qCDebug(logGrandSearch) << "EntranceWidget created successfully";
 }
 
 EntranceWidget::~EntranceWidget()
 {
+    qCDebug(logGrandSearch) << "Destroying EntranceWidget";
 }
 
 void EntranceWidget::showLabelAppIcon(bool visible)
@@ -273,6 +276,8 @@ void EntranceWidget::onAppIconChanged(const QString &searchGroupName, const Matc
         return;
 
     d_p->m_appIconName = appIconName;
+
+    qCDebug(logGrandSearch) << "Updating app icon:" << appIconName;
 
     // 更新应用图标
     const int size = LabelIconSize;

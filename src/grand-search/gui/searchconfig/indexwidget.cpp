@@ -9,6 +9,9 @@
 #include <DFontSizeManager>
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 DWIDGET_USE_NAMESPACE
 
@@ -17,6 +20,8 @@ using namespace GrandSearch;
 IndexWidget::IndexWidget(QWidget *parent)
     : DWidget(parent)
 {
+    qCDebug(logGrandSearch) << "Creating IndexWidget";
+
     m_mainLayout = new QVBoxLayout(this);
     m_mainLayout->setContentsMargins(0, 0, 0, 0);
     m_mainLayout->setSpacing(10);
@@ -33,6 +38,8 @@ IndexWidget::IndexWidget(QWidget *parent)
     m_mainLayout->addSpacing(10);
 #endif
     m_mainLayout->addWidget(m_blackListWidget);
+
+    qCDebug(logGrandSearch) << "IndexWidget created successfully";
 }
 
 bool IndexWidget::onCloseEvent()
@@ -46,5 +53,5 @@ bool IndexWidget::onCloseEvent()
 
 IndexWidget::~IndexWidget()
 {
-
+    qCDebug(logGrandSearch) << "Destroying IndexWidget";
 }

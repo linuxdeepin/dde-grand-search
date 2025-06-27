@@ -27,12 +27,14 @@ GrandSearchInterfacePrivate::GrandSearchInterfacePrivate(GrandSearchInterface *p
     : QObject(parent),
       q(parent)
 {
+    qCDebug(logDaemon) << "GrandSearchInterfacePrivate constructor - Setting up DBus interface private";
     // 允许调用dbus接口的可执行程序名单
     m_permit.insert("/usr/bin/dde-grand-search", true);
 }
 
 GrandSearchInterfacePrivate::~GrandSearchInterfacePrivate()
 {
+    qCDebug(logDaemon) << "GrandSearchInterfacePrivate destructor - Cleaning up main controller";
     if (m_main) {
         delete m_main;
         m_main = nullptr;
@@ -49,8 +51,10 @@ bool GrandSearchInterfacePrivate::isAccessable(const QDBusMessage &msg) const
 
     // 读取进程的可执行程序路径
     QFileInfo fileInfo(QString("/proc/%1/exe").arg(invokerPid));
-    if (!fileInfo.exists())
+    if (!fileInfo.exists()) {
+        qCWarning(logDaemon) << "Process executable not found - PID:" << invokerPid;
         return false;
+    }
     auto invokerPath = fileInfo.canonicalFilePath();
 
     bool accessable = m_permit.value(invokerPath, false);
@@ -66,11 +70,14 @@ bool GrandSearchInterfacePrivate::isAccessable(const QDBusMessage &msg) const
 
 void GrandSearchInterfacePrivate::terminate()
 {
+    qCDebug(logDaemon) << "Terminating search operation - Session:" << m_session;
     m_deadline.stop();
 
     // 停止搜索
-    if (m_main)
+    if (m_main) {
         m_main->terminate();
+        qCDebug(logDaemon) << "Main controller terminated";
+    }
 }
 
 void GrandSearchInterfacePrivate::onMatched()
@@ -97,15 +104,18 @@ GrandSearchInterface::GrandSearchInterface(QObject *parent)
     : QDBusService(parent),
       d(new GrandSearchInterfacePrivate(this))
 {
+    qCDebug(logDaemon) << "GrandSearchInterface constructor - Creating DBus interface";
     initPolicy(QDBusConnection::SessionBus, QString(SERVICE_CONFIG_DIR) + "other/grand-search-daemon.json");
 }
 
 GrandSearchInterface::~GrandSearchInterface()
 {
+    qCDebug(logDaemon) << "GrandSearchInterface destructor - Cleaning up DBus interface";
 }
 
 bool GrandSearchInterface::init()
 {
+    qCDebug(logDaemon) << "Initializing GrandSearchInterface";
     Q_ASSERT(d->m_main == nullptr);
 
     // 超时后强制结束任务
@@ -140,9 +150,11 @@ bool GrandSearchInterface::Search(const QString &session, const QString &key)
     if (d->m_main->newSearch(key)) {
         d->m_session = session;
         d->m_deadline.start();
+        qCDebug(logDaemon) << "Search started successfully - Session:" << session;
         return true;
     }
 
+    qCWarning(logDaemon) << "Failed to start new search - Session:" << session;
     d->m_deadline.stop();
     d->m_session.clear();
     return false;
@@ -163,6 +175,9 @@ QByteArray GrandSearchInterface::MatchedResults(const QString &session)
 
     if (d->vaildSession(session)) {
         ret = d->m_main->getResults();
+    } else {
+        qCWarning(logDaemon) << "Invalid session for results retrieval - Session:" << session
+                             << "Current session:" << d->m_session;
     }
 
     return ret;
@@ -174,8 +189,16 @@ QByteArray GrandSearchInterface::MatchedBuffer(const QString &session)
     QByteArray ret;
     CHECKINVOKER(ret);
 
-    if (d->vaildSession(session) && !d->m_main->isEmptyBuffer()) {
-        ret = d->m_main->readBuffer();
+    if (d->vaildSession(session)) {
+        if (!d->m_main->isEmptyBuffer()) {
+            ret = d->m_main->readBuffer();
+            qCDebug(logDaemon) << "Read buffer - Size:" << ret.size() << "bytes";
+        } else {
+            qCDebug(logDaemon) << "Buffer is empty for session:" << session;
+        }
+    } else {
+        qCWarning(logDaemon) << "Invalid session for buffer reading - Session:" << session
+                             << "Current session:" << d->m_session;
     }
 
     return ret;
@@ -220,7 +243,11 @@ bool GrandSearchInterface::KeepAlive(const QString &session)
     // 重新计时
     if (d->vaildSession(session)) {
         d->m_deadline.start();
+        qCDebug(logDaemon) << "Keep alive successful - Deadline restarted for session:" << session;
         return true;
     }
+
+    qCWarning(logDaemon) << "Keep alive failed - Invalid session:" << session
+                         << "Current session:" << d->m_session;
     return false;
 }

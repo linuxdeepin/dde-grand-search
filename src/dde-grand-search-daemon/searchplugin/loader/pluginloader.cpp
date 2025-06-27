@@ -19,6 +19,7 @@ using namespace GrandSearch;
 PluginLoader::PluginLoader(QObject *parent)
     : QObject(parent)
 {
+    qCDebug(logDaemon) << "PluginLoader constructor - Created plugin loader";
 }
 
 void PluginLoader::setPluginPath(const QStringList &dirPaths)
@@ -100,9 +101,11 @@ bool PluginLoader::getPlugin(const QString &name, SearchPluginInfo &plugin) cons
 {
     if (m_plugins.contains(name)) {
         plugin = m_plugins.value(name);
+        qCDebug(logDaemon) << "Found plugin:" << name;
         return true;
     }
 
+    qCDebug(logDaemon) << "Plugin not found:" << name;
     return false;
 }
 

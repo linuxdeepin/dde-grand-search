@@ -294,6 +294,7 @@ QString DesktopAppSearcherPrivate::splitLocaleName(const QString &locale)
 DesktopAppSearcher::DesktopAppSearcher(QObject *parent)
     : Searcher(parent), d(new DesktopAppSearcherPrivate(this))
 {
+    qCDebug(logDaemon) << "DesktopAppSearcher constructor";
     connect(d->m_fileWatcher, &QFileSystemWatcher::directoryChanged, this, &DesktopAppSearcher::onDirectoryChanged);
 }
 
@@ -305,9 +306,12 @@ DesktopAppSearcher::~DesktopAppSearcher()
 
 void DesktopAppSearcher::asyncInit()
 {
-    if (d->m_inited || d->m_creating)
+    if (d->m_inited || d->m_creating) {
+        qCDebug(logDaemon) << "DesktopAppSearcher already initialized or initializing";
         return;
+    }
 
+    qCInfo(logDaemon) << "Starting DesktopAppSearcher async initialization";
     // 开始遍历目录创建索引
     d->m_creating = true;
     d->m_creatingIndex = QtConcurrent::run(DesktopAppSearcherPrivate::createIndex, d);
@@ -325,15 +329,18 @@ bool DesktopAppSearcher::isActive() const
 
 bool DesktopAppSearcher::activate()
 {
+    qCDebug(logDaemon) << "DesktopAppSearcher activate called - Not supported for this searcher type";
     return false;
 }
 
 ProxyWorker *DesktopAppSearcher::createWorker() const
 {
+    qCDebug(logDaemon) << "Creating DesktopAppWorker";
     auto worker = new DesktopAppWorker(name());
     {
         QWriteLocker lk(&d->m_lock);
         worker->setIndexTable(d->m_indexTable);
+        qCDebug(logDaemon) << "DesktopAppWorker created with index table size:" << d->m_indexTable.size();
     }
 
     return worker;
