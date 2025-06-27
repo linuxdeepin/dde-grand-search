@@ -18,6 +18,7 @@ using namespace GrandSearch;
 StaticTextWorker::StaticTextWorker(const QString &name, QObject *parent)
     : ProxyWorker(name, parent)
 {
+    qCDebug(logDaemon) << "StaticTextWorker constructor - Name:" << name;
 }
 
 void StaticTextWorker::setContext(const QString &context)

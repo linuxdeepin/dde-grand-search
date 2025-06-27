@@ -122,16 +122,19 @@ void SemanticWorkerPrivate::mergeExtra(MatchedItemMap &items, const QHash<QStrin
 SemanticWorker::SemanticWorker(const QString &name, QObject *parent)
     : ProxyWorker(name, parent), d(new SemanticWorkerPrivate(this))
 {
+    qCDebug(logDaemon) << "SemanticWorker constructor - Name:" << name;
 }
 
 SemanticWorker::~SemanticWorker()
 {
+    qCDebug(logDaemon) << "SemanticWorker destructor - Cleaning up semantic worker";
     delete d;
     d = nullptr;
 }
 
 void SemanticWorker::setContext(const QString &context)
 {
+    qCDebug(logDaemon) << "Setting semantic search context - Length:" << context.length();
     d->m_context = context;
 }
 

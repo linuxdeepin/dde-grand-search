@@ -14,3 +14,5 @@ build/
 
 dist/
 3rdparty/antlr4
+.specstory
+.cursorindexingignore

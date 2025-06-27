@@ -36,6 +36,7 @@ static const uint MainWindowExpandHeight    = 520;      // 主界面高度
 MainWindowPrivate::MainWindowPrivate(MainWindow *parent)
     : q_p(parent)
 {
+    qCDebug(logGrandSearch) << "Initializing MainWindow private data";
     m_handleVisibility = new HandleVisibility(q_p, q_p);
 }
 
@@ -43,8 +44,10 @@ MainWindow::MainWindow(QWidget *parent)
     : DBlurEffectWidget(parent)
     , d_p(new MainWindowPrivate(this))
 {
+    qCDebug(logGrandSearch) << "Creating MainWindow";
     initUI();
     initConnect();
+    qCInfo(logGrandSearch) << "MainWindow created successfully";
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
@@ -55,7 +58,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
 MainWindow::~MainWindow()
 {
-
+    qCDebug(logGrandSearch) << "Destroying MainWindow";
 }
 
 void MainWindow::connectToController()
@@ -64,6 +67,8 @@ void MainWindow::connectToController()
     Q_ASSERT(d_p->m_exhibitionWidget);
     Q_ASSERT(!d_p->m_queryController);
     Q_ASSERT(!d_p->m_matchController);
+
+    qCDebug(logGrandSearch) << "Connecting to controllers";
 
     d_p->m_queryController = new QueryController(this);
     d_p->m_matchController = new MatchController(this);
@@ -81,6 +86,8 @@ void MainWindow::connectToController()
     // 匹配结果解析显示
     connect(d_p->m_matchController, &MatchController::matchedResult, d_p->m_exhibitionWidget, &ExhibitionWidget::appendMatchedData);
     connect(d_p->m_matchController, &MatchController::searchCompleted, d_p->m_exhibitionWidget, &ExhibitionWidget::onSearchCompleted);
+
+    qCInfo(logGrandSearch) << "Controller connections established";
 }
 
 void MainWindow::showExhitionWidget(bool bShow)
@@ -173,6 +180,8 @@ void MainWindow::onResetExhitionWidget(const QString &missionId)
 
 void MainWindow::onMissionChanged(const QString &missionId, const QString &missionContent)
 {
+    qCDebug(logGrandSearch) << "Mission changed - ID:" << missionId
+                            << "Content length:" << missionContent.length();
     onResetExhitionWidget(missionId);
 
     if (missionContent.isEmpty()) {
@@ -190,7 +199,7 @@ void MainWindow::initUI()
         // 在Qt5.11版本、x11环境下，同时设置BypassWindowManagerHint与Tool属性之后，键盘切换大小写将会导致程序的激活状态发生改变。
         setWindowFlags(Qt::BypassWindowManagerHint | Qt::WindowStaysOnTopHint);
     }
-    qCInfo(logGrandSearch) << "Initializing main window - Platform:" << QApplication::platformName() 
+    qCInfo(logGrandSearch) << "Initializing main window - Platform:" << QApplication::platformName()
                           << "Window flags:" << this->windowFlags();
 
     // 控制界面大小和位置
@@ -277,6 +286,7 @@ void MainWindow::updateMainWindowHeight()
 
 void MainWindow::showEvent(QShowEvent *event)
 {
+    qCDebug(logGrandSearch) << "MainWindow show event";
     QMetaObject::invokeMethod(this, "visibleChanged", Qt::QueuedConnection, Q_ARG(bool, true));
 
     // 已禁用窗口管理器，在窗口被显示后，需要激活该窗口
@@ -289,6 +299,7 @@ void MainWindow::showEvent(QShowEvent *event)
 
 void MainWindow::hideEvent(QHideEvent *event)
 {
+    qCDebug(logGrandSearch) << "MainWindow hide event";
     emit visibleChanged(false);
 
     d_p->m_handleVisibility->registerRegion(false);
@@ -298,6 +309,7 @@ void MainWindow::hideEvent(QHideEvent *event)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+    qCDebug(logGrandSearch) << "MainWindow close event";
     emit visibleChanged(false);
     // 通知查询控制器停止搜索
     emit terminateSearch();

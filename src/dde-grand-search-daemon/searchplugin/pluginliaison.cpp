@@ -140,6 +140,7 @@ PluginLiaison::PluginLiaison(QObject *parent)
     : QObject(parent),
       d(new PluginLiaisonPrivate(this))
 {
+    qCDebug(logDaemon) << "PluginLiaison constructor - Created plugin liaison";
 }
 
 bool PluginLiaison::init(const QString &service, const QString &address, const QString &interface, const QString &ver, const QString &pluginName)

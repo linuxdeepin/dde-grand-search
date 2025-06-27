@@ -20,6 +20,9 @@
 #include <QPainterPath>
 #include <QDebug>
 #include <QVBoxLayout>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logDock)
 
 using namespace GrandSearch;
 DWIDGET_USE_NAMESPACE
@@ -34,9 +37,15 @@ static QPixmap iconPixmap(const QString &fileName, const QSize &size, qreal rati
                 ? DDciIcon::Light
                 : DDciIcon::Dark;
         pixmap = dciIcon.pixmap(ratio, size.width(), theme);
+        qCDebug(logDock) << "Icon loaded from DCI theme - File:" << fileName << "Size:" << size << "Theme:" << (theme == DDciIcon::Light ? "Light" : "Dark");
     } else {
         iconPath = QString(":/icons/%1.svg").arg(fileName);
         pixmap = QIcon::fromTheme(iconPath).pixmap(size);
+        qCDebug(logDock) << "Icon loaded from SVG fallback - File:" << fileName << "Size:" << size;
+    }
+
+    if (pixmap.isNull()) {
+        qCWarning(logDock) << "Failed to load icon - File:" << fileName;
     }
 
     return pixmap;
@@ -45,25 +54,36 @@ static QPixmap iconPixmap(const QString &fileName, const QSize &size, qreal rati
 GrandSearchWidget::GrandSearchWidget(QWidget *parent)
     : QWidget(parent)
 {
+    qCDebug(logDock) << "Initializing GrandSearchWidget";
+
     setMouseTracking(true);
 
     m_grandSearchInterface = new GrandSearchInterface(this);
     connect(m_grandSearchInterface, &GrandSearchInterface::VisibleChanged, this, &GrandSearchWidget::grandSearchVisibleChanged);
+    qCDebug(logDock) << "GrandSearchInterface created and connected";
 
     bool isRegistered = QDBusConnection::sessionBus().interface()->isServiceRegistered("com.deepin.dde.GrandSearch");
+    qCDebug(logDock) << "Checking Grand Search D-Bus service registration - Registered:" << isRegistered;
+
     if (isRegistered) {
         m_grandSearchVisible = m_grandSearchInterface->IsVisible();
+        qCDebug(logDock) << "Grand Search D-Bus service found - Initial visibility:" << m_grandSearchVisible;
     } else {
         m_grandSearchVisible = false;
+        qCWarning(logDock) << "Grand Search D-Bus service not registered - Setting visibility to false";
     }
+
+    qCDebug(logDock) << "GrandSearchWidget initialization completed";
 }
 
 GrandSearchWidget::~GrandSearchWidget()
 {
+    qCDebug(logDock) << "GrandSearchWidget destructor called";
 }
 
 QString GrandSearchWidget::itemCommand(const QString &itemKey)
 {
+    qCDebug(logDock) << "GrandSearchWidget itemCommand called - Item key:" << itemKey;
     Q_UNUSED(itemKey)
 
     m_grandSearchVisible = !m_grandSearchVisible;
@@ -94,6 +114,7 @@ void GrandSearchWidget::paintEvent(QPaintEvent *event)
     QPainter painter(this);
 
     if (rect().height() > PLUGIN_BACKGROUND_MIN_SIZE) {
+        qCDebug(logDock) << "Drawing background for large plugin size - Height:" << rect().height();
 
         QColor color;
         if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
@@ -136,6 +157,7 @@ void GrandSearchWidget::paintEvent(QPaintEvent *event)
     } else if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
         // 最小尺寸时，不画背景，采用深色图标
         iconName.replace(QString("-light"), PLUGIN_MIN_ICON_NAME);
+        qCDebug(logDock) << "Using minimum size dark icon for light theme";
     }
 
     painter.setOpacity(1);
@@ -182,6 +204,8 @@ void GrandSearchWidget::leaveEvent(QEvent *event)
 QuickPanel::QuickPanel(const QString &desc, QWidget *parent)
     : QWidget(parent)
 {
+    qCDebug(logDock) << "Initializing QuickPanel with description:" << desc;
+
     QVBoxLayout *lay = new QVBoxLayout;
     lay->setContentsMargins(8, 8, 8, 8);
     lay->setSpacing(0);
@@ -206,11 +230,14 @@ QuickPanel::QuickPanel(const QString &desc, QWidget *parent)
     updateIcon();
 
     connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &QuickPanel::updateIcon);
+    qCDebug(logDock) << "QuickPanel initialized with theme change connection";
 }
 
 void QuickPanel::updateIcon()
 {
     const QString name = DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType ? QString("grand-search-dark") : QString("grand-search-light");
+    qCDebug(logDock) << "Updating QuickPanel icon for theme - Theme:" << (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType ? "Light" : "Dark") << "Icon:" << name;
+
     const auto &pixmap = iconPixmap(name, { PANEL_ICON_SIZE, PANEL_ICON_SIZE }, devicePixelRatioF());
     iconLabel->setPixmap(pixmap);
 

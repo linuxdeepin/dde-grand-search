@@ -16,6 +16,7 @@ using namespace GrandSearch;
 StaticTextEchoer::StaticTextEchoer(QObject *parent)
     : Searcher(parent)
 {
+    qCDebug(logDaemon) << "StaticTextEchoer constructor";
 }
 
 QString StaticTextEchoer::name() const
@@ -30,11 +31,13 @@ bool StaticTextEchoer::isActive() const
 
 bool StaticTextEchoer::activate()
 {
+    qCDebug(logDaemon) << "StaticTextEchoer activate called - Not supported for this searcher type";
     return false;
 }
 
 ProxyWorker *StaticTextEchoer::createWorker() const
 {
+    qCDebug(logDaemon) << "Creating StaticTextWorker";
     return new StaticTextWorker(name());
 }
 

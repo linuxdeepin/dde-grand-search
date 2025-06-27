@@ -67,6 +67,8 @@ MatchWidget::~MatchWidget()
 
 void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
 {
+    qCDebug(logGrandSearch) << "MatchWidget appending data - Groups:" << matchedData.size();
+
     bool bNeedRelayout = false;
 
     // 数据处理
@@ -105,8 +107,10 @@ void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
     sortVislibleGroupList();
 
     // 重新调整布局
-    if (bNeedRelayout)
+    if (bNeedRelayout) {
+        qCDebug(logGrandSearch) << "Relayouting match widget";
         reLayout();
+    }
 
     // 用户未手动切换选中项时，确保选中当前结果中的第一个
     if (!m_customSelected) {
@@ -118,6 +122,8 @@ void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
 void MatchWidget::clearMatchedData()
 {
     Q_ASSERT(m_scrollAreaContent);
+
+    qCDebug(logGrandSearch) << "Clearing match widget data";
 
     m_vGroupWidgets.clear();
 
@@ -138,6 +144,8 @@ void MatchWidget::clearMatchedData()
 
 void MatchWidget::onSearchCompleted()
 {
+    qCDebug(logGrandSearch) << "Match widget search completed";
+
     // 搜索结束关闭等待动画
     bool need = false;
     for (GroupWidget *wid : m_groupWidgetMap.values()) {
@@ -156,6 +164,7 @@ void MatchWidget::onSearchCompleted()
     if (!m_vGroupWidgets.isEmpty())
         return;
 
+    qCDebug(logGrandSearch) << "No content to show";
     emit sigShowNoContent(true);
 }
 
@@ -268,6 +277,8 @@ void MatchWidget::selectPreviousItem()
 
 void MatchWidget::handleItem()
 {
+    qCDebug(logGrandSearch) << "Handling selected item";
+
     for (int i = 0; i < m_vGroupWidgets.count(); ++i) {
         if (hasSelectItem(i)) {
             ViewMoreButton *viewMoreBtn = m_vGroupWidgets.at(i)->getViewMoreButton();
@@ -281,6 +292,7 @@ void MatchWidget::handleItem()
             }
 
             MatchedItem item = listView->currentIndex().data(DATA_ROLE).value<MatchedItem>();
+            qCDebug(logGrandSearch) << "Opening matched item:" << item.name;
             Utils::openMatchedItem(item);
             emit sigCloseWindow();
             break;
