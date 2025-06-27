@@ -19,6 +19,9 @@
 #include <QBitmap>
 #include <QPainterPath>
 #include <QFontMetrics>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logImagePreview)
 
 #define IMAGEWIDTH      310
 #define IMAGEHEIGHT     110
@@ -71,11 +74,13 @@ void ImageView::loadImage(const QString &file, const QString &type)
         m_titleLabel->setToolTip(name);
 
     if (!fileInfo.isReadable() || !canPreview()) {
+        qCWarning(logImagePreview) << "Cannot preview image - File not readable or unsupported format:" << m_imageFile;
         showErrorPage();
         return;
     }
 
     if (m_formats == QByteArrayLiteral("gif")) {
+        qCDebug(logImagePreview) << "Loading GIF animation:" << m_imageFile;
         m_isMovie = true;
         m_movie = new QMovie(this);
         m_movie->setFileName(m_imageFile);
@@ -86,9 +91,11 @@ void ImageView::loadImage(const QString &file, const QString &type)
         m_sourceSize = m_movie->frameRect().size();
         m_movie->stop();
     } else {
+        qCDebug(logImagePreview) << "Loading static image:" << m_imageFile;
         m_isMovie = false;
         bool success = m_image.load(m_imageFile, m_formats);
         if (!success) {
+            qCWarning(logImagePreview) << "Failed to load image:" << m_imageFile;
             showErrorPage();
             return;
         }

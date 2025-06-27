@@ -12,28 +12,35 @@ using namespace report;
 CommitLog::CommitLog(QObject *parent)
     : QObject(parent)
 {
+    qCDebug(logGrandSearch) << "CommitLog created for event logging";
 }
 
 CommitLog::~CommitLog()
 {
+    qCDebug(logGrandSearch) << "CommitLog destroyed";
 }
 
 void CommitLog::commit(const QString &data)
 {
-    if (data.isEmpty())
+    if (data.isEmpty()) {
+        qCDebug(logGrandSearch) << "Empty data provided for event commit - Ignoring";
         return;
+    }
 
-    // qCDebug(logGrandSearch) << "Committing event log data - Size:" << data.length();
     m_writeEventLog(data.toStdString());
+    qCDebug(logGrandSearch) << "Event log data committed successfully";
 }
 
 bool CommitLog::init()
 {
+    qCDebug(logGrandSearch) << "Initializing event log system";
+
     QLibrary library("deepin-event-log");
     if (!library.load()) {
         qCWarning(logGrandSearch) << "Failed to load deepin-event-log library - Error:" << library.errorString();
         return false;
     }
+    qCDebug(logGrandSearch) << "deepin-event-log library loaded successfully";
 
     m_initEventLog = reinterpret_cast<InitEventLog>(library.resolve("Initialize"));
     m_writeEventLog = reinterpret_cast<WriteEventLog>(library.resolve("WriteEventLog"));
@@ -43,11 +50,13 @@ bool CommitLog::init()
                                   << "WriteEventLog:" << (m_writeEventLog ? "OK" : "Failed");
         return false;
     }
+    qCDebug(logGrandSearch) << "Event log library functions resolved successfully";
 
     if (!m_initEventLog("uos-ai", false)) {
         qCWarning(logGrandSearch) << "Failed to initialize event log system - Application:uos-ai";
         return false;
     }
 
+    qCInfo(logGrandSearch) << "Event log system initialized successfully - Application:uos-ai";
     return true;
 }

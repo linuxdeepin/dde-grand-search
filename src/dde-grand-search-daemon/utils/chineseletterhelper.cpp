@@ -6,6 +6,9 @@
 
 #include <QFile>
 #include <QTextStream>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logDaemon)
 
 using namespace GrandSearch;
 
@@ -19,7 +22,7 @@ ChineseLetterHelper *ChineseLetterHelper::instance()
 
 ChineseLetterHelper::ChineseLetterHelper()
 {
-
+    qCDebug(logDaemon) << "ChineseLetterHelper constructor - Created Chinese letter helper";
 }
 
 bool ChineseLetterHelper::chinese2Pinyin(const QString &words, QString &result)
@@ -51,9 +54,12 @@ void ChineseLetterHelper::initDict()
     QWriteLocker lk(&m_lock);
 
     // check again, m_inited may be setted to true in other thread.
-    if (m_inited)
+    if (m_inited) {
+        qCDebug(logDaemon) << "Chinese dictionary already initialized (double-check)";
         return;
+    }
 
+    qCDebug(logDaemon) << "Initializing Chinese dictionary";
     m_inited = true;
 
     const QString dictPath = ":/misc/grand-search-daemon/pinyin.dict";
@@ -62,8 +68,10 @@ void ChineseLetterHelper::initDict()
     dict.reserve(maxWord);
 
     QFile file(dictPath);
-    if (!file.open(QIODevice::ReadOnly))
+    if (!file.open(QIODevice::ReadOnly)) {
+        qCWarning(logDaemon) << "Failed to open Chinese dictionary file:" << dictPath;
         return;
+    }
 
     QByteArray content = file.readAll();
     file.close();
@@ -83,8 +91,10 @@ void ChineseLetterHelper::initDict()
 
 bool ChineseLetterHelper::convertChinese2Pinyin(const QString &inStr, QString &outFirstPy, QString &outFullPy)
 {
-    if (inStr.isEmpty())
+    if (inStr.isEmpty()) {
+        qCDebug(logDaemon) << "Input string is empty for Chinese to Pinyin conversion";
         return false;
+    }
 
     initDict();
 

@@ -5,6 +5,9 @@
 #include "fileresultshandler.h"
 
 #include "configuration/configer.h"
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logDaemon)
 
 using namespace GrandSearch;
 
@@ -12,6 +15,7 @@ using namespace GrandSearch;
 
 FileResultsHandler::FileResultsHandler()
 {
+    qCDebug(logDaemon) << "FileResultsHandler constructor - Created file results handler";
     initConfig();
 }
 
@@ -76,11 +80,20 @@ bool FileResultsHandler::appendTo(const QString &file, MatchedItemMap &container
     // read locker
     {
         QReadLocker lk(&m_lock);
-        if (m_tmpSearchResults.contains(file))
+        if (m_tmpSearchResults.contains(file)) {
+            qCDebug(logDaemon) << "File already in results, skipping:" << file;
             return false;
+        }
 
-        if (m_tmpSearchResults.size() >= MAX_SEARCH_NUM || FileSearchUtils::filterByBlacklist(file))
+        if (m_tmpSearchResults.size() >= MAX_SEARCH_NUM) {
+            qCDebug(logDaemon) << "Result limit reached, skipping file:" << file;
             return false;
+        }
+
+        if (FileSearchUtils::filterByBlacklist(file)) {
+            qCDebug(logDaemon) << "File filtered by blacklist:" << file;
+            return false;
+        }
     }
 
     auto item = FileSearchUtils::packItem(file, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC);
@@ -88,6 +101,8 @@ bool FileResultsHandler::appendTo(const QString &file, MatchedItemMap &container
     QWriteLocker lk(&m_lock);
     m_tmpSearchResults << file;
     container[GRANDSEARCH_GROUP_FILE_INFERENCE].append(item);
+    qCDebug(logDaemon) << "Added file to results - Total count:" << m_tmpSearchResults.size()
+                       << "File:" << file;
     return true;
 }
 

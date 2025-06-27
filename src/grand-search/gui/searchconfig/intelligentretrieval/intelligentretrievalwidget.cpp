@@ -55,6 +55,7 @@ static QDBusMessage createVectorMsg(const QString &method)
 IntelligentRetrievalWidget::IntelligentRetrievalWidget(QWidget *parent)
     : DWidget(parent)
 {
+    qCDebug(logGrandSearch) << "Creating IntelligentRetrievalWidget";
 
     m_mainLayout = new QVBoxLayout();
     setLayout(m_mainLayout);
@@ -197,6 +198,8 @@ IntelligentRetrievalWidget::IntelligentRetrievalWidget(QWidget *parent)
 #endif
     connect(m_featIndex, &SwitchWidget::checkedChanged, this, &IntelligentRetrievalWidget::checkChanged);
     connect(m_fullTextIndex, &SwitchWidget::checkedChanged, this, &IntelligentRetrievalWidget::checkChanged);
+
+    qCDebug(logGrandSearch) << "IntelligentRetrievalWidget created - AI Search enabled:" << turnOn;
 }
 
 void IntelligentRetrievalWidget::updateState()
@@ -411,6 +414,8 @@ void IntelligentRetrievalWidget::updateIndexStatusContent(const QVariantHash &st
 
 void IntelligentRetrievalWidget::setFulltextQuery(bool on)
 {
+    qCDebug(logGrandSearch) << "Full text search configuration changed - Enabled:" << on;
+
     SearchConfig::instance()->setConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_FULLTEXT, on);
     // 调用文管接口，没开就打开
     if (on) {

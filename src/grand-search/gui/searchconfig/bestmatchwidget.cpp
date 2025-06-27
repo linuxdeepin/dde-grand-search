@@ -12,6 +12,9 @@
 
 #include <DFontSizeManager>
 #include <DGuiApplicationHelper>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 DWIDGET_USE_NAMESPACE
 DGUI_USE_NAMESPACE
@@ -20,6 +23,8 @@ using namespace GrandSearch;
 BestMatchWidget::BestMatchWidget(QWidget *parent)
     : DWidget(parent)
 {
+    qCDebug(logGrandSearch) << "Creating BestMatchWidget";
+
     m_groupLabel = new QLabel(tr("Best match"), this);
     m_groupLabel->adjustSize();
 
@@ -57,6 +62,7 @@ BestMatchWidget::BestMatchWidget(QWidget *parent)
 
     connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &BestMatchWidget::updateIcons);
 
+    qCDebug(logGrandSearch) << "BestMatchWidget created successfully";
 }
 
 BestMatchWidget::~BestMatchWidget()
@@ -71,6 +77,8 @@ void BestMatchWidget::onSwitchStateChanged(const bool checked)
 
     if (switchWidget) {
         QString group = switchWidget->property(GRANDSEARCH_CUSTOM_GROUP).toString();
+        qCDebug(logGrandSearch) << "Best match configuration changed - Group:" << group
+                                << "Enabled:" << checked;
         SearchConfig::instance()->setConfig(GRANDSEARCH_CUSTOM_GROUP, group, checked);
     }
 }

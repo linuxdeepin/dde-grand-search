@@ -20,6 +20,7 @@ using namespace GrandSearch;
 
 SemanticHelper::SemanticHelper()
 {
+    qCDebug(logDaemon) << "SemanticHelper constructor - Created semantic helper";
 }
 
 bool SemanticHelper::entityFromJson(const QString &json, SemanticEntity &out)

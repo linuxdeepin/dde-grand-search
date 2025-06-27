@@ -15,6 +15,7 @@ using namespace GrandSearch;
 DesktopAppWorker::DesktopAppWorker(const QString &name, QObject *parent)
     : ProxyWorker(name, parent)
 {
+    qCDebug(logDaemon) << "DesktopAppWorker constructor - Name:" << name;
 }
 
 void DesktopAppWorker::setContext(const QString &context)
@@ -22,6 +23,7 @@ void DesktopAppWorker::setContext(const QString &context)
     if (context.isEmpty())
         qCWarning(logDaemon) << "Search key is empty";
     m_context = buildKeyword(context);
+    qCDebug(logDaemon) << "Built search keyword:" << m_context;
 }
 
 bool DesktopAppWorker::isAsync() const

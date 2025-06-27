@@ -93,8 +93,12 @@ UserPreferencePointer ConfigerPrivate::semanticEngine()
 
 bool ConfigerPrivate::updateConfig1(QSettings *set)
 {
-    if (!set || m_root.isNull())
+    if (!set || m_root.isNull()) {
+        qCWarning(logDaemon) << "Configuration update failed - Invalid parameters: set=" << (set != nullptr) << "root=" << !m_root.isNull();
         return false;
+    }
+
+    qCDebug(logDaemon) << "Starting configuration update from settings file";
 
     set->beginGroup(GRANDSEARCH_SEARCH_GROUP);
     UserPreferencePointer searcherConfig = m_root->group(GRANDSEARCH_PREF_SEARCHERENABLED);
@@ -131,6 +135,7 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
 
             // 设置是否启用文件搜索项
             searcherConfig->setValue(GRANDSEARCH_CLASS_FILE_DEEPIN, on);
+            qCDebug(logDaemon) << "File search configuration updated - Enabled:" << on;
         } else {
             qCWarning(logDaemon) << "Configuration not found:" << GRANDSEARCH_CLASS_FILE_DEEPIN;
         }
@@ -140,12 +145,14 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
     {
         bool on = set->value(GRANDSEARCH_GROUP_SETTING, true).toBool();
         searcherConfig->setValue(GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, on);
+        qCDebug(logDaemon) << "Settings search configuration updated - Enabled:" << on;
     }
 
     // 设置是否启用应用搜索项
     {
         bool on = set->value(GRANDSEARCH_GROUP_APP, true).toBool();
         searcherConfig->setValue(GRANDSEARCH_CLASS_APP_DESKTOP, on);
+        qCDebug(logDaemon) << "Application search configuration updated - Enabled:" << on;
     }
 
     // 设置是否启用设置搜索项
@@ -158,6 +165,7 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
     {
         bool on = set->value(GRANDSEARCH_GROUP_WEB, true).toBool();
         searcherConfig->setValue(GRANDSEARCH_CLASS_WEB_STATICTEXT, on);
+        qCDebug(logDaemon) << "Web search configuration updated - Enabled:" << on;
     }
 
     set->endGroup();
@@ -180,6 +188,7 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
 
             // 设置是否启用AI搜索项
             searcherConfig->setValue(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC, on);
+            qCDebug(logDaemon) << "Semantic search configuration updated - Enabled:" << on;
         } else {
             qCWarning(logDaemon) << "Configuration not found:" << GRANDSEARCH_SEMANTIC_GROUP;
         }
@@ -195,6 +204,8 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
 
         ret = set->value(GRANDSEARCH_TAILER_TIMEMODEFIED, true).toBool();
         conf->setValue(GRANDSEARCH_TAILER_TIMEMODEFIED, ret);
+        qCDebug(logDaemon) << "Tailer configuration updated - Parent dir:" << conf->value<bool>(GRANDSEARCH_TAILER_PARENTDIR, false)
+                           << "Time modified:" << conf->value<bool>(GRANDSEARCH_TAILER_TIMEMODEFIED, true);
     } else {
         qCWarning(logDaemon) << "Configuration not found:" << GRANDSEARCH_TAILER_GROUP;
     }
@@ -206,6 +217,8 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
     if (UserPreferencePointer conf = m_root->group(GRANDSEARCH_BLACKLIST_GROUP)) {
         const QStringList blacklist = set->value(GRANDSEARCH_BLACKLIST_PATH, QStringList()).toStringList();
         QStringList vaild;
+        qCDebug(logDaemon) << "Processing blacklist paths - Original count:" << blacklist.size();
+
         for (QString path : blacklist) {
             path = QByteArray::fromBase64(path.toLocal8Bit());
             resetPath(path);
@@ -223,8 +236,9 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
         }
 
         conf->setValue(GRANDSEARCH_BLACKLIST_PATH, vaild);
+        qCDebug(logDaemon) << "Blacklist configuration updated - Valid paths count:" << vaild.size();
     } else {
-        qWarning() << "no shuch config:" << GRANDSEARCH_BLACKLIST_GROUP;
+        qCWarning(logDaemon) << "Configuration not found:" << GRANDSEARCH_BLACKLIST_GROUP;
     }
     set->endGroup();
 
@@ -236,11 +250,14 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
 
         auto searchEngineCustomAddr = set->value(GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM_ADDR).toString();
         conf->setValue(GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM_ADDR, searchEngineCustomAddr);
+        qCDebug(logDaemon) << "Web search engine configuration updated - Engine:" << searchEngine
+                           << "Custom address:" << searchEngineCustomAddr;
     } else {
         qCWarning(logDaemon) << "Configuration not found:" << GRANDSEARCH_WEB_SEARCHENGINE;
     }
     set->endGroup();
 
+    qCDebug(logDaemon) << "Configuration update completed successfully";
     return true;
 }
 
@@ -262,6 +279,7 @@ Configer::Configer(QObject *parent)
     : QObject(parent),
       d(new ConfigerPrivate(this))
 {
+    qCDebug(logDaemon) << "Configer constructor - Initializing configuration manager";
     d->m_delayLoad.setSingleShot(true);
     d->m_delayLoad.setInterval(50);
     connect(&d->m_delayLoad, &QTimer::timeout, this, &Configer::onLoadConfig);
@@ -269,6 +287,7 @@ Configer::Configer(QObject *parent)
 
 Configer::~Configer()
 {
+    qCDebug(logDaemon) << "Configer destructor - Cleaning up configuration manager";
     delete d;
     d = nullptr;
 }
@@ -280,6 +299,8 @@ Configer *Configer::instance()
 
 bool Configer::init()
 {
+    qCDebug(logDaemon) << "Configuration manager initialization started";
+
     initDefault();
 
     auto configPath = QStandardPaths::standardLocations(QStandardPaths::ConfigLocation).first();
@@ -287,6 +308,8 @@ bool Configer::init()
             + "/" + QCoreApplication::organizationName()
             + "/" + GRANDSEARCH_DAEMON_NAME
             + "/" + GRANDSEARCH_DAEMON_NAME + ".conf";
+
+    qCDebug(logDaemon) << "Configuration file path:" << configPath;
 
     QFileInfo configFile(configPath);
     if (!configFile.exists()) {
@@ -310,6 +333,7 @@ bool Configer::init()
     connect(d->m_watcher, &QFileSystemWatcher::directoryChanged, this, &Configer::onFileChanged);
 
     onLoadConfig();
+    qCDebug(logDaemon) << "Configuration manager initialization completed successfully";
     return true;
 }
 
@@ -324,6 +348,8 @@ UserPreferencePointer Configer::group(const QString &name) const
 
 void Configer::initDefault()
 {
+    qCDebug(logDaemon) << "Initializing default configuration values";
+
     QVariantHash rootData;
 
     // 初始化搜索项是否可用
@@ -349,6 +375,8 @@ void Configer::initDefault()
         QWriteLocker lk(&d->m_rwLock);
         d->m_root = root;
     }
+
+    qCDebug(logDaemon) << "Default configuration values initialized successfully";
 }
 
 void Configer::onFileChanged(const QString &path)
@@ -360,8 +388,10 @@ void Configer::onFileChanged(const QString &path)
 void Configer::onLoadConfig()
 {
     qCDebug(logDaemon) << "Loading configuration";
-    if (d->m_configPath.isEmpty())
+    if (d->m_configPath.isEmpty()) {
+        qCWarning(logDaemon) << "Configuration path is empty, cannot load config";
         return;
+    }
 
     QFileInfo configFile(d->m_configPath);
     if (!configFile.exists()) {
@@ -375,8 +405,10 @@ void Configer::onLoadConfig()
         return;
     }
 
-    if (!set.contains("Version_Group/version.config"))
+    if (!set.contains("Version_Group/version.config")) {
+        qCDebug(logDaemon) << "Configuration file does not contain version information, skipping load";
         return;
+    }
 
     QString ver = set.value("Version_Group/version.config", QString()).toString();
     if (ver.isEmpty()) {

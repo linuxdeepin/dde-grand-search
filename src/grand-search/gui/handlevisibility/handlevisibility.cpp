@@ -24,11 +24,15 @@ HandleVisibility::HandleVisibility(MainWindow *mainWindow, QObject *parent)
       m_mainWindow(mainWindow)
 // , m_sessionManagerInter(new com::deepin::SessionManager(SessionManagerService, SessionManagerPath, QDBusConnection::sessionBus(), this))
 {
+    qCDebug(logGrandSearch) << "Creating HandleVisibility";
     init();
+    qCDebug(logGrandSearch) << "HandleVisibility created successfully";
 }
 
 void HandleVisibility::init()
 {
+    qCDebug(logGrandSearch) << "Initializing visibility handler";
+
     m_regionMonitor = new DRegionMonitor(this);
     m_regionMonitor->setCoordinateType(DRegionMonitor::ScaleRatio);
     // 鼠标点击主界面之外的区域，退出进程
@@ -68,6 +72,7 @@ void HandleVisibility::onCloseWindow()
 {
     Q_ASSERT(m_mainWindow);
 
+    qCDebug(logGrandSearch) << "Closing main window";
     m_mainWindow->close();
 }
 
@@ -77,6 +82,8 @@ void HandleVisibility::registerRegion(const bool isRegister)
 
     if (isRegister == m_regionMonitor->registered())
         return;
+
+    qCDebug(logGrandSearch) << "Region registration:" << isRegister;
     // FIXME: how to fix blocked 25s issue on treeland
     /*
     if (isRegister)

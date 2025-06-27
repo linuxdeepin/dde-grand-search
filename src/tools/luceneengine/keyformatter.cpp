@@ -6,23 +6,30 @@
 
 #include <LuceneHeaders.h>
 #include <TokenGroup.h>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logToolFullText)
 
 using namespace GrandSearch;
 using namespace Lucene;
 
 KeyFormatter::KeyFormatter() : Formatter(), LuceneObject() {
-
+    qCDebug(logToolFullText) << "KeyFormatter constructed";
 }
 
 KeyFormatter::~KeyFormatter()
 {
-
+    qCDebug(logToolFullText) << "KeyFormatter destructor called - Total tokens collected:" << tokens.size();
 }
 
 void KeyFormatter::clear()
 {
+    qCDebug(logToolFullText) << "Clearing KeyFormatter - Previous tokens:" << tokens.size() << "Current token length:" << token.length();
+
     token.clear();
     tokens.clear();
+
+    qCDebug(logToolFullText) << "KeyFormatter cleared";
 }
 
 String KeyFormatter::highlightTerm(const String &originalText, const TokenGroupPtr &tokenGroup)

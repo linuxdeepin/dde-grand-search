@@ -87,6 +87,9 @@ QVariant SearchConfig::getConfig(const QString &group, const QString &key, const
     m_settings->beginGroup(group);
     QVariant result = m_settings->value(key, defaultValue);
     m_settings->endGroup();
+
+    qCDebug(logGrandSearch) << "Config retrieved - Group:" << group << "Key:" << key
+                            << "HasValue:" << !result.isNull() << "Type:" << result.typeName();
     return result;
 }
 
@@ -96,6 +99,9 @@ void SearchConfig::setConfig(const QString &group, const QString &key, const QVa
     m_settings->beginGroup(group);
     m_settings->setValue(key, value);
     m_settings->endGroup();
+
+    qCDebug(logGrandSearch) << "Config set - Group:" << group << "Key:" << key
+                            << "Value type:" << value.typeName();
 }
 
 void SearchConfig::removeConfig(const QString &group, const QString &key)
@@ -114,6 +120,7 @@ void SearchConfig::setConfigList(const QString &group, const QStringList &keys, 
         m_settings->setValue(keys.value(i), values.value(i));
     }
     m_settings->endGroup();
+    qCDebug(logGrandSearch) << "Config list set - Group:" << group << "Count:" << keys.size();
 }
 
 void SearchConfig::removeConfigList(const QString &group, const QStringList &keys)

@@ -14,10 +14,13 @@ using namespace GrandSearch;
 SemanticParserPrivate::SemanticParserPrivate(SemanticParser *parent)
     : q(parent)
 {
+    qCDebug(logToolSemantic) << "SemanticParserPrivate created";
 }
 
 QString SemanticParser::vectorSearch(const QString &context)
 {
+    qCDebug(logToolSemantic) << "Starting vector search - Context length:" << context.length();
+
     QString ret;
     if (!d->m_vector) {
         qCWarning(logToolSemantic) << "Vector search failed - Vector service not initialized";
@@ -45,6 +48,8 @@ QString SemanticParser::query(const QString &text)
 
 bool SemanticParser::isVectorSupported()
 {
+    qCDebug(logToolSemantic) << "Checking vector service support";
+
     if (!d->m_vector) {
         qCDebug(logToolSemantic) << "Vector support check failed - Service not initialized";
         return false;
@@ -57,6 +62,8 @@ bool SemanticParser::isVectorSupported()
 
 bool SemanticParser::isQueryLangSupported()
 {
+    qCDebug(logToolSemantic) << "Checking query language service support";
+
     if (!d->m_querylang) {
         qCDebug(logToolSemantic) << "Query language support check failed - Service not initialized";
         return false;
@@ -70,18 +77,21 @@ bool SemanticParser::isQueryLangSupported()
 SemanticParser::SemanticParser(QObject *parent)
     : QObject(parent), d(new SemanticParserPrivate(this))
 {
+    qCDebug(logToolSemantic) << "SemanticParser constructed";
 }
 
 SemanticParser::~SemanticParser()
 {
+    qCDebug(logToolSemantic) << "SemanticParser destructor called";
     delete d;
     d = nullptr;
 }
 
 bool SemanticParser::connectToVector(const QString &service)
 {
+    qCDebug(logToolSemantic) << "Attempting to connect to vector service:" << service;
     if (d->m_vector) {
-        qCWarning(logToolSemantic) << "Vector service already connected";
+        qCWarning(logToolSemantic) << "Vector service already connected - Current service:" << d->m_vector->service();
         return false;
     }
 
@@ -96,8 +106,9 @@ bool SemanticParser::connectToVector(const QString &service)
 
 bool SemanticParser::connectToQueryLang(const QString &service)
 {
+    qCDebug(logToolSemantic) << "Attempting to connect to query language service:" << service;
     if (d->m_querylang) {
-        qCWarning(logToolSemantic) << "Query language service already connected";
+        qCWarning(logToolSemantic) << "Query language service already connected - Current service:" << d->m_querylang->service();
         return false;
     }
 

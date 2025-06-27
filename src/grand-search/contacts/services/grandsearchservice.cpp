@@ -17,16 +17,19 @@ GrandSearchServicePrivate::GrandSearchServicePrivate(MainWindow *mainWindow, Gra
     : q_p(parent),
       m_mainWindow(mainWindow)
 {
+    qCDebug(logGrandSearch) << "GrandSearchServicePrivate created with MainWindow:" << (mainWindow != nullptr);
 }
 
 GrandSearchService::GrandSearchService(MainWindow *mainWindow, QObject *parent)
     : QObject(parent), d_p(new GrandSearchServicePrivate(mainWindow, this))
 {
+    qCDebug(logGrandSearch) << "Initializing GrandSearchService - MainWindow:" << (mainWindow != nullptr);
     connect(d_p->m_mainWindow, &MainWindow::visibleChanged, this, &GrandSearchService::VisibleChanged);
 }
 
 GrandSearchService::~GrandSearchService()
 {
+    qCDebug(logGrandSearch) << "GrandSearchService destroyed";
 }
 
 bool GrandSearchService::IsVisible() const
@@ -34,7 +37,7 @@ bool GrandSearchService::IsVisible() const
     Q_ASSERT(d_p->m_mainWindow);
 
     bool isvisble = d_p->m_mainWindow->isVisible();
-    qCDebug(logGrandSearch) << "Retrieved window visibility state:" << isvisble;
+    qCDebug(logGrandSearch) << "D-Bus method called: IsVisible - Result:" << isvisble;
     return isvisble;
 }
 
@@ -49,10 +52,10 @@ void GrandSearchService::SetVisible(const bool visible)
     }
 
     if (!visible) {
-        qCInfo(logGrandSearch) << "Closing window as visibility set to:" << visible;
+        qCInfo(logGrandSearch) << "Closing main window via D-Bus SetVisible(false)";
         d_p->m_mainWindow->close();
     } else {
-        qCDebug(logGrandSearch) << "Setting window visibility to:" << visible;
+        qCDebug(logGrandSearch) << "Showing main window via D-Bus SetVisible(true)";
         d_p->m_mainWindow->setVisible(visible);
     }
 }
