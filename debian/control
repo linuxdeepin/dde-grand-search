@@ -26,7 +26,6 @@ Build-Depends: debhelper (>= 9),
  libboost-filesystem-dev,
  libgsettings-qt-dev,
  libdeepin-service-framework-dev (>1.0.9),
- libdde-shell-dev | hello,
  deepin-desktop-base
 Standards-Version: 3.9.8
 Homepage: http://www.deepin.org/
