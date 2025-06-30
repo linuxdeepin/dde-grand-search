@@ -26,6 +26,7 @@ Build-Depends: debhelper (>= 9),
  libjpeg62-turbo-dev,
  liblucene++-dev,
  libboost-dev,
+ libboost-system-dev,
  libdeepin-service-framework-dev (>1.0.9),
  libdde-shell-dev | hello,
  deepin-desktop-base
