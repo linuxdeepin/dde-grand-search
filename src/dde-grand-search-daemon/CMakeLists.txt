@@ -47,8 +47,6 @@ set(LINK_LIBS
     ${DTK_LIBS}
     ${deepin-qdbus-service_LIBRARIES}
     dfm${DTK_VERSION_MAJOR}-search
-    ${Boost_LIBRARIES}
-    pthread
 )
 
 # 源文件
