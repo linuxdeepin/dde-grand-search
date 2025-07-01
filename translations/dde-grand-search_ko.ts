@@ -11,7 +11,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="49"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>취소</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
@@ -48,17 +48,17 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="126"/>
         <source>Summarize document content with UOS AI</source>
-        <translation>UOS AI를 사용하여 문서 내용 요약</translation>
+        <translation>UOS AI로 문서 내용 요약</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="127"/>
         <source>Translate document content with UOS AI</source>
-        <translation>UOS AI를 사용하여 문서 내용 번역</translation>
+        <translation>UOS AI로 문서 내용 번역</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="128"/>
         <source>Extend document content with UOS AI</source>
-        <translation>UOS AI를 사용하여 문서 내용 확장</translation>
+        <translation>UOS AI로 문서 내용 확장</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="129"/>
@@ -68,17 +68,17 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="299"/>
         <source>Summarize this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation>이 문서를 요약해 주세요. 불필요한 내용 없이 명확한 결과를 직접 제공해 주십시오.</translation>
+        <translation>이 문서를 요약해 주세요. 간결한 결과를 직접 제공해 주시고, 불필요한 내용은 생략해 주세요.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="315"/>
         <source>Translate this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation>이 문서를 번역해 주세요. 불필요한 내용 없이 명확한 결과를 직접 제공해 주십시오.</translation>
+        <translation>이 문서를 번역해 주세요. 간결한 결과를 직접 제공해 주시고, 불필요한 내용은 생략해 주세요.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="331"/>
         <source>Expand this document for me and provide me with a clear and expanded result directly, without any unnecessary content.</source>
-        <translation>이 문서를 확장해 주세요. 불필요한 내용 없이 명확하고 확장된 결과를 직접 제공해 주십시오.</translation>
+        <translation>이 문서를 확장해 주세요. 명확하고 확장된 결과를 직접 제공해 주시고, 불필요한 내용은 생략해 주세요.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="447"/>
@@ -114,7 +114,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="41"/>
         <source>Add paths to the exclusion list to prevent searching in them.</source>
-        <translation>검색을 막기 위해 제외 목록에 경로를 추가하십시오.</translation>
+        <translation>검색을 방지하기 위해 경로를 제외 목록에 추가하세요.</translation>
     </message>
 </context>
 <context>
@@ -122,7 +122,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/customwidget.cpp" line="26"/>
         <source>Custom search</source>
-        <translation>맞춤 검색</translation>
+        <translation>커스텀 검색</translation>
     </message>
 </context>
 <context>
@@ -164,13 +164,13 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <source>Installed</source>
-        <translation> 설치됨</translation>
+        <translation>설치됨</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="90"/>
         <source>Not Installed</source>
-        <translation>설치되지 않음</translation>
+        <translation>미설치</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="105"/>
@@ -188,7 +188,7 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="235"/>
         <source>What would you like to search for?</source>
-        <translation>검색할 내용은 무엇인가요?</translation>
+        <translation>검색할 항목은 무엇입니까?</translation>
     </message>
 </context>
 <context>
@@ -201,7 +201,7 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="86"/>
         <source>Copy</source>
-        <translation>복사</translation>
+        <translation>복사하기</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="90"/>
@@ -245,13 +245,13 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="269"/>
         <source>Please go to %1 to install the ULLM, and %2 Automatic index update.</source>
-        <translation>ULLM을 설치하려면 %1로 이동하세요, %2 자동 인덱스 업데이트.</translation>
+        <translation>ULLM을 설치하려면 %1으로 이동하고, %2 자동 인덱스 업데이트를 설정해야 합니다.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="270"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="279"/>
         <source>Search configration</source>
-        <translation>검색 구성</translation>
+        <translation>검색 설정</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="271"/>
@@ -262,12 +262,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="274"/>
         <source>Please %1 Automatic index update.</source>
-        <translation>자동 인덱스 업데이트를 위해 %1을 설치하세요.</translation>
+        <translation>자동 인덱스 업데이트를 설정하려면 %1을 설치해야 합니다.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="278"/>
         <source>Please go to %1 to install the ULLM.</source>
-        <translation>ULLM을 설치하려면 %1로 이동하세요.</translation>
+        <translation>ULLM을 설치하려면 %1으로 이동해야 합니다.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="330"/>
@@ -278,7 +278,7 @@
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="281"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="366"/>
         <source>No search results</source>
-        <translation type="unfinished">No search results</translation>
+        <translation>검색 결과가 없습니다</translation>
     </message>
 </context>
 <context>
@@ -294,7 +294,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="78"/>
         <source>When turned on, you can try to search for local documents using natural language descriptions, such as &quot;last week&apos;s documents&quot;.</source>
-        <translation>켜지면, &apos;지난 주의 문서&apos;와 같은 자연어 설명을 사용하여 로컬 문서를 검색할 수 있습니다.</translation>
+        <translation>켜지면 자연어 설명을 사용하여 로컬 문서를 검색할 수 있습니다. 예를 들어 &quot;지난 주의 문서&quot;와 같은 것입니다.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="184"/>
@@ -319,17 +319,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="135"/>
         <source>When turned on, full text search can be used in the file manager and grand search.</source>
-        <translation type="unfinished"></translation>
+        <translation>켜지면 파일 관리자 및 그랜드 검색에서 전체 텍스트 검색을 사용할 수 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="153"/>
         <source>Embedding Plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>임베딩 플러그인</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="153"/>
         <source>After installing the model, you can use services such as AI Search and UOS AI Assistant..</source>
-        <translation>모델을 설치하면 AI 검색과 UOS AI 어시스턴트와 같은 서비스를 사용할 수 있습니다.</translation>
+        <translation>모델을 설치하면 AI 검색 및 UOS AI 어시스턴트와 같은 서비스를 사용할 수 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="171"/>
@@ -344,18 +344,18 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="218"/>
         <source>When enabled, you can search the text of articles using disjointed and incomplete keywords.</source>
-        <translation>활성화되면, 불완전한 키워드를 사용하여 기사의 텍스트를 검색할 수 있습니다.</translation>
+        <translation>활성화되면 조각난 키워드와 불완전한 키워드를 사용하여 문서의 텍스트를 검색할 수 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="240"/>
         <source>Please install %0 in &lt;a href=&quot;%0&quot;&gt;the app store&lt;/a&gt; before turning on this configuration.</source>
-        <translation type="unfinished"></translation>
+        <translation>이 설정을 켜기 전에 %0을 &lt;a href=&quot;%0&quot;&gt;앱 스토어&lt;/a&gt;에서 설치해야 합니다.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="280"/>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="404"/>
         <source>Intelligent search indexing is being updated, which may take up more resources, please keep the power access.</source>
-        <translation>지능형 검색 인덱싱이 업데이트 중이며, 이는 더 많은 자원을 사용할 수 있으므로 전원을 계속 유지해 주세요.</translation>
+        <translation>지능형 검색 인덱싱이 업데이트 중이며, 더 많은 자원이 필요할 수 있으므로 전원을 계속 유지해야 합니다.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="284"/>
@@ -371,12 +371,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="336"/>
         <source>To use AI Smart Search, you need to install the Embedding Plugins and ULLM first.</source>
-        <translation type="unfinished"></translation>
+        <translation>AI 스마트 검색을 사용하려면 먼저 임베딩 플러그인과 ULLM을 설치해야 합니다.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="337"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>확인</translation>
     </message>
 </context>
 <context>
@@ -385,92 +385,92 @@
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="61"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="385"/>
         <source>Not Installed</source>
-        <translation type="unfinished">설치되지 않음</translation>
+        <translation>설치되지 않음</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="77"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="384"/>
         <source>Install Model</source>
-        <translation type="unfinished"></translation>
+        <translation>모델 설치</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="93"/>
         <source>Update model</source>
-        <translation type="unfinished"></translation>
+        <translation>모델 업데이트</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="94"/>
         <source>Uninstall model</source>
-        <translation type="unfinished"></translation>
+        <translation>모델 제거</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="146"/>
         <source>Installing</source>
-        <translation type="unfinished"></translation>
+        <translation>설치 중</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="212"/>
         <source>Are you sure you want to delete this model?</source>
-        <translation type="unfinished"></translation>
+        <translation>이 모델을 삭제하시겠습니까?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="213"/>
         <source>After uninstallation, functions such as AI Search and UOS AI Assistant will not work properly.</source>
-        <translation type="unfinished"></translation>
+        <translation>제거 후 AI 검색 및 UOS AI 어시스턴트 기능이 제대로 작동하지 않습니다.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="214"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Cancel</translation>
+        <translation>취소</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="215"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation type="unfinished">Confirm</translation>
+        <translation>확인</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="324"/>
         <source>Installing </source>
-        <translation type="unfinished"></translation>
+        <translation>설치 중 </translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="344"/>
         <source>Installing the ULLM</source>
-        <translation type="unfinished"></translation>
+        <translation>ULLM 설치 중</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="345"/>
         <source>Exiting will cause the installation to fail, do you still want to exit?</source>
-        <translation type="unfinished"></translation>
+        <translation>나가면 설치가 실패합니다. 그래도 나가겠습니까?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="346"/>
         <source>Exit</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>나가기</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="347"/>
         <source>Continue</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>계속</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="378"/>
         <source>UnInstall Model</source>
-        <translation type="unfinished"></translation>
+        <translation>모델 제거</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="379"/>
         <source>Installed</source>
-        <translation type="unfinished"> 설치됨</translation>
+        <translation>설치됨</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="390"/>
         <source>Please install the &quot;Embedding Plugins&quot; first before installing this model.</source>
-        <translation type="unfinished"></translation>
+        <translation>이 모델을 설치하기 전에 먼저 &quot;임베딩 플러그인&quot;을 설치해 주세요.</translation>
     </message>
 </context>
 <context>
@@ -478,7 +478,7 @@
     <message>
         <location filename="../src/grand-search/gui/mainwindow.cpp" line="213"/>
         <source>No search results</source>
-        <translation type="unfinished">No search results</translation>
+        <translation>검색 결과가 없습니다</translation>
     </message>
 </context>
 <context>
@@ -486,7 +486,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="87"/>
         <source>Guess you want to search the following</source>
-        <translation type="unfinished"></translation>
+        <translation>다음 검색을 원하시는가요</translation>
     </message>
 </context>
 <context>
@@ -494,22 +494,22 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="27"/>
         <source>Search experience program</source>
-        <translation type="unfinished"></translation>
+        <translation>검색 경험 프로그램</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="35"/>
         <source>Join search experience program</source>
-        <translation type="unfinished"></translation>
+        <translation>검색 경험 프로그램에 가입</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="48"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations, the contents you search while using the Application, the time of search, the type of requested large model.If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation type="unfinished"></translation>
+        <translation>검색 경험 프로그램에 가입하면, 기기 및 시스템 정보, 파일 아이콘, 콘텐츠 및 속성, 애플리케이션 및 설정, 애플리케이션을 사용하면서 검색한 내용, 검색 시간, 요청한 대형 모델의 유형을 수집하고 사용하는 것을 허락하는 것으로 간주됩니다. 위 정보 수집 및 사용을 거부하시면 프로그램에 가입하지 마세요.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="59"/>
         <source>To know more about the management of your data, please refer to the UnionTech Software Privacy Policy (</source>
-        <translation type="unfinished"></translation>
+        <translation>데이터 관리에 대한 더 많은 정보를 알고 싶으시면 UnionTech 소프트웨어 개인정보 보호정책을 참조해 주세요 (</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="61"/>
@@ -532,7 +532,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/scopewidget.cpp" line="28"/>
         <source>Search contents</source>
-        <translation type="unfinished"></translation>
+        <translation>검색 내용</translation>
     </message>
 </context>
 <context>
@@ -540,12 +540,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="37"/>
         <source>Default search engine</source>
-        <translation type="unfinished"></translation>
+        <translation>기본 검색 엔진</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="45"/>
         <source>Search for keywords by the default search engine.</source>
-        <translation>기본 검색 엔진을 사용하여 키워드를 검색합니다.</translation>
+        <translation>기본 검색 엔진으로 키워드를 검색합니다.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="57"/>
@@ -565,7 +565,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="68"/>
         <source>Bing</source>
-        <translation>빙</translation>
+        <translation>버그</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="69"/>
@@ -585,17 +585,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="72"/>
         <source>Sogou</source>
-        <translation>소고우</translation>
+        <translation>소우구</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="73"/>
         <source>Custom</source>
-        <translation>커스텀</translation>
+        <translation>사용자 정의</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="94"/>
         <source>You need to use &quot;%0&quot; to replace the keyword in the URL</source>
-        <translation>URL의 키워드를 대체하려면 &quot;%0&quot;을(를) 사용해야 합니다</translation>
+        <translation>URL의 키워드를 대체하려면 &quot;%0&quot;를 사용해야 합니다.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="158"/>
@@ -608,7 +608,7 @@
     <message>
         <location filename="../src/dde-grand-search-daemon/searcher/web/statictextworker.cpp" line="65"/>
         <source>Search for &quot;%1&quot;</source>
-        <translation>&quot;%1&quot;를(를) 검색</translation>
+        <translation>&quot;%1&quot; 검색</translation>
     </message>
 </context>
 <context>
@@ -616,17 +616,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="19"/>
         <source>Tailer settings</source>
-        <translation>트레일러 설정</translation>
+        <translation>테일러 설정</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="29"/>
         <source>It is displayed at the end of search results for better identification and distinction of items with duplicate names.</source>
-        <translation>중복된 이름의 항목을 더 쉽게 식별하고 구분하기 위해 검색 결과의 끝에 표시됩니다.</translation>
+        <translation>중복된 이름의 항목을 더 쉽게 식별하고 구분할 수 있도록 검색 결과의 끝에 표시됩니다.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="38"/>
         <source>Parent directory</source>
-        <translation>상위 폴더</translation>
+        <translation>상위 디렉터리</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="40"/>
@@ -649,7 +649,7 @@
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="96"/>
         <source>Duration:</source>
-        <translation>장르:</translation>
+        <translation>재생 시간:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="111"/>
@@ -705,7 +705,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="25"/>
         <source>Applications</source>
-        <translation>응용 프로그램</translation>
+        <translation>앱</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="26"/>
@@ -715,7 +715,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="27"/>
         <source>Videos</source>
-        <translation>비디오</translation>
+        <translation>동영상</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="28"/>
@@ -755,7 +755,7 @@
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="28"/>
         <source>Dimensions:</source>
-        <translation>차원:</translation>
+        <translation>크기:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="29"/>
@@ -793,12 +793,12 @@
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="24"/>
         <source>GrandSearch</source>
-        <translation>그랜드 검색</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="81"/>
         <source>SearchConfig</source>
-        <translation>검색 설정</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

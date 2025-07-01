@@ -23,21 +23,25 @@
     <name>GrandSearch::AiToolBarInner</name>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="112"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="162"/>
         <source>Summary</source>
         <translation>文档总结</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="113"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="163"/>
         <source>Translation</source>
         <translation>文档翻译</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="114"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="164"/>
         <source>Extension</source>
         <translation>文档扩写</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="115"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="165"/>
         <source>Add to knowledge base</source>
         <translation>添加到知识库</translation>
     </message>
@@ -125,6 +129,7 @@
     <name>GrandSearch::DdeGrandSearchDockPlugin</name>
     <message>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="47"/>
+        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="101"/>
         <source>Grand Search</source>
         <translation>全局搜索</translation>
     </message>
@@ -163,6 +168,7 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="90"/>
         <source>Not Installed</source>
         <translation>未安装</translation>
     </message>
@@ -243,11 +249,13 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="270"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="279"/>
         <source>Search configration</source>
         <translation>搜索配置</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="271"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="275"/>
         <source>turn on</source>
         <translation>开启</translation>
     </message>
@@ -268,6 +276,7 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="281"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="366"/>
         <source>No search results</source>
         <translation>暂无搜索结果</translation>
     </message>
@@ -284,7 +293,7 @@
     <name>GrandSearch::IntelligentRetrievalWidget</name>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="78"/>
-        <source>When turned on, you can try to search for local documents using natural language descriptions, such as "last week's documents".</source>
+        <source>When turned on, you can try to search for local documents using natural language descriptions, such as &quot;last week&apos;s documents&quot;.</source>
         <translation>开启后您可以尝试使用自然语言描述搜索本地文件，例如搜索“上周的文档”。</translation>
     </message>
     <message>
@@ -344,11 +353,13 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="280"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="404"/>
         <source>Intelligent search indexing is being updated, which may take up more resources, please keep the power access.</source>
         <translation>正在更新智能搜索索引编制，可能占用较多资源，请保持电源接入。</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="284"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="408"/>
         <source>Smart Search indexing update is complete. Last update time: %0</source>
         <translation>智能搜索索引编制更新完成。上次更新时间：%0</translation>
     </message>
@@ -372,6 +383,7 @@
     <name>GrandSearch::LLMWidget</name>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="77"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="384"/>
         <source>Install Model</source>
         <translation>安装模型</translation>
     </message>
@@ -451,11 +463,12 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="390"/>
-        <source>Please install the "Embedding Plugins" first before installing this model.</source>
+        <source>Please install the &quot;Embedding Plugins&quot; first before installing this model.</source>
         <translation>安装此模型前请先安装“向量化模型插件”。</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="61"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="385"/>
         <source>Not Installed</source>
         <translation>未安装</translation>
     </message>
@@ -581,7 +594,7 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="94"/>
-        <source>You need to use "%0" to replace the keyword in the URL</source>
+        <source>You need to use &quot;%0&quot; to replace the keyword in the URL</source>
         <translation>需要使用 “%0” 来替换URL中关键词</translation>
     </message>
     <message>
@@ -594,7 +607,7 @@
     <name>GrandSearch::StaticTextWorker</name>
     <message>
         <location filename="../src/dde-grand-search-daemon/searcher/web/statictextworker.cpp" line="65"/>
-        <source>Search for "%1"</source>
+        <source>Search for &quot;%1&quot;</source>
         <translation>通过浏览器搜索“%1”</translation>
     </message>
 </context>
@@ -780,7 +793,7 @@
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="24"/>
         <source>GrandSearch</source>
-        <translation>大搜索</translation>
+        <translation>全局搜索</translation>
     </message>
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="81"/>

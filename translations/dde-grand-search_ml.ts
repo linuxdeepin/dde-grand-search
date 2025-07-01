@@ -6,17 +6,17 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="48"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation>ഈ %1 ഉപയോഗിക്കാൻ കഴിയാത്തതാണ്, ആദ്യം അപ്പ് സ്റ്റോറിൽ പോയി UOS AI പതിപ്പ് അപ്ഡേറ്റ് ചെയ്യുക.</translation>
+        <translation>ഇത് %1 ഉപയോഗം ചെയ്യാൻ കഴിയില്ല, മുൻകൂർ പ്രവർത്തനം നടത്താൻ അപ്പ് സ്റ്റോറിൽ പോകുക.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="49"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>റദ്ദാക്കുക</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
         <source>Open App Stroe</source>
-        <translation>അപ്പ് സ്റ്റോറിൽ പോകുക</translation>
+        <translation>അപ്പ് സ്റ്റോറിൽ തുറക്കുക</translation>
     </message>
 </context>
 <context>
@@ -25,75 +25,75 @@
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="112"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="162"/>
         <source>Summary</source>
-        <translation>സാരാംശം</translation>
+        <translation>ശേഖരം</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="113"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="163"/>
         <source>Translation</source>
-        <translation>ഭാഷാ മാറ്റം</translation>
+        <translation>തർജമ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="114"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="164"/>
         <source>Extension</source>
-        <translation>അഭിവൃദ്ധി</translation>
+        <translation>വികസനം</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="115"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="165"/>
         <source>Add to knowledge base</source>
-        <translation>അറിവ് ബേസിലേക്ക് ചേർക്കുക</translation>
+        <translation>നോവൽ ബേസിൽ ചേർക്കുക</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="126"/>
         <source>Summarize document content with UOS AI</source>
-        <translation>ഡോക്യുമെന്റിലെ ആശയങ്ങൾക്ക് UOS AI ഉപയോഗിച്ച് സാരാംശം നൽകുക</translation>
+        <translation>ഡോക്യം കണ്ടന്റ് നോവൽ ബേസിൽ ശേഖരിക്കുക</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="127"/>
         <source>Translate document content with UOS AI</source>
-        <translation>ഡോക്യുമെന്റിലെ ആശയങ്ങൾക്ക് UOS AI ഉപയോഗിച്ച് ഭാഷാ മാറ്റം നൽകുക</translation>
+        <translation>ഡോക്യം കണ്ടന്റ് നോവൽ ബേസിൽ തർജമ ചെയ്യുക</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="128"/>
         <source>Extend document content with UOS AI</source>
-        <translation>ഡോക്യുമെന്റിലെ ആശയങ്ങൾക്ക് UOS AI ഉപയോഗിച്ച് അഭിവൃദ്ധി നൽകുക</translation>
+        <translation>ഡോക്യം കണ്ടന്റ് നോവൽ ബേസിൽ വികസനം ചെയ്യുക</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="129"/>
         <source>Add document to UOS AI knowledge base</source>
-        <translation>ഡോക്യുമെന്റ് UOS AI അറിവ് ബേസിലേക്ക് ചേർക്കുക</translation>
+        <translation>ഡോക്യം നോവൽ ബേസിൽ ചേർക്കുക</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="299"/>
         <source>Summarize this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation>ഈ ഡോക്യുമെന്റിന്റെ സാരാംശം എനിക്ക് നൽകുക, അത് വിശദമായ ഫലം വേഗം നൽകുക, അജ്ഞാതമായ പേര് അല്ലെങ്കിൽ വെറും അധിക വിവരങ്ങൾ കാണാതെ.</translation>
+        <translation>എനിക്ക് ഈ ഡോക്യം ശേഖരിക്കുക മുതൽ എനിക്ക് വേണ്ടി വ്യക്തമായ ഫലം നേരിട്ട് നൽകുക, കൂടാതെ അപ്പോക്കാൻ ആവശ്യമായ വിവരങ്ങൾ ഒഴിവാക്കുക.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="315"/>
         <source>Translate this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation>ഈ ഡോക്യുമെന്റിന്റെ ഭാഷാ മാറ്റം എനിക്ക് നൽകുക, അത് വിശദമായ ഫലം വേഗം നൽകുക, അജ്ഞാതമായ പേര് അല്ലെങ്കിൽ വെറും അധിക വിവരങ്ങൾ കാണാതെ.</translation>
+        <translation>എനിക്ക് ഈ ഡോക്യം തർജമ ചെയ്യുക മുതൽ എനിക്ക് വേണ്ടി വ്യക്തമായ ഫലം നേരിട്ട് നൽകുക, കൂടാതെ അപ്പോക്കാൻ ആവശ്യമായ വിവരങ്ങൾ ഒഴിവാക്കുക.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="331"/>
         <source>Expand this document for me and provide me with a clear and expanded result directly, without any unnecessary content.</source>
-        <translation>ഈ ഡോക്യുമെന്റിന്റെ അഭിവൃദ്ധി എനിക്ക് നൽകുക, അത് വിശദമായ അഭിവൃദ്ധി ഫലം വേഗം നൽകുക, അജ്ഞാതമായ പേര് അല്ലെങ്കിൽ വെറും അധിക വിവരങ്ങൾ കാണാതെ.</translation>
+        <translation>എനിക്ക് ഈ ഡോക്യം വികസനം ചെയ്യുക മുതൽ എനിക്ക് വേണ്ടി വ്യക്തമായ വികസിത ഫലം നേരിട്ട് നൽകുക, കൂടാതെ അപ്പോക്കാൻ ആവശ്യമായ വിവരങ്ങൾ ഒഴിവാക്കുക.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="447"/>
         <source>DDE Grand Search</source>
-        <translation>ഡിഡിഇ ഗ്രാൻഡ് സെർച്ച്</translation>
+        <translation>ഡിഡിഇ ഗ്രന്റ് സെർച്ച്</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="450"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation>ഈ %1 ഉപയോഗിക്കാൻ കഴിയാത്തതാണ്, ആദ്യം അപ്പ് സ്റ്റോറിൽ പോയി UOS AI പതിപ്പ് അപ്ഡേറ്റ് ചെയ്യുക.</translation>
+        <translation>ഇത് %1 ഉപയോഗം ചെയ്യാൻ കഴിയില്ല, മുൻകൂർ പ്രവർത്തനം നടത്താൻ അപ്പ് സ്റ്റോറിൽ പോകുക.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
         <source>Open App Stroe</source>
-        <translation>അപ്പ് സ്റ്റോറിൽ പോകുക</translation>
+        <translation>അപ്പ് സ്റ്റോറിൽ തുറക്കുക</translation>
     </message>
 </context>
 <context>
@@ -101,7 +101,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/bestmatchwidget.cpp" line="23"/>
         <source>Best match</source>
-        <translation>ഏറ്റവും അനുയോജ്യമായ ഫലം</translation>
+        <translation>ഏറ്റവും മികച്ച പരിഹാരം</translation>
     </message>
 </context>
 <context>
@@ -109,12 +109,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="30"/>
         <source>Excluded path</source>
-        <translation>അനുവദിച്ചിട്ടില്ലാത്ത വഴി</translation>
+        <translation>അപ്പോക്കാൻ തയ്യാറാക്കിയ വഴി</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="41"/>
         <source>Add paths to the exclusion list to prevent searching in them.</source>
-        <translation>അനുവദിച്ചിട്ടില്ലാത്ത വഴികൾ ചേർക്കുക, അതിൽ സെർച്ച് ചെയ്യാൻ തടയുക.</translation>
+        <translation>അപ്പോക്കാൻ തയ്യാറാക്കിയ വഴികൾ പട്ടികയിൽ ചേർക്കുക എന്നാൽ അവയിൽ സെർച്ച് നടത്താൻ തടയും.</translation>
     </message>
 </context>
 <context>
@@ -122,7 +122,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/customwidget.cpp" line="26"/>
         <source>Custom search</source>
-        <translation>പേര് തിരിച്ചറിയൽ സെർച്ച്</translation>
+        <translation>പേർസണൽ സെർച്ച്</translation>
     </message>
 </context>
 <context>
@@ -131,12 +131,12 @@
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="47"/>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="101"/>
         <source>Grand Search</source>
-        <translation>ഗ്രാൻഡ് സെർച്ച്</translation>
+        <translation>ഗ്രന്റ് സെർച്ച്</translation>
     </message>
     <message>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="166"/>
         <source>Search settings</source>
-        <translation>സെർച്ച് സെറ്റിംഗ്</translation>
+        <translation>സെർച്ച് സെറ്റിംഗ്സ്</translation>
     </message>
 </context>
 <context>
@@ -144,7 +144,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="14"/>
         <source>Do you want to remove the path from the exclusion list?</source>
-        <translation>ഈ വഴിയെ അനുവദിച്ചിട്ടില്ലാത്ത പട്ടികയിൽ നിന്ന് മാത്രം നീക്കം ചെയ്യാൻ ആഗ്രഹിക്കുന്നു കൂട്ടുകയോ?</translation>
+        <translation>നിങ്ങൾ അപ്പോക്കാൻ തയ്യാറാക്കിയ വഴിയെ പട്ടികയിൽ നിന്ന് അപ്പോക്കുക എന്ന് ആഗ്രഹിക്കുന്നുവോ?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="20"/>
@@ -164,18 +164,18 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <source>Installed</source>
-        <translation>സ്ഥാപിച്ചിട്ടുണ്ട്</translation>
+        <translation>നിലവിലുള്ളത്</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="90"/>
         <source>Not Installed</source>
-        <translation>സ്ഥാപിച്ചിട്ടില്ല</translation>
+        <translation>നിലവിലില്ല</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="105"/>
         <source>Install</source>
-        <translation>സ്ഥാപിക്കുക</translation>
+        <translation>നിലവിലെത്തിക്കുക</translation>
     </message>
 </context>
 <context>
@@ -183,12 +183,12 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="234"/>
         <source>Search</source>
-        <translation>സെർച്ച് ചെയ്യുക</translation>
+        <translation>സെർച്ച്</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="235"/>
         <source>What would you like to search for?</source>
-        <translation>നിങ്ങൾ എന്ത് തിരിച്ചറിയാൻ ആഗ്രഹിക്കുന്നു?</translation>
+        <translation>നിങ്ങൾ എന്ത് തിരയുകയാണ്?</translation>
     </message>
 </context>
 <context>
@@ -196,17 +196,17 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="82"/>
         <source>Cut</source>
-        <translation>ചിരിക്കുക</translation>
+        <translation>ചുറ്റുക</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="86"/>
         <source>Copy</source>
-        <translation>കോപ്പി ചെയ്യുക</translation>
+        <translation>പകർത്തുക</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="90"/>
         <source>Paste</source>
-        <translation>പേസ്റ്റ് ചെയ്യുക</translation>
+        <translation>കлейർ ചെയ്യുക</translation>
     </message>
 </context>
 <context>
@@ -219,7 +219,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="204"/>
         <source>Time modified:</source>
-        <translation>സമയം മാറ്റി:</translation>
+        <translation>ശേഖരിച്ച സമയം:</translation>
     </message>
 </context>
 <context>
@@ -227,17 +227,17 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="70"/>
         <source>Open</source>
-        <translation>മുറിയിൽ</translation>
+        <translation>മുറിക്കുക</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="75"/>
         <source>Open Path</source>
-        <translation>പാത തുറക്കുക</translation>
+        <translation>മാർഗ്ഗം മുറിക്കുക</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="80"/>
         <source>Copy Path</source>
-        <translation>പാത കോപ്പി ചെയ്യുക</translation>
+        <translation>മാർഗ്ഗം പകർത്തുക</translation>
     </message>
 </context>
 <context>
@@ -245,40 +245,40 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="269"/>
         <source>Please go to %1 to install the ULLM, and %2 Automatic index update.</source>
-        <translation>നിങ്ങൾ ഉള്ള മോഡൽ ഇൻസ്റ്റാൾ ചെയ്യാൻ %1 എന്ന സ്ഥലത്ത് പോകുക, അതുപോലെ %2 ആട്ടോമാറ്റിക് ഇൻഡക്സ് അപ്ഡേറ്റ് ചെയ്യുക.</translation>
+        <translation>നിങ്ങൾ %1 എന്ന സ്ഥലത്ത് ULLM ഇൻസ്റ്റാൾ ചെയ്യുക, അതും %2 ആത്മഘടകം അപ്ഡേറ്റ് ചെയ്യുക.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="270"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="279"/>
         <source>Search configration</source>
-        <translation>സെർച്ച് കൺഫിഗർഷൻ</translation>
+        <translation>തിരയൽ സംവിധാനം</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="271"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="275"/>
         <source>turn on</source>
-        <translation>ഓൺ ചെയ്യുക</translation>
+        <translation>പ്രവർത്തനം ആരംഭിക്കുക</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="274"/>
         <source>Please %1 Automatic index update.</source>
-        <translation>നിങ്ങൾ %1 ആട്ടോമാറ്റിക് ഇൻഡക്സ് അപ്ഡേറ്റ് ചെയ്യുക.</translation>
+        <translation>നിങ്ങൾ %1 ആത്മഘടകം അപ്ഡേറ്റ് ചെയ്യുക.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="278"/>
         <source>Please go to %1 to install the ULLM.</source>
-        <translation>നിങ്ങൾ ഉള്ള മോഡൽ ഇൻസ്റ്റാൾ ചെയ്യാൻ %1 എന്ന സ്ഥലത്ത് പോകുക.</translation>
+        <translation>നിങ്ങൾ %1 എന്ന സ്ഥലത്ത് ULLM ഇൻസ്റ്റാൾ ചെയ്യുക.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="330"/>
         <source>More</source>
-        <translation>ഇതിൽ കൂടുതൽ</translation>
+        <translation>ഇതിനുശേഷം</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="281"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="366"/>
         <source>No search results</source>
-        <translation type="unfinished">No search results</translation>
+        <translation>തിരയൽ ഫലങ്ങൾ ഇല്ല</translation>
     </message>
 </context>
 <context>
@@ -294,89 +294,89 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="78"/>
         <source>When turned on, you can try to search for local documents using natural language descriptions, such as &quot;last week&apos;s documents&quot;.</source>
-        <translation>സെർച്ച് കൺഫിഗർഷൻ</translation>
+        <translation>പ്രവർത്തനം ആരംഭിച്ചാൽ, നിങ്ങൾ &apos;വാസ്തവി ഭാഷയുടെ&apos; വിവരങ്ങൾ ഉപയോഗിച്ച് സ്ഥലീയ പ്രവിശ്യകൾ തിരയാൻ ശ്രമിക്കാം, ഉദാഹരണത്തിന് &apos;വാസ്തവി ഭാഷയുടെ&apos; പ്രവിശ്യകൾ.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="184"/>
         <source>Intelligent full text search</source>
-        <translation>ഓൺ ചെയ്യുക</translation>
+        <translation>ഇൻടെലിജന്റ് പൂർണ്ണ ടെക്സ്റ്റ് തിരയൽ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="99"/>
         <source>Automatic index update</source>
-        <translation>നിങ്ങൾ ഈ കൺഫിഗർഷൻ ഓൺ ചെയ്യുന്നതിനു മുൻപ് %0 എന്ന ആപ്പ് സ്റ്റോറിൽ നിന്ന് ഇൻസ്റ്റാൾ ചെയ്യുക.</translation>
+        <translation>ആതുമഘടകം അപ്ഡേറ്റ്</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="65"/>
         <source>AI Smart Search</source>
-        <translation>ഇൻടെലിജന്റ് ഫുൾ ടെക്സ്റ്റ് സെർച്ച്</translation>
+        <translation>AI സ്മാർട് തിരയൽ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="118"/>
         <source>Full Text Search</source>
-        <translation>ആട്ടോമാറ്റിക് ഇൻഡക്സ് അപ്ഡേറ്റ്</translation>
+        <translation>പൂർണ്ണ ടെക്സ്റ്റ് തിരയൽ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="135"/>
         <source>When turned on, full text search can be used in the file manager and grand search.</source>
-        <translation>എ ഐ സ്മാർട്ട് സെർച്ച്</translation>
+        <translation>പ്രവർത്തനം ആരംഭിച്ചാൽ, ഫയൽ മാനിജർ ആൻഡ് ഗ്രാൻഡ് തിരയൽ പൂർണ്ണ ടെക്സ്റ്റ് തിരയൽ ഉപയോഗിക്കാം.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="153"/>
         <source>Embedding Plugins</source>
-        <translation>ഫുൾ ടെക്സ്റ്റ് സെർച്ച്</translation>
+        <translation>എംബഡിംഗ് പ്ലഗിൻസ്</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="153"/>
         <source>After installing the model, you can use services such as AI Search and UOS AI Assistant..</source>
-        <translation>ഇൻടെലിജന്റ് ഫുൾ ടെക്സ്റ്റ് സെർച്ച്</translation>
+        <translation>മോഡൽ ഇൻസ്റ്റാൾ ചെയ്തതിന് ശേഷം, AI തിരയൽ എന്നാൽ നിങ്ങൾ ഉപയോഗിക്കാം, ഉപയോഗിക്കാം UOS AI അസിസ്റ്റന്റ്.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="171"/>
         <source>ULLM</source>
-        <translation type="unfinished"></translation>
+        <translation>യുഎൽഎൽഎം</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="171"/>
         <source>After installing the ULLM, you can use the AI intelligent search function without an internet connection.</source>
-        <translation>എംബഡിംഗ് പ്ലഗിൻസ്</translation>
+        <translation>യുഎൽഎൽഎം ഇൻസ്റ്റാൾ ചെയ്തതിന് ശേഷം, ഇന്റർനെറ്റ് കണക്കിന്റെ പകരമായി ഇൻടെലിജന്റ് സ്മാർട് തിരയൽ ഫംഷൻ ഉപയോഗിക്കാം.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="218"/>
         <source>When enabled, you can search the text of articles using disjointed and incomplete keywords.</source>
-        <translation>മോഡൽ ഇൻസ്റ്റാൾ ചെയ്യുകയും ചെയ്യുന്നതിനു ശേഷം, AI സെർച്ച് എന്നുപയോഗിക്കുന്നതിനും UOS AI അസിസ്റ്റന്റ് എന്നുപയോഗിക്കുന്നതിനും കഴിയും.</translation>
+        <translation>പ്രവർത്തനം ആരംഭിച്ചാൽ, വിചിത്രമായ അക്ഷരങ്ങൾ ഉപയോഗിച്ച് കഥകളുടെ ടെക്സ്റ്റ് തിരയാൻ കഴിയും.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="240"/>
         <source>Please install %0 in &lt;a href=&quot;%0&quot;&gt;the app store&lt;/a&gt; before turning on this configuration.</source>
-        <translation type="unfinished"></translation>
+        <translation>നിലവിലെ സംവിധാനം ആരംഭിക്കുന്ന മുമ്പ്, നിങ്ങൾ %0 എന്ന ആപ്പ് സ്റ്റോർ ലഭ്യമാക്കുക.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="280"/>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="404"/>
         <source>Intelligent search indexing is being updated, which may take up more resources, please keep the power access.</source>
-        <translation>യു എൽ എൽ എം ഇൻസ്റ്റാൾ ചെയ്യുകയും ചെയ്യുന്നതിനു ശേഷം, ഇന്റർനെറ്റ് കണക്ഷൻ ഇല്ലാതെ എ ഐ ഇൻടെലിജന്റ് സെർച്ച് ഫങ്കഷൻ ഉപയോഗിക്കാൻ കഴിയും.</translation>
+        <translation>ഇൻടെലിജന്റ് തിരയൽ ഇൻഡക്സ് അപ്ഡേറ്റ് ചെയ്യുന്നു, ഇത് കൂടുതൽ സാമ്പത്തിക വിഭവങ്ങൾ ആവശ്യമാകും, കൃത്യമായി പവർ പ്രവേശനം പാലിക്കുക.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="284"/>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="408"/>
         <source>Smart Search indexing update is complete. Last update time: %0</source>
-        <translation>ഓൺ ചെയ്യുന്നതിനു ശേഷം, ജോഡിച്ചിട്ടില്ലാതെ മുഴുവൻ പേരുകൾ കൊണ്ടും കുറച്ച് പേരുകൾ കൊണ്ടും ആർട്ടിക്കിൾ ടെക്സ്റ്റ് സെർച്ച് ചെയ്യാൻ കഴിയും.</translation>
+        <translation>സ്മാർട്ട് സെർച്ച് ഇൻഡെക്സിംഗ് അപ്ഡേറ്റ് പൂർത്തിയായിരിക്കുന്നു. അവസാന അപ്ഡേറ്റ് സമയം: %0</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="287"/>
         <source>Indexing error!</source>
-        <translation>ഇൻടെലിജന്റ് സെർച്ച് ഇൻഡക്സിംഗ് അപ്ഡേറ്റ് ചെയ്യുന്നു, ഇത് കൂടുതൽ റെസോഴ്സുകൾ ആവശ്യമാകാം, പീഴ് പവർ അക്സസ് നിലനിർത്തുക.</translation>
+        <translation>ഇൻഡെക്സിംഗ് പരിശോധന തെറ്റായി!</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="336"/>
         <source>To use AI Smart Search, you need to install the Embedding Plugins and ULLM first.</source>
-        <translation type="unfinished"></translation>
+        <translation>AI സ്മാർട്ട് സെർച്ച് ഉപയോഗിക്കാൻ, നിങ്ങൾക്ക് Embedding Plugins എന്നും ULLM എന്നും ആദ്യം ഇൻസ്റ്റാൾ ചെയ്യണം.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="337"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>ഓക്</translation>
     </message>
 </context>
 <context>
@@ -385,92 +385,92 @@
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="61"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="385"/>
         <source>Not Installed</source>
-        <translation type="unfinished">സ്ഥാപിച്ചിട്ടില്ല</translation>
+        <translation>ഇൻസ്റ്റാൾ ചെയ്യപ്പെടാത്തത്</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="77"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="384"/>
         <source>Install Model</source>
-        <translation type="unfinished"></translation>
+        <translation>മോഡൽ ഇൻസ്റ്റാൾ ചെയ്യുക</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="93"/>
         <source>Update model</source>
-        <translation type="unfinished"></translation>
+        <translation>മോഡൽ അപ്ഡേറ്റ് ചെയ്യുക</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="94"/>
         <source>Uninstall model</source>
-        <translation type="unfinished"></translation>
+        <translation>മോഡൽ ഇൻസ്റ്റാൾ ചെയ്യുക</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="146"/>
         <source>Installing</source>
-        <translation type="unfinished"></translation>
+        <translation>ഇൻസ്റ്റാൾ ചെയ്യുന്നു</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="212"/>
         <source>Are you sure you want to delete this model?</source>
-        <translation type="unfinished"></translation>
+        <translation>നിങ്ങൾ ഈ മോഡൽ നീക്കം ചെയ്യാൻ തയ്യാറാണോ?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="213"/>
         <source>After uninstallation, functions such as AI Search and UOS AI Assistant will not work properly.</source>
-        <translation type="unfinished"></translation>
+        <translation>ഇൻസ്റ്റാൾ ചെയ്യാതെ വിട്ടാൽ, AI സെർച്ച് എന്നില്ലെങ്കിൽ ഉപയോഗിക്കുന്നത് ശരിയായി പ്രവർത്തിക്കില്ല.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="214"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Cancel</translation>
+        <translation>റദ്ദാക്കുക</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="215"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation type="unfinished">Confirm</translation>
+        <translation>പ്രശ്നം</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="324"/>
         <source>Installing </source>
-        <translation type="unfinished"></translation>
+        <translation>ഇൻസ്റ്റാൾ ചെയ്യുന്നു </translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="344"/>
         <source>Installing the ULLM</source>
-        <translation type="unfinished"></translation>
+        <translation>ULLM ഇൻസ്റ്റാൾ ചെയ്യുന്നു</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="345"/>
         <source>Exiting will cause the installation to fail, do you still want to exit?</source>
-        <translation type="unfinished"></translation>
+        <translation>പുറത്തേക്ക് പോകുന്നത് ഇൻസ്റ്റാൾ പരാജയപ്പെടുത്തും, നിങ്ങൾ പുറത്തേക്ക് പോകാൻ തയ്യാറാണോ?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="346"/>
         <source>Exit</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>പുറത്തേക്ക്</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="347"/>
         <source>Continue</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>തുടർന്ന്</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="378"/>
         <source>UnInstall Model</source>
-        <translation type="unfinished"></translation>
+        <translation>മോഡൽ ഇൻസ്റ്റാൾ ചെയ്യുക</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="379"/>
         <source>Installed</source>
-        <translation type="unfinished">സ്ഥാപിച്ചിട്ടുണ്ട്</translation>
+        <translation>ഇൻസ്റ്റാൾ ചെയ്തിരിക്കുന്നു</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="390"/>
         <source>Please install the &quot;Embedding Plugins&quot; first before installing this model.</source>
-        <translation type="unfinished"></translation>
+        <translation>നിർബന്ധമായും ഈ മോഡൽ ഇൻസ്റ്റാൾ ചെയ്യുന്നതിന് മുമ്പ് &quot;Embedding Plugins&quot; ഇന്‍സ്റ്റാൾ ചെയ്യുക.</translation>
     </message>
 </context>
 <context>
@@ -478,7 +478,7 @@
     <message>
         <location filename="../src/grand-search/gui/mainwindow.cpp" line="213"/>
         <source>No search results</source>
-        <translation type="unfinished">No search results</translation>
+        <translation>സെർച്ച് ഫലങ്ങൾ ഇല്ല</translation>
     </message>
 </context>
 <context>
@@ -486,7 +486,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="87"/>
         <source>Guess you want to search the following</source>
-        <translation type="unfinished"></translation>
+        <translation>നിങ്ങൾ ഇത് സെർച്ച് ചെയ്യാൻ തയ്യാറാണോ</translation>
     </message>
 </context>
 <context>
@@ -494,22 +494,22 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="27"/>
         <source>Search experience program</source>
-        <translation type="unfinished"></translation>
+        <translation>സെർച്ച് അനുഭവ പ്രവർത്തനം</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="35"/>
         <source>Join search experience program</source>
-        <translation type="unfinished"></translation>
+        <translation>സെർച് അനുഭവ പ്രവർത്തനം ചേർന്ന്</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="48"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations, the contents you search while using the Application, the time of search, the type of requested large model.If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation type="unfinished"></translation>
+        <translation>എന്നിരുന്നാല്‍ നിങ്ങളുടെ ഉപയോഗിക്കുന്ന പ്രവർത്തനത്തിന്റെ സമയം, ആവശ്യപ്പെട്ട വലിയ മോഡലിന്റെ തരം എന്നിവയും നിങ്ങളുടെ ഡിവൈസ് ആൻഡ് സിസ്റ്റത്തിന്റെ വിവരങ്ങള്‍, ഫയല്‍ ഐക്കണുകള്‍, വിവരങ്ങള്‍ ആൻഡ് പ്രോപ്പർട്ടികള്‍, ആപ്ലിക്കേഷനുകള്‍ ആൻഡ് അവയുടെ ക്രമീകരണങ്ങള്‍, ആപ്ലിക്കേഷനില്‍ ഉപയോഗിക്കുന്ന സമയത്ത് നിങ്ങൾ തിരച്ചിൽ ചെയ്യുന്ന വിവരങ്ങള്‍ എന്നിവയും നമ്മൾ സൂക്ഷിക്കുകയും ഉപയോഗിക്കുകയും ചെയ്യുന്നതിന് നിങ്ങൾ അനുവാദം നല്‍കുകയും ചെയ്യുന്നു. നിങ്ങൾ മുകളില്‍ പറഞ്ഞ വിവരങ്ങളുടെ സൂക്ഷിക്കലും ഉപയോഗവും നിഷേധിക്കുകയാണെങ്കില്‍, പ്രവർത്തനത്തില്‍ പങ്കെടുക്കരുത്.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="59"/>
         <source>To know more about the management of your data, please refer to the UnionTech Software Privacy Policy (</source>
-        <translation type="unfinished"></translation>
+        <translation>നിങ്ങളുടെ ഡാറ്റയുടെ പരിപാലനത്തെക്കുറിച്ച് കൂടുതല്‍ അറിയാന്‍, യൂണിയന്‍ടെക് സോഫ്റ്റ്വെയര്‍ പ്രൈവസി പോളിസി (</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="61"/>
@@ -532,7 +532,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/scopewidget.cpp" line="28"/>
         <source>Search contents</source>
-        <translation type="unfinished"></translation>
+        <translation>ചെയ്യുന്ന തിരയൽ</translation>
     </message>
 </context>
 <context>
@@ -540,22 +540,22 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="37"/>
         <source>Default search engine</source>
-        <translation type="unfinished"></translation>
+        <translation>പ്രാഥമിക തിരയൽ ഇഞ്ചിന</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="45"/>
         <source>Search for keywords by the default search engine.</source>
-        <translation type="unfinished"></translation>
+        <translation>പ്രാഥമിക തിരയൽ ഇഞ്ചിന ഉപയോഗിച്ച് കീവേഡ്സ് തിരയുക.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="57"/>
         <source>Default search engine is</source>
-        <translation>മാനദരിയായ തിരയൽ ഇഞ്ചിന്</translation>
+        <translation>പ്രാഥമിക തിരയൽ ഇഞ്ചിന ആണ്</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="66"/>
         <source>Google</source>
-        <translation>ഗൂഗിൾ</translation>
+        <translation>ഗൂഗിള്‍</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="67"/>
@@ -580,7 +580,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="71"/>
         <source>360 AI Search</source>
-        <translation>360 AI സെർച്ച്</translation>
+        <translation>360 ഐ ഐ തിരയൽ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="72"/>
@@ -590,17 +590,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="73"/>
         <source>Custom</source>
-        <translation>സ്വദേശി</translation>
+        <translation>പ്രത്യേകം</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="94"/>
         <source>You need to use &quot;%0&quot; to replace the keyword in the URL</source>
-        <translation>നിങ്ങൾ ഇന്നിപ്പറ്റെ &quot;%0&quot; ഉപയോഗിച്ച് URL ലെ കീവേഡ് പകരാന്‍ പുറത്തെടുക്കണം</translation>
+        <translation>നിങ്ങൾ ഇനി ഒരു &quot;%0&quot; ഉപയോഗിച്ച് യുആർഎൽ ലിങ്കിലെ കീവേഡ് പകര്‍ത്തേണ്ടതാണ്</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="158"/>
         <source>Invalid URL</source>
-        <translation>അബേധ്യമായ URL</translation>
+        <translation>അസാധുവായ യുആർഎൽ</translation>
     </message>
 </context>
 <context>
@@ -608,7 +608,7 @@
     <message>
         <location filename="../src/dde-grand-search-daemon/searcher/web/statictextworker.cpp" line="65"/>
         <source>Search for &quot;%1&quot;</source>
-        <translation>&quot;%1&quot; എന്ന് തിരയുക</translation>
+        <translation>“%1” എന്ന കീവേഡ് തിരയുക</translation>
     </message>
 </context>
 <context>
@@ -616,22 +616,22 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="19"/>
         <source>Tailer settings</source>
-        <translation>ടെയ്‌ലർ സെറ്റിംഗ്സ്</translation>
+        <translation>തൈലർ സെട്ടിംഗ്സ്</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="29"/>
         <source>It is displayed at the end of search results for better identification and distinction of items with duplicate names.</source>
-        <translation>സമാനമായ പേരുള്ള കാര്യങ്ങൾ തിരയൽ ഫലങ്ങളുടെ അവസാനത്തിൽ കാണിക്കുന്നത് അവയെ കൂടുതൽ തിരിച്ചറിയുന്നതിന് ഉപയോഗിക്കുന്നു</translation>
+        <translation>തിരയൽ ഫലങ്ങളുടെ അവസാനത്തിൽ പ്രദർശിപ്പിക്കുന്നത് ഒരേ പേരിലുള്ള കാര്യങ്ങളുടെ ഓർത്തിന് ഉപയോഗിക്കുന്നതിന് മുൻഗണന നൽകുന്നു.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="38"/>
         <source>Parent directory</source>
-        <translation>പിതാവിന്റെ അധികരണം</translation>
+        <translation>അച്ഛൻ ഡയറക്ടറി</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="40"/>
         <source>Time modified</source>
-        <translation>സമയം മാറ്റി</translation>
+        <translation>സമയം മുതല്‍ മാറ്റി</translation>
     </message>
 </context>
 <context>
@@ -639,7 +639,7 @@
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="59"/>
         <source>Artist:</source>
-        <translation>രചയിതാവ്:</translation>
+        <translation>കലാകാരൻ:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="71"/>
@@ -649,12 +649,12 @@
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="96"/>
         <source>Duration:</source>
-        <translation>സമയം:</translation>
+        <translation>ദൈർഘ്യം:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="111"/>
         <source>Type:</source>
-        <translation>പരിധി:</translation>
+        <translation>വിഭാഗം:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="123"/>
@@ -664,7 +664,7 @@
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="137"/>
         <source>Time modified:</source>
-        <translation>സമയം മാറ്റി:</translation>
+        <translation>സമയം മുതല്‍ മാറ്റി:</translation>
     </message>
 </context>
 <context>
@@ -672,12 +672,12 @@
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="53"/>
         <source>Dimensions:</source>
-        <translation>മാപ്പുകൾ:</translation>
+        <translation>മാപ്പകള്‍:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="69"/>
         <source>Type:</source>
-        <translation>പരിധി:</translation>
+        <translation>വിഭാഗം:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="84"/>
@@ -692,7 +692,7 @@
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="110"/>
         <source>Time modified:</source>
-        <translation>സമയം മാറ്റി:</translation>
+        <translation>സമയം മുതല്‍ മാറ്റി:</translation>
     </message>
 </context>
 <context>
@@ -700,12 +700,12 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="24"/>
         <source>Best match</source>
-        <translation>ഏറ്റവും മികച്ച അനുയോജ്യത</translation>
+        <translation>ഏറ്റത്തിലെ ഏറ്റവും മികച്ചത്</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="25"/>
         <source>Applications</source>
-        <translation>സൗജന്യ പ്രവർത്തനങ്ങൾ</translation>
+        <translation>ഫലകങ്ങൾ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="26"/>
@@ -715,32 +715,32 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="27"/>
         <source>Videos</source>
-        <translation>വീഡിയോകൾ</translation>
+        <translation>വീഡിയോ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="28"/>
         <source>Music</source>
-        <translation>സംഗീതം</translation>
+        <translation>മ്യൂസിക്</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="29"/>
         <source>Pictures</source>
-        <translation>ചിത്രങ്ങൾ</translation>
+        <translation>ഫോട്ടോകൾ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="30"/>
         <source>Documents</source>
-        <translation>ഫയലുകൾ</translation>
+        <translation>ഡൊക്യുമെന്റ്സ്</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="31"/>
         <source>Folders</source>
-        <translation>ഫോൾഡറുകൾ</translation>
+        <translation>ഫോൾഡർകൾ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="32"/>
         <source>Files</source>
-        <translation>ഫയലുകൾ</translation>
+        <translation>ഫൈൽസ്</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="33"/>
@@ -750,17 +750,17 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="34"/>
         <source>AI Search</source>
-        <translation>AI സെർച്ച്</translation>
+        <translation>ഐ സെർച്ച്</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="28"/>
         <source>Dimensions:</source>
-        <translation>മാപ്പുകൾ:</translation>
+        <translation>വലുപ്പം:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="29"/>
         <source>Type:</source>
-        <translation>വിഭാഗം:</translation>
+        <translation>തരം:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="30"/>
@@ -770,7 +770,7 @@
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="31"/>
         <source>Duration:</source>
-        <translation>കാലാവധി:</translation>
+        <translation>കാലാവസ്ഥ:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="32"/>
@@ -793,12 +793,12 @@
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="24"/>
         <source>GrandSearch</source>
-        <translation>ഗ്രാൻഡ് സെർച്ച്</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="81"/>
         <source>SearchConfig</source>
-        <translation>സെർച്ച് കൺഫിഗ്</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

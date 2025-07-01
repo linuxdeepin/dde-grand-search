@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="48"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation>Nelze použít %1, prosím, pojďte do obchodu s aplikacemi a aktualizujte verzi UOS AI nejprve.</translation>
+        <translation>Nelze použít %1, prosím, pojďte do obchodu s aplikacemi, abyste aktualizovali verzi UOS AI.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="49"/>
@@ -25,7 +25,7 @@
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="112"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="162"/>
         <source>Summary</source>
-        <translation>Shrnutí</translation>
+        <translation>Souhrn</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="113"/>
@@ -43,42 +43,42 @@
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="115"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="165"/>
         <source>Add to knowledge base</source>
-        <translation>Přidat do znalostní báze</translation>
+        <translation>Přidat do báze znalostí</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="126"/>
         <source>Summarize document content with UOS AI</source>
-        <translation>Shrňte obsah dokumentu pomocí UOS AI</translation>
+        <translation>Vytvořit souhrn obsahu dokumentu pomocí UOS AI</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="127"/>
         <source>Translate document content with UOS AI</source>
-        <translation>Přeložte obsah dokumentu pomocí UOS AI</translation>
+        <translation>Přeložit obsah dokumentu pomocí UOS AI</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="128"/>
         <source>Extend document content with UOS AI</source>
-        <translation>Rozšířte obsah dokumentu pomocí UOS AI</translation>
+        <translation>Rozšířit obsah dokumentu pomocí UOS AI</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="129"/>
         <source>Add document to UOS AI knowledge base</source>
-        <translation>Přidat dokument do znalostní báze UOS AI</translation>
+        <translation>Přidat dokument do báze znalostí UOS AI</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="299"/>
         <source>Summarize this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation>Shrňte tento dokument pro mě a poskytněte mi jasný výsledek přímo, bez jakékoli nepotřebné informace.</translation>
+        <translation>Vytvořte mi souhrn tohoto dokumentu a poskytněte mi jasné výsledky přímo, bez jakéhokoli nepotřebného obsahu.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="315"/>
         <source>Translate this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation>Přeložte tento dokument pro mě a poskytněte mi jasný výsledek přímo, bez jakékoli nepotřebné informace.</translation>
+        <translation>Přeložte mi tento dokument a poskytněte mi jasné výsledky přímo, bez jakéhokoli nepotřebného obsahu.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="331"/>
         <source>Expand this document for me and provide me with a clear and expanded result directly, without any unnecessary content.</source>
-        <translation>Rozšířte tento dokument pro mě a poskytněte mi jasný a rozšířený výsledek přímo, bez jakékoli nepotřebné informace.</translation>
+        <translation>Rozšířte mi tento dokument a poskytněte mi jasné a rozšířené výsledky přímo, bez jakéhokoli nepotřebného obsahu.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="447"/>
@@ -88,7 +88,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="450"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation>Nelze použít %1, prosím, pojďte do obchodu s aplikacemi a aktualizujte verzi UOS AI nejprve.</translation>
+        <translation>Nelze použít %1, prosím, pojďte do obchodu s aplikacemi, abyste aktualizovali verzi UOS AI.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
@@ -114,7 +114,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="41"/>
         <source>Add paths to the exclusion list to prevent searching in them.</source>
-        <translation>Přidejte cesty do vyloučeného seznamu, aby se zabránilo jejich vyhledávání.</translation>
+        <translation>Přidat cesty do seznamu vyloučených, aby se zabránilo jejich vyhledávání.</translation>
     </message>
 </context>
 <context>
@@ -144,7 +144,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="14"/>
         <source>Do you want to remove the path from the exclusion list?</source>
-        <translation>Chcete odstranit cestu ze seznamu vyloučení?</translation>
+        <translation>Chcete odstranit cestu ze seznamu vyloučených?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="20"/>
@@ -245,13 +245,13 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="269"/>
         <source>Please go to %1 to install the ULLM, and %2 Automatic index update.</source>
-        <translation>Prosím, pojďte do %1 a nainstalujte ULLM, a %2 Automatické aktualizace indexu.</translation>
+        <translation>Prosím, pojďte do %1 a nainstalujte ULLM, a %2 automatické aktualizace indexu.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="270"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="279"/>
         <source>Search configration</source>
-        <translation>Konfigurace vyhledávání</translation>
+        <translation>Nastavení vyhledávání</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="271"/>
@@ -262,7 +262,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="274"/>
         <source>Please %1 Automatic index update.</source>
-        <translation>Prosím, %1 Automatické aktualizace indexu.</translation>
+        <translation>Prosím, %1 automatické aktualizace indexu.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="278"/>
@@ -294,12 +294,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="65"/>
         <source>AI Smart Search</source>
-        <translation>AI inteligentní vyhledávání</translation>
+        <translation>AI Inteligentní vyhledávání</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="78"/>
         <source>When turned on, you can try to search for local documents using natural language descriptions, such as &quot;last week&apos;s documents&quot;.</source>
-        <translation>Při zapnutí můžete pokusit vyhledat místní dokumenty pomocí popisů přirozeného jazyka, například &quot;dokumenty z minulého týdne&quot;.</translation>
+        <translation>Při zapnutí můžete pokusit vyhledat místní dokumenty pomocí přirozených popisů jazyka, například „dokumenty z minulého týdne“.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="99"/>
@@ -314,7 +314,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="135"/>
         <source>When turned on, full text search can be used in the file manager and grand search.</source>
-        <translation>Při zapnutí se plný textový vyhledávání může použít v prohlížeči souborů a Grand Search.</translation>
+        <translation>Při zapnutí se plné textové vyhledávání může použít v prohlížeči souborů a Grand Search.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="153"/>
@@ -324,7 +324,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="153"/>
         <source>After installing the model, you can use services such as AI Search and UOS AI Assistant..</source>
-        <translation>Po instalaci modelu můžete používat služby, jako je AI Search a UOS AI Assistant.</translation>
+        <translation>Po instalaci modelu můžete používat služby jako je AI Search a UOS AI Assistant.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="171"/>
@@ -339,29 +339,29 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="184"/>
         <source>Intelligent full text search</source>
-        <translation>Inteligentní plný textový vyhledávání</translation>
+        <translation>Inteligentní plné textové vyhledávání</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="218"/>
         <source>When enabled, you can search the text of articles using disjointed and incomplete keywords.</source>
-        <translation>Při zapnutí můžete vyhledávat text článků pomocí nespojených a neúplných klíčových slov.</translation>
+        <translation>Při zapnutí můžete vyhledávat text článků pomocí nesouvislých a neúplných klíčových slov.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="240"/>
         <source>Please install %0 in &lt;a href=&quot;%0&quot;&gt;the app store&lt;/a&gt; before turning on this configuration.</source>
-        <translation type="unfinished"></translation>
+        <translation>Před zapnutím této konfigurace prosím nainstalujte %0 v &lt;a href=&quot;%0&quot;&gt;aplikaci pro obchod&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="280"/>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="404"/>
         <source>Intelligent search indexing is being updated, which may take up more resources, please keep the power access.</source>
-        <translation>Inteligentní vyhledávání indexování se aktualizuje, což může spotřebovat více prostředků, ujistěte se, že máte přístup k elektrické energii.</translation>
+        <translation>Inteligentní vyhledávání indexu se aktualizuje, což může spotřebovávat více prostředků, prosím udržte přístup k elektrické energii.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="284"/>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="408"/>
         <source>Smart Search indexing update is complete. Last update time: %0</source>
-        <translation>Aktualizace inteligentního vyhledávání indexování je dokončena. Poslední čas aktualizace: %0</translation>
+        <translation>Aktualizace inteligentního vyhledávání indexu je dokončena. Poslední aktualizace: %0</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="287"/>
@@ -371,7 +371,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="336"/>
         <source>To use AI Smart Search, you need to install the Embedding Plugins and ULLM first.</source>
-        <translation>Pro použití AI Smart Search je třeba nejprve nainstalovat Embedding Plugins a ULLM.</translation>
+        <translation>Pro použití AI inteligentního vyhledávání je třeba nejprve nainstalovat Vložení plug-inů a ULLM.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="337"/>
@@ -411,7 +411,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="212"/>
         <source>Are you sure you want to delete this model?</source>
-        <translation>Jste si jisti, že chcete odstranit tento model?</translation>
+        <translation>Jste si jistí, že chcete odstranit tento model?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="213"/>
@@ -465,12 +465,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="379"/>
         <source>Installed</source>
-        <translation>Nainstalováno</translation>
+        <translation>Instalováno</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="390"/>
         <source>Please install the &quot;Embedding Plugins&quot; first before installing this model.</source>
-        <translation>Prosím nejprve nainstalujte &quot;Embedding Plugins&quot;, než nainstalujete tento model.</translation>
+        <translation>Pro instalaci tohoto modelu nejprve prosím nainstalujte &quot;Vložení plug-inů&quot;.</translation>
     </message>
 </context>
 <context>
@@ -504,7 +504,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="48"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations, the contents you search while using the Application, the time of search, the type of requested large model.If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation>Připojení k programu pro zkušenosti s vyhledáváním znamená, že souhlasíte a oprávňujete nás k shromažďování informací o vašem zařízení a systému, ikonách souborů, obsahu a vlastnostech, aplikacích a jejich konfiguracích, obsahu, který vyhledáváte při použití aplikace, doby vyhledávání a typu požadovaného velkého modelu. Pokud odmítnete naše shromažďování a použití uvedených informací, nepřipojte se k programu.</translation>
+        <translation>Připojení k programu pro zkušenosti s vyhledáváním znamená, že jste nám přiznali a udělili povolení shromažďovat informace o vašem zařízení a systému, ikonách souborů, obsahu a vlastnostech, aplikacích a jejich konfiguracích, obsah, který vyhledáváte při použití aplikace, čas vyhledávání a typ požadovaného velkého modelu. Pokud odmítnete shromažďování a použití uvedených informací, nepřipojte se k programu.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="59"/>
@@ -595,7 +595,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="94"/>
         <source>You need to use &quot;%0&quot; to replace the keyword in the URL</source>
-        <translation>Musíte použít &quot;%0&quot;, aby se výraz v URL nahradil</translation>
+        <translation>Musíte použít &quot;%0&quot; k nahrazení klíčového slova v URL</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="158"/>
@@ -793,12 +793,12 @@
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="24"/>
         <source>GrandSearch</source>
-        <translation>GrandSearch</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="81"/>
         <source>SearchConfig</source>
-        <translation>SearchConfig</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

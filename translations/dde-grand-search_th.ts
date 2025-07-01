@@ -6,12 +6,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="48"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation>ไม่สามารถใช้ %1 ได้ กรุณาไปที่ App Store เพื่ออัปเดตเวอร์ชัน UOS AI ก่อน</translation>
+        <translation>ไม่สามารถใช้งาน %1 ได้ กรุณาไปที่ App Store เพื่ออัปเดตเวอร์ชัน UOS AI ก่อน</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="49"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>ยกเลิก</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
@@ -48,17 +48,17 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="126"/>
         <source>Summarize document content with UOS AI</source>
-        <translation>สรุปเนื้อหาเอกสารด้วย UOS AI</translation>
+        <translation>สรุปเนื้อหาของเอกสารด้วย UOS AI</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="127"/>
         <source>Translate document content with UOS AI</source>
-        <translation>แปลเนื้อหาเอกสารด้วย UOS AI</translation>
+        <translation>แปลเนื้อหาของเอกสารด้วย UOS AI</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="128"/>
         <source>Extend document content with UOS AI</source>
-        <translation>ขยายเนื้อหาเอกสารด้วย UOS AI</translation>
+        <translation>ขยายเนื้อหาของเอกสารด้วย UOS AI</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="129"/>
@@ -68,17 +68,17 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="299"/>
         <source>Summarize this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation>สรุปเอกสารนี้ให้ฉัน และให้ผลลัพธ์ที่ชัดเจนโดยตรง ไม่มีเนื้อหาที่ไม่จำเป็น</translation>
+        <translation>สรุปเอกสารนี้ให้ฉัน และให้ผลลัพธ์ที่ชัดเจนโดยตรง ไม่มีเนื้อหาที่ไม่จำเป็นใด ๆ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="315"/>
         <source>Translate this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation>แปลเอกสารนี้ให้ฉัน และให้ผลลัพธ์ที่ชัดเจนโดยตรง ไม่มีเนื้อหาที่ไม่จำเป็น</translation>
+        <translation>แปลเอกสารนี้ให้ฉัน และให้ผลลัพธ์ที่ชัดเจนโดยตรง ไม่มีเนื้อหาที่ไม่จำเป็นใด ๆ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="331"/>
         <source>Expand this document for me and provide me with a clear and expanded result directly, without any unnecessary content.</source>
-        <translation>ขยายเอกสารนี้ให้ฉัน และให้ผลลัพธ์ที่ชัดเจนและขยายข้อมูลโดยตรง ไม่มีเนื้อหาที่ไม่จำเป็น</translation>
+        <translation>ขยายเอกสารนี้ให้ฉัน และให้ผลลัพธ์ที่ชัดเจนและขยายเต็มที่โดยตรง ไม่มีเนื้อหาที่ไม่จำเป็นใด ๆ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="447"/>
@@ -88,7 +88,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="450"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation>ไม่สามารถใช้ %1 ได้ กรุณาไปที่ App Store เพื่ออัปเดตเวอร์ชัน UOS AI ก่อน</translation>
+        <translation>ไม่สามารถใช้งาน %1 ได้ กรุณาไปที่ App Store เพื่ออัปเดตเวอร์ชัน UOS AI ก่อน</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
@@ -101,7 +101,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/bestmatchwidget.cpp" line="23"/>
         <source>Best match</source>
-        <translation>ผลลัพธ์ที่ตรงที่สุด</translation>
+        <translation>ผลลัพธ์ที่ตรงกันมากที่สุด</translation>
     </message>
 </context>
 <context>
@@ -109,12 +109,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="30"/>
         <source>Excluded path</source>
-        <translation>เส้นทางที่ถูกยกเว้น</translation>
+        <translation>เส้นทางที่ถูกตัดออก</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="41"/>
         <source>Add paths to the exclusion list to prevent searching in them.</source>
-        <translation>เพิ่มเส้นทางไปยังรายการยกเว้นเพื่อป้องกันการค้นหาในที่นั้น</translation>
+        <translation>เพิ่มเส้นทางไปยังรายการตัดออกเพื่อป้องกันไม่ให้ค้นหาในที่นั้น</translation>
     </message>
 </context>
 <context>
@@ -144,7 +144,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="14"/>
         <source>Do you want to remove the path from the exclusion list?</source>
-        <translation>คุณต้องการลบเส้นทางออกจากรายการยกเว้นหรือไม่?</translation>
+        <translation>คุณต้องการลบเส้นทางออกจากรายการตัดออกหรือไม่?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="20"/>
@@ -188,7 +188,7 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="235"/>
         <source>What would you like to search for?</source>
-        <translation>คุณต้องการค้นหาอะไร?</translation>
+        <translation>คุณต้องการค้นหาสิ่งใด?</translation>
     </message>
 </context>
 <context>
@@ -278,7 +278,7 @@
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="281"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="366"/>
         <source>No search results</source>
-        <translation type="unfinished">No search results</translation>
+        <translation>ไม่มีผลการค้นหา</translation>
     </message>
 </context>
 <context>
@@ -294,12 +294,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="78"/>
         <source>When turned on, you can try to search for local documents using natural language descriptions, such as &quot;last week&apos;s documents&quot;.</source>
-        <translation>เมื่อเปิดใช้งาน คุณสามารถลองค้นหาเอกสารท้องถิ่นโดยใช้คำอธิบายภาษาธรรมชาติ เช่น &quot;เอกสารสัปดาห์ที่แล้ว&quot;.</translation>
+        <translation>เมื่อเปิดใช้งาน คุณสามารถลองค้นหาเอกสารท้องถิ่นโดยใช้คำอธิบายภาษาธรรมชาติ เช่น &quot;เอกสารสัปดาห์ที่แล้ว&quot;</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="184"/>
         <source>Intelligent full text search</source>
-        <translation>การค้นหาข้อความแบบเต็มความหมายที่ชาญฉลาด</translation>
+        <translation>การค้นหาข้อความแบบเต็มตัวอัจฉริยะ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="99"/>
@@ -309,17 +309,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="65"/>
         <source>AI Smart Search</source>
-        <translation>AI Smart Search</translation>
+        <translation>การค้นหาอัจฉริยะด้วย AI</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="118"/>
         <source>Full Text Search</source>
-        <translation>การค้นหาข้อความแบบเต็มความหมาย</translation>
+        <translation>การค้นหาข้อความแบบเต็มตัว</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="135"/>
         <source>When turned on, full text search can be used in the file manager and grand search.</source>
-        <translation>เมื่อเปิดใช้งาน การค้นหาข้อความแบบเต็มความหมายสามารถใช้ใน File Manager และ Grand Search ได้</translation>
+        <translation>เมื่อเปิดใช้งาน การค้นหาข้อความแบบเต็มตัวสามารถใช้ในโปรแกรมจัดการไฟล์และ Grand Search ได้</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="153"/>
@@ -339,44 +339,44 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="171"/>
         <source>After installing the ULLM, you can use the AI intelligent search function without an internet connection.</source>
-        <translation>หลังจากติดตั้ง ULLM แล้ว คุณสามารถใช้ฟังก์ชันการค้นหาอย่างชาญฉลาดของ AI โดยไม่ต้องใช้การเชื่อมต่ออินเทอร์เน็ตได้</translation>
+        <translation>หลังจากติดตั้ง ULLM แล้ว คุณสามารถใช้ฟังก์ชันการค้นหาอัจฉริยะด้วย AI โดยไม่ต้องเชื่อมต่อกับอินเทอร์เน็ต</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="218"/>
         <source>When enabled, you can search the text of articles using disjointed and incomplete keywords.</source>
-        <translation>เมื่อเปิดใช้งาน คุณสามารถค้นหาเนื้อหาบทความโดยใช้คำสำคัญที่ไม่สมบูรณ์หรือไม่ครบถ้วนได้</translation>
+        <translation>เมื่อเปิดใช้งาน คุณสามารถค้นหาเนื้อหาของบทความโดยใช้คำสำคัญที่ไม่สมบูรณ์หรือไม่ต่อเนื่องได้</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="240"/>
         <source>Please install %0 in &lt;a href=&quot;%0&quot;&gt;the app store&lt;/a&gt; before turning on this configuration.</source>
-        <translation type="unfinished"></translation>
+        <translation>กรุณาติดตั้ง %0 ใน &lt;a href=&quot;%0&quot;&gt;ร้านค้าแอป&lt;/a&gt; ก่อนเปิดใช้งานการตั้งค่าดังกล่าว</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="280"/>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="404"/>
         <source>Intelligent search indexing is being updated, which may take up more resources, please keep the power access.</source>
-        <translation>การอัปเดตดัชนีการค้นหาอย่างชาญฉลาดกำลังดำเนินการ ซึ่งอาจใช้ทรัพยากรมากขึ้น กรุณาตรวจสอบการเข้าถึงพลังงาน</translation>
+        <translation>การสร้างดัชนีการค้นหาอัจฉริยะกำลังอัปเดต ซึ่งอาจใช้ทรัพยากรมากขึ้น กรุณาอนุญาตให้ระบบเข้าถึงไฟฟ้า</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="284"/>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="408"/>
         <source>Smart Search indexing update is complete. Last update time: %0</source>
-        <translation>การอัปเดตดัชนี Smart Search สำเร็จแล้ว เวลาอัปเดตครั้งสุดท้าย: %0</translation>
+        <translation>การอัปเดตการจัดทำดัชนี Smart Search ถูกดำเนินการเสร็จสิ้นแล้ว ช่วงเวลาการอัปเดตล่าสุด: %0</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="287"/>
         <source>Indexing error!</source>
-        <translation>เกิดข้อผิดพลาดในการอัปเดตดัชนี!</translation>
+        <translation>เกิดข้อผิดพลาดในการจัดทำดัชนี!</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="336"/>
         <source>To use AI Smart Search, you need to install the Embedding Plugins and ULLM first.</source>
-        <translation type="unfinished"></translation>
+        <translation>เพื่อใช้งาน AI Smart Search คุณต้องติดตั้ง Embedding Plugins และ ULLM ก่อน</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="337"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>ตกลง</translation>
     </message>
 </context>
 <context>
@@ -385,92 +385,92 @@
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="61"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="385"/>
         <source>Not Installed</source>
-        <translation type="unfinished">ยังไม่ได้ติดตั้ง</translation>
+        <translation>ยังไม่ได้ติดตั้ง</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="77"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="384"/>
         <source>Install Model</source>
-        <translation type="unfinished"></translation>
+        <translation>ติดตั้งโมเดล</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="93"/>
         <source>Update model</source>
-        <translation type="unfinished"></translation>
+        <translation>อัปเดตโมเดล</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="94"/>
         <source>Uninstall model</source>
-        <translation type="unfinished"></translation>
+        <translation>ถอนการติดตั้งโมเดล</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="146"/>
         <source>Installing</source>
-        <translation type="unfinished"></translation>
+        <translation>กำลังติดตั้ง</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="212"/>
         <source>Are you sure you want to delete this model?</source>
-        <translation type="unfinished"></translation>
+        <translation>คุณแน่ใจหรือไม่ว่าต้องการลบโมเดลนี้?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="213"/>
         <source>After uninstallation, functions such as AI Search and UOS AI Assistant will not work properly.</source>
-        <translation type="unfinished"></translation>
+        <translation>หลังจากถอนการติดตั้ง ฟังก์ชันต่างๆ เช่น AI Search และ UOS AI Assistant จะทำงานไม่ได้อย่างถูกต้อง</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="214"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Cancel</translation>
+        <translation>ยกเลิก</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="215"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation type="unfinished">Confirm</translation>
+        <translation>ยืนยัน</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="324"/>
         <source>Installing </source>
-        <translation type="unfinished"></translation>
+        <translation>กำลังติดตั้ง </translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="344"/>
         <source>Installing the ULLM</source>
-        <translation type="unfinished"></translation>
+        <translation>กำลังติดตั้ง ULLM</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="345"/>
         <source>Exiting will cause the installation to fail, do you still want to exit?</source>
-        <translation type="unfinished"></translation>
+        <translation>การปิดโปรแกรมจะทำให้การติดตั้งล้มเหลว คุณยังต้องการออกจากโปรแกรมหรือไม่?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="346"/>
         <source>Exit</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>ออก</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="347"/>
         <source>Continue</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>ดำเนินการต่อ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="378"/>
         <source>UnInstall Model</source>
-        <translation type="unfinished"></translation>
+        <translation>ถอนการติดตั้งโมเดล</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="379"/>
         <source>Installed</source>
-        <translation type="unfinished">ติดตั้งแล้ว</translation>
+        <translation>ติดตั้งแล้ว</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="390"/>
         <source>Please install the &quot;Embedding Plugins&quot; first before installing this model.</source>
-        <translation type="unfinished"></translation>
+        <translation>กรุณาตั้งค่า &quot;Embedding Plugins&quot; ก่อนการติดตั้งโมเดลนี้</translation>
     </message>
 </context>
 <context>
@@ -478,7 +478,7 @@
     <message>
         <location filename="../src/grand-search/gui/mainwindow.cpp" line="213"/>
         <source>No search results</source>
-        <translation type="unfinished">No search results</translation>
+        <translation>ไม่มีผลการค้นหา</translation>
     </message>
 </context>
 <context>
@@ -486,7 +486,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="87"/>
         <source>Guess you want to search the following</source>
-        <translation type="unfinished"></translation>
+        <translation>คุณอาจต้องการค้นหาสิ่งต่อไปนี้</translation>
     </message>
 </context>
 <context>
@@ -494,22 +494,22 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="27"/>
         <source>Search experience program</source>
-        <translation type="unfinished"></translation>
+        <translation>โปรแกรมประสบการณ์การค้นหา</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="35"/>
         <source>Join search experience program</source>
-        <translation type="unfinished"></translation>
+        <translation>สมัครโปรแกรมประสบการณ์การค้นหา</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="48"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations, the contents you search while using the Application, the time of search, the type of requested large model.If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation type="unfinished"></translation>
+        <translation>การเข้าร่วมโปรแกรมประสบการณ์การค้นหาหมายถึงการที่คุณอนุญาตและยินยอมให้เราเก็บข้อมูลอุปกรณ์และระบบของคุณ ไอคอนไฟล์ ข้อมูลและคุณสมบัติ แอปพลิเคชันและการตั้งค่า เนื้อหาที่คุณค้นหาขณะใช้งานแอปพลิเคชัน ช่วงเวลาการค้นหา ประเภทของโมเดลขนาดใหญ่ที่คุณต้องการ หากคุณปฏิเสธการเก็บข้อมูลและใช้งานข้อมูลดังกล่าว อย่าเข้าร่วมโปรแกรม</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="59"/>
         <source>To know more about the management of your data, please refer to the UnionTech Software Privacy Policy (</source>
-        <translation type="unfinished"></translation>
+        <translation>เพื่อทราบเพิ่มเติมเกี่ยวกับการจัดการข้อมูลของคุณ กรุณาอ้างอิงนโยบายความเป็นส่วนตัวของซอฟต์แวร์ UnionTech (</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="61"/>
@@ -532,7 +532,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/scopewidget.cpp" line="28"/>
         <source>Search contents</source>
-        <translation type="unfinished"></translation>
+        <translation>เนื้อหาการค้นหา</translation>
     </message>
 </context>
 <context>
@@ -540,17 +540,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="37"/>
         <source>Default search engine</source>
-        <translation type="unfinished"></translation>
+        <translation>เครื่องมือค้นหาเริ่มต้น</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="45"/>
         <source>Search for keywords by the default search engine.</source>
-        <translation type="unfinished"></translation>
+        <translation>ค้นหาคำสำคัญโดยเครื่องมือค้นหาเริ่มต้น</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="57"/>
         <source>Default search engine is</source>
-        <translation type="unfinished"></translation>
+        <translation>เครื่องมือค้นหาเริ่มต้นคือ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="66"/>
@@ -560,7 +560,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="67"/>
         <source>Baidu</source>
-        <translation>บaidu</translation>
+        <translation>ไบดู</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="68"/>
@@ -580,7 +580,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="71"/>
         <source>360 AI Search</source>
-        <translation>360 AI Search</translation>
+        <translation>360 ค้นหาด้วย AI</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="72"/>
@@ -616,17 +616,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="19"/>
         <source>Tailer settings</source>
-        <translation>การตั้งค่า Tailer</translation>
+        <translation>การตั้งค่าต่อท้าย</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="29"/>
         <source>It is displayed at the end of search results for better identification and distinction of items with duplicate names.</source>
-        <translation>จะแสดงอยู่ท้ายผลการค้นหาเพื่อช่วยในการระบุและแยกแยะรายการที่มีชื่อซ้ำกัน</translation>
+        <translation>จะแสดงอยู่ท้ายผลการค้นหาเพื่อช่วยระบุและแยกตัวสิ่งของที่มีชื่อซ้ำกันได้ดีขึ้น</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="38"/>
         <source>Parent directory</source>
-        <translation>โฟลเดอร์พาร์เอนต์</translation>
+        <translation>ไดเรกทอรีพาร์เอนต์</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="40"/>
@@ -750,7 +750,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="34"/>
         <source>AI Search</source>
-        <translation>การค้นหา AI</translation>
+        <translation>การค้นหาด้วย AI</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="28"/>
@@ -780,7 +780,7 @@
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="33"/>
         <source>Time modified:</source>
-        <translation>เวลาที่แก้ไขล่าสุด:</translation>
+        <translation>เวลาที่แก้ไข:</translation>
     </message>
     <message>
         <location filename="../src/dde-grand-search-daemon/searcher/file/filesearchutils.cpp" line="205"/>
@@ -793,12 +793,12 @@
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="24"/>
         <source>GrandSearch</source>
-        <translation>GrandSearch</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="81"/>
         <source>SearchConfig</source>
-        <translation>SearchConfig</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="48"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation>İşlemi kullanamazsınız, önce UOS AI sürümünü güncellemek için Uygulama Mağazasına gidin.</translation>
+        <translation>Bir kullanmak için %1, önce UOS AI sürümünü güncellemek için Uygulama Mağazasına gidin.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="49"/>
@@ -23,21 +23,25 @@
     <name>GrandSearch::AiToolBarInner</name>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="112"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="162"/>
         <source>Summary</source>
         <translation>Özet</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="113"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="163"/>
         <source>Translation</source>
         <translation>Çeviri</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="114"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="164"/>
         <source>Extension</source>
         <translation>Uzatma</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="115"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="165"/>
         <source>Add to knowledge base</source>
         <translation>Bilgi verisine ekle</translation>
     </message>
@@ -64,17 +68,17 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="299"/>
         <source>Summarize this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation>Bu belgenin özetini bana verin ve doğrudan net bir sonuç sunun, gereksiz içeriklerden kaçının.</translation>
+        <translation>Bu belgenin için benim için özetleyin ve doğrudan net bir sonuç sağlayın, gereksiz herhangi içerik olmadan.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="315"/>
         <source>Translate this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation>Bu belgenin çevirisini bana verin ve doğrudan net bir sonuç sunun, gereksiz içeriklerden kaçının.</translation>
+        <translation>Bu belgenin için benim için çevirin ve doğrudan net bir sonuç sağlayın, gereksiz herhangi içerik olmadan.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="331"/>
         <source>Expand this document for me and provide me with a clear and expanded result directly, without any unnecessary content.</source>
-        <translation>Bu belgenin genişletilmiş bir versiyonunu bana verin ve doğrudan açık ve genişletilmiş bir sonuç sunun, gereksiz içeriklerden kaçının.</translation>
+        <translation>Bu belgenin için benim için genişletin ve doğrudan net ve genişletilmiş bir sonuç sağlayın, gereksiz herhangi içerik olmadan.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="447"/>
@@ -84,7 +88,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="450"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation>İşlemi kullanamazsınız, önce UOS AI sürümünü güncellemek için Uygulama Mağazasına gidin.</translation>
+        <translation>Bir kullanmak için %1, önce UOS AI sürümünü güncellemek için Uygulama Mağazasına gidin.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
@@ -110,7 +114,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="41"/>
         <source>Add paths to the exclusion list to prevent searching in them.</source>
-        <translation>Arama yapmamak için dışarı atılan yollar listesine yollar ekleyin.</translation>
+        <translation>Arama yapmamak için dışarı atılan listede yollar ekleyin.</translation>
     </message>
 </context>
 <context>
@@ -125,6 +129,7 @@
     <name>GrandSearch::DdeGrandSearchDockPlugin</name>
     <message>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="47"/>
+        <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="101"/>
         <source>Grand Search</source>
         <translation>Büyük Ara</translation>
     </message>
@@ -139,7 +144,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="14"/>
         <source>Do you want to remove the path from the exclusion list?</source>
-        <translation>Yolun dışarı atılan yollar listesinden kaldırılmak istiyor musunuz?</translation>
+        <translation>Yolun dışarı atılan listeden kaldırılması istiyor musunuz?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="20"/>
@@ -163,6 +168,7 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="90"/>
         <source>Not Installed</source>
         <translation>Yüklenmemiştir</translation>
     </message>
@@ -239,15 +245,17 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="269"/>
         <source>Please go to %1 to install the ULLM, and %2 Automatic index update.</source>
-        <translation>Lütfen %1 adresine gidin ve ULLM'yi yükleyin, %2 Otomatik indeks güncelleme.</translation>
+        <translation>Lütfen ULLM&apos;yi yüklemek için %1&apos;e gidin ve %2 Otomatik indeks güncelleme.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="270"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="279"/>
         <source>Search configration</source>
         <translation>Arama yapılandırması</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="271"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="275"/>
         <source>turn on</source>
         <translation>aç</translation>
     </message>
@@ -259,7 +267,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="278"/>
         <source>Please go to %1 to install the ULLM.</source>
-        <translation>Lütfen %1 adresine gidin ve ULLM'yi yükleyin.</translation>
+        <translation>Lütfen ULLM&apos;yi yüklemek için %1&apos;e gidin.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="330"/>
@@ -268,6 +276,7 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="281"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="366"/>
         <source>No search results</source>
         <translation type="unfinished">Arama sonucu bulunamadı</translation>
     </message>
@@ -289,8 +298,8 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="78"/>
-        <source>When turned on, you can try to search for local documents using natural language descriptions, such as "last week's documents".</source>
-        <translation>Açıldığında, doğal dille tanımlanan belgeleri (örneğin "geçen hafta belgeleri") kullanarak yerel belgeleri aramaya çalışabilirsiniz.</translation>
+        <source>When turned on, you can try to search for local documents using natural language descriptions, such as &quot;last week&apos;s documents&quot;.</source>
+        <translation>Açıldığında, doğal dil açıklamaları kullanarak yerel belgeleri aramaya çalışabilirsiniz, örneğin &quot;geçen hafta belgeleri&quot;.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="99"/>
@@ -300,22 +309,22 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="118"/>
         <source>Full Text Search</source>
-        <translation>Tam Metin Araması</translation>
+        <translation>Tam metin arama</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="135"/>
         <source>When turned on, full text search can be used in the file manager and grand search.</source>
-        <translation>Açık bırakıldığında, tam metin arama dosya yöneticisinde ve grand aramada kullanılabilir.</translation>
+        <translation>Açıldığında, dosya yöneticisi ve GrandSearch&apos;te tam metin arama kullanılabilir.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="153"/>
         <source>Embedding Plugins</source>
-        <translation>Ekleme Eklentileri</translation>
+        <translation>Embedding Eklentileri</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="153"/>
         <source>After installing the model, you can use services such as AI Search and UOS AI Assistant..</source>
-        <translation>Model kurulumu完成后, AI Arama ve UOS AI Yardımcısı gibi hizmetleri kullanabilirsiniz.</translation>
+        <translation>Model kurulumdan sonra AI Arama ve UOS AI Yardımcısı gibi hizmetleri kullanabilirsiniz.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="171"/>
@@ -325,7 +334,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="171"/>
         <source>After installing the ULLM, you can use the AI intelligent search function without an internet connection.</source>
-        <translation>ULLM kurulumu完成后, internet bağlantısı olmadan AI zeki arama işlevini kullanabilirsiniz.</translation>
+        <translation>ULLM kurulumdan sonra çevrimiçi bağlantınız olmasa bile AI zeki arama işlevini kullanabilirsiniz.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="184"/>
@@ -335,22 +344,24 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="218"/>
         <source>When enabled, you can search the text of articles using disjointed and incomplete keywords.</source>
-        <translation>Etkinleştirildiğinde, parçalı ve eksik anahtar kelimeleri kullanarak makalelerin metnini arayabilirsiniz.</translation>
+        <translation>Etkinleştirildiğinde, parçalı ve eksik anahtar kelimeler kullanarak makalelerin metnini arayabilirsiniz.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="240"/>
         <source>Please install %0 in &lt;a href=&quot;%0&quot;&gt;the app store&lt;/a&gt; before turning on this configuration.</source>
-        <translation>Lütfen bu yapılandırmayı açmadan önce "%0" &lt;a href=&quot;%0&quot;&gt;uygulama mağazasında&lt;/a&gt; kurun.</translation>
+        <translation>Lütfen bu yapılandırmayı açmadan önce %0 &lt;a href=&quot;%0&quot;&gt;uygulama mağazasında&lt;/a&gt; kurun.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="280"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="404"/>
         <source>Intelligent search indexing is being updated, which may take up more resources, please keep the power access.</source>
         <translation>Zeki arama indeksleme güncelleniyor, bu daha fazla kaynak tüketebilir, lütfen güç erişimini koruyun.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="284"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="408"/>
         <source>Smart Search indexing update is complete. Last update time: %0</source>
-        <translation>Akıllı Arama indeksleme güncelleme tamamlandı. Son güncelleme zamanı: %0</translation>
+        <translation>Akıllı Arama indeksleme güncellemesi tamamlandı. Son güncelleme zamanı: %0</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="287"/>
@@ -360,7 +371,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="336"/>
         <source>To use AI Smart Search, you need to install the Embedding Plugins and ULLM first.</source>
-        <translation>AI Akıllı Arama kullanmak için önce Ekleme Eklentileri ve ULLM kurulumu gerekir.</translation>
+        <translation>AI Akıllı Arama kullanmak için önce Embedding Eklentileri ve ULLM kurulumu gerekir.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="337"/>
@@ -372,18 +383,20 @@
     <name>GrandSearch::LLMWidget</name>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="61"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="385"/>
         <source>Not Installed</source>
-        <translation>Kurulum Yapılmadı</translation>
+        <translation>Kurulu Değil</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="77"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="384"/>
         <source>Install Model</source>
         <translation>Model Kur</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="93"/>
         <source>Update model</source>
-        <translation>Modeli Güncelle</translation>
+        <translation>Modeli Guncelle</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="94"/>
@@ -393,7 +406,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="146"/>
         <source>Installing</source>
-        <translation>Kurulum Yapılıyor</translation>
+        <translation>Kurulum</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="212"/>
@@ -420,17 +433,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="324"/>
         <source>Installing </source>
-        <translation>Kurulum Yapılıyor </translation>
+        <translation>Kurulum </translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="344"/>
         <source>Installing the ULLM</source>
-        <translation>ULLM Kurulumu</translation>
+        <translation>ULLM&apos;yi Kur</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="345"/>
         <source>Exiting will cause the installation to fail, do you still want to exit?</source>
-        <translation>Çıkış yapmak kurulumu başarısız kılacaktır, hâlâ çıkmak istiyorsunuz mu?</translation>
+        <translation>Çıkış yapmak kurulumu başarısız kılacaktır, hâlâ çıkmak istiyor musunuz?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="346"/>
@@ -456,8 +469,8 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="390"/>
-        <source>Please install the "Embedding Plugins" first before installing this model.</source>
-        <translation>Lütfen önce "Ekleme Eklentileri" kurulumu yapın, sonra bu modeli kurun.</translation>
+        <source>Please install the &quot;Embedding Plugins&quot; first before installing this model.</source>
+        <translation>Lütfen bu modeli kurmadan önce &quot;Embedding Eklentileri&quot; kurun.</translation>
     </message>
 </context>
 <context>
@@ -473,7 +486,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="87"/>
         <source>Guess you want to search the following</source>
-        <translation>İşte aramak istediğiniz şeyleri tahmin ediyoruz</translation>
+        <translation>Sanmam ama aramak istediğiniz şey şu</translation>
     </message>
 </context>
 <context>
@@ -491,7 +504,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="48"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations, the contents you search while using the Application, the time of search, the type of requested large model.If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation>Arama deneyimi programına katılmak, cihazınız ve sisteminizin bilgilerini, dosya simgelerini, içerik ve özellikleri, uygulamalar ve yapılandırmalarını, uygulama kullanırken arama yaptığınız içerikleri, arama zamanını ve istenen büyük model türüne izin vermek anlamına gelir. Bu bilgilerin toplanması ve kullanılmasına izin vermiyorsanız, programı katılmayın.</translation>
+        <translation>Arama deneyimi programına katılmak, cihazınız ve sisteminiz hakkında bilgi toplamamıza, dosya simgeleri, içerik ve özellikler, uygulamalar ve yapılandırmalar, uygulama kullanırken arama yaptığınız içerikler, arama zamanı ve istenen büyük model türü izin vermek anlamına gelir. Yukarıdaki bilgilerin toplamamıza ve kullanımına izin vermiyorsanız, programı katılmayın.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="59"/>
@@ -577,12 +590,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="73"/>
         <source>Custom</source>
-        <translation>Özelleştirilmiş</translation>
+        <translation>Özel</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="94"/>
-        <source>You need to use "%0" to replace the keyword in the URL</source>
-        <translation>URL'deki anahtar sözcüğü "%0" ile değiştirmeniz gerekir</translation>
+        <source>You need to use &quot;%0&quot; to replace the keyword in the URL</source>
+        <translation>URL&apos;de anahtar sözcüğü değiştirmek için &quot;%0&quot; kullanmalısınız.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="158"/>
@@ -594,8 +607,8 @@
     <name>GrandSearch::StaticTextWorker</name>
     <message>
         <location filename="../src/dde-grand-search-daemon/searcher/web/statictextworker.cpp" line="65"/>
-        <source>Search for "%1"</source>
-        <translation>"%1" için ara</translation>
+        <source>Search for &quot;%1&quot;</source>
+        <translation>&quot;%1&quot; için ara</translation>
     </message>
 </context>
 <context>
@@ -780,12 +793,12 @@
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="24"/>
         <source>GrandSearch</source>
-        <translation>GrandSearch</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="81"/>
         <source>SearchConfig</source>
-        <translation>AramaKonfigürasyonu</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

@@ -6,17 +6,17 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="48"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation>Хүндрэлтэй байна %1, дараарай үндэсний бараан сан (App Store) - р УОС AI-г шинэчлэх.</translation>
+        <translation>Өөрчлөх бол %1-ийг ашиглах боломжгүй байна, дараа нь UOS AI-г шинэчлэхийг хүсэж, Үнийн байдал бүтээгчтэй холбоо барих болно.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="49"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>Цуцлах</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
         <source>Open App Stroe</source>
-        <translation>App Stroe - г нээх</translation>
+        <translation>Үнийн байдал бүтээгчтэй холбоо барих</translation>
     </message>
 </context>
 <context>
@@ -25,60 +25,60 @@
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="112"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="162"/>
         <source>Summary</source>
-        <translation>Хурааж үзэх</translation>
+        <translation>Ү brief</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="113"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="163"/>
         <source>Translation</source>
-        <translation>Хувилбарлаж үзэх</translation>
+        <translation>Хувиргалт</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="114"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="164"/>
         <source>Extension</source>
-        <translation>Хөгжүүлэх</translation>
+        <translation>Хөрвүүлэлт</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="115"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="165"/>
         <source>Add to knowledge base</source>
-        <translation>Мэдээллийн бүтээгдэхүүнд нэмэх</translation>
+        <translation>Хэмжээний бүтээгчдэд нэмэх</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="126"/>
         <source>Summarize document content with UOS AI</source>
-        <translation>Документын түүхийг УОС AI-г ашиглан хурааж үзэх</translation>
+        <translation>UOS AI-г ашиглан документын ү brief-ийг бүтээх</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="127"/>
         <source>Translate document content with UOS AI</source>
-        <translation>Документын түүхийг Уос AI-г ашиглан хувилбараах</translation>
+        <translation>UOS AI-г ашиглан документын ү content-ийг хувиргах</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="128"/>
         <source>Extend document content with UOS AI</source>
-        <translation>Документын түүхийг Уос AI-г ашиглан хөгжүүлэх</translation>
+        <translation>UOS AI-г ашиглан документын ү content-ийг хөрвүүлэх</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="129"/>
         <source>Add document to UOS AI knowledge base</source>
-        <translation>Документыг Уос AI-гийн мэдээллийн бүтээгдэхүүнд нэмэх</translation>
+        <translation>Документыг UOS AI-гийн хэмжээний бүтээгчдэд нэмэх</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="299"/>
         <source>Summarize this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation>Биийн документийг хурааж үзүүлэх, яг нэгэнд ялгавчлалтын үр дүнг үзүүлэх, бүхэлдээ бэлэн бусад зүйлсээс бүрэн хурааж үзэх.</translation>
+        <translation>Биийн документыг ү brief-ийг бүтээж, тодорхой ү result-ийг түүнээс бүтээж, бусад ү үүргүүдээс ү зөрчлөөс бүтээж, ү нэмэлт үүргүүдээс бүтээж үгүй байна.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="315"/>
         <source>Translate this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation>Биийн документийг хувилбараах, яг нэгэнд ялгавчлалтын үр дүнг үзүүлэх, бүхэлдээ бэлэн бусад зүйлсээс бүрэн хурааж үзэх.</translation>
+        <translation>Биийн документыг ү content-ийг хувиргаж, тодорхой ү result-ийг түүнээс бүтээж, бусад ү үүргүүдээс бүтээж, ү нэмэлт үүргүүдээс бүтээж үгүй байна.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="331"/>
         <source>Expand this document for me and provide me with a clear and expanded result directly, without any unnecessary content.</source>
-        <translation>Биийн документийг хөгжүүлэх, яг нэгэнд ялгавчлалтын үр дүнг үзүүлэх, бүхэлдээ бэлэн бусад зүйлсээс бүрэн хурааж үзэх.</translation>
+        <translation>Биийн документыг ү content-ийг хөрвүүлэж, тодорхой болон хөрвүүлсэн ү result-ийг түүнээс бүтээж, бусад ү үүргүүдээс бүтээж, ү нэмэлт үүргүүдээс бүтээж үгүй байна.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="447"/>
@@ -88,12 +88,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="450"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation>Хүндрэлтэй байна %1, дараарай үндэсний бараан сан (App Store) - р УОС AI-г шинэчлэх.</translation>
+        <translation>Өөрчлөх бол %1-ийг ашиглах боломжгүй байна, дараа нь UOS AI-г шинэчлэхийг хүсэж, Үнийн байдал бүтээгчтэй холбоо барих болно.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
         <source>Open App Stroe</source>
-        <translation>App Stroe - г нээх</translation>
+        <translation>Үнийн байдал бүтээгчтэй холбоо барих</translation>
     </message>
 </context>
 <context>
@@ -101,7 +101,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/bestmatchwidget.cpp" line="23"/>
         <source>Best match</source>
-        <translation>Наймдах хамгийн сайн</translation>
+        <translation>Хамгийн сайн тохирол</translation>
     </message>
 </context>
 <context>
@@ -109,12 +109,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="30"/>
         <source>Excluded path</source>
-        <translation>Хүчинтэйгүй зам</translation>
+        <translation>Хүчирхэг шууд</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="41"/>
         <source>Add paths to the exclusion list to prevent searching in them.</source>
-        <translation>Хүчинтэйгүй болгох замыг жагсаалтаас нэмэх, тэдгээрээс хайхыг хүчингүй болгох.</translation>
+        <translation>Хүчирхэг шуудад нэмэх, тэдгээрээс хайхыг хүчирхэг болгох.</translation>
     </message>
 </context>
 <context>
@@ -136,7 +136,7 @@
     <message>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="166"/>
         <source>Search settings</source>
-        <translation>Хайх нарийвчлан</translation>
+        <translation>Хайх параметрүүд</translation>
     </message>
 </context>
 <context>
@@ -144,7 +144,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="14"/>
         <source>Do you want to remove the path from the exclusion list?</source>
-        <translation>Хүчинтэйгүй болгох замыг жагсаалтаас хасах уу?</translation>
+        <translation>Хүчирхэг шуудыг хүчирхэг шуудад түүнээс арилгах уу?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="20"/>
@@ -164,18 +164,18 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <source>Installed</source>
-        <translation>Бүтэн</translation>
+        <translation>Бүтээгчдэд нэмэгдсэн</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="90"/>
         <source>Not Installed</source>
-        <translation>Бүтэнгүй</translation>
+        <translation>Бүтээгчдэд нэмэгдсэнгүй</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="105"/>
         <source>Install</source>
-        <translation>Бүтэн болгох</translation>
+        <translation>Бүтээгчдэд нэмэх</translation>
     </message>
 </context>
 <context>
@@ -188,7 +188,7 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="235"/>
         <source>What would you like to search for?</source>
-        <translation>Хэдэн түүхийг хайх болохыг сонгох?</translation>
+        <translation>Хүүхэн хайх гэж байна?</translation>
     </message>
 </context>
 <context>
@@ -196,7 +196,7 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="82"/>
         <source>Cut</source>
-        <translation>Харагдах</translation>
+        <translation>Хуваах</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="86"/>
@@ -206,7 +206,7 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="90"/>
         <source>Paste</source>
-        <translation>Нэмэх</translation>
+        <translation>Хуваах</translation>
     </message>
 </context>
 <context>
@@ -219,7 +219,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="204"/>
         <source>Time modified:</source>
-        <translation>Өдөр болон үед</translation>
+        <translation>Засварлах үед:</translation>
     </message>
 </context>
 <context>
@@ -227,17 +227,17 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="70"/>
         <source>Open</source>
-        <translation>Хаах</translation>
+        <translation>Нээх</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="75"/>
         <source>Open Path</source>
-        <translation>Хаах уур</translation>
+        <translation>Хаяг нээх</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="80"/>
         <source>Copy Path</source>
-        <translation>Хуваах уур</translation>
+        <translation>Хаяг хуваах</translation>
     </message>
 </context>
 <context>
@@ -245,13 +245,13 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="269"/>
         <source>Please go to %1 to install the ULLM, and %2 Automatic index update.</source>
-        <translation>Хүнсний хаягийг %1-д барих болно, %2 автомат индекс шинэчлэл.</translation>
+        <translation>Хүүхэн %1-д УЛЛМ-ийг баримталж, %2 автоматаар индекс шинэчлэх.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="270"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="279"/>
         <source>Search configration</source>
-        <translation>Хайх конфигурация</translation>
+        <translation>Хайх конфигураци</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="271"/>
@@ -262,23 +262,23 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="274"/>
         <source>Please %1 Automatic index update.</source>
-        <translation>Хүнсний хаягийг %1-д барих болно.</translation>
+        <translation>Хүүхэн %1 автоматаар индекс шинэчлэх.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="278"/>
         <source>Please go to %1 to install the ULLM.</source>
-        <translation>Хүнсний хаягийг %1-д барих болно.</translation>
+        <translation>Хүүхэн %1-д УЛЛМ-ийг баримталж.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="330"/>
         <source>More</source>
-        <translation>Боломжууд</translation>
+        <translation>Үлдэгдэл</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="281"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="366"/>
         <source>No search results</source>
-        <translation type="unfinished">No search results</translation>
+        <translation>Хайх үр дүнгүй</translation>
     </message>
 </context>
 <context>
@@ -294,89 +294,89 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="78"/>
         <source>When turned on, you can try to search for local documents using natural language descriptions, such as &quot;last week&apos;s documents&quot;.</source>
-        <translation>Үүсгэснээр, &quot;эхний дөрөвний докумэнт&quot; гэх мэт натурал хэлний тайлбарыг ашиглан локал докумэнтүүдийг хайх боломжтой.</translation>
+        <translation>Үүсгэснээр, &quot;өнөөдөр, &quot;өнөөдөр хүүхэн&quot; гэх мэт натурал хэлний тайлбарыг ашиглан хүүхэн докиментүүдийг хайж болох.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="184"/>
         <source>Intelligent full text search</source>
-        <translation>Төсөөтэй бүх текст хайх</translation>
+        <translation>Хүүхэн текст хайх</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="99"/>
         <source>Automatic index update</source>
-        <translation>Автомат индекс шинэчлэл</translation>
+        <translation>Автомат индекс шинэчлэх</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="65"/>
         <source>AI Smart Search</source>
-        <translation>AI Төсөөтэй хайх</translation>
+        <translation>AI Хүүхэн хайх</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="118"/>
         <source>Full Text Search</source>
-        <translation>Бүх текст хайх</translation>
+        <translation>Хүүхэн текст хайх</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="135"/>
         <source>When turned on, full text search can be used in the file manager and grand search.</source>
-        <translation>Үүсгэснээр, файлын хөгжим болон grand search-д бүх текст хайх ажиллах боломжтой.</translation>
+        <translation>Үүсгэснээр, файл менежер болон хүүхэн хайх програмд хүүхэн текст хайх ашиглагдаж болох.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="153"/>
         <source>Embedding Plugins</source>
-        <translation>Тэмдэглэгчийн плагин</translation>
+        <translation>Хүүхэн санах ой плагинууд</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="153"/>
         <source>After installing the model, you can use services such as AI Search and UOS AI Assistant..</source>
-        <translation>Модель барихад, AI Хайх болон UOS AI Assistant гэх мэт үйлчилгээг ашиглах боломжтой.</translation>
+        <translation>Моделийг баримталсан бол, AI Хайх болон UOS AI Хүснэгч гэх мэт үйлчилгээг ашиглаж болох.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="171"/>
         <source>ULLM</source>
-        <translation>ULLM</translation>
+        <translation>УЛЛМ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="171"/>
         <source>After installing the ULLM, you can use the AI intelligent search function without an internet connection.</source>
-        <translation>ULLM барихад, интернет холболтгүйгээр AI төсөөтэй хайх функцийг ашиглах боломжтой.</translation>
+        <translation>УЛЛМ-ийг баримталсан бол, интернет холболтгүйгээр AI хүүхэн хайх үйлдлийг ашиглаж болох.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="218"/>
         <source>When enabled, you can search the text of articles using disjointed and incomplete keywords.</source>
-        <translation>Төсөөтэй Үүсгэснээр, төрөл бүрийн текстэд түрүүлэгч, төгсөхгүй тэмдэгтүүдийг ашиглан хайх боломжтой.</translation>
+        <translation>Үүсгэснээр, нэгдэгдэхгүй болон хялбарчлалтын нэрсийг ашиглан тэмдэгтүүдийн текстийг хайж болох.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="240"/>
         <source>Please install %0 in &lt;a href=&quot;%0&quot;&gt;the app store&lt;/a&gt; before turning on this configuration.</source>
-        <translation type="unfinished"></translation>
+        <translation>Хүүхэн %0-д &lt;a href=&quot;%0&quot;&gt;үйлдлийн сан&lt;/a&gt;-д баримталж, энэ конфигурациг үүсгэхээс өмнө баримтална уу.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="280"/>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="404"/>
         <source>Intelligent search indexing is being updated, which may take up more resources, please keep the power access.</source>
-        <translation>Төсөөтэй хайх индекс шинэчлэл үүсгэгдэж байна, түүнд бага зэрэг ресурсаа хэрэглэнэ, хүнсний хаягийг барих болно.</translation>
+        <translation>Интеллектуалын хайлшгүй нь шинэчлэгдэж байна, энэ нь түүнийг бага зэрэг хэрэглээний хүчдэл авах болно, хүчдэл хүлээн авахад тогтоох.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="284"/>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="408"/>
         <source>Smart Search indexing update is complete. Last update time: %0</source>
-        <translation>Төсөөтэй хайх индекс шинэчлэл үүсгэгдсэн. Сүүлд шинэчлэсэн өдрүүд: %0</translation>
+        <translation>Смарт хайрс индексийн шинэчлэл дууссан. Хайрс шинэчлэл хийгдсэн хугацаа: %0</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="287"/>
         <source>Indexing error!</source>
-        <translation>Индекс хатах</translation>
+        <translation>Индексийн алдаа!</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="336"/>
         <source>To use AI Smart Search, you need to install the Embedding Plugins and ULLM first.</source>
-        <translation type="unfinished"></translation>
+        <translation>AI Смарт Хайрс ашиглахын тулд таны ажиллахад эхлэхэд Embedding Plugins-ыг болон ULLM-ыг бүрэн уншиж байх шаардлагатай.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="337"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>Итгэлцээ</translation>
     </message>
 </context>
 <context>
@@ -385,92 +385,92 @@
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="61"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="385"/>
         <source>Not Installed</source>
-        <translation type="unfinished">Бүтэнгүй</translation>
+        <translation>Бүрэн уншихгүй</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="77"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="384"/>
         <source>Install Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Модель унших</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="93"/>
         <source>Update model</source>
-        <translation type="unfinished"></translation>
+        <translation>Модель шинэчлэх</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="94"/>
         <source>Uninstall model</source>
-        <translation type="unfinished"></translation>
+        <translation>Модель уншиж байхгүй болгох</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="146"/>
         <source>Installing</source>
-        <translation type="unfinished"></translation>
+        <translation>Унших</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="212"/>
         <source>Are you sure you want to delete this model?</source>
-        <translation type="unfinished"></translation>
+        <translation>Энэ модельгүйг хүсэж байгаа барууныг нь устгахдаа итгэлцээ?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="213"/>
         <source>After uninstallation, functions such as AI Search and UOS AI Assistant will not work properly.</source>
-        <translation type="unfinished"></translation>
+        <translation>Модель уншиж байхгүй болгосон дараа AI Хайрс болон UOS AI Assistant функцийн ажиллагаа зөв биш болно.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="214"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Cancel</translation>
+        <translation>Цуцлах</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="215"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation type="unfinished">Confirm</translation>
+        <translation>Батлах</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="324"/>
         <source>Installing </source>
-        <translation type="unfinished"></translation>
+        <translation>Унших </translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="344"/>
         <source>Installing the ULLM</source>
-        <translation type="unfinished"></translation>
+        <translation>ULLM-ыг унших</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="345"/>
         <source>Exiting will cause the installation to fail, do you still want to exit?</source>
-        <translation type="unfinished"></translation>
+        <translation>Гарах нь уншихын ажиллагаагаа бүрэн амжилттай хийхээс үүдэнэ, та гарахдаа итгэлцээ?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="346"/>
         <source>Exit</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Гарах</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="347"/>
         <source>Continue</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Үргэлжлүүлэх</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="378"/>
         <source>UnInstall Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Модельгүй болгох</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="379"/>
         <source>Installed</source>
-        <translation type="unfinished">Бүтэн</translation>
+        <translation>Уншигдсан</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="390"/>
         <source>Please install the &quot;Embedding Plugins&quot; first before installing this model.</source>
-        <translation type="unfinished"></translation>
+        <translation>Энэ модельгүй болгох өмнө &quot;Embedding Plugins&quot;-ыг бүрэн унших шаардлагатай.</translation>
     </message>
 </context>
 <context>
@@ -478,7 +478,7 @@
     <message>
         <location filename="../src/grand-search/gui/mainwindow.cpp" line="213"/>
         <source>No search results</source>
-        <translation type="unfinished">No search results</translation>
+        <translation>Хайрс үр дүнгүй</translation>
     </message>
 </context>
 <context>
@@ -486,7 +486,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="87"/>
         <source>Guess you want to search the following</source>
-        <translation type="unfinished"></translation>
+        <translation>Хайрс хийхээс үүдэнэ, та дараахыг хайхдаа итгэлцээ</translation>
     </message>
 </context>
 <context>
@@ -494,22 +494,22 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="27"/>
         <source>Search experience program</source>
-        <translation type="unfinished"></translation>
+        <translation>Хайрс үйл явдлын програм</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="35"/>
         <source>Join search experience program</source>
-        <translation type="unfinished"></translation>
+        <translation>Хайрс үйл явдлын програмд нээх</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="48"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations, the contents you search while using the Application, the time of search, the type of requested large model.If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation type="unfinished"></translation>
+        <translation>Хайрс үйл явдлын програмд нээх нь таны компьютер болон систем, файлын тэмдэг, мэдээлэл, үйлдэл, програмын бүтэц, програмаар ашиглаж байхад хайсан мэдээлэл, хайсан хугацаа, та чадварлах том модельний төрөл гэх мэт мэдээлэлд таны талаар мэдээлэл авах болон ашиглахыг батлахыг илүү бага болохыг илүү бага болохыг илүү бага болохыг илүү бага болохыг илүү бага болохыг илүү бага болохыг илүү бага болохыг илүү бага болохыг илүү бага болохыг илүү бага болохыг илүү бага болохыг илүү бага болохыг илүү бага болохыг илүү бага болохыг илүү бага болохыг илүү барууныг нь устгах шаардлагатай.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="59"/>
         <source>To know more about the management of your data, please refer to the UnionTech Software Privacy Policy (</source>
-        <translation type="unfinished"></translation>
+        <translation>Таны мэдээллийн удирдлага талаар олон мэдээлэл авахын тулд UnionTech Software Privacy Policy (</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="61"/>
@@ -532,7 +532,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/scopewidget.cpp" line="28"/>
         <source>Search contents</source>
-        <translation type="unfinished"></translation>
+        <translation>Хайрлан</translation>
     </message>
 </context>
 <context>
@@ -540,17 +540,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="37"/>
         <source>Default search engine</source>
-        <translation type="unfinished"></translation>
+        <translation>Хайрланын үндсэн програм</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="45"/>
         <source>Search for keywords by the default search engine.</source>
-        <translation type="unfinished"></translation>
+        <translation>Хайрланын үндсэн програмаар үгсийг хайх</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="57"/>
         <source>Default search engine is</source>
-        <translation type="unfinished"></translation>
+        <translation>Хайрланын үндсэн програм</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="66"/>
@@ -580,7 +580,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="71"/>
         <source>360 AI Search</source>
-        <translation>360 AI Search</translation>
+        <translation>360 AI Хайрлал</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="72"/>
@@ -590,17 +590,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="73"/>
         <source>Custom</source>
-        <translation>Нэгдэл</translation>
+        <translation>Хөгжим</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="94"/>
         <source>You need to use &quot;%0&quot; to replace the keyword in the URL</source>
-        <translation>Хэрэв &quot;%0&quot;-г URL-д урьдчилсан үгийг сольж үзэхийг хүсэх болно</translation>
+        <translation>Холбооны URL-д үгийг орлуулж &quot;%0&quot;-г аших хэрэгтэй</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="158"/>
         <source>Invalid URL</source>
-        <translation>Хүчинтэй биш URL</translation>
+        <translation>Хүчтэй холбоо</translation>
     </message>
 </context>
 <context>
@@ -608,7 +608,7 @@
     <message>
         <location filename="../src/dde-grand-search-daemon/searcher/web/statictextworker.cpp" line="65"/>
         <source>Search for &quot;%1&quot;</source>
-        <translation>&quot;%1&quot;-г хайх</translation>
+        <translation>&quot;%1&quot; гэсэн үгийг хайх</translation>
     </message>
 </context>
 <context>
@@ -616,22 +616,22 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="19"/>
         <source>Tailer settings</source>
-        <translation>Тайлер сэтгэл</translation>
+        <translation>Хөгжимийн сэтгэл</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="29"/>
         <source>It is displayed at the end of search results for better identification and distinction of items with duplicate names.</source>
-        <translation>Хэрэглэгчийн нэр нь давхардсан нэртэй объектуудыг илрүүлэх, ялгахын тулд хайлбарын үр дүнгээс дараа үзүүлэгдэнэ</translation>
+        <translation>Хайрлалын үр дүнгээс дараа харуулаад, үгсийн дубликат нэртэй бүтээгдэхүүнүүдийг идентификаци хийх болон нэгдүгээр нэртэй бүтээгдэхүүнүүдийг ялгахад туслах болно.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="38"/>
         <source>Parent directory</source>
-        <translation>Ээдүүр дүүрэг</translation>
+        <translation>Хүүхэд хэвлэл</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="40"/>
         <source>Time modified</source>
-        <translation>Засварласан огноо</translation>
+        <translation>Засварлах өдрөөр</translation>
     </message>
 </context>
 <context>
@@ -639,12 +639,12 @@
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="59"/>
         <source>Artist:</source>
-        <translation>Хөгжмийнчдийн нэр:</translation>
+        <translation>Хөгжимч:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="71"/>
         <source>Album:</source>
-        <translation>Альбомын нэр:</translation>
+        <translation>Альбом:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="96"/>
@@ -664,7 +664,7 @@
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="137"/>
         <source>Time modified:</source>
-        <translation>Засварласан огноо:</translation>
+        <translation>Засварлах өдрөөр:</translation>
     </message>
 </context>
 <context>
@@ -692,7 +692,7 @@
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="110"/>
         <source>Time modified:</source>
-        <translation>Засварласан огноо:</translation>
+        <translation>Засварлах өдрөөр:</translation>
     </message>
 </context>
 <context>
@@ -700,17 +700,17 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="24"/>
         <source>Best match</source>
-        <translation>Үнээгүй харилцаа</translation>
+        <translation>Хамтын хамгийн сайн харгалзах</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="25"/>
         <source>Applications</source>
-        <translation>Хэрэглэгчийн үйлдлүүд</translation>
+        <translation>Үйлдлийн үр дүн</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="26"/>
         <source>Settings</source>
-        <translation>Сэтгэл</translation>
+        <translation>Харагдах</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="27"/>
@@ -720,7 +720,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="28"/>
         <source>Music</source>
-        <translation>Музыка</translation>
+        <translation>Музык</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="29"/>
@@ -730,12 +730,12 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="30"/>
         <source>Documents</source>
-        <translation>Документы</translation>
+        <translation>Документууд</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="31"/>
         <source>Folders</source>
-        <translation>Фолдерууд</translation>
+        <translation>Фолдерүүд</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="32"/>
@@ -750,7 +750,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="34"/>
         <source>AI Search</source>
-        <translation>AI Хайхал</translation>
+        <translation>AI Хайх</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="28"/>
@@ -780,12 +780,12 @@
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="33"/>
         <source>Time modified:</source>
-        <translation>Засварлагдсан хугацаа:</translation>
+        <translation>Өөрчлөгдсөн огноо:</translation>
     </message>
     <message>
         <location filename="../src/dde-grand-search-daemon/searcher/file/filesearchutils.cpp" line="205"/>
         <source>modified</source>
-        <translation>засварлагдсан</translation>
+        <translation>өөрчлөгдсөн</translation>
     </message>
 </context>
 <context>
@@ -793,12 +793,12 @@
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="24"/>
         <source>GrandSearch</source>
-        <translation>ГрандХайхал</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="81"/>
         <source>SearchConfig</source>
-        <translation>Хайхалын Конфиг</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

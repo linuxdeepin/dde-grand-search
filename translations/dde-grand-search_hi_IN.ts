@@ -6,17 +6,17 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="48"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation>अपने %1 का उपयोग नहीं कर सकते, कृपया सबसे पहले एप्प स्टोर से UOS AI वर्जन अपडेट करें।</translation>
+        <translation>प्रयोग करने में %1 असमर्थ है, कृपया पहले एप स्टोर से यूओएस एआई संस्करण अपडेट करें।</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="49"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>रद्द करें</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
         <source>Open App Stroe</source>
-        <translation>एप्प स्टोर खोलें</translation>
+        <translation>एप स्टोर खोलें</translation>
     </message>
 </context>
 <context>
@@ -43,42 +43,42 @@
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="115"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="165"/>
         <source>Add to knowledge base</source>
-        <translation>ज्ञान क्षेत्र में जोड़ें</translation>
+        <translation>ज्ञान भण्डार में जोड़ें</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="126"/>
         <source>Summarize document content with UOS AI</source>
-        <translation>UOS AI के साथ दस्तावेज की सामग्री का सारांश लें</translation>
+        <translation>यूओएस एआई के साथ दस्तावेज़ की सामग्री का सारांश लें</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="127"/>
         <source>Translate document content with UOS AI</source>
-        <translation>UOS AI के साथ दस्तावेज की सामग्री का अनुवाद करें</translation>
+        <translation>यूओएस एआई के साथ दस्तावेज़ की सामग्री का अनुवाद करें</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="128"/>
         <source>Extend document content with UOS AI</source>
-        <translation>UOS AI के साथ दस्तावेज की सामग्री को विस्तार करें</translation>
+        <translation>यूओएस एआई के साथ दस्तावेज़ की सामग्री का विस्तार करें</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="129"/>
         <source>Add document to UOS AI knowledge base</source>
-        <translation>दस्तावेज को UOS AI ज्ञान क्षेत्र में जोड़ें</translation>
+        <translation>दस्तावेज़ को यूओएस एआई ज्ञान भण्डार में जोड़ें</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="299"/>
         <source>Summarize this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation>मुझे इस दस्तावेज का सारांश दें और अस्थायी सामग्री के बिना स्पष्ट रिजल्ट मुझे सीधे प्रदान करें।</translation>
+        <translation>मुझे इस दस्तावेज़ का सारांश दें और मुझे स्पष्ट परिणाम बिना किसी अविश्वसनीय सामग्री के तुरंत प्रदान करें।</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="315"/>
         <source>Translate this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation>मुझे इस दस्तावेज का अनुवाद दें और अस्थायी सामग्री के बिना स्पष्ट रिजल्ट मुझे सीधे प्रदान करें।</translation>
+        <translation>मुझे इस दस्तावेज़ का अनुवाद दें और मुझे स्पष्ट परिणाम बिना किसी अविश्वसनीय सामग्री के तुरंत प्रदान करें।</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="331"/>
         <source>Expand this document for me and provide me with a clear and expanded result directly, without any unnecessary content.</source>
-        <translation>मुझे इस दस्तावेज को विस्तार करें और अस्थायी सामग्री के बिना स्पष्ट और विस्तारित रिजल्ट मुझे सीधे प्रदान करें।</translation>
+        <translation>मुझे इस दस्तावेज़ का विस्तार करें और मुझे स्पष्ट और विस्तारित परिणाम बिना किसी अविश्वसनीय सामग्री के तुरंत प्रदान करें।</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="447"/>
@@ -88,12 +88,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="450"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation>अपने %1 का उपयोग नहीं कर सकते, कृपया सबसे पहले एप्प स्टोर से UOS AI वर्जन अपडेट करें।</translation>
+        <translation>प्रयोग करने में %1 असमर्थ है, कृपया पहले एप स्टोर से यूओएस एआई संस्करण अपडेट करें।</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
         <source>Open App Stroe</source>
-        <translation>एप्प स्टोर खोलें</translation>
+        <translation>एप स्टोर खोलें</translation>
     </message>
 </context>
 <context>
@@ -114,7 +114,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="41"/>
         <source>Add paths to the exclusion list to prevent searching in them.</source>
-        <translation>अपवाद सूची में रास्ते जोड़ें ताकि उनमें सर्च न कर सकें।</translation>
+        <translation>अपवाद सूची में पथ जोड़ें ताकि उनमें सर्च न की जा सके।</translation>
     </message>
 </context>
 <context>
@@ -144,7 +144,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="14"/>
         <source>Do you want to remove the path from the exclusion list?</source>
-        <translation>क्या आप रास्ता को अपवाद सूची से हटाना चाहते हैं?</translation>
+        <translation>क्या आप अपवाद सूची से रास्ता हटाना चाहते हैं?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="20"/>
@@ -170,7 +170,7 @@
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="90"/>
         <source>Not Installed</source>
-        <translation>इंस्टॉल नहीं किया गया</translation>
+        <translation>नहीं इंस्टॉल किया गया</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="105"/>
@@ -183,12 +183,12 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="234"/>
         <source>Search</source>
-        <translation>सर्च</translation>
+        <translation>सर्च करें</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="235"/>
         <source>What would you like to search for?</source>
-        <translation>आप क्या सर्च करना चाहते हैं?</translation>
+        <translation>आप किसकी खोज के लिए हैं?</translation>
     </message>
 </context>
 <context>
@@ -196,17 +196,17 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="82"/>
         <source>Cut</source>
-        <translation>काट</translation>
+        <translation>काटें</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="86"/>
         <source>Copy</source>
-        <translation>कॉपी</translation>
+        <translation>कॉपी करें</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="90"/>
         <source>Paste</source>
-        <translation>पेस्ट</translation>
+        <translation>पेस्ट करें</translation>
     </message>
 </context>
 <context>
@@ -219,7 +219,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="204"/>
         <source>Time modified:</source>
-        <translation>समय संशोधित किया गया:</translation>
+        <translation>समय संशोधित:</translation>
     </message>
 </context>
 <context>
@@ -245,7 +245,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="269"/>
         <source>Please go to %1 to install the ULLM, and %2 Automatic index update.</source>
-        <translation>कृपया %1 में ULLM इंस्टॉल करें, और %2 स्वचालित सूची अपडेट करें।</translation>
+        <translation>कृपया %1 में जाएं ताकि ULLM निस्तारित किया जा सके, और %2 सूची के सूचना के लिए स्वचालित अपडेट करें।</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="270"/>
@@ -257,17 +257,17 @@
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="271"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="275"/>
         <source>turn on</source>
-        <translation>सुलभ करें</translation>
+        <translation>सक्रिय करें</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="274"/>
         <source>Please %1 Automatic index update.</source>
-        <translation>कृपया %1 स्वचालित सूची अपडेट करें।</translation>
+        <translation>कृपया %1 सूची के सूचना के लिए स्वचालित अपडेट करें।</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="278"/>
         <source>Please go to %1 to install the ULLM.</source>
-        <translation>कृपया %1 में ULLM इंस्टॉल करें।</translation>
+        <translation>कृपया %1 में जाएं ताकि ULLM निस्तारित किया जा सके।</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="330"/>
@@ -278,7 +278,7 @@
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="281"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="366"/>
         <source>No search results</source>
-        <translation type="unfinished">No search results</translation>
+        <translation>कोइ खोज परिणाम नहीं मिले</translation>
     </message>
 </context>
 <context>
@@ -294,12 +294,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="78"/>
         <source>When turned on, you can try to search for local documents using natural language descriptions, such as &quot;last week&apos;s documents&quot;.</source>
-        <translation>जब सुलभ कर दिया जाता है, तो आप ताजा शब्दों के बिना अक्षय विवरण का उपयोग करके स्थानीय दस्तावेज़ खोजने का प्रयास कर सकते हैं, जैसे कि &apos;पिछले हफ्ते के दस्तावेज़&apos;।</translation>
+        <translation>सक्रिय करने पर, आप आसान भाषा के वर्णन का उपयोग करके स्थानीय दस्तावेज़ खोजने की कोशिश कर सकते हैं, जैसे कि &quot;पिछले सप्ताह के दस्तावेज़&quot;।</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="184"/>
         <source>Intelligent full text search</source>
-        <translation>बुद्धिमान पूर्ण-पाठ खोज</translation>
+        <translation>बुद्धिमान संपूर्ण पाठ खोज</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="99"/>
@@ -314,12 +314,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="118"/>
         <source>Full Text Search</source>
-        <translation>पूर्ण-पाठ खोज</translation>
+        <translation>संपूर्ण पाठ खोज</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="135"/>
         <source>When turned on, full text search can be used in the file manager and grand search.</source>
-        <translation>जब सुलभ कर दिया जाता है, तो पूर्ण-पाठ खोज फ़ाइल मैनेजर और ग्रांड खोज में उपयोग की जा सकती है।</translation>
+        <translation>सक्रिय करने पर, संपूर्ण पाठ खोज फ़ाइल मैनेजर और ग्रांड खोज में उपयोग की जा सकती है।</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="153"/>
@@ -329,7 +329,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="153"/>
         <source>After installing the model, you can use services such as AI Search and UOS AI Assistant..</source>
-        <translation>मॉडल इंस्टॉल करने के बाद, आप AI खोज और UOS AI सहायक जैसी सेवाओं का उपयोग कर सकते हैं।</translation>
+        <translation>मॉडल निस्तारित करने के बाद, आप AI खोज और UOS AI सहायक जैसी सेवाओं का उपयोग कर सकते हैं।</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="171"/>
@@ -339,44 +339,44 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="171"/>
         <source>After installing the ULLM, you can use the AI intelligent search function without an internet connection.</source>
-        <translation>ULLM इंस्टॉल करने के बाद, आप इंटरनेट कनेक्शन के बिना AI बुद्धिमान खोज कार्य का उपयोग कर सकते हैं।</translation>
+        <translation>ULLM निस्तारित करने के बाद, आप इंटरनेट कनेक्शन के बिना AI बुद्धिमान खोज कार्य का उपयोग कर सकते हैं।</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="218"/>
         <source>When enabled, you can search the text of articles using disjointed and incomplete keywords.</source>
-        <translation>जब सुलभ कर दिया जाता है, तो आप अलग-अलग और अपूर्ण शब्दों के उपयोग करके लेखों के पाठ की खोज कर सकते हैं।</translation>
+        <translation>सक्रिय करने पर, आप अलग-अलग और अधूरे शब्दकोश का उपयोग करके लेखों के पाठ की खोज कर सकते हैं।</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="240"/>
         <source>Please install %0 in &lt;a href=&quot;%0&quot;&gt;the app store&lt;/a&gt; before turning on this configuration.</source>
-        <translation type="unfinished"></translation>
+        <translation>कृपया इस विन्यास को सक्रिय करने से पहले %0 को &lt;a href=&quot;%0&quot;&gt;ऐप स्टोर&lt;/a&gt; में स्थापित करें।</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="280"/>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="404"/>
         <source>Intelligent search indexing is being updated, which may take up more resources, please keep the power access.</source>
-        <translation>बुद्धिमान खोज सूची अपडेट की जा रही है, जिसके लिए अधिक संसाधन आवश्यक हो सकते हैं, कृपया बिजली के आवेदन को बनाए रखें।</translation>
+        <translation>बुद्धिमान खोज सूची अपडेट हो रही है, जिससे अधिक संसाधन ले लिए जा सकते हैं, कृपया शक्ति आवश्यकता बनाए रखें।</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="284"/>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="408"/>
         <source>Smart Search indexing update is complete. Last update time: %0</source>
-        <translation>बुद्धिमान खोज सूची अपडेट पूरा हो गया है। अंतिम अपडेट समय: %0</translation>
+        <translation>स्मार्ट सर्च इंडेक्सिंग अपडेट पूरा हो गया है। अंतिम अपडेट समय: %0</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="287"/>
         <source>Indexing error!</source>
-        <translation>सूची त्रुटि!</translation>
+        <translation>इंडेक्सिंग त्रुटि!</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="336"/>
         <source>To use AI Smart Search, you need to install the Embedding Plugins and ULLM first.</source>
-        <translation type="unfinished"></translation>
+        <translation>AI स्मार्ट सर्च का उपयोग करने के लिए, आपको पहले Embedding Plugins और ULLM के इंस्टॉल करना होगा।</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="337"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>ठीक है</translation>
     </message>
 </context>
 <context>
@@ -385,92 +385,92 @@
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="61"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="385"/>
         <source>Not Installed</source>
-        <translation type="unfinished">इंस्टॉल नहीं किया गया</translation>
+        <translation>इंस्टॉल नहीं किया गया</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="77"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="384"/>
         <source>Install Model</source>
-        <translation type="unfinished"></translation>
+        <translation>मॉडल इंस्टॉल करें</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="93"/>
         <source>Update model</source>
-        <translation type="unfinished"></translation>
+        <translation>मॉडल अपडेट करें</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="94"/>
         <source>Uninstall model</source>
-        <translation type="unfinished"></translation>
+        <translation>मॉडल अनइंस्टॉल करें</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="146"/>
         <source>Installing</source>
-        <translation type="unfinished"></translation>
+        <translation>इंस्टॉल कर रहे हैं</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="212"/>
         <source>Are you sure you want to delete this model?</source>
-        <translation type="unfinished"></translation>
+        <translation>क्या आप इस मॉडल को हटाना चाहते हैं?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="213"/>
         <source>After uninstallation, functions such as AI Search and UOS AI Assistant will not work properly.</source>
-        <translation type="unfinished"></translation>
+        <translation>अनइंस्टॉल करने के बाद, AI सर्च और UOS AI असिस्टेंट जैसे कार्य सही ढंग से काम नहीं करेंगे।</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="214"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Cancel</translation>
+        <translation>रद्द करें</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="215"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation type="unfinished">Confirm</translation>
+        <translation>पुष्टि करें</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="324"/>
         <source>Installing </source>
-        <translation type="unfinished"></translation>
+        <translation>इंस्टॉल कर रहे हैं </translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="344"/>
         <source>Installing the ULLM</source>
-        <translation type="unfinished"></translation>
+        <translation>ULLM इंस्टॉल कर रहे हैं</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="345"/>
         <source>Exiting will cause the installation to fail, do you still want to exit?</source>
-        <translation type="unfinished"></translation>
+        <translation>निकलने से इंस्टॉलेशन असफल हो जाएगा, क्या आप निकलना चाहते हैं?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="346"/>
         <source>Exit</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>निकलें</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="347"/>
         <source>Continue</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>जारी रखें</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="378"/>
         <source>UnInstall Model</source>
-        <translation type="unfinished"></translation>
+        <translation>मॉडल अनइंस्टॉल करें</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="379"/>
         <source>Installed</source>
-        <translation type="unfinished">इंस्टॉल किया गया</translation>
+        <translation>इंस्टॉल किया गया</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="390"/>
         <source>Please install the &quot;Embedding Plugins&quot; first before installing this model.</source>
-        <translation type="unfinished"></translation>
+        <translation>कृपया इस मॉडल के इंस्टॉल करने से पहले &quot;Embedding Plugins&quot; के इंस्टॉल करें।</translation>
     </message>
 </context>
 <context>
@@ -478,7 +478,7 @@
     <message>
         <location filename="../src/grand-search/gui/mainwindow.cpp" line="213"/>
         <source>No search results</source>
-        <translation type="unfinished">No search results</translation>
+        <translation>कोई सर्च रिजल्ट नहीं मिले</translation>
     </message>
 </context>
 <context>
@@ -486,7 +486,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="87"/>
         <source>Guess you want to search the following</source>
-        <translation type="unfinished"></translation>
+        <translation>आपको निश्चित रूप से निम्नलिखित के सर्च करना होगा</translation>
     </message>
 </context>
 <context>
@@ -494,37 +494,37 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="27"/>
         <source>Search experience program</source>
-        <translation type="unfinished"></translation>
+        <translation>सर्च अनुभव कार्यक्रम</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="35"/>
         <source>Join search experience program</source>
-        <translation type="unfinished"></translation>
+        <translation>सर्च अनुभव कार्यक्रम में शामिल हों</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="48"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations, the contents you search while using the Application, the time of search, the type of requested large model.If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation type="unfinished"></translation>
+        <translation>सर्च अनुभव कार्यक्रम में शामिल होने का अर्थ है कि आप हमें आपके डिवाइस और सिस्टम, फ़ाइल आइकन, सामग्री और गुणधर्म, एप्लिकेशन और उनके विन्यास, एप्लिकेशन का उपयोग करते समय आपके द्वारा सर्च की गई सामग्री, सर्च के समय और अनुरोध किए गए बड़े मॉडल के प्रकार के बारे में जानकारी एकत्र करने और उपयोग करने की अनुमति देते हैं। यदि आप इन जानकारी के संग्रह और उपयोग को अस्वीकार करते हैं, तो कार्यक्रम में शामिल नहीं हों।</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="59"/>
         <source>To know more about the management of your data, please refer to the UnionTech Software Privacy Policy (</source>
-        <translation type="unfinished"></translation>
+        <translation>सर्च अनुभव कार्यक्रम में शामिल होने का अर्थ है कि आप हमें आपके डिवाइस और सिस्टम, फ़ाइल आइकन, सामग्री और गुणधर्म, एप्लिकेशन और उनके विन्यास, एप्लिकेशन का उपयोग करते समय आपके द्वारा सर्च की गई सामग्री, सर्च के समय और अनुरोध किए गए बड़े मॉडल के प्रकार के बारे में जानकारी एकत्र करने और उपयोग करने की अनुमति देते हैं। यदि आप इन जानकारी के संग्रह और उपयोग को अस्वीकार करते हैं, तो कार्यक्रम में शामिल नहीं हों।</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="61"/>
         <source>https://www.uniontech.com/agreement/privacy-en</source>
-        <translation type="unfinished"></translation>
+        <translation>अपने डेटा के प्रबंधन के बारे में अधिक जानकारी प्राप्त करने के लिए, कृपया UnionTech सॉफ्टवेयर प्राइवेसी पॉलिसी (</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="62"/>
         <source>https://www.deepin.org/en/agreement/privacy/</source>
-        <translation type="unfinished"></translation>
+        <translation>https://www.uniontech.com/agreement/privacy-en</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="64"/>
         <source>).</source>
-        <translation type="unfinished"></translation>
+        <translation>।</translation>
     </message>
 </context>
 <context>
@@ -532,7 +532,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/scopewidget.cpp" line="28"/>
         <source>Search contents</source>
-        <translation type="unfinished"></translation>
+        <translation>खोज सामग्री</translation>
     </message>
 </context>
 <context>
@@ -540,17 +540,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="37"/>
         <source>Default search engine</source>
-        <translation type="unfinished"></translation>
+        <translation>डिफ़ॉल्ट खोज इंजन</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="45"/>
         <source>Search for keywords by the default search engine.</source>
-        <translation type="unfinished"></translation>
+        <translation>डिफ़ॉल्ट खोज इंजन द्वारा शब्द कुंजी के लिए खोज करें।</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="57"/>
         <source>Default search engine is</source>
-        <translation type="unfinished"></translation>
+        <translation>डिफ़ॉल्ट खोज इंजन है</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="66"/>
@@ -560,7 +560,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="67"/>
         <source>Baidu</source>
-        <translation>बaidu</translation>
+        <translation> बाइडू</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="68"/>
@@ -585,7 +585,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="72"/>
         <source>Sogou</source>
-        <translation>सोगो</translation>
+        <translation>सोगोउ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="73"/>
@@ -595,7 +595,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="94"/>
         <source>You need to use &quot;%0&quot; to replace the keyword in the URL</source>
-        <translation>आप URL में कीवर्ड को बदलने के लिए &quot;%0&quot; का उपयोग करना चाहिए</translation>
+        <translation>आप URL में शब्द कुंजी को बदलने के लिए &quot;%0&quot; का उपयोग करना होगा।</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="158"/>
@@ -608,7 +608,7 @@
     <message>
         <location filename="../src/dde-grand-search-daemon/searcher/web/statictextworker.cpp" line="65"/>
         <source>Search for &quot;%1&quot;</source>
-        <translation>&quot;%1&quot; के लिए खोजें</translation>
+        <translation> &quot;%1&quot; के लिए खोज करें।</translation>
     </message>
 </context>
 <context>
@@ -621,17 +621,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="29"/>
         <source>It is displayed at the end of search results for better identification and distinction of items with duplicate names.</source>
-        <translation>इसे खोज के नतीजों के अंत में दिखाया जाता है, ताकि नाम के दोहरे आइटम के बेहतर पहचान और विभेद किया जा सके।</translation>
+        <translation>यह खोज परिणाम के अंत में दिखाया जाता है, ताकि नाम दोहराए गए आइटमों के बेहतर पहचान और विभेद किया जा सके।</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="38"/>
         <source>Parent directory</source>
-        <translation>माता-पिता फ़ोल्डर</translation>
+        <translation>माता पिता डायरेक्टरी</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="40"/>
         <source>Time modified</source>
-        <translation>समय बदला</translation>
+        <translation>समय संशोधित</translation>
     </message>
 </context>
 <context>
@@ -664,7 +664,7 @@
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="137"/>
         <source>Time modified:</source>
-        <translation>समय बदला:</translation>
+        <translation>समय संशोधित:</translation>
     </message>
 </context>
 <context>
@@ -677,22 +677,22 @@
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="69"/>
         <source>Type:</source>
-        <translation>प्रकार:</translation>
+        <translation>आकार:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="84"/>
         <source>Size:</source>
-        <translation>आपका आकार:</translation>
+        <translation>स्थान:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="96"/>
         <source>Location:</source>
-        <translation>स्थान:</translation>
+        <translation>समय संशोधित:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="110"/>
         <source>Time modified:</source>
-        <translation>समय बदला:</translation>
+        <translation>समय बदल गया:</translation>
     </message>
 </context>
 <context>
@@ -700,12 +700,12 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="24"/>
         <source>Best match</source>
-        <translation>सर्वश्रेष्ठ मेच</translation>
+        <translation>सर्वाधिक मेच</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="25"/>
         <source>Applications</source>
-        <translation>एप्लिकेशन</translation>
+        <translation>एप्लिकेशन्स</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="26"/>
@@ -720,27 +720,27 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="28"/>
         <source>Music</source>
-        <translation>संगीत</translation>
+        <translation>म्यूजिक</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="29"/>
         <source>Pictures</source>
-        <translation>चित्र</translation>
+        <translation>पिक्चर्स</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="30"/>
         <source>Documents</source>
-        <translation>दस्तावेज</translation>
+        <translation>डॉक्यूमेंट्स</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="31"/>
         <source>Folders</source>
-        <translation>फोल्डर</translation>
+        <translation>फोल्डर्स</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="32"/>
         <source>Files</source>
-        <translation>फाइल</translation>
+        <translation>फाइल्स</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="33"/>
@@ -750,7 +750,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="34"/>
         <source>AI Search</source>
-        <translation>AI खोज</translation>
+        <translation>AI सर्च</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="28"/>
@@ -765,12 +765,12 @@
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="30"/>
         <source>Size:</source>
-        <translation>आकार:</translation>
+        <translation>कार्यक्षमता:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="31"/>
         <source>Duration:</source>
-        <translation>समय अवधि:</translation>
+        <translation>अवधि:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="32"/>
@@ -780,7 +780,7 @@
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="33"/>
         <source>Time modified:</source>
-        <translation>अद्यतन समय:</translation>
+        <translation>समय अद्यतन:</translation>
     </message>
     <message>
         <location filename="../src/dde-grand-search-daemon/searcher/file/filesearchutils.cpp" line="205"/>
@@ -793,12 +793,12 @@
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="24"/>
         <source>GrandSearch</source>
-        <translation>ग्रैंड खोज</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="81"/>
         <source>SearchConfig</source>
-        <translation>खोज संरचना</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

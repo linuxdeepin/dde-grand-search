@@ -6,17 +6,17 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="48"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation>Չի կարող օգտագործել %1, խնդրում ենք այցելել Այլընտիր մատնադրումների կայքը և առաջին անգամ թույլատրել ՈՒՈՍ ԱԻ-ն տեղադրելու համար</translation>
+        <translation>Ուղղակի օգտագործել հնարավոր չէ %1, խորացրեք կամ թողարկեք UOS AI տարբերակը հարցազրույցի միջոցով։</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="49"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>Չեղարկել</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
         <source>Open App Stroe</source>
-        <translation>Բացել Այլընտիր մատնադրումների կայքը</translation>
+        <translation>Բացել կամ թողարկել կայքը</translation>
     </message>
 </context>
 <context>
@@ -37,7 +37,7 @@
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="114"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="164"/>
         <source>Extension</source>
-        <translation>Ավելացում</translation>
+        <translation>Բարձրացուցակ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="115"/>
@@ -48,52 +48,52 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="126"/>
         <source>Summarize document content with UOS AI</source>
-        <translation>ՈՒՈՍ ԱԻ-ով փաստա文书ի պարունակությունը ամփոփել</translation>
+        <translation>UOS AI-ով ամփոփել նյութի բովանդակությունը</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="127"/>
         <source>Translate document content with UOS AI</source>
-        <translation>ՈՒՈՍ ԱԻ-ով փաստա文书ի պարունակությունը թարգմանել</translation>
+        <translation>UOS AI-ով թարգմանել նյութի բովանդակությունը</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="128"/>
         <source>Extend document content with UOS AI</source>
-        <translation>ՈՒՈՍ ԱԻ-ով փաստա文书ի պարունակությունը ավելացնել</translation>
+        <translation>UOS AI-ով փաստաթուղթը բարձրացնել</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="129"/>
         <source>Add document to UOS AI knowledge base</source>
-        <translation>Փաստա文书ը ավելացնել ՈՒՈՍ ԱԻ-ի գիտելիքների բազայի</translation>
+        <translation>Նյութը ավելացնել UOS AI գիտելիքների բազայի</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="299"/>
         <source>Summarize this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation>Խնդրում ենք այս փաստա文书ը ամփոփեք և միանձեռ հանրահայտ արդյունք տաք, առանց անհրաժեշտ պարունակության</translation>
+        <translation>Խմբագրեք փաստաթուղթը և տրամադրեք հասկացելի արդյունք ինձ ամենաարագ եղելու համար, առանց անհրաժեշտ պարունակության</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="315"/>
         <source>Translate this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation>Խնդրում ենք այս փաստա文书ը թարգմանեք և միանձեռ հանրահայտ արդյունք տաք, առանց անհրաժեշտ պարունակության</translation>
+        <translation>Փաստաթուղթը թարգմանեք ինձ և տրամադրեք հասկացելի արդյունք ամեն առանց անհրաժեշտ պարունակության</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="331"/>
         <source>Expand this document for me and provide me with a clear and expanded result directly, without any unnecessary content.</source>
-        <translation>Խնդրում ենք այս փաստա文书ը ավելացնեք և միանձեռ հանրահայտ, ավելացված արդյունք տաք, առանց անհրաժեշտ պարունակության</translation>
+        <translation>Փաստաթուղթը լրացրեք ինձ և տրամադրեք հասկացելի և լրացված արդյունք ամենաարագ եղելու համար, առանց անհրաժեշտ պարունակության</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="447"/>
         <source>DDE Grand Search</source>
-        <translation>ԴԴԵ Շարունակական որոնում</translation>
+        <translation>ԴԴԵ Գրանդ Սեարչ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="450"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation>Չի կարող օգտագործել %1, խնդրում ենք այցելել Այլընտիր մատնադրումների կայքը և առաջին անգամ թույլատրել ՈՒՈՍ ԱԻ-ն տեղադրելու համար</translation>
+        <translation>Ուղղակի օգտագործել հնարավոր չէ %1, խորացրեք կամ թողարկեք UOS AI տարբերակը հարցազրույցի միջոցով։</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
         <source>Open App Stroe</source>
-        <translation>Բացել Այլընտիր մատնադրումների կայքը</translation>
+        <translation>Բացել կամ թողարկել կայքը</translation>
     </message>
 </context>
 <context>
@@ -109,12 +109,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="30"/>
         <source>Excluded path</source>
-        <translation>Անցում կատարվող ճանապարհ</translation>
+        <translation>Անհամապատասխան ճանապարհ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="41"/>
         <source>Add paths to the exclusion list to prevent searching in them.</source>
-        <translation>Ավելացրեք ճանապարհները անցում կատարվող ցանկի մեջ և արգելեք նրանց մեջ որոնումը</translation>
+        <translation>Ավելացնել ճանապարհները անհամապատասխան ցուցակի՝ կանխարգելելու համար դրանց վրա անումը։</translation>
     </message>
 </context>
 <context>
@@ -122,7 +122,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/customwidget.cpp" line="26"/>
         <source>Custom search</source>
-        <translation>Անձնական որոնում</translation>
+        <translation>Անհամապատասխան ստուգում</translation>
     </message>
 </context>
 <context>
@@ -131,12 +131,12 @@
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="47"/>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="101"/>
         <source>Grand Search</source>
-        <translation>Շարունակական որոնում</translation>
+        <translation>Գրանդ Սեարչ</translation>
     </message>
     <message>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="166"/>
         <source>Search settings</source>
-        <translation>Որոնման կարգավորումներ</translation>
+        <translation>Ստուգումը տարբերակն ու կանխարգելումը</translation>
     </message>
 </context>
 <context>
@@ -144,7 +144,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="14"/>
         <source>Do you want to remove the path from the exclusion list?</source>
-        <translation>Անցում կատարվող ցանկից հեռացնել ճանապարհը կամ ոչ?</translation>
+        <translation>Անհամապատասխան ճանապարհը հեռացնել ցուցակից արդյունքում ուղղակի կամ թողարկել կայքը։</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="20"/>
@@ -164,18 +164,18 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <source>Installed</source>
-        <translation>Ընդգրկված է</translation>
+        <translation>Նախատեսված է</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="90"/>
         <source>Not Installed</source>
-        <translation>Չի ընդգրկված</translation>
+        <translation>Չի նախատեսված</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="105"/>
         <source>Install</source>
-        <translation>Ծանրաբեռնել</translation>
+        <translation>Նախատեսել</translation>
     </message>
 </context>
 <context>
@@ -183,12 +183,12 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="234"/>
         <source>Search</source>
-        <translation>Որոնել</translation>
+        <translation>Ստուգել</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="235"/>
         <source>What would you like to search for?</source>
-        <translation>Ինչ ցանկանում եք որոնել?</translation>
+        <translation>Ինչ եք ուզում փնտռել?</translation>
     </message>
 </context>
 <context>
@@ -196,7 +196,7 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="82"/>
         <source>Cut</source>
-        <translation>Կտացնել</translation>
+        <translation>Կտրել</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="86"/>
@@ -206,7 +206,7 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="90"/>
         <source>Paste</source>
-        <translation>Ընթերցել</translation>
+        <translation>Փոխադրել</translation>
     </message>
 </context>
 <context>
@@ -219,7 +219,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="204"/>
         <source>Time modified:</source>
-        <translation>Վերահաստատում է տեղի ունեցել:</translation>
+        <translation>Վերափոխվել է ընթացքում:</translation>
     </message>
 </context>
 <context>
@@ -245,29 +245,29 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="269"/>
         <source>Please go to %1 to install the ULLM, and %2 Automatic index update.</source>
-        <translation>Խնդրում ենք գնալ %1 և բացակայում է ավտոմատ ինդեքս թարմացումը</translation>
+        <translation>Խնդրում ենք գնալ %1 և համարձակ ինդեքսավորում ստեղծել %2 համարձակ ինդեքսավորում:</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="270"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="279"/>
         <source>Search configration</source>
-        <translation>Որոնման կարգավորումը</translation>
+        <translation>Փնտռում տարբերակը</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="271"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="275"/>
         <source>turn on</source>
-        <translation>միացնել</translation>
+        <translation>կացրել</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="274"/>
         <source>Please %1 Automatic index update.</source>
-        <translation>Խնդրում ենք ավտոմատ ինդեքս թարմացումը</translation>
+        <translation>Խնդրում ենք %1 համարձակ ինդեքսավորում:</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="278"/>
         <source>Please go to %1 to install the ULLM.</source>
-        <translation>Խնդրում ենք գնալ %1 և ստանալ ULLM</translation>
+        <translation>Խնդրում ենք գնալ %1 և ստեղծել ULLM:</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="330"/>
@@ -278,7 +278,7 @@
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="281"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="366"/>
         <source>No search results</source>
-        <translation type="unfinished">No search results</translation>
+        <translation>Ոչ մի փնտռում արդյունք չկա</translation>
     </message>
 </context>
 <context>
@@ -294,42 +294,42 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="78"/>
         <source>When turned on, you can try to search for local documents using natural language descriptions, such as &quot;last week&apos;s documents&quot;.</source>
-        <translation>Ամենայն անհատական նախադրումներով, դուք կարող եք փնտրել տեղական փաստաթուղթներ բնական լեզվական նկարագրություններով, օրինակ՝ «նախորդ շաբաթի փաստաթուղթները»</translation>
+        <translation>Ակտիվ վիճակում դուք կարող եք փնտռել տեղական փաստաթուղթները բնական լեզուներով նկարագրություններով, օրինակ՝ «անցյալ շաբաթի փաստաթուղթները»:</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="184"/>
         <source>Intelligent full text search</source>
-        <translation>Ամենայն տեքստային որոնումը</translation>
+        <translation>Ինտելլիջենտ լրիվ տեքստային փնտռում</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="99"/>
         <source>Automatic index update</source>
-        <translation>Ավտոմատ ինդեքս թարմացում</translation>
+        <translation>Ավտոմատ ինդեքսավորում</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="65"/>
         <source>AI Smart Search</source>
-        <translation>ԱԻ Ամենայն որոնումը</translation>
+        <translation>ԱԻ Ինտելլիջենտ Փնտռում</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="118"/>
         <source>Full Text Search</source>
-        <translation>Ամենայն տեքստային որոնումը</translation>
+        <translation>Լրիվ Տեքստային Փնտռում</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="135"/>
         <source>When turned on, full text search can be used in the file manager and grand search.</source>
-        <translation>Ամենայն տեքստային որոնումը կարող է օգտագործվել ֆայլերի համարադրիչում և հիմնական որոնումում</translation>
+        <translation>Ակտիվ վիճակում լրիվ տեքստային փնտռումն օգտագործելի է ֆայլերի վարողի և գրանդ փնտռումի մեջ:</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="153"/>
         <source>Embedding Plugins</source>
-        <translation>Փոխակցում փաստաթուղթների փոխադրիչները</translation>
+        <translation>Տուփերը</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="153"/>
         <source>After installing the model, you can use services such as AI Search and UOS AI Assistant..</source>
-        <translation>Մոդելը ստանալու հետևանքով կարող եք օգտագործել համարադրիչներ, ինչպես ԱԻ Որոնումը և ՈՒՕՍ ԱԻ Աստիճանաբար օգտագործողները</translation>
+        <translation>Մոդել պահպանելուց հետո դուք կարող եք օգտագործել ծառայություններ ինտելլիջենտ փնտռում և ՈՒՕՍ ԱԻ Ասիստանտ:</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="171"/>
@@ -339,44 +339,44 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="171"/>
         <source>After installing the ULLM, you can use the AI intelligent search function without an internet connection.</source>
-        <translation>ՈՒԼԼՄ-ը ստանալու հետևանքով կարող եք օգտագործել ԱԻ համարադրիչների ֆունկցիան ինտերնետի առանց կապի դեպքում</translation>
+        <translation>ՈՒԼԼՄ պահպանելուց հետո դուք կարող եք օգտագործել ԱԻ ինտելլիջենտ փնտռումը ինտերնետի առանցքում:</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="218"/>
         <source>When enabled, you can search the text of articles using disjointed and incomplete keywords.</source>
-        <translation>Ակտիվացնելու դեպքում կարող եք օգտագործել տարբեր և անբավարար բառեր հատուկ և ամբողջական որոնումների համար</translation>
+        <translation>Ակտիվ վիճակում դուք կարող եղանակ օգտագործել հոդվածների տեքստը անընդհատ և անբավարար բառերով:</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="240"/>
         <source>Please install %0 in &lt;a href=&quot;%0&quot;&gt;the app store&lt;/a&gt; before turning on this configuration.</source>
-        <translation type="unfinished"></translation>
+        <translation>Խնդրում ենք ստեղծել %0 &lt;a href=&quot;%0&quot;&gt;ծրագրերի ակշի&lt;/a&gt; այն ակտիվացնելուց առաջ:</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="280"/>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="404"/>
         <source>Intelligent search indexing is being updated, which may take up more resources, please keep the power access.</source>
-        <translation>Ամենայն որոնումների ինդեքսը թարմացվում է, այն կարող է ավելի շատ ռեսուրսներ անհրաժեշտ լինել, խնդրում ենք մշտական էլեկտրական կապը պահպանել</translation>
+        <translation>Ինտելլիջենտ փնտռում ինդեքսավորումը առաջարկվում է համարձակ ռեսուրսների հաշվառում կատարելու համար, խաղողեք էլեարտի առաջարկը:</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="284"/>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="408"/>
         <source>Smart Search indexing update is complete. Last update time: %0</source>
-        <translation>Ամենայն որոնումների ինդեքսը թարմացվել է: Վերջին թարմացման ժամանակը: %0</translation>
+        <translation>Սմարթ ստուդիայի ինդեքսավորման թույլատրությունը ավարտվել է։ Վերջին թարմացումը կատարվել է %0 ժամանակը</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="287"/>
         <source>Indexing error!</source>
-        <translation>Ինդեքսացման սխալ!</translation>
+        <translation>Ինդեքսավորման սխալ!</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="336"/>
         <source>To use AI Smart Search, you need to install the Embedding Plugins and ULLM first.</source>
-        <translation type="unfinished"></translation>
+        <translation>AI Սմարթ ստուդիայի օգտագործման համար անհրաժեշտ է տեղակայել միավորաբար ինքնամասնակիցների և ULLM պլագինները։</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="337"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>Լաւ</translation>
     </message>
 </context>
 <context>
@@ -385,92 +385,92 @@
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="61"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="385"/>
         <source>Not Installed</source>
-        <translation type="unfinished">Չի ընդգրկված</translation>
+        <translation>Չի տեղակայվել</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="77"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="384"/>
         <source>Install Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Տեղակայել մոդելը</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="93"/>
         <source>Update model</source>
-        <translation type="unfinished"></translation>
+        <translation>Թարմացնել մոդելը</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="94"/>
         <source>Uninstall model</source>
-        <translation type="unfinished"></translation>
+        <translation>Ընթարցել մոդելը</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="146"/>
         <source>Installing</source>
-        <translation type="unfinished"></translation>
+        <translation>Տեղակայում է</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="212"/>
         <source>Are you sure you want to delete this model?</source>
-        <translation type="unfinished"></translation>
+        <translation>Դուք ուզում եք ջատակալ այս մոդելը, կարող է ապահով լինել։</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="213"/>
         <source>After uninstallation, functions such as AI Search and UOS AI Assistant will not work properly.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ընթարցումից հետո AI Որոնումը և UOS Ինտելլիջենտ օգնողը աշխատելու կարող է անհարուստ լինել։</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="214"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Cancel</translation>
+        <translation>Չեղարկել</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="215"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation type="unfinished">Confirm</translation>
+        <translation>Հաստատել</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="324"/>
         <source>Installing </source>
-        <translation type="unfinished"></translation>
+        <translation>Տեղակայում է </translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="344"/>
         <source>Installing the ULLM</source>
-        <translation type="unfinished"></translation>
+        <translation>ULLM տեղակայում է</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="345"/>
         <source>Exiting will cause the installation to fail, do you still want to exit?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ելքը կպատճառի տեղակայումը կատարվի, կարող է ապահով լինել։</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="346"/>
         <source>Exit</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ելք</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="347"/>
         <source>Continue</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Շարունակել</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="378"/>
         <source>UnInstall Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Ընթարցել մոդելը</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="379"/>
         <source>Installed</source>
-        <translation type="unfinished">Ընդգրկված է</translation>
+        <translation>Տեղակայված է</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="390"/>
         <source>Please install the &quot;Embedding Plugins&quot; first before installing this model.</source>
-        <translation type="unfinished"></translation>
+        <translation>Խնդրում ենք գործադրել առաջին անգամ ինքնակիցների պլագինները, այնուհետև տեղակայեք այս մոդելը։</translation>
     </message>
 </context>
 <context>
@@ -478,7 +478,7 @@
     <message>
         <location filename="../src/grand-search/gui/mainwindow.cpp" line="213"/>
         <source>No search results</source>
-        <translation type="unfinished">No search results</translation>
+        <translation>Որոնումների արդյունքներ չկան</translation>
     </message>
 </context>
 <context>
@@ -486,7 +486,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="87"/>
         <source>Guess you want to search the following</source>
-        <translation type="unfinished"></translation>
+        <translation>Հարցական եք ուզում որոնել հետևյալը</translation>
     </message>
 </context>
 <context>
@@ -494,22 +494,22 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="27"/>
         <source>Search experience program</source>
-        <translation type="unfinished"></translation>
+        <translation>Որոնումի փորձառության ծրագիր</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="35"/>
         <source>Join search experience program</source>
-        <translation type="unfinished"></translation>
+        <translation>Շառավիղ որոնումի փորձառության ծրագրին</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="48"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations, the contents you search while using the Application, the time of search, the type of requested large model.If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation type="unfinished"></translation>
+        <translation>Որոնումի փորձառության ծրագրին մասնակցելը նշանակում է, որ դուք տրամադրում եք և թույլատրում եք մեզ հավաքել ձեր սարքի և համակարգի, ֆայլերի նկարանկարները, պարունակությունը և հատկությունները, ծրագրերը և նրանց կարգավորումները, գործադրումից օգտագործելու ընթացքում դուք որոնում եք պարունակությունը, որոնման ընթացքը, պահանջվող մեծ մոդելի տեսակը։ Եթե դուք մեր հավաքման և օգտագործման վերընտրված տեղեկատվության մեջ մեր հավաքման և օգտագործման վերաբերյալ տենդելները մեր հավաքման և օգտագործման վերընտրված տեղեկատվության մեջ մեր հավաքման և օգտագործման վերաբերյալ տենդելները չեք ցանկանում, այդ ծրագիրը մասնակցեք։</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="59"/>
         <source>To know more about the management of your data, please refer to the UnionTech Software Privacy Policy (</source>
-        <translation type="unfinished"></translation>
+        <translation>Ավելին տեղեկանք ձեր տվյالների կարգավորումի մասին, նախագիր մի տեղադրեք UnionTech ծրագրի անձնական տվյալների պաշտպանության կանոնակարգը (</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="61"/>
@@ -532,7 +532,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/scopewidget.cpp" line="28"/>
         <source>Search contents</source>
-        <translation type="unfinished"></translation>
+        <translation>Որոնման բովանդակություն</translation>
     </message>
 </context>
 <context>
@@ -540,22 +540,22 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="37"/>
         <source>Default search engine</source>
-        <translation type="unfinished"></translation>
+        <translation>Ստանդարտ որոնման հանդիպակացի</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="45"/>
         <source>Search for keywords by the default search engine.</source>
-        <translation type="unfinished"></translation>
+        <translation>Որոնեք բառերը ստանդարտ որոնման հանդիպակացով</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="57"/>
         <source>Default search engine is</source>
-        <translation type="unfinished"></translation>
+        <translation>Ստանդարտ որոնման հանդիպակացին է</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="66"/>
         <source>Google</source>
-        <translation>Գոոգل</translation>
+        <translation>Գոոգլ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="67"/>
@@ -580,7 +580,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="71"/>
         <source>360 AI Search</source>
-        <translation>360 ԱԻ Որոնման համար</translation>
+        <translation>360 AI Որոնում</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="72"/>
@@ -590,17 +590,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="73"/>
         <source>Custom</source>
-        <translation>Կարգավորված</translation>
+        <translation>Անձնական</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="94"/>
         <source>You need to use &quot;%0&quot; to replace the keyword in the URL</source>
-        <translation>Դուք պետք คือ &quot;%0&quot; արտադրել ողնաշարի բառը URL-ուն</translation>
+        <translation>Դուք պետք է օգտագործեք &quot;%0&quot; տողի մեջ բառը փոխարինելու համար</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="158"/>
         <source>Invalid URL</source>
-        <translation>Անվավեր հղում</translation>
+        <translation>Սխալ URL</translation>
     </message>
 </context>
 <context>
@@ -608,7 +608,7 @@
     <message>
         <location filename="../src/dde-grand-search-daemon/searcher/web/statictextworker.cpp" line="65"/>
         <source>Search for &quot;%1&quot;</source>
-        <translation>Որոնել &quot;%1&quot;</translation>
+        <translation>Որոնեք &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
@@ -616,17 +616,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="19"/>
         <source>Tailer settings</source>
-        <translation>Ավանդական կարգավորումներ</translation>
+        <translation>Տեյլերի կարգավորումներ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="29"/>
         <source>It is displayed at the end of search results for better identification and distinction of items with duplicate names.</source>
-        <translation>Այն ցուցադրվում է որոնման արդյունքների վերջում, որպեսզի ավելի լավ հայտնի լինի և տարբերակվի անուններով կրկնվող առարկաները</translation>
+        <translation>Այն պատճառաբանվում է որոնման արդյունքների վերջում, որպեսզի լավագույն ճանաչել և տարբերակել նման անուններով առարկաները</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="38"/>
         <source>Parent directory</source>
-        <translation>Ավանդական կատալոգ</translation>
+        <translation>Ավագ հանրապետություն</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="40"/>
@@ -639,7 +639,7 @@
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="59"/>
         <source>Artist:</source>
-        <translation>Աշխատող:</translation>
+        <translation>Ստեղծող:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="71"/>
@@ -649,17 +649,17 @@
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="96"/>
         <source>Duration:</source>
-        <translation>Ժամանակը:</translation>
+        <translation>Ժամանակահատված:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="111"/>
         <source>Type:</source>
-        <translation>Տեսակը:</translation>
+        <translation>Տիպ:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="123"/>
         <source>Location:</source>
-        <translation>Տեղը:</translation>
+        <translation>Գտնվելը:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="137"/>
@@ -677,22 +677,22 @@
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="69"/>
         <source>Type:</source>
-        <translation>Չափը:</translation>
+        <translation>Տիպ:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="84"/>
         <source>Size:</source>
-        <translation>Ծրագրեր</translation>
+        <translation>Չափը:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="96"/>
         <source>Location:</source>
-        <translation>Կարգավորումներ</translation>
+        <translation>Գտնվելը:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="110"/>
         <source>Time modified:</source>
-        <translation>Վիդեո</translation>
+        <translation>Վերափոխված ժամանակը:</translation>
     </message>
 </context>
 <context>
@@ -700,12 +700,12 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="24"/>
         <source>Best match</source>
-        <translation>Լավագույն համապատասխանություն</translation>
+        <translation>Լաւագույն ընթերցումը</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="25"/>
         <source>Applications</source>
-        <translation>Հայտնի ծրագրեր</translation>
+        <translation>Ծրագրեր</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="26"/>
@@ -720,7 +720,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="28"/>
         <source>Music</source>
-        <translation>Երաժություն</translation>
+        <translation>Մուսիկա</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="29"/>
@@ -730,12 +730,12 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="30"/>
         <source>Documents</source>
-        <translation>Փաստաթուղթեր</translation>
+        <translation>Փաստաթղթեր</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="31"/>
         <source>Folders</source>
-        <translation>Քարտաշարքեր</translation>
+        <translation>Փաստարաններ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="32"/>
@@ -745,7 +745,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="33"/>
         <source>Web</source>
-        <translation>Ինտերնետ</translation>
+        <translation>Վեբ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="34"/>
@@ -770,17 +770,17 @@
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="31"/>
         <source>Duration:</source>
-        <translation>Ժամանակահատված:</translation>
+        <translation>Ժամանակացույց:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="32"/>
         <source>Location:</source>
-        <translation>Տեղադրումը:</translation>
+        <translation>Բարձրացույց:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="33"/>
         <source>Time modified:</source>
-        <translation>Վերակազմակերպման ժամանակը:</translation>
+        <translation>Վերամշակման ժամանակը:</translation>
     </message>
     <message>
         <location filename="../src/dde-grand-search-daemon/searcher/file/filesearchutils.cpp" line="205"/>
@@ -793,12 +793,12 @@
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="24"/>
         <source>GrandSearch</source>
-        <translation>Փոխարկումը</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="81"/>
         <source>SearchConfig</source>
-        <translation>Որոնման կարգավորումներ</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
