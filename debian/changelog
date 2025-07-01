@@ -1,3 +1,10 @@
+dde-grand-search (6.0.18) unstable; urgency=medium
+
+  * fix bugs
+  * update translations
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Tue, 01 Jul 2025 20:35:21 +0800
+
 dde-grand-search (6.0.17) unstable; urgency=medium
 
   * Deleted the `dde-grand-search_en_AU.ts` translation file as it is no longer needed.
