@@ -11,6 +11,9 @@
 #include <QLayout>
 #include <QMouseEvent>
 #include <QDesktopServices>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 using namespace GrandSearch;
 
@@ -21,6 +24,8 @@ HyperlinkLabel::HyperlinkLabel(const QString &leadintText, const QString &hyperl
     , m_endText(endText)
     , m_fontMetrics(this->font())
 {
+    qCDebug(logGrandSearch) << "Creating HyperlinkLabel - Hyperlink:" << hyperlink;
+
     m_showText = m_leadingText + m_hyperlink + m_endText;
     m_showTextList << m_leadingText << m_hyperlink << m_endText;
 
@@ -50,6 +55,7 @@ void HyperlinkLabel::paintEvent(QPaintEvent *e)
 void HyperlinkLabel::mouseReleaseEvent(QMouseEvent *ev)
 {
     if (m_hyperlinkRegion.contains(ev->pos())) {
+        qCDebug(logGrandSearch) << "Hyperlink clicked - URL:" << m_hyperlink;
         QDesktopServices::openUrl(QUrl(m_hyperlink));
     }
     return QLabel::mouseReleaseEvent(ev);

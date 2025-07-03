@@ -17,16 +17,22 @@ using namespace GrandSearch;
 PreviewPluginManager::PreviewPluginManager()
     : QObject()
 {
+    qCDebug(logGrandSearch) << "Creating PreviewPluginManager";
     readPluginConfig();
+    qCDebug(logGrandSearch) << "PreviewPluginManager created - Total plugins:" << m_plugins.size();
 }
 
 PreviewPluginManager::~PreviewPluginManager()
 {
+    qCDebug(logGrandSearch) << "Destroying PreviewPluginManager";
     clearPluginInfo();
 }
 
 PreviewPlugin *PreviewPluginManager::getPreviewPlugin(const MatchedItem &item)
 {
+    qCDebug(logGrandSearch) << "Getting preview plugin for item - Name:" << item.name
+                            << "Type:" << item.type;
+
     PreviewPlugin *previewPlugin = nullptr;
 
     QString mimeType = item.type;
@@ -54,8 +60,11 @@ PreviewPlugin *PreviewPluginManager::getPreviewPlugin(const MatchedItem &item)
 
                 // 从预览插件创建或获取预览界面
                 QObject *pluginObject = pluginInfo.pPlugin->instance();
-                if (PreviewPluginInterface *pluginIFace = qobject_cast<PreviewPluginInterface *>(pluginObject))
+                if (PreviewPluginInterface *pluginIFace = qobject_cast<PreviewPluginInterface *>(pluginObject)) {
                     previewPlugin = pluginIFace->create(mimeType);
+                    qCDebug(logGrandSearch) << "Created preview plugin - Name:" << pluginInfo.name
+                                            << "MimeType:" << mimeType;
+                }
                 break;
             }
         }

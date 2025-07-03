@@ -28,6 +28,7 @@ QString FileNameSearcher::name() const
 
 bool FileNameSearcher::isActive() const
 {
+    qCDebug(logDaemon) << "FileNameSearcher activity check - Always active: true";
     return true;
 }
 
