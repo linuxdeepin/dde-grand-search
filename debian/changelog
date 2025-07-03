@@ -1,3 +1,9 @@
+dde-grand-search (6.0.19) unstable; urgency=medium
+
+  * update translations.
+
+ -- Liuyangming <liuyangming@uniontech.com>  Thu, 03 Jul 2025 16:02:31 +0800
+
 dde-grand-search (6.0.18) unstable; urgency=medium
 
   * fix bugs
