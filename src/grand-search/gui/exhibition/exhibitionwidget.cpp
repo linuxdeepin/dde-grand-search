@@ -55,21 +55,27 @@ void ExhibitionWidget::clearData()
 
 void ExhibitionWidget::onSelectNextItem()
 {
-    if (this->isHidden())
+    if (this->isHidden()) {
+        qCDebug(logGrandSearch) << "Select next item ignored - Exhibition widget is hidden";
         return;
+    }
 
     Q_ASSERT(m_matchWidget);
 
+    qCDebug(logGrandSearch) << "Selecting next item in exhibition";
     m_matchWidget->selectNextItem();
 }
 
 void ExhibitionWidget::onSelectPreviousItem()
 {
-    if (this->isHidden())
+    if (this->isHidden()) {
+        qCDebug(logGrandSearch) << "Select previous item ignored - Exhibition widget is hidden";
         return;
+    }
 
     Q_ASSERT(m_matchWidget);
 
+    qCDebug(logGrandSearch) << "Selecting previous item in exhibition";
     m_matchWidget->selectPreviousItem();
 }
 
@@ -91,7 +97,7 @@ void ExhibitionWidget::appendMatchedData(const MatchedItemMap &matchedData)
 
 void ExhibitionWidget::onSearchCompleted()
 {
-    qCDebug(logGrandSearch) << "Search completed";
+    qCDebug(logGrandSearch) << "Search completed - Processing final results";
     m_matchWidget->onSearchCompleted();
 }
 

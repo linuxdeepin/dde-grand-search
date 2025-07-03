@@ -65,6 +65,8 @@ void HandleVisibility::onLockedChanged(const bool locked)
 {
     Q_ASSERT(m_mainWindow);
 
+    qCDebug(logGrandSearch) << "Screen lock state changed - Locked:" << locked
+                            << "Setting window visible:" << !locked;
     m_mainWindow->setVisible(!locked);
 }
 

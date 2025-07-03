@@ -376,7 +376,9 @@ QVariantHash IntelligentRetrievalWidget::getIndexStatus()
 
     ret.waitForFinished();
     if (ret.error().type() != QDBusError::NoError) {
-        qWarning() << "error: " << msg.service() << QDBusError::errorString(ret.error().type()) << ret;
+        qCWarning(logGrandSearch) << "Failed to get semantic status - Service:" << msg.service()
+                                  << "Error:" << QDBusError::errorString(ret.error().type())
+                                  << "Response:" << ret;
         return QVariantHash();
     }
 
@@ -441,7 +443,8 @@ void IntelligentRetrievalWidget::setAutoIndex(bool on)
     QDBusPendingReply<void> ret = QDBusConnection::sessionBus().asyncCall(msg, 500);
     ret.waitForFinished();
     if (ret.error().type() != QDBusError::NoError) {
-        qWarning() << "error: " << msg.service() << QDBusError::errorString(ret.error().type());
+        qCWarning(logGrandSearch) << "Failed to set auto index - Service:" << msg.service()
+                                  << "Error:" << QDBusError::errorString(ret.error().type());
     }
     return;
 }

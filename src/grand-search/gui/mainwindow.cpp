@@ -128,6 +128,7 @@ void MainWindow::onFocusObjectChanged(QObject *obj)
 {
     // 焦点回到主窗口时，将焦点设置到输入框中(焦点改变到了预览相关的窗口中则不做处理)
     if (obj && obj == this && d_p->m_entranceWidget) {
+        qCDebug(logGrandSearch) << "Focus returned to main window - Setting focus to entrance widget";
         d_p->m_entranceWidget->setFocus();
     }
 }
@@ -135,6 +136,8 @@ void MainWindow::onFocusObjectChanged(QObject *obj)
 void MainWindow::onPrimaryScreenChanged(const QScreen *screen)
 {
     // 主窗口显示在主屏
+    qCDebug(logGrandSearch) << "Primary screen changed - Geometry:" << screen->geometry()
+                            << "DPI:" << screen->logicalDotsPerInch();
     disconnect(this, SLOT(onGeometryChanged(const QRect &)));
     onGeometryChanged(screen->geometry());
     connect(screen, &QScreen::geometryChanged, this, &MainWindow::onGeometryChanged);
@@ -148,12 +151,15 @@ void MainWindow::onGeometryChanged(const QRect &geometry)
     // 移动窗口到屏幕的居中偏上位置
     sWidth = geometry.x() + sWidth/2 - int(MainWindowWidth/2);
     sHeight = geometry.y() + sHeight/4;
+    qCDebug(logGrandSearch) << "Window geometry changed - Screen:" << geometry
+                            << "Moving window to:" << QPoint(sWidth, sHeight);
     move(sWidth, sHeight);
 }
 
 void MainWindow::onHideExhitionWidget()
 {
     // 搜索文本为空，隐藏展示界面
+    qCDebug(logGrandSearch) << "Hiding exhibition widget - Clearing search results";
     showSerachNoContent(false);
     showExhitionWidget(false);
     showEntranceAppIcon(false);
@@ -169,6 +175,7 @@ void MainWindow::onResetExhitionWidget(const QString &missionId)
     Q_UNUSED(missionId);
 
     // 搜索任务id改变，重置展示界面
+    qCDebug(logGrandSearch) << "Resetting exhibition widget - Mission ID:" << missionId;
     showSerachNoContent(false);
     showExhitionWidget(true);
 

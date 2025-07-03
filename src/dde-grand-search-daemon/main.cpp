@@ -142,10 +142,11 @@ int main(int argc, char *argv[])
 
         // 日志
         dgsLogManager->applySuggestedLogSettings();
-        qCInfo(logDaemon) << dateTime << "Starting" << app.applicationName()
-                             << "Version:" << app.applicationVersion()
-                             << "PID:" << getpid();
     }
+
+    qCInfo(logDaemon) << "Starting" << app.applicationName()
+                      << "Version:" << app.applicationVersion()
+                      << "PID:" << getpid();
 
     // 初始化
     int ret = startGrandSearchDaemon(argc, argv);
