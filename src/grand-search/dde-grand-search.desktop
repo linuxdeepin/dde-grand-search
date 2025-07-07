@@ -1,0 +1,18 @@
+[Desktop Entry]
+Categories=Utility;
+GenericName=Grand Search
+Icon=dde-grand-search
+Name=DDE Grand Search
+NoDisplay=true
+StartupNotify=true
+Terminal=false
+Type=Application
+
+# Translations:
+GenericName[zh_CN]=全局搜索
+GenericName[zh_HK]=全局搜索
+GenericName[zh_TW]=全局搜索
+
+Name[zh_CN]=全局搜索
+Name[zh_HK]=全局搜索
+Name[zh_TW]=全局搜索

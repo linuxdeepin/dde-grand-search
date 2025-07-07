@@ -33,6 +33,11 @@ Files: README.md README.zh_CN.md CHANGELOG.md
 Copyright: UnionTech Software Technology Co., Ltd.
 License: CC-BY-4.0
 
+# assets
+Files: assets/*
+Copyright: UnionTech Software Technology Co., Ltd.
+License: GPL-3.0-or-later
+
 # translations
 Files: translate_generation.sh lupdate.sh translations/*
 Copyright: UnionTech Software Technology Co., Ltd.
