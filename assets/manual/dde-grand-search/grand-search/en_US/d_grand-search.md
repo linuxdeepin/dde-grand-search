@@ -52,7 +52,6 @@ Right-click ![ ](../common/dde-grand-search.svg) on the taskbar and select **Sea
 
 ### Indexing
 **AI Smart Search**
-
 * Enable **AI Smart Search** to use AI features.
 * Install **Vectorization Model Plugin** and **Tongxin Youreng LLM**.
 * Enable **Auto-Update Index** for real-time AI indexing.
@@ -61,7 +60,6 @@ Right-click ![ ](../common/dde-grand-search.svg) on the taskbar and select **Sea
 <img src="fig/search_setting2.png" alt=" " style="zoom:80%;" />
 
 **Path Blacklist**
-
 * Add paths you wish to exclude from searches using the ![ ](../common/+.svg)/![ ](../common/-.svg) buttons. Files in these paths won’t appear in results.
 
 ### Personalization
