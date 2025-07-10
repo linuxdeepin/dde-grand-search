@@ -1,3 +1,9 @@
+dde-grand-search (6.0.20) unstable; urgency=medium
+
+  * chore: Update the help manual
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Thu, 10 Jul 2025 19:49:44 +0800
+
 dde-grand-search (6.0.19) unstable; urgency=medium
 
   * update translations.
