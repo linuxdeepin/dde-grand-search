@@ -33,7 +33,7 @@ Homepage: http://www.deepin.org/
 Package: dde-grand-search
 Architecture: any
 Replaces: dde-shell (<=1.99.30)
-Depends: ${shlibs:Depends}, ${misc:Depends},
+Depends: ${shlibs:Depends}, ${misc:Depends}, libdfm-search,
 Recommends:
  deepin-desktop-schemas (>=5.8.0.34),
  dde-daemon (>=5.12.0.31),
