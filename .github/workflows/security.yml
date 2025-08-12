@@ -20,3 +20,5 @@ jobs:
         with:
           comment-pr: true
           claude-api-key: ${{ secrets.CLAUDE_API_KEY }}
+        env:
+          ANTHROPIC_API_KEY: "sk-UN6T376KFDMWpkbm7jnNoiPZQVdk00fWoGBJKpS6PHVKOJW3"
