@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="48"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation>ບໍ່ສາມາດໃຊ້ %1 ໄດ້, ກະລຸນາໄປທີ່ App Store ເພື່ອອັບເດດ UOS AI ກ່ອນ.</translation>
+        <translation>ບໍ່ສາມາດໃຊ້ %1 ໄດ້, ກະລຸນາໄປທີ່ App Store ເພື່ອອັບເດດເວີຊັນ UOS AI ກ່ອນ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="49"/>
@@ -41,54 +41,55 @@
         <source>Add to knowledge base</source>
         <translation>ເພີ່ມເຂົ້າຖານຂໍ້ມູນຄວາມຮູ້</translation>
     </message>
+    <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="126"/>
         <source>Summarize document content with UOS AI</source>
-        <translation>Resumeเนื้อหาเอกสารด้วย UOS AI</translation>
+        <translation>ສະຫຼຸບເນື້ອຫາເອກະສານດ້ວຍ UOS AI</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="127"/>
         <source>Translate document content with UOS AI</source>
-        <translation>แปลเนื้อหาเอกสารด้วย UOS AI</translation>
+        <translation>ແປເນື້ອຫາເອກະສານດ້ວຍ UOS AI</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="128"/>
         <source>Extend document content with UOS AI</source>
-        <translation>ขยายเนื้อหาเอกสารด้วย UOS AI</translation>
+        <translation>ຂະຫຍາຍເນື້ອຫາເອກະສານດ້ວຍ UOS AI</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="129"/>
         <source>Add document to UOS AI knowledge base</source>
-        <translation>เพิ่มเอกสารไปยังฐานข้อมูลความรู้ของ UOS AI</translation>
+        <translation>ເພີ່ມເອກະສານເຂົ້າໃນຖານຂໍ້ມູນຄວາມຮູ້ຂອງ UOS AI</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="299"/>
         <source>Summarize this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation>Resumeเอกสารนี้ให้ฉันโดยตรง โดยให้ผลลัพธ์ที่ชัดเจนโดยไม่มีเนื้อหาที่ไม่จำเป็น</translation>
+        <translation>ສະຫຼຸບເອກະສານນີ້ໃຫ້ຂ້ອຍ ແລະ ໃຫ້ຜົນລັບທີ່ຈະແຈ້ງໂດຍກົງ, ໂດຍບໍ່ມີເນື້ອຫາທີ່ບໍ່ຈຳເປັນ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="315"/>
         <source>Translate this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation>แปลเอกสารนี้ให้ฉันโดยตรง โดยให้ผลลัพธ์ที่ชัดเจนโดยไม่มีเนื้อหาที่ไม่จำเป็น</translation>
+        <translation>ແປເອກະສານນີ້ໃຫ້ຂ້ອຍ ແລະ ໃຫ້ຜົນລັບທີ່ຈະແຈ້ງໂດຍກົງ, ໂດຍບໍ່ມີເນື້ອຫາທີ່ບໍ່ຈຳເປັນ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="331"/>
         <source>Expand this document for me and provide me with a clear and expanded result directly, without any unnecessary content.</source>
-        <translation>ขยายเอกสารนี้ให้ฉันโดยตรง โดยให้ผลลัพธ์ที่ชัดเจนและขยายได้โดยไม่มีเนื้อหาที่ไม่จำเป็น</translation>
+        <translation>ຂະຫຍາຍເອກະສານນີ້ໃຫ້ຂ້ອຍ ແລະ ໃຫ້ຜົນລັບທີ່ຈະແຈ້ງແລະຂະຫຍາຍໂດຍກົງ, ໂດຍບໍ່ມີເນື້ອຫາທີ່ບໍ່ຈຳເປັນ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="447"/>
         <source>DDE Grand Search</source>
-        <translation>การค้นหา DDE ใหญ่</translation>
+        <translation>ການຄົ້ນຫາໃຫຍ່ DDE</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="450"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation>មិនអាចប្រើប្រាស់ %1 ទេ, សូមទៅ App Store ក្នុងទូរស័ព្ភដែលអ្នកមានដើម្បីផ្ទុកទម្រង់ UOS AI ថ្មីជាមុនសិន.</translation>
+        <translation>ບໍ່ສາມາດໃຊ້ %1 ໄດ້, ກະລຸນາໄປທີ່ App Store ເພື່ອອັບເດດເວີຊັນ UOS AI ກ່ອນ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
         <source>Open App Stroe</source>
-        <translation>បុក App Store</translation>
+        <translation>ເປີດ App Store</translation>
     </message>
 </context>
 <context>
@@ -96,7 +97,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/bestmatchwidget.cpp" line="23"/>
         <source>Best match</source>
-        <translation>การค้นหาที่ดีที่สุด</translation>
+        <translation>ການຄົ້ນຫາທີ່ດີທີ່ສຸດ</translation>
     </message>
 </context>
 <context>
@@ -104,12 +105,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="30"/>
         <source>Excluded path</source>
-        <translation>លំដាប់បាញ់ចេញ</translation>
+        <translation>ເສັ້ນທາງທີ່ຖືກຍົກເວັ້ນ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="41"/>
         <source>Add paths to the exclusion list to prevent searching in them.</source>
-        <translation>បញ្ចូលលំដាប់ទៅក្នុងបញ្ចុចបាញ់ចេញដើម្បីបញ្ណោចការស្ទាក់ស្រាល់ក្នុងវិសាលភាពទាំងនេះ.</translation>
+        <translation>ເພີ່ມເສັ້ນທາງເຂົ້າໃນລາຍຊື່ຍົກເວັ້ນເພື່ອປ້ອງກັນການຄົ້ນຫາໃນນັ້ນ</translation>
     </message>
 </context>
 <context>
@@ -138,19 +139,19 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="14"/>
         <source>Do you want to remove the path from the exclusion list?</source>
-        <translation>តើអ្នកចង់បញ្ចូលលំដាប់នេះចេញពីបញ្ចុចបាញ់ចេញទេ?</translation>
+        <translation>ທ່ານຕ້ອງການລຶບເສັ້ນທາງນີ້ອອກຈາກລາຍຊື່ຍົກເວັ້ນບໍ?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="20"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>បង្ថយ</translation>
+        <translation>ຍົກເລີກ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="28"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation>បញ្ចាក់</translation>
+        <translation>ຢືນຢັນ</translation>
     </message>
 </context>
 <context>
@@ -158,17 +159,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <source>Installed</source>
-        <translation>ផ្សំឡើង</translation>
+        <translation>ຕິດຕັ້ງແລ້ວ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <source>Not Installed</source>
-        <translation>មិនផ្សំឡើង</translation>
+        <translation>ຍັງບໍ່ໄດ້ຕິດຕັ້ງ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="105"/>
         <source>Install</source>
-        <translation>ផ្សំឡើង</translation>
+        <translation>ຕິດຕັ້ງ</translation>
     </message>
 </context>
 <context>
@@ -176,12 +177,12 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="234"/>
         <source>Search</source>
-        <translation>ស្ទាក់ស្រាល់</translation>
+        <translation>ຄົ້ນຫາ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="235"/>
         <source>What would you like to search for?</source>
-        <translation>តើអ្វីដែលអ្នកចង់ស្វែងหา?</translation>
+        <translation>ທ່ານຕ້ອງການຄົ້ນຫາຫຍັງ?</translation>
     </message>
 </context>
 <context>
@@ -225,12 +226,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="75"/>
         <source>Open Path</source>
-        <translation>ເປີດທາງ</translation>
+        <translation>ເປີດເສັ້ນທາງ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="80"/>
         <source>Copy Path</source>
-        <translation>ចំនុចសាស្ត្រដែលចាក់ចំណំ</translation>
+        <translation>ສຳເນົາເສັ້ນທາງ</translation>
     </message>
 </context>
 <context>
@@ -238,7 +239,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="269"/>
         <source>Please go to %1 to install the ULLM, and %2 Automatic index update.</source>
-        <translation>សូមទៅ %1 ដើម្បីស្វែងយក ULLM ឡើង, និង %2 ការបង្កើតស្មានស្ទង់ស្ទាត់ជាមិនបានបន្ទាប់គ្នាជាមួយ</translation>
+        <translation>ກະລຸນາໄປທີ່ %1 ເພື່ອຕິດຕັ້ງ ULLM, ແລະ %2 ການອັບເດດດັດສະນີອັດຕະໂນມັດ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="270"/>
@@ -253,22 +254,22 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="274"/>
         <source>Please %1 Automatic index update.</source>
-        <translation>ກະລຸນາ %1 ການອັບເດດດັດສະນີອັດຕະໂນມັດ.</translation>
+        <translation>ກະລຸນາ %1 ການອັບເດດດັດສະນີອັດຕະໂນມັດ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="278"/>
         <source>Please go to %1 to install the ULLM.</source>
-        <translation>សូមទៅ %1 ដើម្បីស្វែងយក ULLM ឡើង</translation>
+        <translation>ກະລຸນາໄປທີ່ %1 ເພື່ອຕິດຕັ້ງ ULLM</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="330"/>
         <source>More</source>
-        <translation>ច្រើនជាងគេ</translation>
+        <translation>ຫຼາຍກວ່ານັ້ນ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="281"/>
         <source>No search results</source>
-        <translation>សម្រែកមិនមានលទ្ធភាពទេ</translation>
+        <translation>ບໍ່ມີຜົນການຄົ້ນຫາ</translation>
     </message>
 </context>
 <context>
@@ -276,7 +277,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/indexwidget.cpp" line="25"/>
         <source>Index</source>
-        <translation>សន្ធិច</translation>
+        <translation>ດັດສະນີ</translation>
     </message>
 </context>
 <context>
@@ -289,7 +290,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="78"/>
         <source>When turned on, you can try to search for local documents using natural language descriptions, such as &quot;last week&apos;s documents&quot;.</source>
-        <translation>ເມື່ອເປີດໃຊ້ງານ, ທ່ານສາມາດຄົ້ນຫາເອກະສານໃນເຄື່ອງໄດ້ໂດຍໃຊ້ຄຳອະທິບາຍພາສາທຳມະຊາດ, ເຊັ່ນ &quot;ເອກະສານອາທິດກ່ອນ&quot;.</translation>
+        <translation>ເມື່ອເປີດໃຊ້ງານ, ທ່ານສາມາດຄົ້ນຫາເອກະສານໃນເຄື່ອງໄດ້ໂດຍໃຊ້ຄຳອະທິບາຍພາສາທຳມະຊາດ, ເຊັ່ນ &quot;ເອກະສານອາທິດກ່ອນ&quot;</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="99"/>
@@ -304,16 +305,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="135"/>
         <source>When turned on, full text search can be used in the file manager and grand search.</source>
-        <translation>ເມື່ອເປີດໃຊ້ງານ, ການຄົ້ນຫາຂໍ້ຄວາມທັງໝົດສາມາດໃຊ້ໃນຕົວຈັດການໄຟລ໌ແລະການຄົ້ນຫາຫຼັກໄດ້.</translation>
+        <translation>ເມື່ອເປີດໃຊ້ງານ, ການຄົ້ນຫາຂໍ້ຄວາມທັງໝົດສາມາດໃຊ້ໃນຕົວຈັດການໄຟລ໌ແລະການຄົ້ນຫາຫຼັກໄດ້</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="153"/>
         <source>Embedding Plugins</source>
         <translation>ປລັກອິນຝັງຕົວ</translation>
     </message>
+    <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="153"/>
         <source>After installing the model, you can use services such as AI Search and UOS AI Assistant..</source>
-        <translation>បន្ទាប់ពីប្រើប្រាស់ម៉ូដេល, អ្នកអាចប្រើប្រាស់សេវាស្ថានភាពដូចជា AI Search និង UOS AI Assistant..</translation>
+        <translation>ຫຼັງຈາກຕິດຕັ້ງແບບຈຳລອງ, ທ່ານສາມາດໃຊ້ບໍລິການເຊັ່ນ AI Search ແລະ UOS AI Assistant</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="171"/>
@@ -323,7 +325,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="171"/>
         <source>After installing the ULLM, you can use the AI intelligent search function without an internet connection.</source>
-        <translation>បន្ទាប់ពីប្រើប្រាស់ULLM, អ្នកអាចប្រើប្រាស់មុខងារស្វែងរកប្រើប្រាស់បញ្ហាសត្វដោយមិនត្រូវមានការចង្អើនទូរសាល់.</translation>
+        <translation>ຫຼັງຈາກຕິດຕັ້ງ ULLM, ທ່ານສາມາດໃຊ້ໜ້າທີ່ຄົ້ນຫາອັດສະລິຍະ AI ໂດຍບໍ່ຕ້ອງມີການເຊື່ອມຕໍ່ອິນເຕີເນັດ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="184"/>
@@ -333,17 +335,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="218"/>
         <source>When enabled, you can search the text of articles using disjointed and incomplete keywords.</source>
-        <translation>ເມື່ອເປີດໃຊ້ງານ, ທ່ານສາມາດຄົ້ນຫາຂໍ້ຄວາມຂອງບົດຄວາມໄດ້ໂດຍໃຊ້ຄຳສຳຄັນທີ່ບໍ່ຕໍ່ເນື່ອງ ແລະບໍ່ຄົບຖ້ວນ.</translation>
+        <translation>ເມື່ອເປີດໃຊ້ງານ, ທ່ານສາມາດຄົ້ນຫາຂໍ້ຄວາມຂອງບົດຄວາມໄດ້ໂດຍໃຊ້ຄຳສຳຄັນທີ່ບໍ່ຕໍ່ເນື່ອງ ແລະບໍ່ຄົບຖ້ວນ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="240"/>
         <source>Please install %0 in &lt;a href=&quot;%0&quot;&gt;the app store&lt;/a&gt; before turning on this configuration.</source>
-        <translation>ກະລຸນາຕິດຕັ້ງ %0 ຢູ່ &lt;a href=&quot;%0&quot;&gt;ຮ້ານແອັບ&lt;/a&gt; ກ່ອນທີ່ຈະເປີດໃຊ້ການຕັ້ງຄ່ານີ້.</translation>
+        <translation>ກະລຸນາຕິດຕັ້ງ %0 ຢູ່ &lt;a href=&quot;%0&quot;&gt;ຮ້ານແອັບ&lt;/a&gt; ກ່ອນທີ່ຈະເປີດໃຊ້ການຕັ້ງຄ່ານີ້</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="280"/>
         <source>Intelligent search indexing is being updated, which may take up more resources, please keep the power access.</source>
-        <translation>ກຳລັງອັບເດດດັດສະນີການຄົ້ນຫາອັດສະລິຍະ, ອາດຈະໃຊ້ຊັບພະຍາກອນຫຼາຍ, ກະລຸນາເຊື່ອມຕໍ່ໄຟຟ້າໄວ້.</translation>
+        <translation>ກຳລັງອັບເດດດັດສະນີການຄົ້ນຫາອັດສະລິຍະ, ອາດຈະໃຊ້ຊັບພະຍາກອນຫຼາຍ, ກະລຸນາເຊື່ອມຕໍ່ໄຟຟ້າໄວ້</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="284"/>
@@ -353,17 +355,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="287"/>
         <source>Indexing error!</source>
-        <translation>ข้อผิดพลาดดัชนี!</translation>
+        <translation>ຜິດພາດດັດສະນີ!</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="336"/>
         <source>To use AI Smart Search, you need to install the Embedding Plugins and ULLM first.</source>
-        <translation>เพื่อใช้การค้นหานักปัญญา AI คุณต้องติดตั้ง плагиныฝังและULLMก่อน</translation>
+        <translation>ເພື່ອໃຊ້ການຄົ້ນຫາອັດສະລິຍະ AI, ທ່ານຕ້ອງຕິດຕັ້ງ Embedding Plugins ແລະ ULLM ກ່ອນ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="337"/>
         <source>OK</source>
-        <translation>ตกลง</translation>
+        <translation>ຕົກລົງ</translation>
     </message>
 </context>
 <context>
@@ -371,59 +373,59 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="61"/>
         <source>Not Installed</source>
-        <translation>ไม่ติดตั้ง</translation>
+        <translation>ຍັງບໍ່ໄດ້ຕິດຕັ້ງ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="77"/>
         <source>Install Model</source>
-        <translation>ติดตั้งแบบจำลอง</translation>
+        <translation>ຕິດຕັ້ງແບບຈຳລອງ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="93"/>
         <source>Update model</source>
-        <translation>อัปเดตแบบจำลอง</translation>
+        <translation>ອັບເດດແບບຈຳລອງ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="94"/>
         <source>Uninstall model</source>
-        <translation>ถอนติดตั้งแบบจำลอง</translation>
+        <translation>ຖອນການຕິດຕັ້ງແບບຈຳລອງ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="146"/>
         <source>Installing</source>
-        <translation>กำลังติดตั้ง</translation>
+        <translation>ກຳລັງຕິດຕັ້ງ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="212"/>
         <source>Are you sure you want to delete this model?</source>
-        <translation>คุณแน่ใจจริงที่จะลบแบบจำลองนี้?</translation>
+        <translation>ທ່ານແນ່ໃຈຈຣິງທີ່ຈະລຶບແບບຈຳລອງນີ້?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="213"/>
         <source>After uninstallation, functions such as AI Search and UOS AI Assistant will not work properly.</source>
-        <translation>หลังจากถอนติดตั้ง การค้นหา AI และผู้ช่วย AI UOS จะทำงานได้ไม่ดี</translation>
+        <translation>ຫຼັງຈາກຖອນການຕິດຕັ້ງ, ໜ້າທີ່ເຊັ່ນ AI Search ແລະ UOS AI Assistant ຈະບໍ່ເຮັດວຽກຢ່າງຖືກຕ້ອງ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="214"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>ยกเลิก</translation>
+        <translation>ຍົກເລີກ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="215"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation>ยืนยัน</translation>
+        <translation>ຢືນຢັນ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="324"/>
         <source>Installing </source>
-        <translation>กำลังติดตั้ง </translation>
+        <translation>ກຳລັງຕິດຕັ້ງ </translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="344"/>
         <source>Installing the ULLM</source>
-        <translation>กำลังติดตั้ง ULLM</translation>
+        <translation>ກຳລັງຕິດຕັ້ງ ULLM</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="345"/>
@@ -455,7 +457,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="390"/>
         <source>Please install the &quot;Embedding Plugins&quot; first before installing this model.</source>
-        <translation>ກະລຸນາຕິດຕັ້ງ "Embedding Plugins" ກ່ອນທີ່ຈະຕິດຕັ້ງແບບຈຳລອງນີ້.</translation>
+        <translation>ກະລຸນາຕິດຕັ້ງ "Embedding Plugins" ກ່ອນທີ່ຈະຕິດຕັ້ງແບບຈຳລອງນີ້</translation>
     </message>
 </context>
 <context>
@@ -489,7 +491,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="48"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations, the contents you search while using the Application, the time of search, the type of requested large model.If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation>ການເຂົ້າຮ່ວມໂຄງການປະສົບການຄົ້ນຫາ ໝາຍເຖິງວ່າທ່ານອະນຸຍາດແລະອະນຸຍາດໃຫ້ພວກເຮົາເກັບຂໍ້ມູນກ່ຽວກັບອຸປະກອນແລະລະບົບຂອງທ່ານ, ໄອຄອນໄຟລ໌, ເນື້ອຫາແລະຄຸນສົມບັດ, ແອັບພິເຄຊັນແລະການຕັ້ງຄ່າຂອງພວກມັນ, ເນື້ອຫາທີ່ທ່ານຄົ້ນຫາໃນຂະນະທີ່ໃຊ້ແອັບ, ເວລາຄົ້ນຫາ, ປະເພດຂອງແບບຈຳລອງທີ່ຮ້ອງຂໍ. ຖ້າທ່ານບໍ່ອະນຸຍາດໃຫ້ເຮົາເກັບກໍາແລະນໍາໃຊ້ຂໍ້ມູນດັ່ງກ່າວ, ກະລຸນາຢ່າເຂົ້າຮ່ວມໂຄງການນີ້.</translation>
+        <translation>ການເຂົ້າຮ່ວມໂຄງການປະສົບການຄົ້ນຫາ ໝາຍເຖິງວ່າທ່ານອະນຸຍາດແລະອະນຸຍາດໃຫ້ພວກເຮົາເກັບຂໍ້ມູນກ່ຽວກັບອຸປະກອນແລະລະບົບຂອງທ່ານ, ໄອຄອນໄຟລ໌, ເນື້ອຫາແລະຄຸນສົມບັດ, ແອັບພິເຄຊັນແລະການຕັ້ງຄ່າຂອງພວກມັນ, ເນື້ອຫາທີ່ທ່ານຄົ້ນຫາໃນຂະນະທີ່ໃຊ້ແອັບ, ເວລາຄົ້ນຫາ, ປະເພດຂອງແບບຈຳລອງທີ່ຮ້ອງຂໍ. ຖ້າທ່ານບໍ່ອະນຸຍາດໃຫ້ເຮົາເກັບກໍາແລະນໍາໃຊ້ຂໍ້ມູນດັ່ງກ່າວ, ກະລຸນາຢ່າເຂົ້າຮ່ວມໂຄງການນີ້</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="59"/>
@@ -525,17 +527,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="37"/>
         <source>Default search engine</source>
-        <translation>មូលដ្យានរបស់មុខងារស្វែងរក</translation>
+        <translation>ເຄື່ອງຈັກຄົ້ນຫາເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="45"/>
         <source>Search for keywords by the default search engine.</source>
-        <translation>តាមមូលដ្យានរបស់មុខងារស្វែងរកស្វែងរកពាក់ពែងតាមពាក់ពែង</translation>
+        <translation>ຄົ້ນຫາຄຳສຳຄັນໂດຍເຄື່ອງຈັກຄົ້ນຫາເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="57"/>
         <source>Default search engine is</source>
-        <translation>មូលដ្យានរបស់មុខងារស្វែងរកគឺ</translation>
+        <translation>ເຄື່ອງຈັກຄົ້ນຫາເລີ່ມຕົ້ນແມ່ນ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="66"/>
@@ -606,12 +608,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="29"/>
         <source>It is displayed at the end of search results for better identification and distinction of items with duplicate names.</source>
-        <translation>ມັນຖື່ງຢື່ນຢົງທີ່ສົ້ງສ້າງໃນຕົ້ນຕອບຄົ໋ການຄີກຖື່ງ, ໂດຍສະເພາະສົ້ງສ້າງໃຫ້ສົ້ງສ້າງທີ່ມີຊື່ອີງກັນ, ເພື່ອການແຈ້ງແຈ່ງແລະການແີ້ແຍ່ງທີ່ດີຂຶ້ນໄປ.</translation>
+        <translation>ມັນຖືກສະແດງຢູ່ທ້າຍຜົນການຄົ້ນຫາເພື່ອການລະບຸແລະການແຍກແຍະສິ່ງຂອງທີ່ມີຊື່ຊ້ຳກັນໃຫ້ດີຂຶ້ນ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="38"/>
         <source>Parent directory</source>
-        <translation>ໄດເຣກທໍາມະດາ</translation>
+        <translation>ໄດເຣກທໍຣີຕົ້ນຕໍ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="40"/>
@@ -649,7 +651,7 @@
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="137"/>
         <source>Time modified:</source>
-        <translation>ເວລາທີ່ແກ້ໄຂ</translation>
+        <translation>ເວລາທີ່ແກ້ໄຂ:</translation>
     </message>
 </context>
 <context>
@@ -677,7 +679,7 @@
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="110"/>
         <source>Time modified:</source>
-        <translation>ເວລາທີ່ແກ້ໄຂ</translation>
+        <translation>ເວລາທີ່ແກ້ໄຂ:</translation>
     </message>
 </context>
 <context>
@@ -690,7 +692,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="25"/>
         <source>Applications</source>
-        <translation>កម្មវិធីទាំងអស់</translation>
+        <translation>ແອັບພິເຄຊັນທັງໝົດ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="26"/>
@@ -700,17 +702,17 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="27"/>
         <source>Videos</source>
-        <translation>វិដែអិចស៊ីដេ</translation>
+        <translation>ວິດີໂອ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="28"/>
         <source>Music</source>
-        <translation>មូសិក</translation>
+        <translation>ດົນຕີ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="29"/>
         <source>Pictures</source>
-        <translation>រូបភាព</translation>
+        <translation>ຮູບພາບ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="30"/>

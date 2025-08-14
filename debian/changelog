@@ -1,3 +1,9 @@
+dde-grand-search (6.0.22) unstable; urgency=medium
+
+  * fix: update translations
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Thu, 14 Aug 2025 09:43:21 +0800
+
 dde-grand-search (6.0.21) unstable; urgency=medium
 
   * Update version to 6.0.21. 
