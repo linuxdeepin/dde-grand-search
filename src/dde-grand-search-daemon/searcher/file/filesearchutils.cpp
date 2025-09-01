@@ -9,6 +9,8 @@
 #include "global/searchconfigdefine.h"
 #include "configuration/configer.h"
 
+#include <dfm-search/dsearch_global.h>
+
 #include <QLoggingCategory>
 
 Q_DECLARE_LOGGING_CATEGORY(logDaemon)
@@ -281,11 +283,11 @@ QStringList FileSearchUtils::buildDFMSearchFileTypes(const QList<Group> &groupLi
     qCDebug(logDaemon) << "Building DFM search file types - Groups:" << groupList.size();
 
     static const QMap<Group, QString> kGroupToTypeMap = {
-        {Group::Folder, "dir"},
-        {Group::Picture, "pic"},
-        {Group::Audio, "audio"},
-        {Group::Video, "video"},
-        {Group::Document, "doc"}
+        { Group::Folder, "dir" },
+        { Group::Picture, "pic" },
+        { Group::Audio, "audio" },
+        { Group::Video, "video" },
+        { Group::Document, "doc" }
     };
 
     const bool containFile = groupList.contains(Group::File);
@@ -295,7 +297,9 @@ QStringList FileSearchUtils::buildDFMSearchFileTypes(const QList<Group> &groupLi
     if (containFile) {
         qCDebug(logDaemon) << "File group detected - Adding all file types";
         types = kGroupToTypeMap.values();
-        types << "app" << "archive" << "other";
+        types << "app"
+              << "archive"
+              << "other";
         if (!containFolder) {
             types.removeOne(kGroupToTypeMap.value(Group::Folder));
             qCDebug(logDaemon) << "Folder group not included - Removed directory type";
@@ -318,12 +322,10 @@ bool FileSearchUtils::isPinyin(const QString &str)
         return false;
     }
 
-    static QRegularExpression regex(R"(^[a-zA-Z]+$)");
-    return regex.match(str).hasMatch();
+    return DFMSEARCH::Global::isPinyinAcronymSequence(str);
 }
 
 bool FileSearchUtils::hasWildcard(const QString &str)
 {
     return str.contains('*') || str.contains('?');
 }
-

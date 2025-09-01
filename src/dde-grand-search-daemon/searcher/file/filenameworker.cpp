@@ -190,8 +190,8 @@ SearchQuery FileNameWorkerPrivate::createSearchQuery() const
         query = SearchFactory::createQuery(boolKeywords, SearchQuery::Type::Boolean);
     } else {
         SearchQuery::Type queryType = FileSearchUtils::hasWildcard(keyword)
-                                    ? SearchQuery::Type::Wildcard
-                                    : SearchQuery::Type::Simple;
+                ? SearchQuery::Type::Wildcard
+                : SearchQuery::Type::Simple;
         query = SearchFactory::createQuery(keyword, queryType);
         qCDebug(logDaemon) << "Created query - Type:" << (queryType == SearchQuery::Type::Wildcard ? "Wildcard" : "Simple");
     }
@@ -212,19 +212,23 @@ void FileNameWorkerPrivate::configureFileNameOptions(FileNameOptionsAPI &fileNam
     if (useTypeSearch) {
         qCDebug(logDaemon) << "Type search configuration - Enabling pinyin and setting file types";
         fileNameOptions.setPinyinEnabled(true);
+        fileNameOptions.setPinyinAcronymEnabled(true);
         fileNameOptions.setFileTypes(FileSearchUtils::buildDFMSearchFileTypes(m_searchInfo.groupList));
         fileNameOptions.setFileExtensions(m_searchInfo.suffixList);
         qCDebug(logDaemon) << "File extensions configured:" << m_searchInfo.suffixList;
     } else if (query.type() == SearchQuery::Type::Boolean) {
         qCDebug(logDaemon) << "Boolean query configuration - Enabling pinyin";
         fileNameOptions.setPinyinEnabled(true);
+        fileNameOptions.setPinyinAcronymEnabled(true);
     } else if (query.type() == SearchQuery::Type::Wildcard) {
         qCDebug(logDaemon) << "Wildcard query configuration - Disabling pinyin";
         // 通配符搜索通常不需要拼音支持，因为用户输入的是精确的模式
         fileNameOptions.setPinyinEnabled(false);
+        fileNameOptions.setPinyinAcronymEnabled(false);
     } else if (FileSearchUtils::isPinyin(keyword)) {
         qCDebug(logDaemon) << "Pinyin keyword detected - Enabling pinyin support";
         fileNameOptions.setPinyinEnabled(true);
+        fileNameOptions.setPinyinAcronymEnabled(true);
     }
 }
 
