@@ -30,7 +30,7 @@ Build-Depends: debhelper (>= 9),
  libdde-shell-dev | hello,
  deepin-desktop-base
 Standards-Version: 3.9.8
-Homepage: http://www.deepin.org/
+Homepage: https://github.com/linuxdeepin/dde-grand-search
 
 Package: dde-grand-search
 Architecture: any
