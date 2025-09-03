@@ -18,11 +18,13 @@ using namespace GrandSearch;
 PluginProcess::PluginProcess(QObject *parent)
     : QObject(parent)
 {
+    qCDebug(logDaemon) << "PluginProcess constructor - Created plugin process manager";
     qRegisterMetaType<QProcess::ProcessState>();
 }
 
 PluginProcess::~PluginProcess()
 {
+    qCDebug(logDaemon) << "PluginProcess destructor - Cleaning up plugin process manager";
     clear();
 }
 
@@ -63,8 +65,10 @@ bool PluginProcess::addProgram(const QString &name, const QString &path)
 void PluginProcess::setWatched(const QString &name, bool watch)
 {
     if (watch) {
+        qCDebug(logDaemon) << "Setting plugin to be watched:" << name;
         m_watch.insert(name, watch);
     } else {
+        qCDebug(logDaemon) << "Removing plugin from watch list:" << name;
         m_watch.remove(name);
     }
 }

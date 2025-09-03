@@ -18,6 +18,7 @@ using namespace GrandSearch;
 FileNameSearcher::FileNameSearcher(QObject *parent)
     : Searcher(parent)
 {
+    qCDebug(logDaemon) << "FileNameSearcher constructor";
 }
 
 QString FileNameSearcher::name() const
@@ -27,16 +28,19 @@ QString FileNameSearcher::name() const
 
 bool FileNameSearcher::isActive() const
 {
+    qCDebug(logDaemon) << "FileNameSearcher activity check - Always active: true";
     return true;
 }
 
 bool FileNameSearcher::activate()
 {
+    qCDebug(logDaemon) << "FileNameSearcher activate called - Not supported for this searcher type";
     return false;
 }
 
 ProxyWorker *FileNameSearcher::createWorker() const
 {
+    qCDebug(logDaemon) << "Creating FileNameWorker";
     auto worker = new FileNameWorker(name());
     return worker;
 }

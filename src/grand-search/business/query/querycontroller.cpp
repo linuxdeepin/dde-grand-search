@@ -21,6 +21,8 @@ static const uint KeepAliveTime = 15000;   // 搜索过程中，调用后端心�
 QueryControllerPrivate::QueryControllerPrivate(QueryController *parent)
     : q_p(parent)
 {
+    qCDebug(logGrandSearch) << "Initializing QueryControllerPrivate - Keep alive interval:" << KeepAliveTime << "ms";
+
     m_keepAliveTimer = new QTimer(this);
     m_keepAliveTimer->setInterval(KeepAliveTime);
 
@@ -32,14 +34,18 @@ QueryControllerPrivate::QueryControllerPrivate(QueryController *parent)
     m_daemonDbus = new DaemonGrandSearchInterface(this);
 
     // 前端启动时，通知后端停止可能的已有搜索任务，同时通过DBus调用保证后端已经启动
+    qCDebug(logGrandSearch) << "Terminating any existing search tasks at startup";
     m_daemonDbus->Terminate();
 
     connect(m_keepAliveTimer, &QTimer::timeout, this, &QueryControllerPrivate::keepAlive);
     connect(m_debounceTimer, &QTimer::timeout, this, &QueryControllerPrivate::performSearch);
+
+    qCInfo(logGrandSearch) << "QueryController initialized successfully";
 }
 
 void QueryControllerPrivate::keepAlive()
 {
+    qCDebug(logGrandSearch) << "Sending keep-alive for mission:" << m_missionId;
     m_daemonDbus->KeepAlive(m_missionId);
 }
 
@@ -82,10 +88,12 @@ void QueryControllerPrivate::performSearch()
 QueryController::QueryController(QObject *parent)
     : QObject(parent), d_p(new QueryControllerPrivate(this))
 {
+    qCDebug(logGrandSearch) << "QueryController created";
 }
 
 QueryController::~QueryController()
 {
+    qCDebug(logGrandSearch) << "Destroying QueryController";
 }
 
 void QueryController::onSearchTextChanged(const QString &txt)
@@ -138,8 +146,10 @@ void QueryController::onSearchTextChanged(const QString &txt)
 
 void QueryController::onTerminateSearch()
 {
-    if (d_p->m_missionId.isEmpty())
+    if (d_p->m_missionId.isEmpty()) {
+        qCDebug(logGrandSearch) << "Terminate search called with no active mission";
         return;
+    }
 
     qCDebug(logGrandSearch) << "Terminating search - Mission:" << d_p->m_missionId;
     d_p->m_daemonDbus->Terminate();

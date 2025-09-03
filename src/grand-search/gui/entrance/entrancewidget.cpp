@@ -56,6 +56,7 @@ void EntranceWidgetPrivate::delayChangeText()
 {
     Q_ASSERT(m_delayChangeTimer);
 
+    qCDebug(logGrandSearch) << "Search text input changed - Starting delay timer";
     m_delayChangeTimer->start();
 }
 
@@ -64,7 +65,8 @@ void EntranceWidgetPrivate::notifyTextChanged()
     Q_ASSERT(m_searchEdit);
 
     const QString &currentSearchText = m_searchEdit->text().trimmed();
-    qCDebug(logGrandSearch) << "Search text changed:" << currentSearchText;
+    qCDebug(logGrandSearch) << "Search text changed - Text:" << currentSearchText
+                            << "Length:" << currentSearchText.length();
     emit q_p->searchTextChanged(currentSearchText);
 
     // 搜索内容改变后，清空图标显示
@@ -76,6 +78,7 @@ void EntranceWidgetPrivate::showMenu(const QPoint &pos)
 {
     Q_ASSERT(m_lineEdit);
 
+    qCDebug(logGrandSearch) << "Showing context menu - Position:" << pos;
     QMenu *menu = new QMenu;
     QAction *action = nullptr;
 
@@ -98,12 +101,15 @@ void EntranceWidgetPrivate::showMenu(const QPoint &pos)
 EntranceWidget::EntranceWidget(QWidget *parent)
     : QFrame(parent), d_p(new EntranceWidgetPrivate(this))
 {
+    qCDebug(logGrandSearch) << "Creating EntranceWidget";
     initUI();
     initConnections();
+    qCDebug(logGrandSearch) << "EntranceWidget created successfully";
 }
 
 EntranceWidget::~EntranceWidget()
 {
+    qCDebug(logGrandSearch) << "Destroying EntranceWidget";
 }
 
 void EntranceWidget::showLabelAppIcon(bool visible)
@@ -113,6 +119,8 @@ void EntranceWidget::showLabelAppIcon(bool visible)
     Q_ASSERT(d_p->m_appIconAction);
     if (visible == d_p->m_appIconLabel->isVisible())
         return;
+
+    qCDebug(logGrandSearch) << "App icon visibility changed - Visible:" << visible;
     d_p->m_appIconAction->setVisible(visible);
     d_p->m_appIconLabel->setVisible(visible);
     d_p->m_lineEdit->update();
@@ -143,20 +151,24 @@ bool EntranceWidget::eventFilter(QObject *watched, QEvent *event)
             qCDebug(logGrandSearch) << "Key press event:" << key;
             switch (key) {
             case Qt::Key_Up: {
+                qCDebug(logGrandSearch) << "Navigation key pressed - Selecting previous item";
                 emit sigSelectPreviousItem();
                 return true;
             }
             case Qt::Key_Tab:
             case Qt::Key_Down: {
+                qCDebug(logGrandSearch) << "Navigation key pressed - Selecting next item";
                 emit sigSelectNextItem();
                 return true;
             }
             case Qt::Key_Return:
             case Qt::Key_Enter: {
+                qCDebug(logGrandSearch) << "Enter key pressed - Handling selected item";
                 emit sigHandleItem();
                 return true;
             }
             case Qt::Key_Escape: {
+                qCDebug(logGrandSearch) << "Escape key pressed - Closing window";
                 emit sigCloseWindow();
                 return true;
             }
@@ -273,6 +285,8 @@ void EntranceWidget::onAppIconChanged(const QString &searchGroupName, const Matc
         return;
 
     d_p->m_appIconName = appIconName;
+
+    qCDebug(logGrandSearch) << "Updating app icon:" << appIconName;
 
     // 更新应用图标
     const int size = LabelIconSize;

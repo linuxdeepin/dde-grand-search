@@ -16,6 +16,9 @@
 #include <QClipboard>
 #include <QToolButton>
 #include <QPainter>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 #define ICON_SIZE               96
 #define HOR_MARGIN_SIZE         10
@@ -104,11 +107,13 @@ GeneralPreviewPlugin::GeneralPreviewPlugin(QObject *parent)
     , PreviewPlugin()
     , d_p(new GeneralPreviewPluginPrivate(this))
 {
-
+    qCDebug(logGrandSearch) << "Creating GeneralPreviewPlugin";
 }
 
 GeneralPreviewPlugin::~GeneralPreviewPlugin()
 {
+    qCDebug(logGrandSearch) << "Destroying GeneralPreviewPlugin";
+
     if (d_p->m_sizeWorker) {
         d_p->m_sizeWorker->stop();
         d_p->m_sizeWorker->wait();
@@ -130,11 +135,16 @@ bool GeneralPreviewPlugin::previewItem(const ItemInfo &info)
     item.type = info[PREVIEW_ITEMINFO_TYPE];
     item.searcher = info[PREVIEW_ITEMINFO_SEARCHER];
 
+    qCDebug(logGrandSearch) << "General preview item - Name:" << item.name
+                            << "Type:" << item.type;
+
     if (!item.item.isEmpty()
             && !item.name.isEmpty()
             && d_p->m_item.item == item.item
-            && d_p->m_item.name == item.name)
+            && d_p->m_item.name == item.name) {
+        qCDebug(logGrandSearch) << "Item already previewed - skipping";
         return true;
+    }
 
     d_p->m_item = item;
 

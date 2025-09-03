@@ -297,3 +297,10 @@ install(FILES contacts/services/com.deepin.dde.GrandSearch.xml DESTINATION ${CMA
 # setting
 install(FILES contacts/services/com.deepin.dde.GrandSearchSetting.service DESTINATION ${CMAKE_INSTALL_DATADIR}/dbus-1/services)
 install(FILES contacts/services/com.deepin.dde.GrandSearchSetting.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/dbus-1/interfaces)
+
+# manual
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/assets/manual/dde-grand-search
+    DESTINATION share/deepin-manual/manual-assets/application)
+
+# desktop
+install(FILES dde-grand-search.desktop DESTINATION share/applications)

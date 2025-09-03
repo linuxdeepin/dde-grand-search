@@ -12,6 +12,9 @@
 #endif
 
 #include <QPainter>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 #define ICONLABELSIZE   36
 
@@ -22,13 +25,14 @@ using namespace GrandSearch;
 SwitchWidget::SwitchWidget(const QString &title, QWidget *parent)
     : SwitchWidget(parent, new QLabel(title, parent))
 {
-
+    qCDebug(logGrandSearch) << "Creating SwitchWidget with title:" << title;
 }
 
 SwitchWidget::SwitchWidget(QWidget *parent, QWidget *leftWidget)
     : RoundedBackground (parent)
     , m_leftWidget(leftWidget)
 {
+    qCDebug(logGrandSearch) << "Creating SwitchWidget with custom left widget";
 
     m_iconLabel = new QLabel(this);
     m_iconLabel->setFixedSize(ICONLABELSIZE, ICONLABELSIZE);
@@ -54,10 +58,13 @@ SwitchWidget::SwitchWidget(QWidget *parent, QWidget *leftWidget)
 
     setTopRound(true);
     setBottomRound(true);
+    qCDebug(logGrandSearch) << "SwitchWidget created successfully";
 }
 
 void SwitchWidget::setChecked(const bool checked)
 {
+    qCDebug(logGrandSearch) << "Setting switch state - Title:" << title()
+                            << "Checked:" << checked;
     m_switchBtn->blockSignals(true);
     m_switchBtn->setChecked(checked);
     m_switchBtn->blockSignals(false);
@@ -72,9 +79,12 @@ void SwitchWidget::setTitle(const QString &title)
 {
     QLabel *label = qobject_cast<QLabel *>(m_leftWidget);
     if (label) {
+        qCDebug(logGrandSearch) << "Setting switch title - Title:" << title;
         label->setText(title);
         label->setWordWrap(true);
         label->adjustSize();
+    } else {
+        qCWarning(logGrandSearch) << "Failed to set title - Left widget is not a QLabel";
     }
 }
 
@@ -90,11 +100,13 @@ QString SwitchWidget::title() const
 
 void SwitchWidget::setIconEnable(bool e)
 {
+    qCDebug(logGrandSearch) << "Setting icon visibility - Enabled:" << e;
     m_iconLabel->setVisible(e);
 }
 
 void SwitchWidget::setIcon(const QIcon &icon, const QSize &size)
 {
+    qCDebug(logGrandSearch) << "Setting switch icon - Size:" << size;
     m_iconLabel->setPixmap(icon.pixmap(size));
 
     update();

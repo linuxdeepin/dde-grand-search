@@ -17,14 +17,19 @@ TaskCommanderPrivate::TaskCommanderPrivate(TaskCommander *parent)
     : QObject(parent),
       q(parent)
 {
+    qCDebug(logDaemon) << "TaskCommanderPrivate constructor";
 }
 
 TaskCommanderPrivate::~TaskCommanderPrivate()
 {
+    qCDebug(logDaemon) << "TaskCommanderPrivate destructor - Task ID:" << m_id;
 }
 
 void TaskCommanderPrivate::merge(MatchedItemMap &addTo, const MatchedItemMap &addFrom)
 {
+    qCDebug(logDaemon) << "Merging results - Target groups:" << addTo.size()
+                       << "Source groups:" << addFrom.size();
+
     for (auto iter = addFrom.begin(); iter != addFrom.end(); ++iter) {
         MatchedItemMap::iterator org = addTo.find(iter.key());
         if (org == addTo.end()) {
@@ -38,12 +43,18 @@ void TaskCommanderPrivate::merge(MatchedItemMap &addTo, const MatchedItemMap &ad
 void TaskCommanderPrivate::working(ProxyWorker *worker)
 {
     Q_ASSERT(worker);
+    qCDebug(logDaemon) << "Starting sync worker execution";
     worker->working(nullptr);
+    qCDebug(logDaemon) << "Sync worker execution completed";
 }
 
 void TaskCommanderPrivate::onUnearthed(ProxyWorker *worker)
 {
     Q_ASSERT(worker);
+
+    qCDebug(logDaemon) << "Worker results unearthed - Worker:" << worker
+                       << "Has items:" << worker->hasItem();
+
     auto isEmpty = [](const MatchedItemMap &map) {
         for (const MatchedItems &it : map.values()) {
             if (!it.isEmpty())
@@ -54,6 +65,8 @@ void TaskCommanderPrivate::onUnearthed(ProxyWorker *worker)
 
     if (m_allWorkers.contains(worker) && worker->hasItem()) {
         auto results = worker->takeAll();
+        qCDebug(logDaemon) << "Taking results from worker - Result groups:" << results.size();
+
         QWriteLocker lk(&m_lock);
         // check buffer has real item.
         bool emptyBuffer = isEmpty(m_buffer);
@@ -63,8 +76,10 @@ void TaskCommanderPrivate::onUnearthed(ProxyWorker *worker)
 
         bool emptyBuffer2 = isEmpty(m_buffer);
         // 回到主线程发送信号
-        if (emptyBuffer && !emptyBuffer2)
+        if (emptyBuffer && !emptyBuffer2) {
+            qCDebug(logDaemon) << "Buffer transitioned from empty to non-empty, emitting matched signal";
             QMetaObject::invokeMethod(q, "matched", Qt::QueuedConnection);
+        }
     }
 }
 
@@ -75,10 +90,12 @@ void TaskCommanderPrivate::onFinished()
     // 工作线程退出，若之前调用了deleteSelf那么在这里执行释放，否则发送结束信号
     if (m_asyncLine.isFinished() && m_syncLine.isFinished()) {
         if (m_deleted) {
+            qCDebug(logDaemon) << "Task marked for deletion, deleting now - ID:" << m_id;
             q->deleteLater();
             disconnect(q, nullptr, nullptr, nullptr);
         } else if (m_workingWorkers.isEmpty() && !m_finished) {
             m_finished = true;
+            qCDebug(logDaemon) << "All workers completed, task finished - ID:" << m_id;
             emit q->finished();
         }
     }
@@ -88,10 +105,16 @@ void TaskCommanderPrivate::onWorkFinished(ProxyWorker *worker)
 {
     // 检查
     ProxyWorker *send = dynamic_cast<ProxyWorker *>(sender());
-    if (worker == nullptr || send != worker)
+    if (worker == nullptr || send != worker) {
+        qCWarning(logDaemon) << "Invalid worker finish notification - Expected:" << worker
+                             << "Actual sender:" << send;
         return;
+    }
 
+    qCDebug(logDaemon) << "Worker finished - Removing from working list";
     m_workingWorkers.removeOne(worker);
+    qCDebug(logDaemon) << "Remaining working workers:" << m_workingWorkers.size();
+
     onFinished();
 }
 
@@ -101,11 +124,14 @@ TaskCommander::TaskCommander(const QString &content, QObject *parent)
 {
     d->m_id = QString::number(QDateTime::currentMSecsSinceEpoch());
     d->m_content = content;
+
+    qCDebug(logDaemon) << "TaskCommander created - ID:" << d->m_id
+                       << "Content length:" << content.size();
 }
 
 TaskCommander::~TaskCommander()
 {
-    qCDebug(logDaemon) << "Task deleted - ID:" << d->m_id;
+    qCDebug(logDaemon) << "TaskCommander destructor - ID:" << d->m_id;
 }
 
 QString TaskCommander::taskID() const
@@ -120,27 +146,37 @@ QString TaskCommander::content() const
 
 void TaskCommander::setContent(const QString &content)
 {
+    qCDebug(logDaemon) << "Task content updated - ID:" << d->m_id
+                       << "Old length:" << d->m_content.size()
+                       << "New length:" << content.size();
     d->m_content = content;
 }
 
 bool TaskCommander::start()
 {
-    qCDebug(logDaemon) << "Starting task - ID:" << this->taskID()
-                       << "Working:" << d->m_working
+    qCInfo(logDaemon) << "Starting task - ID:" << this->taskID()
+                      << "Already working:" << d->m_working
                        << "Async workers:" << d->m_asyncWorkers.size()
                        << "Sync workers:" << d->m_syncWorkers.size();
-    if (d->m_working)
+
+    if (d->m_working) {
+        qCWarning(logDaemon) << "Task already running - ID:" << this->taskID();
         return false;
+    }
 
     d->m_working = true;
     bool isOn = false;
     // 所有异步搜索项在一个线程中依次执行
     if (!d->m_asyncWorkers.isEmpty()) {
+        qCDebug(logDaemon) << "Starting async workers execution - Count:" << d->m_asyncWorkers.size();
+
         d->m_asyncLine.setFuture(QtConcurrent::run([this]() {
             QString taskID = d->m_id;
             for (auto worker : d->m_asyncWorkers) {
-                if (!d->m_working)
+                if (!d->m_working) {
+                    qCDebug(logDaemon) << "Task stopped during async execution - Task ID:" << taskID;
                     return;
+                }
 
                 if (worker->working(&taskID)) {
                     // 在主线程处理搜索结束
@@ -155,6 +191,8 @@ bool TaskCommander::start()
 
     // 所有同步搜索项在线程池中执行
     if (!d->m_syncWorkers.isEmpty()) {
+        qCDebug(logDaemon) << "Starting sync workers execution - Count:" << d->m_syncWorkers.size();
+
         d->m_syncLine.setFuture(QtConcurrent::map(d->m_syncWorkers, TaskCommanderPrivate::working));
         connect(&d->m_syncLine, &QFutureWatcherBase::finished, d, &TaskCommanderPrivate::onFinished);
         isOn = true;
@@ -211,30 +249,42 @@ bool TaskCommander::join(ProxyWorker *worker)
 {
     // 已经开启任务不允许添加搜索项
     if (d->m_working) {
-        qCDebug(logDaemon) << "Cannot join worker - Task already running - ID:" << this->taskID();
+        qCWarning(logDaemon) << "Cannot join worker - Task already running - ID:" << this->taskID();
         return false;
     }
 
     Q_ASSERT(worker);
+
+    qCDebug(logDaemon) << "Joining worker to task - ID:" << this->taskID()
+                       << "Worker async:" << worker->isAsync();
+
     worker->setParent(d);
     worker->setContext(d->m_content);
     d->m_allWorkers.append(worker);
 
-    if (worker->isAsync())
+    if (worker->isAsync()) {
         d->m_asyncWorkers.append(worker);
-    else
+        qCDebug(logDaemon) << "Worker added to async list - Total async workers:" << d->m_asyncWorkers.size();
+    } else {
         d->m_syncWorkers.append(worker);
-
-    qCDebug(logDaemon) << "Worker joined - Task ID:" << this->taskID()
-                       << "Type:" << (worker->isAsync() ? "Async" : "Sync");
+        qCDebug(logDaemon) << "Worker added to sync list - Total sync workers:" << d->m_syncWorkers.size();
+    }
 
     // 直连，在线程处理
     connect(worker, &ProxyWorker::unearthed, d, &TaskCommanderPrivate::onUnearthed, Qt::DirectConnection);
+
+    qCDebug(logDaemon) << "Worker joined successfully - Task ID:" << this->taskID()
+                       << "Total workers:" << d->m_allWorkers.size();
+
     return true;
 }
 
 void TaskCommander::deleteSelf()
 {
+    qCDebug(logDaemon) << "Deletion requested - ID:" << this->taskID()
+                       << "Async finished:" << d->m_asyncLine.isFinished()
+                       << "Sync finished:" << d->m_syncLine.isFinished();
+
     // 工作线程未完全退出时不执行释放，待退出后再释放
     if (d->m_asyncLine.isFinished() && d->m_syncLine.isFinished()) {
         qCDebug(logDaemon) << "Deleting task immediately - ID:" << this->taskID();

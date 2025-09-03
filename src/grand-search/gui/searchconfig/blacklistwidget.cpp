@@ -27,6 +27,8 @@ using namespace GrandSearch;
 BlackListWidget::BlackListWidget(QWidget *parent)
     : DWidget(parent)
 {
+    qCDebug(logGrandSearch) << "Creating BlackListWidget";
+
     m_groupLabel = new QLabel(tr("Excluded path"), this);
     m_groupLabel->adjustSize();
 
@@ -64,19 +66,25 @@ BlackListWidget::BlackListWidget(QWidget *parent)
     connect(m_addButton, &DIconButton::clicked, this, &BlackListWidget::addButtonClicked);
     connect(m_deleteButton, &DIconButton::clicked, this, &BlackListWidget::deleteButtonClicked);
     connect(m_listWrapper, &BlackListWrapper::selectedChanged, this, &BlackListWidget::selectedChanged);
+
+    qCDebug(logGrandSearch) << "BlackListWidget created successfully";
 }
 
 BlackListWidget::~BlackListWidget()
 {
+    qCDebug(logGrandSearch) << "Destroying BlackListWidget";
 }
 
 void BlackListWidget::addButtonClicked()
 {
+    qCDebug(logGrandSearch) << "Adding path to blacklist";
+
     QFileDialog fileDialog;
     auto url = fileDialog.getExistingDirectoryUrl(this, QString(""), QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first());
     QFileInfo info(url.toLocalFile());
     m_listWrapper->clearSelection();
     if (!url.isEmpty() && !info.isSymLink() && info.exists()) {
+        qCDebug(logGrandSearch) << "Added path to blacklist:" << info.absoluteFilePath();
         m_listWrapper->addRow(info.absoluteFilePath());
     } else {
         qCWarning(logGrandSearch) << "Failed to add path to blacklist - Path:" << url.toLocalFile()
@@ -87,6 +95,8 @@ void BlackListWidget::addButtonClicked()
 
 void BlackListWidget::deleteButtonClicked()
 {
+    qCDebug(logGrandSearch) << "Deleting paths from blacklist";
+
     DeleteDialog dlg(this);
     if (dlg.exec() == QDialog::Accepted) {
         auto selectedRows = m_listWrapper->selectionModel()->selectedRows();
@@ -99,6 +109,7 @@ void BlackListWidget::deleteButtonClicked()
 #else
         std::stable_sort(rowList.begin(), rowList.end(), std::greater<int>());
 #endif
+        qCDebug(logGrandSearch) << "Removed" << rowList.size() << "paths from blacklist";
         for (auto index : rowList) {
             m_listWrapper->removeRows(index, 1);
         }

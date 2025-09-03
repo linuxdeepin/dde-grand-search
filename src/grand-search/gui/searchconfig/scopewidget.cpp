@@ -18,6 +18,9 @@
 #include <QDir>
 #include <QSettings>
 #include <QVBoxLayout>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
@@ -25,6 +28,8 @@ using namespace GrandSearch;
 ScopeWidget::ScopeWidget(QWidget *parent)
     : DWidget(parent)
 {
+    qCDebug(logGrandSearch) << "Creating ScopeWidget";
+
     m_groupLabel = new QLabel(tr("Search contents"), this);
     DFontSizeManager::instance()->bind(m_groupLabel, DFontSizeManager::T5, QFont::Bold);
 
@@ -82,6 +87,8 @@ ScopeWidget::ScopeWidget(QWidget *parent)
     updateIcons();
 
     connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &ScopeWidget::updateIcons);
+
+    qCDebug(logGrandSearch) << "ScopeWidget created with" << m_switchWidgets.size() << "search groups";
 }
 
 ScopeWidget::~ScopeWidget()
@@ -96,6 +103,8 @@ void ScopeWidget::onSwitchStateChanged(const bool checked)
 
     if (switchWidget) {
         QString group = switchWidget->property(GRANDSEARCH_SEARCH_GROUP).toString();
+        qCDebug(logGrandSearch) << "Search group configuration changed - Group:" << group
+                                << "Enabled:" << checked;
         SearchConfig::instance()->setConfig(GRANDSEARCH_SEARCH_GROUP, group, checked);
     }
 }

@@ -115,10 +115,13 @@ SearcherGroup::SearcherGroup(QObject *parent)
     : QObject(parent),
       d(new SearcherGroupPrivate(this))
 {
+    qCDebug(logDaemon) << "SearcherGroup constructor - Initializing searcher group";
 }
 
 bool SearcherGroup::init()
 {
+    qCInfo(logDaemon) << "SearcherGroup initialization started";
+
     // 初始化内置搜索项
     d->initBuiltin();
 
@@ -134,6 +137,7 @@ bool SearcherGroup::init()
     // 启动高优先级插件
     d->m_pluginManager->autoActivate();
 
+    qCInfo(logDaemon) << "SearcherGroup initialization completed successfully";
     return true;
 }
 
@@ -150,14 +154,18 @@ Searcher *SearcherGroup::searcher(const QString &name) const
         return s->name() == name;
     });
 
-    if (iter != allSearcher.end())
+    if (iter != allSearcher.end()) {
         return *iter;
-    else
+    } else {
+        qCDebug(logDaemon) << "Searcher not found:" << name;
         return nullptr;
+}
 }
 
 void SearcherGroup::dormancy()
 {
+    qCDebug(logDaemon) << "Entering dormancy mode";
+
     if (d->m_pluginManager) {
         QList<SearchPluginInfo> plugins = d->m_pluginManager->plugins();
         for (const SearchPluginInfo &plugin : plugins) {
@@ -168,5 +176,7 @@ void SearcherGroup::dormancy()
                 d->m_pluginManager->inactivate(plugin.name);
             }
         }
+    } else {
+        qCWarning(logDaemon) << "Plugin manager not available for dormancy";
     }
 }

@@ -26,25 +26,34 @@
 #include <QScrollBar>
 #include <QToolButton>
 #include <QClipboard>
+#include <QLoggingCategory>
 
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
 
 #define CONTENT_WIDTH           372
 
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
+
 PreviewWidget::PreviewWidget(QWidget *parent)
     : DWidget(parent)
     , m_proxy(new PluginProxy(this))
 {
+    qCDebug(logGrandSearch) << "Creating PreviewWidget";
+
     m_generalPreview = QSharedPointer<PreviewPlugin>(new GeneralPreviewPlugin());
     m_generalPreview->init(m_proxy);
 
     initUi();
     initConnect();
+
+    qCDebug(logGrandSearch) << "PreviewWidget created successfully";
 }
 
 PreviewWidget::~PreviewWidget()
 {
+    qCDebug(logGrandSearch) << "Destroying PreviewWidget";
+
     // 解除当前预览插件界面与预览主界面父子窗口关系，所有预览插件界面统一由插件管理类析构函数释放
     clearLayoutWidgets();
     if (m_vSpaceItem) {
@@ -55,14 +64,19 @@ PreviewWidget::~PreviewWidget()
 
 bool PreviewWidget::previewItem(const MatchedItem &item)
 {
+    qCDebug(logGrandSearch) << "Previewing item:" << item.name << "Type:" << item.type;
+
     m_item = item;
 
     QSharedPointer<PreviewPlugin> preview = QSharedPointer<PreviewPlugin>(m_pluginManager.getPreviewPlugin(item));
 
-    if (!preview)
+    if (!preview) {
+        qCDebug(logGrandSearch) << "Using general preview plugin";
         preview = m_generalPreview;
-    else
+    } else {
+        qCDebug(logGrandSearch) << "Using specific preview plugin";
         preview->init(m_proxy);
+    }
 
     // 插件界面根据新来搜索结果刷新预览内容
     ItemInfo itemInfo;
@@ -75,6 +89,7 @@ bool PreviewWidget::previewItem(const MatchedItem &item)
 
     // 插件有变更， 更换新插件界面内容到主界面布局中
     if (preview != m_preview) {
+        qCDebug(logGrandSearch) << "Switching preview plugin";
 
         // 清空主界面布局中原有预览插件界面内容
         clearLayoutWidgets();
@@ -162,6 +177,8 @@ void PreviewWidget::initConnect()
 
 void PreviewWidget::clearLayoutWidgets()
 {
+    qCDebug(logGrandSearch) << "Clearing preview layout widgets";
+
     if (m_preview) {
         m_preview->stopPreview();
         if (m_preview->contentWidget()) {
@@ -197,16 +214,19 @@ void PreviewWidget::clearLayoutWidgets()
 
 void PreviewWidget::onOpenClicked()
 {
+    qCDebug(logGrandSearch) << "Preview open clicked:" << m_item.name;
     Utils::openMatchedItem(m_item);
 }
 
 void PreviewWidget::onOpenpathClicked()
 {
+    qCDebug(logGrandSearch) << "Preview open path clicked:" << m_item.item;
     Utils::openInFileManager(m_item);
 }
 
 void PreviewWidget::onCopypathClicked()
 {
+    qCDebug(logGrandSearch) << "Preview copy path clicked:" << m_item.item;
     QClipboard *clipboard = QGuiApplication::clipboard();
     clipboard->setText(m_item.item);
 }
