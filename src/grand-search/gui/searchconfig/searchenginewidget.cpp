@@ -16,6 +16,9 @@
 #include <DLineEdit>
 
 #include <QByteArray>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 #define Margin  10
 
@@ -34,6 +37,8 @@ static const QHash<int, QString> searchEngineChinese{{0, GRANDSEARCH_WEB_SEARCHE
 SearchEngineWidget::SearchEngineWidget(QWidget *parent)
     :DWidget(parent)
 {
+    qCDebug(logGrandSearch) << "Creating SearchEngineWidget";
+
     m_groupLabel = new QLabel(tr("Default search engine"), this);
     m_groupLabel->adjustSize();
 
@@ -103,6 +108,8 @@ SearchEngineWidget::SearchEngineWidget(QWidget *parent)
 
     connect(m_comboboxWidget, &ComboboxWidget::checkedChanged, this, &SearchEngineWidget::checkedChangedIndex);
     connect(m_lineEdit, &DLineEdit::textChanged, this, &SearchEngineWidget::setCustomSearchEngineAddress);
+
+    qCDebug(logGrandSearch) << "SearchEngineWidget created with default engine:" << userChoice;
 }
 
 SearchEngineWidget::~SearchEngineWidget()
@@ -122,6 +129,8 @@ void SearchEngineWidget::checkedChangedIndex(int index)
         } else {
             text = searchEngineEnglish.value(index);
         }
+
+        qCDebug(logGrandSearch) << "Search engine changed to:" << text << "Index:" << index;
         SearchConfig::instance()->setConfig(GRANDSEARCH_WEB_GROUP, GRANDSEARCH_WEB_SEARCHENGINE, text);
 
         if (text == GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM) {

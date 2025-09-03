@@ -79,10 +79,13 @@ PluginManager::PluginManager(QObject *parent)
     : QObject(parent),
       d(new PluginManagerPrivate(this))
 {
+    qCDebug(logDaemon) << "PluginManager constructor - Created plugin manager";
 }
 
 bool PluginManager::loadPlugin()
 {
+    qCDebug(logDaemon) << "Starting plugin loading process";
+
     // 初始化数据协议
     DataConvertor::instance()->initConvetor();
 
@@ -92,6 +95,7 @@ bool PluginManager::loadPlugin()
     // 加入进程管理
     d->prepareProcess();
 
+    qCDebug(logDaemon) << "Plugin loading process completed - Success:" << ret;
     return ret;
 }
 
@@ -129,6 +133,7 @@ bool PluginManager::activatePlugin(const QString &name)
 void PluginManager::inactivate(const QString &name)
 {
     Q_ASSERT(d->m_process);
+    qCDebug(logDaemon) << "Inactivating plugin:" << name;
     d->m_process->terminate(name);
     return;
 }

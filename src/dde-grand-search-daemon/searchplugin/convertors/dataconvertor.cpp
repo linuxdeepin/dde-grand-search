@@ -5,6 +5,10 @@
 #include "dataconvertor.h"
 #include "convertorv1_0.h"
 
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logDaemon)
+
 using namespace GrandSearch;
 
 class DataConvertorGlobal : public DataConvertor {};
@@ -17,14 +21,19 @@ DataConvertor *DataConvertor::instance()
 
 void DataConvertor::initConvetor()
 {
-    if (m_inited)
+    if (m_inited) {
+        qCDebug(logDaemon) << "DataConvertor already initialized";
         return;
+    }
+
+    qCDebug(logDaemon) << "Initializing data convertor";
     m_inited = true;
 
     //注册1.0版本
     {
         ConvertorV1_0 v1;
         regist(v1.version(), &ConvertorV1_0::create);
+        qCDebug(logDaemon) << "Registered convertor version:" << v1.version();
     }
 }
 
@@ -36,8 +45,12 @@ bool DataConvertor::isSupported(const QString &ver)
 
 int DataConvertor::convert(const QString &version, const QString &type, void *in, void *out)
 {
-    if (version.isEmpty() || type.isEmpty() || in == nullptr || out == nullptr)
+    if (version.isEmpty() || type.isEmpty() || in == nullptr || out == nullptr) {
+        qCWarning(logDaemon) << "Invalid conversion parameters - Version:" << version
+                             << "Type:" << type << "Input:" << (in != nullptr)
+                             << "Output:" << (out != nullptr);
         return -1;
+    }
 
     QReadLocker lk(&m_rwLock);
     if (auto creator = m_convertors.value(version)) {
@@ -51,6 +64,8 @@ int DataConvertor::convert(const QString &version, const QString &type, void *in
 
             return (*func)(in, out);
         }
+    } else {
+        qCWarning(logDaemon) << "Unsupported convertor version:" << version;
     }
 
     return 1;

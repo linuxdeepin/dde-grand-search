@@ -23,14 +23,19 @@ using namespace DFMSEARCH;
 FullTextEnginePrivate::FullTextEnginePrivate(FullTextEngine *qq)
     : q(qq)
 {
+    qCDebug(logToolFullText) << "FullTextEnginePrivate created";
 }
 
 FullTextEnginePrivate::~FullTextEnginePrivate()
 {
+    qCDebug(logToolFullText) << "FullTextEnginePrivate destructor called";
+
     if (m_engineHolder) {
+        qCDebug(logToolFullText) << "Cleaning up dfm-search engine holder";
         delete m_engineHolder;
         m_engineHolder = nullptr;
         m_engine = nullptr;
+        qCDebug(logToolFullText) << "DFM-search engine cleanup completed";
     }
 }
 
@@ -41,30 +46,37 @@ bool FullTextEnginePrivate::isContentIndexAvailable() const
 
 QSet<QString> FullTextEnginePrivate::extractMatchedKeys(const QString &content, const QStringList &keywords) const
 {
+    qCDebug(logToolFullText) << "Extracting matched keys - Content length:" << content.length() << "Keywords:" << keywords.size();
     QSet<QString> matchedKeys;
 
     for (const QString &keyword : keywords) {
-        if (keyword.isEmpty())
+        if (keyword.isEmpty()) {
+            qCDebug(logToolFullText) << "Skipping empty keyword";
             continue;
+        }
 
         // Use case-insensitive matching to find keywords in content
         QRegularExpression regex(QRegularExpression::escape(keyword),
                                  QRegularExpression::CaseInsensitiveOption);
         if (regex.match(content).hasMatch()) {
             matchedKeys.insert(keyword);
+            qCDebug(logToolFullText) << "Keyword matched in content:" << keyword;
         }
     }
 
+    qCDebug(logToolFullText) << "Key extraction completed - Matched keys:" << matchedKeys.size() << "/" << keywords.size();
     return matchedKeys;
 }
 
 FullTextEngine::FullTextEngine(QObject *parent)
     : QObject(parent), d(new FullTextEnginePrivate(this))
 {
+    qCDebug(logToolFullText) << "FullTextEngine constructed";
 }
 
 FullTextEngine::~FullTextEngine()
 {
+    qCDebug(logToolFullText) << "FullTextEngine destructor called";
     delete d;
     d = nullptr;
 }
@@ -72,6 +84,7 @@ FullTextEngine::~FullTextEngine()
 bool FullTextEngine::init(const QString &cache)
 {
     Q_UNUSED(cache)   // dfm-search manages its own index, cache parameter not needed
+    qCDebug(logToolFullText) << "Initializing FullTextEngine - Cache parameter ignored (dfm-search manages its own index)";
 
     if (d->m_engine) {
         qCWarning(logToolFullText) << "Full text engine already initialized";
@@ -79,7 +92,7 @@ bool FullTextEngine::init(const QString &cache)
     }
 
     if (!d->isContentIndexAvailable()) {
-        qCWarning(logToolFullText) << "Content index is not available";
+        qCCritical(logToolFullText) << "Content index is not available - Cannot initialize full text engine";
         return false;
     }
 
@@ -142,7 +155,7 @@ void FullTextEngine::query(const QString &searchPath, const QStringList &keys, C
             QString filePath = result.path();
 
             if (!QFile::exists(filePath)) {
-                qCDebug(logToolFullText) << "File not found:" << filePath;
+                qCDebug(logToolFullText) << "File not found, skipping:" << filePath;
                 return true;   // Continue search
             }
 
@@ -176,6 +189,8 @@ void FullTextEngine::query(const QString &searchPath, const QStringList &keys, C
 
 QSet<QString> FullTextEngine::matchedKeys(void *ctx) const
 {
+    qCDebug(logToolFullText) << "Retrieving matched keys from context";
+
     if (!ctx) {
         qCDebug(logToolFullText) << "No context provided for matched keys";
         return {};

@@ -30,6 +30,7 @@ SemanticSearcher::SemanticSearcher(QObject *parent)
     : Searcher(parent),
       d(new SemanticSearcherPrivate(this))
 {
+    qCDebug(logDaemon) << "SemanticSearcher constructor";
 }
 
 SemanticSearcher::~SemanticSearcher()
@@ -75,6 +76,7 @@ bool SemanticSearcher::isActive() const
 
 bool SemanticSearcher::activate()
 {
+    qCDebug(logDaemon) << "SemanticSearcher activate called - Not supported for this searcher type";
     return false;
 }
 

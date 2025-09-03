@@ -21,6 +21,8 @@ using namespace GrandSearch;
 MatchControllerPrivate::MatchControllerPrivate(MatchController *parent)
     : q_p(parent)
 {
+    qCDebug(logGrandSearch) << "Initializing MatchControllerPrivate";
+
     m_daemonDbus = new DaemonGrandSearchInterface(this);
 
     m_enableBestMatch = SearchConfig::instance()->getConfig(GRANDSEARCH_CUSTOM_GROUP, GRANDSEARCH_CUSTOM_BESTMATCH, m_enableBestMatch).toBool();
@@ -40,12 +42,17 @@ void MatchControllerPrivate::initConnect()
 {
     connect(m_daemonDbus, &DaemonGrandSearchInterface::Matched, this, &MatchControllerPrivate::onMatched);
     connect(m_daemonDbus, &DaemonGrandSearchInterface::SearchCompleted, this, &MatchControllerPrivate::onSearchCompleted);
+
+    qCDebug(logGrandSearch) << "Match controller D-Bus connections established";
 }
 
 void MatchControllerPrivate::onMatched(const QString &missionId)
 {
-    if (missionId != m_missionId || m_missionId.isEmpty())
+    if (missionId != m_missionId || m_missionId.isEmpty()) {
+        qCDebug(logGrandSearch) << "Ignoring matched signal - Mission mismatch or empty - Current:" << m_missionId
+                                << "Received:" << missionId;
         return;
+    }
 
     // 获取数据解析
     qCDebug(logGrandSearch) << "Processing matched results for mission:" << missionId;
@@ -142,8 +149,10 @@ MatchController::~MatchController()
 
 void MatchController::onMissionChanged(const QString &missionId, const QString &missionContent)
 {
-    if (Q_UNLIKELY(missionId == d_p->m_missionId))
+    if (Q_UNLIKELY(missionId == d_p->m_missionId)) {
+        qCDebug(logGrandSearch) << "Mission ID unchanged, ignoring - ID:" << missionId;
         return;
+    }
 
     qCDebug(logGrandSearch) << "Mission changed - ID:" << missionId
                             << "Content:" << missionContent;
@@ -157,4 +166,6 @@ void MatchController::onMissionChanged(const QString &missionId, const QString &
     }
     d_p->m_waitTimer.reset(new QTimer);
     d_p->m_waitTimer->setSingleShot(true);
+
+    qCDebug(logGrandSearch) << "Mission setup completed - Ready for results";
 }

@@ -17,11 +17,12 @@ PDFPreviewPlugin::PDFPreviewPlugin(QObject *parent)
     : QObject (parent)
     , PreviewPlugin()
 {
-
+    qCDebug(logPdfPreview) << "PDFPreviewPlugin created";
 }
 
 PDFPreviewPlugin::~PDFPreviewPlugin()
 {
+    qCDebug(logPdfPreview) << "PDFPreviewPlugin destroyed";
     if (m_pdfView)
         m_pdfView->deleteLater();
 }
@@ -29,22 +30,32 @@ PDFPreviewPlugin::~PDFPreviewPlugin()
 void PDFPreviewPlugin::init(QObject *proxyInter)
 {
     Q_UNUSED(proxyInter)
+    qCDebug(logPdfPreview) << "PDFPreviewPlugin initialized";
 }
 
 bool PDFPreviewPlugin::previewItem(const ItemInfo &item)
 {
     const QString path = item.value(PREVIEW_ITEMINFO_ITEM);
-    if (path.isEmpty())
+    if (path.isEmpty()) {
+        qCWarning(logPdfPreview) << "PDF file path is empty - Cannot preview";
         return false;
+    }
+
+    qCDebug(logPdfPreview) << "Previewing PDF file - Path:" << path;
 
     QFileInfo fileInfo(path);
-    if (!fileInfo.isReadable())
+    if (!fileInfo.isReadable()) {
+        qCWarning(logPdfPreview) << "PDF file is not readable:" << path;
         return false;
+    }
 
-    if (!m_pdfView)
+    if (!m_pdfView) {
         m_pdfView = new PDFView(path);
+        qCDebug(logPdfPreview) << "PDFView created";
+    }
 
     m_item = item;
+    qCDebug(logPdfPreview) << "PDF preview completed successfully - Path:" << path;
     return true;
 }
 
@@ -60,6 +71,7 @@ QWidget *PDFPreviewPlugin::contentWidget() const
 
 bool PDFPreviewPlugin::stopPreview()
 {
+    qCDebug(logPdfPreview) << "Stopping PDF preview";
     return true;
 }
 

@@ -267,11 +267,14 @@ bool Utils::compareByWeight(const MatchedItem &node1, const MatchedItem &node2, 
  */
 void Utils::updateItemsWeight(MatchedItemMap &map, const QString &content)
 {
+    qCDebug(logGrandSearch) << "Updating item weights for search content:" << content;
+
     // 类目、后缀搜索时的关键字解析
     QStringList groupList, suffixList, keys;
     if (!searchHelper->parseKeyword(content, groupList, suffixList, keys))
         keys = QStringList() << content;
 
+    qCDebug(logGrandSearch) << "Parsed search keywords:" << keys;
     for (const QString &searchGroupName : map.keys()) {
         MatchedItems &list = map[searchGroupName];
         for (MatchedItem &item : list) {
@@ -670,14 +673,21 @@ bool Utils::isShowAppIcon(const MatchedItem &item)
 
 QString Utils::getFileMimetype(const QString &filePath)
 {
+    qCDebug(logGrandSearch) << "Getting MIME type for file:" << filePath;
+
     QString mimetype = getFileMimetypeByQt(filePath);
-    if (mimetype.isEmpty())
+    if (mimetype.isEmpty()) {
+        qCDebug(logGrandSearch) << "Qt MIME detection failed - Trying GIO method";
         mimetype = getFileMimetypeByGio(filePath);
+    }
 
     // 通过gio库和qt库都获取不到mimetype，则默认返回文本类型
-    if (mimetype.isEmpty())
+    if (mimetype.isEmpty()) {
+        qCDebug(logGrandSearch) << "All MIME detection methods failed - Using default text/plain";
         mimetype = "text/plain";
+    }
 
+    qCDebug(logGrandSearch) << "MIME type determined:" << mimetype;
     return mimetype;
 }
 
@@ -746,28 +756,39 @@ bool Utils::isResultFromBuiltSearch(const MatchedItem &item)
 
 bool Utils::openMatchedItem(const MatchedItem &item)
 {
+    qCDebug(logGrandSearch) << "Opening matched item - Searcher:" << item.searcher << "Item:" << item.item;
+
     if (Utils::isResetSearcher(item.searcher)) {
         QDateTime time = QDateTime::currentDateTime();
         qint64 timeT = time.toSecsSinceEpoch();
         AccessRecord::instance()->updateRecord(item, timeT);
+        qCDebug(logGrandSearch) << "Access record updated for item:" << item.item;
     }
+
     bool bFromBuiltSearch = isResultFromBuiltSearch(item);
     if (!bFromBuiltSearch) {
+        qCDebug(logGrandSearch) << "Item from extend search - Using extend search method";
         return openExtendSearchMatchedItem(item);
     }
 
-    if (item.item.isEmpty())
+    if (item.item.isEmpty()) {
+        qCWarning(logGrandSearch) << "Item path is empty - Cannot open";
         return false;
+    }
 
     bool result = false;
     if (item.searcher == GRANDSEARCH_CLASS_APP_DESKTOP) {   // 启动应用
+        qCDebug(logGrandSearch) << "Opening desktop application:" << item.item;
         result = Utils::launchApp(item.item);
     } else if (item.searcher == GRANDSEARCH_CLASS_WEB_STATICTEXT) {   // 跳转浏览器
+        qCDebug(logGrandSearch) << "Opening web search in browser:" << item.item;
         result = Utils::openWithBrowser(item.item);
     } else {   // 打开文件
+        qCDebug(logGrandSearch) << "Opening file:" << item.item;
         result = openFile(item);
     }
 
+    qCDebug(logGrandSearch) << "Matched item open operation completed - Result:" << result;
     return result;
 }
 
@@ -789,20 +810,30 @@ bool Utils::openInFileManager(const MatchedItem &item)
 
 bool Utils::openExtendSearchMatchedItem(const MatchedItem &item)
 {
+    qCDebug(logGrandSearch) << "Opening extend search item via DBus - Searcher:" << item.searcher << "Item:" << item.item;
+
     // 搜索结果来自扩展插件，使用Dbus通知主控调用扩展插件打开接口打开搜索结果
     DaemonGrandSearchInterface daemonDbus;
     auto reply = daemonDbus.OpenWithPlugin(item.searcher, item.item);
     reply.waitForFinished();
+    if (reply.isError()) {
+        qCWarning(logGrandSearch) << "Failed to open extend search item via DBus - Error:" << reply.error();
+        return false;
+    }
 
+    qCDebug(logGrandSearch) << "Extend search item opened successfully via DBus";
     return true;
 }
 
 bool Utils::openFile(const MatchedItem &item)
 {
     QString filePath = item.item;
-    if (filePath.isEmpty())
+    if (filePath.isEmpty()) {
+        qCWarning(logGrandSearch) << "File path is empty - Cannot open file";
         return false;
+    }
 
+    qCDebug(logGrandSearch) << "Opening file:" << filePath;
     bool result = false;
 
     // 获取mimetype
@@ -810,34 +841,46 @@ bool Utils::openFile(const MatchedItem &item)
     if (mimetype.isEmpty())
         mimetype = getFileMimetype(item.item);
 
+    qCDebug(logGrandSearch) << "File mimetype determined:" << mimetype;
+
     // fix bug98384 社区版在打开特殊字符名称的文件夹时，丢失路径导致打开主目录
     QString fileUrlString = QUrl::fromLocalFile(filePath).toString();
 
     // 获取对应默认打开应用
     QString defaultDesktopFile = getDefaultAppDesktopFileByMimeType(mimetype);
     if (defaultDesktopFile.isEmpty()) {
+        qCDebug(logGrandSearch) << "No default application found - Opening with file manager";
         result = QProcess::startDetached(QString("dde-file-manager"), { QString("-o"), fileUrlString });
         qCDebug(logGrandSearch) << "Opening file in file manager - Result:" << result;
     } else {
+        qCDebug(logGrandSearch) << "Opening file with default application:" << defaultDesktopFile;
         QStringList filePaths(fileUrlString);
         result = launchApp(defaultDesktopFile, filePaths);
     }
 
+    qCDebug(logGrandSearch) << "File open operation completed - Result:" << result;
     return result;
 }
 
 bool Utils::launchApp(const QString &desktopFile, const QStringList &filePaths)
 {
+    qCDebug(logGrandSearch) << "Launching application - Desktop file:" << desktopFile
+                            << "File paths count:" << filePaths.size();
+
     bool ok = launchAppByDBus(desktopFile, filePaths);
     if (!ok) {
+        qCDebug(logGrandSearch) << "DBus launch failed - Trying GIO method";
         ok = launchAppByGio(desktopFile, filePaths);
     }
 
+    qCDebug(logGrandSearch) << "Application launch completed - Result:" << ok;
     return ok;
 }
 
 bool Utils::launchAppByDBus(const QString &desktopFile, const QStringList &filePaths)
 {
+    qCDebug(logGrandSearch) << "Launching application via DBus - Desktop file:" << desktopFile;
+
     const auto &file = QFileInfo { desktopFile };
     constexpr auto kDesktopSuffix { u8"desktop" };
 
@@ -847,6 +890,8 @@ bool Utils::launchAppByDBus(const QString &desktopFile, const QStringList &fileP
     }
 
     auto ver = DSysInfo::majorVersion().toInt();
+    qCDebug(logGrandSearch) << "System version:" << ver;
+
     if (ver > 20) {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
         const QString AppManagerService = "org.desktopspec.ApplicationManager1";
@@ -869,6 +914,7 @@ bool Utils::launchAppByDBus(const QString &desktopFile, const QStringList &fileP
     }
 
     // V20 Use the SessionManager to launch app
+    qCDebug(logGrandSearch) << "Using SessionManager to launch application (V20 compatibility)";
     const QString SessionManagerService = "com.deepin.SessionManager";
     const QString StartManagerPath = "/com/deepin/StartManager";
     const QString StartManagerInterface = "com.deepin.StartManager";
@@ -890,11 +936,14 @@ bool Utils::launchAppByDBus(const QString &desktopFile, const QStringList &fileP
         return false;
     }
 
+    qCDebug(logGrandSearch) << "Application launched successfully via SessionManager";
     return true;
 }
 
 bool Utils::launchAppByGio(const QString &desktopFile, const QStringList &filePaths)
 {
+    qCDebug(logGrandSearch) << "Launching application via GIO - Desktop file:" << desktopFile;
+
     // 使用gio接口启动应用
     std::string stdDesktopFilePath = desktopFile.toStdString();
     const char *cDesktopPath = stdDesktopFilePath.data();
@@ -923,13 +972,18 @@ bool Utils::launchAppByGio(const QString &desktopFile, const QStringList &filePa
 
     if (!ok) {
         qCWarning(logGrandSearch) << "Application launch via GIO failed - File:" << desktopFile;
+    } else {
+        qCDebug(logGrandSearch) << "Application launched successfully via GIO";
     }
+
     g_object_unref(appInfo);
     g_list_free(g_files);
 
     for (auto filePath : filePaths) {
-        if (!filePath.isEmpty())
+        if (!filePath.isEmpty()) {
+            qCDebug(logGrandSearch) << "Opening file with gio:" << filePath;
             QProcess::startDetached("gio", QStringList() << "open" << filePath);
+        }
     }
 
     return ok;
@@ -937,8 +991,12 @@ bool Utils::launchAppByGio(const QString &desktopFile, const QStringList &filePa
 
 bool Utils::openWithBrowser(const QString &words)
 {
-    if (words.isEmpty())
+    if (words.isEmpty()) {
+        qCWarning(logGrandSearch) << "Empty URL provided - Cannot open browser";
         return false;
+    }
+
+    qCDebug(logGrandSearch) << "Opening URL in browser:" << words;
 
     // 获取默认浏览器
     QString defaultDesktopFile = defaultBrowser();
