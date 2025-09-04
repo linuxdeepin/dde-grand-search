@@ -1,3 +1,9 @@
+dde-grand-search (6.0.24) unstable; urgency=medium
+
+  * add pinyin acronym search support
+
+ -- Zhang Sheng <zhangsheng@uniontech.com>  Thu, 04 Sep 2025 19:01:32 +0800
+
 dde-grand-search (6.0.23) unstable; urgency=medium
 
   * Update version to 6.0.23. 
