@@ -29,26 +29,9 @@ DWIDGET_USE_NAMESPACE
 
 static QPixmap iconPixmap(const QString &fileName, const QSize &size, qreal ratio)
 {
-    QString iconPath = QString(":/icons/%1.dci").arg(fileName);
-    QPixmap pixmap;
-    DDciIcon dciIcon = DDciIcon::fromTheme(iconPath);
-    if (!dciIcon.isNull()) {
-        auto theme = DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType
-                ? DDciIcon::Light
-                : DDciIcon::Dark;
-        pixmap = dciIcon.pixmap(ratio, size.width(), theme);
-        qCDebug(logDock) << "Icon loaded from DCI theme - File:" << fileName << "Size:" << size << "Theme:" << (theme == DDciIcon::Light ? "Light" : "Dark");
-    } else {
-        iconPath = QString(":/icons/%1.svg").arg(fileName);
-        pixmap = QIcon::fromTheme(iconPath).pixmap(size);
-        qCDebug(logDock) << "Icon loaded from SVG fallback - File:" << fileName << "Size:" << size;
-}
+    QString iconPath = QString(":/icons/%1.svg").arg(fileName);
 
-    if (pixmap.isNull()) {
-        qCWarning(logDock) << "Failed to load icon - File:" << fileName;
-    }
-
-    return pixmap;
+    return QIcon::fromTheme(iconPath).pixmap(size);
 }
 
 GrandSearchWidget::GrandSearchWidget(QWidget *parent)
