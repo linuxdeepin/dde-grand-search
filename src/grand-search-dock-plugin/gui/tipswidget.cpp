@@ -9,6 +9,8 @@
 #include <QTextDocument>
 #include <QLoggingCategory>
 
+inline constexpr int kMargin { 12 };
+
 Q_DECLARE_LOGGING_CATEGORY(logDock)
 
 using namespace GrandSearch;
@@ -42,7 +44,7 @@ void TipsWidget::setText(const QString &text)
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     setFixedSize(fontMetrics().horizontalAdvance(m_text), fontMetrics().boundingRect(m_text).height());
 #else
-    setFixedSize(fontMetrics().width(m_text), fontMetrics().height());
+    setFixedSize(fontMetrics().width(m_text) + 2 * kMargin, fontMetrics().height());
 #endif
 
     update();
