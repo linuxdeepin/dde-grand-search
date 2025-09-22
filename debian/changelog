@@ -1,3 +1,9 @@
+dde-grand-search (6.0.25) unstable; urgency=medium
+
+  * fix: fix memory leak
+
+ -- wangrong <wangrong@uniontech.com>  Mon, 22 Sep 2025 11:33:34 +0800
+
 dde-grand-search (6.0.24) unstable; urgency=medium
 
   * add pinyin acronym search support
