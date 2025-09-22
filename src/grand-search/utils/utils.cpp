@@ -701,6 +701,7 @@ QString Utils::getFileMimetypeByGio(const QString &path)
     info = g_file_query_info(file, "standard::content-type", G_FILE_QUERY_INFO_NONE, nullptr, nullptr);
     result = g_file_info_get_content_type(info);
 
+    g_object_unref(info);
     g_object_unref(file);
 
     return result;
