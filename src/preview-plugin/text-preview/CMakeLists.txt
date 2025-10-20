@@ -15,15 +15,15 @@ set(SRCS
 
 add_library(${LIB_NAME} SHARED ${SRCS} ${QRCS})
 
-target_include_directories(${LIB_NAME} PUBLIC
-    ${DtkWidget_INCLUDE_DIRS}
-    ${DtkGUI_INCLUDE_DIRS}
-)
+set(Qt_CURRENT_LIBS ${Qt_LIBS})
+if (QT_VERSION_MAJOR EQUAL 6)
+    find_package(${QT_NS} REQUIRED COMPONENTS Core5Compat)
+    set(Qt_CURRENT_LIBS ${Qt_LIBS} Qt6::Core5Compat)
+endif()
 
 target_link_libraries(${LIB_NAME} PRIVATE
-    ${Qt_LIBS}
-    ${DtkWidget_LIBRARIES}
-    ${DtkGUI_LIBRARIES}
+    ${Qt_CURRENT_LIBS}
+    ${DTK_LIBS}
 )
 
 # bin

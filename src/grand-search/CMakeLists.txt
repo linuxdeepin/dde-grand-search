@@ -1,7 +1,7 @@
 # 定义需要的cmake版本
 cmake_minimum_required(VERSION 3.10)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -13,17 +13,31 @@ set(BIN_NAME ${SEARCH_BIN_NAME})
 # 集成测试标签
 ADD_DEFINITIONS(-DENABLE_ACCESSIBILITY)
 
+if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips"
+        OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64"
+        OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "sw"
+        OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "loongarch64"
+        )
+    message("${CMAKE_SYSTEM_PROCESSOR} : disable ai search")
+else()
+    message("${CMAKE_SYSTEM_PROCESSOR} : enable ai search")
+    ADD_DEFINITIONS(-DENABLE_AI_SEARCH)
+endif()
+
 # 依赖包
 find_package(PkgConfig REQUIRED)
-find_package(DtkWidget REQUIRED)
-find_package(DtkGui REQUIRED)
-find_package(DtkCMake REQUIRED)
-find_package(Qt5 COMPONENTS
+find_package(${DTK_NS} COMPONENTS
+    Core
+    Gui
+    Widget
+REQUIRED)
+find_package(${QT_NS} COMPONENTS
     Core
     Gui
     Widgets
     Concurrent
     DBus
+    Network
 REQUIRED)
 
 set(DBUSSRC
@@ -36,11 +50,17 @@ set(DBUSSRC
 )
 
 set(Qt_LIBS
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Widgets
-    Qt5::DBus
-    Qt5::Concurrent
+    ${QT_NS}::Core
+    ${QT_NS}::Gui
+    ${QT_NS}::Widgets
+    ${QT_NS}::DBus
+    ${QT_NS}::Concurrent
+    ${QT_NS}::Network
+)
+set(DTK_LIBS
+    ${DTK_NS}::Core
+    ${DTK_NS}::Gui
+    ${DTK_NS}::Widget
 )
 
 # gio 打开功能需要依赖的库
@@ -48,8 +68,6 @@ pkg_check_modules(GIO_LIB REQUIRED
         gio-unix-2.0
         glib-2.0
 )
-
-pkg_check_modules(DFrameworkDBus REQUIRED dframeworkdbus)
 
 # gui
 set(GUISRC
@@ -103,6 +121,14 @@ set(GUISRC
     gui/exhibition/preview/generalwidget/detailitem.cpp
     gui/exhibition/preview/generalwidget/detailwidget.h
     gui/exhibition/preview/generalwidget/detailwidget.cpp
+    gui/exhibition/preview/generalwidget/transbutton.h
+    gui/exhibition/preview/generalwidget/transbutton.cpp
+    gui/exhibition/preview/generalwidget/linkbutton.h
+    gui/exhibition/preview/generalwidget/linkbutton.cpp
+    gui/exhibition/preview/generalwidget/omitbutton.h
+    gui/exhibition/preview/generalwidget/omitbutton.cpp
+    gui/exhibition/preview/generalwidget/aitoolbar.h
+    gui/exhibition/preview/generalwidget/aitoolbar.cpp
     gui/exhibition/preview/pluginproxy.h
     gui/exhibition/preview/pluginproxy.cpp
     gui/exhibition/preview/previewproxyinterface.h
@@ -125,6 +151,14 @@ set(GUISRC
     gui/searchconfig/checkboxwidget/checkboxitem.h
     gui/searchconfig/switchwidget/switchwidget.cpp
     gui/searchconfig/switchwidget/switchwidget.h
+    gui/searchconfig/llmwidget/llmwidget.cpp
+    gui/searchconfig/llmwidget/llmwidget.h
+    gui/searchconfig/llmwidget/modelmanagebutton.cpp
+    gui/searchconfig/llmwidget/modelmanagebutton.h
+    gui/searchconfig/llmwidget/downloader.h
+    gui/searchconfig/llmwidget/downloader.cpp
+    gui/searchconfig/llmwidget/embeddingpluginwidget.cpp
+    gui/searchconfig/llmwidget/embeddingpluginwidget.h
     gui/searchconfig/hyperlinklabel/hyperlinklabel.cpp
     gui/searchconfig/hyperlinklabel/hyperlinklabel.h
     gui/searchconfig/comboboxwidget/comboboxwidget.h
@@ -143,6 +177,16 @@ set(GUISRC
     gui/searchconfig/blacklistwidget.h
     gui/searchconfig/indexwidget.cpp
     gui/searchconfig/indexwidget.h
+    gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.h
+    gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp
+    gui/searchconfig/roundedbackground.h
+    gui/searchconfig/roundedbackground.cpp
+    gui/searchconfig/intelligentretrieval/detailcheckbox.cpp
+    gui/searchconfig/intelligentretrieval/detailcheckbox.h
+    gui/searchconfig/intelligentretrieval/autoindexstatus.cpp
+    gui/searchconfig/intelligentretrieval/autoindexstatus.h
+    gui/searchconfig/tipslabel.h
+    gui/searchconfig/tipslabel.cpp
     )
 
 # business
@@ -178,6 +222,13 @@ set(UTILSSRC
     utils/previewpluginconf.h
     utils/filestatisticsthread.h
     utils/filestatisticsthread.cpp
+    utils/report/basicpoint.h
+    utils/report/basicpoint.cpp
+    utils/report/committhread.h
+    utils/report/committhread.cpp
+    utils/report/eventlogutil.h
+    utils/report/eventlogutil.cpp
+    utils/report/aisearchpoint.h
     )
 
 # 源文件
@@ -195,24 +246,35 @@ set(SRCS
 set(QRCS
     gui/searchconfig/resource.qrc
     gui/exhibition/preview/resource.qrc
+    gui/exhibition/matchresult/resource.qrc
     )
 
 add_executable(${BIN_NAME} ${SRCS} ${QRCS})
 
 target_include_directories(${BIN_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include
-    ${DtkWidget_INCLUDE_DIRS}
-    ${DtkGUI_INCLUDE_DIRS}
-    ${DFrameworkDBus_INCLUDE_DIRS}
     ${GIO_LIB_INCLUDE_DIRS}
 )
 
 target_link_libraries(${BIN_NAME} PRIVATE
     ${Qt_LIBS}
-    ${DtkWidget_LIBRARIES}
-    ${DtkGUI_LIBRARIES}
-    ${DFrameworkDBus_LIBRARIES}
+    ${DTK_LIBS}
     ${GIO_LIB_LIBRARIES}
+)
+
+set(SRCS_SETTING
+    setting_main.cpp
+    contacts/services/grandsearchsettingservice_p.h
+    contacts/services/grandsearchsettingservice.h
+    contacts/services/grandsearchsettingservice.cpp
+    ${PROJECT_3RDPARTY_PATH}/services/grandsearchsettingserviceadaptor.h
+    ${PROJECT_3RDPARTY_PATH}/services/grandsearchsettingserviceadaptor.cpp
+)
+
+add_executable(${BIN_NAME}-setting ${SRCS_SETTING})
+target_link_libraries(${BIN_NAME}-setting PRIVATE
+    ${Qt_LIBS}
+    ${DTK_LIBS}
 )
 
 # Install settings
@@ -222,7 +284,7 @@ endif ()
 
 # bin
 install(TARGETS ${BIN_NAME} DESTINATION bin)
-
+install(TARGETS ${BIN_NAME}-setting DESTINATION bin)
 # ts
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/translations
     DESTINATION share/${BIN_NAME}
@@ -231,3 +293,14 @@ install(DIRECTORY ${PROJECT_SOURCE_DIR}/translations
 # dbus
 install(FILES contacts/services/com.deepin.dde.GrandSearch.service DESTINATION ${CMAKE_INSTALL_DATADIR}/dbus-1/services)
 install(FILES contacts/services/com.deepin.dde.GrandSearch.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/dbus-1/interfaces)
+
+# setting
+install(FILES contacts/services/com.deepin.dde.GrandSearchSetting.service DESTINATION ${CMAKE_INSTALL_DATADIR}/dbus-1/services)
+install(FILES contacts/services/com.deepin.dde.GrandSearchSetting.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/dbus-1/interfaces)
+
+# manual
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/assets/manual/dde-grand-search
+    DESTINATION share/deepin-manual/manual-assets/application)
+
+# desktop
+install(FILES dde-grand-search.desktop DESTINATION share/applications)

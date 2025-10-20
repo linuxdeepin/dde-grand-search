@@ -21,6 +21,8 @@ extern "C" {
 #include <DDesktopEntry>
 #include <DGuiApplicationHelper>
 #include <DDesktopServices>
+#include <DUtil>
+#include <DSysInfo>
 
 #include <QCollator>
 #include <QFileInfo>
@@ -31,21 +33,14 @@ extern "C" {
 #include <QDateTime>
 #include <QIcon>
 #include <QApplication>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 DCORE_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
 DGUI_USE_NAMESPACE
 using namespace GrandSearch;
-
-#ifdef COMPILE_ON_V23
-static const QString SessionManagerService = "org.deepin.dde.Application1.Manager";
-static const QString StartManagerPath = "/org/deepin/dde/Application1/Manager";
-static const QString StartManagerInterface = "org.deepin.dde.Application1.Manager";
-#else
-static const QString SessionManagerService = "com.deepin.SessionManager";
-static const QString StartManagerPath = "/com/deepin/StartManager";
-static const QString StartManagerInterface = "com.deepin.StartManager";
-#endif
 
 static const int WeightDiffLimit = 21;
 
@@ -58,7 +53,8 @@ static const double TimesWeight = 0.5;
 class DCollator : public QCollator
 {
 public:
-    DCollator() : QCollator()
+    DCollator()
+        : QCollator()
     {
         setCaseSensitivity(Qt::CaseInsensitive);
     }
@@ -67,19 +63,25 @@ public:
 QMap<QString, QString> Utils::m_appIconNameMap;
 QMimeDatabase Utils::m_mimeDb;
 
-bool Utils::sort(MatchedItems &list, Qt::SortOrder order/* = Qt::AscendingOrder*/)
+bool Utils::sort(MatchedItems &list, Qt::SortOrder order /* = Qt::AscendingOrder*/)
 {
-    QTime time;
+    QElapsedTimer time;
     time.start();
-    qStableSort(list.begin(), list.end(), [order](MatchedItem node1, MatchedItem node2) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    qStableSort(list.begin(), list.end(), [order](const MatchedItem &node1, const MatchedItem &node2) {
         return compareByString(node1.name, node2.name, order);
     });
+#else
+    std::stable_sort(list.begin(), list.end(), [order](const MatchedItem &node1, const MatchedItem &node2) {
+        return compareByString(node1.name, node2.name, order);
+    });
+#endif
 
-    qDebug() << QString("sort matchItems done. cost [%1]ms").arg(time.elapsed());
+    qCDebug(logGrandSearch) << "Sorting matched items completed - Time:" << time.elapsed() << "ms";
     return true;
 }
 
-bool Utils::compareByString(QString &str1, QString &str2, Qt::SortOrder order)
+bool Utils::compareByString(QString str1, QString str2, Qt::SortOrder order)
 {
     thread_local static DCollator sortCollator;
 
@@ -93,8 +95,8 @@ bool Utils::compareByString(QString &str1, QString &str2, Qt::SortOrder order)
         }
     }
     if (nMidIndex > 0) {
-        str1=str1.mid(nMidIndex);
-        str2=str2.mid(nMidIndex);
+        str1 = str1.mid(nMidIndex);
+        str2 = str2.mid(nMidIndex);
     }
 
     // 其他符号要排在最后
@@ -152,8 +154,8 @@ bool Utils::startWithSymbol(const QString &text)
 
     bool bRet = false;
     // 先匹配中文标点符号
-    QRegExp regExp("^[\u3002\uff1b\uff0c\uff1a\u201c\u201d\uff08\uff09\u3001\uff1f\u300a\u300b].*$");
-    bRet = regExp.exactMatch(text.at(0));
+    QRegularExpression regExp("^[\u3002\uff1b\uff0c\uff1a\u201c\u201d\uff08\uff09\u3001\uff1f\u300a\u300b].*$");
+    bRet = regExp.match(text.at(0)).hasMatch();
 
     // 若不是中文标点符号，再判断是否为其他符号
     if (!bRet)
@@ -168,8 +170,8 @@ bool Utils::startWithHanzi(const QString &text)
         return false;
 
     // 匹配中文
-    QRegExp regExp("^[\u4e00-\u9fa5].*$");
-    bool bRet = regExp.exactMatch(text.at(0));
+    QRegularExpression regExp("^[\u4e00-\u9fa5].*$");
+    bool bRet = regExp.match(text.at(0)).hasMatch();
 
     return bRet;
 }
@@ -180,8 +182,8 @@ bool Utils::startWithLatin(const QString &text)
         return false;
 
     // 匹配英文
-    QRegExp regExp("^[a-zA-Z].*$");
-    bool bRet = regExp.exactMatch(text.at(0));
+    QRegularExpression regExp("^[a-zA-Z].*$");
+    bool bRet = regExp.match(text.at(0)).hasMatch();
 
     return bRet;
 }
@@ -198,7 +200,7 @@ bool Utils::startWithOtherLang(const QString &text)
             && textScript != QChar::Script_Latin
             && textScript != QChar::Script_Han;
 
-    //qDebug() <<QString("%1 is %2 otherLang").arg(text).arg(bRet ? "" : "not");
+    // qDebug() <<QString("%1 is %2 otherLang").arg(text).arg(bRet ? "" : "not");
     return bRet;
 }
 
@@ -208,26 +210,23 @@ bool Utils::startWidthNum(const QString &text)
         return false;
 
     // 匹配数字
-    QRegExp regExp("^[0-9].*$");
-    bool bRet = regExp.exactMatch(text.at(0));
+    QRegularExpression regExp("^[0-9].*$");
+    bool bRet = regExp.match(text.at(0)).hasMatch();
 
     return bRet;
 }
 
 bool Utils::sortByWeight(MatchedItemMap &map, Qt::SortOrder order)
 {
-    QTime time;
+    QElapsedTimer time;
     time.start();
 
     for (const QString &searchGroupName : map.keys()) {
         MatchedItems &list = map[searchGroupName];
-
-        qStableSort(list.begin(), list.end(), [order](MatchedItem node1, MatchedItem node2){
-            return compareByWeight(node1, node2, order);
-        });
+        sortByWeight(list, order);
     }
 
-    qDebug() << QString("sort matchItems by weight done.cost %1ms").arg(time.elapsed());
+    qCDebug(logGrandSearch) << "Sorting matched items by weight completed - Time:" << time.elapsed() << "ms";
     return true;
 }
 
@@ -238,7 +237,7 @@ bool Utils::sortByWeight(MatchedItemMap &map, Qt::SortOrder order)
  * @param order 排序规则，升序/降序
  * @return 类目1>类目2返回true，否则返回false
  */
-bool Utils::compareByWeight(MatchedItem &node1, MatchedItem &node2, Qt::SortOrder order)
+bool Utils::compareByWeight(const MatchedItem &node1, const MatchedItem &node2, Qt::SortOrder order)
 {
     bool hasWeight1 = node1.extra.toHash().contains(GRANDSEARCH_PROPERTY_ITEM_WEIGHT);
     bool hasWeight2 = node2.extra.toHash().contains(GRANDSEARCH_PROPERTY_ITEM_WEIGHT);
@@ -268,11 +267,14 @@ bool Utils::compareByWeight(MatchedItem &node1, MatchedItem &node2, Qt::SortOrde
  */
 void Utils::updateItemsWeight(MatchedItemMap &map, const QString &content)
 {
+    qCDebug(logGrandSearch) << "Updating item weights for search content:" << content;
+
     // 类目、后缀搜索时的关键字解析
     QStringList groupList, suffixList, keys;
     if (!searchHelper->parseKeyword(content, groupList, suffixList, keys))
         keys = QStringList() << content;
 
+    qCDebug(logGrandSearch) << "Parsed search keywords:" << keys;
     for (const QString &searchGroupName : map.keys()) {
         MatchedItems &list = map[searchGroupName];
         for (MatchedItem &item : list) {
@@ -322,9 +324,7 @@ bool Utils::setWeightMethod(MatchedItem &item)
         return true;
 
     const QString &search = item.searcher;
-    if (search == GRANDSEARCH_CLASS_FILE_DEEPIN ||
-            search == GRANDSEARCH_CLASS_FILE_FSEARCH) {
-
+    if (search == GRANDSEARCH_CLASS_FILE_DEEPIN) {
         ext.insert(GRANDSEARCH_PROPERTY_WEIGHT_METHOD,
                    GRANDSEARCH_PROPERTY_WEIGHT_METHOD_LOCALFILE);
     } else if (search == GRANDSEARCH_CLASS_APP_DESKTOP) {
@@ -350,9 +350,9 @@ bool Utils::setWeightMethod(MatchedItem &item)
  * @param keys 输入关键字列表
  * @return 文件权重
  */
-int Utils::calcFileWeight(const QString &path, const QString &name, const QStringList &keys)
+double Utils::calcFileWeight(const QString &path, const QString &name, const QStringList &keys)
 {
-    int weight = 0;
+    double weight = 0;
     for (const QString &key : keys) {
         if (name.contains(key)) {
             weight += 43;
@@ -363,7 +363,11 @@ int Utils::calcFileWeight(const QString &path, const QString &name, const QStrin
     QFileInfo fileInfo(path);
 
     const QDateTime &currentDateTime = QDateTime::currentDateTime();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    const QDateTime &createDateTime = fileInfo.birthTime();
+#else
     const QDateTime &createDateTime = fileInfo.created();
+#endif
     const QDateTime &lastModifyTime = fileInfo.lastModified();
     const QDateTime &lastReadTime = fileInfo.lastRead();
 
@@ -397,11 +401,11 @@ qint64 Utils::calcDateDiff(const QDateTime &date1, const QDateTime &date2)
  * @param type 计算类型，创建/修改/访问
  * @return 天数的权重
  */
-int Utils::calcWeightByDateDiff(const qint64 &diff, const int &type)
+double Utils::calcWeightByDateDiff(const qint64 &diff, const int &type)
 {
     switch (type) {
-    case CreateDateType :
-    case ModifyDateType : {
+    case CreateDateType:
+    case ModifyDateType: {
         switch (diff) {
         case 0:
             return 24;
@@ -416,9 +420,8 @@ int Utils::calcWeightByDateDiff(const qint64 &diff, const int &type)
         default:
             return 0;
         }
-    }
-        break;
-    case ReadDateType : {
+    } break;
+    case ReadDateType: {
         switch (diff) {
         case 0:
             return 9;
@@ -433,8 +436,7 @@ int Utils::calcWeightByDateDiff(const qint64 &diff, const int &type)
         default:
             return 0;
         }
-    }
-        break;
+    } break;
     default:
         return 0;
     }
@@ -486,23 +488,22 @@ void Utils::packageBestMatch(MatchedItemMap &map, int maxQuantity)
     if (map.isEmpty() || maxQuantity <= 0)
         return;
 
-    QTime time;
+    QElapsedTimer time;
     time.start();
 
     static const QMap<QString, bool> supprotedSeracher = {
-        {GRANDSEARCH_CLASS_FILE_DEEPIN, true},
-        {GRANDSEARCH_CLASS_FILE_FSEARCH, true},
-        {GRANDSEARCH_CLASS_APP_DESKTOP, true},
-        {GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, true},
+        { GRANDSEARCH_CLASS_FILE_DEEPIN, true },
+        { GRANDSEARCH_CLASS_APP_DESKTOP, true },
+        { GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, true },
     };
 
     // 待文件搜索各组去重后删除该黑名单
     static const QMap<QString, bool> blackGroup = {
-        {GRANDSEARCH_GROUP_FILE_VIDEO, false},
-        {GRANDSEARCH_GROUP_FILE_AUDIO, false},
-        {GRANDSEARCH_GROUP_FILE_PICTURE, false},
-        {GRANDSEARCH_GROUP_FILE_DOCUMNET, false},
-        {GRANDSEARCH_GROUP_FOLDER, false}
+        { GRANDSEARCH_GROUP_FILE_VIDEO, false },
+        { GRANDSEARCH_GROUP_FILE_AUDIO, false },
+        { GRANDSEARCH_GROUP_FILE_PICTURE, false },
+        { GRANDSEARCH_GROUP_FILE_DOCUMNET, false },
+        { GRANDSEARCH_GROUP_FOLDER, false }
     };
 
     MatchedItems bestList;
@@ -561,11 +562,26 @@ void Utils::packageBestMatch(MatchedItemMap &map, int maxQuantity)
 
     for (auto list : tempBestList) {
         // 在原分组中移除最佳匹配项
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        auto &items = map[list.second];
+        auto it = std::find(items.begin(), items.end(), list.first);
+        if (it != items.end()) {
+            items.erase(it);
+        }
+#else
         map[list.second].removeOne(list.first);
+#endif
+
         bestList.append(list.first);
+
+        // 原分组为空，移除分组
+        if (map[list.second].isEmpty()) {
+            qCDebug(logGrandSearch) << "Removing empty group - Group:" << list.second;
+            map.remove(list.second);
+        }
     }
 
-    qDebug() << "find best match count:" << bestList.count() << QString(".cost [%1]ms").arg(time.elapsed());
+    qCDebug(logGrandSearch) << "Best match processing completed - Count:" << bestList.count() << "Time:" << time.elapsed() << "ms";
     if (!bestList.isEmpty()) {
         map.insert(GRANDSEARCH_GROUP_BEST, bestList);
     }
@@ -610,7 +626,7 @@ QString Utils::appIconName(const MatchedItem &item)
     if (item.searcher == GRANDSEARCH_CLASS_APP_DESKTOP) {
         return item.icon;
     } else if (item.searcher == GRANDSEARCH_CLASS_WEB_STATICTEXT) {
-        //默认浏览器图标
+        // 默认浏览器图标
         auto defaultDesktopFile = defaultBrowser();
         if (!defaultDesktopFile.isEmpty()) {
             DDesktopEntry entry(defaultDesktopFile);
@@ -628,7 +644,7 @@ QString Utils::appIconName(const MatchedItem &item)
         if (strAppIconName.isEmpty())
             strAppIconName = "preferences-system";
     } else {
-    // 搜索结果为文件，查询该文件对应默认打开应用图标的名称
+        // 搜索结果为文件，查询该文件对应默认打开应用图标的名称
         QString mimetype = item.type;
         if (mimetype.isEmpty())
             mimetype = getFileMimetype(item.item);
@@ -648,23 +664,30 @@ QString Utils::appIconName(const MatchedItem &item)
 
 bool Utils::isShowAppIcon(const MatchedItem &item)
 {
-    //特殊搜索项
+    // 特殊搜索项
     static QHash<QString, bool> extendSearcher = {
-        {GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, true}
+        { GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, true }
     };
     return isResultFromBuiltSearch(item) || extendSearcher.value(item.searcher, false);
 }
 
 QString Utils::getFileMimetype(const QString &filePath)
 {
+    qCDebug(logGrandSearch) << "Getting MIME type for file:" << filePath;
+
     QString mimetype = getFileMimetypeByQt(filePath);
-    if (mimetype.isEmpty())
+    if (mimetype.isEmpty()) {
+        qCDebug(logGrandSearch) << "Qt MIME detection failed - Trying GIO method";
         mimetype = getFileMimetypeByGio(filePath);
+    }
 
     // 通过gio库和qt库都获取不到mimetype，则默认返回文本类型
-    if (mimetype.isEmpty())
+    if (mimetype.isEmpty()) {
+        qCDebug(logGrandSearch) << "All MIME detection methods failed - Using default text/plain";
         mimetype = "text/plain";
+    }
 
+    qCDebug(logGrandSearch) << "MIME type determined:" << mimetype;
     return mimetype;
 }
 
@@ -678,6 +701,7 @@ QString Utils::getFileMimetypeByGio(const QString &path)
     info = g_file_query_info(file, "standard::content-type", G_FILE_QUERY_INFO_NONE, nullptr, nullptr);
     result = g_file_info_get_content_type(info);
 
+    g_object_unref(info);
     g_object_unref(file);
 
     return result;
@@ -703,13 +727,13 @@ QString Utils::getFileMimetypeByQt(const QString &path)
 
 QString Utils::getDefaultAppDesktopFileByMimeType(const QString &mimeType)
 {
-    GAppInfo* defaultApp = g_app_info_get_default_for_type(mimeType.toLocal8Bit().constData(), FALSE);
-    if(!defaultApp)
+    GAppInfo *defaultApp = g_app_info_get_default_for_type(mimeType.toLocal8Bit().constData(), FALSE);
+    if (!defaultApp)
         return "";
 
-    const char* desktop_id = g_app_info_get_id(defaultApp);
-    GDesktopAppInfo* desktopAppInfo = g_desktop_app_info_new(desktop_id);
-    if(!desktopAppInfo) {
+    const char *desktop_id = g_app_info_get_id(defaultApp);
+    GDesktopAppInfo *desktopAppInfo = g_desktop_app_info_new(desktop_id);
+    if (!desktopAppInfo) {
         g_object_unref(defaultApp);
         return "";
     }
@@ -733,34 +757,45 @@ bool Utils::isResultFromBuiltSearch(const MatchedItem &item)
 
 bool Utils::openMatchedItem(const MatchedItem &item)
 {
+    qCDebug(logGrandSearch) << "Opening matched item - Searcher:" << item.searcher << "Item:" << item.item;
+
     if (Utils::isResetSearcher(item.searcher)) {
         QDateTime time = QDateTime::currentDateTime();
         qint64 timeT = time.toSecsSinceEpoch();
         AccessRecord::instance()->updateRecord(item, timeT);
+        qCDebug(logGrandSearch) << "Access record updated for item:" << item.item;
     }
+
     bool bFromBuiltSearch = isResultFromBuiltSearch(item);
     if (!bFromBuiltSearch) {
+        qCDebug(logGrandSearch) << "Item from extend search - Using extend search method";
         return openExtendSearchMatchedItem(item);
     }
 
-    if (item.item.isEmpty())
+    if (item.item.isEmpty()) {
+        qCWarning(logGrandSearch) << "Item path is empty - Cannot open";
         return false;
+    }
 
     bool result = false;
     if (item.searcher == GRANDSEARCH_CLASS_APP_DESKTOP) {   // 启动应用
+        qCDebug(logGrandSearch) << "Opening desktop application:" << item.item;
         result = Utils::launchApp(item.item);
-    } else if (item.searcher == GRANDSEARCH_CLASS_WEB_STATICTEXT) { // 跳转浏览器
+    } else if (item.searcher == GRANDSEARCH_CLASS_WEB_STATICTEXT) {   // 跳转浏览器
+        qCDebug(logGrandSearch) << "Opening web search in browser:" << item.item;
         result = Utils::openWithBrowser(item.item);
-    } else {    // 打开文件
+    } else {   // 打开文件
+        qCDebug(logGrandSearch) << "Opening file:" << item.item;
         result = openFile(item);
     }
 
+    qCDebug(logGrandSearch) << "Matched item open operation completed - Result:" << result;
     return result;
 }
 
 bool Utils::openMatchedItemWithCtrl(const MatchedItem &item)
 {
-    if (GRANDSEARCH_CLASS_FILE_DEEPIN == item.searcher || GRANDSEARCH_CLASS_FILE_FSEARCH == item.searcher) {
+    if (GRANDSEARCH_CLASS_FILE_DEEPIN == item.searcher) {
         QFileInfo fileInfo(item.item);
         if (!fileInfo.isDir())
             return openInFileManager(item);
@@ -776,19 +811,30 @@ bool Utils::openInFileManager(const MatchedItem &item)
 
 bool Utils::openExtendSearchMatchedItem(const MatchedItem &item)
 {
+    qCDebug(logGrandSearch) << "Opening extend search item via DBus - Searcher:" << item.searcher << "Item:" << item.item;
+
     // 搜索结果来自扩展插件，使用Dbus通知主控调用扩展插件打开接口打开搜索结果
     DaemonGrandSearchInterface daemonDbus;
-    daemonDbus.OpenWithPlugin(item.searcher, item.item);
+    auto reply = daemonDbus.OpenWithPlugin(item.searcher, item.item);
+    reply.waitForFinished();
+    if (reply.isError()) {
+        qCWarning(logGrandSearch) << "Failed to open extend search item via DBus - Error:" << reply.error();
+        return false;
+    }
 
+    qCDebug(logGrandSearch) << "Extend search item opened successfully via DBus";
     return true;
 }
 
 bool Utils::openFile(const MatchedItem &item)
 {
     QString filePath = item.item;
-    if (filePath.isEmpty())
+    if (filePath.isEmpty()) {
+        qCWarning(logGrandSearch) << "File path is empty - Cannot open file";
         return false;
+    }
 
+    qCDebug(logGrandSearch) << "Opening file:" << filePath;
     bool result = false;
 
     // 获取mimetype
@@ -796,65 +842,116 @@ bool Utils::openFile(const MatchedItem &item)
     if (mimetype.isEmpty())
         mimetype = getFileMimetype(item.item);
 
+    qCDebug(logGrandSearch) << "File mimetype determined:" << mimetype;
+
     // fix bug98384 社区版在打开特殊字符名称的文件夹时，丢失路径导致打开主目录
     QString fileUrlString = QUrl::fromLocalFile(filePath).toString();
 
     // 获取对应默认打开应用
     QString defaultDesktopFile = getDefaultAppDesktopFileByMimeType(mimetype);
     if (defaultDesktopFile.isEmpty()) {
-        result = QProcess::startDetached(QString("dde-file-manager"), {QString("-o"), fileUrlString});
-        qDebug() << "open file dialog" << result;
+        qCDebug(logGrandSearch) << "No default application found - Opening with file manager";
+        result = QProcess::startDetached(QString("dde-file-manager"), { QString("-o"), fileUrlString });
+        qCDebug(logGrandSearch) << "Opening file in file manager - Result:" << result;
     } else {
+        qCDebug(logGrandSearch) << "Opening file with default application:" << defaultDesktopFile;
         QStringList filePaths(fileUrlString);
         result = launchApp(defaultDesktopFile, filePaths);
     }
 
+    qCDebug(logGrandSearch) << "File open operation completed - Result:" << result;
     return result;
 }
 
-bool Utils::launchApp(const QString& desktopFile, const QStringList &filePaths)
+bool Utils::launchApp(const QString &desktopFile, const QStringList &filePaths)
 {
+    qCDebug(logGrandSearch) << "Launching application - Desktop file:" << desktopFile
+                            << "File paths count:" << filePaths.size();
+
     bool ok = launchAppByDBus(desktopFile, filePaths);
     if (!ok) {
+        qCDebug(logGrandSearch) << "DBus launch failed - Trying GIO method";
         ok = launchAppByGio(desktopFile, filePaths);
     }
 
+    qCDebug(logGrandSearch) << "Application launch completed - Result:" << ok;
     return ok;
 }
 
 bool Utils::launchAppByDBus(const QString &desktopFile, const QStringList &filePaths)
 {
+    qCDebug(logGrandSearch) << "Launching application via DBus - Desktop file:" << desktopFile;
+
+    const auto &file = QFileInfo { desktopFile };
+    constexpr auto kDesktopSuffix { u8"desktop" };
+
+    if (file.suffix() != kDesktopSuffix) {
+        qCWarning(logGrandSearch) << "Invalid desktop file format - File:" << desktopFile;
+        return false;
+    }
+
+    auto ver = DSysInfo::majorVersion().toInt();
+    qCDebug(logGrandSearch) << "System version:" << ver;
+
+    if (ver > 20) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        const QString AppManagerService = "org.desktopspec.ApplicationManager1";
+        const QString AppManagerPathPrefix = "/org/desktopspec/ApplicationManager1";
+        const QString AppInterface = "org.desktopspec.ApplicationManager1.Application";
+
+        const auto &DBusAppId = DUtil::escapeToObjectPath(file.completeBaseName());
+        const auto &currentAppPath = QString { AppManagerPathPrefix } + "/" + DBusAppId;
+        qCDebug(logGrandSearch) << "Launching application via DBus - Path:" << currentAppPath;
+
+        QDBusInterface appManager(AppManagerService,
+                                  currentAppPath,
+                                  AppInterface,
+                                  QDBusConnection::sessionBus());
+
+        auto reply = appManager.callWithArgumentList(QDBus::Block, QStringLiteral("Launch"), { QVariant::fromValue(QString {}), QVariant::fromValue(filePaths), QVariant::fromValue(QVariantMap {}) });
+
+        return reply.type() == QDBusMessage::ReplyMessage;
+#endif
+    }
+
+    // V20 Use the SessionManager to launch app
+    qCDebug(logGrandSearch) << "Using SessionManager to launch application (V20 compatibility)";
+    const QString SessionManagerService = "com.deepin.SessionManager";
+    const QString StartManagerPath = "/com/deepin/StartManager";
+    const QString StartManagerInterface = "com.deepin.StartManager";
     QDBusInterface interface(SessionManagerService,
                              StartManagerPath,
                              StartManagerInterface,
-                             QDBusConnection::sessionBus(),
-                             qApp);
+                             QDBusConnection::sessionBus());
 
     QList<QVariant> args;
     args << desktopFile
-         << QDateTime::currentDateTime().toTime_t()
+         << QDateTime::currentDateTime().toSecsSinceEpoch()
          << filePaths;
 
     QDBusPendingCall call = interface.asyncCallWithArgumentList("LaunchApp", args);
 
-    QDBusReply<QString> reply = call.reply();
+    QDBusReply<void> reply = call.reply();
     if (!reply.isValid()) {
-            qCritical() << "Launch app by DBus failed:" << reply.error();
-            return false;
+        qCCritical(logGrandSearch) << "Failed to launch application via DBus - Error:" << reply.error();
+        return false;
     }
 
+    qCDebug(logGrandSearch) << "Application launched successfully via SessionManager";
     return true;
 }
 
 bool Utils::launchAppByGio(const QString &desktopFile, const QStringList &filePaths)
 {
+    qCDebug(logGrandSearch) << "Launching application via GIO - Desktop file:" << desktopFile;
+
     // 使用gio接口启动应用
     std::string stdDesktopFilePath = desktopFile.toStdString();
     const char *cDesktopPath = stdDesktopFilePath.data();
 
     GDesktopAppInfo *appInfo = g_desktop_app_info_new_from_filename(cDesktopPath);
     if (!appInfo) {
-        //qDebug() << "Failed to open desktop file with gio: g_desktop_app_info_new_from_filename returns NULL. Check PATH maybe?";
+        qCWarning(logGrandSearch) << "Failed to create desktop app info - File:" << desktopFile;
         return false;
     }
 
@@ -870,19 +967,24 @@ bool Utils::launchAppByGio(const QString &desktopFile, const QStringList &filePa
     gboolean ok = g_app_info_launch(reinterpret_cast<GAppInfo *>(appInfo), g_files, nullptr, &gError);
 
     if (gError) {
-        qWarning() << "Error when trying to open desktop file with gio:" << gError->message;
+        qCWarning(logGrandSearch) << "Failed to launch application via GIO - Error:" << gError->message;
         g_error_free(gError);
     }
 
     if (!ok) {
-        qWarning() << "Failed to open desktop file with gio: g_app_info_launch returns false";
+        qCWarning(logGrandSearch) << "Application launch via GIO failed - File:" << desktopFile;
+    } else {
+        qCDebug(logGrandSearch) << "Application launched successfully via GIO";
     }
+
     g_object_unref(appInfo);
     g_list_free(g_files);
 
     for (auto filePath : filePaths) {
-        if (!filePath.isEmpty())
+        if (!filePath.isEmpty()) {
+            qCDebug(logGrandSearch) << "Opening file with gio:" << filePath;
             QProcess::startDetached("gio", QStringList() << "open" << filePath);
+        }
     }
 
     return ok;
@@ -890,25 +992,29 @@ bool Utils::launchAppByGio(const QString &desktopFile, const QStringList &filePa
 
 bool Utils::openWithBrowser(const QString &words)
 {
-    if (words.isEmpty())
+    if (words.isEmpty()) {
+        qCWarning(logGrandSearch) << "Empty URL provided - Cannot open browser";
         return false;
+    }
+
+    qCDebug(logGrandSearch) << "Opening URL in browser:" << words;
 
     // 获取默认浏览器
     QString defaultDesktopFile = defaultBrowser();
     if (defaultDesktopFile.isEmpty()) {
-        qWarning() << "no browser to open url.";
+        qCWarning(logGrandSearch) << "No default browser found to open URL";
         return false;
     }
-    //默认浏览器
-    qDebug() << "open with" << defaultDesktopFile;
-    return launchApp(defaultDesktopFile, {words});
+    // 默认浏览器
+    qCDebug(logGrandSearch) << "Opening URL in browser - Browser:" << defaultDesktopFile;
+    return launchApp(defaultDesktopFile, { words });
 }
 
 QIcon Utils::defaultIcon(const MatchedItem &item)
 {
     if (item.searcher == GRANDSEARCH_CLASS_APP_DESKTOP)
         return QIcon::fromTheme("application-x-desktop");
-    else if (item.searcher == GRANDSEARCH_CLASS_FILE_DEEPIN || item.searcher == GRANDSEARCH_CLASS_FILE_FSEARCH) {
+    else if (item.searcher == GRANDSEARCH_CLASS_FILE_DEEPIN) {
         return QIcon::fromTheme(m_mimeDb.mimeTypeForFile(item.item).genericIconName());
     } else if (item.searcher == GRANDSEARCH_CLASS_WEB_STATICTEXT) {
         // 使用默认浏览器的图标
@@ -941,12 +1047,8 @@ bool Utils::isLevelItem(const MatchedItem &item, int &level)
 
 bool Utils::isLevelGroup(const QString &searchGroupName)
 {
-    static const QStringList containLevelGroup{
-        GRANDSEARCH_GROUP_FILE_VIDEO
-      , GRANDSEARCH_GROUP_FILE_AUDIO
-      , GRANDSEARCH_GROUP_FILE_PICTURE
-      , GRANDSEARCH_GROUP_FILE_DOCUMNET
-      , GRANDSEARCH_GROUP_FILE
+    static const QStringList containLevelGroup {
+        GRANDSEARCH_GROUP_FILE_VIDEO, GRANDSEARCH_GROUP_FILE_AUDIO, GRANDSEARCH_GROUP_FILE_PICTURE, GRANDSEARCH_GROUP_FILE_DOCUMNET, GRANDSEARCH_GROUP_FILE
     };
 
     return containLevelGroup.contains(searchGroupName);
@@ -954,13 +1056,8 @@ bool Utils::isLevelGroup(const QString &searchGroupName)
 
 bool Utils::canPreview(const QString &searchGroupName)
 {
-    static const QStringList containPreviewGroup{
-        GRANDSEARCH_GROUP_FOLDER
-      , GRANDSEARCH_GROUP_FILE
-      , GRANDSEARCH_GROUP_FILE_VIDEO
-      , GRANDSEARCH_GROUP_FILE_AUDIO
-      , GRANDSEARCH_GROUP_FILE_PICTURE
-      , GRANDSEARCH_GROUP_FILE_DOCUMNET
+    static const QStringList containPreviewGroup {
+        GRANDSEARCH_GROUP_FOLDER, GRANDSEARCH_GROUP_FILE, GRANDSEARCH_GROUP_FILE_VIDEO, GRANDSEARCH_GROUP_FILE_AUDIO, GRANDSEARCH_GROUP_FILE_PICTURE, GRANDSEARCH_GROUP_FILE_DOCUMNET, GRANDSEARCH_GROUP_FILE_INFERENCE
     };
 
     return containPreviewGroup.contains(searchGroupName);

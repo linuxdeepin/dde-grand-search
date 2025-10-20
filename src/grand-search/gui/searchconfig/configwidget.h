@@ -22,9 +22,14 @@ public:
     explicit ConfigWidget(QWidget *parent = nullptr);
     ~ConfigWidget();
 
+    void scrollToAiConfig();
+
 private:
     void initUI();
     void initData();
+
+protected:
+    void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 
 private:
     QVBoxLayout *m_mainLayout                       = nullptr;      // 界面主体布局

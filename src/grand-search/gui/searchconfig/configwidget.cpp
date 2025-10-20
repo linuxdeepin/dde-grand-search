@@ -15,6 +15,11 @@
 
 #include <QLabel>
 #include <QPushButton>
+#include <QCloseEvent>
+#include <QScrollBar>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 #define MAINWINDOW_WIDTH    696
 #define MAINWINDOW_HEIGHT   529
@@ -25,12 +30,15 @@ DWIDGET_USE_NAMESPACE
 ConfigWidget::ConfigWidget(QWidget *parent)
     : DMainWindow(parent)
 {
+    qCDebug(logGrandSearch) << "Creating ConfigWidget";
     initUI();
     initData();
+    qCDebug(logGrandSearch) << "ConfigWidget created successfully";
 }
 
 ConfigWidget::~ConfigWidget()
 {
+    qCDebug(logGrandSearch) << "Destroying ConfigWidget";
 }
 
 void ConfigWidget::initUI()
@@ -79,6 +87,19 @@ void ConfigWidget::initUI()
     m_scrollArea->setWidget(m_scrollAreaContent);
 }
 
+void ConfigWidget::closeEvent(QCloseEvent *event)
+{
+    if (!m_indexWidget->onCloseEvent())
+        event->ignore();
+}
+
 void ConfigWidget::initData()
 {
+}
+
+void ConfigWidget::scrollToAiConfig()
+{
+    qCDebug(logGrandSearch) << "Scrolling to AI configuration section";
+    QPoint targetPos = m_indexWidget->mapTo(m_scrollArea->viewport(), QPoint(0, 0));
+    m_scrollArea->verticalScrollBar()->setValue(targetPos.y());
 }

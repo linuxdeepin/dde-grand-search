@@ -5,6 +5,7 @@
 #include "pdfpreview_global.h"
 #include "pdfview.h"
 #include "global/commontools.h"
+#include "grand-search/gui/exhibition/preview/generalwidget/aitoolbar.h"
 
 #include <dpdfpage.h>
 
@@ -16,11 +17,28 @@
 #include <QPainterPath>
 #include <QApplication>
 #include <QScreen>
+#include <QDBusInterface>
+#include <QDBusReply>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logPdfPreview)
 
 GRANDSEARCH_USE_NAMESPACE
 using namespace GrandSearch::pdf_preview;
 
-#define PAGE_FIXED_SIZE   QSize(360, 386)
+#define PAGE_FIXED_SIZE   (PDFView::checkUosAiInstalled() ? QSize(360, 350) : QSize(360, 386))
+
+bool PDFView::checkUosAiInstalled() {
+    QDBusInterface iface("org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus");
+    QDBusReply<QStringList> reply = iface.call("ListActivatableNames");
+    if (reply.isValid()) {
+        if (reply.value().contains("com.deepin.copilot")) {
+            return true;
+        }
+    }
+
+    return false;
+}
 
 PDFView::PDFView(const QString &file, QWidget *parent)
     : QWidget(parent)
@@ -40,7 +58,7 @@ void PDFView::initDoc(const QString &file)
 {
     m_doc.reset(new DPdfDoc(file));
     if (!m_doc || m_doc->status() != DPdfDoc::SUCCESS) {
-        qWarning() << "Cannot read this pdf file: " << file;
+        qCWarning(logPdfPreview) << "Failed to load PDF document - Path:" << file << "Status:" << (m_doc ? m_doc->status() : -1);
         m_isBadDoc = true;
     }
 }
@@ -57,7 +75,7 @@ void PDFView::initUI()
     // 居中显示
     layout->addStretch();
     layout->addWidget(m_pageLabel);
-    layout->addStretch();
+    //layout->addStretch();
 
     if (m_isBadDoc) {
         showErrorPage();
@@ -110,6 +128,13 @@ void PDFView::onPageUpdated(QImage img)
 {
     auto pixmap = scaleAndRound(img);
     m_pageLabel->setPixmap(pixmap);
+
+    // AI工具栏要紧贴预览画面
+    if (pixmap.height() < PAGE_FIXED_SIZE.height()) {
+        this->setFixedHeight((PAGE_FIXED_SIZE.height() - pixmap.height()) / 2 + pixmap.height());
+    } else {
+        this->setFixedHeight(PAGE_FIXED_SIZE.height());
+    }
 }
 
 void PDFView::syncLoadFirstPage()

@@ -11,6 +11,7 @@
 #include <QFileInfo>
 #include <QRect>
 #include <QDateTime>
+#include <QLoggingCategory>
 
 extern "C"
 {
@@ -18,6 +19,7 @@ extern "C"
 #include <libavformat/avformat.h>
 }
 
+Q_LOGGING_CATEGORY(logAudioPreview, "org.deepin.dde.grandsearch.plugin.audio")
 GRANDSEARCH_USE_NAMESPACE
 using namespace GrandSearch::audio_preview;
 
@@ -25,11 +27,12 @@ AudioPreviewPlugin::AudioPreviewPlugin(QObject *parent)
     : QObject (parent)
     , PreviewPlugin()
 {
-
+    qCDebug(logAudioPreview) << "AudioPreviewPlugin created";
 }
 
 AudioPreviewPlugin::~AudioPreviewPlugin()
 {
+    qCDebug(logAudioPreview) << "AudioPreviewPlugin destroyed";
     if (m_audioView)
         m_audioView->deleteLater();
 }
@@ -37,20 +40,30 @@ AudioPreviewPlugin::~AudioPreviewPlugin()
 void AudioPreviewPlugin::init(QObject *proxyInter)
 {
     Q_UNUSED(proxyInter)
-    if (!m_audioView)
+    qCDebug(logAudioPreview) << "Initializing AudioPreviewPlugin";
+    if (!m_audioView) {
         m_audioView = new AudioView();
+        qCDebug(logAudioPreview) << "AudioView created";
+    }
 }
 
 bool AudioPreviewPlugin::previewItem(const ItemInfo &item)
 {
     const QString path = item.value(PREVIEW_ITEMINFO_ITEM);
-    if (path.isEmpty())
+    if (path.isEmpty()) {
+        qCWarning(logAudioPreview) << "Audio file path is empty - Cannot preview";
         return false;
+    }
+
+    qCDebug(logAudioPreview) << "Previewing audio file - Path:" << path;
 
     m_audioView->setItemInfo(item);
 
     AudioFileInfo afi;
     AudioFileInfo::AudioMetaData amd = afi.openAudioFile(path);
+
+    qCDebug(logAudioPreview) << "Audio metadata - Artist:" << amd.artist
+                             << "Album:" << amd.album << "Duration:" << amd.duration;
 
     // 歌手 尾部截断
     DetailTagInfo tagInfos;
@@ -143,6 +156,7 @@ bool AudioPreviewPlugin::previewItem(const ItemInfo &item)
     m_detailInfos.push_back(detailInfo);
 
     m_item = item;
+    qCDebug(logAudioPreview) << "Audio preview completed successfully - Path:" << path;
     return true;
 }
 
@@ -153,6 +167,7 @@ ItemInfo AudioPreviewPlugin::item() const
 
 bool AudioPreviewPlugin::stopPreview()
 {
+    qCDebug(logAudioPreview) << "Stopping audio preview";
     return true;
 }
 

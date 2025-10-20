@@ -8,6 +8,8 @@
 
 #include <QDebug>
 #include <QTextCodec>
+#include <QLocale>
+#include <QLoggingCategory>
 
 #include <unicode/ucnv.h>
 #include <unicode/ucsdet.h>
@@ -16,6 +18,7 @@
 #include <taglib.h>
 #include <tpropertymap.h>
 
+Q_DECLARE_LOGGING_CATEGORY(logAudioPreview)
 GRANDSEARCH_USE_NAMESPACE
 using namespace GrandSearch::audio_preview;
 
@@ -28,13 +31,13 @@ AudioFileInfo::AudioMetaData AudioFileInfo::openAudioFile(const QString &file)
 {
     TagLib::FileRef f(file.toLocal8Bit());
     if (!f.file()) {
-        qWarning() << "TagLib: open file failed:" << file;
+        qCWarning(logAudioPreview) << "Failed to open audio file - Path:" << file;
         return {};
     }
 
     TagLib::Tag *tag = f.tag();
     if (!tag) {
-        qWarning() << "TagLib: no tag for media file" << file;
+        qCWarning(logAudioPreview) << "No metadata tags found in audio file - Path:" << file;
         return {};
     }
 
@@ -54,9 +57,9 @@ void AudioFileInfo::characterEncodingTransform(AudioFileInfo::AudioMetaData &met
 {
     TagLib::Tag *tag = static_cast<TagLib::Tag *>(obj);
     bool encode = true;
-    encode &= tag->title().isNull() ? true : tag->title().isLatin1();
-    encode &= tag->artist().isNull() ? true : tag->artist().isLatin1();
-    encode &= tag->album().isNull() ? true : tag->album().isLatin1();
+    encode &= tag->title().isEmpty() ? true : tag->title().isLatin1();
+    encode &= tag->artist().isEmpty() ? true : tag->artist().isLatin1();
+    encode &= tag->album().isEmpty() ? true : tag->album().isLatin1();
 
     QByteArray detectByte;
     QByteArray detectCodec;
@@ -69,9 +72,9 @@ void AudioFileInfo::characterEncodingTransform(AudioFileInfo::AudioMetaData &met
             auto localeCode = m_localeCodeMap.value(QLocale::system().name());
 
             auto iter = std::find_if(allDetectCodecs.begin(), allDetectCodecs.end(),
-                                     [localeCode](const QByteArray & curDetext) {
-                return (curDetext == "Big5" || curDetext == localeCode);
-            });
+                                     [localeCode](const QByteArray &curDetext) {
+                                         return (curDetext == "Big5" || curDetext == localeCode);
+                                     });
 
             if (iter != allDetectCodecs.end())
                 detectCodec = *iter;
@@ -85,7 +88,7 @@ void AudioFileInfo::characterEncodingTransform(AudioFileInfo::AudioMetaData &met
             if (curStr.isEmpty())
                 curStr = QString::fromLocal8Bit(tag->album().toCString());
 
-            auto ret = std::any_of(curStr.begin(), curStr.end(), [this](const QChar & ch) {
+            auto ret = std::any_of(curStr.begin(), curStr.end(), [this](const QChar &ch) {
                 return isChinese(ch);
             });
 
@@ -98,7 +101,7 @@ void AudioFileInfo::characterEncodingTransform(AudioFileInfo::AudioMetaData &met
             meta.album = TStringToQString(tag->album());
             meta.artist = TStringToQString(tag->artist());
             meta.title = TStringToQString(tag->title());
-            meta.codec = "UTF-8";  //info codec
+            meta.codec = "UTF-8";   // info codec
         } else {
             QTextCodec *codec = QTextCodec::codecForName(detectCodec);
             if (codec == nullptr) {
@@ -119,7 +122,7 @@ void AudioFileInfo::characterEncodingTransform(AudioFileInfo::AudioMetaData &met
         meta.codec = "UTF-8";
     }
 
-    //empty str
+    // empty str
     meta.album = meta.album.simplified();
     meta.artist = meta.artist.simplified();
     meta.title = meta.title.simplified();

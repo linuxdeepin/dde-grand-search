@@ -4,31 +4,37 @@ Priority: optional
 Maintainer: Deepin Packages Builder <packages@deepin.com>
 Build-Depends: debhelper (>= 9),
  pkg-config,
- qt5-qmake,
- qtbase5-dev,
- libdtkwidget-dev,
- libdtkcore-dev,
- libdtkgui-dev,
- libdtkcore5-bin,
- libdframeworkdbus-dev (>=5.4.6),
- qttools5-dev-tools,
+ qt6-base-dev | qtbase5-dev,
+ qt6-5compat-dev | hello,
+ libdtk6widget-dev | libdtkwidget-dev,
+ libdtk6core-dev | libdtkcore-dev,
+ libdtk6gui-dev | libdtkgui-dev,
+ libdtk6core-bin | libdtkcore5-bin,
+ libdtk6declarative-dev | hello,
+ libdfm6-search-dev | libdfm-search-dev,
+ qt6-tools-dev-tools | qttools5-dev-tools,
+ qt6-declarative-dev | hello,
  cmake,
- dde-dock-dev,
+ dde-tray-loader-dev | dde-dock-dev,
  libglib2.0-dev,
  libffmpegthumbnailer-dev,
  libavformat-dev,
  libavcodec-dev,
  libtag1-dev,
  libicu-dev,
- libgsettings-qt-dev,
- libpcre3-dev,
  libdeepin-pdfium-dev,
- libjpeg62-turbo-dev
+ libjpeg62-turbo-dev,
+ liblucene++-dev,
+ libboost-dev,
+ libdeepin-service-framework-dev (>1.0.9),
+ libdde-shell-dev | hello,
+ deepin-desktop-base
 Standards-Version: 3.9.8
 Homepage: http://www.deepin.org/
 
 Package: dde-grand-search
 Architecture: any
+Replaces: dde-shell (<=1.99.30)
 Depends: ${shlibs:Depends}, ${misc:Depends},
 Recommends:
  deepin-desktop-schemas (>=5.8.0.34),

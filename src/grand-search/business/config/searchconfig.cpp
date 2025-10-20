@@ -12,10 +12,15 @@
 #include <QDir>
 #include <QMutexLocker>
 #include <QtDebug>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 using namespace GrandSearch;
 
-class SearchConfigGlobal : public SearchConfig {};
+class SearchConfigGlobal : public SearchConfig
+{
+};
 Q_GLOBAL_STATIC(SearchConfigGlobal, searchConfigGlobal)
 
 SearchConfig *SearchConfig::instance()
@@ -27,19 +32,22 @@ SearchConfig::SearchConfig()
 {
     auto configPath = QStandardPaths::standardLocations(QStandardPaths::ConfigLocation).first();
     configPath = configPath
-                 + "/" + QApplication::organizationName()
-                 + "/" + GRANDSEARCH_DAEMON_NAME
-                 + "/" + GRANDSEARCH_DAEMON_NAME + ".conf";
+            + "/" + QApplication::organizationName()
+            + "/" + GRANDSEARCH_DAEMON_NAME
+            + "/" + GRANDSEARCH_DAEMON_NAME + ".conf";
+
+    qCDebug(logGrandSearch) << "Initializing search configuration - Path:" << configPath;
 
     QFileInfo configFile(configPath);
     if (!configFile.exists()) {
+        qCDebug(logGrandSearch) << "Creating configuration directory structure";
         configFile.absoluteDir().mkpath(".");
 
         // 根据要求，明确生成文件，而非等设置值时自动生成文件
         QFile file(configPath);
         file.open(QFile::NewOnly);
         file.close();
-        qInfo() << "create conf " << configPath;
+        qCInfo(logGrandSearch) << "Created new configuration file:" << configPath;
     }
 
     m_settings = new QSettings(configPath, QSettings::IniFormat);
@@ -48,11 +56,14 @@ SearchConfig::SearchConfig()
     if (m_settings->childKeys().contains(GRANDSEARCH_VERSION_CONFIG)) {
         QString curVersion = m_settings->value(GRANDSEARCH_VERSION_CONFIG).toString();
         if (curVersion != GRANDSEARCH_VERSION_CONFIG_CURRENT) {
-            qWarning() << "read config version:" << curVersion << ",and software version:" << GRANDSEARCH_VERSION_CONFIG_CURRENT;
+            qCWarning(logGrandSearch) << "Configuration version mismatch - Current:" << curVersion
+                                      << "Required:" << GRANDSEARCH_VERSION_CONFIG_CURRENT;
+            qCDebug(logGrandSearch) << "Converting configuration file to latest version";
             convertConfigFile();
             m_settings->setValue(GRANDSEARCH_VERSION_CONFIG, GRANDSEARCH_VERSION_CONFIG_CURRENT);
         }
     } else {
+        qCDebug(logGrandSearch) << "Setting initial configuration version:" << GRANDSEARCH_VERSION_CONFIG_CURRENT;
         m_settings->setValue(GRANDSEARCH_VERSION_CONFIG, GRANDSEARCH_VERSION_CONFIG_CURRENT);
     }
     m_settings->endGroup();
@@ -76,6 +87,9 @@ QVariant SearchConfig::getConfig(const QString &group, const QString &key, const
     m_settings->beginGroup(group);
     QVariant result = m_settings->value(key, defaultValue);
     m_settings->endGroup();
+
+    qCDebug(logGrandSearch) << "Config retrieved - Group:" << group << "Key:" << key
+                            << "HasValue:" << !result.isNull() << "Type:" << result.typeName();
     return result;
 }
 
@@ -85,6 +99,9 @@ void SearchConfig::setConfig(const QString &group, const QString &key, const QVa
     m_settings->beginGroup(group);
     m_settings->setValue(key, value);
     m_settings->endGroup();
+
+    qCDebug(logGrandSearch) << "Config set - Group:" << group << "Key:" << key
+                            << "Value type:" << value.typeName();
 }
 
 void SearchConfig::removeConfig(const QString &group, const QString &key)
@@ -103,6 +120,7 @@ void SearchConfig::setConfigList(const QString &group, const QStringList &keys, 
         m_settings->setValue(keys.value(i), values.value(i));
     }
     m_settings->endGroup();
+    qCDebug(logGrandSearch) << "Config list set - Group:" << group << "Count:" << keys.size();
 }
 
 void SearchConfig::removeConfigList(const QString &group, const QStringList &keys)

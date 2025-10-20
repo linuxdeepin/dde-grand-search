@@ -16,6 +16,9 @@
 
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE
@@ -24,6 +27,8 @@ using namespace GrandSearch;
 PlanWidget::PlanWidget(QWidget *parent)
     : DWidget(parent)
 {
+    qCDebug(logGrandSearch) << "Creating PlanWidget";
+
     m_groupLabel = new QLabel(tr("Search experience program"), this);
     m_groupLabel->adjustSize();
 
@@ -48,7 +53,9 @@ PlanWidget::PlanWidget(QWidget *parent)
     QString content = tr("Joining the search experience program means that "
                          "you grant and authorize us to collect the information of "
                          "your device and system, file icons, content and properties, "
-                         "applications and their configurations. If you refuse our collection "
+                         "applications and their configurations, the contents you search while using the Application, "
+                         "the time of search, the type of requested large model."
+                         "If you refuse our collection "
                          "and use of the aforementioned information, do not join the program.");
     m_contentLabel = new QLabel(content, this);
     m_contentLabel->setWordWrap(true);
@@ -79,6 +86,8 @@ PlanWidget::PlanWidget(QWidget *parent)
 
     connect(m_switchWidget, &SwitchWidget::checkedChanged, this, &PlanWidget::onSwitchStateChanged);
     connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &PlanWidget::updateIcons);
+
+    qCDebug(logGrandSearch) << "PlanWidget created successfully";
 }
 
 PlanWidget::~PlanWidget()
@@ -92,6 +101,7 @@ void PlanWidget::onSwitchStateChanged(const bool checked)
     SwitchWidget *switchWidget = static_cast<SwitchWidget *>(obj);
 
     if (switchWidget) {
+        qCDebug(logGrandSearch) << "Search experience program configuration changed - Enabled:" << checked;
         SearchConfig::instance()->setConfig(GRANDSEARCH_PLAN_GROUP, GRANDSEARCH_PLAN_EXPERIENCE, checked);
     }
 }

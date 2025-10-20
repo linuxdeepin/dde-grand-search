@@ -8,6 +8,7 @@
 #include "global/searchconfigdefine.h"
 #include "global/searchhelper.h"
 #include "comboboxwidget/comboboxwidget.h"
+#include "tipslabel.h"
 
 #include <DWidget>
 #include <DComboBox>
@@ -15,6 +16,9 @@
 #include <DLineEdit>
 
 #include <QByteArray>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 #define Margin  10
 
@@ -23,16 +27,18 @@ DCORE_USE_NAMESPACE
 using namespace GrandSearch;
 
 static const QHash<int, QString> searchEngineEnglish{{0, GRANDSEARCH_WEB_SEARCHENGINE_GOOGLE}, {1, GRANDSEARCH_WEB_SEARCHENGINE_YAHOO},
-                          {2, GRANDSEARCH_WEB_SEARCHENGINE_BING}, {3, GRANDSEARCH_WEB_SEARCHENGINE_BAIDU}, 
+                          {2, GRANDSEARCH_WEB_SEARCHENGINE_BING}, {3, GRANDSEARCH_WEB_SEARCHENGINE_BAIDU},
                           {4, GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM}};
 static const QHash<int, QString> searchEngineChinese{{0, GRANDSEARCH_WEB_SEARCHENGINE_BAIDU}, {1, GRANDSEARCH_WEB_SEARCHENGINE_SOGOU},
-                                 {2, GRANDSEARCH_WEB_SEARCHENGINE_360}, {3, GRANDSEARCH_WEB_SEARCHENGINE_GOOGLE},
-                                 {4, GRANDSEARCH_WEB_SEARCHENGINE_YAHOO}, {5, GRANDSEARCH_WEB_SEARCHENGINE_BING}, 
-                                 {6, GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM}};
+                                 {2, GRANDSEARCH_WEB_SEARCHENGINE_360}, {3, GRANDSEARCH_WEB_SEARCHENGINE_360AI}, {4, GRANDSEARCH_WEB_SEARCHENGINE_GOOGLE},
+                                 {5, GRANDSEARCH_WEB_SEARCHENGINE_YAHOO}, {6, GRANDSEARCH_WEB_SEARCHENGINE_BING},
+                                 {7, GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM}};
 
 SearchEngineWidget::SearchEngineWidget(QWidget *parent)
     :DWidget(parent)
 {
+    qCDebug(logGrandSearch) << "Creating SearchEngineWidget";
+
     m_groupLabel = new QLabel(tr("Default search engine"), this);
     m_groupLabel->adjustSize();
 
@@ -43,12 +49,8 @@ SearchEngineWidget::SearchEngineWidget(QWidget *parent)
 
     QString content = tr("Search for keywords by the default search engine.");
 
-    m_contentLabel = new QLabel(content, this);
+    m_contentLabel = new TipsLabel(content, this);
     m_contentLabel->setWordWrap(true);
-    DFontSizeManager::instance()->bind(m_contentLabel, DFontSizeManager::T8);
-    QPalette p(m_contentLabel->palette());
-    p.setColor(QPalette::Active, QPalette::WindowText, QColor("#526A7F"));
-    m_contentLabel->setPalette(p);
     m_mainLayout->addWidget(m_contentLabel);
 
     m_comboboxWidget = new ComboboxWidget(this);
@@ -71,10 +73,12 @@ SearchEngineWidget::SearchEngineWidget(QWidget *parent)
         const QString searchEngineBing = tr("Bing");
         const QString searchEngineYahoo = tr("Yahoo");
         const QString searchEngine360 = tr("360");
+        const QString searchEngine360AI = tr("360 AI Search");
         const QString searchEngineSogou = tr("Sogou");
         const QString searchEngineCustom = tr("Custom");
         if (searchHelper->isSimplifiedChinese()) {
-            list << searchEngineBaidu << searchEngineSogou << searchEngine360 << searchEngineGoogle << searchEngineYahoo << searchEngineBing << searchEngineCustom;
+            list << searchEngineBaidu << searchEngineSogou << searchEngine360 << searchEngine360AI
+            << searchEngineGoogle << searchEngineYahoo << searchEngineBing << searchEngineCustom;
         } else {
             list << searchEngineGoogle<< searchEngineYahoo << searchEngineBing << searchEngineBaidu << searchEngineCustom;
         }
@@ -104,6 +108,8 @@ SearchEngineWidget::SearchEngineWidget(QWidget *parent)
 
     connect(m_comboboxWidget, &ComboboxWidget::checkedChanged, this, &SearchEngineWidget::checkedChangedIndex);
     connect(m_lineEdit, &DLineEdit::textChanged, this, &SearchEngineWidget::setCustomSearchEngineAddress);
+
+    qCDebug(logGrandSearch) << "SearchEngineWidget created with default engine:" << userChoice;
 }
 
 SearchEngineWidget::~SearchEngineWidget()
@@ -123,6 +129,8 @@ void SearchEngineWidget::checkedChangedIndex(int index)
         } else {
             text = searchEngineEnglish.value(index);
         }
+
+        qCDebug(logGrandSearch) << "Search engine changed to:" << text << "Index:" << index;
         SearchConfig::instance()->setConfig(GRANDSEARCH_WEB_GROUP, GRANDSEARCH_WEB_SEARCHENGINE, text);
 
         if (text == GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM) {

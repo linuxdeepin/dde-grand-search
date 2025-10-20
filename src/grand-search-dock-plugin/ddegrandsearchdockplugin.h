@@ -5,10 +5,17 @@
 #ifndef DDEGRANDSEARCHDOCKPLUGIN_H
 #define DDEGRANDSEARCHDOCKPLUGIN_H
 
-#include <pluginsiteminterface.h>
+#include "versiondefine.h"
+
+#ifdef USE_DOCK_2_0
+#    include <pluginsiteminterface_v2.h>
+#else
+#    include <pluginsiteminterface.h>
+#endif
 
 #include <QObject>
 #include <QScopedPointer>
+#include <QLabel>
 
 class QGSettings;
 
@@ -16,6 +23,15 @@ namespace GrandSearch {
 
 class TipsWidget;
 class GrandSearchWidget;
+#ifdef USE_DOCK_2_0
+class DdeGrandSearchDockPlugin : public QObject, public PluginsItemInterfaceV2
+{
+    Q_OBJECT
+    // 声明实现了的接口
+    Q_INTERFACES(PluginsItemInterfaceV2)
+    // 插件元数据
+    Q_PLUGIN_METADATA(IID ModuleInterface_iid_V2 FILE "ddegrandsearch_dockplugin2.json")
+#else
 class DdeGrandSearchDockPlugin : public QObject, PluginsItemInterface
 {
     Q_OBJECT
@@ -23,7 +39,7 @@ class DdeGrandSearchDockPlugin : public QObject, PluginsItemInterface
     Q_INTERFACES(PluginsItemInterface)
     // 插件元数据
     Q_PLUGIN_METADATA(IID "com.deepin.dock.PluginsItemInterface" FILE "ddegrandsearch_dockplugin.json")
-
+#endif
 public:
     explicit DdeGrandSearchDockPlugin(QObject *parent = nullptr);
     ~DdeGrandSearchDockPlugin() override;
@@ -67,15 +83,31 @@ public:
     // 菜单执行项
     void invokedMenuItem(const QString &itemKey, const QString &menuId, const bool checked) override;
 
-    QIcon icon(const DockPart &dockPart, DGuiApplicationHelper::ColorType themeType = DGuiApplicationHelper::instance()->themeType()) override;
+#ifdef USE_DOCK_2_0
+    Dock::PluginFlags flags() const override
+    {
+        return Dock::Type_Quick | Dock::Quick_Panel_Single | Dock::Attribute_Normal;
+    }
+    virtual void setMessageCallback(MessageCallbackFunc cb) override { m_messageCallback = cb; }
+#endif
 
 private slots:
+#if (QT_VERSION_MAJOR < 6)
     void onGsettingsChanged(const QString &key);
+#endif
+    void onVisibleChanged(bool visible);
 
 private:
     QScopedPointer<GrandSearchWidget> m_searchWidget;
+#if (QT_VERSION_MAJOR < 6)
     QScopedPointer<QGSettings> m_gsettings;
+#endif
     QScopedPointer<TipsWidget> m_tipsWidget;
+    QScopedPointer<QWidget> m_quickWidget;
+
+#ifdef USE_DOCK_2_0
+    MessageCallbackFunc m_messageCallback = nullptr;
+#endif
 };
 
 }

@@ -26,11 +26,15 @@ public slots:
     // 接收后端搜索完成信号，停止心跳发送
     void onSearchCompleted(const QString &missionId);
 
+    void performSearch();
+
 public:
     QueryController *q_p = nullptr;
     QString m_missionId;
     QString m_searchText;
+    QString m_pendingSearchText;   // 待处理的搜索文本
     QTimer *m_keepAliveTimer = nullptr;
+    QTimer *m_debounceTimer = nullptr;   // 防抖定时器
 
     DaemonGrandSearchInterface *m_daemonDbus = nullptr;
 };

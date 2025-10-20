@@ -11,7 +11,6 @@ Source0:        %{name}_%{version}.orig.tar.xz
 BuildRequires:  dtkcore-devel >= 5.1
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
-BuildRequires:  pkgconfig(dframeworkdbus) >= 2.0
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Gui)
 BuildRequires:  pkgconfig(Qt5Widgets)

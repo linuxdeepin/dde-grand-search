@@ -1,0 +1,405 @@
+// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+#include "llmwidget.h"
+#include "downloader.h"
+
+#include <DFontSizeManager>
+#include <DGuiApplicationHelper>
+#include <DMenu>
+#include <DToolButton>
+#include <DDialog>
+
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QTimer>
+#include <QtConcurrent>
+#include <QStandardPaths>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
+
+DWIDGET_USE_NAMESPACE
+using namespace GrandSearch;
+
+// static constexpr int TIMERBEGIN = 720;//5秒轮询安装和更新状态60分钟
+
+static constexpr char MODELNAME[] = "yourong1.5B-Instruct-GGUF";
+
+LLMWidget::LLMWidget(DWidget *parent)
+    : DWidget(parent)
+{
+    initUI();
+    initConnect();
+    installEventFilter(this);
+    QString homePath = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    m_installPath = homePath + "/.local/share/deepin-modelhub/models";
+    m_baseUrl = "https://www.modelscope.cn/models/uniontech-yourong";
+    m_modelFileList << "/modelhub/config.json"
+                    << "/modelhub/LICENSE"
+                    << "/modelhub/template"
+                    << "/modelhub/template_dsl"
+                    << "/modelhub/template_func"
+                    << "/yourong_1.5B_bf16_Q4_K_M.gguf";
+}
+
+LLMWidget::~LLMWidget()
+{
+}
+
+void LLMWidget::initUI()
+{
+    m_pLabelTheme = new DLabel;
+    DFontSizeManager::instance()->bind(m_pLabelTheme, DFontSizeManager::T6, QFont::Medium);
+    m_pLabelTheme->setElideMode(Qt::ElideRight);
+
+    m_spinner = new DSpinner(this);
+    m_spinner->setFixedSize(12, 12);
+    m_spinner->hide();
+
+    m_pLabelStatus = new DLabel(tr("Not Installed"));
+    m_pLabelStatus->setForegroundRole(QPalette::Text);
+    DFontSizeManager::instance()->bind(m_pLabelStatus, DFontSizeManager::T8, QFont::Medium);
+
+    auto topLayout = new QHBoxLayout();
+    topLayout->setContentsMargins(0, 0, 0, 0);
+    topLayout->addWidget(m_pLabelTheme, 0, Qt::AlignLeft);
+    topLayout->addStretch();
+    topLayout->addWidget(m_spinner, 0, Qt::AlignRight);
+    topLayout->addWidget(m_pLabelStatus, 0, Qt::AlignRight);
+
+    m_pLabelSummary = new DLabel;
+    m_pLabelSummary->setForegroundRole(QPalette::Text);
+    DFontSizeManager::instance()->bind(m_pLabelSummary, DFontSizeManager::T8, QFont::Normal);
+    m_pLabelSummary->setElideMode(Qt::ElideRight);
+
+    m_pManageModel = new ModelManageButton(tr("Install Model"), this);
+    QPixmap pixmap = QApplication::style()->standardIcon(QStyle::SP_ArrowDown).pixmap(QSize(10, 10));
+    QPainter painter(&pixmap);
+    painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+    painter.fillRect(pixmap.rect(), DGuiApplicationHelper::instance()->applicationPalette().textTips());
+    m_pManageModel->setIcon(pixmap);
+    m_pManageModel->setProperty("modelStatus", Uninstall);
+    DFontSizeManager::instance()->bind(m_pManageModel, DFontSizeManager::T8, QFont::Medium);
+
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    mainLayout->setContentsMargins(10, 8, 10, 6);
+    mainLayout->setSpacing(5);
+    mainLayout->addLayout(topLayout);
+    mainLayout->addWidget(m_pLabelSummary, 0, Qt::AlignLeft);
+    mainLayout->addWidget(m_pManageModel, 0, Qt::AlignLeft);
+
+    m_updateAction = new QAction(tr("Update model"));
+    m_uninstallAction = new QAction(tr("Uninstall model"));
+
+    m_pMenu = new DMenu(this);
+    m_pMenu->setMinimumWidth(92);
+    m_pMenu->installEventFilter(this);
+    m_pMenu->addAction(m_updateAction);
+    m_pMenu->addAction(m_uninstallAction);
+
+    setLayout(mainLayout);
+}
+
+void LLMWidget::initConnect()
+{
+    connect(m_pManageModel, &DCommandLinkButton::clicked, this, &LLMWidget::onClickedStatusBtn);
+    connect(m_pMenu, &QMenu::triggered, this, &LLMWidget::onMoreMenuTriggered);
+}
+
+void LLMWidget::paintEvent(QPaintEvent *e)
+{
+    DPalette pl = m_pLabelSummary->palette();
+    QColor color = DGuiApplicationHelper::instance()->applicationPalette().color(DPalette::BrightText);
+    if (!isActiveWindow())
+        color.setAlphaF(0.4);
+    else
+        color.setAlphaF(0.6);
+    pl.setColor(QPalette::Text, color);
+    m_pLabelSummary->setPalette(pl);
+
+    pl = m_pLabelStatus->palette();
+    if (m_pManageModel->property("modelStatus").toInt() == Install) {
+        color = QColor(21, 190, 76);
+        color.setAlphaF(1);
+    } else
+        color.setAlphaF(0.6);
+
+    if (!isActiveWindow())
+        color.setAlphaF(0.4);
+
+    pl.setColor(QPalette::Text, color);
+    m_pLabelStatus->setPalette(pl);
+
+    DWidget::paintEvent(e);
+}
+
+void LLMWidget::onClickedStatusBtn()
+{
+    int modelStatus = m_pManageModel->property("modelStatus").toInt();
+    switch (modelStatus) {
+    case Install:
+        onUninstall();
+        break;
+    case Uninstall: {
+        m_pManageModel->setText(tr("Installing"));
+        m_pManageModel->setEnabled(false);
+        m_pManageModel->updateRectSize();
+        m_spinner->show();
+        m_spinner->start();
+        onInstall();
+        break;
+    }
+    case InstallAndUpdate:
+        m_pMenu->exec(m_pManageModel->mapToGlobal(m_pManageModel->rect().bottomLeft() + QPoint(0, 5)));
+        break;
+    default:
+        break;
+    }
+}
+
+bool LLMWidget::isInstalled()
+{
+    return m_pManageModel->property("modelStatus").toInt() != Uninstall;
+}
+
+void LLMWidget::pluginStateChanged(bool enable)
+{
+    m_pluginInstalled = enable;
+    if (m_downloader.isNull() || m_downloader->isFinished())
+        checkInstallStatus();
+}
+
+void LLMWidget::onMoreMenuTriggered(const QAction *action)
+{
+    if (action == m_uninstallAction) {
+        onUninstall();
+    } else {
+        //        onInstall();//更新模型也打开应用商店的下载界面去更新
+    }
+}
+
+void LLMWidget::onInstall()
+{
+    // http请求下载
+    QDir destinationDir(m_installPath + "/." + MODELNAME);
+
+    if (destinationDir.mkpath("gguf")) {
+        qCInfo(logGrandSearch) << "Created model directory successfully - Path:" << destinationDir.absolutePath();
+    } else {
+        qCWarning(logGrandSearch) << "Failed to create model directory - Path:" << destinationDir.absolutePath();
+        return;
+    }
+
+    destinationDir.cd("gguf");
+
+    m_downloader.reset(new Downloader(destinationDir.absolutePath()));
+    connect(m_downloader.data(), &Downloader::downloadFinished, this, &LLMWidget::onDownloadFinished);
+    connect(m_downloader.data(), &Downloader::onDownloadProgress, this, &LLMWidget::onDownloadProgress);
+
+    foreach (const QString &fileUrl, m_modelFileList) {
+        QString url = m_baseUrl + "/" + MODELNAME + "/resolve/master" + fileUrl;
+        m_downloader->addDownloadTask(QUrl(url));
+    }
+}
+
+void LLMWidget::onUninstall()
+{
+    DDialog dlg(this);
+    dlg.setIcon(QIcon(":icons/dde-grand-search-setting.svg"));
+    dlg.setMaximumWidth(380);
+    dlg.setTitle(tr("Are you sure you want to delete this model?"));
+    dlg.setMessage(tr("After uninstallation, functions such as AI Search and UOS AI Assistant will not work properly."));
+    dlg.addButton(tr("Cancel", "button"), false, DDialog::ButtonNormal);
+    dlg.addButton(tr("Confirm", "button"), true, DDialog::ButtonWarning);
+    auto labelList = dlg.findChildren<QLabel *>();
+    for (auto messageLabel : labelList) {
+        if ("MessageLabel" == messageLabel->objectName())
+            messageLabel->setFixedWidth(dlg.width() - 20);
+    }
+    if (DDialog::Accepted == dlg.exec()) {
+        QDir installFile(m_installPath + "/YouRong-1.5B");
+
+        if (installFile.exists()) {
+            if (installFile.removeRecursively())
+                qCInfo(logGrandSearch) << "Model directory removed successfully - Path:" << installFile.absolutePath();
+            else
+                qCWarning(logGrandSearch) << "Failed to remove model directory - Path:" << installFile.absolutePath();
+        }
+        checkInstallStatus();
+    }
+}
+
+void LLMWidget::onProcessFinished(int exitCode, QProcess::ExitStatus exitStatus)
+{
+    QProcess *process = qobject_cast<QProcess *>(sender());
+    if (process) {
+        if (exitStatus == QProcess::NormalExit && exitCode == 0) {
+            qCInfo(logGrandSearch) << "Git clone completed successfully";
+            if (onDealInstalledModel())
+                checkInstallStatus();
+        } else {
+            qCWarning(logGrandSearch) << "Git clone failed - Exit code:" << exitCode;
+        }
+    }
+}
+
+bool LLMWidget::onDealInstalledModel()
+{
+    QDir installFile(m_installPath + MODELNAME);
+
+    if (installFile.exists()) {
+        QDir sourceDir(m_installPath + MODELNAME + "/modelhub");
+        if (!sourceDir.exists()) {
+            qCWarning(logGrandSearch) << "Source directory not found - Path:" << sourceDir.absolutePath();
+            return false;
+        }
+
+        QDir destinationDir(m_installPath + MODELNAME);
+
+        if (destinationDir.mkpath("gguf")) {
+            qCInfo(logGrandSearch) << "Created model directory successfully - Path:" << destinationDir.absolutePath();
+        } else {
+            qCWarning(logGrandSearch) << "Failed to create model directory - Path:" << destinationDir.absolutePath();
+            return false;
+        }
+
+        destinationDir.cd("gguf");
+
+        QStringList files = sourceDir.entryList(QDir::Files);
+        for (const QString &fileName : files) {
+            QString sourceFilePath = sourceDir.absoluteFilePath(fileName);
+            QString destinationFilePath = destinationDir.absoluteFilePath(fileName);
+            if (!QFile::rename(sourceFilePath, destinationFilePath)) {
+                qCWarning(logGrandSearch) << "Failed to move model file - Source:" << sourceFilePath
+                                          << "Destination:" << destinationFilePath;
+                return false;
+            }
+        }
+
+        auto filesInfo = installFile.entryInfoList(QDir::Files);
+        for (const QFileInfo &info : filesInfo) {
+            if (info.suffix() == "gguf") {
+                QString sourceFilePath = info.absoluteFilePath();
+                if (!QFile::rename(sourceFilePath, destinationDir.absoluteFilePath(info.fileName()))) {
+                    qCWarning(logGrandSearch) << "Failed to move model file - Source:" << sourceFilePath
+                                              << "Destination:" << destinationDir.absoluteFilePath(info.fileName());
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
+void LLMWidget::onDownloadFinished()
+{
+    QString originalFolderPath = m_installPath + "/." + MODELNAME;
+    QString targetFolderPath = m_installPath + "/YouRong-1.5B";
+
+    QDir dir(originalFolderPath);
+
+    if (dir.exists()) {
+        if (dir.rename(originalFolderPath, targetFolderPath)) {
+            qCInfo(logGrandSearch) << "Model files downloaded and moved successfully - Target:" << targetFolderPath;
+        } else {
+            qCWarning(logGrandSearch) << "Failed to move downloaded model files - Source:" << originalFolderPath
+                                      << "Target:" << targetFolderPath;
+        }
+    }
+
+    checkInstallStatus();
+}
+
+void LLMWidget::onDownloadProgress(qint64 bytesReceived, qint64 bytesTotal)
+{
+    if (bytesTotal <= 1024)
+        return;
+
+    double progress = static_cast<double>(bytesReceived) / static_cast<double>(bytesTotal) * 100.0;
+    progress = round(progress * 100) / 100;
+
+    if (progress >= m_lastProgress) {
+        m_pLabelStatus->setText(tr("Installing ") + QString::number(progress, 'f', 1) + "%");
+        m_lastProgress = progress;
+    }
+}
+
+void LLMWidget::checkInstallStatus()
+{
+    QDir installFile(m_installPath + "/YouRong-1.5B");
+
+    m_pManageModel->setProperty("modelStatus", installFile.exists() ? Install : Uninstall);
+
+    changeInstallStatus();
+}
+
+bool LLMWidget::onCloseEvent()
+{
+    if (m_downloader && !m_downloader->isFinished()) {
+        DDialog dlg(this);
+        dlg.setIcon(QIcon(":icons/dde-grand-search-setting.svg"));
+        dlg.setMaximumWidth(380);
+        dlg.setTitle(tr("Installing the ULLM"));
+        dlg.setMessage(tr("Exiting will cause the installation to fail, do you still want to exit?"));
+        dlg.addButton(tr("Exit", "button"), false, DDialog::ButtonNormal);
+        dlg.addButton(tr("Continue", "button"), true, DDialog::ButtonRecommend);
+        auto labelList = dlg.findChildren<QLabel *>();
+        for (auto messageLabel : labelList) {
+            if ("MessageLabel" == messageLabel->objectName())
+                messageLabel->setFixedWidth(dlg.width() - 20);
+        }
+        if (DDialog::Rejected != dlg.exec())
+            return false;
+
+        if (Uninstall == m_pManageModel->property("modelStatus").toInt()) {
+            m_downloader->cancelDownloads();
+            QDir installFile(m_installPath + "/." + MODELNAME);
+
+            if (installFile.exists()) {
+                if (installFile.removeRecursively())
+                    qCInfo(logGrandSearch) << "Model directory removed successfully - Path:" << installFile.absolutePath();
+                else
+                    qCWarning(logGrandSearch) << "Failed to remove model directory - Path:" << installFile.absolutePath();
+            }
+            checkInstallStatus();
+        }
+    }
+
+    return true;
+}
+
+void LLMWidget::changeInstallStatus()
+{
+    int modelStatus = m_pManageModel->property("modelStatus").toInt();
+    switch (modelStatus) {
+    case Install: {
+        m_pManageModel->setText(tr("UnInstall Model"));
+        m_pLabelStatus->setText(tr("Installed"));
+        m_pManageModel->setEnabled(true);
+        break;
+    }
+    case Uninstall: {
+        m_pManageModel->setText(tr("Install Model"));
+        m_pLabelStatus->setText(tr("Not Installed"));
+        m_pManageModel->setEnabled(m_pluginInstalled);
+        if (m_pluginInstalled)
+            m_pManageModel->setToolTip("");
+        else
+            m_pManageModel->setToolTip(tr("Please install the \"Embedding Plugins\" first before installing this model."));
+        break;
+    }
+    default:
+        break;
+    }
+    m_spinner->hide();
+    m_spinner->stop();
+    m_pManageModel->updateRectSize();
+}
+
+void LLMWidget::setText(const QString &theme, const QString &summary)
+{
+    m_pLabelTheme->setText(theme);
+    m_pLabelSummary->setText(summary);
+}

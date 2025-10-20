@@ -8,22 +8,32 @@
 #include "utils/previewpluginconf.h"
 #include "utils/utils.h"
 
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
+
 using namespace GrandSearch;
 
 PreviewPluginManager::PreviewPluginManager()
-    : QObject ()
+    : QObject()
 {
+    qCDebug(logGrandSearch) << "Creating PreviewPluginManager";
     readPluginConfig();
+    qCDebug(logGrandSearch) << "PreviewPluginManager created - Total plugins:" << m_plugins.size();
 }
 
 PreviewPluginManager::~PreviewPluginManager()
 {
+    qCDebug(logGrandSearch) << "Destroying PreviewPluginManager";
     clearPluginInfo();
 }
 
 PreviewPlugin *PreviewPluginManager::getPreviewPlugin(const MatchedItem &item)
 {
-    PreviewPlugin* previewPlugin = nullptr;
+    qCDebug(logGrandSearch) << "Getting preview plugin for item - Name:" << item.name
+                            << "Type:" << item.type;
+
+    PreviewPlugin *previewPlugin = nullptr;
 
     QString mimeType = item.type;
     if (mimeType.isEmpty())
@@ -34,13 +44,13 @@ PreviewPlugin *PreviewPluginManager::getPreviewPlugin(const MatchedItem &item)
             if (!pluginInfo.bValid)
                 continue;
 
-            //需支持正则表达式 todo
+            // 需支持正则表达式 todo
             if (isMimeTypeMatch(mimeType, pluginInfo.mimeTypes)) {
                 if (nullptr == pluginInfo.pPlugin) {
                     // 加载预览插件
                     QPluginLoader *loader = new QPluginLoader(pluginInfo.path, this);
                     if (!loader->load()) {
-                        qWarning() << QString("load %0 error: %1").arg(pluginInfo.path).arg(loader->errorString());
+                        qCWarning(logGrandSearch) << "Failed to load preview plugin - Path:" << pluginInfo.path << "Error:" << loader->errorString();
                         loader->deleteLater();
                         continue;
                     }
@@ -50,8 +60,11 @@ PreviewPlugin *PreviewPluginManager::getPreviewPlugin(const MatchedItem &item)
 
                 // 从预览插件创建或获取预览界面
                 QObject *pluginObject = pluginInfo.pPlugin->instance();
-                if (PreviewPluginInterface *pluginIFace = qobject_cast<PreviewPluginInterface*>(pluginObject))
+                if (PreviewPluginInterface *pluginIFace = qobject_cast<PreviewPluginInterface *>(pluginObject)) {
                     previewPlugin = pluginIFace->create(mimeType);
+                    qCDebug(logGrandSearch) << "Created preview plugin - Name:" << pluginInfo.name
+                                            << "MimeType:" << mimeType;
+                }
                 break;
             }
         }
@@ -94,7 +107,7 @@ bool PreviewPluginManager::readPluginConfig()
 {
     // 获取预览插件路径
 #ifdef QT_DEBUG
-    char path[PATH_MAX] = {0};
+    char path[PATH_MAX] = { 0 };
     const char *defaultPath = realpath("./", path);
 #else
     auto defaultPath = PLUGIN_PREVIEW_DIR;
@@ -102,7 +115,7 @@ bool PreviewPluginManager::readPluginConfig()
     static_assert(std::is_same<decltype(defaultPath), const char *>::value, "PLUGIN_PREVIEW_DIR is not a string.");
 
     // 设置预览插件路径
-    setPluginPath({QString(defaultPath)});
+    setPluginPath({ QString(defaultPath) });
 
     // 从预览插件路径加载预览插件信息
     return loadConfig();
@@ -118,20 +131,22 @@ bool PreviewPluginManager::loadConfig()
         if (!dir.isReadable())
             continue;
 
-        auto entrys = dir.entryInfoList({"*.conf"}, QDir::Files, QDir::Name);
+        auto entrys = dir.entryInfoList({ "*.conf" }, QDir::Files, QDir::Name);
         for (const QFileInfo &entry : entrys) {
             PreviewPluginInfo info;
             if (readInfo(entry.absoluteFilePath(), info)) {
                 // 检查插件版本是否向下兼容
                 if (!downwardCompatibility(info.version)) {
-                    qWarning() << QString("do not support this version(%1), plugin name:%2 plugin version:%3").arg(m_mainVersion).arg(info.name).arg(info.version);
+                    qCWarning(logGrandSearch) << "Plugin version not supported - Version:" << info.version
+                                              << "Plugin:" << info.name
+                                              << "Required version:" << m_mainVersion;
                     continue;
                 }
 
-                qInfo() << "add plugin info" << entry.fileName() << info.name;
+                qCInfo(logGrandSearch) << "Plugin loaded successfully - File:" << entry.fileName() << "Name:" << info.name;
                 m_plugins.push_back(info);
             } else {
-                qWarning() << "plugin info error:" << entry.absoluteFilePath();
+                qCWarning(logGrandSearch) << "Failed to read plugin configuration - Path:" << entry.absoluteFilePath();
             }
         }
     }
@@ -141,7 +156,7 @@ bool PreviewPluginManager::loadConfig()
 
 bool PreviewPluginManager::readInfo(const QString &path, PreviewPluginInfo &info)
 {
-    qDebug() << "load conf" << path;
+    qCDebug(logGrandSearch) << "Loading plugin configuration - Path:" << path;
     QSettings conf(path, QSettings::IniFormat);
 
     if (!conf.childGroups().contains(PREVIEW_PLUGINIFACE_CONF_ROOT))
@@ -154,7 +169,7 @@ bool PreviewPluginManager::readInfo(const QString &path, PreviewPluginInfo &info
     if (info.name.isEmpty())
         return false;
     if (getPreviewPlugin(info.name)) {
-        qWarning() << "duplicate plugin name" << path << info.name;
+        qCWarning(logGrandSearch) << "Duplicate plugin name found - Path:" << path << "Name:" << info.name;
         return false;
     }
 
@@ -163,8 +178,12 @@ bool PreviewPluginManager::readInfo(const QString &path, PreviewPluginInfo &info
     if (info.version.isEmpty())
         return false;
 
-    // 支持预览的mimetype列表
+        // 支持预览的mimetype列表
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     info.mimeTypes = conf.value(PREVIEW_PLUGINIFACE_CONF_MIMETYPES, "").toString().split(':', QString::SkipEmptyParts);
+#else
+    info.mimeTypes = conf.value(PREVIEW_PLUGINIFACE_CONF_MIMETYPES, "").toString().split(':', Qt::SkipEmptyParts);
+#endif
     if (info.mimeTypes.isEmpty())
         return false;
 
@@ -185,8 +204,8 @@ PreviewPluginInfo *PreviewPluginManager::getPreviewPlugin(const QString &name)
 
     int nPluginCount = m_plugins.count();
     for (int i = 0; i < nPluginCount; i++) {
-      if(m_plugins[i].name == name)
-          return &m_plugins[i];
+        if (m_plugins[i].name == name)
+            return &m_plugins[i];
     }
 
     return nullptr;
@@ -198,14 +217,14 @@ void PreviewPluginManager::setPluginPath(const QStringList &dirPaths)
     for (const QString &path : dirPaths) {
         QDir dir(path);
         if (dir.isReadable()) {
-            qDebug() << "add plugin path:" << path;
+            qCDebug(logGrandSearch) << "Adding plugin path - Path:" << path;
             paths << path;
+        } else {
+            qCWarning(logGrandSearch) << "Invalid plugin path - Path:" << path;
         }
-        else
-            qWarning() << "invaild plugin path:" << path;
     }
 
-    qDebug() << "update plugin paths" << paths.size();
+    qCDebug(logGrandSearch) << "Updated plugin paths - Total paths:" << paths.size();
     m_paths = paths;
 }
 

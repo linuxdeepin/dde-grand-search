@@ -1,3 +1,250 @@
+dde-grand-search (6.0.25) unstable; urgency=medium
+
+  * fix: fix memory leak
+
+ -- wangrong <wangrong@uniontech.com>  Mon, 22 Sep 2025 11:33:34 +0800
+
+dde-grand-search (6.0.24) unstable; urgency=medium
+
+  * add pinyin acronym search support
+
+ -- Zhang Sheng <zhangsheng@uniontech.com>  Thu, 04 Sep 2025 19:01:32 +0800
+
+dde-grand-search (6.0.23) unstable; urgency=medium
+
+  * Update version to 6.0.23. 
+
+ -- Tian ShiLin <tianshilin@uniontech.com>  Wed, 20 Aug 2025 16:16:09 +0800
+
+dde-grand-search (6.0.22) unstable; urgency=medium
+
+  * fix: update translations
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Thu, 14 Aug 2025 09:43:21 +0800
+
+dde-grand-search (6.0.21) unstable; urgency=medium
+
+  * Update version to 6.0.21. 
+
+ -- Tian ShiLin <tianshilin@uniontech.com>  Thu, 07 Aug 2025 20:53:41 +0800
+
+dde-grand-search (6.0.20) unstable; urgency=medium
+
+  * chore: Update the help manual
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Thu, 10 Jul 2025 19:49:44 +0800
+
+dde-grand-search (6.0.19) unstable; urgency=medium
+
+  * update translations.
+
+ -- Liuyangming <liuyangming@uniontech.com>  Thu, 03 Jul 2025 16:02:31 +0800
+
+dde-grand-search (6.0.18) unstable; urgency=medium
+
+  * fix bugs
+  * update translations
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Tue, 01 Jul 2025 20:35:21 +0800
+
+dde-grand-search (6.0.17) unstable; urgency=medium
+
+  * Deleted the `dde-grand-search_en_AU.ts` translation file as it is no longer needed.
+
+ -- Zhang Sheng <zhangsheng@uniontech.com>  Fri, 27 Jun 2025 17:09:41 +0800
+
+dde-grand-search (6.0.16) unstable; urgency=medium
+
+  * fix: The search icon looks pixelated
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Thu, 26 Jun 2025 13:58:09 +0800
+
+dde-grand-search (6.0.15) unstable; urgency=medium
+
+  * wildcard support
+
+ -- Zhang Sheng <zhangsheng@uniontech.com>  Mon, 23 Jun 2025 17:41:04 +0800
+
+dde-grand-search (6.0.14) unstable; urgency=medium
+
+  * update translations
+
+ -- Zhang Sheng <zhangsheng@uniontech.com>  Mon, 23 Jun 2025 11:48:11 +0800
+
+dde-grand-search (6.0.13) unstable; urgency=medium
+
+  * improve search method handling and logging in file search components
+
+ -- Zhang Sheng <zhangsheng@uniontech.com>  Fri, 13 Jun 2025 09:31:45 +0800
+
+dde-grand-search (6.0.12) unstable; urgency=medium
+
+  * fix bugs
+
+ -- Zhang Sheng <zhangsheng@uniontech.com>  Thu, 29 May 2025 19:20:34 +0800
+
+dde-grand-search (6.0.11) unstable; urgency=medium
+
+  * new file-search
+
+ -- Zhang Sheng <zhangsheng@uniontech.com>  Wed, 21 May 2025 18:11:40 +0800
+
+dde-grand-search (6.0.10) unstable; urgency=medium
+
+  * refactor search for filename 
+
+ -- Zhang Sheng <zhangsheng@uniontech.com>  Tue, 20 May 2025 09:50:31 +0800
+
+dde-grand-search (6.0.9) unstable; urgency=medium
+
+  * New version 6.0.9
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Thu, 10 Apr 2025 20:14:55 +0800
+
+dde-grand-search (6.0.8) unstable; urgency=medium
+
+  * New version 6.0.8
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Thu, 10 Apr 2025 16:26:56 +0800
+
+dde-grand-search (6.0.7) unstable; urgency=medium
+
+  * fix: improve service availability check in FileNameSearcher
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Wed, 02 Apr 2025 15:56:32 +0800
+
+dde-grand-search (6.0.6) unstable; urgency=medium
+
+  * New version 6.0.6. 
+
+ -- Wang Yu <wangyu@uniontch.com>  Thu, 27 Mar 2025 14:01:08 +0800
+
+dde-grand-search (6.0.5) unstable; urgency=medium
+
+  * New version 6.0.5. 
+
+ -- Wang Yu <wangyu@uniontch.com>  Thu, 06 Mar 2025 20:33:23 +0800
+
+dde-grand-search (6.0.4) unstable; urgency=medium
+
+  * fix: improve plugin item opening with async dbus call(Bug: 305007)
+
+ -- renbin <renbin@uniontech.com>  Thu, 27 Feb 2025 19:12:56 +0800
+
+dde-grand-search (6.0.3) unstable; urgency=medium
+
+  * New version 6.0.3
+
+ -- Liu zheng <liuzheng@uniontech.com>  Fri, 14 Feb 2025 10:15:53 +0800
+
+dde-grand-search (6.0.2) unstable; urgency=medium
+
+  * New version 6.0.2
+
+ -- Wang Yu <wangyu@uniontch.com>  Wed, 22 Jan 2025 10:40:39 +0800
+
+dde-grand-search (6.0.1) unstable; urgency=medium
+
+  * update dde-grand-search V25 6.0.1 baseline version
+
+ -- zhangyu <zhangyub@uniontech.com>  Tues, 21 Jan 2025 15:05:50 +0800
+
+dde-grand-search (6.0.0) unstable; urgency=medium
+
+  * New version 6.0.0
+  * support Qt6
+
+ -- Wang Yu <wangyu@uniontch.com>  Mon, 20 Jan 2025 13:49:28 +0800
+
+dde-grand-search (5.5.14) unstable; urgency=medium
+
+  * update version
+
+ -- Liu zheng <liuzheng@uniontech.com>  Fri, 17 Jan 2025 21:36:12 +0800
+
+dde-grand-search (5.5.13) unstable; urgency=medium
+
+  * update dde-grand-search V25 5.5.13 baseline version
+  * fix issue about launch app and CI build.
+
+ -- re2zero <yangwu@uniontech.com>  Fri, 17 Jan 2025 14:45:45 +0800
+
+dde-grand-search (5.5.12) unstable; urgency=medium
+
+  * update dde-grand-search V25 5.5.12 baseline version
+  * fix issue about launch app and CI build.
+
+ -- re2zero <yangwu@uniontech.com>  Fri, 17 Jan 2025 14:15:36 +0800
+
+dde-grand-search (5.5.11) unstable; urgency=medium
+
+  * update dde-grand-search V25 5.5.11 baseline version
+
+ -- zhangyu <zhangyub@uniontech.com>  Thu, 19 Dec 2024 21:18:40 +0800
+ 
+dde-grand-search (5.5.10) unstable; urgency=medium
+
+  * update varsion.
+  * Workaround blocked issue
+
+  -- re2zero <yangwu@uniontech.com>  Sat, 16 Dec 2024 04:28:55 +0800
+
+dde-grand-search (5.5.8) unstable; urgency=medium
+
+  * update varsion.
+
+ -- liuyangming <liuyangming@uniontech.com>  Sat, 14 Dec 2024 13:25:53 +0800
+
+dde-grand-search (5.5.7) unstable; urgency=medium
+
+  * Disable auto index.
+
+ -- Zhang Yu <zhangyub@uniontech.com>  Fri, 1 Nov 2024 15:20:14 +0800
+
+ dde-grand-search (5.5.6) unstable; urgency=medium
+
+  * DSL search
+
+ -- Zhang Yu <zhangyub@uniontech.com>  Thu, 31 Oct 2024 13:40:10 +0800
+
+ dde-grand-search (5.5.4) unstable; urgency=medium
+
+  * move daemon to deepin-service-manage
+  * 
+
+ -- zhangsheng <zhangsheng@uniontech.com>  Fri, 20 Sep 2024 18:05:58 +0800
+
+dde-grand-search (5.5.2) unstable; urgency=medium
+
+  * update dde-grand-search V23 5.5.2 baseline version
+
+ -- zhengyouge <zhengyouge@uniontech.com>  Mon, 12 Aug 2024 10:27:09 +0800
+
+dde-grand-search (5.5.1) unstable; urgency=medium
+
+  * update dde-grand-search V23 5.5.1 baseline version
+
+ -- zhangyu <zhangyub@uniontech.com>  Wed, 7 Aug 2024 21:21:23 +0800
+ 
+dde-grand-search (5.5.0) unstable; urgency=medium
+
+  * update dde-grand-search V23 5.5.0 baseline version
+
+ -- zhangyu <zhangyub@uniontech.com>  Thu, 13 Jun 2024 21:41:46 +0800
+ 
+dde-grand-search (5.4.9) unstable; urgency=medium
+
+  * update dde-grand-search V23 5.4.9 baseline version
+
+ -- zhanghongyuan <zhanghongyuan@uniontech.com>  Thu, 25 Apr 2024 10:36:46 +0800
+
+dde-grand-search (5.4.8) unstable; urgency=medium
+
+  * fix issue about launch app.
+  * 
+
+ -- xushitong <xushitong@uniontech.com>  Fri, 19 Apr 2024 13:52:11 +0800
+
 dde-grand-search (5.4.5) unstable; urgency=medium
 
   * update dde-grand-search V23 5.4.5 baseline version

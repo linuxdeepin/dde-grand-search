@@ -6,6 +6,7 @@
 #include "blacklistview/blacklistview.h"
 #include "blacklistview/deletedialog.h"
 #include "blacklistview/blacklistmodel.h"
+#include "tipslabel.h"
 
 #include <DWidget>
 #include <DFontSizeManager>
@@ -15,14 +16,19 @@
 #include <QFileDialog>
 #include <QStandardPaths>
 #include <QItemSelection>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 DWIDGET_USE_NAMESPACE
 
 using namespace GrandSearch;
 
 BlackListWidget::BlackListWidget(QWidget *parent)
-    :DWidget(parent)
+    : DWidget(parent)
 {
+    qCDebug(logGrandSearch) << "Creating BlackListWidget";
+
     m_groupLabel = new QLabel(tr("Excluded path"), this);
     m_groupLabel->adjustSize();
 
@@ -34,14 +40,8 @@ BlackListWidget::BlackListWidget(QWidget *parent)
     m_childHLayout = new QHBoxLayout();
     m_childHLayout->addWidget(m_groupLabel);
 
-    m_contentLabel = new QLabel(tr("Add paths to the exclusion list to prevent searching in them."), this);
-
+    m_contentLabel = new TipsLabel(tr("Add paths to the exclusion list to prevent searching in them."), this);
     m_contentLabel->setWordWrap(true);
-    DFontSizeManager::instance()->bind(m_contentLabel, DFontSizeManager::T8);
-    QPalette p(m_contentLabel->palette());
-    p.setColor(QPalette::Active, QPalette::WindowText, QColor("#526A7F"));
-    m_contentLabel->setPalette(p);
-
     m_childHLayout->addStretch();
 
     m_deleteButton = new DIconButton(this);
@@ -66,29 +66,37 @@ BlackListWidget::BlackListWidget(QWidget *parent)
     connect(m_addButton, &DIconButton::clicked, this, &BlackListWidget::addButtonClicked);
     connect(m_deleteButton, &DIconButton::clicked, this, &BlackListWidget::deleteButtonClicked);
     connect(m_listWrapper, &BlackListWrapper::selectedChanged, this, &BlackListWidget::selectedChanged);
+
+    qCDebug(logGrandSearch) << "BlackListWidget created successfully";
 }
 
 BlackListWidget::~BlackListWidget()
 {
-
+    qCDebug(logGrandSearch) << "Destroying BlackListWidget";
 }
 
 void BlackListWidget::addButtonClicked()
 {
+    qCDebug(logGrandSearch) << "Adding path to blacklist";
+
     QFileDialog fileDialog;
-    auto url = fileDialog.getExistingDirectoryUrl(this, QString("")
-                                                  , QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first());
+    auto url = fileDialog.getExistingDirectoryUrl(this, QString(""), QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first());
     QFileInfo info(url.toLocalFile());
     m_listWrapper->clearSelection();
     if (!url.isEmpty() && !info.isSymLink() && info.exists()) {
+        qCDebug(logGrandSearch) << "Added path to blacklist:" << info.absoluteFilePath();
         m_listWrapper->addRow(info.absoluteFilePath());
     } else {
-        qInfo() << "add path failed";
+        qCWarning(logGrandSearch) << "Failed to add path to blacklist - Path:" << url.toLocalFile()
+                                  << "Is symlink:" << info.isSymLink()
+                                  << "Exists:" << info.exists();
     }
 }
 
 void BlackListWidget::deleteButtonClicked()
 {
+    qCDebug(logGrandSearch) << "Deleting paths from blacklist";
+
     DeleteDialog dlg(this);
     if (dlg.exec() == QDialog::Accepted) {
         auto selectedRows = m_listWrapper->selectionModel()->selectedRows();
@@ -96,7 +104,12 @@ void BlackListWidget::deleteButtonClicked()
         for (auto index : selectedRows) {
             rowList << index.row();
         }
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         qStableSort(rowList.begin(), rowList.end(), qGreater<int>());
+#else
+        std::stable_sort(rowList.begin(), rowList.end(), std::greater<int>());
+#endif
+        qCDebug(logGrandSearch) << "Removed" << rowList.size() << "paths from blacklist";
         for (auto index : rowList) {
             m_listWrapper->removeRows(index, 1);
         }

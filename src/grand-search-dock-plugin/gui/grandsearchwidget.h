@@ -5,7 +5,7 @@
 #ifndef GRANDSEARCHWIDGET_H
 #define GRANDSEARCHWIDGET_H
 
-#include <DGuiApplicationHelper>
+#include <DLabel>
 
 #include <QWidget>
 #include <QIcon>
@@ -23,7 +23,9 @@ public:
     ~GrandSearchWidget() override;
 
     QString itemCommand(const QString &itemKey);
-    QPixmap iconPixmap(QSize iconSize, DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType themeType) const;
+
+Q_SIGNALS:
+    void visibleChanged(bool);
 
 private slots:
     void grandSearchVisibleChanged(bool visible);
@@ -36,17 +38,23 @@ protected:
     void leaveEvent(QEvent *event) override;
 
 private:
-    const QPixmap loadSvg(const QString &fileName, const QSize &size) const;
-
-private:
-    bool m_hover = false;       // 鼠标是否悬浮
-    bool m_pressed = false;     // 鼠标是否按下
-    QIcon m_icon;
-    QPixmap m_pixmap;
+    bool m_hover = false;   // 鼠标是否悬浮
+    bool m_pressed = false;   // 鼠标是否按下
     bool m_grandSearchVisible = false;
     GrandSearchInterface *m_grandSearchInterface = nullptr;
 };
 
+class QuickPanel : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit QuickPanel(const QString &desc, QWidget *parent = nullptr);
+public slots:
+    void updateIcon();
+
+private:
+    DTK_WIDGET_NAMESPACE::DLabel *iconLabel = nullptr;
+};
 }
 
-#endif // GRANDSEARCHWIDGET_H
+#endif   // GRANDSEARCHWIDGET_H

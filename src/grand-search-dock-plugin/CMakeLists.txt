@@ -1,7 +1,7 @@
 # 定义需要的cmake版本
 cmake_minimum_required(VERSION 3.10)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -17,6 +17,7 @@ project(${PLUGIN_NAME})
 set(SRCS
     ddegrandsearchdockplugin.h
     ddegrandsearchdockplugin.cpp
+    versiondefine.h
     gui/grandsearchwidget.h
     gui/grandsearchwidget.cpp
     gui/tipswidget.h
@@ -31,8 +32,12 @@ set(QRCS
     )
 
 # 指定要用到的库
-find_package(Qt5Widgets REQUIRED)
-find_package(DtkWidget REQUIRED)
+find_package(${DTK_NS} COMPONENTS
+    Widget
+REQUIRED)
+find_package(${QT_NS} COMPONENTS
+    Widgets
+REQUIRED)
 
 
 # 加载 FindPkgConfig 模块
@@ -40,7 +45,9 @@ find_package(PkgConfig REQUIRED)
 
 # 加载需要的库
 pkg_check_modules(DdeDockInterface REQUIRED dde-dock)
-pkg_check_modules(QGSettings REQUIRED gsettings-qt)
+if (QT_VERSION_MAJOR LESS 6)
+    pkg_check_modules(QGSettings REQUIRED gsettings-qt)
+endif()
 
 # 编译目标
 add_library(${PLUGIN_NAME} SHARED ${SRCS} ${QRCS})
@@ -53,20 +60,18 @@ set_target_properties(${PLUGIN_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ./)
 # 变量 ${DtkWidget_INCLUDE_DIRS} 是在前面执行 find_package 命令时引入的
 # 当出现编译失败提示找不到某些库的头文件时应该检查此处是否将所有需要的头文件都包含了
 target_include_directories(${PLUGIN_NAME} PUBLIC
-    ${Qt5Widgets_INCLUDE_DIRS}
-    ${DtkWidget_INCLUDE_DIRS}
     ${DdeDockInterface_INCLUDE_DIRS}
-    ${QGSettings_INCLUDE_DIRS}
+    $<$<VERSION_LESS:${QT_VERSION_MAJOR},6>:${QGSettings_INCLUDE_DIRS}>
 )
 
 # 设置目标要使用的链接库
 # 变量 ${DtkWidget_LIBRARIES} 和 ${Qt5Widgets_LIBRARIES} 是在前面执行 find_package 命令时引入的
 # 当出现运行时错误提示某些符号没有定义时应该检查此处是否将所有用的库都写在了这里
 target_link_libraries(${PLUGIN_NAME} PRIVATE
-    ${Qt5Widgets_LIBRARIES}
-    ${DtkWidget_LIBRARIES}
+    ${QT_NS}::Widgets
+    ${DTK_NS}::Widget
     ${DdeDockInterface_LIBRARIES}
-    ${QGSettings_LIBRARIES}
+    $<$<VERSION_LESS:${QT_VERSION_MAJOR},6>:${QGSettings_LIBRARIES}>
 )
 
 # 设置安装路径的前缀(默认为"/usr/local")
@@ -78,5 +83,3 @@ install(TARGETS ${PLUGIN_NAME} LIBRARY DESTINATION lib/dde-dock/plugins/)
 
 # gsettings
 install(FILES gschema/com.deepin.dde.dock.module.grand-search.gschema.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/glib-2.0/schemas)
-
-

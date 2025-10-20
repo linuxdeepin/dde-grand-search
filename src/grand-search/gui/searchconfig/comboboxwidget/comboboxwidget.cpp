@@ -6,9 +6,19 @@
 #include "global/searchhelper.h"
 
 #include <DPalette>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <DGuiApplicationHelper>
+#else
 #include <DApplicationHelper>
+#endif
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <DPaletteHelper>
+#endif
 
 #include <QPainter>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
@@ -19,13 +29,14 @@ using namespace GrandSearch;
 ComboboxWidget::ComboboxWidget(const QString &title, QWidget *parent)
     : ComboboxWidget(parent, new QLabel(title, parent))
 {
-
+    qCDebug(logGrandSearch) << "Creating ComboboxWidget with title:" << title;
 }
 
 ComboboxWidget::ComboboxWidget(QWidget *parent, QWidget *leftWidget)
     : QWidget (parent)
     , m_leftWidget(leftWidget)
 {
+    qCDebug(logGrandSearch) << "Creating ComboboxWidget with custom left widget";
     if (!m_leftWidget)
         m_leftWidget = new QLabel(this);
     m_leftWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
@@ -45,10 +56,12 @@ ComboboxWidget::ComboboxWidget(QWidget *parent, QWidget *leftWidget)
     setLayout(m_mainLayout);
 
     connect(m_comboBox, QOverload<int>::of(&DComboBox::currentIndexChanged), this, &ComboboxWidget::checkedChanged);
+    qCDebug(logGrandSearch) << "ComboboxWidget created successfully";
 }
 
 void ComboboxWidget::setChecked(const QString &text)
 {
+    qCDebug(logGrandSearch) << "Setting combobox selection - Text:" << text;
     m_comboBox->setCurrentText(text);
 }
 
@@ -61,8 +74,11 @@ void ComboboxWidget::setTitle(const QString &title)
 {
     QLabel *label = qobject_cast<QLabel *>(m_leftWidget);
     if (label) {
+        qCDebug(logGrandSearch) << "Setting combobox title - Title:" << title;
         label->setText(title);
         label->adjustSize();
+    } else {
+        qCWarning(logGrandSearch) << "Failed to set title - Left widget is not a QLabel";
     }
 }
 
@@ -97,7 +113,11 @@ DComboBox *ComboboxWidget::getComboBox()
 void ComboboxWidget::paintEvent(QPaintEvent *event)
 {
     if (m_hasBack) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        const DPalette &dp = DPaletteHelper::instance()->palette(this);
+#else
         const DPalette &dp = DApplicationHelper::instance()->palette(this);
+#endif
         QPainter p(this);
         p.setPen(Qt::NoPen);
         p.setBrush(dp.brush(DPalette::ItemBackground));

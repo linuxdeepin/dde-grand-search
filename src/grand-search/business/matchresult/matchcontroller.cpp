@@ -12,17 +12,28 @@
 
 #include "interfaces/daemongrandsearchinterface.h"
 
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
+
 using namespace GrandSearch;
 
 MatchControllerPrivate::MatchControllerPrivate(MatchController *parent)
     : q_p(parent)
 {
+    qCDebug(logGrandSearch) << "Initializing MatchControllerPrivate";
+
     m_daemonDbus = new DaemonGrandSearchInterface(this);
 
     m_enableBestMatch = SearchConfig::instance()->getConfig(GRANDSEARCH_CUSTOM_GROUP, GRANDSEARCH_CUSTOM_BESTMATCH, m_enableBestMatch).toBool();
     m_firstItemLimit = SearchConfig::instance()->getConfig(GRANDSEARCH_CUSTOM_GROUP, GRANDSEARCH_CUSTOM_BESTMATCH_FIRSTITEMLIMIT, m_firstItemLimit).toInt();
     m_firstWaitTime = SearchConfig::instance()->getConfig(GRANDSEARCH_CUSTOM_GROUP, GRANDSEARCH_CUSTOM_BESTMATCH_FIRSTWAITTIME, m_firstWaitTime).toInt();
     m_bestItemMaxCount = SearchConfig::instance()->getConfig(GRANDSEARCH_CUSTOM_GROUP, GRANDSEARCH_CUSTOM_BESTMATCH_MAXCOUNT, m_bestItemMaxCount).toInt();
+
+    qCDebug(logGrandSearch) << "Match controller configuration - Best match:" << m_enableBestMatch
+                            << "First item limit:" << m_firstItemLimit
+                            << "First wait time:" << m_firstWaitTime
+                            << "Best item max count:" << m_bestItemMaxCount;
 
     initConnect();
 }
@@ -31,17 +42,23 @@ void MatchControllerPrivate::initConnect()
 {
     connect(m_daemonDbus, &DaemonGrandSearchInterface::Matched, this, &MatchControllerPrivate::onMatched);
     connect(m_daemonDbus, &DaemonGrandSearchInterface::SearchCompleted, this, &MatchControllerPrivate::onSearchCompleted);
+
+    qCDebug(logGrandSearch) << "Match controller D-Bus connections established";
 }
 
 void MatchControllerPrivate::onMatched(const QString &missionId)
 {
-    if (missionId != m_missionId || m_missionId.isEmpty())
+    if (missionId != m_missionId || m_missionId.isEmpty()) {
+        qCDebug(logGrandSearch) << "Ignoring matched signal - Mission mismatch or empty - Current:" << m_missionId
+                                << "Received:" << missionId;
         return;
+    }
 
     // 获取数据解析
-    qDebug() << QString("m_daemonDbus->MatchedBuffer begin missionId:%1").arg(m_missionId);
+    qCDebug(logGrandSearch) << "Processing matched results for mission:" << missionId;
     QByteArray matchedBytes = m_daemonDbus->MatchedBuffer(m_missionId);
-    qDebug() << QString("m_daemonDbus->MatchedBuffer end   missionId:%1").arg(m_missionId);
+    qCDebug(logGrandSearch) << "Received matched buffer for mission:" << missionId
+                            << "Size:" << matchedBytes.size() << "bytes";
 
     QDataStream stream(&matchedBytes, QIODevice::ReadOnly);
 
@@ -56,10 +73,12 @@ void MatchControllerPrivate::onMatched(const QString &missionId)
         for (const MatchedItems &itemValues : items.values()) {
             count += itemValues.count();
         }
-        qDebug() << "fisrt recive data count:" << count << "    limit count:" << m_firstItemLimit;
+        qCDebug(logGrandSearch) << "First data reception - Items:" << count
+                                << "Limit:" << m_firstItemLimit;
 
         // 总数不够时，将数据放入到缓存中，并开启延迟定时器
         if (count < m_firstItemLimit) {
+            qCDebug(logGrandSearch) << "Insufficient items, caching data and starting wait timer";
             Utils::updateItemsWeight(items, m_missionContent);
             for (const QString &groupName : items.keys()) {
                 m_cacheItems[groupName].append(items.value(groupName));
@@ -69,6 +88,7 @@ void MatchControllerPrivate::onMatched(const QString &missionId)
 
             return;
         } else {
+            qCDebug(logGrandSearch) << "Processing initial items with best match:" << m_enableBestMatch;
             Utils::updateItemsWeight(items, m_missionContent);
             Utils::sortByWeight(items);
             if (m_enableBestMatch)
@@ -78,6 +98,7 @@ void MatchControllerPrivate::onMatched(const QString &missionId)
 
     if (m_waitTimer.get() && m_waitTimer->isActive()) {
         // 首次数据不够，正在缓存数据
+        qCDebug(logGrandSearch) << "Caching additional items while waiting";
         Utils::updateItemsWeight(items, m_missionContent);
         for (const QString &groupName : items.keys()) {
             m_cacheItems[groupName].append(items.value(groupName));
@@ -89,7 +110,7 @@ void MatchControllerPrivate::onMatched(const QString &missionId)
     // 非首次、非缓存数据，不使用动态排序策略，直接发送
     emit q_p->matchedResult(items);
 
-    qDebug() << QString("matched %1 groups.").arg(items.size());
+    qCDebug(logGrandSearch) << "Emitted matched results - Groups:" << items.size();
 }
 
 void MatchControllerPrivate::onSearchCompleted(const QString &missionId)
@@ -97,12 +118,11 @@ void MatchControllerPrivate::onSearchCompleted(const QString &missionId)
     if (missionId != m_missionId || m_missionId.isEmpty())
         return;
 
+    qCDebug(logGrandSearch) << "Search completed for mission:" << missionId;
     sendCacheItems();
 
-    //通知界面刷新，若界面有数据不做处理，否则就刷新
+    // 通知界面刷新，若界面有数据不做处理，否则就刷新
     emit q_p->searchCompleted();
-
-    qDebug() << QString("search Completed.");
 }
 
 void MatchControllerPrivate::sendCacheItems()
@@ -114,26 +134,28 @@ void MatchControllerPrivate::sendCacheItems()
     if (m_enableBestMatch)
         Utils::packageBestMatch(m_cacheItems, m_bestItemMaxCount);
     emit q_p->matchedResult(m_cacheItems);
-    qDebug() << QString("send cache items %1 groups.").arg(m_cacheItems.size());
+    qCDebug(logGrandSearch) << "Emitted cached results - Groups:" << m_cacheItems.size();
     m_cacheItems.clear();
 }
 
 MatchController::MatchController(QObject *parent)
-    : QObject(parent)
-    , d_p(new MatchControllerPrivate(this))
+    : QObject(parent), d_p(new MatchControllerPrivate(this))
 {
-
 }
 
 MatchController::~MatchController()
 {
-
 }
 
 void MatchController::onMissionChanged(const QString &missionId, const QString &missionContent)
 {
-    if (Q_UNLIKELY(missionId == d_p->m_missionId))
+    if (Q_UNLIKELY(missionId == d_p->m_missionId)) {
+        qCDebug(logGrandSearch) << "Mission ID unchanged, ignoring - ID:" << missionId;
         return;
+    }
+
+    qCDebug(logGrandSearch) << "Mission changed - ID:" << missionId
+                            << "Content:" << missionContent;
 
     d_p->m_missionId = missionId;
     d_p->m_missionContent = missionContent;
@@ -144,5 +166,6 @@ void MatchController::onMissionChanged(const QString &missionId, const QString &
     }
     d_p->m_waitTimer.reset(new QTimer);
     d_p->m_waitTimer->setSingleShot(true);
-}
 
+    qCDebug(logGrandSearch) << "Mission setup completed - Ready for results";
+}

@@ -11,6 +11,7 @@
 #include <QDateTime>
 #include <QtConcurrent>
 #include <QPainterPath>
+#include <QLoggingCategory>
 
 #ifdef __cplusplus
 extern "C" {
@@ -19,6 +20,7 @@ extern "C" {
 }
 #endif
 
+Q_LOGGING_CATEGORY(logVideoPreview, "org.deepin.dde.grandsearch.plugin.video")
 GRANDSEARCH_USE_NAMESPACE
 using namespace GrandSearch::video_preview;
 
@@ -42,29 +44,36 @@ VideoPreviewPlugin::VideoPreviewPlugin(QObject *parent)
     : QObject(parent)
     , PreviewPlugin()
 {
-
+    qCDebug(logVideoPreview) << "VideoPreviewPlugin created";
 }
 
 VideoPreviewPlugin::~VideoPreviewPlugin()
 {
+    qCDebug(logVideoPreview) << "VideoPreviewPlugin destroyed";
     stopPreview();
     delete m_view;
 }
 
 void VideoPreviewPlugin::init(QObject *proxyInter)
 {
+    qCDebug(logVideoPreview) << "Initializing VideoPreviewPlugin";
     m_proxy = proxyInter;
     if (!m_view) {
         m_view = new VideoView();
         m_view->initUI();
+        qCDebug(logVideoPreview) << "VideoView created and initialized";
     }
 }
 #define PREVIEW_ASYNC_DECODE
 bool VideoPreviewPlugin::previewItem(const ItemInfo &item)
 {
     const QString path = item.value(PREVIEW_ITEMINFO_ITEM);
-    if (path.isEmpty())
+    if (path.isEmpty()) {
+        qCWarning(logVideoPreview) << "Video file path is empty - Cannot preview";
         return false;
+    }
+
+    qCDebug(logVideoPreview) << "Previewing video file - Path:" << path;
 
     //开启线程解析
 #ifdef PREVIEW_ASYNC_DECODE
@@ -162,6 +171,7 @@ bool VideoPreviewPlugin::previewItem(const ItemInfo &item)
     future.waitForFinished();
     updateInfo(future.result(), false);
 #endif
+    qCDebug(logVideoPreview) << "Video preview setup completed - Path:" << path;
     return true;
 }
 
@@ -177,6 +187,7 @@ QWidget *VideoPreviewPlugin::contentWidget() const
 
 bool VideoPreviewPlugin::stopPreview()
 {
+    qCDebug(logVideoPreview) << "Stopping video preview";
     if (!m_decode.isNull())
         m_decode->decoding = false;
     return true;
@@ -267,13 +278,13 @@ QVariantHash DecodeBridge::decode(QSharedPointer<DecodeBridge> self, const QStri
                 info.insert(kLabelDuration, QVariant::fromValue(duration));
                 info.insert(kLabelDimension, QSize(codecpar->width, codecpar->height));
             } else {
-                qWarning() << "VideoPreviewPlugin: find stream error" << videoRet;
+                qCWarning(logVideoPreview) << "Failed to find video stream - Error code:" << videoRet << "File:" << file;
             }
         }
 
         avformat_close_input(&avCtx);
     } else {
-        qWarning() << "VideoPreviewPlugin: could not open video....";
+        qCWarning(logVideoPreview) << "Failed to open video file - Path:" << file;
     }
 
     //检查一次是否停止
@@ -300,7 +311,7 @@ QVariantHash DecodeBridge::decode(QSharedPointer<DecodeBridge> self, const QStri
             info.insert(kKeyThumbnailer, QVariant::fromValue(pixmap));
         } else {
             // 预览失败
-            qWarning() << "thumbnailer create image error";
+            qCWarning(logVideoPreview) << "Failed to generate video thumbnail - File:" << file;
             QImage errorImg(":/icons/image_damaged.svg");
             errorImg = errorImg.scaled(46, 46);
             auto img = CommonTools::creatErrorImage({192, 108}, errorImg);

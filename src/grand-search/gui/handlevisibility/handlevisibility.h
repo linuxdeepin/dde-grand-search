@@ -5,8 +5,6 @@
 #ifndef HANDLEVISIBILITY_H
 #define HANDLEVISIBILITY_H
 
-#include <com_deepin_sessionmanager.h>
-
 #include <DRegionMonitor>
 
 #include <QObject>
@@ -34,7 +32,7 @@ private:
 private:
     MainWindow *m_mainWindow = nullptr;
     Dtk::Gui::DRegionMonitor *m_regionMonitor = nullptr;
-    __SessionManager *m_sessionManagerInter = nullptr;
+    // __SessionManager *m_sessionManagerInter = nullptr;
 };
 
 }

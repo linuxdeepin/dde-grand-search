@@ -16,6 +16,9 @@
 
 #include <DFontSizeManager>
 #include <DGuiApplicationHelper>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
@@ -23,9 +26,11 @@ using namespace GrandSearch;
 CustomWidget::CustomWidget(QWidget *parent)
     : DWidget(parent)
 {
+    qCDebug(logGrandSearch) << "Creating CustomWidget";
+
     m_groupLabel = new QLabel(tr("Custom search"), this);
     DFontSizeManager::instance()->bind(m_groupLabel, DFontSizeManager::T5, QFont::Bold);
-    m_groupLabel->setMargin(0);
+    m_groupLabel->setContentsMargins(0, 0, 0, 0);
 
     m_mainLayout = new QVBoxLayout();
     setLayout(m_mainLayout);
@@ -49,6 +54,8 @@ CustomWidget::CustomWidget(QWidget *parent)
     m_innerLayout->addWidget(m_bestMatchWidget);
     m_innerLayout->addWidget(m_searchEngineWidget);
     m_innerLayout->addWidget(m_searchPlanWidget);
+
+    qCDebug(logGrandSearch) << "CustomWidget created successfully";
 }
 
 CustomWidget::~CustomWidget()
@@ -63,6 +70,8 @@ void CustomWidget::onSwitchStateChanged(const bool checked)
 
     if (switchWidget) {
         QString group = switchWidget->property(GRANDSEARCH_CUSTOM_GROUP).toString();
+        qCDebug(logGrandSearch) << "Custom search configuration changed - Group:" << group
+                                << "Enabled:" << checked;
         SearchConfig::instance()->setConfig(GRANDSEARCH_CUSTOM_GROUP, group, checked);
     }
 }
