@@ -11,6 +11,7 @@
 #include <FilterIndexReader.h>
 #include <FuzzyQuery.h>
 #include <QueryWrapperFilter.h>
+#include <PerFieldAnalyzerWrapper.h>
 
 #include <QFileInfo>
 #include <QDebug>
@@ -239,7 +240,16 @@ void FeatureLibEngine::query(const QString &searchPath, const QueryConditons &co
 
     try {
         SearcherPtr searcher = newLucene<IndexSearcher>(d->m_reader);
-        AnalyzerPtr analyzer = newLucene<ChineseAnalyzer>();
+
+        // default analyzer: do not analyze
+        AnalyzerPtr defaultAnalyzer = newLucene<KeywordAnalyzer>();
+        PerFieldAnalyzerWrapperPtr analyzer = newLucene<PerFieldAnalyzerWrapper>(defaultAnalyzer);
+
+        // the keys need analyze
+        analyzer->addAnalyzer(L"contents", newLucene<ChineseAnalyzer>());
+        analyzer->addAnalyzer(L"Album", newLucene<ChineseAnalyzer>());
+        analyzer->addAnalyzer(L"Author", newLucene<ChineseAnalyzer>());
+
         QueryParserPtr parser = newLucene<QueryParser>(LuceneVersion::LUCENE_CURRENT, L"contents", analyzer);
 
         QueryPtr query = parser->parse(key.toStdWString());
