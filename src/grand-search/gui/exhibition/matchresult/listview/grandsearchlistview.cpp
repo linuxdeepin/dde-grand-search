@@ -239,10 +239,10 @@ void GrandSearchListView::setData(const QModelIndex& index, const MatchedItem &i
     // 设置icon
     QVariant iconVariantData;
     const QString &strIcon = item.icon;
-    if (!strIcon.isEmpty()) {
-        const int size = static_cast<int>(ICON_SIZE);
-        const QSize iconSize(size, size);
+    const int size = static_cast<int>(ICON_SIZE);
+    const QSize iconSize(size, size);
 
+    if (!strIcon.isEmpty()) {
         // 判断icon是路径还是图标名
         if (strIcon.contains('/')) {
             QFileInfo file(strIcon);
@@ -257,6 +257,9 @@ void GrandSearchListView::setData(const QModelIndex& index, const MatchedItem &i
             else
                 iconVariantData.setValue(icon.pixmap(iconSize));
         }
+    } else {
+        // 图标名为空时，使用默认图标
+        iconVariantData.setValue(Utils::defaultIcon(item).pixmap(iconSize));
     }
 
     m_model->setData(index,iconVariantData, Qt::DecorationRole);
