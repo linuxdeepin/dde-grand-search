@@ -124,7 +124,7 @@ void QueryController::onSearchTextChanged(const QString &txt)
     d_p->m_pendingSearchText = txt;
 
     // 设置防抖延迟，根据文本字节长度动态调整
-    int debounceDelay = 0;
+    int debounceDelay = 100;
     QByteArray bytes = txt.toUtf8();
     int byteLength = bytes.length();
 
@@ -133,8 +133,6 @@ void QueryController::onSearchTextChanged(const QString &txt)
 
         if (txt == ".")
             debounceDelay += 500;
-    } else if (byteLength > 3) {
-        debounceDelay = 0;
     }
 
     qCDebug(logGrandSearch) << "Setting debounce delay - Text:" << txt
