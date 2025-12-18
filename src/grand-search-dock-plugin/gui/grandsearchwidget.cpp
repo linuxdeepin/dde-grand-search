@@ -15,6 +15,7 @@
 #endif
 #include <DStyleHelper>
 #include <DFontSizeManager>
+#include <DToolTip>
 
 #include <QPainter>
 #include <QPainterPath>
@@ -224,9 +225,11 @@ QuickPanel::QuickPanel(const QString &desc, QWidget *parent)
 
     DLabel *textLabel = new DLabel;
     textLabel->setText(desc);
+    textLabel->setToolTip(desc);
     textLabel->setElideMode(Qt::ElideRight);
     textLabel->setAlignment(Qt::AlignCenter);
     DFontSizeManager::instance()->bind(textLabel, DFontSizeManager::T10);
+    DToolTip::setToolTipShowMode(textLabel, DToolTip::ShowWhenElided);
     lay->addSpacing(10);
     lay->addWidget(textLabel, 0, Qt::AlignHCenter);
     lay->addStretch(1);
