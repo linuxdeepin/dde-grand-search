@@ -1,3 +1,13 @@
+dde-grand-search (6.0.26) unstable; urgency=medium
+
+  * fix: Precisely use the tokenizer
+  * fix: (icon)adjust icon setting logic in grand search list view
+  * fix: [dock-plugin] Set the tooltip margin
+  * fix: [Icon] The dock plugin icon is empty.
+  * fix: add tooltip for elided text in quick panel
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Thu, 18 Dec 2025 20:25:03 +0800
+
 dde-grand-search (6.0.25) unstable; urgency=medium
 
   * fix: fix memory leak
