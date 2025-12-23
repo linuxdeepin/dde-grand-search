@@ -30,8 +30,6 @@ DWIDGET_USE_NAMESPACE
 
 static QPixmap iconPixmap(const QString &fileName, const QSize &size, qreal ratio)
 {
-// TODO: 需要调研为什么 v20 不能使用 DCI 图标
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QString iconPath = QString(":/icons/%1.dci").arg(fileName);
     QPixmap pixmap;
     DDciIcon dciIcon = DDciIcon::fromTheme(iconPath);
@@ -41,10 +39,11 @@ static QPixmap iconPixmap(const QString &fileName, const QSize &size, qreal rati
                 : DDciIcon::Dark;
         pixmap = dciIcon.pixmap(ratio, size.width(), theme);
         qCDebug(logDock) << "Icon loaded from DCI theme - File:" << fileName << "Size:" << size << "Theme:" << (theme == DDciIcon::Light ? "Light" : "Dark");
-    } else {
+    }
+    if (pixmap.isNull()) {
         iconPath = QString(":/icons/%1.svg").arg(fileName);
         pixmap = QIcon::fromTheme(iconPath).pixmap(size);
-        qCDebug(logDock) << "Icon loaded from SVG fallback - File:" << fileName << "Size:" << size;
+        qCWarning(logDock) << "Icon loaded from SVG fallback - File:" << fileName << "Size:" << size;
     }
 
     if (pixmap.isNull()) {
@@ -52,10 +51,6 @@ static QPixmap iconPixmap(const QString &fileName, const QSize &size, qreal rati
     }
 
     return pixmap;
-#else
-    QString iconPath = QString(":/icons/%1.svg").arg(fileName);
-    return QIcon::fromTheme(iconPath).pixmap(size);
-#endif
 }
 
 GrandSearchWidget::GrandSearchWidget(QWidget *parent)
