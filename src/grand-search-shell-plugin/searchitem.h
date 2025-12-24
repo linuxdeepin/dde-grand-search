@@ -37,7 +37,7 @@ public:
 
     bool load() override
     {
-        return QGuiApplication::platformName() != QStringLiteral("wayland");
+        return true;
     }
 
 Q_SIGNALS:
