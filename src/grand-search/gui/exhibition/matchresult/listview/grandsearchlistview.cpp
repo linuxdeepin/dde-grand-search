@@ -7,7 +7,6 @@
 #include "grandsearchlistdelegate.h"
 #include "utils/utils.h"
 #include "global/matcheditem.h"
-#include "global/builtinsearch.h"
 #include "global/accessibility/acintelfunctions.h"
 
 #include <DGuiApplicationHelper>
@@ -24,7 +23,7 @@ DGUI_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
 
 #define ICON_SIZE 24
-#define ListItemTextMaxWidth      240      // 文本元素最大显示宽度
+#define ListItemTextMaxWidth 240   // 文本元素最大显示宽度
 
 GrandSearchListView::GrandSearchListView(QWidget *parent)
     : DListView(parent)
@@ -35,6 +34,7 @@ GrandSearchListView::GrandSearchListView(QWidget *parent)
     setItemDelegate(m_delegate);
     setViewportMargins(0, 0, 0, 0);
     setUniformItemSizes(true);
+    setIconSize({ ICON_SIZE, ICON_SIZE });
 
     setViewMode(QListView::ListMode);
     setResizeMode(QListView::Adjust);
@@ -52,7 +52,6 @@ GrandSearchListView::GrandSearchListView(QWidget *parent)
 
 GrandSearchListView::~GrandSearchListView()
 {
-
 }
 
 void GrandSearchListView::setMatchedItems(const MatchedItems &items)
@@ -120,7 +119,7 @@ void GrandSearchListView::insertRows(int nRow, const MatchedItems &items)
     }
 
     for (int i = 0; i < items.size(); i++) {
-        insertRow(nRow,items[i]);
+        insertRow(nRow, items[i]);
     }
 }
 
@@ -220,7 +219,7 @@ QString GrandSearchListView::cacheDir()
     return userCachePath;
 }
 
-void GrandSearchListView::setData(const QModelIndex& index, const MatchedItem &item)
+void GrandSearchListView::setData(const QModelIndex &index, const MatchedItem &item)
 {
     if (!index.isValid())
         return;
@@ -237,32 +236,23 @@ void GrandSearchListView::setData(const QModelIndex& index, const MatchedItem &i
     }
 
     // 设置icon
-    QVariant iconVariantData;
+    QIcon itemIcon = Utils::defaultIcon(item);
     const QString &strIcon = item.icon;
-    const int size = static_cast<int>(ICON_SIZE);
-    const QSize iconSize(size, size);
 
     if (!strIcon.isEmpty()) {
         // 判断icon是路径还是图标名
         if (strIcon.contains('/')) {
             QFileInfo file(strIcon);
             if (file.exists())
-                iconVariantData.setValue(QIcon(strIcon).pixmap(iconSize));
-            else
-                iconVariantData.setValue(Utils::defaultIcon(item).pixmap(iconSize));
+                itemIcon = QIcon(strIcon);
         } else {
             QIcon icon = QIcon::fromTheme(strIcon);
-            if (icon.isNull())
-                iconVariantData.setValue(Utils::defaultIcon(item).pixmap(iconSize));
-            else
-                iconVariantData.setValue(icon.pixmap(iconSize));
+            if (!icon.isNull())
+                itemIcon = icon;
         }
-    } else {
-        // 图标名为空时，使用默认图标
-        iconVariantData.setValue(Utils::defaultIcon(item).pixmap(iconSize));
     }
 
-    m_model->setData(index,iconVariantData, Qt::DecorationRole);
+    m_model->setData(index, itemIcon, Qt::DecorationRole);
 }
 
 int GrandSearchListView::levelItemLastRow(const int level)

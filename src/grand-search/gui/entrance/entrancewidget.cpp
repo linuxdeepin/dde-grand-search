@@ -290,8 +290,9 @@ void EntranceWidget::onAppIconChanged(const QString &searchGroupName, const Matc
 
     // 更新应用图标
     const int size = LabelIconSize;
-    QIcon icon = QIcon::fromTheme(appIconName);
-    d_p->m_appIconLabel->setPixmap(icon.pixmap(int(size), int(size)));
+    auto pixmap = QIcon::fromTheme(appIconName).pixmap(size);
+    pixmap.setDevicePixelRatio(qApp->devicePixelRatio());
+    d_p->m_appIconLabel->setPixmap(pixmap);
 
     // 图标更新完成后再刷新显示
     showLabelAppIcon(true);
