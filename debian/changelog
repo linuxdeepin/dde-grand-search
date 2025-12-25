@@ -1,3 +1,11 @@
+dde-grand-search (6.0.27) unstable; urgency=medium
+
+  * fix(grand-search-dock-plugin): improve icon loading mechanism
+  * fix: modify load method in searchitem.h to always return true
+  * fix: improve icon display quality and code consistency
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Thu, 25 Dec 2025 19:21:29 +0800
+
 dde-grand-search (6.0.26) unstable; urgency=medium
 
   * fix: Precisely use the tokenizer
