@@ -1,3 +1,9 @@
+dde-grand-search (6.0.28) unstable; urgency=medium
+
+  * fix: add missing boost-filesystem dependency
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Fri, 26 Dec 2025 09:20:49 +0800
+
 dde-grand-search (6.0.27) unstable; urgency=medium
 
   * fix(grand-search-dock-plugin): improve icon loading mechanism
