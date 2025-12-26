@@ -23,7 +23,6 @@ BuildRequires:  dtkwidget-devel >= 5.1
 BuildRequires:  dtkgui-devel >= 5.2.2.16
 BuildRequires:  pkgconfig(taglib)
 BuildRequires:  dde-dock-devel
-BuildRequires:  pkgconfig(poppler-qt5)
 BuildRequires:  ffmpeg-devel
 BuildRequires:  ffmpegthumbnailer-devel
 BuildRequires:  libicu-devel
@@ -32,7 +31,6 @@ BuildRequires:  deepin-anything-devel
 Requires:  startdde
 Requires:  dtkwidget
 Requires:  taglib
-Requires:  poppler-qt5
 Requires:  ffmpeg-libs
 Requires:  ffmpegthumbnailer
 
