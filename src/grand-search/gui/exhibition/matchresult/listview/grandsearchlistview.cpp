@@ -264,6 +264,10 @@ void GrandSearchListView::setData(const QModelIndex& index, const MatchedItem &i
         iconVariantData.setValue(Utils::defaultIcon(item).pixmap(iconSize));
     }
 
+    // 如果图标为空，使用通用文件图标
+    if (iconVariantData.isNull())
+        iconVariantData.setValue(QIcon::fromTheme("text-x-generic").pixmap(iconSize));
+
     m_model->setData(index,iconVariantData, Qt::DecorationRole);
 }
 
