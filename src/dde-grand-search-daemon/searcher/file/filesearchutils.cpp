@@ -322,7 +322,99 @@ bool FileSearchUtils::isPinyin(const QString &str)
         return false;
     }
 
-    return DFMSEARCH::Global::isPinyinAcronymSequence(str);
+    QString lettersOnly = normalizePinyinKeyword(str);
+    if (lettersOnly.isEmpty()) {
+        return false;
+    }
+
+    return DFMSEARCH::Global::isPinyinAcronymSequence(lettersOnly);
+}
+
+QString FileSearchUtils::normalizePinyinKeyword(const QString &str)
+{
+    QString lettersOnly;
+    for (const QChar &ch : str) {
+        if (ch.isLetter()) {
+            lettersOnly.append(ch);
+        }
+    }
+    qCDebug(logDaemon) << "Normalized pinyin keyword from" << str << "to" << lettersOnly;
+    return lettersOnly;
+}
+bool FileSearchUtils::charsEquivalent(const QChar &ch1, const QChar &ch2)
+{
+    if (ch1 == ch2) {
+        return true;
+    }
+    
+    ushort u1 = ch1.unicode();
+    ushort u2 = ch2.unicode();
+    
+    if (u1 >= 0xFF01 && u1 <= 0xFF5E) {
+        if (QChar(u1 - 0xFEE0) == ch2) {
+            return true;
+        }
+    }
+    
+    if (u2 >= 0xFF01 && u2 <= 0xFF5E) {
+        if (QChar(u2 - 0xFEE0) == ch1) {
+            return true;
+        }
+    }
+    
+    // 发现特殊情况后添加
+    // static const QMap<QChar, QChar> specialEquivalents = {
+    //     // 可以根据需要添加其他特殊等价关系
+    // };
+    // if (specialEquivalents.contains(ch1) && specialEquivalents.value(ch1) == ch2) {
+    //     return true;
+    // }
+    
+    return false;
+}
+
+bool FileSearchUtils::matchSpecialChars(const QString &fileName, const QString &searchKeyword)
+{
+    QString searchSpecialChars;
+    for (const QChar &ch : searchKeyword) {
+        if (!ch.isLetter() && !ch.isDigit()) {
+            searchSpecialChars.append(ch);
+        }
+    }
+    
+    if (searchSpecialChars.isEmpty()) {
+        return true;
+    }
+    
+    QFileInfo fileInfo(fileName);
+    QString baseName = fileInfo.completeBaseName();
+    QString fileSpecialChars;
+    for (const QChar &ch : baseName) {
+        if (!ch.isLetter() && !ch.isDigit()) {
+            fileSpecialChars.append(ch);
+        }
+    }
+    
+    for (const QChar &searchChar : searchSpecialChars) {
+        bool found = false;
+        
+        for (const QChar &fileChar : fileSpecialChars) {
+            if (charsEquivalent(searchChar, fileChar)) {
+                found = true;
+                break;
+            }
+        }
+        
+        if (!found) {
+            qCDebug(logDaemon) << "Special char mismatch - File:" << fileName 
+                               << "Search:" << searchKeyword
+                               << "Missing char:" << searchChar;
+            return false;
+        }
+    }
+    
+    qCDebug(logDaemon) << "Special char match - File:" << fileName << "Search:" << searchKeyword;
+    return true;
 }
 
 bool FileSearchUtils::hasWildcard(const QString &str)

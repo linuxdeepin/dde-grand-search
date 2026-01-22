@@ -109,6 +109,12 @@ bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName)
         return false;
     }
 
+    const QString &keyword = m_searchInfo.keyword;
+    if (FileSearchUtils::isPinyin(keyword) && !FileSearchUtils::matchSpecialChars(fileName, keyword)) {
+        qCDebug(logDaemon) << "File filtered by special char mismatch:" << fileName;
+        return false;
+    }
+
     m_tmpSearchResults << fileName;
     const auto &item = FileSearchUtils::packItem(fileName, q->name());
     QMutexLocker lk(&m_mutex);
@@ -160,7 +166,7 @@ SearchOptions FileNameWorkerPrivate::createSearchOptions() const
 
 SearchQuery FileNameWorkerPrivate::createSearchQuery() const
 {
-    const QString &keyword = m_searchInfo.keyword;
+    QString keyword = m_searchInfo.keyword;
     const QStringList &boolKeywords = m_searchInfo.boolKeywords;
     const QStringList &typeKeywords = m_searchInfo.typeKeywords;
 
@@ -182,7 +188,10 @@ SearchQuery FileNameWorkerPrivate::createSearchQuery() const
             query = SearchFactory::createQuery(typeKeywords.first(), SearchQuery::Type::Simple);
             qCDebug(logDaemon) << "Created simple query with single type keyword";
         } else {
-            query = SearchFactory::createQuery(m_searchInfo.keyword, SearchQuery::Type::Simple);
+            if (FileSearchUtils::isPinyin(m_searchInfo.keyword)) {
+                keyword = FileSearchUtils::normalizePinyinKeyword(m_searchInfo.keyword);
+            }
+            query = SearchFactory::createQuery(keyword, SearchQuery::Type::Simple);
             qCDebug(logDaemon) << "Created simple query with main keyword";
         }
     } else if (useBoolQuery) {
@@ -192,6 +201,11 @@ SearchQuery FileNameWorkerPrivate::createSearchQuery() const
         SearchQuery::Type queryType = FileSearchUtils::hasWildcard(keyword)
                 ? SearchQuery::Type::Wildcard
                 : SearchQuery::Type::Simple;
+        
+        if (queryType == SearchQuery::Type::Simple && FileSearchUtils::isPinyin(keyword)) {
+            keyword = FileSearchUtils::normalizePinyinKeyword(keyword);
+        }
+        
         query = SearchFactory::createQuery(keyword, queryType);
         qCDebug(logDaemon) << "Created query - Type:" << (queryType == SearchQuery::Type::Wildcard ? "Wildcard" : "Simple");
     }
