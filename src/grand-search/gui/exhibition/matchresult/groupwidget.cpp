@@ -26,6 +26,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QLoggingCategory>
+#include <QTextDocument>
 
 Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
@@ -158,14 +159,31 @@ void GroupWidget::reLayout()
 
     m_listView->setFixedHeight(m_listView->rowCount() * ListItemHeight);
 
+    int labelWidth = this->width() - LayoutMagrinSize * 2 - (m_groupIcon->isVisible() ? 23 : 0);
+    QTextDocument doc;
+    doc.setHtml(m_groupLabel->text());
+    doc.setDefaultFont(m_groupLabel->font());
+    doc.setTextWidth(labelWidth);
+    int groupLabelTextHeight = static_cast<int>(doc.size().height());
+    int groupLabelHeight = qMax(groupLabelTextHeight, GroupLabelHeight);
+    m_groupLabel->setFixedHeight(groupLabelHeight);
+
     int nHeight = 0;
     nHeight += m_groupLabel->height();
 
     if (m_listView->isVisible())
         nHeight += m_listView->height();
 
-    if (m_resultLabel->isVisible())
+    if (m_resultLabel->isVisible()) {
+        int labelWidth = this->width() - LayoutMagrinSize * 2;
+        QTextDocument doc;
+        doc.setHtml(m_resultLabel->text());
+        doc.setDefaultFont(m_resultLabel->font());
+        doc.setTextWidth(labelWidth);
+        int textHeight = static_cast<int>(doc.size().height());
+        m_resultLabel->setFixedHeight(textHeight + 14);
         nHeight += m_resultLabel->height();
+    }
 
     if (!m_line->isHidden()) {
         nHeight += m_line->height();
@@ -309,10 +327,11 @@ void GroupWidget::initUi()
 
     // 组名标签
     m_groupLabel = new DLabel("", this);
-    m_groupLabel->setFixedHeight(GroupLabelHeight);
+    m_groupLabel->setMinimumHeight(GroupLabelHeight);
     m_groupLabel->setPalette(labelPalette);
     m_groupLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
     m_groupLabel->setContentsMargins(0, 0, 0, 0);
+    m_groupLabel->setWordWrap(true);
 
     // 组名图标
     m_groupIcon = new DLabel("", this);
@@ -373,8 +392,8 @@ void GroupWidget::initUi()
         pal.setColor(m_resultLabel->foregroundRole(), colorText);
         m_resultLabel->setPalette(pal);
     }
-    m_resultLabel->setFixedHeight(14 + DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T8));
-    m_resultLabel->setAlignment(Qt::AlignBottom | Qt::AlignLeft);
+    m_resultLabel->setWordWrap(true);
+    m_resultLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     m_resultLabel->setContentsMargins(LayoutMagrinSize, 10, 0, 0);
     m_resultLabel->hide();
 
