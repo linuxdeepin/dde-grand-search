@@ -78,6 +78,7 @@ IntelligentRetrievalWidget::IntelligentRetrievalWidget(QWidget *parent)
 
     m_detailLabel = new TipsLabel(tr("When turned on, you can try to search for local documents using natural language descriptions, such as \"last week's documents\"."), this);
     m_detailLabel->setWordWrap(true);
+    m_detailLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     m_mainLayout->addWidget(m_detailLabel);
 
     m_indexWidget = new QWidget(this);
@@ -134,6 +135,8 @@ IntelligentRetrievalWidget::IntelligentRetrievalWidget(QWidget *parent)
 
         m_indexLayout->addSpacing(5);
         m_fullTextLabel = new TipsLabel(tr("When turned on, full text search can be used in the file manager and grand search."), this);
+        m_fullTextLabel->setWordWrap(true);
+        m_fullTextLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
         auto margin = m_fullTextLabel->contentsMargins();
         margin.setLeft(10);
         m_fullTextLabel->setContentsMargins(margin);

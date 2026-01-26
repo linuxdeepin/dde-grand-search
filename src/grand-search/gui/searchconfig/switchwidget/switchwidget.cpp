@@ -37,9 +37,16 @@ SwitchWidget::SwitchWidget(QWidget *parent, QWidget *leftWidget)
     m_iconLabel = new QLabel(this);
     m_iconLabel->setFixedSize(ICONLABELSIZE, ICONLABELSIZE);
 
-    if (!m_leftWidget)
+    if (!m_leftWidget) {
         m_leftWidget = new QLabel(this);
+    }
     m_leftWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    
+    // 如果是 QLabel，设置自动换行
+    QLabel *label = qobject_cast<QLabel *>(m_leftWidget);
+    if (label) {
+        label->setWordWrap(true);
+    }
 
     m_switchBtn = new DSwitchButton(this);
 
@@ -82,6 +89,7 @@ void SwitchWidget::setTitle(const QString &title)
         qCDebug(logGrandSearch) << "Setting switch title - Title:" << title;
         label->setText(title);
         label->setWordWrap(true);
+        label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
         label->adjustSize();
     } else {
         qCWarning(logGrandSearch) << "Failed to set title - Left widget is not a QLabel";

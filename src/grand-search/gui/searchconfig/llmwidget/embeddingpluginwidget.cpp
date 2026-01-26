@@ -85,7 +85,8 @@ void EmbeddingPluginWidget::initUI()
 {
     m_pLabelTheme = new DLabel;
     DFontSizeManager::instance()->bind(m_pLabelTheme, DFontSizeManager::T6, QFont::Medium);
-    m_pLabelTheme->setElideMode(Qt::ElideRight);
+    m_pLabelTheme->setWordWrap(true);
+    m_pLabelTheme->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
     m_pLabelStatus = new DLabel(tr("Not Installed"));
     m_pLabelStatus->setForegroundRole(QPalette::Text);
@@ -100,7 +101,8 @@ void EmbeddingPluginWidget::initUI()
     m_pLabelSummary = new DLabel;
     m_pLabelSummary->setForegroundRole(QPalette::Text);
     DFontSizeManager::instance()->bind(m_pLabelSummary, DFontSizeManager::T8, QFont::Normal);
-    m_pLabelSummary->setElideMode(Qt::ElideRight);
+    m_pLabelSummary->setWordWrap(true);
+    m_pLabelSummary->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
     m_pManageModel = new ModelManageButton(tr("Install"), this);
     QPixmap pixmap = QApplication::style()->standardIcon(QStyle::SP_ArrowDown).pixmap(QSize(10, 10));
