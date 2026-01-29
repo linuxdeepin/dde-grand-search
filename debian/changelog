@@ -1,3 +1,11 @@
+dde-grand-search (6.0.29) unstable; urgency=medium
+
+  * build: add missing depends
+  * build(debian): separate Qt5/Qt6 build configurations for V25/V20 support
+  * fix: Modify text interface to be adaptive
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Thu, 29 Jan 2026 19:47:28 +0800
+
 dde-grand-search (6.0.28) unstable; urgency=medium
 
   * fix: add missing boost-filesystem dependency
