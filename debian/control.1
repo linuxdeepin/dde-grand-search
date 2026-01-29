@@ -4,18 +4,15 @@ Priority: optional
 Maintainer: Deepin Packages Builder <packages@deepin.com>
 Build-Depends: debhelper (>= 9),
  pkg-config,
- qt6-base-dev,
- qt6-5compat-dev,
- libdtk6widget-dev,
- libdtk6core-dev,
- libdtk6gui-dev,
- libdtk6core-bin,
- libdtk6declarative-dev,
- libdfm6-search-dev,
- qt6-tools-dev-tools,
- qt6-declarative-dev,
+ qtbase5-dev,
+ libdtkwidget-dev,
+ libdtkcore-dev,
+ libdtkgui-dev,
+ libdtkcore5-bin,
+ libdfm-search-dev,
+ qttools5-dev-tools,
  cmake,
- dde-tray-loader-dev,
+ dde-dock-dev,
  libglib2.0-dev,
  libffmpegthumbnailer-dev,
  libavformat-dev,
@@ -28,7 +25,6 @@ Build-Depends: debhelper (>= 9),
  libboost-dev,
  libboost-filesystem-dev,
  libdeepin-service-framework-dev (>1.0.9),
- libdde-shell-dev,
  deepin-desktop-base
 Standards-Version: 3.9.8
 Homepage: http://www.deepin.org/
@@ -41,6 +37,6 @@ Recommends:
  deepin-desktop-schemas (>=5.8.0.34),
  dde-daemon (>=5.12.0.31),
  startdde (>=5.6.0.34),
- deepin-anything-server[i386 amd64]
+ deepin-anything-server[i386 amd64f]
 Description: deepin desktop-environment - search module
  Search module of deepin desktop-environment
