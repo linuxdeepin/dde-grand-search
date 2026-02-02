@@ -220,7 +220,6 @@ QuickPanel::QuickPanel(const QString &desc, QWidget *parent)
 
     DLabel *textLabel = new DLabel;
     textLabel->setText(desc);
-    textLabel->setToolTip(desc);
     textLabel->setElideMode(Qt::ElideRight);
     textLabel->setAlignment(Qt::AlignCenter);
     DFontSizeManager::instance()->bind(textLabel, DFontSizeManager::T10);
