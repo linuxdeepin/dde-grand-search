@@ -17,6 +17,7 @@ if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips"
         OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64"
         OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "sw"
         OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "loongarch64"
+        OR NOT OPT_ENABLE_AI_SEARCH
         )
     message("${CMAKE_SYSTEM_PROCESSOR} : disable ai search")
 else()
