@@ -1,3 +1,10 @@
+dde-grand-search (6.0.30) unstable; urgency=medium
+
+  * fix: grand search quick panel don't show tooltip
+  * feat: add AI search feature toggle
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Wed, 04 Mar 2026 10:36:20 +0800
+
 dde-grand-search (6.0.29) unstable; urgency=medium
 
   * build: add missing depends
