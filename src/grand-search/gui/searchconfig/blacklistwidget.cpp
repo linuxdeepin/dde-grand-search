@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -80,14 +80,14 @@ void BlackListWidget::addButtonClicked()
     qCDebug(logGrandSearch) << "Adding path to blacklist";
 
     QFileDialog fileDialog;
-    auto url = fileDialog.getExistingDirectoryUrl(this, QString(""), QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first());
-    QFileInfo info(url.toLocalFile());
+    auto dirPath = fileDialog.getExistingDirectory(this, QString(""), QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+    QFileInfo info(dirPath);
     m_listWrapper->clearSelection();
-    if (!url.isEmpty() && !info.isSymLink() && info.exists()) {
+    if (!dirPath.isEmpty() && !info.isSymLink() && info.exists()) {
         qCDebug(logGrandSearch) << "Added path to blacklist:" << info.absoluteFilePath();
         m_listWrapper->addRow(info.absoluteFilePath());
     } else {
-        qCWarning(logGrandSearch) << "Failed to add path to blacklist - Path:" << url.toLocalFile()
+        qCWarning(logGrandSearch) << "Failed to add path to blacklist - Path:" << dirPath
                                   << "Is symlink:" << info.isSymLink()
                                   << "Exists:" << info.exists();
     }
