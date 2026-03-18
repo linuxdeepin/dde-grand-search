@@ -132,9 +132,13 @@ bool DdeGrandSearchDockPlugin::pluginIsAllowDisable()
 
 bool DdeGrandSearchDockPlugin::pluginIsDisable()
 {
+#ifdef USE_DOCK_2_0
+    return false;
+#else
     // 第二个参数 "disabled" 表示存储这个值的键（所有配置都是以键值对的方式存储）
     // 第三个参数表示默认值，即默认不禁用
     return m_proxyInter->getValue(this, "disabled", false).toBool();
+#endif
 }
 
 void DdeGrandSearchDockPlugin::pluginStateSwitched()
