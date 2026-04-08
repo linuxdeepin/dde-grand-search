@@ -55,22 +55,6 @@ message("   >>> Build with DTK: ${DTK_VERSION_MAJOR}")
 set(QT_NS Qt${QT_VERSION_MAJOR})
 set(DTK_NS Dtk${DTK_VERSION_MAJOR})
 
-#tar -czvf antlr4.tar.gz ./antlr4
-if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/antlr4")
-    message("find antlr4")
-else()
-    message("decompression antlr4")
-    execute_process(
-        COMMAND tar -xzvf antlr4.tar.gz
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty
-        RESULT_VARIABLE ANTLR_UNZIP_RESULT
-    )
-
-    if (NOT ANTLR_UNZIP_RESULT EQUAL "0")
-        message(FATAL_ERROR "tar antlr4.tar.gz failed: ${ANTLR_UNZIP_RESULT}")
-    endif()
-endif()
-
 configure_file(${CMAKE_SOURCE_DIR}/src/environments.h.in ${CMAKE_SOURCE_DIR}/src/environments.h @ONLY)
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
@@ -153,7 +137,6 @@ add_subdirectory(src/grand-search-dock-plugin)
 add_subdirectory(src/preview-plugin)
 add_subdirectory(src/tools/semanticparser)
 add_subdirectory(src/tools/luceneengine)
-add_subdirectory(3rdparty/antlr4/antlr4-runtime)
 
 # shell-plugin仅在Qt6下被include
 if (${BUILD_OS_VERSION} GREATER_EQUAL "25" AND QT_VERSION_MAJOR EQUAL 6)
