@@ -39,6 +39,7 @@ find_package(${QT_NS} COMPONENTS
     Concurrent
     DBus
     Network
+    Multimedia
 REQUIRED)
 
 set(DBUSSRC
@@ -57,6 +58,7 @@ set(Qt_LIBS
     ${QT_NS}::DBus
     ${QT_NS}::Concurrent
     ${QT_NS}::Network
+    ${QT_NS}::Multimedia
 )
 set(DTK_LIBS
     ${DTK_NS}::Core
@@ -232,6 +234,23 @@ set(UTILSSRC
     utils/report/aisearchpoint.h
     )
 
+# thumbnail
+set(THUMBNAILSRC
+    thumbnail/thumbnail.h
+    thumbnail/thumbnailgenerator.h
+    thumbnail/thumbnailgenerator.cpp
+    thumbnail/thumbnailcache.h
+    thumbnail/thumbnailcache.cpp
+    thumbnail/thumbnailtaskmanager.h
+    thumbnail/thumbnailtaskmanager.cpp
+    thumbnail/thumbnailprovider.h
+    thumbnail/thumbnailprovider.cpp
+    thumbnail/generators/imagethumbnailgenerator.h
+    thumbnail/generators/imagethumbnailgenerator.cpp
+    thumbnail/generators/textthumbnailgenerator.h
+    thumbnail/generators/textthumbnailgenerator.cpp
+    )
+
 # 源文件
 set(SRCS
     main.cpp
@@ -240,6 +259,7 @@ set(SRCS
     ${BUSINESSSRC}
     ${CONTACTSSRC}
     ${UTILSSRC}
+    ${THUMBNAILSRC}
     ${DBUSSRC}
 )
 
