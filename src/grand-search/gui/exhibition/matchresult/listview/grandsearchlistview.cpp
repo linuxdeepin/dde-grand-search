@@ -264,8 +264,8 @@ void GrandSearchListView::setData(const QModelIndex &index, const MatchedItem &i
 
     m_model->setData(index, itemIcon, Qt::DecorationRole);
 
-    // 异步请求缩略图（仅对文件类型）
-    if (item.searcher == GRANDSEARCH_CLASS_FILE_DEEPIN && !item.item.isEmpty()) {
+    // 异步请求缩略图
+    if (!item.item.isEmpty()) {
         QString mimetype = item.type;
         if (mimetype.isEmpty()) {
             mimetype = Utils::getFileMimetype(item.item);
@@ -273,8 +273,7 @@ void GrandSearchListView::setData(const QModelIndex &index, const MatchedItem &i
 
         // 检查是否支持该类型的缩略图
         if (ThumbnailProvider::instance()->isSupported(mimetype)) {
-            QSize thumbnailSize = ThumbnailProvider::instance()->defaultSize();
-            ThumbnailProvider::instance()->requestThumbnail(item.item, mimetype, thumbnailSize);
+            ThumbnailProvider::instance()->requestThumbnail(item.item, mimetype, GrandSearch::ThumbnailSize::Large);
         }
     }
 }

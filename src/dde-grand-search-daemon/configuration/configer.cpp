@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -185,6 +185,9 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
 
             ret = set->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_FULLTEXT, false).toBool();
             conf->setValue(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_FULLTEXT, ret);
+
+            ret = set->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_OCRTEXT, false).toBool();
+            conf->setValue(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_OCRTEXT, ret);
 
             // 设置是否启用AI搜索项
             searcherConfig->setValue(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC, on);

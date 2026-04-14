@@ -128,9 +128,6 @@ else()
     message("catch BUILD_OS_VERSION ${BUILD_OS_VERSION}")
 endif()
 
-# option
-option(OPT_ENABLE_AI_SEARCH "Enable AI search feature" OFF)
-
 add_subdirectory(src/grand-search)
 add_subdirectory(src/dde-grand-search-daemon)
 add_subdirectory(src/grand-search-dock-plugin)

@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/"/>
+    <qresource prefix="/rules">
+        <file alias="noise_rules.json">rules/noise_rules.json</file>
+        <file alias="keyword_rules.json">rules/keyword_rules.json</file>
+        <file alias="time_rules.json">rules/time_rules.json</file>
+        <file alias="filetype_rules.json">rules/filetype_rules.json</file>
+    </qresource>
+</RCC>

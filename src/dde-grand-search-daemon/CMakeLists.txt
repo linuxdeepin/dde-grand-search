@@ -68,8 +68,6 @@ set(MAINCTRL
 FILE(GLOB_RECURSE SEMANTIC_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/searcher/semantic/*.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/searcher/semantic/*.cpp"
-    "${PROJECT_3RDPARTY_PATH}/antlr4/querylang/*.h"
-    "${PROJECT_3RDPARTY_PATH}/antlr4/querylang/*.cpp"
 )
 
 set(SEARCHER
@@ -101,22 +99,8 @@ set(SEARCHER
     searcher/file/filenameworker_p.h
     searcher/file/filesearchutils.h
     searcher/file/filesearchutils.cpp
+    ${SEMANTIC_FILES}
 )
-
-if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64" AND OPT_ENABLE_AI_SEARCH)
-    ADD_DEFINITIONS(-DENABLE_SEMANTIC)
-    set(SEARCHER
-        ${SEARCHER}
-        ${SEMANTIC_FILES}
-    )
-
-    set(LINK_LIBS
-        ${LINK_LIBS}
-        semanticparser
-        luceneengine
-        antlr4_static
-    )
-endif()
 
 # 手动生成xml描述文件
 # qdbuscpp2xml -A grandsearchplugininterfacev1.h -o com.deepin.dde.grandsearch.searchplugin.xml
@@ -187,9 +171,15 @@ set(SRCS
 )
 
 if (${QT_VERSION_MAJOR} EQUAL 5)
-    qt5_add_resources(QRC_FILES utils/dict.qrc)
+    qt5_add_resources(QRC_FILES
+        utils/dict.qrc
+        searcher/semantic/config/semantic.qrc
+    )
 else()
-    qt_add_resources(QRC_FILES utils/dict.qrc)
+    qt_add_resources(QRC_FILES
+        utils/dict.qrc
+        searcher/semantic/config/semantic.qrc
+    )
 endif()
 
 # 执行程序

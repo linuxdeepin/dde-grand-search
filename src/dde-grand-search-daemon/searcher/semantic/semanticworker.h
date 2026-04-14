@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2023 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -23,7 +23,7 @@ public:
     Status status() Q_DECL_OVERRIDE;
     bool hasItem() const Q_DECL_OVERRIDE;
     MatchedItemMap takeAll() Q_DECL_OVERRIDE;
-    void setEngineState(bool e, bool v, bool f);
+    void setEngineState(bool semantic, bool ocrtext, bool fulltext);
 private:
     SemanticWorkerPrivate *d;
 };

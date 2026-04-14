@@ -5,7 +5,10 @@
 #ifndef THUMBNAILCACHE_H
 #define THUMBNAILCACHE_H
 
+#include "thumbnail.h"
+
 #include <QCache>
+#include <QImage>
 #include <QMutex>
 #include <QObject>
 #include <QPixmap>
@@ -19,9 +22,10 @@ namespace GrandSearch {
  *
  * 实现两级缓存机制：
  * 1. 内存缓存：使用 QCache 存储最近使用的缩略图
- * 2. 磁盘缓存：遵循 XDG 标准，存储在用户缓存目录
+ * 2. 磁盘缓存：遵循 XDG 标准，存储在 ~/.cache/thumbnails/
+ *    与文管（dde-file-manager）共用缩略图缓存
  *
- * 缓存文件命名使用文件路径的 MD5 哈希 + 尺寸后缀。
+ * 缓存文件命名使用文件 URL 的 MD5 哈希。
  */
 class ThumbnailCache : public QObject
 {
@@ -40,7 +44,7 @@ public:
      * @param size 缩略图尺寸
      * @return 缓存的缩略图，如果不存在返回空 QPixmap
      */
-    QPixmap get(const QString &filePath, const QSize &size);
+    QPixmap get(const QString &filePath, const ThumbnailSize &size);
 
     /**
      * @brief 将缩略图存入缓存
@@ -48,7 +52,7 @@ public:
      * @param size 缩略图尺寸
      * @param thumbnail 缩略图
      */
-    void put(const QString &filePath, const QSize &size, const QPixmap &thumbnail);
+    void put(const QString &filePath, const ThumbnailSize &size, const QPixmap &thumbnail);
 
     /**
      * @brief 检查缓存是否存在
@@ -56,7 +60,21 @@ public:
      * @param size 缩略图尺寸
      * @return 如果缓存存在返回 true，否则返回 false
      */
-    bool exists(const QString &filePath, const QSize &size);
+    bool exists(const QString &filePath, const ThumbnailSize &size);
+
+    /**
+     * @brief 将 QSize 转换为 ThumbnailSize 枚举
+     * @param size 具体尺寸
+     * @return 对应的 ThumbnailSize 枚举值
+     */
+    static ThumbnailSize sizeToEnum(const QSize &size);
+
+    /**
+     * @brief 将 ThumbnailSize 枚举转换为具体 QSize
+     * @param size ThumbnailSize 枚举值
+     * @return 对应的具体尺寸
+     */
+    static QSize enumToSize(ThumbnailSize size);
 
     /**
      * @brief 清除内存缓存
@@ -80,7 +98,7 @@ public:
      * @param size 缩略图尺寸
      * @return 缓存文件的完整路径
      */
-    QString cacheFilePath(const QString &filePath, const QSize &size);
+    QString cacheFilePath(const QString &filePath, const ThumbnailSize &size);
 
     /**
      * @brief 检查缓存是否过期（基于文件修改时间）
@@ -89,6 +107,15 @@ public:
      * @return 如果缓存过期返回 true，否则返回 false
      */
     bool isCacheExpired(const QString &filePath, const QString &cachePath);
+
+    /**
+     * @brief 检查缓存是否过期（基于元数据）
+     * @param filePath 原始文件路径
+     * @param cachePath 缓存文件路径
+     * @param cacheImage 缓存的图片对象
+     * @return 如果缓存过期返回 true，否则返回 false
+     */
+    bool isCacheExpired(const QString &filePath, const QString &cachePath, const QImage &cacheImage);
 
 private:
     explicit ThumbnailCache(QObject *parent = nullptr);
@@ -104,19 +131,33 @@ private:
      * @param size 缩略图尺寸
      * @return 缓存键
      */
-    QString cacheKey(const QString &filePath, const QSize &size);
+    QString cacheKey(const QString &filePath, const ThumbnailSize &size);
 
     /**
      * @brief 确保缓存目录存在
      */
     void ensureCacheDirExists();
 
+    /**
+     * @brief 获取指定尺寸的缓存目录路径
+     * @param size ThumbnailSize 枚举值
+     * @return 缓存目录路径
+     */
+    QString sizeToDirPath(ThumbnailSize size) const;
+
+    /**
+     * @brief 将文件路径转换为 file:// URL 格式
+     * @param filePath 文件路径
+     * @return file:// URL 字符串
+     */
+    QString filePathToUrl(const QString &filePath) const;
+
 private:
     static ThumbnailCache *s_instance;
 
     QCache<QString, QPixmap> m_memoryCache;   // 内存缓存
     QMutex m_mutex;   // 线程安全锁
-    QString m_cacheDir;   // 磁盘缓存目录
+    QString m_cacheDir;   // 磁盘缓存根目录 (~/.cache/thumbnails)
     int m_maxMemoryCacheItems;   // 内存缓存最大条目数
 };
 

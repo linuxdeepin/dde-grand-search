@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "thumbnailprovider.h"
+#include "thumbnail.h"
 #include "thumbnailcache.h"
 #include "thumbnailtaskmanager.h"
 
@@ -15,7 +16,7 @@ namespace GrandSearch {
 ThumbnailProvider *ThumbnailProvider::s_instance = nullptr;
 
 ThumbnailProvider::ThumbnailProvider(QObject *parent)
-    : QObject(parent), m_defaultSize(128, 128)   // 默认 128x128
+    : QObject(parent)
 {
     // 连接任务管理器的信号
     connect(ThumbnailTaskManager::instance(), &ThumbnailTaskManager::thumbnailReady,
@@ -87,7 +88,7 @@ ThumbnailGenerator *ThumbnailProvider::findGenerator(const QString &mimetype) co
 }
 
 void ThumbnailProvider::requestThumbnail(const QString &filePath, const QString &mimetype,
-                                         const QSize &size, int priority)
+                                         const ThumbnailSize &size, int priority)
 {
     // 检查是否有生成器支持
     if (!isSupported(mimetype)) {
@@ -102,12 +103,11 @@ void ThumbnailProvider::requestThumbnail(const QString &filePath, const QString 
         return;
     }
 
-    // 提交异步任务
     ThumbnailTaskManager::instance()->submit(filePath, mimetype, size, priority);
 }
 
 QPixmap ThumbnailProvider::getThumbnailSync(const QString &filePath, const QString &mimetype,
-                                            const QSize &size)
+                                            const ThumbnailSize &size)
 {
     // 先检查缓存
     QPixmap cached = ThumbnailCache::instance()->get(filePath, size);
@@ -122,8 +122,9 @@ QPixmap ThumbnailProvider::getThumbnailSync(const QString &filePath, const QStri
         return QPixmap();
     }
 
-    // 同步生成缩略图
-    QPixmap thumbnail = generator->generate(filePath, size);
+    // 同步生成缩略图（将 ThumbnailSize 转换为 QSize）
+    QSize qsize = ThumbnailCache::enumToSize(size);
+    QPixmap thumbnail = generator->generate(filePath, qsize);
 
     if (!thumbnail.isNull()) {
         // 存入缓存
@@ -141,16 +142,6 @@ void ThumbnailProvider::cancelRequest(const QString &filePath)
 bool ThumbnailProvider::isSupported(const QString &mimetype) const
 {
     return findGenerator(mimetype) != nullptr;
-}
-
-QSize ThumbnailProvider::defaultSize() const
-{
-    return m_defaultSize;
-}
-
-void ThumbnailProvider::setDefaultSize(const QSize &size)
-{
-    m_defaultSize = size;
 }
 
 QStringList ThumbnailProvider::supportedMimeTypes() const

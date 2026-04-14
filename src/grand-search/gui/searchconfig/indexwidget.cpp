@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -32,11 +32,9 @@ IndexWidget::IndexWidget(QWidget *parent)
 
     m_mainLayout->addWidget(m_groupLabel);
 
-#ifdef ENABLE_AI_SEARCH
     m_intelligent = new IntelligentRetrievalWidget(this);
     m_mainLayout->addWidget(m_intelligent);
     m_mainLayout->addSpacing(10);
-#endif
     m_mainLayout->addWidget(m_blackListWidget);
 
     qCDebug(logGrandSearch) << "IndexWidget created successfully";

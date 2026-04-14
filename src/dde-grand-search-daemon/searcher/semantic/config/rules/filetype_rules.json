@@ -1,0 +1,221 @@
+{
+  "version": "1.0.0",
+  "groups": [
+    {
+      "name": "filetype",
+      "version": "1.0.0",
+      "rules": [
+        {
+          "id": "filetype_word",
+          "pattern": "word|doc|docx|Word文档",
+          "description": "Word文档",
+          "enabled": true,
+          "priority": 120,
+          "metadata": {
+            "extensions": ["doc", "docx"]
+          }
+        },
+        {
+          "id": "filetype_pdf",
+          "pattern": "pdf|PDF",
+          "description": "PDF文档",
+          "enabled": true,
+          "priority": 120,
+          "metadata": {
+            "extensions": ["pdf"]
+          }
+        },
+        {
+          "id": "filetype_excel",
+          "pattern": "excel|xls|xlsx|Excel表格",
+          "description": "Excel表格",
+          "enabled": true,
+          "priority": 120,
+          "metadata": {
+            "extensions": ["xls", "xlsx"]
+          }
+        },
+        {
+          "id": "filetype_powerpoint",
+          "pattern": "ppt|pptx|PPT演示|幻灯片|演示文稿",
+          "description": "PPT演示",
+          "enabled": true,
+          "priority": 120,
+          "metadata": {
+            "extensions": ["ppt", "pptx"]
+          }
+        },
+        {
+          "id": "filetype_image",
+          "pattern": "图片|照片|截图|图|壁纸|海报|相片|表情包",
+          "description": "图片",
+          "enabled": true,
+          "priority": 110,
+          "metadata": {
+            "extensions": ["jpg", "jpeg", "png", "gif", "bmp", "webp", "svg"]
+          }
+        },
+        {
+          "id": "filetype_video",
+          "pattern": "视频|录像|电影|动画|短片|片子",
+          "description": "视频",
+          "enabled": true,
+          "priority": 110,
+          "metadata": {
+            "extensions": ["mp4", "avi", "mkv", "mov", "flv", "wmv", "webm"]
+          }
+        },
+        {
+          "id": "filetype_audio",
+          "pattern": "音频|音乐|录音|歌|语音",
+          "description": "音频",
+          "enabled": true,
+          "priority": 110,
+          "metadata": {
+            "extensions": ["mp3", "wav", "flac", "aac", "ogg", "m4a"]
+          }
+        },
+        {
+          "id": "filetype_archive",
+          "pattern": "压缩包|归档|源码包|打包文件|zip|rar",
+          "description": "压缩包",
+          "enabled": true,
+          "priority": 110,
+          "metadata": {
+            "extensions": ["zip", "tar.gz", "tar", "rar", "7z", "bz2"]
+          }
+        },
+        {
+          "id": "filetype_application",
+          "pattern": "安装包|软件|应用|脚本|程序|包",
+          "description": "应用程序",
+          "enabled": true,
+          "priority": 110,
+          "metadata": {
+            "extensions": ["deb", "AppImage", "sh", "py", "bin", "run"]
+          }
+        },
+        {
+          "id": "filetype_design",
+          "pattern": "源文件|设计稿|psd|矢量图|工程文件",
+          "description": "设计源文件",
+          "enabled": true,
+          "priority": 110,
+          "metadata": {
+            "extensions": ["psd", "ai", "fig", "sketch"]
+          }
+        },
+        {
+          "id": "filetype_code",
+          "pattern": "代码|源码|脚本|程序文件",
+          "description": "代码文件",
+          "enabled": true,
+          "priority": 110,
+          "metadata": {
+            "extensions": ["cpp", "h", "c", "py", "js", "java", "go", "rs", "ts", "php", "rb", "swift", "kt", "cs", "vue", "jsx", "tsx", "scala", "lua", "perl", "r", "m", "mm"]
+          }
+        },
+        {
+          "id": "filetype_font",
+          "pattern": "字体|字库|font",
+          "description": "字体文件",
+          "enabled": true,
+          "priority": 110,
+          "metadata": {
+            "extensions": ["ttf", "otf", "woff", "woff2", "eot", "ttc"]
+          }
+        },
+        {
+          "id": "filetype_ebook",
+          "pattern": "电子书|ebook|epub|mobi",
+          "description": "电子书",
+          "enabled": true,
+          "priority": 110,
+          "metadata": {
+            "extensions": ["epub", "mobi", "azw", "azw3", "fb2", "ibook"]
+          }
+        },
+        {
+          "id": "filetype_torrent",
+          "pattern": "种子|torrent|bt",
+          "description": "种子文件",
+          "enabled": true,
+          "priority": 110,
+          "metadata": {
+            "extensions": ["torrent"]
+          }
+        },
+        {
+          "id": "filetype_database",
+          "pattern": "数据库|database|db|sqlite",
+          "description": "数据库文件",
+          "enabled": true,
+          "priority": 110,
+          "metadata": {
+            "extensions": ["db", "sqlite", "sqlite3", "sql", "mdb", "accdb"]
+          }
+        },
+        {
+          "id": "filetype_config",
+          "pattern": "配置|config|设置|conf",
+          "description": "配置文件",
+          "enabled": true,
+          "priority": 110,
+          "metadata": {
+            "extensions": ["json", "yaml", "yml", "xml", "ini", "conf", "toml", "properties", "cfg"]
+          }
+        },
+        {
+          "id": "filetype_markdown",
+          "pattern": "markdown|md|md文档",
+          "description": "Markdown文档",
+          "enabled": true,
+          "priority": 110,
+          "metadata": {
+            "extensions": ["md", "markdown", "mdown", "mkd"]
+          }
+        },
+        {
+          "id": "filetype_text",
+          "pattern": "文本|txt|记事本",
+          "description": "文本文件",
+          "enabled": true,
+          "priority": 110,
+          "metadata": {
+            "extensions": ["txt", "text", "log"]
+          }
+        },
+        {
+          "id": "filetype_document_generic",
+          "pattern": "文档|文件|报告|文章|方案|资料|笔记|稿件",
+          "description": "泛文档",
+          "enabled": true,
+          "priority": 90,
+          "metadata": {
+            "extensions": ["doc", "docx", "pdf", "txt", "wps", "rtf", "md", "odt"]
+          }
+        },
+        {
+          "id": "filetype_spreadsheet_generic",
+          "pattern": "表格|统计表|报表|名单|数据表|数据|明细",
+          "description": "泛表格",
+          "enabled": true,
+          "priority": 90,
+          "metadata": {
+            "extensions": ["xls", "xlsx", "csv", "ods", "et"]
+          }
+        },
+        {
+          "id": "filetype_presentation_generic",
+          "pattern": "幻灯片|演示文稿|汇报|课件|宣讲",
+          "description": "泛演示文稿",
+          "enabled": true,
+          "priority": 90,
+          "metadata": {
+            "extensions": ["ppt", "pptx", "dps", "odp"]
+          }
+        }
+      ]
+    }
+  ]
+}

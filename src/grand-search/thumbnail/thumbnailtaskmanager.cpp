@@ -37,14 +37,15 @@ ThumbnailTaskManager *ThumbnailTaskManager::instance()
     return s_instance;
 }
 
-QString ThumbnailTaskManager::generateTaskId(const QString &filePath, const QSize &size)
+QString ThumbnailTaskManager::generateTaskId(const QString &filePath, const ThumbnailSize &size)
 {
-    QString key = QString("%1_%2x%3").arg(filePath).arg(size.width()).arg(size.height());
+    const auto &sz = ThumbnailCache::enumToSize(size);
+    QString key = QString("%1_%2x%3").arg(filePath).arg(sz.width()).arg(sz.height());
     return QString::fromLatin1(QCryptographicHash::hash(key.toUtf8(), QCryptographicHash::Md5).toHex());
 }
 
 QString ThumbnailTaskManager::submit(const QString &filePath, const QString &mimetype,
-                                     const QSize &size, int priority)
+                                     const ThumbnailSize &size, int priority)
 {
     QMutexLocker locker(&m_mutex);
 
@@ -57,7 +58,6 @@ QString ThumbnailTaskManager::submit(const QString &filePath, const QString &mim
 
     // 检查缓存是否已存在
     if (ThumbnailCache::instance()->exists(filePath, size)) {
-        // 缓存已存在，直接返回
         QPixmap cached = ThumbnailCache::instance()->get(filePath, size);
         if (!cached.isNull()) {
             // 异步发送信号，避免死锁

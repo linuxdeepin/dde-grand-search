@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -35,11 +35,9 @@ void SearcherGroupPrivate::initBuiltin()
     auto stWebSearcher = new StaticTextEchoer(this);
     m_builtin << stWebSearcher;
 
-#ifdef ENABLE_SEMANTIC
     qInfo() << "create SemanticSearcher.";
     auto semanticSearcher = new SemanticSearcher(this);
     m_builtin << semanticSearcher;
-#endif
 }
 
 bool SearcherGroupPrivate::addExtendSearcher(const SearchPluginInfo &pluginInfo)

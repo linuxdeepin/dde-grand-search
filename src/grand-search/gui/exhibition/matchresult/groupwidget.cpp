@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -8,18 +8,17 @@
 #include "viewmore/viewmorebutton.h"
 #include "utils/utils.h"
 #include "global/accessibility/acintelfunctions.h"
-#include "gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.h"
 
 #include <DLabel>
 #include <DPushButton>
 #include <DHorizontalLine>
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-#include <DGuiApplicationHelper>
+#    include <DGuiApplicationHelper>
 #else
-#include <DApplicationHelper>
+#    include <DApplicationHelper>
 #endif
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-#include <DPaletteHelper>
+#    include <DPaletteHelper>
 #endif
 #include <DSpinner>
 
@@ -265,39 +264,7 @@ void GroupWidget::showLabel(bool bShow)
     m_listView->setVisible(!bShow);
     m_resultLabel->setVisible(bShow);
     if (bShow && m_searchGroupName == GRANDSEARCH_GROUP_FILE_INFERENCE) {
-        // 有无索引文件
-        QString idxDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + "/.cache/deepin/deepin-ai-daemon/index";
-        bool hasIdx = QFile::exists(idxDir);
-        // 有无自动更新索引
-        bool isUpdateIdx = IntelligentRetrievalWidget::isUpdateIndex();
-        // 有无安装大模型
-        bool hasModel = IntelligentRetrievalWidget::isQueryLangSupported();
-        qCDebug(logGrandSearch) << "AI inference state - Index directory:" << idxDir
-                                << "Has index:" << hasIdx
-                                << "Auto-update enabled:" << isUpdateIdx
-                                << "Model available:" << hasModel;
-
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-        const QColor &color = DPaletteHelper::instance()->palette(m_resultLabel).color(DPalette::Normal, DPalette::Highlight);
-#else
-        const QColor &color = DApplicationHelper::instance()->palette(m_resultLabel).color(DPalette::Normal, DPalette::Highlight);
-#endif
-        if (!hasIdx && !isUpdateIdx && !hasModel) {
-            // 请先前往搜索配置安装UOS AI大模型，并开启自动更新索引 Please go to Search configration to install the ULLM, and turn on Automatic index update.
-            m_resultLabel->setText(tr("Please go to %1 to install the ULLM, and %2 Automatic index update.")
-                                           .arg(QString("<a href=\"config\" style=\"color:%1; text-decoration: none;\">%2</a>").arg(color.name()).arg(tr("Search configration")))
-                                           .arg(QString("<a href=\"update index\" style=\"color:%1; text-decoration: none;\">%2</a>").arg(color.name()).arg(tr("turn on"))));
-        } else if (!hasIdx && !isUpdateIdx) {
-            // 请先开启自动更新索引 Please turn on Automatic index update.
-            m_resultLabel->setText(tr("Please %1 Automatic index update.")
-                                           .arg(QString("<a href=\"update index\" style=\"color:%1; text-decoration: none;\">%2</a>").arg(color.name()).arg(tr("turn on"))));
-        } else if (!hasModel) {
-            // 请先前往搜索配置安装UOS AI大模型 Please go to Search configration to install the UOS AI large model.
-            m_resultLabel->setText(tr("Please go to %1 to install the ULLM.")
-                                           .arg(QString("<a href=\"config\" style=\"color:%1; text-decoration: none;\">%2</a>").arg(color.name()).arg(tr("Search configration"))));
-        } else {
-            m_resultLabel->setText(tr("No search results"));
-        }
+        m_resultLabel->setText(tr("No search results"));
     }
 }
 
@@ -478,11 +445,11 @@ void GroupWidget::onMoreBtnClicked()
 
 void GroupWidget::onOpenConfig(const QString &link)
 {
-    const QStringList args = { "-s", "--position", "aiconfig" };
-    if (link == "update index") {
-        IntelligentRetrievalWidget::setAutoIndex(true);
-        QProcess::startDetached("dde-grand-search", args);
-    } else if (link == "config") {
-        QProcess::startDetached("dde-grand-search", args);
-    }
+    // const QStringList args = { "-s", "--position", "aiconfig" };
+    // if (link == "update index") {
+    //     IntelligentRetrievalWidget::setOcrTextQuery(true);
+    //     QProcess::startDetached("dde-grand-search", args);
+    // } else if (link == "config") {
+    //     QProcess::startDetached("dde-grand-search", args);
+    // }
 }

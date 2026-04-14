@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -31,7 +31,7 @@
 #define GroupName_Folder            QObject::tr("Folders")
 #define GroupName_File              QObject::tr("Files")
 #define GroupName_Web               QObject::tr("Web")
-#define GroupName_Inference         QObject::tr("AI Search")
+#define GroupName_Inference         QObject::tr("Semantic Search")
 
 #define GROUP_MAX_SHOW              5   // 每组默认显示数量
 

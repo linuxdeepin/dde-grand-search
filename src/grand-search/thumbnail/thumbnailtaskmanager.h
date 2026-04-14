@@ -18,6 +18,9 @@
 
 namespace GrandSearch {
 
+// 前向声明
+enum class ThumbnailSize;
+
 /**
  * @brief 缩略图任务结构
  */
@@ -25,7 +28,7 @@ struct ThumbnailTask
 {
     QString filePath;   // 文件路径
     QString mimetype;   // MIME 类型
-    QSize size;   // 目标尺寸
+    ThumbnailSize size;   // 目标尺寸
     int priority;   // 优先级（数值越大优先级越高）
     bool canceled;   // 是否已取消
 
@@ -34,7 +37,7 @@ struct ThumbnailTask
     {
     }
 
-    ThumbnailTask(const QString &path, const QString &mime, const QSize &s, int prio = 0)
+    ThumbnailTask(const QString &path, const QString &mime, const ThumbnailSize &s, int prio = 0)
         : filePath(path), mimetype(mime), size(s), priority(prio), canceled(false)
     {
     }
@@ -74,7 +77,7 @@ public:
      * @return 任务 ID（用于取消任务）
      */
     QString submit(const QString &filePath, const QString &mimetype,
-                   const QSize &size, int priority = 0);
+                   const ThumbnailSize &size, int priority = 0);
 
     /**
      * @brief 取消指定任务
@@ -141,7 +144,7 @@ private:
      * @param size 目标尺寸
      * @return 任务 ID
      */
-    QString generateTaskId(const QString &filePath, const QSize &size);
+    QString generateTaskId(const QString &filePath, const ThumbnailSize &size);
 
 private:
     static ThumbnailTaskManager *s_instance;

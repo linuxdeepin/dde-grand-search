@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -63,6 +63,7 @@ void DesktopAppSearcherPrivate::createIndex(DesktopAppSearcherPrivate *d)
 
         // 获取索引关键字
         auto keys = DesktopAppSearcherPrivate::desktopIndex(value, locale);
+        qWarning() << "=========" << app.key() << keys;
         if (Q_UNLIKELY(keys.isEmpty()))
             continue;
 
@@ -132,9 +133,11 @@ QMap<QString, DesktopEntryPointer> DesktopAppSearcherPrivate::scanDesktopFile(co
             if (duplicate.contains(fileName))
                 continue;
 
+            qWarning() << "$$$$$$$$$$$$$$$" << path;
             DesktopEntryPointer pointer(new DDesktopEntry(path));
             if (isHidden(pointer))
                 continue;
+            qWarning() << "###############" << path;
             // 正常解析时pointer->status()返回的不是NoError
             // if (pointer->status() == DDesktopEntry::NoError)
             entrys.insert(path, pointer);
@@ -161,7 +164,7 @@ bool DesktopAppSearcherPrivate::isHidden(DesktopEntryPointer pointer)
             return true;
     }
 
-    static QString desktop = qgetenv("XDG_CURRENT_DESKTOP");
+    static QString desktop = "Deepin";//qgetenv("XDG_CURRENT_DESKTOP");
     if (!desktop.isEmpty()) {
         // NotShowIn
         {
