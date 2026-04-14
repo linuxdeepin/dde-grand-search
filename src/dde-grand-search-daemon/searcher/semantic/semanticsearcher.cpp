@@ -1,16 +1,13 @@
-// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2023 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "semanticsearcher_p.h"
 #include "global/builtinsearch.h"
+#include "global/searchconfigdefine.h"
 #include "semanticworker.h"
-#include "semantichelper.h"
 #include "configuration/configer.h"
-#include "tools/semanticparser/semanticparser.h"
 
-#include <QDBusConnection>
-#include <QDBusConnectionInterface>
 #include <QLoggingCategory>
 
 Q_DECLARE_LOGGING_CATEGORY(logDaemon)
@@ -27,8 +24,8 @@ SemanticSearcherPrivate::~SemanticSearcherPrivate()
 }
 
 SemanticSearcher::SemanticSearcher(QObject *parent)
-    : Searcher(parent),
-      d(new SemanticSearcherPrivate(this))
+    : Searcher(parent)
+    , d(new SemanticSearcherPrivate(this))
 {
     qCDebug(logDaemon) << "SemanticSearcher constructor";
 }
@@ -47,31 +44,23 @@ QString SemanticSearcher::name() const
 bool SemanticSearcher::isActive() const
 {
     qCDebug(logDaemon) << "Checking SemanticSearcher active status";
+
     auto config = ConfigerIns->group(GRANDSEARCH_SEMANTIC_GROUP);
     Q_ASSERT(config);
 
-    SemanticParser paser;
-    d->m_semantic = false;
-    d->m_vector = false;
-    d->m_fulltext = false;
+    // 检查语义分析是否启用
+    d->m_semanticEnabled = config->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, true);
+    qCDebug(logDaemon) << "Semantic analysis enabled:" << d->m_semanticEnabled;
 
-    if (config->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, true)) {
-        /*if (paser.connectToQueryLang(SemanticHelper::querylangServiceName())) {
-            d->m_semantic  = paser.isQueryLangSupported();
-        }*/
-        d->m_semantic = true;
-        qCDebug(logDaemon) << "Semantic analysis enabled";
-    }
+    // 检查全文搜索是否启用
+    d->m_fulltextEnabled = config->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_FULLTEXT, false);
+    qCDebug(logDaemon) << "Fulltext search enabled:" << d->m_fulltextEnabled;
 
-    //    if (config->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR, true)) {
-    //        if (paser.connectToVector(SemanticHelper::vectorServiceName())) {
-    //            d->m_vector = paser.isVectorSupported();
-    //        }
-    //    }
+    // 检查 OCR 文本搜索是否启用
+    d->m_ocrtextEnabled = config->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_OCRTEXT, false);
+    qCDebug(logDaemon) << "OCR text search enabled:" << d->m_ocrtextEnabled;
 
-    d->m_fulltext = config->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_FULLTEXT, false);
-
-    return d->m_semantic;
+    return d->m_semanticEnabled;
 }
 
 bool SemanticSearcher::activate()
@@ -83,16 +72,20 @@ bool SemanticSearcher::activate()
 ProxyWorker *SemanticSearcher::createWorker() const
 {
     qCDebug(logDaemon) << "Creating SemanticWorker";
+
     auto worker = new SemanticWorker(name());
-    worker->setEngineState(d->m_semantic, d->m_vector, d->m_fulltext);
-    qCInfo(logDaemon) << "Created SemanticWorker with engine state - Semantic:" << d->m_semantic
-                      << "Vector:" << d->m_vector
-                      << "Fulltext:" << d->m_fulltext;
+    worker->setEngineState(d->m_semanticEnabled, d->m_ocrtextEnabled, d->m_fulltextEnabled);
+
+    qCInfo(logDaemon) << "Created SemanticWorker - semantic:" << d->m_semanticEnabled
+                      << "fulltext:" << d->m_fulltextEnabled
+                      << "ocrtext:" << d->m_ocrtextEnabled;
+
     return worker;
 }
 
 bool SemanticSearcher::action(const QString &action, const QString &item)
 {
+    Q_UNUSED(action)
     Q_UNUSED(item)
     qCWarning(logDaemon) << "Unsupported action requested:" << action;
     return false;

@@ -1,0 +1,55 @@
+{
+  "version": "1.0.0",
+  "groups": [
+    {
+      "name": "keyword",
+      "version": "1.0.0",
+      "rules": [
+        {
+          "id": "keyword_contains",
+          "pattern": "(?:文件名|名称|名字|标题)?(?:中)?包含(?:了)?[\"\"「]?([^\"\"」\\s的]+(?:[和与以及或、,，][^\"\"」\\s的]+)*)[\"\"」]?",
+          "description": "包含关键词（支持多关键词连接词分隔）",
+          "enabled": true,
+          "priority": 200,
+          "metadata": {
+            "capture_group": 1,
+            "multi_keyword": true
+          }
+        },
+        {
+          "id": "keyword_named",
+          "pattern": "(?:文件)?(?:名(?:称|字)?)?(?:叫做|叫|名为|为)[\"\"「]?([^\"\"」\\s的]+(?:[和与以及或、,，][^\"\"」\\s的]+)*)[\"\"」]?",
+          "description": "文件名为关键词（支持多关键词连接词分隔）",
+          "enabled": true,
+          "priority": 200,
+          "metadata": {
+            "capture_group": 1,
+            "multi_keyword": true
+          }
+        },
+        {
+          "id": "keyword_about",
+          "pattern": "关于[\"\"「]?([^\"\"」\\s的]+(?:[和与以及或、,，][^\"\"」\\s的]+)*)[\"\"」]?",
+          "description": "关于某主题（支持多关键词连接词分隔）",
+          "enabled": true,
+          "priority": 190,
+          "metadata": {
+            "capture_group": 1,
+            "multi_keyword": true
+          }
+        },
+        {
+          "id": "keyword_with",
+          "pattern": "含有[\"\"「]?([^\"\"」\\s的]+(?:[和与以及或、,，][^\"\"」\\s的]+)*)[\"\"」]?",
+          "description": "含有关键词（支持多关键词连接词分隔）",
+          "enabled": true,
+          "priority": 190,
+          "metadata": {
+            "capture_group": 1,
+            "multi_keyword": true
+          }
+        }
+      ]
+    }
+  ]
+}

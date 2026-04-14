@@ -16,6 +16,9 @@
 
 namespace GrandSearch {
 
+// 前向声明
+enum class ThumbnailSize;
+
 /**
  * @brief 缩略图提供者
  *
@@ -59,7 +62,7 @@ public:
      * 否则提交异步任务生成缩略图。
      */
     void requestThumbnail(const QString &filePath, const QString &mimetype,
-                          const QSize &size, int priority = 0);
+                          const ThumbnailSize &size, int priority = 0);
 
     /**
      * @brief 同步获取缩略图（阻塞）
@@ -71,7 +74,7 @@ public:
      * 注意：此方法会阻塞当前线程，建议仅在后台线程中使用。
      */
     QPixmap getThumbnailSync(const QString &filePath, const QString &mimetype,
-                             const QSize &size);
+                             const ThumbnailSize &size);
 
     /**
      * @brief 取消指定文件的缩略图请求
@@ -85,18 +88,6 @@ public:
      * @return 如果有生成器支持返回 true，否则返回 false
      */
     bool isSupported(const QString &mimetype) const;
-
-    /**
-     * @brief 获取默认缩略图尺寸
-     * @return 默认尺寸
-     */
-    QSize defaultSize() const;
-
-    /**
-     * @brief 设置默认缩略图尺寸
-     * @param size 默认尺寸
-     */
-    void setDefaultSize(const QSize &size);
 
     /**
      * @brief 获取所有支持的 mimetype 列表
@@ -145,7 +136,6 @@ private:
 
     QList<ThumbnailGenerator *> m_generators;   // 已注册的生成器列表
     mutable QMutex m_mutex;   // 线程安全锁
-    QSize m_defaultSize;   // 默认缩略图尺寸
 };
 
 }   // namespace GrandSearch

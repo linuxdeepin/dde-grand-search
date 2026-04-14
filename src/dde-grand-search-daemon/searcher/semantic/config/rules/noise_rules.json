@@ -1,0 +1,67 @@
+{
+  "version": "1.0.0",
+  "groups": [
+    {
+      "name": "noise",
+      "version": "1.0.0",
+      "rules": [
+        {
+          "id": "noise_action",
+          "pattern": "帮我找到|帮我查找|帮我搜索|帮我找|帮我看看|帮我查|帮我搜|找到|查找|搜索|寻找|找一下|找找|看看|查看|查看一下|查一下|搜一下|搜搜",
+          "description": "搜索动作词（噪声）",
+          "enabled": true,
+          "priority": 100,
+          "metadata": {}
+        },
+        {
+          "id": "noise_generic",
+          "pattern": "所有的|全部的|所有的|全部|一切|任何|各个|每",
+          "description": "泛型词（噪声）",
+          "enabled": true,
+          "priority": 100,
+          "metadata": {}
+        },
+        {
+          "id": "noise_quantifier",
+          "pattern": "一些|几个|那些|这些|某个|某些|那个|这个",
+          "description": "量词指示词（噪声）",
+          "enabled": true,
+          "priority": 95,
+          "metadata": {}
+        },
+        {
+          "id": "noise_polite",
+          "pattern": "请|麻烦|能不能|可以|想要|需要|希望|能不能帮我|可以帮我",
+          "description": "礼貌用语（噪声）",
+          "enabled": true,
+          "priority": 95,
+          "metadata": {}
+        },
+        {
+          "id": "noise_location",
+          "pattern": "在哪里|在哪|在哪个|在什么|哪里有|哪有",
+          "description": "位置询问词（噪声）",
+          "enabled": true,
+          "priority": 90,
+          "metadata": {}
+        },
+        {
+          "id": "noise_suffix",
+          "pattern": "的文件$|的文件夹$|的文档$|的内容$|的东西$|的信息$",
+          "description": "尾部噪声词",
+          "enabled": true,
+          "priority": 90,
+          "metadata": {}
+        },
+        {
+          "id": "noise_prefix",
+          "pattern": "^有没有|^是不是|^有没有一个|^有没有什么",
+          "description": "头部疑问词（噪声）",
+          "enabled": true,
+          "priority": 90,
+          "metadata": {}
+        }
+      ]
+    }
+  ]
+}

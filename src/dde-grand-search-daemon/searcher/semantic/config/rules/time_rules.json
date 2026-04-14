@@ -1,0 +1,362 @@
+{
+  "version": "1.0.0",
+  "groups": [
+    {
+      "name": "time",
+      "version": "2.0.0",
+      "rules": [
+        {
+          "id": "time_today",
+          "pattern": "今天|今日",
+          "description": "今天",
+          "enabled": true,
+          "priority": 100,
+          "metadata": {
+            "type": "preset",
+            "preset": "today"
+          }
+        },
+        {
+          "id": "time_just_now",
+          "pattern": "刚刚|刚才|刚|这会儿",
+          "description": "刚刚（过去2小时内）",
+          "enabled": true,
+          "priority": 105,
+          "metadata": {
+            "type": "relative_range",
+            "start_offset": -2,
+            "end_offset": 0,
+            "unit": "hours"
+          }
+        },
+        {
+          "id": "time_yesterday",
+          "pattern": "昨天|昨日",
+          "description": "昨天",
+          "enabled": true,
+          "priority": 100,
+          "metadata": {
+            "type": "preset",
+            "preset": "yesterday"
+          }
+        },
+        {
+          "id": "time_this_week",
+          "pattern": "本周|这周|这个星期",
+          "description": "本周",
+          "enabled": true,
+          "priority": 90,
+          "metadata": {
+            "type": "preset",
+            "preset": "this_week"
+          }
+        },
+        {
+          "id": "time_last_week",
+          "pattern": "上周|上个星期",
+          "description": "上周",
+          "enabled": true,
+          "priority": 90,
+          "metadata": {
+            "type": "preset",
+            "preset": "last_week"
+          }
+        },
+        {
+          "id": "time_this_month",
+          "pattern": "本月|这个月",
+          "description": "本月",
+          "enabled": true,
+          "priority": 80,
+          "metadata": {
+            "type": "preset",
+            "preset": "this_month"
+          }
+        },
+        {
+          "id": "time_last_month",
+          "pattern": "上个月|上月",
+          "description": "上个月",
+          "enabled": true,
+          "priority": 80,
+          "metadata": {
+            "type": "preset",
+            "preset": "last_month"
+          }
+        },
+        {
+          "id": "time_this_year",
+          "pattern": "今年",
+          "description": "今年",
+          "enabled": true,
+          "priority": 70,
+          "metadata": {
+            "type": "preset",
+            "preset": "this_year"
+          }
+        },
+        {
+          "id": "time_last_year",
+          "pattern": "去年",
+          "description": "去年",
+          "enabled": true,
+          "priority": 70,
+          "metadata": {
+            "type": "preset",
+            "preset": "last_year"
+          }
+        },
+        {
+          "id": "time_recent_days",
+          "pattern": "最?近(\\d+)天",
+          "description": "最近N天",
+          "enabled": true,
+          "priority": 98,
+          "metadata": {
+            "type": "relative",
+            "capture_group": 1,
+            "unit": "days"
+          }
+        },
+        {
+          "id": "time_recent_few_days",
+          "pattern": "这几天|最近|近期|这阵子",
+          "description": "这几天（过去3天内）",
+          "enabled": true,
+          "priority": 96,
+          "metadata": {
+            "type": "relative_range",
+            "start_offset": -3,
+            "end_offset": 0,
+            "unit": "days"
+          }
+        },
+        {
+          "id": "time_past_few_days",
+          "pattern": "前几天|之前几天|那些天",
+          "description": "前几天（3到7天前）",
+          "enabled": true,
+          "priority": 94,
+          "metadata": {
+            "type": "relative_range",
+            "start_offset": -7,
+            "end_offset": -3,
+            "unit": "days"
+          }
+        },
+        {
+          "id": "time_a_while_ago",
+          "pattern": "之前|早些时候|以前",
+          "description": "之前（30天以前）",
+          "enabled": true,
+          "priority": 60,
+          "metadata": {
+            "type": "relative_range",
+            "start_offset": -999999,
+            "end_offset": -30,
+            "unit": "days"
+          }
+        },
+        {
+          "id": "time_recent_weeks",
+          "pattern": "最?近(\\d+)周|最?近(\\d+)个星期",
+          "description": "最近N周",
+          "enabled": true,
+          "priority": 98,
+          "metadata": {
+            "type": "relative",
+            "capture_group": 1,
+            "unit": "weeks"
+          }
+        },
+        {
+          "id": "time_recent_months",
+          "pattern": "最?近(\\d+)个月",
+          "description": "最近N个月",
+          "enabled": true,
+          "priority": 98,
+          "metadata": {
+            "type": "relative",
+            "capture_group": 1,
+            "unit": "months"
+          }
+        },
+        {
+          "id": "time_recent_years",
+          "pattern": "最?近(\\d+)年",
+          "description": "最近N年",
+          "enabled": true,
+          "priority": 98,
+          "metadata": {
+            "type": "relative",
+            "capture_group": 1,
+            "unit": "years"
+          }
+        },
+        {
+          "id": "time_full_date",
+          "pattern": "(\\d{4})年(\\d{1,2})月(\\d{1,2})[日号]",
+          "description": "完整日期（年月日）",
+          "enabled": true,
+          "priority": 150,
+          "metadata": {
+            "type": "custom",
+            "format": "full_date",
+            "year_group": 1,
+            "month_group": 2,
+            "day_group": 3
+          }
+        },
+        {
+          "id": "time_year_month",
+          "pattern": "(\\d{4})年(\\d{1,2})月",
+          "description": "年月",
+          "enabled": true,
+          "priority": 145,
+          "metadata": {
+            "type": "custom",
+            "format": "year_month",
+            "year_group": 1,
+            "month_group": 2
+          }
+        },
+        {
+          "id": "time_iso_date",
+          "pattern": "(\\d{4})-(\\d{1,2})-(\\d{1,2})",
+          "description": "ISO格式日期",
+          "enabled": true,
+          "priority": 150,
+          "metadata": {
+            "type": "custom",
+            "format": "iso_date",
+            "year_group": 1,
+            "month_group": 2,
+            "day_group": 3
+          }
+        },
+        {
+          "id": "time_month_day",
+          "pattern": "(\\d{1,2})月(\\d{1,2})[日号]",
+          "description": "月日（默认当年）",
+          "enabled": true,
+          "priority": 140,
+          "metadata": {
+            "type": "custom",
+            "format": "month_day",
+            "month_group": 1,
+            "day_group": 2,
+            "default_year": "current"
+          }
+        },
+        {
+          "id": "time_chinese_date_full",
+          "pattern": "(\\d{4})年([一二三四五六七八九十]+)月([一二三四五六七八九十]+)[日号]",
+          "description": "中文数字日期（完整）",
+          "enabled": true,
+          "priority": 145,
+          "metadata": {
+            "type": "custom",
+            "format": "chinese_date_full",
+            "year_group": 1,
+            "month_group": 2,
+            "day_group": 3,
+            "chinese_numbers": true
+          }
+        },
+        {
+          "id": "time_chinese_date_month_day",
+          "pattern": "([一二三四五六七八九十]+)月([一二三四五六七八九十]+)[日号]",
+          "description": "中文数字日期（月日）",
+          "enabled": true,
+          "priority": 140,
+          "metadata": {
+            "type": "custom",
+            "format": "chinese_date_month_day",
+            "month_group": 1,
+            "day_group": 2,
+            "default_year": "current",
+            "chinese_numbers": true
+          }
+        },
+        {
+          "id": "time_range_full",
+          "pattern": "(\\d{4})年(\\d{1,2})月(\\d{1,2})[日号]?[到至](\\d{1,2})月(\\d{1,2})[日号]?",
+          "description": "日期范围（同年）",
+          "enabled": true,
+          "priority": 130,
+          "metadata": {
+            "type": "custom",
+            "format": "date_range_same_year",
+            "year_group": 1,
+            "start_month_group": 2,
+            "start_day_group": 3,
+            "end_month_group": 4,
+            "end_day_group": 5
+          }
+        },
+        {
+          "id": "time_range_cross_year",
+          "pattern": "(\\d{4})年(\\d{1,2})月(\\d{1,2})[日号]?[到至](\\d{4})年(\\d{1,2})月(\\d{1,2})[日号]?",
+          "description": "日期范围（跨年）",
+          "enabled": true,
+          "priority": 130,
+          "metadata": {
+            "type": "custom",
+            "format": "date_range_cross_year",
+            "start_year_group": 1,
+            "start_month_group": 2,
+            "start_day_group": 3,
+            "end_year_group": 4,
+            "end_month_group": 5,
+            "end_day_group": 6
+          }
+        },
+        {
+          "id": "time_range_month_day",
+          "pattern": "(\\d{1,2})月(\\d{1,2})[日号]?[到至](\\d{1,2})月(\\d{1,2})[日号]?",
+          "description": "日期范围（月日，默认当年）",
+          "enabled": true,
+          "priority": 125,
+          "metadata": {
+            "type": "custom",
+            "format": "date_range_month_day",
+            "start_month_group": 1,
+            "start_day_group": 2,
+            "end_month_group": 3,
+            "end_day_group": 4,
+            "default_year": "current"
+          }
+        },
+        {
+          "id": "time_range_iso",
+          "pattern": "(\\d{4})-(\\d{1,2})-(\\d{1,2})[到至](\\d{4})-(\\d{1,2})-(\\d{1,2})",
+          "description": "ISO格式日期范围",
+          "enabled": true,
+          "priority": 130,
+          "metadata": {
+            "type": "custom",
+            "format": "date_range_iso",
+            "start_year_group": 1,
+            "start_month_group": 2,
+            "start_day_group": 3,
+            "end_year_group": 4,
+            "end_month_group": 5,
+            "end_day_group": 6
+          }
+        },
+        {
+          "id": "time_relative_weekday",
+          "pattern": "(上|下|这)(一|二|三|四|五|六|七|天|日|周|星期)",
+          "description": "相对星期",
+          "enabled": true,
+          "priority": 110,
+          "metadata": {
+            "type": "relative_weekday",
+            "direction_group": 1,
+            "weekday_group": 2
+          }
+        }
+      ]
+    }
+  ]
+}
