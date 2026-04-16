@@ -322,7 +322,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="154"/>
         <source>Embedding Plugins</source>
-        <translation>Incrustació de complements</translation>
+        <translation>Encastament de connectors</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="154"/>
@@ -369,7 +369,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="339"/>
         <source>To use AI Smart Search, you need to install the Embedding Plugins and ULLM first.</source>
-        <translation>Per usar la cerca intel·ligent amb IA, primer cal instal·lar els complements d&apos;encastament i l&apos;ULLM.</translation>
+        <translation>Per usar la cerca intel·ligent amb IA, primer cal instal·lar l&apos;Encastament de connectors i l&apos;ULLM.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="340"/>
@@ -468,7 +468,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="390"/>
         <source>Please install the &quot;Embedding Plugins&quot; first before installing this model.</source>
-        <translation>Si us plau, instal·leu primer els Complements d&apos;encastament abans d&apos;instal·lar aquest model.</translation>
+        <translation>Si us plau, instal·leu primer l&apos;Encastament de connectors abans d&apos;instal·lar aquest model.</translation>
     </message>
 </context>
 <context>
