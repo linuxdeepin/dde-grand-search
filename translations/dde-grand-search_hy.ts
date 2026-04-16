@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="hy">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="hy">
 <context>
     <name>GrandSearch::AiToolBar</name>
     <message>
@@ -11,7 +9,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="49"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
@@ -278,7 +276,7 @@
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="281"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="366"/>
         <source>No search results</source>
-        <translation type="unfinished">No search results</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -349,7 +347,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="243"/>
         <source>Please install %0 in &lt;a href=&quot;%0&quot;&gt;the app store&lt;/a&gt; before turning on this configuration.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="283"/>
@@ -371,12 +369,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="339"/>
         <source>To use AI Smart Search, you need to install the Embedding Plugins and ULLM first.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="340"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -385,92 +383,92 @@
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="61"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="385"/>
         <source>Not Installed</source>
-        <translation type="unfinished">Չի ընդգրկված</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="77"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="384"/>
         <source>Install Model</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="93"/>
         <source>Update model</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="94"/>
         <source>Uninstall model</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="146"/>
         <source>Installing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="212"/>
         <source>Are you sure you want to delete this model?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="213"/>
         <source>After uninstallation, functions such as AI Search and UOS AI Assistant will not work properly.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="214"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Cancel</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="215"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation type="unfinished">Confirm</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="324"/>
         <source>Installing </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="344"/>
         <source>Installing the ULLM</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="345"/>
         <source>Exiting will cause the installation to fail, do you still want to exit?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="346"/>
         <source>Exit</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="347"/>
         <source>Continue</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="378"/>
         <source>UnInstall Model</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="379"/>
         <source>Installed</source>
-        <translation type="unfinished">Ընդգրկված է</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="390"/>
         <source>Please install the &quot;Embedding Plugins&quot; first before installing this model.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -478,7 +476,7 @@
     <message>
         <location filename="../src/grand-search/gui/mainwindow.cpp" line="222"/>
         <source>No search results</source>
-        <translation type="unfinished">No search results</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -486,7 +484,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="89"/>
         <source>Guess you want to search the following</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -494,37 +492,37 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="32"/>
         <source>Search experience program</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="40"/>
         <source>Join search experience program</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="53"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations, the contents you search while using the Application, the time of search, the type of requested large model.If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="64"/>
         <source>To know more about the management of your data, please refer to the UnionTech Software Privacy Policy (</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="66"/>
         <source>https://www.uniontech.com/agreement/privacy-en</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="67"/>
         <source>https://www.deepin.org/en/agreement/privacy/</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="69"/>
         <source>).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -532,7 +530,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/scopewidget.cpp" line="33"/>
         <source>Search contents</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -540,17 +538,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="42"/>
         <source>Default search engine</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="50"/>
         <source>Search for keywords by the default search engine.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="62"/>
         <source>Default search engine is</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="71"/>
