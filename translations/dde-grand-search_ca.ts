@@ -4,17 +4,17 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="48"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation type="unfinished"/>
+        <translation>No es pot usar %1. Si us plau, aneu a la Botiga d&apos;aplicacions per actualitzar primer la versió d&apos;UOS AI.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="49"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancel·la</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
         <source>Open App Stroe</source>
-        <translation type="unfinished"/>
+        <translation>Obre la Botiga d&apos;aplicacions</translation>
     </message>
 </context>
 <context>
