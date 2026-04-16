@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="48"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation type="unfinished"/>
+        <translation>Nu se poate folosi %1, vă rugăm să accesați Magazinul de Aplicații pentru a actualiza versiunea UOS AI înainte.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="49"/>
@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
         <source>Open App Stroe</source>
-        <translation type="unfinished"/>
+        <translation>Deschide Magazinul de Aplicații</translation>
     </message>
 </context>
 <context>
@@ -23,75 +23,75 @@
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="112"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="162"/>
         <source>Summary</source>
-        <translation type="unfinished"/>
+        <translation>Rezumat</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="113"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="163"/>
         <source>Translation</source>
-        <translation type="unfinished"/>
+        <translation>Traducere</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="114"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="164"/>
         <source>Extension</source>
-        <translation type="unfinished"/>
+        <translation>Extensie</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="115"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="165"/>
         <source>Add to knowledge base</source>
-        <translation type="unfinished"/>
+        <translation>Adaugă în baza de cunoștințe</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="126"/>
         <source>Summarize document content with UOS AI</source>
-        <translation type="unfinished"/>
+        <translation>Rezumă conținutul documentului cu UOS AI</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="127"/>
         <source>Translate document content with UOS AI</source>
-        <translation type="unfinished"/>
+        <translation>Traduce conținutul documentului cu UOS AI</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="128"/>
         <source>Extend document content with UOS AI</source>
-        <translation type="unfinished"/>
+        <translation>Extinde conținutul documentului cu UOS AI</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="129"/>
         <source>Add document to UOS AI knowledge base</source>
-        <translation type="unfinished"/>
+        <translation>Adaugă documentul în baza de cunoștințe UOS AI</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="299"/>
         <source>Summarize this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation type="unfinished"/>
+        <translation>Rezumă acest document pentru mine și oferi-mi un rezultat clar direct, fără niciun conținut inutil.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="315"/>
         <source>Translate this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation type="unfinished"/>
+        <translation>Traduce acest document pentru mine și oferi-mi un rezultat clar direct, fără niciun conținut inutil.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="331"/>
         <source>Expand this document for me and provide me with a clear and expanded result directly, without any unnecessary content.</source>
-        <translation type="unfinished"/>
+        <translation>Extinde acest document pentru mine și oferi-mi un rezultat clar și extins direct, fără niciun conținut inutil.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="447"/>
         <source>DDE Grand Search</source>
-        <translation type="unfinished"/>
+        <translation>DDE Grand Search</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="450"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation type="unfinished"/>
+        <translation>Nu se poate folosi %1, vă rugăm să accesați Magazinul de Aplicații pentru a actualiza versiunea UOS AI înainte.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
         <source>Open App Stroe</source>
-        <translation type="unfinished"/>
+        <translation>Deschide Magazinul de Aplicații</translation>
     </message>
 </context>
 <context>
@@ -99,7 +99,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/bestmatchwidget.cpp" line="28"/>
         <source>Best match</source>
-        <translation type="unfinished"/>
+        <translation>Cel mai bun matching</translation>
     </message>
 </context>
 <context>
@@ -107,12 +107,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="32"/>
         <source>Excluded path</source>
-        <translation type="unfinished"/>
+        <translation>Cale excluză</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="43"/>
         <source>Add paths to the exclusion list to prevent searching in them.</source>
-        <translation type="unfinished"/>
+        <translation>Adăugați căi în lista de excluziuni pentru a preveni căutarea în ele.</translation>
     </message>
 </context>
 <context>
@@ -120,7 +120,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/customwidget.cpp" line="31"/>
         <source>Custom search</source>
-        <translation type="unfinished"/>
+        <translation>Căutare personalizată</translation>
     </message>
 </context>
 <context>
@@ -129,12 +129,12 @@
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="49"/>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="122"/>
         <source>Grand Search</source>
-        <translation type="unfinished"/>
+        <translation>Grand Search</translation>
     </message>
     <message>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="201"/>
         <source>Search settings</source>
-        <translation type="unfinished"/>
+        <translation>Setări căutare</translation>
     </message>
 </context>
 <context>
@@ -142,7 +142,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="14"/>
         <source>Do you want to remove the path from the exclusion list?</source>
-        <translation type="unfinished"/>
+        <translation>Doriti să eliminați calea din lista de excluziuni?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="20"/>
@@ -154,7 +154,7 @@
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="28"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation>Confirmare</translation>
+        <translation>Confirma</translation>
     </message>
 </context>
 <context>
@@ -162,18 +162,18 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <source>Installed</source>
-        <translation type="unfinished"/>
+        <translation>Instalat</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="90"/>
         <source>Not Installed</source>
-        <translation type="unfinished"/>
+        <translation>Nu este instalat</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="105"/>
         <source>Install</source>
-        <translation type="unfinished"/>
+        <translation>Instalează</translation>
     </message>
 </context>
 <context>
@@ -186,7 +186,7 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="238"/>
         <source>What would you like to search for?</source>
-        <translation type="unfinished"/>
+        <translation>Ce doriți să căutați?</translation>
     </message>
 </context>
 <context>
@@ -194,17 +194,17 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="82"/>
         <source>Cut</source>
-        <translation>Tăiere</translation>
+        <translation>Taie</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="86"/>
         <source>Copy</source>
-        <translation>Copiere</translation>
+        <translation>Copie</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="90"/>
         <source>Paste</source>
-        <translation>Lipire</translation>
+        <translation>Lipează</translation>
     </message>
 </context>
 <context>
@@ -212,12 +212,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="193"/>
         <source>Location:</source>
-        <translation type="unfinished"/>
+        <translation>Locație:</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="204"/>
         <source>Time modified:</source>
-        <translation type="unfinished"/>
+        <translation>Timp modificare:</translation>
     </message>
 </context>
 <context>
@@ -230,12 +230,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="75"/>
         <source>Open Path</source>
-        <translation type="unfinished"/>
+        <translation>Deschide calea</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="80"/>
         <source>Copy Path</source>
-        <translation type="unfinished"/>
+        <translation>Copiază calea</translation>
     </message>
 </context>
 <context>
@@ -243,29 +243,29 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="269"/>
         <source>Please go to %1 to install the ULLM, and %2 Automatic index update.</source>
-        <translation type="unfinished"/>
+        <translation>Vă rugăm să accesați %1 pentru a instala ULLM și %2 Actualizare automată a indexului.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="270"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="279"/>
         <source>Search configration</source>
-        <translation type="unfinished"/>
+        <translation>Configurare căutare</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="271"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="275"/>
         <source>turn on</source>
-        <translation type="unfinished"/>
+        <translation>activează</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="274"/>
         <source>Please %1 Automatic index update.</source>
-        <translation type="unfinished"/>
+        <translation>Vă rugăm să activează Actualizarea automată a indexului.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="278"/>
         <source>Please go to %1 to install the ULLM.</source>
-        <translation type="unfinished"/>
+        <translation>Vă rugăm să accesați %1 pentru a instala ULLM.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="330"/>
@@ -284,7 +284,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/indexwidget.cpp" line="30"/>
         <source>Index</source>
-        <translation type="unfinished"/>
+        <translation>Index</translation>
     </message>
 </context>
 <context>
@@ -292,57 +292,57 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="79"/>
         <source>When turned on, you can try to search for local documents using natural language descriptions, such as &quot;last week&apos;s documents&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Atunci când este activat, puteți încerca să căutați documente locale folosind descrieri în limbaj natural, cum ar fi &quot;documentele din săptămâna trecută&quot;.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="185"/>
         <source>Intelligent full text search</source>
-        <translation type="unfinished"/>
+        <translation>Căutare text complet inteligentă</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="100"/>
         <source>Automatic index update</source>
-        <translation type="unfinished"/>
+        <translation>Actualizare automată a indexului</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="66"/>
         <source>AI Smart Search</source>
-        <translation type="unfinished"/>
+        <translation>Căutare inteligentă AI</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="119"/>
         <source>Full Text Search</source>
-        <translation type="unfinished"/>
+        <translation>Căutare text complet</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="136"/>
         <source>When turned on, full text search can be used in the file manager and grand search.</source>
-        <translation type="unfinished"/>
+        <translation>Atunci când este activat, căutarea text complet poate fi folosită în managerul de fișiere și Grand Search.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="154"/>
         <source>Embedding Plugins</source>
-        <translation type="unfinished"/>
+        <translation>Plugin-uri de încorporare</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="154"/>
         <source>After installing the model, you can use services such as AI Search and UOS AI Assistant..</source>
-        <translation type="unfinished"/>
+        <translation>După instalarea modelului, puteți folosi servicii precum AI Search și UOS AI Assistant.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="172"/>
         <source>ULLM</source>
-        <translation type="unfinished"/>
+        <translation>ULLM</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="172"/>
         <source>After installing the ULLM, you can use the AI intelligent search function without an internet connection.</source>
-        <translation type="unfinished"/>
+        <translation>După instalarea ULLM, puteți folosi funcția de căutare inteligentă AI fără conexiune la internet.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="221"/>
         <source>When enabled, you can search the text of articles using disjointed and incomplete keywords.</source>
-        <translation type="unfinished"/>
+        <translation>Atunci când este activat, puteți căuta textul articolelor folosind cuvinte cheie disjuncte și incomplete.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="243"/>
@@ -353,18 +353,18 @@
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="283"/>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="407"/>
         <source>Intelligent search indexing is being updated, which may take up more resources, please keep the power access.</source>
-        <translation type="unfinished"/>
+        <translation>Indexarea căutării inteligente este în curs de actualizare, care poate consuma mai multe resurse, vă rugăm să mențineți accesul la alimentare.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="287"/>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="411"/>
         <source>Smart Search indexing update is complete. Last update time: %0</source>
-        <translation type="unfinished"/>
+        <translation>Actualizarea indexării căutării inteligente este finalizată. Ultima dată de actualizare: %0</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="290"/>
         <source>Indexing error!</source>
-        <translation type="unfinished"/>
+        <translation>Eroare la indexare!</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="339"/>
@@ -553,52 +553,52 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="71"/>
         <source>Google</source>
-        <translation type="unfinished"/>
+        <translation>Google</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="72"/>
         <source>Baidu</source>
-        <translation type="unfinished"/>
+        <translation>Baidu</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="73"/>
         <source>Bing</source>
-        <translation type="unfinished"/>
+        <translation>Bing</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="74"/>
         <source>Yahoo</source>
-        <translation type="unfinished"/>
+        <translation>Yahoo</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="75"/>
         <source>360</source>
-        <translation type="unfinished"/>
+        <translation>360</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="76"/>
         <source>360 AI Search</source>
-        <translation type="unfinished"/>
+        <translation>360 AI Search</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="77"/>
         <source>Sogou</source>
-        <translation type="unfinished"/>
+        <translation>Sogou</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="78"/>
         <source>Custom</source>
-        <translation type="unfinished"/>
+        <translation>Personalizat</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="99"/>
         <source>You need to use &quot;%0&quot; to replace the keyword in the URL</source>
-        <translation type="unfinished"/>
+        <translation>Trebuie să folosiți &quot;%0&quot; pentru a înlocui cuvântul cheie în URL</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="167"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>URL nevalid</translation>
     </message>
 </context>
 <context>
@@ -606,7 +606,7 @@
     <message>
         <location filename="../src/dde-grand-search-daemon/searcher/web/statictextworker.cpp" line="66"/>
         <source>Search for &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Caută &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
@@ -614,22 +614,22 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="19"/>
         <source>Tailer settings</source>
-        <translation type="unfinished"/>
+        <translation>Setări Tailer</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="29"/>
         <source>It is displayed at the end of search results for better identification and distinction of items with duplicate names.</source>
-        <translation type="unfinished"/>
+        <translation>Este afișat la finalul rezultatelor de căutare pentru o identificare și diferențiere mai bună a itemilor cu nume duplicate.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="38"/>
         <source>Parent directory</source>
-        <translation type="unfinished"/>
+        <translation>Director părinte</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="40"/>
         <source>Time modified</source>
-        <translation type="unfinished"/>
+        <translation>Data modificării</translation>
     </message>
 </context>
 <context>
@@ -647,7 +647,7 @@
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="107"/>
         <source>Duration:</source>
-        <translation>Durată:</translation>
+        <translation>Durata:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="122"/>
@@ -657,12 +657,12 @@
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="134"/>
         <source>Location:</source>
-        <translation type="unfinished"/>
+        <translation>Locație:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="148"/>
         <source>Time modified:</source>
-        <translation type="unfinished"/>
+        <translation>Data modificării:</translation>
     </message>
 </context>
 <context>
@@ -670,7 +670,7 @@
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="65"/>
         <source>Dimensions:</source>
-        <translation type="unfinished"/>
+        <translation>Dimensiuni:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="81"/>
@@ -680,17 +680,17 @@
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="96"/>
         <source>Size:</source>
-        <translation>Mărime:</translation>
+        <translation>Dimensiune:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="108"/>
         <source>Location:</source>
-        <translation type="unfinished"/>
+        <translation>Locație:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="122"/>
         <source>Time modified:</source>
-        <translation type="unfinished"/>
+        <translation>Data modificării:</translation>
     </message>
 </context>
 <context>
@@ -698,7 +698,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="24"/>
         <source>Best match</source>
-        <translation type="unfinished"/>
+        <translation>Cel mai bun matching</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="25"/>
@@ -713,7 +713,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="27"/>
         <source>Videos</source>
-        <translation>Videoclipuri</translation>
+        <translation>Video</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="28"/>
@@ -733,7 +733,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="31"/>
         <source>Folders</source>
-        <translation type="unfinished"/>
+        <translation>Dosare</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="32"/>
@@ -743,17 +743,17 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="33"/>
         <source>Web</source>
-        <translation type="unfinished"/>
+        <translation>Web</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="34"/>
         <source>AI Search</source>
-        <translation type="unfinished"/>
+        <translation>Căutare AI</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="28"/>
         <source>Dimensions:</source>
-        <translation type="unfinished"/>
+        <translation>Dimensiuni:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="29"/>
@@ -773,17 +773,17 @@
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="32"/>
         <source>Location:</source>
-        <translation type="unfinished"/>
+        <translation>Locație:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="33"/>
         <source>Time modified:</source>
-        <translation type="unfinished"/>
+        <translation>Data modificării:</translation>
     </message>
     <message>
         <location filename="../src/dde-grand-search-daemon/searcher/file/filesearchutils.cpp" line="205"/>
         <source>modified</source>
-        <translation type="unfinished"/>
+        <translation>modificat</translation>
     </message>
 </context>
 <context>
@@ -791,12 +791,12 @@
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="24"/>
         <source>GrandSearch</source>
-        <translation type="unfinished"/>
+        <translation>GrandSearch</translation>
     </message>
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="81"/>
         <source>SearchConfig</source>
-        <translation type="unfinished"/>
+        <translation>SearchConfig</translation>
     </message>
 </context>
 </TS>
