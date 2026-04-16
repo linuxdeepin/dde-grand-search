@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="49"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Anuloje</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
@@ -619,7 +619,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="29"/>
         <source>It is displayed at the end of search results for better identification and distinction of items with duplicate names.</source>
-        <translation>Shfaqet në fund të përfundimeve të kërkimit, për identifikim dhe ndarje më të mirë të objekteve me emra të përsëdytur.</translation>
+        <translation>Shfaqet në fund të përfundimeve të kërkimit, për identifikim dhe dallim më të mirë të objekteve me emra të përsëdytur.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="38"/>
