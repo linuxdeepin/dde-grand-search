@@ -441,29 +441,29 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="345"/>
         <source>Exiting will cause the installation to fail, do you still want to exit?</source>
-        <translation type="unfinished"/>
+        <translation>Вихід призведе до переривання встановлення. Ви справді хочете вийти?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="346"/>
         <source>Exit</source>
         <comment>button</comment>
-        <translation type="unfinished"/>
+        <translation>Вийти</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="347"/>
         <source>Continue</source>
         <comment>button</comment>
-        <translation type="unfinished"/>
+        <translation>Продовжити</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="378"/>
         <source>UnInstall Model</source>
-        <translation type="unfinished"/>
+        <translation>Вилучити модель</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="379"/>
         <source>Installed</source>
-        <translation type="unfinished"/>
+        <translation>Встановлено</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="390"/>
