@@ -120,7 +120,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/customwidget.cpp" line="31"/>
         <source>Custom search</source>
-        <translation>Pesquisa personalizada</translation>
+        <translation>Pesquisa personalizada </translation>
     </message>
 </context>
 <context>
@@ -129,7 +129,7 @@
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="49"/>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="122"/>
         <source>Grand Search</source>
-        <translation>Pesquisa instantânea</translation>
+        <translation>Pesquisa geral</translation>
     </message>
     <message>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="201"/>
@@ -230,12 +230,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="75"/>
         <source>Open Path</source>
-        <translation>Acessar caminho</translation>
+        <translation>Acessar o caminho</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="80"/>
         <source>Copy Path</source>
-        <translation>Copiar caminho</translation>
+        <translation>Copiar o caminho</translation>
     </message>
 </context>
 <context>
@@ -476,7 +476,7 @@
     <message>
         <location filename="../src/grand-search/gui/mainwindow.cpp" line="222"/>
         <source>No search results</source>
-        <translation>Nenhum resultado encontrado</translation>
+        <translation>Nenhum resultado</translation>
     </message>
 </context>
 <context>
@@ -713,12 +713,12 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="27"/>
         <source>Videos</source>
-        <translation>Vídeos</translation>
+        <translation>Vídeo</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="28"/>
         <source>Music</source>
-        <translation>Música</translation>
+        <translation>Player de Música</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="29"/>
