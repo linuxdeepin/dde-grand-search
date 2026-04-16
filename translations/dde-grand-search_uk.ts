@@ -162,18 +162,18 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <source>Installed</source>
-        <translation type="unfinished"/>
+        <translation>Встановлено</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="90"/>
         <source>Not Installed</source>
-        <translation type="unfinished"/>
+        <translation>Не встановлено</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="105"/>
         <source>Install</source>
-        <translation type="unfinished"/>
+        <translation>Встановити</translation>
     </message>
 </context>
 <context>
