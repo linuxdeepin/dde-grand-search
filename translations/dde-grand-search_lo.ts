@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="lo">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="lo">
 <context>
     <name>GrandSearch::AiToolBar</name>
     <message>
@@ -15,8 +13,8 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
-        <source>Open App Store</source>
-        <translation>ເປີດຮ້ານຄ້າແອັບພລິເຄຊັນ</translation>
+        <source>Open App Stroe</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -142,18 +140,18 @@
 <context>
     <name>GrandSearch::DeleteDialog</name>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="19"/>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="14"/>
         <source>Do you want to remove the path from the exclusion list?</source>
         <translation>ທ່ານຕ້ອງການລຶບເສັ້ນທາງນີ້ອອກຈາກລາຍຊື່ຍົກເວັ້ນບໍ?</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="29"/>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="20"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>ຍົກເລີກ</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="41"/>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="28"/>
         <source>Confirm</source>
         <comment>button</comment>
         <translation>ຢືນຢັນ</translation>
@@ -181,12 +179,12 @@
 <context>
     <name>GrandSearch::EntranceWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="246"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="237"/>
         <source>Search</source>
         <translation>ຄົ້ນຫາ</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="247"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="238"/>
         <source>What would you like to search for?</source>
         <translation>ທ່ານຕ້ອງການຄົ້ນຫາຫຍັງ?</translation>
     </message>
@@ -194,17 +192,17 @@
 <context>
     <name>GrandSearch::EntranceWidgetPrivate</name>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="85"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="82"/>
         <source>Cut</source>
         <translation>ຕັດ</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="89"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="86"/>
         <source>Copy</source>
         <translation>ສຳເນົາ</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="93"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="90"/>
         <source>Paste</source>
         <translation>ວາງ</translation>
     </message>
@@ -212,12 +210,12 @@
 <context>
     <name>GrandSearch::GeneralPreviewPlugin</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="203"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="193"/>
         <source>Location:</source>
         <translation>ສະຖານທີ່:</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="214"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="204"/>
         <source>Time modified:</source>
         <translation>ເວລາທີ່ຖືກແກ້ໄຂ:</translation>
     </message>
@@ -292,19 +290,24 @@
 <context>
     <name>GrandSearch::IntelligentRetrievalWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="66"/>
-        <source>AI Smart Search</source>
-        <translation>ການຄົ້ນຫາ AI ອັດສະລິຍະ</translation>
-    </message>
-    <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="79"/>
         <source>When turned on, you can try to search for local documents using natural language descriptions, such as &quot;last week&apos;s documents&quot;.</source>
         <translation>ເມື່ອເປີດໃຊ້ງານ, ທ່ານສາມາດຄົ້ນຫາເອກະສານໃນເຄື່ອງໄດ້ໂດຍໃຊ້ຄຳອະທິບາຍພາສາທຳມະຊາດ, ເຊັ່ນ &quot;ເອກະສານອາທິດກ່ອນ&quot;</translation>
     </message>
     <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="185"/>
+        <source>Intelligent full text search</source>
+        <translation>ການຄົ້ນຫາຂໍ້ຄວາມທັງໝົດອັດສະລິຍະ</translation>
+    </message>
+    <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="100"/>
         <source>Automatic index update</source>
         <translation>ການອັບເດດດັດສະນີອັດຕະໂນມັດ</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="66"/>
+        <source>AI Smart Search</source>
+        <translation>ການຄົ້ນຫາ AI ອັດສະລິຍະ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="119"/>
@@ -337,11 +340,6 @@
         <translation>ຫຼັງຈາກຕິດຕັ້ງ ULLM, ທ່ານສາມາດໃຊ້ໜ້າທີ່ຄົ້ນຫາອັດສະລິຍະ AI ໂດຍບໍ່ຕ້ອງມີການເຊື່ອມຕໍ່ອິນເຕີເນັດ</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="185"/>
-        <source>Intelligent full text search</source>
-        <translation>ການຄົ້ນຫາຂໍ້ຄວາມທັງໝົດອັດສະລິຍະ</translation>
-    </message>
-    <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="221"/>
         <source>When enabled, you can search the text of articles using disjointed and incomplete keywords.</source>
         <translation>ເມື່ອເປີດໃຊ້ງານ, ທ່ານສາມາດຄົ້ນຫາຂໍ້ຄວາມຂອງບົດຄວາມໄດ້ໂດຍໃຊ້ຄຳສຳຄັນທີ່ບໍ່ຕໍ່ເນື່ອງ ແລະບໍ່ຄົບຖ້ວນ</translation>
@@ -353,13 +351,13 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="283"/>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="409"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="407"/>
         <source>Intelligent search indexing is being updated, which may take up more resources, please keep the power access.</source>
         <translation>ກຳລັງອັບເດດດັດສະນີການຄົ້ນຫາອັດສະລິຍະ, ອາດຈະໃຊ້ຊັບພະຍາກອນຫຼາຍ, ກະລຸນາເຊື່ອມຕໍ່ໄຟຟ້າໄວ້</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="287"/>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="413"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="411"/>
         <source>Smart Search indexing update is complete. Last update time: %0</source>
         <translation>ການອັບເດດດັດສະນີການຄົ້ນຫາອັດສະລິຍະສຳເລັດແລ້ວ. ເວລາອັບເດດຫຼ້າສຸດ: %0</translation>
     </message>
@@ -476,7 +474,7 @@
 <context>
     <name>GrandSearch::MainWindow</name>
     <message>
-        <location filename="../src/grand-search/gui/mainwindow.cpp" line="229"/>
+        <location filename="../src/grand-search/gui/mainwindow.cpp" line="222"/>
         <source>No search results</source>
         <translation>ບໍ່ມີຜົນການຄົ້ນຫາ</translation>
     </message>
@@ -783,7 +781,7 @@
         <translation>ເວລາທີ່ແກ້ໄຂ:</translation>
     </message>
     <message>
-        <location filename="../src/dde-grand-search-daemon/searcher/file/filesearchutils.cpp" line="264"/>
+        <location filename="../src/dde-grand-search-daemon/searcher/file/filesearchutils.cpp" line="205"/>
         <source>modified</source>
         <translation>ແກ້ໄຂແລ້ວ</translation>
     </message>
