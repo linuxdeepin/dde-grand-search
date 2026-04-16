@@ -484,7 +484,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="89"/>
         <source>Guess you want to search the following</source>
-        <translation type="unfinished"/>
+        <translation>Suposo que voleu cercar el següent:</translation>
     </message>
 </context>
 <context>
