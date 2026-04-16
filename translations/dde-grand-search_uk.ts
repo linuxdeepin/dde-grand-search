@@ -71,22 +71,22 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="315"/>
         <source>Translate this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation type="unfinished"/>
+        <translation>Зроби переклад цього документа і надай мені зрозумілий результат безпосередньо без непотрібних даних.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="331"/>
         <source>Expand this document for me and provide me with a clear and expanded result directly, without any unnecessary content.</source>
-        <translation type="unfinished"/>
+        <translation>Розшир цей документ і надай мені зрозумілий і розгорнутий результат безпосередньо без непотрібних даних.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="447"/>
         <source>DDE Grand Search</source>
-        <translation type="unfinished"/>
+        <translation>Великий пошук DDE</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="450"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо скористатися %1. Будь ласка, спочатку перейдіть до крамниці програм і оновіть версію ШІ UOS.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
