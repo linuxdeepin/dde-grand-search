@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="49"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
@@ -276,7 +276,7 @@
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="281"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="366"/>
         <source>No search results</source>
-        <translation type="unfinished"/>
+        <translation>Brak wyników wyszukiwania</translation>
     </message>
 </context>
 <context>
@@ -420,13 +420,13 @@
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="214"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished"/>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="215"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation type="unfinished"/>
+        <translation>Potwierdź</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="324"/>
