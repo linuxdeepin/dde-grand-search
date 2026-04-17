@@ -81,7 +81,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="447"/>
         <source>DDE Grand Search</source>
-        <translation type="unfinished"/>
+        <translation>DDE Grand Search</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="450"/>
@@ -91,7 +91,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
         <source>Open App Stroe</source>
-        <translation type="unfinished"/>
+        <translation>アプリストアを開く</translation>
     </message>
 </context>
 <context>
@@ -276,7 +276,7 @@
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="281"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="366"/>
         <source>No search results</source>
-        <translation type="unfinished"/>
+        <translation>検索結果はありません</translation>
     </message>
 </context>
 <context>
@@ -302,12 +302,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="100"/>
         <source>Automatic index update</source>
-        <translation type="unfinished"/>
+        <translation>インデックスの自動更新</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="66"/>
         <source>AI Smart Search</source>
-        <translation type="unfinished"/>
+        <translation>AIスマート検索</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="119"/>
