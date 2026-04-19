@@ -369,7 +369,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="339"/>
         <source>To use AI Smart Search, you need to install the Embedding Plugins and ULLM first.</source>
-        <translation type="unfinished"/>
+        <translation>Um die KI-Smart-Suche verwenden zu können, müssen Sie zunächst die Einbettungs-PlugIns und dann das ULLM installieren.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="340"/>
