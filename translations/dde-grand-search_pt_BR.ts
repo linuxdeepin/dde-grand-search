@@ -468,7 +468,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="390"/>
         <source>Please install the &quot;Embedding Plugins&quot; first before installing this model.</source>
-        <translation type="unfinished"/>
+        <translation>Instale os “Plugins de incorporação” antes de instalar este modelo.</translation>
     </message>
 </context>
 <context>
