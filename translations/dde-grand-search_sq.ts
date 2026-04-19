@@ -436,34 +436,34 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="344"/>
         <source>Installing the ULLM</source>
-        <translation type="unfinished"/>
+        <translation>Po instalohet ULLM</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="345"/>
         <source>Exiting will cause the installation to fail, do you still want to exit?</source>
-        <translation type="unfinished"/>
+        <translation>Dalja do të sjellë dështimin e instalimit, doni ende të dilni?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="346"/>
         <source>Exit</source>
         <comment>button</comment>
-        <translation type="unfinished"/>
+        <translation>Dalje</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="347"/>
         <source>Continue</source>
         <comment>button</comment>
-        <translation type="unfinished"/>
+        <translation>Vazhdo</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="378"/>
         <source>UnInstall Model</source>
-        <translation type="unfinished"/>
+        <translation>Çinstaloje Modelin</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="379"/>
         <source>Installed</source>
-        <translation type="unfinished"/>
+        <translation>Të instaluar</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="390"/>
