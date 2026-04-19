@@ -593,12 +593,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="99"/>
         <source>You need to use &quot;%0&quot; to replace the keyword in the URL</source>
-        <translation type="unfinished"/>
+        <translation>Verenden Sie &quot;%0&quot; um das Schlüsselwort in der URL zu ersetzen</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="167"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>Ungültige URL</translation>
     </message>
 </context>
 <context>
