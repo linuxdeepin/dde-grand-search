@@ -337,7 +337,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="172"/>
         <source>After installing the ULLM, you can use the AI intelligent search function without an internet connection.</source>
-        <translation type="unfinished"/>
+        <translation>Nach der Installation des ULLM können Sie die Intelligente KI-Suchfunktion ohne Internetverbindung benutzen.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="221"/>
