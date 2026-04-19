@@ -292,7 +292,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="79"/>
         <source>When turned on, you can try to search for local documents using natural language descriptions, such as &quot;last week&apos;s documents&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Wenn eingeschalten, können Sie mit natürlicher Sprache, z.B. &quot;Dokumente von letzter Woche&quot;, nach lokalen Dokumente zu suchen.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="185"/>
