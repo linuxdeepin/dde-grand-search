@@ -409,12 +409,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="212"/>
         <source>Are you sure you want to delete this model?</source>
-        <translation type="unfinished"/>
+        <translation>Sind Sie sicher, dass Sie dieses Modell löschen möchten?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="213"/>
         <source>After uninstallation, functions such as AI Search and UOS AI Assistant will not work properly.</source>
-        <translation type="unfinished"/>
+        <translation>Nach dem Deinstallieren des Modells werden Funktionen wie KI-Suche und UOS-KI-Assistent nicht mehr richtig funktionieren.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="214"/>
