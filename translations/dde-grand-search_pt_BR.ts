@@ -86,12 +86,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="450"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation type="unfinished"/>
+        <translation>Impossível usar %1. Acesse a Loja de Aplicativos e atualize o UOS AI.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
         <source>Open App Stroe</source>
-        <translation type="unfinished"/>
+        <translation>Abrir loja de aplicativos</translation>
     </message>
 </context>
 <context>
@@ -162,18 +162,18 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <source>Installed</source>
-        <translation type="unfinished"/>
+        <translation>Instalado</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="90"/>
         <source>Not Installed</source>
-        <translation type="unfinished"/>
+        <translation>Não instalado</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="105"/>
         <source>Install</source>
-        <translation type="unfinished"/>
+        <translation>Instalar</translation>
     </message>
 </context>
 <context>
