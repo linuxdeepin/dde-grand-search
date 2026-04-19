@@ -81,7 +81,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="447"/>
         <source>DDE Grand Search</source>
-        <translation type="unfinished"/>
+        <translation>Pesquisa global</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="450"/>
@@ -129,7 +129,7 @@
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="49"/>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="122"/>
         <source>Grand Search</source>
-        <translation>Pesquisa geral</translation>
+        <translation>Pesquisa global</translation>
     </message>
     <message>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="201"/>
@@ -791,7 +791,7 @@
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="24"/>
         <source>GrandSearch</source>
-        <translation>Pesquisa instantânea</translation>
+        <translation>Pesquisa global</translation>
     </message>
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="81"/>
