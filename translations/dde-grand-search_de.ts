@@ -796,7 +796,7 @@
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="81"/>
         <source>SearchConfig</source>
-        <translation type="unfinished"/>
+        <translation>Sucheinstellungen</translation>
     </message>
 </context>
 </TS>
