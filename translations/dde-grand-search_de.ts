@@ -317,7 +317,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="136"/>
         <source>When turned on, full text search can be used in the file manager and grand search.</source>
-        <translation type="unfinished"/>
+        <translation>Wenn eingeschalten, können Sie Volltextsuche in der Dateiverwaltung und in der Großen Suche durchführen.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="154"/>
