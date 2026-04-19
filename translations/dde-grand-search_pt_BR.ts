@@ -484,7 +484,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="89"/>
         <source>Guess you want to search the following</source>
-        <translation type="unfinished"/>
+        <translation>Você quis dizer</translation>
     </message>
 </context>
 <context>
@@ -593,7 +593,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="99"/>
         <source>You need to use &quot;%0&quot; to replace the keyword in the URL</source>
-        <translation type="unfinished"/>
+        <translation>Você precisa usar &quot;%0&quot; para substituir a palavra-chave na URL</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="167"/>
