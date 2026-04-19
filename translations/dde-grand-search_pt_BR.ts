@@ -342,7 +342,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="221"/>
         <source>When enabled, you can search the text of articles using disjointed and incomplete keywords.</source>
-        <translation type="unfinished"/>
+        <translation>Quando ativado, você pode pesquisar o texto de artigos usando palavras-chave desconexas e incompletas.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="243"/>
