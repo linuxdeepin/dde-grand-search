@@ -260,12 +260,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="274"/>
         <source>Please %1 Automatic index update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 para atualizar automaticamente o índice</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="278"/>
         <source>Please go to %1 to install the ULLM.</source>
-        <translation type="unfinished"/>
+        <translation>Acesse %1 para instalar o ULLM.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="330"/>
