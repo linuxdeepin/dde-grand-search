@@ -61,22 +61,22 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="129"/>
         <source>Add document to UOS AI knowledge base</source>
-        <translation type="unfinished"/>
+        <translation>Adicionar documento à base de conhecimento do UOS AI</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="299"/>
         <source>Summarize this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation type="unfinished"/>
+        <translation>Resuma este documento e forneça o resultado de forma direta, sem conteúdo desnecessário.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="315"/>
         <source>Translate this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation type="unfinished"/>
+        <translation>Traduza este documento e forneça o resultado de forma direta, sem conteúdo desnecessário.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="331"/>
         <source>Expand this document for me and provide me with a clear and expanded result directly, without any unnecessary content.</source>
-        <translation type="unfinished"/>
+        <translation>Expanda este documento e forneça o resultado de forma clara e ampliada, diretamente, sem conteúdo desnecessário.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="447"/>
