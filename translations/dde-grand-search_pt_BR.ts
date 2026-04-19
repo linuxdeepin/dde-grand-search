@@ -394,22 +394,22 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="93"/>
         <source>Update model</source>
-        <translation type="unfinished"/>
+        <translation>Atualizar modelo</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="94"/>
         <source>Uninstall model</source>
-        <translation type="unfinished"/>
+        <translation>Desinstalar modelo</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="146"/>
         <source>Installing</source>
-        <translation type="unfinished"/>
+        <translation>Instalando</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="212"/>
         <source>Are you sure you want to delete this model?</source>
-        <translation type="unfinished"/>
+        <translation>Excluir este modelo?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="213"/>
