@@ -342,12 +342,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="221"/>
         <source>When enabled, you can search the text of articles using disjointed and incomplete keywords.</source>
-        <translation type="unfinished"/>
+        <translation>Kur aktivizohet, mund të kërkoni në tekst artikujsh duke përdorur fjalë të palidhura dhe të paplota.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="243"/>
         <source>Please install %0 in &lt;a href=&quot;%0&quot;&gt;the app store&lt;/a&gt; before turning on this configuration.</source>
-        <translation type="unfinished"/>
+        <translation>Ju lutemi, instaloni %0 që nga &lt;a href=&quot;%0&quot;&gt;shitorja e aplikacioneve&lt;/a&gt;, para se të aktivizoni këtë formësim.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="283"/>
