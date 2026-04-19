@@ -243,13 +243,13 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="269"/>
         <source>Please go to %1 to install the ULLM, and %2 Automatic index update.</source>
-        <translation type="unfinished"/>
+        <translation>Acesse %1 para instalar o ULLM e %2 para atualizar automaticamente o índice.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="270"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="279"/>
         <source>Search configration</source>
-        <translation type="unfinished"/>
+        <translation>Configurações de busca</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="271"/>
