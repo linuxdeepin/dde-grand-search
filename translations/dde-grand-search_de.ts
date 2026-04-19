@@ -347,7 +347,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="243"/>
         <source>Please install %0 in &lt;a href=&quot;%0&quot;&gt;the app store&lt;/a&gt; before turning on this configuration.</source>
-        <translation type="unfinished"/>
+        <translation>Bitte installieren Sie %0 im &lt;a href=&quot;%0&quot;&gt;App Store&lt;/a&gt; bevor Sie diese Einstellung anschalten.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="283"/>
