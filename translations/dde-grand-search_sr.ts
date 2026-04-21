@@ -142,18 +142,18 @@
 <context>
     <name>GrandSearch::DeleteDialog</name>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="14"/>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="19"/>
         <source>Do you want to remove the path from the exclusion list?</source>
         <translation>Желите ли да уклоните пут из листе искључења?</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="20"/>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="29"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>Откажи</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="28"/>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="41"/>
         <source>Confirm</source>
         <comment>button</comment>
         <translation>Потврди</translation>
@@ -168,12 +168,12 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="90"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="91"/>
         <source>Not Installed</source>
         <translation>Не инсталирано</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="105"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="107"/>
         <source>Install</source>
         <translation>Инсталирај</translation>
     </message>
@@ -181,12 +181,12 @@
 <context>
     <name>GrandSearch::EntranceWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="237"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="246"/>
         <source>Search</source>
         <translation type="unfinished">Претражи</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="238"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="247"/>
         <source>What would you like to search for?</source>
         <translation type="unfinished">Шта желите да претражите?</translation>
     </message>
@@ -194,17 +194,17 @@
 <context>
     <name>GrandSearch::EntranceWidgetPrivate</name>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="82"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="85"/>
         <source>Cut</source>
         <translation type="unfinished">Исеци</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="86"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="89"/>
         <source>Copy</source>
         <translation type="unfinished">Копирај</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="90"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="93"/>
         <source>Paste</source>
         <translation type="unfinished">Убаци</translation>
     </message>
@@ -212,12 +212,12 @@
 <context>
     <name>GrandSearch::GeneralPreviewPlugin</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="193"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="203"/>
         <source>Location:</source>
         <translation type="unfinished">Локација:</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="204"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="214"/>
         <source>Time modified:</source>
         <translation type="unfinished">Измењено:</translation>
     </message>
@@ -243,40 +243,13 @@
 <context>
     <name>GrandSearch::GroupWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="269"/>
-        <source>Please go to %1 to install the ULLM, and %2 Automatic index update.</source>
-        <translation>Молимо вас да отидете на %1 да бисте инсталирали ULLM, и %2 Аутоматско ажурирање индекса.</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="270"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="279"/>
-        <source>Search configration</source>
-        <translation>Претрага конфигурација</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="271"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="275"/>
-        <source>turn on</source>
-        <translation>Укључи</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="274"/>
-        <source>Please %1 Automatic index update.</source>
-        <translation>Молимо %1 аутоматско ажурирање индекса.</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="278"/>
-        <source>Please go to %1 to install the ULLM.</source>
-        <translation>Молимо појавите се на %1 да бисте инсталирали ULLM.</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="330"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="316"/>
         <source>More</source>
         <translation type="unfinished">Више</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="281"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="366"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="267"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="352"/>
         <source>No search results</source>
         <translation type="unfinished">Нема резултата претраге</translation>
     </message>
@@ -292,183 +265,126 @@
 <context>
     <name>GrandSearch::IntelligentRetrievalWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="66"/>
-        <source>AI Smart Search</source>
-        <translation>AI Смарт Сearch</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="79"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="76"/>
         <source>When turned on, you can try to search for local documents using natural language descriptions, such as &quot;last week&apos;s documents&quot;.</source>
         <translation>Када је укључено, можете покушати да претражите локалне докумете коришћењем природних језичних описа, као што је &quot;документи из прошле недеље&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="100"/>
-        <source>Automatic index update</source>
-        <translation>Аутоматско ажурирање индекса</translation>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="63"/>
+        <source>Semantic Search</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="119"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="93"/>
+        <source>Ocr Text Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="110"/>
+        <source>When turned on, ocr text search can be used in the file manager and grand search.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="122"/>
         <source>Full Text Search</source>
         <translation>Пунотекстни претрага</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="136"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="139"/>
         <source>When turned on, full text search can be used in the file manager and grand search.</source>
         <translation>Када је укључено, пунотекстна претрага се може користити у управљачу датотекама и grand search.</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="154"/>
-        <source>Embedding Plugins</source>
-        <translation>Плагини за ембедовање</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="154"/>
-        <source>After installing the model, you can use services such as AI Search and UOS AI Assistant..</source>
-        <translation>Након инсталирања модела, можете користити услуге као што су AI Претрага и UOS AI Асистент.</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="172"/>
-        <source>ULLM</source>
-        <translation>ULLM</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="172"/>
-        <source>After installing the ULLM, you can use the AI intelligent search function without an internet connection.</source>
-        <translation>Након инсталирања ULLM, можете користити AI интелигентну претрагу без интернета.</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="185"/>
-        <source>Intelligent full text search</source>
-        <translation>Интелигентна пунотекстна претрага</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="221"/>
-        <source>When enabled, you can search the text of articles using disjointed and incomplete keywords.</source>
-        <translation>Када је омогућено, можете претраживати текст чланака коришћењем несавршених и непотпуних кључних речи.</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="243"/>
-        <source>Please install %0 in &lt;a href=&quot;%0&quot;&gt;the app store&lt;/a&gt; before turning on this configuration.</source>
-        <translation>Молимо инсталирајте %0 у &lt;a href=&quot;%0&quot;&gt;апликационом тргу&lt;/a&gt; пре него што укључите ову конфигурацију.</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="283"/>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="407"/>
-        <source>Intelligent search indexing is being updated, which may take up more resources, please keep the power access.</source>
-        <translation>Интелигентно индексирање претраге се ажурира, што може да захтева више ресурса, молимо вас задржите приступ енергији.</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="287"/>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="411"/>
-        <source>Smart Search indexing update is complete. Last update time: %0</source>
-        <translation>Ажурирање индекса за Smart Search је завршено. Последња датум ажурирања: %0</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="290"/>
-        <source>Indexing error!</source>
-        <translation>Грешка при индексирању!</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="339"/>
-        <source>To use AI Smart Search, you need to install the Embedding Plugins and ULLM first.</source>
-        <translation>За коришћење AI Смарт Сearch, прво морате инсталирати Плагине за ембедовање и ULLM.</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="340"/>
-        <source>OK</source>
-        <translation>ОК</translation>
     </message>
 </context>
 <context>
     <name>GrandSearch::LLMWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="61"/>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="385"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="62"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="387"/>
         <source>Not Installed</source>
         <translation>Не инсталиран</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="77"/>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="384"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="79"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="386"/>
         <source>Install Model</source>
         <translation>Инсталирај модел</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="93"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="95"/>
         <source>Update model</source>
         <translation>Ажурирај модел</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="94"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="96"/>
         <source>Uninstall model</source>
         <translation>Деинсталирај модел</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="146"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="148"/>
         <source>Installing</source>
         <translation>Инсталирање</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="212"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="214"/>
         <source>Are you sure you want to delete this model?</source>
         <translation>Сигурни сте да желите да обришете овај модел?</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="213"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="215"/>
         <source>After uninstallation, functions such as AI Search and UOS AI Assistant will not work properly.</source>
         <translation>Након деинсталирања, функције као што су AI Претрага и UOS AI Асистент неће радити исправно.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="214"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="216"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>Поништи</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="215"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="217"/>
         <source>Confirm</source>
         <comment>button</comment>
         <translation>Потврди</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="324"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="326"/>
         <source>Installing </source>
         <translation>Инсталирање </translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="344"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="346"/>
         <source>Installing the ULLM</source>
         <translation>Инсталирање ULLM</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="345"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="347"/>
         <source>Exiting will cause the installation to fail, do you still want to exit?</source>
         <translation>Излазак ће довести до неуспеха инсталирања, да ли желите да изашете?</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="346"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="348"/>
         <source>Exit</source>
         <comment>button</comment>
         <translation>Излаз</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="347"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="349"/>
         <source>Continue</source>
         <comment>button</comment>
         <translation>Настави</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="378"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="380"/>
         <source>UnInstall Model</source>
         <translation>Деинсталирај модел</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="379"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="381"/>
         <source>Installed</source>
         <translation>Инсталирано</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="390"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="392"/>
         <source>Please install the &quot;Embedding Plugins&quot; first before installing this model.</source>
         <translation>Молимо вас, прво инсталирајте „Embedding Plugins“, па онда инсталирате овај модел.</translation>
     </message>
@@ -476,7 +392,7 @@
 <context>
     <name>GrandSearch::MainWindow</name>
     <message>
-        <location filename="../src/grand-search/gui/mainwindow.cpp" line="222"/>
+        <location filename="../src/grand-search/gui/mainwindow.cpp" line="229"/>
         <source>No search results</source>
         <translation type="unfinished">Нема резултата претраге</translation>
     </message>
@@ -749,8 +665,8 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="34"/>
-        <source>AI Search</source>
-        <translation>AI претрага</translation>
+        <source>Semantic Search</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="28"/>
@@ -783,9 +699,45 @@
         <translation>Измењено:</translation>
     </message>
     <message>
-        <location filename="../src/dde-grand-search-daemon/searcher/file/filesearchutils.cpp" line="205"/>
+        <location filename="../src/dde-grand-search-daemon/searcher/file/filesearchutils.cpp" line="266"/>
         <source>modified</source>
         <translation>modifikovano</translation>
+    </message>
+</context>
+<context>
+    <name>RuleConfigLoader</name>
+    <message>
+        <location filename="../src/dde-grand-search-daemon/searcher/semantic/config/ruleconfigloader.cpp" line="138"/>
+        <source>Rule file is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dde-grand-search-daemon/searcher/semantic/config/ruleconfigloader.cpp" line="148"/>
+        <source>JSON parse error: %1 (at position: %2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dde-grand-search-daemon/searcher/semantic/config/ruleconfigloader.cpp" line="156"/>
+        <source>Root element must be a JSON object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dde-grand-search-daemon/searcher/semantic/config/ruleconfigloader.cpp" line="165"/>
+        <source>Missing required fields: version, groups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dde-grand-search-daemon/searcher/semantic/config/ruleconfigloader.cpp" line="173"/>
+        <source>Groups array is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SemanticRuleEngine</name>
+    <message>
+        <location filename="../src/dde-grand-search-daemon/searcher/semantic/semanticruleengine.cpp" line="138"/>
+        <source>No valid rules loaded from multiple files</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
