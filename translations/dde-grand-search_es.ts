@@ -404,12 +404,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="146"/>
         <source>Installing</source>
-        <translation type="unfinished"/>
+        <translation>Instalando</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="212"/>
         <source>Are you sure you want to delete this model?</source>
-        <translation type="unfinished"/>
+        <translation>¿Estás seguro de que quieres eliminar este modelo?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="213"/>
