@@ -441,29 +441,29 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="345"/>
         <source>Exiting will cause the installation to fail, do you still want to exit?</source>
-        <translation>Si sales, la instalación fallará. ¿Aún deseas salir?</translation>
+        <translation>Si sale, la instalación fallará. ¿Aún desea salir?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="346"/>
         <source>Exit</source>
         <comment>button</comment>
-        <translation type="unfinished"/>
+        <translation>Salir</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="347"/>
         <source>Continue</source>
         <comment>button</comment>
-        <translation type="unfinished"/>
+        <translation>Continuar</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="378"/>
         <source>UnInstall Model</source>
-        <translation type="unfinished"/>
+        <translation>Desinstalar modelo</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="379"/>
         <source>Installed</source>
-        <translation type="unfinished"/>
+        <translation>Instalado</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="390"/>
