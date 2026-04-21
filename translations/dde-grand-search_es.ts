@@ -276,7 +276,7 @@
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="281"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="366"/>
         <source>No search results</source>
-        <translation type="unfinished"/>
+        <translation>Sin resultados</translation>
     </message>
 </context>
 <context>
@@ -297,7 +297,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="185"/>
         <source>Intelligent full text search</source>
-        <translation type="unfinished"/>
+        <translation>Búsqueda inteligente de texto completo</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="100"/>
@@ -327,7 +327,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="154"/>
         <source>After installing the model, you can use services such as AI Search and UOS AI Assistant..</source>
-        <translation type="unfinished"/>
+        <translation>Tras instalar el modelo, podrá utilizar servicios como la Búsqueda con IA y el Asistente de IA de UOS.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="172"/>
