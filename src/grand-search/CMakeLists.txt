@@ -232,6 +232,23 @@ set(UTILSSRC
     utils/report/aisearchpoint.h
     )
 
+# thumbnail
+set(THUMBNAILSRC
+    thumbnail/thumbnail.h
+    thumbnail/thumbnailgenerator.h
+    thumbnail/thumbnailgenerator.cpp
+    thumbnail/thumbnailcache.h
+    thumbnail/thumbnailcache.cpp
+    thumbnail/thumbnailtaskmanager.h
+    thumbnail/thumbnailtaskmanager.cpp
+    thumbnail/thumbnailprovider.h
+    thumbnail/thumbnailprovider.cpp
+    thumbnail/generators/imagethumbnailgenerator.h
+    thumbnail/generators/imagethumbnailgenerator.cpp
+    thumbnail/generators/textthumbnailgenerator.h
+    thumbnail/generators/textthumbnailgenerator.cpp
+    )
+
 # 源文件
 set(SRCS
     main.cpp
@@ -241,6 +258,7 @@ set(SRCS
     ${CONTACTSSRC}
     ${UTILSSRC}
     ${DBUSSRC}
+    ${THUMBNAILSRC}
 )
 
 # 指定资源文件

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -8,6 +8,7 @@
 #include "utils/utils.h"
 #include "global/matcheditem.h"
 #include "global/accessibility/acintelfunctions.h"
+#include "thumbnail/thumbnail.h"
 
 #include <DGuiApplicationHelper>
 #include <DStandardPaths>
@@ -48,10 +49,19 @@ GrandSearchListView::GrandSearchListView(QWidget *parent)
     connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &GrandSearchListView::onSetThemeType);
 
     m_themeType = DGuiApplicationHelper::instance()->themeType();
+
+    // 初始化缩略图模块
+    initThumbnailModule();
+
+    // 连接缩略图生成完成信号
+    connect(ThumbnailProvider::instance(), &ThumbnailProvider::thumbnailReady,
+            this, &GrandSearchListView::onThumbnailReady);
 }
 
 GrandSearchListView::~GrandSearchListView()
 {
+    // 主动释放缩略图任务管理器资源
+    ThumbnailTaskManager::instance()->shutdown();
 }
 
 void GrandSearchListView::setMatchedItems(const MatchedItems &items)
@@ -213,6 +223,15 @@ void GrandSearchListView::mousePressEvent(QMouseEvent *event)
     DListView::mousePressEvent(event);
 }
 
+void GrandSearchListView::onThumbnailReady(const QString &filePath, const QPixmap &thumbnail)
+{
+    if (thumbnail.isNull()) {
+        return;
+    }
+
+    updateThumbnail(filePath, thumbnail);
+}
+
 QString GrandSearchListView::cacheDir()
 {
     auto userCachePath = DStandardPaths::standardLocations(QStandardPaths::CacheLocation).value(0);
@@ -235,7 +254,7 @@ void GrandSearchListView::setData(const QModelIndex &index, const MatchedItem &i
         m_model->setData(index, item.name, Qt::ToolTipRole);
     }
 
-    // 设置icon
+    // 设置icon - 先显示默认图标
     QIcon itemIcon = Utils::defaultIcon(item);
     const QString &strIcon = item.icon;
 
@@ -253,6 +272,19 @@ void GrandSearchListView::setData(const QModelIndex &index, const MatchedItem &i
     }
 
     m_model->setData(index, itemIcon, Qt::DecorationRole);
+
+    // 异步请求缩略图
+    if (!item.item.isEmpty()) {
+        QString mimetype = item.type;
+        if (mimetype.isEmpty()) {
+            mimetype = Utils::getFileMimetype(item.item);
+        }
+
+        // 检查是否支持该类型的缩略图
+        if (ThumbnailProvider::instance()->isSupported(mimetype)) {
+            ThumbnailProvider::instance()->requestThumbnail(item.item, mimetype, GrandSearch::ThumbnailSize::Large);
+        }
+    }
 }
 
 int GrandSearchListView::levelItemLastRow(const int level)
@@ -267,4 +299,36 @@ int GrandSearchListView::levelItemLastRow(const int level)
     }
 
     return lastRow;
+}
+
+void GrandSearchListView::updateThumbnail(const QString &filePath, const QPixmap &thumbnail)
+{
+    if (filePath.isEmpty() || thumbnail.isNull()) {
+        return;
+    }
+
+    // 遍历所有项，找到匹配的文件路径
+    for (int row = 0; row < m_model->rowCount(); ++row) {
+        QModelIndex index = m_model->index(row, 0);
+        if (!index.isValid()) {
+            continue;
+        }
+
+        // 获取该项的数据
+        QVariant data = m_model->data(index, DATA_ROLE);
+        if (!data.isValid()) {
+            continue;
+        }
+
+        MatchedItem item = data.value<MatchedItem>();
+        if (item.item == filePath) {
+            // 将缩略图缩放到视图的图标大小
+            QSize targetSize = this->iconSize();
+            QPixmap scaledThumbnail = thumbnail.scaled(targetSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+            // 更新缩略图
+            m_model->setData(index, scaledThumbnail, Qt::DecorationRole);
+            break;   // 找到后退出循环
+        }
+    }
 }
