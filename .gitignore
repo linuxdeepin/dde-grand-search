@@ -16,3 +16,6 @@ dist/
 3rdparty/antlr4
 .specstory
 .cursorindexingignore
+AGENTS.md
+.claude
+.trellis

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -12,14 +12,14 @@
 
 #include <QPixmap>
 
-#define ICON_ROLE Qt::UserRole+1
-#define DATA_ROLE Qt::UserRole+2
+#define ICON_ROLE Qt::UserRole + 1
+#define DATA_ROLE Qt::UserRole + 2
 
 namespace GrandSearch {
 
 class GrandSearchListModel;
 class GrandSearchListDelegate;
-class GrandSearchListView: public Dtk::Widget::DListView
+class GrandSearchListView : public Dtk::Widget::DListView
 {
     Q_OBJECT
 public:
@@ -58,21 +58,36 @@ protected:
     bool event(QEvent *event) Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
+private slots:
+    /**
+     * @brief 处理缩略图生成完成
+     * @param filePath 文件路径
+     * @param thumbnail 生成的缩略图
+     */
+    void onThumbnailReady(const QString &filePath, const QPixmap &thumbnail);
+
 private:
     QString cacheDir();
-    void setData(const QModelIndex& index, const MatchedItem &item);
+    void setData(const QModelIndex &index, const MatchedItem &item);
     int levelItemLastRow(const int level);
 
+    /**
+     * @brief 更新指定文件路径对应的项的缩略图
+     * @param filePath 文件路径
+     * @param thumbnail 缩略图
+     */
+    void updateThumbnail(const QString &filePath, const QPixmap &thumbnail);
+
 private:
-    GrandSearchListModel        *m_model        = nullptr;
-    GrandSearchListDelegate     *m_delegate     = nullptr;
+    GrandSearchListModel *m_model = nullptr;
+    GrandSearchListDelegate *m_delegate = nullptr;
 
-    int                         m_themeType     = 1;// 当前应用主题类型 1:浅色 2:深色 默认1:浅色
-    MatchedItems                m_matchedItems;
+    int m_themeType = 1;   // 当前应用主题类型 1:浅色 2:深色 默认1:浅色
+    MatchedItems m_matchedItems;
 
-    bool                        m_isPreviewItem = false;
+    bool m_isPreviewItem = false;
 };
 
 }
 
-#endif // GRANDSEARCHLISTVIEW_H
+#endif   // GRANDSEARCHLISTVIEW_H
