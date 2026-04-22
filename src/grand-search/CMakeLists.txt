@@ -27,7 +27,6 @@ find_package(${QT_NS} COMPONENTS
     Concurrent
     DBus
     Network
-    Multimedia
 REQUIRED)
 
 set(DBUSSRC
@@ -46,7 +45,6 @@ set(Qt_LIBS
     ${QT_NS}::DBus
     ${QT_NS}::Concurrent
     ${QT_NS}::Network
-    ${QT_NS}::Multimedia
 )
 set(DTK_LIBS
     ${DTK_NS}::Core
