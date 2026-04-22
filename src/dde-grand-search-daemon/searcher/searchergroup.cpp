@@ -1,9 +1,10 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "searchergroup.h"
 #include "searchergroup_p.h"
+#include "ocr/ocrtextsearcher.h"
 
 #include <QDebug>
 #include <QLoggingCategory>
@@ -40,6 +41,10 @@ void SearcherGroupPrivate::initBuiltin()
     auto semanticSearcher = new SemanticSearcher(this);
     m_builtin << semanticSearcher;
 #endif
+
+    qCInfo(logDaemon) << "Initializing OcrTextSearcher";
+    auto ocrSearcher = new OcrTextSearcher(this);
+    m_builtin << ocrSearcher;
 }
 
 bool SearcherGroupPrivate::addExtendSearcher(const SearchPluginInfo &pluginInfo)

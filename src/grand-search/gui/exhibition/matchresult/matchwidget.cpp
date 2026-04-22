@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -53,8 +53,9 @@ MatchWidget::MatchWidget(QWidget *parent)
     m_groupHashShowOrder << GRANDSEARCH_GROUP_BEST << GRANDSEARCH_GROUP_FILE_INFERENCE
                          << GRANDSEARCH_GROUP_APP << GRANDSEARCH_GROUP_SETTING
                          << GRANDSEARCH_GROUP_WEB << GRANDSEARCH_GROUP_FILE_VIDEO
-                         << GRANDSEARCH_GROUP_FILE_AUDIO << GRANDSEARCH_GROUP_FILE_PICTURE
-                         << GRANDSEARCH_GROUP_FILE_DOCUMNET << GRANDSEARCH_GROUP_FOLDER << GRANDSEARCH_GROUP_FILE;
+                         << GRANDSEARCH_GROUP_FILE_AUDIO << GRANDSEARCH_GROUP_FILE_OCR
+                         << GRANDSEARCH_GROUP_FILE_PICTURE << GRANDSEARCH_GROUP_FILE_DOCUMNET
+                         << GRANDSEARCH_GROUP_FOLDER << GRANDSEARCH_GROUP_FILE;
     initUi();
     initConnect();
 

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -304,7 +304,7 @@ void GroupWidget::showLabel(bool bShow)
 QString GroupWidget::convertDisplayName(const QString &searchGroupName)
 {
     static const QHash<QString, QString> groupDisplayName {
-        { GRANDSEARCH_GROUP_BEST, GroupName_Best }, { GRANDSEARCH_GROUP_APP, GroupName_App }, { GRANDSEARCH_GROUP_SETTING, GroupName_Setting }, { GRANDSEARCH_GROUP_FILE_VIDEO, GroupName_Video }, { GRANDSEARCH_GROUP_FILE_AUDIO, GroupName_Audio }, { GRANDSEARCH_GROUP_FILE_PICTURE, GroupName_Picture }, { GRANDSEARCH_GROUP_FILE_DOCUMNET, GroupName_Document }, { GRANDSEARCH_GROUP_FOLDER, GroupName_Folder }, { GRANDSEARCH_GROUP_FILE, GroupName_File }, { GRANDSEARCH_GROUP_WEB, GroupName_Web }, { GRANDSEARCH_GROUP_FILE_INFERENCE, GroupName_Inference }
+        { GRANDSEARCH_GROUP_BEST, GroupName_Best }, { GRANDSEARCH_GROUP_APP, GroupName_App }, { GRANDSEARCH_GROUP_SETTING, GroupName_Setting }, { GRANDSEARCH_GROUP_FILE_VIDEO, GroupName_Video }, { GRANDSEARCH_GROUP_FILE_AUDIO, GroupName_Audio }, { GRANDSEARCH_GROUP_FILE_PICTURE, GroupName_Picture }, { GRANDSEARCH_GROUP_FILE_DOCUMNET, GroupName_Document }, { GRANDSEARCH_GROUP_FOLDER, GroupName_Folder }, { GRANDSEARCH_GROUP_FILE, GroupName_File }, { GRANDSEARCH_GROUP_WEB, GroupName_Web }, { GRANDSEARCH_GROUP_FILE_INFERENCE, GroupName_Inference }, { GRANDSEARCH_GROUP_FILE_OCR, GroupName_Ocr }
     };
 
     return groupDisplayName.value(searchGroupName, searchGroupName);
