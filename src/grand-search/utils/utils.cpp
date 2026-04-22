@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -324,7 +324,7 @@ bool Utils::setWeightMethod(MatchedItem &item)
         return true;
 
     const QString &search = item.searcher;
-    if (search == GRANDSEARCH_CLASS_FILE_DEEPIN) {
+    if (search == GRANDSEARCH_CLASS_FILE_DEEPIN || search == GRANDSEARCH_CLASS_OCR_TEXT) {
         ext.insert(GRANDSEARCH_PROPERTY_WEIGHT_METHOD,
                    GRANDSEARCH_PROPERTY_WEIGHT_METHOD_LOCALFILE);
     } else if (search == GRANDSEARCH_CLASS_APP_DESKTOP) {
@@ -495,6 +495,7 @@ void Utils::packageBestMatch(MatchedItemMap &map, int maxQuantity)
         { GRANDSEARCH_CLASS_FILE_DEEPIN, true },
         { GRANDSEARCH_CLASS_APP_DESKTOP, true },
         { GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, true },
+        { GRANDSEARCH_CLASS_OCR_TEXT, true },
     };
 
     // 待文件搜索各组去重后删除该黑名单
@@ -1048,7 +1049,7 @@ bool Utils::isLevelItem(const MatchedItem &item, int &level)
 bool Utils::isLevelGroup(const QString &searchGroupName)
 {
     static const QStringList containLevelGroup {
-        GRANDSEARCH_GROUP_FILE_VIDEO, GRANDSEARCH_GROUP_FILE_AUDIO, GRANDSEARCH_GROUP_FILE_PICTURE, GRANDSEARCH_GROUP_FILE_DOCUMNET, GRANDSEARCH_GROUP_FILE
+        GRANDSEARCH_GROUP_FILE_VIDEO, GRANDSEARCH_GROUP_FILE_AUDIO, GRANDSEARCH_GROUP_FILE_PICTURE, GRANDSEARCH_GROUP_FILE_DOCUMNET, GRANDSEARCH_GROUP_FILE, GRANDSEARCH_GROUP_FILE_OCR
     };
 
     return containLevelGroup.contains(searchGroupName);
@@ -1057,7 +1058,7 @@ bool Utils::isLevelGroup(const QString &searchGroupName)
 bool Utils::canPreview(const QString &searchGroupName)
 {
     static const QStringList containPreviewGroup {
-        GRANDSEARCH_GROUP_FOLDER, GRANDSEARCH_GROUP_FILE, GRANDSEARCH_GROUP_FILE_VIDEO, GRANDSEARCH_GROUP_FILE_AUDIO, GRANDSEARCH_GROUP_FILE_PICTURE, GRANDSEARCH_GROUP_FILE_DOCUMNET, GRANDSEARCH_GROUP_FILE_INFERENCE
+        GRANDSEARCH_GROUP_FOLDER, GRANDSEARCH_GROUP_FILE, GRANDSEARCH_GROUP_FILE_VIDEO, GRANDSEARCH_GROUP_FILE_AUDIO, GRANDSEARCH_GROUP_FILE_PICTURE, GRANDSEARCH_GROUP_FILE_DOCUMNET, GRANDSEARCH_GROUP_FILE_INFERENCE, GRANDSEARCH_GROUP_FILE_OCR
     };
 
     return containPreviewGroup.contains(searchGroupName);

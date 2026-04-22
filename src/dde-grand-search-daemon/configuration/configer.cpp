@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -38,7 +38,8 @@ UserPreferencePointer ConfigerPrivate::defaultSearcher()
                         {GRANDSEARCH_CLASS_APP_DESKTOP, true},
                         {GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, true},
                         {GRANDSEARCH_CLASS_WEB_STATICTEXT, true},
-                        {GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC, true}
+                        {GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC, true},
+                        {GRANDSEARCH_CLASS_OCR_TEXT, true}
                         };
 
     return UserPreferencePointer(new UserPreference(data));
