@@ -1,22 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="es">
 <context>
     <name>GrandSearch::AiToolBar</name>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="48"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation type="unfinished"></translation>
+        <translation>No se puede usar %1, por favor vaya a la App Store para actualizar primero la versión de UOS AI.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="49"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancelar</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
         <source>Open App Stroe</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir la tienda de aplicaciones</translation>
     </message>
 </context>
 <context>
@@ -25,75 +23,75 @@
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="112"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="162"/>
         <source>Summary</source>
-        <translation type="unfinished"></translation>
+        <translation>Resumen</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="113"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="163"/>
         <source>Translation</source>
-        <translation type="unfinished"></translation>
+        <translation>Traducción</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="114"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="164"/>
         <source>Extension</source>
-        <translation type="unfinished"></translation>
+        <translation>Extensión</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="115"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="165"/>
         <source>Add to knowledge base</source>
-        <translation type="unfinished"></translation>
+        <translation>Agregar a la base de conocimientos</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="126"/>
         <source>Summarize document content with UOS AI</source>
-        <translation type="unfinished"></translation>
+        <translation>Resume el contenido del documento con UOS AI.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="127"/>
         <source>Translate document content with UOS AI</source>
-        <translation type="unfinished"></translation>
+        <translation>Traduce el contenido del documento con UOS AI</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="128"/>
         <source>Extend document content with UOS AI</source>
-        <translation type="unfinished"></translation>
+        <translation>Amplíe el contenido del documento con la IA de UOS</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="129"/>
         <source>Add document to UOS AI knowledge base</source>
-        <translation type="unfinished"></translation>
+        <translation>Agregar documento a la base de conocimientos de IA de UOS</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="299"/>
         <source>Summarize this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation type="unfinished"></translation>
+        <translation>Resuma este documento y proporcione un resultado claro y directo, sin contenido innecesario.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="315"/>
         <source>Translate this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation type="unfinished"></translation>
+        <translation>Traduzca este documento y proporcione un resultado claro y directo, sin contenido innecesario.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="331"/>
         <source>Expand this document for me and provide me with a clear and expanded result directly, without any unnecessary content.</source>
-        <translation type="unfinished"></translation>
+        <translation>Amplíe este documento y proporcione un resultado claro y completo directamente, sin contenido innecesario.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="447"/>
         <source>DDE Grand Search</source>
-        <translation type="unfinished"></translation>
+        <translation>DDE búsqueda global</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="450"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation type="unfinished"></translation>
+        <translation>No se puede usar %1, por favor vaya a la App Store para actualizar primero la versión de UOS AI.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
         <source>Open App Stroe</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir la tienda de aplicaciones</translation>
     </message>
 </context>
 <context>
@@ -101,7 +99,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/bestmatchwidget.cpp" line="28"/>
         <source>Best match</source>
-        <translation>Mejor resultado</translation>
+        <translation>Mejor coincidencia</translation>
     </message>
 </context>
 <context>
@@ -131,7 +129,7 @@
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="49"/>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="122"/>
         <source>Grand Search</source>
-        <translation>Búsqueda general</translation>
+        <translation>Búsqueda global</translation>
     </message>
     <message>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="201"/>
@@ -164,18 +162,18 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <source>Installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Instalado</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="90"/>
         <source>Not Installed</source>
-        <translation type="unfinished"></translation>
+        <translation>No instalado</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="105"/>
         <source>Install</source>
-        <translation type="unfinished"></translation>
+        <translation>Instalar</translation>
     </message>
 </context>
 <context>
@@ -245,29 +243,29 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="269"/>
         <source>Please go to %1 to install the ULLM, and %2 Automatic index update.</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor, vaya a %1 para instalar ULLM y a %2 para la actualización automática del índice.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="270"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="279"/>
         <source>Search configration</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajustes de búsqueda</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="271"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="275"/>
         <source>turn on</source>
-        <translation type="unfinished"></translation>
+        <translation>Activar</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="274"/>
         <source>Please %1 Automatic index update.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Actualización automática del índice.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="278"/>
         <source>Please go to %1 to install the ULLM.</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor, diríjase a %1 para instalar ULLM.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="330"/>
@@ -278,7 +276,7 @@
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="281"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="366"/>
         <source>No search results</source>
-        <translation type="unfinished">Sin resultados</translation>
+        <translation>Sin resultados</translation>
     </message>
 </context>
 <context>
@@ -292,91 +290,91 @@
 <context>
     <name>GrandSearch::IntelligentRetrievalWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="66"/>
-        <source>AI Smart Search</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="79"/>
         <source>When turned on, you can try to search for local documents using natural language descriptions, such as &quot;last week&apos;s documents&quot;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="100"/>
-        <source>Automatic index update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="119"/>
-        <source>Full Text Search</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="136"/>
-        <source>When turned on, full text search can be used in the file manager and grand search.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="154"/>
-        <source>Embedding Plugins</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="154"/>
-        <source>After installing the model, you can use services such as AI Search and UOS AI Assistant..</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="172"/>
-        <source>ULLM</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="172"/>
-        <source>After installing the ULLM, you can use the AI intelligent search function without an internet connection.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cuando está activada, puedes intentar buscar documentos locales utilizando descripciones en lenguaje natural, como por ejemplo &quot;documentos de la semana pasada&quot;.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="185"/>
         <source>Intelligent full text search</source>
-        <translation type="unfinished"></translation>
+        <translation>Búsqueda inteligente de texto completo</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="100"/>
+        <source>Automatic index update</source>
+        <translation>Actualización automática del índice</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="66"/>
+        <source>AI Smart Search</source>
+        <translation>Búsqueda inteligente IA</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="119"/>
+        <source>Full Text Search</source>
+        <translation>Búsqueda de texto completo</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="136"/>
+        <source>When turned on, full text search can be used in the file manager and grand search.</source>
+        <translation>Cuando está activada, la búsqueda de texto completo se puede utilizar en el administrador de archivos y en la búsqueda general.</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="154"/>
+        <source>Embedding Plugins</source>
+        <translation>Integración de complementos</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="154"/>
+        <source>After installing the model, you can use services such as AI Search and UOS AI Assistant..</source>
+        <translation>Tras instalar el modelo, podrá utilizar servicios como la Búsqueda con IA y el Asistente de IA de UOS.</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="172"/>
+        <source>ULLM</source>
+        <translation>ULLM</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="172"/>
+        <source>After installing the ULLM, you can use the AI intelligent search function without an internet connection.</source>
+        <translation>Tras instalar ULLM, podrá utilizar la función de búsqueda inteligente mediante IA sin necesidad de conexión a Internet.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="221"/>
         <source>When enabled, you can search the text of articles using disjointed and incomplete keywords.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cuando está habilitada, puedes buscar en el texto de los artículos utilizando palabras clave inconexas e incompletas.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="243"/>
         <source>Please install %0 in &lt;a href=&quot;%0&quot;&gt;the app store&lt;/a&gt; before turning on this configuration.</source>
-        <translation type="unfinished"></translation>
+        <translation>Instale %0 en &lt;a href=&quot;%0&quot;&gt;la tienda de aplicaciones&lt;/a&gt; antes de activar esta configuración.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="283"/>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="407"/>
         <source>Intelligent search indexing is being updated, which may take up more resources, please keep the power access.</source>
-        <translation type="unfinished"></translation>
+        <translation>Se está actualizando el sistema de indexación de búsqueda inteligente, lo que puede consumir más recursos; manténgase conectado a la energía.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="287"/>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="411"/>
         <source>Smart Search indexing update is complete. Last update time: %0</source>
-        <translation type="unfinished"></translation>
+        <translation>La actualización del índice de Búsqueda Inteligente se ha completado. Hora de la última actualización: %0</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="290"/>
         <source>Indexing error!</source>
-        <translation type="unfinished"></translation>
+        <translation>¡Error de indexación!</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="339"/>
         <source>To use AI Smart Search, you need to install the Embedding Plugins and ULLM first.</source>
-        <translation type="unfinished"></translation>
+        <translation>Para utilizar la Búsqueda Inteligente con IA, primero debe instalar los complementos de integración y ULLM.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="340"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>Aceptar</translation>
     </message>
 </context>
 <context>
@@ -385,92 +383,92 @@
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="61"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="385"/>
         <source>Not Installed</source>
-        <translation type="unfinished"></translation>
+        <translation>No instalado</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="77"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="384"/>
         <source>Install Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Instalar modelo</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="93"/>
         <source>Update model</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizar modelo</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="94"/>
         <source>Uninstall model</source>
-        <translation type="unfinished"></translation>
+        <translation>Desinstalar modelo</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="146"/>
         <source>Installing</source>
-        <translation type="unfinished"></translation>
+        <translation>Instalando</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="212"/>
         <source>Are you sure you want to delete this model?</source>
-        <translation type="unfinished"></translation>
+        <translation>¿Estás seguro de que quieres eliminar este modelo?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="213"/>
         <source>After uninstallation, functions such as AI Search and UOS AI Assistant will not work properly.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tras la desinstalación, funciones como la búsqueda con IA y el asistente de IA de UOS no funcionarán correctamente.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="214"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Cancelar</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="215"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation type="unfinished">Confirmar</translation>
+        <translation>Confirmar</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="324"/>
         <source>Installing </source>
-        <translation type="unfinished"></translation>
+        <translation>Instalando</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="344"/>
         <source>Installing the ULLM</source>
-        <translation type="unfinished"></translation>
+        <translation>Instalación del ULLM</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="345"/>
         <source>Exiting will cause the installation to fail, do you still want to exit?</source>
-        <translation type="unfinished"></translation>
+        <translation>Si sale, la instalación fallará. ¿Aún desea salir?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="346"/>
         <source>Exit</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Salir</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="347"/>
         <source>Continue</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Continuar</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="378"/>
         <source>UnInstall Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Desinstalar modelo</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="379"/>
         <source>Installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Instalado</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="390"/>
         <source>Please install the &quot;Embedding Plugins&quot; first before installing this model.</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor, instale primero los &quot;Complementos de incrustación&quot; antes de instalar este modelo.</translation>
     </message>
 </context>
 <context>
@@ -486,7 +484,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="89"/>
         <source>Guess you want to search the following</source>
-        <translation type="unfinished"></translation>
+        <translation>Supongo que quieres buscar lo siguiente</translation>
     </message>
 </context>
 <context>
@@ -504,7 +502,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="53"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations, the contents you search while using the Application, the time of search, the type of requested large model.If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation type="unfinished"></translation>
+        <translation>Al unirte al programa de experiencia de búsqueda, nos autoriza a recopilar información sobre tu dispositivo y sistema, iconos de archivos, contenido y propiedades, aplicaciones y sus configuraciones, el contenido que buscas al usar la aplicación, la hora de la búsqueda y el tipo de modelo solicitado. Si rechazas la recopilación y el uso de la información mencionada, no te unas al programa.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="64"/>
@@ -580,7 +578,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="76"/>
         <source>360 AI Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Búsqueda con IA 360</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="77"/>
@@ -590,17 +588,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="78"/>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>Personalizado</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="99"/>
         <source>You need to use &quot;%0&quot; to replace the keyword in the URL</source>
-        <translation type="unfinished"></translation>
+        <translation>Debes usar &quot;%0&quot; para reemplazar la palabra clave en la URL.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="167"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"></translation>
+        <translation>URL no válida</translation>
     </message>
 </context>
 <context>
@@ -700,7 +698,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="24"/>
         <source>Best match</source>
-        <translation>Mejor resultado</translation>
+        <translation>Mejor coincidencia</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="25"/>
@@ -750,7 +748,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="34"/>
         <source>AI Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Búsqueda IA</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="28"/>
@@ -793,12 +791,12 @@
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="24"/>
         <source>GrandSearch</source>
-        <translation type="unfinished"></translation>
+        <translation>Búsqueda global</translation>
     </message>
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="81"/>
         <source>SearchConfig</source>
-        <translation type="unfinished"></translation>
+        <translation>Configuración de Búsqueda</translation>
     </message>
 </context>
 </TS>
