@@ -47,7 +47,7 @@ void AiToolBar::showWarningDialog(QString name)
     warningDlg->setIcon(QIcon(":icons/dde-grand-search-setting.svg"));
     warningDlg->setMessage(QString(tr("Unable to use %1, please go to the App Store to update the UOS AI version first.").arg(name)));
     warningDlg->addButton(tr("Cancel"), false, DDialog::ButtonNormal);
-    warningDlg->addButton(tr("Open App Stroe"), true, DDialog::ButtonRecommend);
+    warningDlg->addButton(tr("Open App Store"), true, DDialog::ButtonRecommend);
     connect(warningDlg, &DDialog::accepted, warningDlg, [&] {
         QDBusInterface iface("com.home.appstore.client", "/com/home/appstore/client", "com.home.appstore.client");
         iface.call("openBusinessUri", QString("app_detail_info/uos-ai"));
@@ -448,7 +448,7 @@ void AiToolBarInner::showWarningDialog(QString name)
     notify.appName(DApplication::instance()->applicationName());
     notify.appIcon(tmpPath);
     notify.appBody(QString(tr("Unable to use %1, please go to the App Store to update the UOS AI version first.").arg(name)));
-    notify.actions(QStringList() << "_open" << tr("Open App Stroe"));
+    notify.actions(QStringList() << "_open" << tr("Open App Store"));
     QVariantMap hints;
     hints["x-deepin-action-_open"] = QString("dbus-send,--print-reply,--dest=com.home.appstore.client,/com/home/appstore/client,com.home.appstore.client.openBusinessUri,string:app_detail_info/uos-ai");   // 通过命令定位到应用商店uos-ai页
     notify.hints(hints);
