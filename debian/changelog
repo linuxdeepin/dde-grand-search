@@ -1,3 +1,17 @@
+dde-grand-search (6.0.31) unstable; urgency=medium
+
+  * feat: remove bundled antlr4 and update build configuration
+  * feat: add thumbnail generation module for search results
+  * feat: add OCR text search functionality for images
+  * feat: add full-text search integration for filename worker
+  * feat: add matched content preview for search results
+  * feat: add keyword highlighting for search results
+  * chore: update translations
+  * Fix minor typo
+  * Fix minor typos
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Fri, 24 Apr 2026 15:42:46 +0800
+
 dde-grand-search (6.0.30) unstable; urgency=medium
 
   * fix: grand search quick panel don't show tooltip
