@@ -18,6 +18,7 @@
 
 DWIDGET_BEGIN_NAMESPACE
 class DHorizontalLine;
+class DTipLabel;
 DWIDGET_END_NAMESPACE
 
 namespace GrandSearch {
@@ -50,10 +51,12 @@ public:
 
     QVBoxLayout *m_vMainLayout = nullptr;
     QPointer<QWidget> m_contentWidget = nullptr;
+    QObject *m_proxy = nullptr;
 
     // 图标和名称
     QLabel *m_iconLabel = nullptr;
     NameLabel *m_nameLabel = nullptr;
+    DTK_WIDGET_NAMESPACE::DTipLabel *m_contentLabel = nullptr;
 
     // 大小
     SizeLabel *m_sizeLabel = nullptr;

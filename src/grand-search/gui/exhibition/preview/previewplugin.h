@@ -32,6 +32,7 @@ typedef QList<DetailInfo> DetailInfoList;
 #define PREVIEW_ITEMINFO_ICON "icon"
 #define PREVIEW_ITEMINFO_TYPE "type"
 #define PREVIEW_ITEMINFO_SEARCHER "searcher"
+#define PREVIEW_ITEMINFO_MATCHEDCONTEXT "matchedContext"
 typedef QHash<QString, QString> ItemInfo;
 
 class PreviewPlugin

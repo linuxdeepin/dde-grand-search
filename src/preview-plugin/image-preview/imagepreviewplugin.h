@@ -29,6 +29,7 @@ private:
     ItemInfo m_item;
     ImageView *m_imageView = nullptr;
     DetailInfoList m_detailInfos;
+    QString m_matchedContext;
 };
 
 }}

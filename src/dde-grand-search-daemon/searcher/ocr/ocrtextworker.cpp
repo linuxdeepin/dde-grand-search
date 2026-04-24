@@ -91,9 +91,8 @@ bool OcrTextWorkerPrivate::processSearchResults(const DFMSEARCH::SearchResultExp
         // Get OCR content and store in extra field
         QVariantHash extra = item.extra.toHash();
         DFMSEARCH::SearchResult mutableResult = const_cast<DFMSEARCH::SearchResult &>(file);
-        DFMSEARCH::OcrTextResultAPI ocrResult(mutableResult);
-        QString ocrContent = ocrResult.ocrContent();
-
+        OcrTextResultAPI ocrResult(const_cast<SearchResult &>(mutableResult));
+        QString ocrContent = ocrResult.highlightedContent();
         if (!ocrContent.isEmpty()) {
             extra.insert(GRANDSEARCH_PROPERTY_ITEM_MATCHEDCONTEXT, ocrContent);
             qCDebug(logDaemon) << "OCR content found for file:" << filePath
@@ -134,6 +133,7 @@ bool OcrTextWorkerPrivate::searchByDFMSearch()
 
     // Configure OCR options
     OcrTextOptionsAPI ocrOptions(options);
+    ocrOptions.setMaxPreviewLength(30);
     // Enable filename-OCR content mixed search
     ocrOptions.setFilenameOcrContentMixedAndSearchEnabled(true);
 
