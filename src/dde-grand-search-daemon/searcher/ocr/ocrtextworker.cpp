@@ -6,6 +6,7 @@
 #include "global/builtinsearch.h"
 #include "utils/specialtools.h"
 #include "searcher/file/filesearchutils.h"
+#include "global/searchhelper.h"
 
 #include <DConfig>
 
@@ -47,10 +48,16 @@ DFMSEARCH::SearchOptions OcrTextWorkerPrivate::createSearchOptions() const
 
 DFMSEARCH::SearchQuery OcrTextWorkerPrivate::createSearchQuery() const
 {
-    qCDebug(logDaemon) << "Creating OCR search query - Keyword:" << m_keyword;
+    qCDebug(logDaemon) << "Creating OCR search query - Keyword:" << m_keywords;
 
-    // Create a simple query for the keyword
-    SearchQuery query = SearchFactory::createQuery(m_keyword, SearchQuery::Type::Simple);
+    // Create query for the keyword
+    SearchQuery query;
+    if (m_keywords.size() > 1) {
+        query = SearchFactory::createQuery(m_keywords, SearchQuery::Type::Boolean);
+        query.setBooleanOperator(SearchQuery::BooleanOperator::AND);
+    } else {
+        query = SearchFactory::createQuery(m_keywords.first(), SearchQuery::Type::Simple);
+    }
     return query;
 }
 
@@ -61,7 +68,7 @@ bool OcrTextWorkerPrivate::processSearchResults(const DFMSEARCH::SearchResultExp
     qCDebug(logDaemon) << "Processing OCR search results";
 
     if (!result.hasValue()) {
-        qCWarning(logDaemon) << "OCR search failed for keyword:" << m_keyword
+        qCWarning(logDaemon) << "OCR search failed for keyword:" << m_keywords
                              << "Error:" << result.error().message();
         return false;
     }
@@ -85,8 +92,8 @@ bool OcrTextWorkerPrivate::processSearchResults(const DFMSEARCH::SearchResultExp
 
         m_tmpSearchResults << filePath;
 
-        // Create matched item
-        GrandSearch::MatchedItem item = FileSearchUtils::packItem(filePath, q->name());
+        // Create matched item with keywords for highlighting
+        GrandSearch::MatchedItem item = FileSearchUtils::packItem(filePath, q->name(), QStringList { m_keywords });
 
         // Get OCR content and store in extra field
         QVariantHash extra = item.extra.toHash();
@@ -120,9 +127,33 @@ bool OcrTextWorkerPrivate::processSearchResults(const DFMSEARCH::SearchResultExp
     return true;
 }
 
+QStringList OcrTextWorkerPrivate::parserKeywords(const QString &context)
+{
+    QJsonParseError error;
+    QJsonDocument doc = QJsonDocument::fromJson(context.toLocal8Bit(), &error);
+    if (error.error != QJsonParseError::NoError || doc.isEmpty())
+        return { searchHelper->tropeInputSymbol(context) };
+
+    // 应用搜索类目，只需要获取关键字信息
+    QStringList keywordList;
+    QJsonObject obj = doc.object();
+    QJsonArray arr = obj[JSON_KEYWORD_ATTRIBUTE].toArray();
+    for (int i = 0; i < arr.count(); ++i) {
+        const QString &key = arr[i].toString();
+        if (key.isEmpty())
+            continue;
+        keywordList.append(searchHelper->tropeInputSymbol(key));
+    }
+
+    if (keywordList.isEmpty())
+        return { searchHelper->tropeInputSymbol(context) };
+
+    return keywordList;
+}
+
 bool OcrTextWorkerPrivate::searchByDFMSearch()
 {
-    qCDebug(logDaemon) << "Starting DFM OCR search with keyword:" << m_keyword;
+    qCDebug(logDaemon) << "Starting DFM OCR search with keyword:" << m_keywords;
     QObject holder;
     SearchEngine *engine = SearchFactory::createEngine(SearchType::Ocr, &holder);
 
@@ -191,22 +222,9 @@ void OcrTextWorker::setContext(const QString &context)
         qCWarning(logDaemon) << "OCR search key is empty";
 
     // Parse the keyword from context
-    // Context may be JSON or plain text
-    QJsonParseError error;
-    QJsonDocument doc = QJsonDocument::fromJson(context.toLocal8Bit(), &error);
-    if (error.error != QJsonParseError::NoError || doc.isEmpty()) {
-        d->m_keyword = context;
-    } else {
-        QJsonObject obj = doc.object();
-        QJsonArray keywordArr = obj["keywords"].toArray();
-        if (!keywordArr.isEmpty()) {
-            d->m_keyword = keywordArr.first().toString();
-        } else {
-            d->m_keyword = context;
-        }
-    }
+    d->m_keywords = d->parserKeywords(context);
 
-    qCDebug(logDaemon) << "Parsed OCR search keyword:" << d->m_keyword;
+    qCDebug(logDaemon) << "Parsed OCR search keyword:" << d->m_keywords;
 }
 
 bool OcrTextWorker::isAsync() const
@@ -226,13 +244,19 @@ bool OcrTextWorker::working(void *context)
         return false;
     }
 
-    if (d->m_keyword.toLocal8Bit().size() < 2) {
-        qCWarning(logDaemon) << "OCR search prerequisites not met - keyword: " << d->m_keyword;
+    if (d->m_keywords.isEmpty()) {
+        qCWarning(logDaemon) << "Search prerequisites not met - Empty keyword";
         d->m_status.storeRelease(Completed);
         return false;
     }
 
-    qCDebug(logDaemon) << "Starting OCR text search with keyword:" << d->m_keyword;
+    if (d->m_keywords.size() == 1 && d->m_keywords.first().toLocal8Bit().size() < 2) {
+        qCWarning(logDaemon) << "OCR search prerequisites not met - keyword: " << d->m_keywords;
+        d->m_status.storeRelease(Completed);
+        return false;
+    }
+
+    qCDebug(logDaemon) << "Starting OCR text search with keyword:" << d->m_keywords;
     d->m_time.start();
 
     if (!d->searchByDFMSearch()) {

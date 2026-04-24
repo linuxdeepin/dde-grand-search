@@ -29,8 +29,8 @@ public:
     QSize sourceSize();
     bool stopPreview();
 
-    void loadImage(const QString &file, const QString &type);
-    void setMatchedContext(const QString &context);
+    void loadImage(const QString &file, const QString &type, const QStringList &keywords = QStringList());
+    void setMatchedContext(const QString &context, const QStringList &keywords = QStringList());
 private:
     void initUI();
     void initConnect();

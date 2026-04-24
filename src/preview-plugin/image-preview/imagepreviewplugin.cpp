@@ -44,17 +44,25 @@ bool ImagePreviewPlugin::previewItem(const ItemInfo &item)
     const QString type = item.value(PREVIEW_ITEMINFO_TYPE);
     m_matchedContext = item.value(PREVIEW_ITEMINFO_MATCHEDCONTEXT);
 
+    // Get keywords for highlighting
+    QStringList keywords;
+    QString keywordsStr = item.value(PREVIEW_ITEMINFO_KEYWORDS);
+    if (!keywordsStr.isEmpty()) {
+        keywords = keywordsStr.split(",", Qt::SkipEmptyParts);
+    }
+
     qCDebug(logImagePreview) << "Previewing image - Path:" << path << "Type:" << type
-                             << "Has matched context:" << !m_matchedContext.isEmpty();
+                             << "Has matched context:" << !m_matchedContext.isEmpty()
+                             << "Keywords count:" << keywords.size();
     if (!m_imageView) {
         m_imageView = new ImageView();
         qCDebug(logImagePreview) << "ImageView created";
     }
 
-    m_imageView->loadImage(path, type);
+    m_imageView->loadImage(path, type, keywords);
 
     // Set matched context if available - will show context instead of filename
-    m_imageView->setMatchedContext(m_matchedContext);
+    m_imageView->setMatchedContext(m_matchedContext, keywords);
 
     // 尺寸
     auto dimension = m_imageView->sourceSize();

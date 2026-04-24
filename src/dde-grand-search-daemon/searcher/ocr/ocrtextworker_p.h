@@ -23,6 +23,7 @@ public:
     DFMSEARCH::SearchOptions createSearchOptions() const;
     DFMSEARCH::SearchQuery createSearchQuery() const;
     bool processSearchResults(const DFMSEARCH::SearchResultExpected &result);
+    QStringList parserKeywords(const QString &context);
 
     void tryNotify();
     int itemCount() const;
@@ -31,7 +32,7 @@ public:
 public:
     OcrTextWorker *q_ptr = nullptr;
     QAtomicInt m_status = ProxyWorker::Ready;
-    QString m_keyword;   // Search keyword
+    QStringList m_keywords;   // Search keyword
 
     mutable QMutex m_mutex;
     MatchedItems m_items;   // OCR search results
