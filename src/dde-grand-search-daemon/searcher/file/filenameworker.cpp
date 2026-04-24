@@ -403,7 +403,7 @@ bool FileNameWorkerPrivate::executeContentSearch()
 
     // Configure content search options
     ContentOptionsAPI contentOptions(options);
-    contentOptions.setMaxPreviewLength(200);
+    contentOptions.setMaxPreviewLength(50);
     contentOptions.setFilenameContentMixedAndSearchEnabled(true);
 
     engine->setSearchOptions(options);

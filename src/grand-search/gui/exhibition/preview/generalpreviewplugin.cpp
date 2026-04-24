@@ -10,6 +10,7 @@
 #include <DFontSizeManager>
 #include <DMessageBox>
 #include <DGuiApplicationHelper>
+#include <DTipLabel>
 
 #include <QIcon>
 #include <QGuiApplication>
@@ -75,14 +76,17 @@ GeneralPreviewPluginPrivate::GeneralPreviewPluginPrivate(GeneralPreviewPlugin *p
     m_iconLabel->setObjectName("IconLabel");
     m_iconLabel->setFixedSize(QSize(ICON_SIZE, ICON_SIZE));
     m_nameLabel = new NameLabel("", m_contentWidget);
-    m_sizeLabel = new SizeLabel("", m_contentWidget);
+    m_contentLabel = new DTipLabel("", m_contentWidget);
+    m_contentLabel->setFixedWidth(NAME_WIDTH);
+    m_contentLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    m_contentLabel->setWordWrap(true);
 
     QVBoxLayout *vLayout = new QVBoxLayout();
     vLayout->setContentsMargins(0, 0, 0, 0);
     vLayout->setSpacing(0);
     vLayout->addSpacerItem(new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding));
     vLayout->addWidget(m_nameLabel);
-    vLayout->addWidget(m_sizeLabel);
+    vLayout->addWidget(m_contentLabel);
     vLayout->addSpacerItem(new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
     QHBoxLayout *hLayout = new QHBoxLayout();
@@ -123,7 +127,7 @@ GeneralPreviewPlugin::~GeneralPreviewPlugin()
 
 void GeneralPreviewPlugin::init(QObject *proxyInter)
 {
-    Q_UNUSED(proxyInter)
+    d_p->m_proxy = proxyInter;
 }
 
 bool GeneralPreviewPlugin::previewItem(const ItemInfo &info)
@@ -135,8 +139,16 @@ bool GeneralPreviewPlugin::previewItem(const ItemInfo &info)
     item.type = info[PREVIEW_ITEMINFO_TYPE];
     item.searcher = info[PREVIEW_ITEMINFO_SEARCHER];
 
+    // Get matched context if available
+    QString matchedContext = info.value(PREVIEW_ITEMINFO_MATCHEDCONTEXT);
+    if (matchedContext.startsWith("…"))
+        matchedContext = matchedContext.mid(1);
+    if (matchedContext.endsWith("…"))
+        matchedContext.chop(1);
+
     qCDebug(logGrandSearch) << "General preview item - Name:" << item.name
-                            << "Type:" << item.type;
+                            << "Type:" << item.type
+                            << "Has matched context:" << !matchedContext.isEmpty();
 
     if (!item.item.isEmpty()
             && !item.name.isEmpty()
@@ -178,27 +190,21 @@ bool GeneralPreviewPlugin::previewItem(const ItemInfo &info)
     if (elidedText != item.name)
         d_p->m_nameLabel->setToolTip(item.name);
 
-    QFileInfo fi(item.item);
-
-    // 获取文件(夹)大小
-    if (fi.isDir()) {
-        if (!d_p->m_sizeWorker) {
-            d_p->m_sizeWorker = new FileStatisticsThread(this);
-            connect(d_p->m_sizeWorker, &FileStatisticsThread::dataNotify, this, &GeneralPreviewPlugin::updateFolderSize);
-        } else if (d_p->m_sizeWorker->isRunning()) {
-            d_p->m_sizeWorker->stop();
-            d_p->m_sizeWorker->wait();
-        }
-
-        d_p->m_sizeLabel->setText(CommonTools::formatFileSize(0));
-        d_p->m_sizeWorker->start(item.item);
+    // 设置匹配内容，最多显示3行，超出部分行尾省略
+    if (!matchedContext.isEmpty()) {
+        QString elidedContext = CommonTools::lineFeed(matchedContext, d_p->m_contentLabel->width(), d_p->m_contentLabel->font(), 3);
+        d_p->m_contentLabel->setText(elidedContext);
+        if (elidedContext != matchedContext)
+            d_p->m_contentLabel->setToolTip(matchedContext);
     } else {
-        d_p->m_sizeLabel->setText(CommonTools::formatFileSize(fi.size()));
+        d_p->m_contentLabel->clear();
     }
+    QFileInfo fi(item.item);
 
     // 设置属性详情信息
     d_p->m_detailInfos.clear();
 
+    // 位置信息
     DetailTagInfo tagInfos;
     tagInfos.insert(DetailInfoProperty::Text, QVariant(tr("Location:")));
     tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
@@ -210,6 +216,36 @@ bool GeneralPreviewPlugin::previewItem(const ItemInfo &info)
     DetailInfo detailInfo = qMakePair(tagInfos, contentInfos);
     d_p->m_detailInfos.push_back(detailInfo);
 
+    // 文件大小
+    QString fileSizeStr;
+    // 获取文件(夹)大小
+    if (fi.isDir()) {
+        if (!d_p->m_sizeWorker) {
+            d_p->m_sizeWorker = new FileStatisticsThread(this);
+            connect(d_p->m_sizeWorker, &FileStatisticsThread::dataNotify, this, &GeneralPreviewPlugin::updateFolderSize);
+        } else if (d_p->m_sizeWorker->isRunning()) {
+            d_p->m_sizeWorker->stop();
+            d_p->m_sizeWorker->wait();
+        }
+
+        fileSizeStr = CommonTools::formatFileSize(0);
+        d_p->m_sizeWorker->start(item.item);
+    } else {
+        fileSizeStr = CommonTools::formatFileSize(fi.size());
+    }
+
+    tagInfos.clear();
+    tagInfos.insert(DetailInfoProperty::Text, QVariant(tr("Size:")));
+    tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
+
+    contentInfos.clear();
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(fileSizeStr));
+    contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideRight));
+
+    detailInfo = qMakePair(tagInfos, contentInfos);
+    d_p->m_detailInfos.push_back(detailInfo);
+
+    // 修改时间
     tagInfos.clear();
     tagInfos.insert(DetailInfoProperty::Text, QVariant(tr("Time modified:")));
     tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
@@ -263,5 +299,14 @@ bool GeneralPreviewPlugin::showToolBar() const
 
 void GeneralPreviewPlugin::updateFolderSize(qint64 size)
 {
-    d_p->m_sizeLabel->setText(CommonTools::formatFileSize(size));
+    // Find and update the size entry in detail infos
+    for (int i = 0; i < d_p->m_detailInfos.size(); ++i) {
+        DetailTagInfo &tag = d_p->m_detailInfos[i].first;
+        if (tag.value(DetailInfoProperty::Text).toString() == tr("Size:")) {
+            d_p->m_detailInfos[i].second.insert(DetailInfoProperty::Text, QVariant(CommonTools::formatFileSize(size)));
+            break;
+        }
+    }
+
+    QMetaObject::invokeMethod(d_p->m_proxy, "updateDetailInfo", Qt::AutoConnection, Q_ARG(GrandSearch::PreviewPlugin*, this));
 }

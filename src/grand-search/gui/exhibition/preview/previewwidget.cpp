@@ -9,6 +9,7 @@
 #include "generalwidget/generaltoolbar.h"
 #include "generalwidget/aitoolbar.h"
 #include "pluginproxy.h"
+#include "global/builtinsearch.h"
 
 #include <DScrollArea>
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
@@ -85,6 +86,13 @@ bool PreviewWidget::previewItem(const MatchedItem &item)
     itemInfo[PREVIEW_ITEMINFO_ICON] = item.icon;
     itemInfo[PREVIEW_ITEMINFO_TYPE] = item.type;
     itemInfo[PREVIEW_ITEMINFO_SEARCHER] = item.searcher;
+
+    // Pass matched context from extra data
+    QVariantHash extraHash = item.extra.toHash();
+    if (extraHash.contains(GRANDSEARCH_PROPERTY_ITEM_MATCHEDCONTEXT)) {
+        itemInfo[PREVIEW_ITEMINFO_MATCHEDCONTEXT] = extraHash.value(GRANDSEARCH_PROPERTY_ITEM_MATCHEDCONTEXT).toString();
+    }
+
     preview->previewItem(itemInfo);
 
     // 插件有变更， 更换新插件界面内容到主界面布局中

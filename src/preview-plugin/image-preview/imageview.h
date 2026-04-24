@@ -13,6 +13,7 @@
 
 DWIDGET_BEGIN_NAMESPACE
 class DLabel;
+class DTipLabel;
 DWIDGET_END_NAMESPACE
 
 namespace GrandSearch {
@@ -29,6 +30,7 @@ public:
     bool stopPreview();
 
     void loadImage(const QString &file, const QString &type);
+    void setMatchedContext(const QString &context);
 private:
     void initUI();
     void initConnect();
@@ -53,6 +55,7 @@ private:
     QSize m_sourceSize;                 // 资源尺寸
     QLabel *m_imageLabel;               // 显示图片
     Dtk::Widget::DLabel *m_titleLabel;  // 显示名称
+    Dtk::Widget::DTipLabel *m_contentLabel;
 };
 
 }}

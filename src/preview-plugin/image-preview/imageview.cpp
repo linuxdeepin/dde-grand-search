@@ -9,6 +9,7 @@
 #include <DLabel>
 #include <DFontSizeManager>
 #include <DGuiApplicationHelper>
+#include <DTipLabel>
 
 #include <QDebug>
 #include <QtConcurrent>
@@ -137,6 +138,12 @@ void ImageView::initUI()
     m_titleLabel->setFixedWidth(IMAGEWIDTH);
     m_titleLabel->setAlignment(Qt::AlignCenter);
 
+    m_contentLabel = new DTipLabel("", this);
+    m_contentLabel->setFixedWidth(IMAGEWIDTH);
+    m_contentLabel->setAlignment(Qt::AlignCenter);
+    m_contentLabel->setElideMode(Qt::ElideRight);
+    m_contentLabel->setVisible(false);
+
     QFont titleFont = m_titleLabel->font();
     titleFont.setWeight(QFont::Medium);
     titleFont = DFontSizeManager::instance()->get(DFontSizeManager::T5, titleFont);
@@ -154,6 +161,7 @@ void ImageView::initUI()
 
     QHBoxLayout *titleLayout = new QHBoxLayout;
     titleLayout->addWidget(m_titleLabel);
+    titleLayout->addWidget(m_contentLabel);
 
     m_mainLayout = new QVBoxLayout(this);
     m_mainLayout->setContentsMargins(35, 12, 35, 0);
@@ -233,5 +241,22 @@ void ImageView::showErrorPage()
 
     auto errorPixmap = getRoundPixmap(QPixmap::fromImage(errorImg));
     m_imageLabel->setPixmap(errorPixmap);
+}
+
+void ImageView::setMatchedContext(const QString &context)
+{
+    auto highlightedContent = context;
+    if (highlightedContent.startsWith("…"))
+        highlightedContent = highlightedContent.mid(1);
+
+    if (highlightedContent.endsWith("…"))
+        highlightedContent.chop(1);
+
+    m_contentLabel->setVisible(!highlightedContent.isEmpty());
+    m_titleLabel->setVisible(highlightedContent.isEmpty());
+    if (!highlightedContent.isEmpty()) {
+        m_contentLabel->setText(highlightedContent);
+        m_contentLabel->setToolTip(highlightedContent);
+    }
 }
 
