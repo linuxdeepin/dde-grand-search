@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ug">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ug">
 <context>
     <name>GrandSearch::AiToolBar</name>
     <message>
@@ -16,7 +14,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
         <source>Open App Store</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -93,7 +91,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
         <source>Open App Store</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -131,12 +129,12 @@
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="49"/>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="122"/>
         <source>Grand Search</source>
-        <translation type="unfinished">تولۇق ئىزدەش</translation>
+        <translation>تولۇق ئىزدەش</translation>
     </message>
     <message>
         <location filename="../src/grand-search-dock-plugin/ddegrandsearchdockplugin.cpp" line="201"/>
         <source>Search settings</source>
-        <translation type="unfinished">ئىزدەش تەڭشىكى</translation>
+        <translation>ئىزدەش تەڭشىكى</translation>
     </message>
 </context>
 <context>
@@ -183,12 +181,12 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="246"/>
         <source>Search</source>
-        <translation type="unfinished">ئىزدەش</translation>
+        <translation>ئىزدەش</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="247"/>
         <source>What would you like to search for?</source>
-        <translation type="unfinished">لازىملىق مەزمۇننى ئىزدەڭ</translation>
+        <translation>لازىملىق مەزمۇننى ئىزدەڭ</translation>
     </message>
 </context>
 <context>
@@ -196,17 +194,17 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="85"/>
         <source>Cut</source>
-        <translation type="unfinished">كېسىش</translation>
+        <translation>كېسىش</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="89"/>
         <source>Copy</source>
-        <translation type="unfinished">كۆچۈرۈش</translation>
+        <translation>كۆچۈرۈش</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="93"/>
         <source>Paste</source>
-        <translation type="unfinished">چاپلاش</translation>
+        <translation>چاپلاش</translation>
     </message>
 </context>
 <context>
@@ -214,18 +212,18 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="254"/>
         <source>Location:</source>
-        <translation type="unfinished">ئورۇن:</translation>
+        <translation>ئورۇن:</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="283"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="350"/>
         <source>Size:</source>
-        <translation type="unfinished">چوڭلىقى :</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="295"/>
         <source>Time modified:</source>
-        <translation type="unfinished">ئۆزگەرتىلگەن ۋاقتى:</translation>
+        <translation>ئۆزگەرتىلگەن ۋاقتى:</translation>
     </message>
 </context>
 <context>
@@ -233,17 +231,17 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="70"/>
         <source>Open</source>
-        <translation type="unfinished">ئوچۇق</translation>
+        <translation>ئېچىش</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="75"/>
         <source>Open Path</source>
-        <translation type="unfinished">مۇندەرىجىسىنى ئېچىش</translation>
+        <translation>مۇندەرىجىسىنى ئېچىش</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="80"/>
         <source>Copy Path</source>
-        <translation type="unfinished">مۇندەرىجىسىنى كۆچۈرۈش</translation>
+        <translation>مۇندەرىجىسىنى كۆچۈرۈش</translation>
     </message>
 </context>
 <context>
@@ -257,7 +255,7 @@
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="288"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="297"/>
         <source>Search configuration</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="289"/>
@@ -278,13 +276,13 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="349"/>
         <source>More</source>
-        <translation type="unfinished">تېخىمۇ كۆپ</translation>
+        <translation>تېخىمۇ كۆپ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="299"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="385"/>
         <source>No search results</source>
-        <translation type="unfinished">ئىزدەش نەتىجىسى تىپىلمىدى</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -298,19 +296,24 @@
 <context>
     <name>GrandSearch::IntelligentRetrievalWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="66"/>
-        <source>AI Smart Search</source>
-        <translation>تِلْكَ بَحْث تَكْمِيلي بِذُكاء اصطناعي</translation>
-    </message>
-    <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="79"/>
         <source>When turned on, you can try to search for local documents using natural language descriptions, such as &quot;last week&apos;s documents&quot;.</source>
         <translation>بِإذنك، بِمَنْشَأة الْمُؤشر تَكْمِيلي بِذُكاء اصطناعي، بِمَمكنك بَحث المَلفات المحليّة بِتَرْجمة لُغويّة طبيعية، مِثل &quot;مَلفات هَذا الْأسبوع&quot;.</translation>
     </message>
     <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="188"/>
+        <source>Intelligent full text search</source>
+        <translation>بحث نصي كامل ذكي</translation>
+    </message>
+    <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="101"/>
         <source>Automatic index update</source>
         <translation>تحديث مؤشر تلقائي</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="66"/>
+        <source>AI Smart Search</source>
+        <translation>تِلْكَ بَحْث تَكْمِيلي بِذُكاء اصطناعي</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="120"/>
@@ -343,11 +346,6 @@
         <translation>بَعد تنصيب ULLM، بِمَمكنك استخدام وظيفة بَحث الذكاء الاصطناعي تَكْمِيلي بِلا اتصال بِإنترنت.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="188"/>
-        <source>Intelligent full text search</source>
-        <translation>بحث نصي كامل ذكي</translation>
-    </message>
-    <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="224"/>
         <source>When enabled, you can search the text of articles using disjointed and incomplete keywords.</source>
         <translation>بِإذنك، بِمَمكنك بَحث نص المقالات بِاستخدام كلمات مُشتَتَة وغَيْر مُكْمِلَة.</translation>
@@ -355,7 +353,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="246"/>
         <source>Please install %0 in &lt;a href=&quot;%0&quot;&gt;the app store&lt;/a&gt; before turning on this configuration.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="286"/>
@@ -484,7 +482,7 @@
     <message>
         <location filename="../src/grand-search/gui/mainwindow.cpp" line="229"/>
         <source>No search results</source>
-        <translation type="unfinished">ئىزدەش نەتىجىسى تىپىلمىدى</translation>
+        <translation>ھېچقانداق ئىزدەش نەتىجىسى تىپىلمىدى</translation>
     </message>
 </context>
 <context>
@@ -500,12 +498,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="32"/>
         <source>Search experience program</source>
-        <translation type="unfinished">ئىزدەش تەسىراتى پىلانى</translation>
+        <translation>ئىزدەش تەسىراتى پىلانى</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="40"/>
         <source>Join search experience program</source>
-        <translation type="unfinished">ئىزدەش تەسىراتى پىلانىغا قاتنىشىش</translation>
+        <translation>ئىزدەش تەسىراتى پىلانىغا قاتنىشىش</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="53"/>
@@ -515,22 +513,22 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="64"/>
         <source>To know more about the management of your data, please refer to the UnionTech Software Privacy Policy (</source>
-        <translation type="unfinished">سانلىق مەلۇماتلارنى باشقۇرۇش ۋە ئىشلىتىش ئۇسۇلىنى چۈشەنمەكچى بولسىڭىز، توڭشىن يۇمشاق دېتال شىركىتىمىزنىڭ شەخسىيەت سىياسىتىدىن پايدىلىنىڭ (</translation>
+        <translation>سانلىق مەلۇماتلارنى باشقۇرۇش ۋە ئىشلىتىش ئۇسۇلىنى چۈشەنمەكچى بولسىڭىز، توڭشىن يۇمشاق دېتال شىركىتىمىزنىڭ شەخسىيەت سىياسىتىدىن پايدىلىنىڭ (</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="66"/>
         <source>https://www.uniontech.com/agreement/privacy-en</source>
-        <translation type="unfinished">https://www.uniontech.com/agreement/privacy-uy</translation>
+        <translation>https://www.uniontech.com/agreement/privacy-uy</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="67"/>
         <source>https://www.deepin.org/en/agreement/privacy/</source>
-        <translation type="unfinished">https://www.deepin.org/en/agreement/privacy/</translation>
+        <translation>https://www.deepin.org/en/agreement/privacy/</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="69"/>
         <source>).</source>
-        <translation type="unfinished">).</translation>
+        <translation>).</translation>
     </message>
 </context>
 <context>
@@ -538,7 +536,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/scopewidget.cpp" line="33"/>
         <source>Search contents</source>
-        <translation type="unfinished">ئىزدەش دائىرىسى</translation>
+        <translation>ئىزدەش دائىرىسى</translation>
     </message>
 </context>
 <context>
@@ -614,7 +612,7 @@
     <message>
         <location filename="../src/dde-grand-search-daemon/searcher/web/statictextworker.cpp" line="66"/>
         <source>Search for &quot;%1&quot;</source>
-        <translation type="unfinished">تور كۆرگۈچ ئارقىلىق «1»نى ئىزدەش</translation>
+        <translation>تور كۆرگۈچ ئارقىلىق «1»نى ئىزدەش</translation>
     </message>
 </context>
 <context>
@@ -645,32 +643,32 @@
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="70"/>
         <source>Artist:</source>
-        <translation type="unfinished">ناخشىچى :</translation>
+        <translation>ناخشىچى :</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="82"/>
         <source>Album:</source>
-        <translation type="unfinished">ئالبوم :</translation>
+        <translation>ئالبوم :</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="107"/>
         <source>Duration:</source>
-        <translation type="unfinished">داۋاملاشتۇرۇش ۋاقتى</translation>
+        <translation>داۋاملاشتۇرۇش ۋاقتى</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="122"/>
         <source>Type:</source>
-        <translation type="unfinished">تىپى: </translation>
+        <translation>تىپى: </translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="134"/>
         <source>Location:</source>
-        <translation type="unfinished">ئورۇن:</translation>
+        <translation>ئورۇن:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/audio-preview/audiopreviewplugin.cpp" line="148"/>
         <source>Time modified:</source>
-        <translation type="unfinished">ئۆزگەرتىلگەن ۋاقتى:</translation>
+        <translation>ئۆزگەرتىلگەن ۋاقتى:</translation>
     </message>
 </context>
 <context>
@@ -678,27 +676,27 @@
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="78"/>
         <source>Dimensions:</source>
-        <translation type="unfinished">رازمېرى:</translation>
+        <translation>رازمېرى:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="94"/>
         <source>Type:</source>
-        <translation type="unfinished">تىپى: </translation>
+        <translation>تىپى: </translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="109"/>
         <source>Size:</source>
-        <translation type="unfinished">چوڭلىقى :</translation>
+        <translation>چوڭلىقى :</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="121"/>
         <source>Location:</source>
-        <translation type="unfinished">ئورۇن:</translation>
+        <translation>ئورۇن:</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="135"/>
         <source>Time modified:</source>
-        <translation type="unfinished">ئۆزگەرتىلگەن ۋاقتى:</translation>
+        <translation>ئۆزگەرتىلگەن ۋاقتى:</translation>
     </message>
 </context>
 <context>
@@ -761,7 +759,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="36"/>
         <source>Text found in the image</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="28"/>
