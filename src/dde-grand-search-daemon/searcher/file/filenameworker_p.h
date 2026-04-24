@@ -10,6 +10,11 @@
 
 #include <dfm-search/searchfactory.h>
 #include <dfm-search/filenamesearchapi.h>
+#include <dfm-search/contentsearchapi.h>
+
+#include <DConfig>
+
+DCORE_USE_NAMESPACE
 
 namespace GrandSearch {
 
@@ -28,19 +33,33 @@ public:
 
     void tryNotify();
     int itemCount() const;
-    // 判断所有类目的搜索结果是否达到限制数量
     bool isResultLimit();
+
+    // Full-text search methods
+    bool checkFullTextSearchEnabled() const;
+    bool executeContentSearch();
+    bool processContentSearchResults(const DFMSEARCH::SearchResultExpected &result);
+    void cacheDocumentResult(const QString &path, const MatchedItem &item);
+    void pushDocumentResults();
 
 public:
     FileNameWorker *q_ptr = nullptr;
     QAtomicInt m_status = ProxyWorker::Ready;
     QString m_searchPath;
-    FileSearchUtils::SearchInfo m_searchInfo;   // 搜索信息
-    QHash<FileSearchUtils::Group, quint32> m_resultCountHash;   // 记录各类型文件搜索结果数量
+    FileSearchUtils::SearchInfo m_searchInfo;
+    QHash<FileSearchUtils::Group, quint32> m_resultCountHash;
 
     mutable QMutex m_mutex;
-    MatchedItems m_items[FileSearchUtils::GroupCount];   // 文件搜索
-    QSet<QString> m_tmpSearchResults;   // 存储所有的搜索结果，用于去重
+    MatchedItems m_items[FileSearchUtils::GroupCount];
+    QSet<QString> m_tmpSearchResults;
+
+    // Document category caching for full-text search deduplication
+    QSet<QString> m_documentPathCache;
+    QHash<QString, MatchedItem> m_documentItems;
+
+    // Full-text search state
+    bool m_fullTextSearchEnabled = false;
+    bool m_documentPushDeferred = false;
 
     // 计时
     QElapsedTimer m_time;

@@ -7,6 +7,8 @@
 #include "utils/specialtools.h"
 #include "configuration/configer.h"
 
+#include <DConfig>
+
 #include <QStandardPaths>
 #include <QLoggingCategory>
 
@@ -14,6 +16,7 @@ Q_DECLARE_LOGGING_CATEGORY(logDaemon)
 
 using namespace GrandSearch;
 DFM_SEARCH_USE_NS
+DCORE_USE_NAMESPACE
 
 #define MAX_SEARCH_NUM_GROUP 100
 #define MAX_SEARCH_NUM_TOTAL 10000
@@ -111,6 +114,14 @@ bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName)
 
     m_tmpSearchResults << fileName;
     const auto &item = FileSearchUtils::packItem(fileName, q->name());
+
+    // Cache Document category results if full-text search is enabled
+    if (m_documentPushDeferred && group == FileSearchUtils::Document) {
+        cacheDocumentResult(fileName, item);
+        qCDebug(logDaemon) << "Document result cached for deduplication:" << fileName;
+        return true;
+    }
+
     QMutexLocker lk(&m_mutex);
     m_items[group].append(item);
     m_resultCountHash[group]++;
@@ -318,11 +329,216 @@ int FileNameWorkerPrivate::itemCount() const
 
 bool FileNameWorkerPrivate::isResultLimit()
 {
-    const auto &iter = std::find_if(m_resultCountHash.begin(), m_resultCountHash.end(), [](const int &num) {
-        return num <= MAX_SEARCH_NUM_GROUP;
-    });
+    bool limited = false;
+    auto it = m_resultCountHash.cbegin();
+    for (; it != m_resultCountHash.cend(); ++it) {
+        if (m_documentPushDeferred && it.key() == FileSearchUtils::Document)
+            limited = m_documentPathCache.size() >= MAX_SEARCH_NUM_GROUP;
+        else
+            limited = it.value() >= MAX_SEARCH_NUM_GROUP;
 
-    return iter == m_resultCountHash.end();
+        if (limited)
+            break;
+    }
+
+    return limited;
+}
+
+bool FileNameWorkerPrivate::checkFullTextSearchEnabled() const
+{
+    // Check if this is a combined search - not supported for full-text
+    if (m_searchInfo.isCombinationSearch) {
+        qCDebug(logDaemon) << "Full-text search disabled: combined search mode";
+        return false;
+    }
+
+    // Check if Document category is enabled
+    if (!m_resultCountHash.contains(FileSearchUtils::Document)) {
+        qCDebug(logDaemon) << "Full-text search disabled: Document category not enabled";
+        return false;
+    }
+
+    // Check DConfig for enableFullTextSearch
+    DConfig *dcfg = DConfig::create("org.deepin.dde.file-manager",
+                                    "org.deepin.dde.file-manager.search");
+    if (!dcfg) {
+        qCWarning(logDaemon) << "Failed to create DConfig for full-text search check";
+        return false;
+    }
+
+    bool enabled = dcfg->value("enableFullTextSearch", false).toBool();
+    delete dcfg;
+
+    if (!enabled) {
+        qCDebug(logDaemon) << "Full-text search disabled by DConfig";
+        return false;
+    }
+
+    // Check if content index is available
+    if (!DFMSEARCH::Global::isContentIndexAvailable()) {
+        qCDebug(logDaemon) << "Full-text search disabled: content index not available";
+        return false;
+    }
+
+    qCDebug(logDaemon) << "Full-text search enabled: all conditions met";
+    return true;
+}
+
+bool FileNameWorkerPrivate::executeContentSearch()
+{
+    qCDebug(logDaemon) << "Starting content search with keyword:" << m_searchInfo.keyword;
+
+    QObject holder;
+    SearchEngine *engine = SearchFactory::createEngine(SearchType::Content, &holder);
+    if (!engine) {
+        qCWarning(logDaemon) << "Failed to create content search engine";
+        return false;
+    }
+
+    // Create search options
+    SearchOptions options;
+    options.setSearchPath(m_searchPath);
+    options.setSearchMethod(SearchMethod::Indexed);
+    options.setMaxResults(MAX_SEARCH_NUM_GROUP);
+
+    // Configure content search options
+    ContentOptionsAPI contentOptions(options);
+    contentOptions.setMaxPreviewLength(200);
+    contentOptions.setFilenameContentMixedAndSearchEnabled(true);
+
+    engine->setSearchOptions(options);
+    qCDebug(logDaemon) << "Content search options configured";
+
+    // Create search query - use simple query for content search
+    SearchQuery query = SearchFactory::createQuery(m_searchInfo.keyword, SearchQuery::Type::Simple);
+
+    qCDebug(logDaemon) << "Executing content search";
+    const SearchResultExpected &result = engine->searchSync(query);
+    return processContentSearchResults(result);
+}
+
+bool FileNameWorkerPrivate::processContentSearchResults(const SearchResultExpected &result)
+{
+    Q_Q(FileNameWorker);
+
+    qCDebug(logDaemon) << "Processing content search results";
+
+    if (!result.hasValue()) {
+        qCWarning(logDaemon) << "Content search failed - Error:" << result.error().message();
+        return false;
+    }
+
+    int contentCount = 0;
+    for (const auto &file : result.value()) {
+        if (m_status.loadAcquire() != ProxyWorker::Runing)
+            return false;
+
+        const QString &filePath = file.path();
+        int currentDocCount = m_resultCountHash.value(FileSearchUtils::Document, 0);
+        if (currentDocCount >= MAX_SEARCH_NUM_GROUP) {
+            qCDebug(logDaemon) << "Document category limit reached";
+            break;
+        }
+
+        // Skip if already in results from content search
+        if (m_tmpSearchResults.contains(filePath)) {
+            // Remove from document cache if it was a filename result (deduplication)
+            if (m_documentPathCache.remove(filePath)) {
+                m_documentItems.remove(filePath);
+                qCDebug(logDaemon) << "Deduplicated: replaced filename result with content result:" << filePath;
+            } else {
+                qCDebug(logDaemon) << "Duplicate content result ignored:" << filePath;
+                continue;
+            }
+        }
+
+        m_tmpSearchResults << filePath;
+
+        // Create matched item with highlighted content
+        MatchedItem item = FileSearchUtils::packItem(filePath, q->name());
+
+        // Get highlighted content
+        QVariantHash extra = item.extra.toHash();
+        SearchResult mutableResult = const_cast<SearchResult &>(file);
+        ContentResultAPI contentResult(mutableResult);
+        QString highlightedContent = contentResult.highlightedContent();
+        if (!highlightedContent.isEmpty()) {
+            extra.insert(GRANDSEARCH_PROPERTY_ITEM_MATCHEDCONTEXT, highlightedContent);
+        }
+
+        item.extra = extra;
+
+        // Add to Document category
+        {
+            QMutexLocker lk(&m_mutex);
+            m_items[FileSearchUtils::Document].append(item);
+            m_resultCountHash[FileSearchUtils::Document]++;
+        }
+
+        contentCount++;
+        qCDebug(logDaemon) << "Content search result added - File:" << filePath
+                           << "Total doc count:" << m_resultCountHash[FileSearchUtils::Document];
+
+        // Also add to File category if enabled
+        if (m_resultCountHash.contains(FileSearchUtils::File)
+            && m_resultCountHash[FileSearchUtils::File] < MAX_SEARCH_NUM_GROUP) {
+            QMutexLocker lk(&m_mutex);
+            m_items[FileSearchUtils::File].append(item);
+            m_resultCountHash[FileSearchUtils::File]++;
+        }
+
+        tryNotify();
+    }
+
+    qCInfo(logDaemon) << "Content search completed - Added:" << contentCount
+                      << "Time elapsed:" << m_time.elapsed() << "ms";
+
+    return true;
+}
+
+void FileNameWorkerPrivate::cacheDocumentResult(const QString &path, const MatchedItem &item)
+{
+    m_documentPathCache.insert(path);
+    m_documentItems.insert(path, item);
+}
+
+void FileNameWorkerPrivate::pushDocumentResults()
+{
+    if (!m_documentPushDeferred) {
+        return;
+    }
+
+    qCDebug(logDaemon) << "Pushing deferred document results - Cached count:"
+                       << m_documentPathCache.size();
+
+    // Add cached document results to main items
+    int addedCount = 0;
+    for (auto it = m_documentItems.begin(); it != m_documentItems.end(); ++it) {
+        // Check limit
+        if (m_resultCountHash[FileSearchUtils::Document] >= MAX_SEARCH_NUM_GROUP) {
+            qCDebug(logDaemon) << "Document category limit reached during push";
+            break;
+        }
+
+        QMutexLocker lk(&m_mutex);
+        m_items[FileSearchUtils::Document].append(it.value());
+        m_resultCountHash[FileSearchUtils::Document]++;
+        addedCount++;
+
+        // Also add to File category if enabled
+        if (m_resultCountHash.contains(FileSearchUtils::File)
+            && m_resultCountHash[FileSearchUtils::File] < MAX_SEARCH_NUM_GROUP) {
+            m_items[FileSearchUtils::File].append(it.value());
+            m_resultCountHash[FileSearchUtils::File]++;
+        }
+    }
+
+    qCDebug(logDaemon) << "Pushed" << addedCount << "document results from cache";
+
+    // Clear caches
+    m_documentPathCache.clear();
+    m_documentItems.clear();
+    m_documentPushDeferred = false;
 }
 
 FileNameWorker::FileNameWorker(const QString &name, QObject *parent)
@@ -375,9 +591,29 @@ bool FileNameWorker::working(void *context)
     qCDebug(logDaemon) << "Starting file name search with keyword:" << d->m_searchInfo.keyword;
     d->m_time.start();
 
+    // Check if full-text search should be enabled
+    d->m_fullTextSearchEnabled = d->checkFullTextSearchEnabled();
+    d->m_documentPushDeferred = d->m_fullTextSearchEnabled;
+    qCDebug(logDaemon) << "Full-text search enabled:" << d->m_fullTextSearchEnabled
+                       << "Document push deferred:" << d->m_documentPushDeferred;
+
     if (!d->searchByDFMSearch()) {
         qCWarning(logDaemon) << "Search operation failed";
         return false;
+    }
+
+    // Execute content search if enabled
+    if (d->m_fullTextSearchEnabled && d->m_status.loadAcquire() == Runing) {
+        if (hasItem()) {
+            emit unearthed(this);
+        }
+
+        qCDebug(logDaemon) << "Starting content search after filename search";
+        if (!d->executeContentSearch()) {
+            qCWarning(logDaemon) << "Content search operation failed";
+        }
+        // Push deferred document results after content search
+        d->pushDocumentResults();
     }
 
     // 检查是否还有数据
