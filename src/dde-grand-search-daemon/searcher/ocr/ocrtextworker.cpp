@@ -5,6 +5,7 @@
 #include "ocrtextworker_p.h"
 #include "global/builtinsearch.h"
 #include "utils/specialtools.h"
+#include "searcher/file/filesearchutils.h"
 
 #include <DConfig>
 
@@ -55,6 +56,8 @@ DFMSEARCH::SearchQuery OcrTextWorkerPrivate::createSearchQuery() const
 
 bool OcrTextWorkerPrivate::processSearchResults(const DFMSEARCH::SearchResultExpected &result)
 {
+    Q_Q(OcrTextWorker);
+
     qCDebug(logDaemon) << "Processing OCR search results";
 
     if (!result.hasValue()) {
@@ -83,18 +86,10 @@ bool OcrTextWorkerPrivate::processSearchResults(const DFMSEARCH::SearchResultExp
         m_tmpSearchResults << filePath;
 
         // Create matched item
-        QFileInfo fileInfo(filePath);
-        QMimeType mimeType = SpecialTools::getMimeType(fileInfo);
-
-        GrandSearch::MatchedItem item;
-        item.item = filePath;
-        item.name = fileInfo.fileName();
-        item.type = mimeType.name();
-        item.icon = mimeType.iconName();
-        item.searcher = q_ptr->name();
+        GrandSearch::MatchedItem item = FileSearchUtils::packItem(filePath, q->name());
 
         // Get OCR content and store in extra field
-        QVariantHash extra;
+        QVariantHash extra = item.extra.toHash();
         DFMSEARCH::SearchResult mutableResult = const_cast<DFMSEARCH::SearchResult &>(file);
         DFMSEARCH::OcrTextResultAPI ocrResult(mutableResult);
         QString ocrContent = ocrResult.ocrContent();
@@ -105,9 +100,6 @@ bool OcrTextWorkerPrivate::processSearchResults(const DFMSEARCH::SearchResultExp
                                << "Content length:" << ocrContent.length();
         }
 
-        // Set weight method for file-like weight calculation
-        extra.insert(GRANDSEARCH_PROPERTY_WEIGHT_METHOD,
-                     GRANDSEARCH_PROPERTY_WEIGHT_METHOD_LOCALFILE);
         item.extra = extra;
 
         {
