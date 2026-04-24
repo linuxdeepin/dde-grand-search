@@ -96,7 +96,7 @@ bool FileResultsHandler::appendTo(const QString &file, MatchedItemMap &container
         }
     }
 
-    auto item = FileSearchUtils::packItem(file, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC);
+    auto item = FileSearchUtils::packItem(file, GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC, m_keywords);
 
     QWriteLocker lk(&m_lock);
     m_tmpSearchResults << file;

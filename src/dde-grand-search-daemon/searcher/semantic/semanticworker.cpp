@@ -232,6 +232,14 @@ bool SemanticWorker::working(void *context)
     QList<SemanticWorkerPrivate::QueryFunction> querys;
     FileResultsHandler fileHandler;
 
+    // Extract keywords from entity list for highlighting
+    QStringList keywords;
+    for (const SemanticEntity &entity : entityList) {
+        keywords.append(entity.keys);
+    }
+    fileHandler.setKeywords(keywords);
+    qCDebug(logDaemon) << "Semantic search keywords set:" << keywords;
+
     FileNameQuery fnQuery;
     if (canSemantic) {
         SemanticWorkerPrivate::QueryFunction func = {&fnQuery, &FileNameQuery::run, d};

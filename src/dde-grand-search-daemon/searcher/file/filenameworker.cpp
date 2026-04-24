@@ -113,7 +113,14 @@ bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName)
     }
 
     m_tmpSearchResults << fileName;
-    const auto &item = FileSearchUtils::packItem(fileName, q->name());
+    // Get keywords for highlighting
+    QStringList keywords { m_searchInfo.keyword };
+    if (m_searchInfo.isCombinationSearch) {
+        keywords = m_searchInfo.typeKeywords;
+    } else if (!m_searchInfo.boolKeywords.isEmpty()) {
+        keywords = m_searchInfo.boolKeywords;
+    }
+    const auto &item = FileSearchUtils::packItem(fileName, q->name(), keywords);
 
     // Cache Document category results if full-text search is enabled
     if (m_documentPushDeferred && group == FileSearchUtils::Document) {
@@ -409,8 +416,14 @@ bool FileNameWorkerPrivate::executeContentSearch()
     engine->setSearchOptions(options);
     qCDebug(logDaemon) << "Content search options configured";
 
-    // Create search query - use simple query for content search
-    SearchQuery query = SearchFactory::createQuery(m_searchInfo.keyword, SearchQuery::Type::Simple);
+    // Create search query
+    SearchQuery query;
+    if (!m_searchInfo.boolKeywords.isEmpty()) {
+        query = SearchFactory::createQuery(m_searchInfo.keyword, SearchQuery::Type::Boolean);
+        query.setBooleanOperator(SearchQuery::BooleanOperator::AND);
+    } else {
+        query = SearchFactory::createQuery(m_searchInfo.keyword, SearchQuery::Type::Simple);
+    }
 
     qCDebug(logDaemon) << "Executing content search";
     const SearchResultExpected &result = engine->searchSync(query);
@@ -455,7 +468,10 @@ bool FileNameWorkerPrivate::processContentSearchResults(const SearchResultExpect
         m_tmpSearchResults << filePath;
 
         // Create matched item with highlighted content
-        MatchedItem item = FileSearchUtils::packItem(filePath, q->name());
+        QStringList keywords = !m_searchInfo.boolKeywords.isEmpty()
+                ? m_searchInfo.boolKeywords
+                : QStringList { m_searchInfo.keyword };
+        MatchedItem item = FileSearchUtils::packItem(filePath, q->name(), keywords);
 
         // Get highlighted content
         QVariantHash extra = item.extra.toHash();

@@ -35,7 +35,7 @@ public:
         QList<Group> groupList;             // 搜索类目表
     };
 
-    static MatchedItem packItem(const QString &fileName, const QString &searcher);
+    static MatchedItem packItem(const QString &fileName, const QString &searcher, const QStringList &keywords = QStringList());
     static QString groupKey(Group group);
     static Group getGroupByName(const QString &fileName);
     static Group getGroupBySuffix(const QString &suffix);

@@ -17,7 +17,7 @@ Q_DECLARE_LOGGING_CATEGORY(logDaemon)
 
 using namespace GrandSearch;
 
-MatchedItem FileSearchUtils::packItem(const QString &fileName, const QString &searcher)
+MatchedItem FileSearchUtils::packItem(const QString &fileName, const QString &searcher, const QStringList &keywords)
 {
     qCDebug(logDaemon) << "Packing file item - File:" << fileName << "Searcher:" << searcher;
     QFileInfo fileInfo(fileName);
@@ -28,7 +28,13 @@ MatchedItem FileSearchUtils::packItem(const QString &fileName, const QString &se
     item.type = mimeType.name();
     item.icon = mimeType.iconName();
     item.searcher = searcher;
-    item.extra = QVariant::fromValue(tailerData(fileInfo));
+
+    QVariantHash extraData = tailerData(fileInfo);
+    // Inject keywords for highlighting
+    if (!keywords.isEmpty()) {
+        extraData.insert(GRANDSEARCH_PROPERTY_ITEM_KEYWORDS, keywords);
+    }
+    item.extra = QVariant::fromValue(extraData);
 
     qCDebug(logDaemon) << "Item packed successfully - Name:" << item.name
                        << "Type:" << item.type << "Icon:" << item.icon;

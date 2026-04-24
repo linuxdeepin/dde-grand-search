@@ -18,6 +18,7 @@
 #include <QToolButton>
 #include <QPainter>
 #include <QLoggingCategory>
+#include <QRegularExpression>
 
 Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
@@ -30,6 +31,34 @@ using namespace GrandSearch;
 
 DWIDGET_USE_NAMESPACE
 DGUI_USE_NAMESPACE
+
+namespace {
+// Helper function to highlight keywords with bold text
+QString highlightKeywords(const QString &text, const QStringList &keywords) {
+    if (text.isEmpty())
+        return QString();
+
+    QString result = text.toHtmlEscaped();
+    for (const QString &keyword : keywords) {
+        if (keyword.isEmpty())
+            continue;
+        QString escapedKeyword = keyword.toHtmlEscaped();
+        // Use rich text <b> tag for bold highlighting, case-insensitive
+        QRegularExpression re(QRegularExpression::escape(escapedKeyword),
+                              QRegularExpression::CaseInsensitiveOption);
+        QRegularExpressionMatch match;
+        int pos = 0;
+        while ((pos = result.indexOf(re, pos, &match)) != -1) {
+            QString matched = match.captured(0);
+            result.replace(pos, matched.length(), QString("<b>%1</b>").arg(matched));
+            pos += matched.length() + 7;  // 7 = length of "<b></b>"
+        }
+    }
+    // Convert newlines to <br> for rich text display
+    result.replace('\n', "<br>");
+    return result;
+}
+} // namespace
 
 NameLabel::NameLabel(const QString &text, QWidget *parent, Qt::WindowFlags f):
     QLabel(text, parent, f)
@@ -146,9 +175,17 @@ bool GeneralPreviewPlugin::previewItem(const ItemInfo &info)
     if (matchedContext.endsWith("…"))
         matchedContext.chop(1);
 
+    // Get keywords for highlighting
+    QStringList keywords;
+    QString keywordsStr = info.value(PREVIEW_ITEMINFO_KEYWORDS);
+    if (!keywordsStr.isEmpty()) {
+        keywords = keywordsStr.split(",", Qt::SkipEmptyParts);
+    }
+
     qCDebug(logGrandSearch) << "General preview item - Name:" << item.name
                             << "Type:" << item.type
-                            << "Has matched context:" << !matchedContext.isEmpty();
+                            << "Has matched context:" << !matchedContext.isEmpty()
+                            << "Keywords count:" << keywords.size();
 
     if (!item.item.isEmpty()
             && !item.name.isEmpty()
@@ -184,16 +221,24 @@ bool GeneralPreviewPlugin::previewItem(const ItemInfo &info)
     }
     d_p->m_iconLabel->setPixmap(pixmap);
 
-    // 设置名称，并计算换行内容
+    // 设置名称，并计算换行内容，应用关键词高亮
     QString elidedText = CommonTools::lineFeed(item.name, d_p->m_nameLabel->width(), d_p->m_nameLabel->font(), 2);
-    d_p->m_nameLabel->setText(elidedText);
+    if (!keywords.isEmpty()) {
+        d_p->m_nameLabel->setText(highlightKeywords(elidedText, keywords));
+    } else {
+        d_p->m_nameLabel->setText(elidedText);
+    }
     if (elidedText != item.name)
         d_p->m_nameLabel->setToolTip(item.name);
 
-    // 设置匹配内容，最多显示3行，超出部分行尾省略
+    // 设置匹配内容，最多显示3行，超出部分行尾省略，应用关键词高亮
     if (!matchedContext.isEmpty()) {
         QString elidedContext = CommonTools::lineFeed(matchedContext, d_p->m_contentLabel->width(), d_p->m_contentLabel->font(), 3);
-        d_p->m_contentLabel->setText(elidedContext);
+        if (!keywords.isEmpty()) {
+            d_p->m_contentLabel->setText(highlightKeywords(elidedContext, keywords));
+        } else {
+            d_p->m_contentLabel->setText(elidedContext);
+        }
         if (elidedContext != matchedContext)
             d_p->m_contentLabel->setToolTip(matchedContext);
     } else {

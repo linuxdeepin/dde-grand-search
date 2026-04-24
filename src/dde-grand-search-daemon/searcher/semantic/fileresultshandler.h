@@ -42,6 +42,18 @@ public:
         QReadLocker lk(&m_lock);
         return m_resultExtra;
     }
+
+    // Set keywords for highlighting
+    inline void setKeywords(const QStringList &keywords) {
+        QWriteLocker lk(&m_lock);
+        m_keywords = keywords;
+    }
+
+    inline QStringList keywords() const {
+        QReadLocker lk(&m_lock);
+        return m_keywords;
+    }
+
 private:
     void initConfig();
 protected:
@@ -50,6 +62,7 @@ protected:
     QHash<QString, double> m_resultWeight;
     QHash<QString, QVariantHash> m_resultExtra;
     QHash<FileSearchUtils::Group, quint32> m_resultCountHash; // 记录各类型文件搜索结果数量
+    QStringList m_keywords;   // Keywords for highlighting
 };
 
 }

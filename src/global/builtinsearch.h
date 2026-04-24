@@ -57,6 +57,9 @@
 // 匹配的到具体信息
 #define GRANDSEARCH_PROPERTY_ITEM_MATCHEDCONTEXT    "itemMatchedContext"
 
+// 匹配的关键词列表
+#define GRANDSEARCH_PROPERTY_ITEM_KEYWORDS          "itemKeywords"
+
 /****************** 扩展数据 END ******************************/
 
 #define DEF_BUILTISEARCH_NAMES  \

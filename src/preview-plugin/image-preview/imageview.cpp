@@ -21,6 +21,7 @@
 #include <QPainterPath>
 #include <QFontMetrics>
 #include <QLoggingCategory>
+#include <QRegularExpression>
 
 Q_DECLARE_LOGGING_CATEGORY(logImagePreview)
 
@@ -31,6 +32,33 @@ Q_DECLARE_LOGGING_CATEGORY(logImagePreview)
 DWIDGET_USE_NAMESPACE
 GRANDSEARCH_USE_NAMESPACE
 using namespace GrandSearch::image_preview;
+
+namespace {
+// Helper function to highlight keywords with bold text
+QString highlightKeywords(const QString &text, const QStringList &keywords) {
+    if (text.isEmpty())
+        return QString();
+
+    QString result = text.toHtmlEscaped();
+    for (const QString &keyword : keywords) {
+        if (keyword.isEmpty())
+            continue;
+        QString escapedKeyword = keyword.toHtmlEscaped();
+        QRegularExpression re(QRegularExpression::escape(escapedKeyword),
+                              QRegularExpression::CaseInsensitiveOption);
+        QRegularExpressionMatch match;
+        int pos = 0;
+        while ((pos = result.indexOf(re, pos, &match)) != -1) {
+            QString matched = match.captured(0);
+            result.replace(pos, matched.length(), QString("<b>%1</b>").arg(matched));
+            pos += matched.length() + 7;
+        }
+    }
+    // Convert newlines to <br> for rich text display
+    result.replace('\n', "<br>");
+    return result;
+}
+} // namespace
 
 ImageView::ImageView(QWidget *parent)
     :DWidget (parent)
@@ -58,7 +86,7 @@ bool ImageView::stopPreview()
     return true;
 }
 
-void ImageView::loadImage(const QString &file, const QString &type)
+void ImageView::loadImage(const QString &file, const QString &type, const QStringList &keywords)
 {
     m_imageFile = file;
     m_formats = type.toLocal8Bit();
@@ -66,12 +94,21 @@ void ImageView::loadImage(const QString &file, const QString &type)
     // 名称超长时省略中间部分,并增加提示
     QFileInfo fileInfo(m_imageFile);
     QString name = fileInfo.fileName();
-    m_titleLabel->setElideMode(Qt::ElideMiddle);
-    m_titleLabel->setText(name);
 
     QFontMetrics fontMetrics(m_titleLabel->font());
-    int textWidth = fontMetrics.size(Qt::TextSingleLine, name).width();
-    if (textWidth >= m_titleLabel->width())
+    QString elidedName = fontMetrics.elidedText(name, Qt::ElideMiddle, m_titleLabel->width());
+
+    // Apply highlighting to elided text if keywords exist
+    if (!keywords.isEmpty()) {
+        m_titleLabel->setTextFormat(Qt::RichText);
+        m_titleLabel->setText(highlightKeywords(elidedName, keywords));
+    } else {
+        m_titleLabel->setTextFormat(Qt::PlainText);
+        m_titleLabel->setText(elidedName);
+    }
+
+    // Show full name as tooltip if elided
+    if (elidedName != name)
         m_titleLabel->setToolTip(name);
 
     if (!fileInfo.isReadable() || !canPreview()) {
@@ -124,6 +161,35 @@ void ImageView::loadImage(const QString &file, const QString &type)
         m_imageLabel->setPixmap(roundPixmap);
     }
 
+}
+
+void ImageView::setMatchedContext(const QString &context, const QStringList &keywords)
+{
+    auto highlightedContent = context;
+    if (highlightedContent.startsWith("…"))
+        highlightedContent = highlightedContent.mid(1);
+
+    if (highlightedContent.endsWith("…"))
+        highlightedContent.chop(1);
+
+    m_contentLabel->setVisible(!highlightedContent.isEmpty());
+    m_titleLabel->setVisible(highlightedContent.isEmpty());
+    if (!highlightedContent.isEmpty()) {
+        // Apply elide first, then highlight
+        QFontMetrics fontMetrics(m_contentLabel->font());
+        QString elidedContent = fontMetrics.elidedText(highlightedContent, Qt::ElideRight, m_contentLabel->width());
+
+        if (!keywords.isEmpty()) {
+            m_contentLabel->setTextFormat(Qt::RichText);
+            m_contentLabel->setText(highlightKeywords(elidedContent, keywords));
+        } else {
+            m_contentLabel->setTextFormat(Qt::PlainText);
+            m_contentLabel->setText(elidedContent);
+        }
+        // Show full content as tooltip if elided
+        if (elidedContent != highlightedContent)
+            m_contentLabel->setToolTip(highlightedContent);
+    }
 }
 
 void ImageView::initUI()
@@ -242,21 +308,3 @@ void ImageView::showErrorPage()
     auto errorPixmap = getRoundPixmap(QPixmap::fromImage(errorImg));
     m_imageLabel->setPixmap(errorPixmap);
 }
-
-void ImageView::setMatchedContext(const QString &context)
-{
-    auto highlightedContent = context;
-    if (highlightedContent.startsWith("…"))
-        highlightedContent = highlightedContent.mid(1);
-
-    if (highlightedContent.endsWith("…"))
-        highlightedContent.chop(1);
-
-    m_contentLabel->setVisible(!highlightedContent.isEmpty());
-    m_titleLabel->setVisible(highlightedContent.isEmpty());
-    if (!highlightedContent.isEmpty()) {
-        m_contentLabel->setText(highlightedContent);
-        m_contentLabel->setToolTip(highlightedContent);
-    }
-}
-
