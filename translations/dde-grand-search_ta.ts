@@ -15,8 +15,8 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
-        <source>Open App Stroe</source>
-        <translation>அப்ப் ஸ்டோர் திறந்து</translation>
+        <source>Open App Store</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -92,8 +92,8 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
-        <source>Open App Stroe</source>
-        <translation>அப்ப் ஸ்டோர் திறந்து</translation>
+        <source>Open App Store</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -142,18 +142,18 @@
 <context>
     <name>GrandSearch::DeleteDialog</name>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="14"/>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="19"/>
         <source>Do you want to remove the path from the exclusion list?</source>
         <translation>இந்த பாதத்தை தவிர்க்கப்பட்ட பட்டியலிலிருந்து நீக்க விரும்புகிறீர்களா?</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="20"/>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="29"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>தவறு</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="28"/>
+        <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="41"/>
         <source>Confirm</source>
         <comment>button</comment>
         <translation>உறுதிபெறு</translation>
@@ -168,12 +168,12 @@
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="90"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="91"/>
         <source>Not Installed</source>
         <translation>இன்ஸ்டால் செய்யப்படவில்லை</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="105"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="107"/>
         <source>Install</source>
         <translation>இன்ஸ்டால் செய்க</translation>
     </message>
@@ -181,12 +181,12 @@
 <context>
     <name>GrandSearch::EntranceWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="237"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="246"/>
         <source>Search</source>
         <translation>தேடல்</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="238"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="247"/>
         <source>What would you like to search for?</source>
         <translation>நீங்கள் என்னை தேட விரும்புகிறீர்களா?</translation>
     </message>
@@ -194,17 +194,17 @@
 <context>
     <name>GrandSearch::EntranceWidgetPrivate</name>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="82"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="85"/>
         <source>Cut</source>
         <translation>மீட்டர்</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="86"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="89"/>
         <source>Copy</source>
         <translation>காப்பியெடு</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="90"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="93"/>
         <source>Paste</source>
         <translation>அலசு</translation>
     </message>
@@ -212,12 +212,18 @@
 <context>
     <name>GrandSearch::GeneralPreviewPlugin</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="193"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="254"/>
         <source>Location:</source>
         <translation>இடம்:</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="204"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="283"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="350"/>
+        <source>Size:</source>
+        <translation type="unfinished">அளவு:</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="295"/>
         <source>Time modified:</source>
         <translation>நேரம் மாற்றப்பட்டது:</translation>
     </message>
@@ -243,40 +249,40 @@
 <context>
     <name>GrandSearch::GroupWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="269"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="287"/>
         <source>Please go to %1 to install the ULLM, and %2 Automatic index update.</source>
         <translation>மேலோடு %1 க்குச் சென்று ULLM ஐ பதிவிறக்கவும், %2 தாக்கல் செய்யப்பட்ட இடைவிவரத்தை தொடர்புபடுத்தவும்.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="270"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="279"/>
-        <source>Search configration</source>
-        <translation>தேடல் அமைப்பு</translation>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="288"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="297"/>
+        <source>Search configuration</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="271"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="275"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="289"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="293"/>
         <source>turn on</source>
         <translation>மெய்ப்படுத்து</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="274"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="292"/>
         <source>Please %1 Automatic index update.</source>
         <translation>மெய்ப்படுத்து %1 தாக்கல் செய்யப்பட்ட இடைவிவரத்தை.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="278"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="296"/>
         <source>Please go to %1 to install the ULLM.</source>
         <translation>மேலோடு %1 க்குச் சென்று ULLM ஐ பதிவிறக்கவும்.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="330"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="349"/>
         <source>More</source>
         <translation>மேலும்</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="281"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="366"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="299"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="385"/>
         <source>No search results</source>
         <translation type="unfinished">No search results</translation>
     </message>
@@ -297,12 +303,12 @@
         <translation>மெய்ப்படுத்தப்பட்டால், தேடல் செய்ய வேண்டும் என்பதற்கு, தனிப்பெயர் விவரங்களைப் பயன்படுத்தி, தொடர்புடைய பத்திரிகைகளை தேடலாம், உதாரணமாக &quot;கடந்த வாரத்தின் பத்திரிகைகள்&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="185"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="188"/>
         <source>Intelligent full text search</source>
         <translation>மெய்ப்படுத்தப்பட்ட முழு பொருள் தேடல்</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="100"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="101"/>
         <source>Automatic index update</source>
         <translation>தாக்கல் செய்யப்பட்ட இடைவிவரத்தை ஆட்டோமேட்டிக் அப்டேட் செய்யவும்</translation>
     </message>
@@ -312,69 +318,69 @@
         <translation>AI மெய்ப்படுத்தப்பட்ட தேடல்</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="119"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="120"/>
         <source>Full Text Search</source>
         <translation>முழு பொருள் தேடல்</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="136"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="137"/>
         <source>When turned on, full text search can be used in the file manager and grand search.</source>
         <translation>மெய்ப்படுத்தப்பட்டால், பைல் மேனேஜர் மற்றும் கிராந்த் தேடலில் முழு பொருள் தேடல் பயன்படுத்த முடியும்.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="154"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="157"/>
         <source>Embedding Plugins</source>
         <translation>ஏம்பெட்டிங் பிளூக்ஸ்</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="154"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="157"/>
         <source>After installing the model, you can use services such as AI Search and UOS AI Assistant..</source>
         <translation>மாடலை பதிவிறக்கிய பின்னர், AI தேடல் மற்றும் UOS AI உதவியாளர் போன்ற சேவைகளைப் பயன்படுத்த முடியும்.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="172"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="175"/>
         <source>ULLM</source>
         <translation>உல் எம் எல்</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="172"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="175"/>
         <source>After installing the ULLM, you can use the AI intelligent search function without an internet connection.</source>
         <translation>உல் எம் எல் ஐ பதிவிறக்கிய பின்னர், இணையதள இணைப்பு இல்லாமல் AI மெய்ப்படுத்தப்பட்ட தேடல் செயல்பாட்டைப் பயன்படுத்த முடியும்.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="221"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="224"/>
         <source>When enabled, you can search the text of articles using disjointed and incomplete keywords.</source>
         <translation>மெய்ப்படுத்தப்பட்டால், பிரித்து காட்டப்பட்ட மற்றும் முழுமையற்ற குறிச்சொற்களைப் பயன்படுத்தி கட்டுரைகளின் பொருளைத் தேடலாம்.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="243"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="246"/>
         <source>Please install %0 in &lt;a href=&quot;%0&quot;&gt;the app store&lt;/a&gt; before turning on this configuration.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="283"/>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="407"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="286"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="412"/>
         <source>Intelligent search indexing is being updated, which may take up more resources, please keep the power access.</source>
         <translation>மெய்ப்பாட்டு தேடல் காணொளி அப்டேட் செய்யப்படுகிறது, இது அதிகமான வளங்களை தேவைப்படும், புறக்கழிப்பு பெற்று வைக்கவும்.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="287"/>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="411"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="290"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="416"/>
         <source>Smart Search indexing update is complete. Last update time: %0</source>
         <translation>மெய்ப்படுத்தப்பட்ட தேடல் காணொளி அப்டேட் முடிவடைந்துள்ளது. கடைசி அப்டேட் நேரம்: %0</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="290"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="293"/>
         <source>Indexing error!</source>
         <translation>காணொளி தவறு!</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="339"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="342"/>
         <source>To use AI Smart Search, you need to install the Embedding Plugins and ULLM first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="340"/>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="343"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -382,93 +388,93 @@
 <context>
     <name>GrandSearch::LLMWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="61"/>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="385"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="62"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="387"/>
         <source>Not Installed</source>
         <translation type="unfinished">இன்ஸ்டால் செய்யப்படவில்லை</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="77"/>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="384"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="79"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="386"/>
         <source>Install Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="93"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="95"/>
         <source>Update model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="94"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="96"/>
         <source>Uninstall model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="146"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="148"/>
         <source>Installing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="212"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="214"/>
         <source>Are you sure you want to delete this model?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="213"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="215"/>
         <source>After uninstallation, functions such as AI Search and UOS AI Assistant will not work properly.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="214"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="216"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation type="unfinished">Cancel</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="215"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="217"/>
         <source>Confirm</source>
         <comment>button</comment>
         <translation type="unfinished">Confirm</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="324"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="326"/>
         <source>Installing </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="344"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="346"/>
         <source>Installing the ULLM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="345"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="347"/>
         <source>Exiting will cause the installation to fail, do you still want to exit?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="346"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="348"/>
         <source>Exit</source>
         <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="347"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="349"/>
         <source>Continue</source>
         <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="378"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="380"/>
         <source>UnInstall Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="379"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="381"/>
         <source>Installed</source>
         <translation type="unfinished">இன்ஸ்டால் செய்யப்பட்டது</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="390"/>
+        <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="392"/>
         <source>Please install the &quot;Embedding Plugins&quot; first before installing this model.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -476,7 +482,7 @@
 <context>
     <name>GrandSearch::MainWindow</name>
     <message>
-        <location filename="../src/grand-search/gui/mainwindow.cpp" line="222"/>
+        <location filename="../src/grand-search/gui/mainwindow.cpp" line="229"/>
         <source>No search results</source>
         <translation type="unfinished">No search results</translation>
     </message>
@@ -484,7 +490,7 @@
 <context>
     <name>GrandSearch::MatchWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="89"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="90"/>
         <source>Guess you want to search the following</source>
         <translation type="unfinished"></translation>
     </message>
@@ -670,27 +676,27 @@
 <context>
     <name>GrandSearch::image_preview::ImagePreviewPlugin</name>
     <message>
-        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="65"/>
+        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="78"/>
         <source>Dimensions:</source>
         <translation>அளவுகள்:</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="81"/>
+        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="94"/>
         <source>Type:</source>
         <translation>வகை:</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="96"/>
+        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="109"/>
         <source>Size:</source>
         <translation>அளவு:</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="108"/>
+        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="121"/>
         <source>Location:</source>
         <translation>இடம்:</translation>
     </message>
     <message>
-        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="122"/>
+        <location filename="../src/preview-plugin/image-preview/imagepreviewplugin.cpp" line="135"/>
         <source>Time modified:</source>
         <translation>கால மாற்றம்:</translation>
     </message>
@@ -698,59 +704,64 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="24"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="25"/>
         <source>Best match</source>
         <translation>சிறந்த பொருத்தம்</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="25"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="26"/>
         <source>Applications</source>
         <translation>விண்டோஸ் பயன்பாடுகள்</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="26"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="27"/>
         <source>Settings</source>
         <translation>அமைப்புகள்</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="27"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="28"/>
         <source>Videos</source>
         <translation>விடியோக்கள்</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="28"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="29"/>
         <source>Music</source>
         <translation>பாடல்கள்</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="29"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="30"/>
         <source>Pictures</source>
         <translation>படங்கள்</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="30"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="31"/>
         <source>Documents</source>
         <translation>கையெழுத்துகள்</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="31"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="32"/>
         <source>Folders</source>
         <translation>மூடிகள்</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="32"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="33"/>
         <source>Files</source>
         <translation>கூட்டாட்சி</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="33"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="34"/>
         <source>Web</source>
         <translation>இணையம்</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/datadefine.h" line="34"/>
+        <location filename="../src/grand-search/gui/datadefine.h" line="35"/>
         <source>AI Search</source>
         <translation>AI தேடல்</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/datadefine.h" line="36"/>
+        <source>Text found in the image</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="28"/>
@@ -783,7 +794,7 @@
         <translation>தேசிய மாற்றம்:</translation>
     </message>
     <message>
-        <location filename="../src/dde-grand-search-daemon/searcher/file/filesearchutils.cpp" line="205"/>
+        <location filename="../src/dde-grand-search-daemon/searcher/file/filesearchutils.cpp" line="272"/>
         <source>modified</source>
         <translation>மாற்றம்</translation>
     </message>
