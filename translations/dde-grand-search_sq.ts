@@ -508,7 +508,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="53"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations, the contents you search while using the Application, the time of search, the type of requested large model.If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation type="unfinished"/>
+        <translation>Pjesëmarrja te programi rreth funksionimi kërkimesh do të thotë se na akordoni dhe autorizoni të grumbullojmë informacion të pajisjes dhe sistemit tuaj, ikona, lëndë dhe veti kartelash, aplikacione dhe formësime të tyre, lëndën që kërkoni teksa përdorni Aplikacionin, kohën e kërkimit, llojin e LMM-së së kërkuar. Nëse s’e pranoni grumbullimin dhe përdorimin nga ana jonë të informacioneve të përmendura më sipër, mos merrni pjesë në program.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="64"/>
