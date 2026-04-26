@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
         <source>Open App Store</source>
-        <translation type="unfinished"/>
+        <translation>Hap Shitore Aplikacionesh</translation>
     </message>
 </context>
 <context>
@@ -91,7 +91,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
         <source>Open App Store</source>
-        <translation type="unfinished"/>
+        <translation>Hap Shitore Aplikacionesh</translation>
     </message>
 </context>
 <context>
@@ -218,7 +218,7 @@
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="283"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="350"/>
         <source>Size:</source>
-        <translation type="unfinished"/>
+        <translation>Madhësi:</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="295"/>
@@ -255,7 +255,7 @@
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="288"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="297"/>
         <source>Search configuration</source>
-        <translation type="unfinished"/>
+        <translation>Kërko në formësim</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="289"/>
