@@ -106,6 +106,11 @@ set(SEARCHER
     searcher/ocr/ocrtextworker.h
     searcher/ocr/ocrtextworker.cpp
     searcher/ocr/ocrtextworker_p.h
+    searcher/fulltext/fulltextsearcher.h
+    searcher/fulltext/fulltextsearcher.cpp
+    searcher/fulltext/fulltextworker.h
+    searcher/fulltext/fulltextworker.cpp
+    searcher/fulltext/fulltextworker_p.h
 )
 
 if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64" AND OPT_ENABLE_AI_SEARCH)

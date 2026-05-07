@@ -91,14 +91,17 @@ void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
         }
 
         // 追加匹配数据到类目列表中
-        groupWidget->appendMatchedItems(itData.value(), itData.key());
+        MatchedItems filteredItems = itData.value();
+        if (groupWidget->searchGroupName() != GRANDSEARCH_GROUP_BEST)
+            filteredItems = deduplicateAgainstBestMatch(filteredItems, itData.key());
+        groupWidget->appendMatchedItems(filteredItems, itData.key());
 
         // 列表中没有数据，显示等待效果
         groupWidget->setVisible(true);
         groupWidget->showSpinner(groupWidget->itemCount() < 1);
 
         // 有新增匹配结果，需要调整重新布局
-        if (!bNeedRelayout && itData.value().size() > 0)
+        if (!bNeedRelayout && filteredItems.size() > 0)
             bNeedRelayout = true;
 
         itData++;
@@ -671,4 +674,39 @@ void MatchWidget::resizeEvent(QResizeEvent *event)
     }
 
     DWidget::resizeEvent(event);
+}
+
+MatchedItems MatchWidget::deduplicateAgainstBestMatch(const MatchedItems &items, const QString &groupName)
+{
+    // Groups in blackGroup always display their items regardless of Best Match
+    static const QSet<QString> blackGroup = {
+        GRANDSEARCH_GROUP_FILE_VIDEO,
+        GRANDSEARCH_GROUP_FILE_AUDIO,
+        GRANDSEARCH_GROUP_FILE_PICTURE,
+        GRANDSEARCH_GROUP_FILE_DOCUMNET,
+        GRANDSEARCH_GROUP_FOLDER
+    };
+    if (blackGroup.contains(groupName))
+        return items;
+
+    GroupWidget *bestMatchWidget = m_groupWidgetMap.value(GRANDSEARCH_GROUP_BEST);
+    if (!bestMatchWidget || bestMatchWidget->itemCount() == 0)
+        return items;
+
+    MatchedItems filtered;
+    for (const auto &item : items) {
+        MatchedItem existing = bestMatchWidget->findItemByPath(item.item);
+        if (!existing.item.isEmpty()) {
+            // Already in Best Match — update if new item has higher weight
+            double newWeight = item.extra.toHash().value(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 0).toDouble();
+            double existingWeight = existing.extra.toHash().value(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 0).toDouble();
+            if (newWeight > existingWeight) {
+                bestMatchWidget->updateItemByPath(item.item, item);
+            }
+            // Don't add to current group — item belongs to Best Match
+            continue;
+        }
+        filtered << item;
+    }
+    return filtered;
 }

@@ -10,11 +10,6 @@
 
 #include <dfm-search/searchfactory.h>
 #include <dfm-search/filenamesearchapi.h>
-#include <dfm-search/contentsearchapi.h>
-
-#include <DConfig>
-
-DCORE_USE_NAMESPACE
 
 namespace GrandSearch {
 
@@ -35,13 +30,6 @@ public:
     int itemCount() const;
     bool isResultLimit();
 
-    // Full-text search methods
-    bool checkFullTextSearchEnabled() const;
-    bool executeContentSearch();
-    bool processContentSearchResults(const DFMSEARCH::SearchResultExpected &result);
-    void cacheDocumentResult(const QString &path, const MatchedItem &item);
-    void pushDocumentResults();
-
 public:
     FileNameWorker *q_ptr = nullptr;
     QAtomicInt m_status = ProxyWorker::Ready;
@@ -52,14 +40,6 @@ public:
     mutable QMutex m_mutex;
     MatchedItems m_items[FileSearchUtils::GroupCount];
     QSet<QString> m_tmpSearchResults;
-
-    // Document category caching for full-text search deduplication
-    QSet<QString> m_documentPathCache;
-    QHash<QString, MatchedItem> m_documentItems;
-
-    // Full-text search state
-    bool m_fullTextSearchEnabled = false;
-    bool m_documentPushDeferred = false;
 
     // 计时
     QElapsedTimer m_time;

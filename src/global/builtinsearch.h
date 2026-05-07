@@ -12,6 +12,7 @@
 #define GRANDSEARCH_CLASS_WEB_STATICTEXT "com.deepin.dde-grand-search.web-statictext"
 #define GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC "com.deepin.dde-grand-search.generalfile-semantic"
 #define GRANDSEARCH_CLASS_OCR_TEXT "com.deepin.dde-grand-search.ocr-text"
+#define GRANDSEARCH_CLASS_FILE_FULLTEXT "com.deepin.dde-grand-search.file-fulltext"
 
 // AI搜索子项
 #define GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC".analysis"
