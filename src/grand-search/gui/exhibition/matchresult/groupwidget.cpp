@@ -14,12 +14,12 @@
 #include <DPushButton>
 #include <DHorizontalLine>
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-#include <DGuiApplicationHelper>
+#    include <DGuiApplicationHelper>
 #else
-#include <DApplicationHelper>
+#    include <DApplicationHelper>
 #endif
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-#include <DPaletteHelper>
+#    include <DPaletteHelper>
 #endif
 #include <DSpinner>
 
@@ -79,16 +79,22 @@ void GroupWidget::appendMatchedItems(const MatchedItems &newItems, const QString
     if (newItems.isEmpty())
         return;
 
+    // Deduplicate: remove/replace items with same file path, preferring higher weight
+    MatchedItems dedupedItems = newItems;
+    deduplicateByPath(dedupedItems);
+    if (dedupedItems.isEmpty())
+        return;
+
     // 结果列表未展开
     if (!m_bListExpanded) {
         // 当前组没有数据，则需要判断本次数据是否包含权重
         if (0 == m_listView->rowCount()) {
-            const MatchedItem &item = newItems.first();
+            const MatchedItem &item = dedupedItems.first();
             if (!item.extra.isNull()
                 && item.extra.type() == QVariant::Hash
                 && item.extra.toHash().keys().contains(GRANDSEARCH_PROPERTY_ITEM_WEIGHT)) {
                 // 已经排序过，直接显示
-                m_cacheWeightItems << newItems;
+                m_cacheWeightItems << dedupedItems;
                 updateShowItems(m_cacheWeightItems);
 
                 return;
@@ -96,12 +102,12 @@ void GroupWidget::appendMatchedItems(const MatchedItems &newItems, const QString
         }
 
         // 对未展开的数据排序
-        m_cacheItems << newItems;
+        m_cacheItems << dedupedItems;
         Utils::sortByWeight(m_cacheItems);
         updateShowItems(m_cacheItems);
     } else {
         // 结果列表已展开，已经显示的数据保持不变，仅对新增数据排序，然后追加到列表末尾
-        MatchedItems &tempNewItems = const_cast<MatchedItems &>(newItems);
+        MatchedItems &tempNewItems = const_cast<MatchedItems &>(dedupedItems);
         Utils::sortByWeight(tempNewItems);
         m_listView->addRows(tempNewItems);
     }
@@ -421,6 +427,41 @@ void GroupWidget::initConnect()
     connect(m_resultLabel, &DLabel::linkActivated, this, &GroupWidget::onOpenConfig);
 }
 
+void GroupWidget::deduplicateByPath(MatchedItems &newItems)
+{
+    MatchedItems filtered;
+    QSet<QString> seenInBatch;
+
+    auto weightOf = [](const MatchedItem &item) {
+        return item.extra.toHash()
+                     .value(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 0)
+                     .toDouble();
+    };
+
+    for (const auto &newItem : newItems) {
+        const QString &path = newItem.item;
+        if (path.isEmpty())
+            continue;
+
+        if (seenInBatch.contains(path))
+            continue;
+        seenInBatch.insert(path);
+
+        const double newWeight = weightOf(newItem);
+
+        MatchedItem existing = findItemByPath(path);
+        if (!existing.item.isEmpty()) {
+            if (newWeight <= weightOf(existing))
+                continue;
+            updateItemByPath(path, newItem);
+        } else {
+            filtered << newItem;
+        }
+    }
+
+    newItems = filtered;
+}
+
 void GroupWidget::updateShowItems(MatchedItems &items)
 {
     // 显示不足5个，补足显示
@@ -485,4 +526,56 @@ void GroupWidget::onOpenConfig(const QString &link)
     } else if (link == "config") {
         QProcess::startDetached("dde-grand-search", args);
     }
+}
+
+MatchedItem GroupWidget::findItemByPath(const QString &path) const
+{
+    auto findIn = [&](const MatchedItems &items) -> MatchedItem {
+        for (const auto &item : items) {
+            if (item.item == path)
+                return item;
+        }
+        return {};
+    };
+
+    MatchedItem found = findIn(m_firstFiveItems);
+    if (!found.item.isEmpty()) return found;
+
+    found = findIn(m_restShowItems);
+    if (!found.item.isEmpty()) return found;
+
+    found = findIn(m_cacheItems);
+    if (!found.item.isEmpty()) return found;
+
+    return findIn(m_cacheWeightItems);
+}
+
+bool GroupWidget::updateItemByPath(const QString &path, const MatchedItem &newItem)
+{
+    auto doUpdate = [&](MatchedItems &items) -> bool {
+        for (int i = 0; i < items.size(); ++i) {
+            if (items[i].item == path) {
+                items[i] = newItem;
+                return true;
+            }
+        }
+        return false;
+    };
+
+    bool updated = false;
+    updated |= doUpdate(m_firstFiveItems);
+    updated |= doUpdate(m_restShowItems);
+    updated |= doUpdate(m_cacheItems);
+    updated |= doUpdate(m_cacheWeightItems);
+
+    if (updated) {
+        if (m_bListExpanded) {
+            MatchedItems all = m_firstFiveItems + m_restShowItems;
+            m_listView->setMatchedItems(all);
+        } else {
+            m_listView->setMatchedItems(m_firstFiveItems);
+        }
+    }
+
+    return updated;
 }

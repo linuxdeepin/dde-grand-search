@@ -324,7 +324,8 @@ bool Utils::setWeightMethod(MatchedItem &item)
         return true;
 
     const QString &search = item.searcher;
-    if (search == GRANDSEARCH_CLASS_FILE_DEEPIN || search == GRANDSEARCH_CLASS_OCR_TEXT) {
+    if (search == GRANDSEARCH_CLASS_FILE_DEEPIN || search == GRANDSEARCH_CLASS_OCR_TEXT
+        || search == GRANDSEARCH_CLASS_FILE_FULLTEXT) {
         ext.insert(GRANDSEARCH_PROPERTY_WEIGHT_METHOD,
                    GRANDSEARCH_PROPERTY_WEIGHT_METHOD_LOCALFILE);
     } else if (search == GRANDSEARCH_CLASS_APP_DESKTOP) {
@@ -493,6 +494,7 @@ void Utils::packageBestMatch(MatchedItemMap &map, int maxQuantity)
 
     static const QMap<QString, bool> supprotedSeracher = {
         { GRANDSEARCH_CLASS_FILE_DEEPIN, true },
+        { GRANDSEARCH_CLASS_FILE_FULLTEXT, true },
         { GRANDSEARCH_CLASS_APP_DESKTOP, true },
         { GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, true },
         { GRANDSEARCH_CLASS_OCR_TEXT, true },

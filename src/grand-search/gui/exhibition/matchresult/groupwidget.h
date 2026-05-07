@@ -56,6 +56,9 @@ public:
 
     static QString convertDisplayName(const QString &searchGroupName);
 
+    MatchedItem findItemByPath(const QString &path) const;
+    bool updateItemByPath(const QString &path, const MatchedItem &newItem);
+
 public slots:
     virtual void onMoreBtnClicked();
 
@@ -66,6 +69,7 @@ private:
     void initUi();
     void initConnect();
     void updateShowItems(MatchedItems &items);
+    void deduplicateByPath(MatchedItems &newItems);
     void onOpenConfig(const QString& link);
 
 signals:

@@ -5,6 +5,7 @@
 #include "searchergroup.h"
 #include "searchergroup_p.h"
 #include "ocr/ocrtextsearcher.h"
+#include "fulltext/fulltextsearcher.h"
 
 #include <QDebug>
 #include <QLoggingCategory>
@@ -45,6 +46,10 @@ void SearcherGroupPrivate::initBuiltin()
     qCInfo(logDaemon) << "Initializing OcrTextSearcher";
     auto ocrSearcher = new OcrTextSearcher(this);
     m_builtin << ocrSearcher;
+
+    qCInfo(logDaemon) << "Initializing FullTextSearcher";
+    auto fullTextSearcher = new FullTextSearcher(this);
+    m_builtin << fullTextSearcher;
 }
 
 bool SearcherGroupPrivate::addExtendSearcher(const SearchPluginInfo &pluginInfo)

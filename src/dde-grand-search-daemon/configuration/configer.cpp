@@ -39,6 +39,7 @@ UserPreferencePointer ConfigerPrivate::defaultSearcher()
                         {GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, true},
                         {GRANDSEARCH_CLASS_WEB_STATICTEXT, true},
                         {GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC, true},
+                        {GRANDSEARCH_CLASS_FILE_FULLTEXT, true},
                         {GRANDSEARCH_CLASS_OCR_TEXT, true}
                         };
 

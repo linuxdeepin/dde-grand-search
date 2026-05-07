@@ -74,6 +74,8 @@ protected:
     // 对要显示的类目列表进行排序
     void sortVislibleGroupList();
 
+    MatchedItems deduplicateAgainstBestMatch(const MatchedItems &items, const QString &groupName);
+
     void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent* event) override;
 

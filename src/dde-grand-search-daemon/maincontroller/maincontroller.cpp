@@ -146,8 +146,9 @@ QStringList MainControllerPrivate::checkSearcher(const QStringList &groupList, c
         // 说明分隔符前后的字段既不是后缀也不是类目
         if (groupList.isEmpty() && !keywordList.isEmpty()) {
             data.append(GRANDSEARCH_CLASS_FILE_DEEPIN);
+            data.append(GRANDSEARCH_CLASS_FILE_FULLTEXT);
             data.append(GRANDSEARCH_CLASS_APP_DESKTOP);
-            qCDebug(logDaemon) << "Added default searchers (file and app) for general keyword search";
+            qCDebug(logDaemon) << "Added default searchers (file, full-text and app) for general keyword search";
         }
     }
 
