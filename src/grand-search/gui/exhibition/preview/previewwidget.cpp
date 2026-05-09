@@ -95,7 +95,7 @@ bool PreviewWidget::previewItem(const MatchedItem &item)
 
     // Pass keywords for highlighting
     if (extraHash.contains(GRANDSEARCH_PROPERTY_ITEM_KEYWORDS)) {
-        itemInfo[PREVIEW_ITEMINFO_KEYWORDS] = extraHash.value(GRANDSEARCH_PROPERTY_ITEM_KEYWORDS).toStringList().join(",");
+        itemInfo[PREVIEW_ITEMINFO_KEYWORDS] = extraHash.value(GRANDSEARCH_PROPERTY_ITEM_KEYWORDS).toStringList().join(":");
     }
 
     preview->previewItem(itemInfo);

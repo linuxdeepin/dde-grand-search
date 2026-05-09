@@ -11,10 +11,7 @@
 #include <QMovie>
 #include <QVBoxLayout>
 
-DWIDGET_BEGIN_NAMESPACE
-class DLabel;
-class DTipLabel;
-DWIDGET_END_NAMESPACE
+class HighlightLabel;
 
 namespace GrandSearch {
 namespace image_preview {
@@ -54,8 +51,8 @@ private:
 
     QSize m_sourceSize;                 // 资源尺寸
     QLabel *m_imageLabel;               // 显示图片
-    Dtk::Widget::DLabel *m_titleLabel;  // 显示名称
-    Dtk::Widget::DTipLabel *m_contentLabel;
+    HighlightLabel *m_titleLabel;       // 显示名称
+    HighlightLabel *m_contentLabel;     // 显示匹配内容
 };
 
 }}

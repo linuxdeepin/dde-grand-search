@@ -6,11 +6,11 @@
 #include "generalpreviewplugin.h"
 #include "utils/utils.h"
 #include "global/commontools.h"
+#include "global/widgets/highlightlabel.h"
 
 #include <DFontSizeManager>
 #include <DMessageBox>
 #include <DGuiApplicationHelper>
-#include <DTipLabel>
 
 #include <QIcon>
 #include <QGuiApplication>
@@ -18,7 +18,6 @@
 #include <QToolButton>
 #include <QPainter>
 #include <QLoggingCategory>
-#include <QRegularExpression>
 
 Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
@@ -31,55 +30,6 @@ using namespace GrandSearch;
 
 DWIDGET_USE_NAMESPACE
 DGUI_USE_NAMESPACE
-
-namespace {
-// Helper function to highlight keywords with bold text
-QString highlightKeywords(const QString &text, const QStringList &keywords) {
-    if (text.isEmpty())
-        return QString();
-
-    QString result = text.toHtmlEscaped();
-    for (const QString &keyword : keywords) {
-        if (keyword.isEmpty())
-            continue;
-        QString escapedKeyword = keyword.toHtmlEscaped();
-        // Use rich text <b> tag for bold highlighting, case-insensitive
-        QRegularExpression re(QRegularExpression::escape(escapedKeyword),
-                              QRegularExpression::CaseInsensitiveOption);
-        QRegularExpressionMatch match;
-        int pos = 0;
-        while ((pos = result.indexOf(re, pos, &match)) != -1) {
-            QString matched = match.captured(0);
-            result.replace(pos, matched.length(), QString("<b>%1</b>").arg(matched));
-            pos += matched.length() + 7;  // 7 = length of "<b></b>"
-        }
-    }
-    // Convert newlines to <br> for rich text display
-    result.replace('\n', "<br>");
-    return result;
-}
-} // namespace
-
-NameLabel::NameLabel(const QString &text, QWidget *parent, Qt::WindowFlags f):
-    QLabel(text, parent, f)
-{
-    setObjectName("NameLabel");
-    setFixedWidth(NAME_WIDTH);
-
-    QFont titleFont = this->font();
-    titleFont.setWeight(QFont::Medium);
-    titleFont = DFontSizeManager::instance()->get(DFontSizeManager::T5, titleFont);
-    this->setFont(titleFont);
-
-    QColor textColor(0, 0, 0, int(255 * 0.9));
-    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
-        textColor = QColor(255, 255, 255, int(255 * 0.9));
-    QPalette pa = palette();
-    pa.setColor(QPalette::WindowText, textColor);
-    setPalette(pa);
-
-    setAlignment(Qt::AlignBottom | Qt::AlignLeft);
-}
 
 SizeLabel::SizeLabel(const QString &text, QWidget *parent, Qt::WindowFlags f):
     QLabel(text, parent, f)
@@ -104,11 +54,33 @@ GeneralPreviewPluginPrivate::GeneralPreviewPluginPrivate(GeneralPreviewPlugin *p
     m_iconLabel = new QLabel(m_contentWidget);
     m_iconLabel->setObjectName("IconLabel");
     m_iconLabel->setFixedSize(QSize(ICON_SIZE, ICON_SIZE));
-    m_nameLabel = new NameLabel("", m_contentWidget);
-    m_contentLabel = new DTipLabel("", m_contentWidget);
+
+    // 名称标签：中间省略，最多2行
+    m_nameLabel = new HighlightLabel(m_contentWidget);
+    m_nameLabel->setObjectName("NameLabel");
+    m_nameLabel->setFixedWidth(NAME_WIDTH);
+    QFont titleFont = DFontSizeManager::instance()->get(DFontSizeManager::T5, QFont::Normal);
+    m_nameLabel->setFont(titleFont);
+    QPalette pa = m_nameLabel->palette();
+    QColor textColor = pa.brightText().color();
+    textColor.setAlpha(255 * 0.9);
+    pa.setColor(QPalette::WindowText, textColor);
+    m_nameLabel->setPalette(pa);
+    m_nameLabel->setElideMode(Qt::ElideMiddle);
+    m_nameLabel->setMaxLines(2);
+
+    // 内容标签：右省略，最多3行
+    m_contentLabel = new HighlightLabel(m_contentWidget);
+    pa = m_contentLabel->palette();
+    textColor = pa.brightText().color();
+    textColor.setAlpha(255 * 0.5);
+    pa.setColor(QPalette::WindowText, textColor);
+    QFont contentFont = DFontSizeManager::instance()->get(DFontSizeManager::T7, QFont::Normal);
+    m_contentLabel->setFont(contentFont);
+    m_contentLabel->setPalette(pa);
     m_contentLabel->setFixedWidth(NAME_WIDTH);
-    m_contentLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    m_contentLabel->setWordWrap(true);
+    m_contentLabel->setElideMode(Qt::ElideRight);
+    m_contentLabel->setMaxLines(3);
 
     QVBoxLayout *vLayout = new QVBoxLayout();
     vLayout->setContentsMargins(0, 0, 0, 0);
@@ -179,7 +151,12 @@ bool GeneralPreviewPlugin::previewItem(const ItemInfo &info)
     QStringList keywords;
     QString keywordsStr = info.value(PREVIEW_ITEMINFO_KEYWORDS);
     if (!keywordsStr.isEmpty()) {
-        keywords = keywordsStr.split(",", Qt::SkipEmptyParts);
+        keywords = keywordsStr.split(":", Qt::SkipEmptyParts);
+    }
+
+    if (!keywords.isEmpty()) {
+        QVariantHash extraHash { { GRANDSEARCH_PROPERTY_ITEM_KEYWORDS, keywords } };
+        item.extra = extraHash;
     }
 
     qCDebug(logGrandSearch) << "General preview item - Name:" << item.name
@@ -191,8 +168,12 @@ bool GeneralPreviewPlugin::previewItem(const ItemInfo &info)
             && !item.name.isEmpty()
             && d_p->m_item.item == item.item
             && d_p->m_item.name == item.name) {
-        qCDebug(logGrandSearch) << "Item already previewed - skipping";
-        return true;
+        const auto &extra = d_p->m_item.extra.toHash();
+        const auto &itemKeywords = extra.value(GRANDSEARCH_PROPERTY_ITEM_KEYWORDS, QStringList()).toStringList();
+        if (!keywords.isEmpty() && keywords == itemKeywords) {
+            qCDebug(logGrandSearch) << "Item already previewed - skipping";
+            return true;
+        }
     }
 
     d_p->m_item = item;
@@ -221,28 +202,26 @@ bool GeneralPreviewPlugin::previewItem(const ItemInfo &info)
     }
     d_p->m_iconLabel->setPixmap(pixmap);
 
-    // 设置名称，并计算换行内容，应用关键词高亮
-    QString elidedText = CommonTools::lineFeed(item.name, d_p->m_nameLabel->width(), d_p->m_nameLabel->font(), 2);
-    if (!keywords.isEmpty()) {
-        d_p->m_nameLabel->setText(highlightKeywords(elidedText, keywords));
-    } else {
-        d_p->m_nameLabel->setText(elidedText);
-    }
-    if (elidedText != item.name)
+    // 设置名称，关键词高亮在 HighlightLabel 内部处理
+    d_p->m_nameLabel->setPlainText(item.name);
+    d_p->m_nameLabel->setKeywords(keywords);
+    if (d_p->m_nameLabel->isElided())
         d_p->m_nameLabel->setToolTip(item.name);
+    else
+        d_p->m_nameLabel->setToolTip("");
 
-    // 设置匹配内容，最多显示3行，超出部分行尾省略，应用关键词高亮
+    // 设置匹配内容，关键词高亮在 HighlightLabel 内部处理
     if (!matchedContext.isEmpty()) {
-        QString elidedContext = CommonTools::lineFeed(matchedContext, d_p->m_contentLabel->width(), d_p->m_contentLabel->font(), 3);
-        if (!keywords.isEmpty()) {
-            d_p->m_contentLabel->setText(highlightKeywords(elidedContext, keywords));
-        } else {
-            d_p->m_contentLabel->setText(elidedContext);
-        }
-        if (elidedContext != matchedContext)
+        d_p->m_contentLabel->setPlainText(matchedContext);
+        d_p->m_contentLabel->setKeywords(keywords);
+        if (d_p->m_contentLabel->isElided())
             d_p->m_contentLabel->setToolTip(matchedContext);
+        else
+            d_p->m_contentLabel->setToolTip("");
     } else {
-        d_p->m_contentLabel->clear();
+        d_p->m_contentLabel->setPlainText("");
+        d_p->m_contentLabel->setKeywords(QStringList());
+        d_p->m_contentLabel->setToolTip("");
     }
     QFileInfo fi(item.item);
 

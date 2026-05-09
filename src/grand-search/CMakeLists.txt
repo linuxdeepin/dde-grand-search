@@ -188,6 +188,9 @@ set(GUISRC
     gui/searchconfig/intelligentretrieval/autoindexstatus.h
     gui/searchconfig/tipslabel.h
     gui/searchconfig/tipslabel.cpp
+    # shared widgets
+    ../global/widgets/highlightlabel.h
+    ../global/widgets/highlightlabel.cpp
     )
 
 # business
