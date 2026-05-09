@@ -1,3 +1,11 @@
+dde-grand-search (6.0.32) unstable; urgency=medium
+
+  * refactor: extract full-text search into separate searcher
+  * feat: add reusable HighlightLabel widget for keyword highlighting
+  * refactor: streamline file search blacklist filtering and item packing
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Sat, 09 May 2026 15:23:50 +0800
+
 dde-grand-search (6.0.31) unstable; urgency=medium
 
   * feat: remove bundled antlr4 and update build configuration
