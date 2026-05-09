@@ -23,9 +23,7 @@ FileNameWorkerPrivate::FileNameWorkerPrivate(FileNameWorker *qq)
     : q_ptr(qq)
 {
     qCDebug(logDaemon) << "FileNameWorkerPrivate constructor called";
-    m_searchPath = DFMSEARCH::Global::isFileNameIndexDirectoryAvailable()
-            ? QDir::rootPath()
-            : QDir::homePath();
+    m_searchPath = QDir::homePath();
     initConfig();
 }
 
@@ -96,18 +94,8 @@ bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName)
         }
     }
 
-    if (!FileSearchUtils::fileShouldVisible(fileName, group, m_searchInfo)) {
-        qCDebug(logDaemon) << "File filtered by visibility rules:" << fileName;
-        return false;
-    }
-
     if (m_resultCountHash[group] >= MAX_SEARCH_NUM_GROUP)
         return false;
-
-    if (FileSearchUtils::filterByBlacklist(fileName)) {
-        qCDebug(logDaemon) << "File filtered by blacklist:" << fileName;
-        return false;
-    }
 
     m_tmpSearchResults << fileName;
     // Get keywords for highlighting
@@ -151,6 +139,10 @@ SearchOptions FileNameWorkerPrivate::createSearchOptions() const
 
     SearchOptions options;
     options.setSearchPath(m_searchPath);
+
+    auto config = Configer::instance()->group(GRANDSEARCH_BLACKLIST_GROUP);
+    auto blacklist = config->value(GRANDSEARCH_BLACKLIST_PATH, QStringList());
+    options.setSearchExcludedPaths(blacklist);
 
     // 检查文件名索引目录是否可用，如果不可用则回退到实时搜索
     if (DFMSEARCH::Global::isFileNameIndexDirectoryAvailable()) {

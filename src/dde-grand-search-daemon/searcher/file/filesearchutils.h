@@ -35,14 +35,12 @@ public:
         QList<Group> groupList;             // 搜索类目表
     };
 
-    static MatchedItem packItem(const QString &fileName, const QString &searcher, const QStringList &keywords = QStringList());
+    static MatchedItem packItem(const QString &fileName, const QString &searcher, const QStringList &keywords = QStringList(), const QString &matchedContext = "");
     static QString groupKey(Group group);
     static Group getGroupByName(const QString &fileName);
     static Group getGroupBySuffix(const QString &suffix);
     static Group getGroupByGroupName(const QString &groupName);
     static SearchInfo parseContent(const QString &content);
-    static bool fileShouldVisible(const QString &fileName, Group &group, const SearchInfo &info);
-    static bool filterByBlacklist(const QString &fileName);
     static QVariantHash tailerData(const QFileInfo &info);
     static QStringList buildDFMSearchFileTypes(const QList<Group> &groupList);
     static bool isPinyin(const QString &str);

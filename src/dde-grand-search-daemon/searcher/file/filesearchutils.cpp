@@ -17,7 +17,7 @@ Q_DECLARE_LOGGING_CATEGORY(logDaemon)
 
 using namespace GrandSearch;
 
-MatchedItem FileSearchUtils::packItem(const QString &fileName, const QString &searcher, const QStringList &keywords)
+MatchedItem FileSearchUtils::packItem(const QString &fileName, const QString &searcher, const QStringList &keywords, const QString &matchedContext)
 {
     qCDebug(logDaemon) << "Packing file item - File:" << fileName << "Searcher:" << searcher;
     QFileInfo fileInfo(fileName);
@@ -31,9 +31,12 @@ MatchedItem FileSearchUtils::packItem(const QString &fileName, const QString &se
 
     QVariantHash extraData = tailerData(fileInfo);
     // Inject keywords for highlighting
-    if (!keywords.isEmpty()) {
+    if (!keywords.isEmpty())
         extraData.insert(GRANDSEARCH_PROPERTY_ITEM_KEYWORDS, keywords);
-    }
+
+    if (!matchedContext.isEmpty())
+        extraData.insert(GRANDSEARCH_PROPERTY_ITEM_MATCHEDCONTEXT, matchedContext);
+
     item.extra = QVariant::fromValue(extraData);
 
     qCDebug(logDaemon) << "Item packed successfully - Name:" << item.name
@@ -203,57 +206,6 @@ FileSearchUtils::SearchInfo FileSearchUtils::parseContent(const QString &content
     info.keyword = QString(R"((%1).*)").arg(keywordList.join('|'));
     info.typeKeywords = keywordList;
     return info;
-}
-
-bool FileSearchUtils::fileShouldVisible(const QString &fileName, Group &group, const FileSearchUtils::SearchInfo &info)
-{
-    // 对组合搜索到的结果进行过滤
-    if (info.isCombinationSearch) {
-        if (!info.groupList.contains(group)) {
-            QFileInfo fileInfo(fileName);
-            if (fileInfo.isDir())
-                return false;
-
-            const auto &suffix = fileInfo.suffix();
-            if (suffix.isEmpty() || !info.suffixList.contains(suffix, Qt::CaseInsensitive)) {
-                if (info.groupList.contains(File)) {
-                    group = File;
-                    return true;
-                }
-
-                return false;
-            }
-        }
-    }
-
-    return true;
-}
-
-bool FileSearchUtils::filterByBlacklist(const QString &fileName)
-{
-    qCDebug(logDaemon) << "Checking blacklist filter for file:" << fileName;
-
-    // 过滤黑名单中的结果
-    // add "/" to the end of fileName to distinguish partially identical path
-    QString filePath = fileName + "/";
-    auto config = Configer::instance()->group(GRANDSEARCH_BLACKLIST_GROUP);
-    auto blacklist = config->value(GRANDSEARCH_BLACKLIST_PATH, QStringList());
-    if (blacklist.isEmpty()) {
-        qCDebug(logDaemon) << "Blacklist is empty - File not filtered:" << fileName;
-        return false;
-    }
-
-    qCDebug(logDaemon) << "Checking against blacklist - Entries:" << blacklist.size();
-    for (const auto &path : blacklist) {
-        if (filePath.startsWith(path)) {
-            qCDebug(logDaemon) << "File filtered by blacklist - File:" << fileName
-                               << "Blacklist path:" << path;
-            return true;
-        }
-    }
-
-    qCDebug(logDaemon) << "File passed blacklist filter:" << fileName;
-    return false;
 }
 
 QVariantHash FileSearchUtils::tailerData(const QFileInfo &info)

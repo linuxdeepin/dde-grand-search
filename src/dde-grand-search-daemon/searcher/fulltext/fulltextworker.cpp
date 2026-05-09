@@ -41,6 +41,11 @@ bool FullTextWorkerPrivate::doSearch()
 
     SearchOptions options;
     options.setSearchPath(m_searchPath);
+
+    auto config = Configer::instance()->group(GRANDSEARCH_BLACKLIST_GROUP);
+    auto blacklist = config->value(GRANDSEARCH_BLACKLIST_PATH, QStringList());
+    options.setSearchExcludedPaths(blacklist);
+
     options.setSearchMethod(SearchMethod::Indexed);
     options.setMaxResults(MAX_SEARCH_NUM_GROUP);
 
@@ -99,20 +104,16 @@ bool FullTextWorkerPrivate::processResults(const SearchResultExpected &result)
         }
 
         m_tmpSearchResults << filePath;
-        MatchedItem item = FileSearchUtils::packItem(filePath, q->name(), keywords);
-
-        // Set higher weight so frontend dedup prefers content results over filename results
-        QVariantHash extra = item.extra.toHash();
-        extra.insert(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 10);
 
         // Get highlighted content preview
         SearchResult mutableResult = const_cast<SearchResult &>(file);
         ContentResultAPI contentResult(mutableResult);
         QString highlightedContent = contentResult.highlightedContent();
-        if (!highlightedContent.isEmpty()) {
-            extra.insert(GRANDSEARCH_PROPERTY_ITEM_MATCHEDCONTEXT, highlightedContent);
-        }
+        MatchedItem item = FileSearchUtils::packItem(filePath, q->name(), keywords, highlightedContent);
 
+        // Set higher weight so frontend dedup prefers content results over filename results
+        QVariantHash extra = item.extra.toHash();
+        extra.insert(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 10);
         item.extra = extra;
 
         // Add to Document category
