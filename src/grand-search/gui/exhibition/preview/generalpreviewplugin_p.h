@@ -18,17 +18,11 @@
 
 DWIDGET_BEGIN_NAMESPACE
 class DHorizontalLine;
-class DTipLabel;
 DWIDGET_END_NAMESPACE
 
-namespace GrandSearch {
+class HighlightLabel;
 
-class NameLabel: public QLabel
-{
-    Q_OBJECT
-public:
-    explicit NameLabel(const QString &text = "", QWidget *parent = nullptr, Qt::WindowFlags f = {});
-};
+namespace GrandSearch {
 
 class SizeLabel: public QLabel
 {
@@ -42,7 +36,7 @@ class GeneralPreviewPluginPrivate
 {
 public:
     explicit GeneralPreviewPluginPrivate(GeneralPreviewPlugin *parent = nullptr);
-    ~GeneralPreviewPluginPrivate();    
+    ~GeneralPreviewPluginPrivate();
 
     GeneralPreviewPlugin *q_p = nullptr;
 
@@ -55,8 +49,8 @@ public:
 
     // 图标和名称
     QLabel *m_iconLabel = nullptr;
-    NameLabel *m_nameLabel = nullptr;
-    DTK_WIDGET_NAMESPACE::DTipLabel *m_contentLabel = nullptr;
+    HighlightLabel *m_nameLabel = nullptr;
+    HighlightLabel *m_contentLabel = nullptr;
 
     // 大小
     SizeLabel *m_sizeLabel = nullptr;

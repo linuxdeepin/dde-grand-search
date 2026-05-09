@@ -5,11 +5,11 @@
 #include "imagepreview_global.h"
 #include "imageview.h"
 #include "global/commontools.h"
+#include "global/widgets/highlightlabel.h"
 
-#include <DLabel>
 #include <DFontSizeManager>
 #include <DGuiApplicationHelper>
-#include <DTipLabel>
+#include <DWidget>
 
 #include <QDebug>
 #include <QtConcurrent>
@@ -19,9 +19,7 @@
 #include <QImageReader>
 #include <QBitmap>
 #include <QPainterPath>
-#include <QFontMetrics>
 #include <QLoggingCategory>
-#include <QRegularExpression>
 
 Q_DECLARE_LOGGING_CATEGORY(logImagePreview)
 
@@ -30,35 +28,9 @@ Q_DECLARE_LOGGING_CATEGORY(logImagePreview)
 #define ROUNDRADIUS     8
 
 DWIDGET_USE_NAMESPACE
+DGUI_USE_NAMESPACE
 GRANDSEARCH_USE_NAMESPACE
 using namespace GrandSearch::image_preview;
-
-namespace {
-// Helper function to highlight keywords with bold text
-QString highlightKeywords(const QString &text, const QStringList &keywords) {
-    if (text.isEmpty())
-        return QString();
-
-    QString result = text.toHtmlEscaped();
-    for (const QString &keyword : keywords) {
-        if (keyword.isEmpty())
-            continue;
-        QString escapedKeyword = keyword.toHtmlEscaped();
-        QRegularExpression re(QRegularExpression::escape(escapedKeyword),
-                              QRegularExpression::CaseInsensitiveOption);
-        QRegularExpressionMatch match;
-        int pos = 0;
-        while ((pos = result.indexOf(re, pos, &match)) != -1) {
-            QString matched = match.captured(0);
-            result.replace(pos, matched.length(), QString("<b>%1</b>").arg(matched));
-            pos += matched.length() + 7;
-        }
-    }
-    // Convert newlines to <br> for rich text display
-    result.replace('\n', "<br>");
-    return result;
-}
-} // namespace
 
 ImageView::ImageView(QWidget *parent)
     :DWidget (parent)
@@ -95,21 +67,13 @@ void ImageView::loadImage(const QString &file, const QString &type, const QStrin
     QFileInfo fileInfo(m_imageFile);
     QString name = fileInfo.fileName();
 
-    QFontMetrics fontMetrics(m_titleLabel->font());
-    QString elidedName = fontMetrics.elidedText(name, Qt::ElideMiddle, m_titleLabel->width());
-
-    // Apply highlighting to elided text if keywords exist
-    if (!keywords.isEmpty()) {
-        m_titleLabel->setTextFormat(Qt::RichText);
-        m_titleLabel->setText(highlightKeywords(elidedName, keywords));
-    } else {
-        m_titleLabel->setTextFormat(Qt::PlainText);
-        m_titleLabel->setText(elidedName);
-    }
-
-    // Show full name as tooltip if elided
-    if (elidedName != name)
+    // HighlightLabel 内部处理省略和高亮
+    m_titleLabel->setPlainText(name);
+    m_titleLabel->setKeywords(keywords);
+    if (m_titleLabel->isElided())
         m_titleLabel->setToolTip(name);
+    else
+        m_titleLabel->setToolTip("");
 
     if (!fileInfo.isReadable() || !canPreview()) {
         qCWarning(logImagePreview) << "Cannot preview image - File not readable or unsupported format:" << m_imageFile;
@@ -175,20 +139,13 @@ void ImageView::setMatchedContext(const QString &context, const QStringList &key
     m_contentLabel->setVisible(!highlightedContent.isEmpty());
     m_titleLabel->setVisible(highlightedContent.isEmpty());
     if (!highlightedContent.isEmpty()) {
-        // Apply elide first, then highlight
-        QFontMetrics fontMetrics(m_contentLabel->font());
-        QString elidedContent = fontMetrics.elidedText(highlightedContent, Qt::ElideRight, m_contentLabel->width());
-
-        if (!keywords.isEmpty()) {
-            m_contentLabel->setTextFormat(Qt::RichText);
-            m_contentLabel->setText(highlightKeywords(elidedContent, keywords));
-        } else {
-            m_contentLabel->setTextFormat(Qt::PlainText);
-            m_contentLabel->setText(elidedContent);
-        }
-        // Show full content as tooltip if elided
-        if (elidedContent != highlightedContent)
+        // HighlightLabel 内部处理省略和高亮
+        m_contentLabel->setPlainText(highlightedContent);
+        m_contentLabel->setKeywords(keywords);
+        if (m_contentLabel->isElided())
             m_contentLabel->setToolTip(highlightedContent);
+        else
+            m_contentLabel->setToolTip("");
     }
 }
 
@@ -200,27 +157,30 @@ void ImageView::initUI()
     m_imageLabel->setFixedSize(IMAGEWIDTH, IMAGEHEIGHT);
     m_imageLabel->setAlignment(Qt::AlignCenter);
 
-    m_titleLabel = new DLabel(this);
+    // 名称标签：中间省略，1行
+    m_titleLabel = new HighlightLabel(this);
     m_titleLabel->setFixedWidth(IMAGEWIDTH);
     m_titleLabel->setAlignment(Qt::AlignCenter);
+    m_titleLabel->setElideMode(Qt::ElideMiddle);
+    m_titleLabel->setMaxLines(1);
 
-    m_contentLabel = new DTipLabel("", this);
+    // 内容标签：右省略，1行
+    m_contentLabel = new HighlightLabel(this);
     m_contentLabel->setFixedWidth(IMAGEWIDTH);
     m_contentLabel->setAlignment(Qt::AlignCenter);
     m_contentLabel->setElideMode(Qt::ElideRight);
+    m_contentLabel->setMaxLines(1);
     m_contentLabel->setVisible(false);
 
-    QFont titleFont = m_titleLabel->font();
-    titleFont.setWeight(QFont::Medium);
-    titleFont = DFontSizeManager::instance()->get(DFontSizeManager::T5, titleFont);
-    m_titleLabel->setFont(titleFont);
-
-    QColor textColor(0, 0, 0, int(255 * 0.9));
-    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
-        textColor = QColor(255, 255, 255, int(255 * 0.9));
-    QPalette pa = m_titleLabel->palette();
+    QPalette pa = palette();
+    auto textColor = pa.brightText().color();
+    textColor.setAlpha(255 * 0.9);
     pa.setColor(QPalette::WindowText, textColor);
+    QFont font = DFontSizeManager::instance()->get(DFontSizeManager::T7, QFont::Normal);
+    m_titleLabel->setFont(font);
     m_titleLabel->setPalette(pa);
+    m_contentLabel->setPalette(pa);
+    m_contentLabel->setFont(font);
 
     QHBoxLayout *imageLayout = new QHBoxLayout;
     imageLayout->addWidget(m_imageLabel);

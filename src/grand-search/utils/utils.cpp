@@ -286,13 +286,16 @@ void Utils::updateItemsWeight(MatchedItemMap &map, const QString &content)
             {
                 const QVariantHash &extData = item.extra.toHash();
                 const QString &method = extData.value(GRANDSEARCH_PROPERTY_WEIGHT_METHOD).toString();
+                // 已经设置权重基础数值
+                if (extData.contains(GRANDSEARCH_PROPERTY_ITEM_WEIGHT))
+                    weight = extData.value(GRANDSEARCH_PROPERTY_ITEM_WEIGHT).toDouble();
 
                 if (method == GRANDSEARCH_PROPERTY_WEIGHT_METHOD_LOCALFILE) {
-                    weight = calcFileWeight(item.item, item.name, keys);
+                    weight += calcFileWeight(item.item, item.name, keys);
                 } else if (method == GRANDSEARCH_PROPERTY_WEIGHT_METHOD_APP) {
-                    weight = calcAppWeight(item, keys);
+                    weight += calcAppWeight(item, keys);
                 } else if (method == GRANDSEARCH_PROPERTY_WEIGHT_METHOD_SETTING) {
-                    weight = calcSettingWeight(item, keys);
+                    weight += calcSettingWeight(item, keys);
                 } else {
                     continue;
                 }
@@ -314,10 +317,6 @@ void Utils::updateItemsWeight(MatchedItemMap &map, const QString &content)
 bool Utils::setWeightMethod(MatchedItem &item)
 {
     QVariantHash ext = item.extra.toHash();
-
-    // 已经设置权重数值
-    if (ext.contains(GRANDSEARCH_PROPERTY_ITEM_WEIGHT))
-        return false;
 
     // 已经设置了计算方法
     if (ext.contains(GRANDSEARCH_PROPERTY_WEIGHT_METHOD))

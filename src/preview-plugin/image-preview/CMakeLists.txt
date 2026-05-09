@@ -11,6 +11,8 @@ set(SRCS
     imagepreviewplugin.cpp
     imageview.h
     imageview.cpp
+    ${CMAKE_SOURCE_DIR}/src/global/widgets/highlightlabel.h
+    ${CMAKE_SOURCE_DIR}/src/global/widgets/highlightlabel.cpp
 )
 
 add_library(${LIB_NAME} SHARED ${SRCS} ${QRCS})
