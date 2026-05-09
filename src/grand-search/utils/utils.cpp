@@ -1016,7 +1016,9 @@ QIcon Utils::defaultIcon(const MatchedItem &item)
 {
     if (item.searcher == GRANDSEARCH_CLASS_APP_DESKTOP)
         return QIcon::fromTheme("application-x-desktop");
-    else if (item.searcher == GRANDSEARCH_CLASS_FILE_DEEPIN) {
+    else if (item.searcher == GRANDSEARCH_CLASS_FILE_DEEPIN ||
+             item.searcher == GRANDSEARCH_CLASS_FILE_FULLTEXT ||
+             item.searcher == GRANDSEARCH_CLASS_OCR_TEXT) {
         return QIcon::fromTheme(m_mimeDb.mimeTypeForFile(item.item).genericIconName());
     } else if (item.searcher == GRANDSEARCH_CLASS_WEB_STATICTEXT) {
         // 使用默认浏览器的图标

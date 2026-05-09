@@ -31,7 +31,6 @@ bool TextThumbnailGenerator::canHandle(const QString &mimetype) const
     // 支持一些常见的文本格式
     static const QStringList textMimes = {
         "application/json",
-        "application/xml",
         "application/javascript",
         "application/x-yaml",
         "application/x-sh",

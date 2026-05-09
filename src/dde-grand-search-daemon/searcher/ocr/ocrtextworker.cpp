@@ -4,7 +4,7 @@
 
 #include "ocrtextworker_p.h"
 #include "global/builtinsearch.h"
-#include "utils/specialtools.h"
+#include "configuration/configer.h"
 #include "searcher/file/filesearchutils.h"
 #include "global/searchhelper.h"
 
@@ -40,6 +40,11 @@ DFMSEARCH::SearchOptions OcrTextWorkerPrivate::createSearchOptions() const
 
     SearchOptions options;
     options.setSearchPath(QDir::homePath());
+
+    auto config = Configer::instance()->group(GRANDSEARCH_BLACKLIST_GROUP);
+    auto blacklist = config->value(GRANDSEARCH_BLACKLIST_PATH, QStringList());
+    options.setSearchExcludedPaths(blacklist);
+
     options.setSearchMethod(SearchMethod::Indexed);
     options.setMaxResults(MAX_SEARCH_NUM);
     qCDebug(logDaemon) << "OCR search options configured - Max results:" << MAX_SEARCH_NUM;
@@ -92,21 +97,11 @@ bool OcrTextWorkerPrivate::processSearchResults(const DFMSEARCH::SearchResultExp
 
         m_tmpSearchResults << filePath;
 
-        // Create matched item with keywords for highlighting
-        GrandSearch::MatchedItem item = FileSearchUtils::packItem(filePath, q->name(), QStringList { m_keywords });
-
         // Get OCR content and store in extra field
-        QVariantHash extra = item.extra.toHash();
         DFMSEARCH::SearchResult mutableResult = const_cast<DFMSEARCH::SearchResult &>(file);
         OcrTextResultAPI ocrResult(const_cast<SearchResult &>(mutableResult));
         QString ocrContent = ocrResult.highlightedContent();
-        if (!ocrContent.isEmpty()) {
-            extra.insert(GRANDSEARCH_PROPERTY_ITEM_MATCHEDCONTEXT, ocrContent);
-            qCDebug(logDaemon) << "OCR content found for file:" << filePath
-                               << "Content length:" << ocrContent.length();
-        }
-
-        item.extra = extra;
+        GrandSearch::MatchedItem item = FileSearchUtils::packItem(filePath, q->name(), m_keywords, ocrContent);
 
         {
             QMutexLocker lk(&m_mutex);
