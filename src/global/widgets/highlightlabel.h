@@ -12,14 +12,23 @@ class HighlightLabel : public QLabel
 {
     Q_OBJECT
 public:
+    enum class ElideMode {
+        None    = Qt::ElideNone,
+        Left    = Qt::ElideLeft,
+        Right   = Qt::ElideRight,
+        Middle  = Qt::ElideMiddle,
+        Smart   = 5
+    };
+    Q_ENUM(ElideMode)
+
     explicit HighlightLabel(QWidget *parent = nullptr, Qt::WindowFlags f = {});
 
     void setPlainText(const QString &text);
     void setKeywords(const QStringList &keywords);
-    void setElideMode(Qt::TextElideMode mode);
+    void setElideMode(ElideMode mode);
     void setMaxLines(int lines);
 
-    Qt::TextElideMode elideMode() const;
+    ElideMode elideMode() const;
     int maxLines() const;
     bool isElided() const;
 
@@ -41,6 +50,7 @@ private:
     void relayout();
     void doLayout();
     ElideInfo computeElidedText(int layoutWidth) const;
+    ElideInfo computeSmartElidedText(const QString &text, int maxWidth, const QFontMetrics &fm) const;
     void buildFinalLayout(const QString &displayText, const QVector<int> &origPosMapping, int layoutWidth);
     QVector<QTextLayout::FormatRange> buildFormatRanges(
         const QString &displayText,
@@ -48,7 +58,7 @@ private:
 
     QString m_text;
     QStringList m_keywords;
-    Qt::TextElideMode m_elideMode = Qt::ElideRight;
+    ElideMode m_elideMode = ElideMode::Right;
     int m_maxLines = 1;
     QTextLayout m_layout;
     QTextOption m_textOption;

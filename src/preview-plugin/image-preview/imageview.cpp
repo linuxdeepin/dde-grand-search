@@ -129,21 +129,14 @@ void ImageView::loadImage(const QString &file, const QString &type, const QStrin
 
 void ImageView::setMatchedContext(const QString &context, const QStringList &keywords)
 {
-    auto highlightedContent = context;
-    if (highlightedContent.startsWith("…"))
-        highlightedContent = highlightedContent.mid(1);
-
-    if (highlightedContent.endsWith("…"))
-        highlightedContent.chop(1);
-
-    m_contentLabel->setVisible(!highlightedContent.isEmpty());
-    m_titleLabel->setVisible(highlightedContent.isEmpty());
-    if (!highlightedContent.isEmpty()) {
+    m_contentLabel->setVisible(!context.isEmpty());
+    m_titleLabel->setVisible(context.isEmpty());
+    if (!context.isEmpty()) {
         // HighlightLabel 内部处理省略和高亮
-        m_contentLabel->setPlainText(highlightedContent);
+        m_contentLabel->setPlainText(context);
         m_contentLabel->setKeywords(keywords);
         if (m_contentLabel->isElided())
-            m_contentLabel->setToolTip(highlightedContent);
+            m_contentLabel->setToolTip(context);
         else
             m_contentLabel->setToolTip("");
     }
@@ -161,14 +154,14 @@ void ImageView::initUI()
     m_titleLabel = new HighlightLabel(this);
     m_titleLabel->setFixedWidth(IMAGEWIDTH);
     m_titleLabel->setAlignment(Qt::AlignCenter);
-    m_titleLabel->setElideMode(Qt::ElideMiddle);
+    m_titleLabel->setElideMode(HighlightLabel::ElideMode::Middle);
     m_titleLabel->setMaxLines(1);
 
     // 内容标签：右省略，1行
     m_contentLabel = new HighlightLabel(this);
     m_contentLabel->setFixedWidth(IMAGEWIDTH);
     m_contentLabel->setAlignment(Qt::AlignCenter);
-    m_contentLabel->setElideMode(Qt::ElideRight);
+    m_contentLabel->setElideMode(HighlightLabel::ElideMode::Smart);
     m_contentLabel->setMaxLines(1);
     m_contentLabel->setVisible(false);
 

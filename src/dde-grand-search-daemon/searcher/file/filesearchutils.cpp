@@ -34,8 +34,16 @@ MatchedItem FileSearchUtils::packItem(const QString &fileName, const QString &se
     if (!keywords.isEmpty())
         extraData.insert(GRANDSEARCH_PROPERTY_ITEM_KEYWORDS, keywords);
 
-    if (!matchedContext.isEmpty())
-        extraData.insert(GRANDSEARCH_PROPERTY_ITEM_MATCHEDCONTEXT, matchedContext);
+    if (!matchedContext.isEmpty()) {
+        QString context = matchedContext;
+        // 去除首尾的省略符号
+        if (context.startsWith("…"))
+            context = context.mid(1);
+        if (context.endsWith("…"))
+            context.chop(1);
+        if (!context.isEmpty())
+            extraData.insert(GRANDSEARCH_PROPERTY_ITEM_MATCHEDCONTEXT, context);
+    }
 
     item.extra = QVariant::fromValue(extraData);
 

@@ -98,14 +98,18 @@ QueryController::~QueryController()
 
 void QueryController::onSearchTextChanged(const QString &txt)
 {
+    // 替换换行符为空格，处理复制粘贴带来的换行
+    QString normalizedText = txt;
+    normalizedText.replace('\n', ' ').replace('\r', ' ');
+
     // 如果文本没有变化，直接返回
-    if (txt == d_p->m_searchText && txt == d_p->m_pendingSearchText)
+    if (normalizedText == d_p->m_searchText && normalizedText == d_p->m_pendingSearchText)
         return;
 
     // 停止已有的定时器
     d_p->m_debounceTimer->stop();
 
-    if (txt.isEmpty()) {
+    if (normalizedText.isEmpty()) {
         // 停止搜索相关的所有活动
         onTerminateSearch();
         qCInfo(logGrandSearch) << "Search terminated - Mission:" << d_p->m_missionId;
@@ -121,11 +125,11 @@ void QueryController::onSearchTextChanged(const QString &txt)
     }
 
     // 存储待处理的搜索文本
-    d_p->m_pendingSearchText = txt;
+    d_p->m_pendingSearchText = normalizedText;
 
     // 设置防抖延迟，根据文本字节长度动态调整
     int debounceDelay = 0;
-    QByteArray bytes = txt.toUtf8();
+    QByteArray bytes = normalizedText.toUtf8();
     int byteLength = bytes.length();
 
     if (byteLength <= 2) {
@@ -137,7 +141,7 @@ void QueryController::onSearchTextChanged(const QString &txt)
         debounceDelay = 0;
     }
 
-    qCDebug(logGrandSearch) << "Setting debounce delay - Text:" << txt
+    qCDebug(logGrandSearch) << "Setting debounce delay - Text:" << normalizedText
                             << "Length:" << byteLength
                             << "Delay:" << debounceDelay;
     d_p->m_debounceTimer->setInterval(debounceDelay);
