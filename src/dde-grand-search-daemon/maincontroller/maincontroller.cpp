@@ -148,6 +148,7 @@ QStringList MainControllerPrivate::checkSearcher(const QStringList &groupList, c
             data.append(GRANDSEARCH_CLASS_FILE_DEEPIN);
             data.append(GRANDSEARCH_CLASS_FILE_FULLTEXT);
             data.append(GRANDSEARCH_CLASS_APP_DESKTOP);
+            data.append(GRANDSEARCH_CLASS_OCR_TEXT);
             qCDebug(logDaemon) << "Added default searchers (file, full-text and app) for general keyword search";
         }
     }

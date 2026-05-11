@@ -127,7 +127,7 @@ QStringList OcrTextWorkerPrivate::parserKeywords(const QString &context)
     QJsonParseError error;
     QJsonDocument doc = QJsonDocument::fromJson(context.toLocal8Bit(), &error);
     if (error.error != QJsonParseError::NoError || doc.isEmpty())
-        return { searchHelper->tropeInputSymbol(context) };
+        return searchHelper->tropeInputSymbol(context).split(" ");
 
     // 应用搜索类目，只需要获取关键字信息
     QStringList keywordList;
@@ -159,7 +159,7 @@ bool OcrTextWorkerPrivate::searchByDFMSearch()
 
     // Configure OCR options
     OcrTextOptionsAPI ocrOptions(options);
-    ocrOptions.setMaxPreviewLength(30);
+    ocrOptions.setMaxPreviewLength(500);
     // Enable filename-OCR content mixed search
     ocrOptions.setFilenameOcrContentMixedAndSearchEnabled(true);
 

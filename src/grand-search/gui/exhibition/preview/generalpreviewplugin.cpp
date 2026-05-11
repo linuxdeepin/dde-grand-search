@@ -66,7 +66,7 @@ GeneralPreviewPluginPrivate::GeneralPreviewPluginPrivate(GeneralPreviewPlugin *p
     textColor.setAlpha(255 * 0.9);
     pa.setColor(QPalette::WindowText, textColor);
     m_nameLabel->setPalette(pa);
-    m_nameLabel->setElideMode(Qt::ElideMiddle);
+    m_nameLabel->setElideMode(HighlightLabel::ElideMode::Middle);
     m_nameLabel->setMaxLines(2);
 
     // 内容标签：右省略，最多3行
@@ -79,7 +79,7 @@ GeneralPreviewPluginPrivate::GeneralPreviewPluginPrivate(GeneralPreviewPlugin *p
     m_contentLabel->setFont(contentFont);
     m_contentLabel->setPalette(pa);
     m_contentLabel->setFixedWidth(NAME_WIDTH);
-    m_contentLabel->setElideMode(Qt::ElideRight);
+    m_contentLabel->setElideMode(HighlightLabel::ElideMode::Right);
     m_contentLabel->setMaxLines(3);
 
     QVBoxLayout *vLayout = new QVBoxLayout();
@@ -142,11 +142,6 @@ bool GeneralPreviewPlugin::previewItem(const ItemInfo &info)
 
     // Get matched context if available
     QString matchedContext = info.value(PREVIEW_ITEMINFO_MATCHEDCONTEXT);
-    if (matchedContext.startsWith("…"))
-        matchedContext = matchedContext.mid(1);
-    if (matchedContext.endsWith("…"))
-        matchedContext.chop(1);
-
     // Get keywords for highlighting
     QStringList keywords;
     QString keywordsStr = info.value(PREVIEW_ITEMINFO_KEYWORDS);

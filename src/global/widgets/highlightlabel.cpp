@@ -10,6 +10,7 @@
 #include <QFontMetrics>
 #include <QRegularExpression>
 #include <QEvent>
+#include <algorithm>
 
 namespace {
 
@@ -17,6 +18,12 @@ struct ElideResult
 {
     QString text;
     QVector<int> origPositions;   // text[i] -> original char position, -1 for ellipsis char
+};
+
+struct MatchRange
+{
+    int start;
+    int end;   // exclusive
 };
 
 static int charWidth(const QFontMetrics &fm, QChar ch)
@@ -35,6 +42,176 @@ static int textWidth(const QFontMetrics &fm, const QString &text)
 #else
     return fm.horizontalAdvance(text);
 #endif
+}
+
+static QVector<MatchRange> findMatchRanges(const QString &text, const QStringList &keywords)
+{
+    QVector<MatchRange> ranges;
+    for (const QString &kw : keywords) {
+        if (kw.isEmpty())
+            continue;
+        QRegularExpression re(QRegularExpression::escape(kw),
+                              QRegularExpression::CaseInsensitiveOption);
+        QRegularExpressionMatchIterator it = re.globalMatch(text);
+        while (it.hasNext()) {
+            auto m = it.next();
+            ranges.append({ static_cast<int>(m.capturedStart()),
+                            static_cast<int>(m.capturedStart() + m.capturedLength()) });
+        }
+    }
+    // sort by start, merge overlapping
+    std::sort(ranges.begin(), ranges.end(),
+              [](const MatchRange &a, const MatchRange &b) { return a.start < b.start; });
+    QVector<MatchRange> merged;
+    for (const auto &r : ranges) {
+        if (!merged.isEmpty() && r.start <= merged.last().end)
+            merged.last().end = std::max(merged.last().end, r.end);
+        else
+            merged.append(r);
+    }
+    return merged;
+}
+
+static ElideResult buildWindowElide(const QString &text, int keepStart, int keepEnd,
+                                    int maxWidth, const QFontMetrics &fm)
+{
+    ElideResult result;
+    const QString ellipsis = QStringLiteral("…");
+    int ellipsisWidth = charWidth(fm, QChar(0x2026));
+
+    bool needLeft = (keepStart > 0);
+    bool needRight = (keepEnd < text.length());
+    int numEllipsis = (needLeft ? 1 : 0) + (needRight ? 1 : 0);
+    int budget = maxWidth - numEllipsis * ellipsisWidth;
+    if (budget <= 0) {
+        result.text = ellipsis;
+        result.origPositions = { -1 };
+        return result;
+    }
+
+    int keepLen = keepEnd - keepStart;
+    // trim from both sides if needed
+    int trimLeft = 0, trimRight = 0;
+    int w = textWidth(fm, text.mid(keepStart, keepLen));
+    while (w > budget && keepLen > 0) {
+        int lNext = charWidth(fm, text[keepStart + trimLeft]);
+        int rNext = charWidth(fm, text[keepEnd - 1 - trimRight]);
+        if (trimRight >= keepLen - trimLeft - 1) {
+            w -= lNext;
+            ++trimLeft;
+        } else if (lNext >= rNext) {
+            w -= lNext;
+            ++trimLeft;
+        } else {
+            w -= rNext;
+            ++trimRight;
+        }
+        keepLen = (keepEnd - trimRight) - (keepStart + trimLeft);
+    }
+    if (keepLen <= 0) {
+        result.text = ellipsis;
+        result.origPositions = { -1 };
+        return result;
+    }
+
+    int actualStart = keepStart + trimLeft;
+    int actualEnd = keepEnd - trimRight;
+    QString kept = text.mid(actualStart, actualEnd - actualStart);
+
+    result.text = (needLeft ? ellipsis : QString()) + kept + (needRight ? ellipsis : QString());
+    int pos = 0;
+    result.origPositions.resize(result.text.length());
+    if (needLeft) {
+        result.origPositions[pos++] = -1;
+    }
+    for (int i = actualStart; i < actualEnd; ++i)
+        result.origPositions[pos++] = i;
+    if (needRight)
+        result.origPositions[pos] = -1;
+    return result;
+}
+
+static ElideResult smartElideWithTracking(const QString &text, int maxWidth,
+                                          const QFontMetrics &fm,
+                                          const QVector<MatchRange> &matchRanges)
+{
+    const QString ellipsis = QStringLiteral("…");
+    int ellipsisWidth = charWidth(fm, QChar(0x2026));
+
+    // 1. If full text fits, return it as-is
+    if (textWidth(fm, text) <= maxWidth) {
+        ElideResult result;
+        result.text = text;
+        result.origPositions.resize(text.length());
+        for (int i = 0; i < text.length(); ++i)
+            result.origPositions[i] = i;
+        return result;
+    }
+
+    // 2. If only ellipsis fits, return just ellipsis
+    if (maxWidth <= ellipsisWidth) {
+        ElideResult result;
+        result.text = ellipsis;
+        result.origPositions = { -1 };
+        return result;
+    }
+
+    // 3. Compute initial keyword window from match ranges
+    int keepStart = text.length();
+    int keepEnd = 0;
+    for (const auto &mr : matchRanges) {
+        keepStart = std::min(keepStart, mr.start);
+        keepEnd = std::max(keepEnd, mr.end);
+    }
+
+    if (keepStart >= keepEnd)
+        return {};
+
+    // 4. Expand outward from keyword range, filling available width with context
+    //    The key insight: expanding to an edge may eliminate an ellipsis,
+    //    freeing ellipsisWidth of budget for further expansion.
+    while (true) {
+        bool needLeft = (keepStart > 0);
+        bool needRight = (keepEnd < text.length());
+        int numEllipsis = (needLeft ? 1 : 0) + (needRight ? 1 : 0);
+        int budget = maxWidth - numEllipsis * ellipsisWidth;
+
+        int keptWidth = textWidth(fm, text.mid(keepStart, keepEnd - keepStart));
+        if (keptWidth > budget)
+            break;   // Already over budget; buildWindowElide will trim from inside
+
+        // Neither side to expand into
+        if (!needLeft && !needRight)
+            break;
+
+        // Try expanding left
+        bool expanded = false;
+        if (keepStart > 0) {
+            int cw = charWidth(fm, text[keepStart - 1]);
+            int newNeedLeft = (keepStart - 1 > 0);
+            int newNumEllipsis = (newNeedLeft ? 1 : 0) + (needRight ? 1 : 0);
+            int newBudget = maxWidth - newNumEllipsis * ellipsisWidth;
+            if (keptWidth + cw <= newBudget) {
+                --keepStart;
+                expanded = true;
+            }
+        }
+        // Try expanding right
+        if (!expanded && keepEnd < text.length()) {
+            int cw = charWidth(fm, text[keepEnd]);
+            int newNeedRight = (keepEnd + 1 < text.length());
+            int newNumEllipsis = (needLeft ? 1 : 0) + (newNeedRight ? 1 : 0);
+            int newBudget = maxWidth - newNumEllipsis * ellipsisWidth;
+            if (keptWidth + cw <= newBudget) {
+                ++keepEnd;
+                expanded = true;
+            }
+        }
+        if (!expanded)
+            break;
+    }
+
+    return buildWindowElide(text, keepStart, keepEnd, maxWidth, fm);
 }
 
 ElideResult elideWithTracking(const QString &text, Qt::TextElideMode mode,
@@ -169,7 +346,7 @@ void HighlightLabel::setKeywords(const QStringList &keywords)
     relayout();
 }
 
-void HighlightLabel::setElideMode(Qt::TextElideMode mode)
+void HighlightLabel::setElideMode(ElideMode mode)
 {
     if (m_elideMode == mode)
         return;
@@ -185,7 +362,7 @@ void HighlightLabel::setMaxLines(int lines)
     relayout();
 }
 
-Qt::TextElideMode HighlightLabel::elideMode() const
+HighlightLabel::ElideMode HighlightLabel::elideMode() const
 {
     return m_elideMode;
 }
@@ -266,9 +443,20 @@ HighlightLabel::ElideInfo HighlightLabel::computeElidedText(int layoutWidth) con
                 info.elided = true;
                 QFontMetrics fm(font());
                 QString remaining = m_text.mid(line.textStart());
-                // For multi-line text, use left elision on the last line to show the end
-                Qt::TextElideMode lastLineElideMode = (m_maxLines > 1 && m_elideMode == Qt::ElideMiddle) ? Qt::ElideLeft : m_elideMode;
-                ElideResult elideResult = elideWithTracking(remaining, lastLineElideMode, layoutWidth, fm);
+
+                ElideResult elideResult;
+                if (m_elideMode == ElideMode::Smart) {
+                    ElideInfo smartInfo = computeSmartElidedText(remaining, layoutWidth, fm);
+                    elideResult.text = smartInfo.displayText;
+                    elideResult.origPositions = smartInfo.origPosMapping;
+                    info.elided = smartInfo.elided;
+                } else {
+                    auto qtMode = static_cast<Qt::TextElideMode>(m_elideMode);
+                    // For multi-line text, use left elision on the last line to show the end
+                    Qt::TextElideMode lastLineElideMode =
+                            (m_maxLines > 1 && qtMode == Qt::ElideMiddle) ? Qt::ElideLeft : qtMode;
+                    elideResult = elideWithTracking(remaining, lastLineElideMode, layoutWidth, fm);
+                }
                 info.displayText = m_text.left(line.textStart()) + elideResult.text;
 
                 // Build full position mapping: identity for head, elideResult mapping for tail
@@ -318,6 +506,45 @@ void HighlightLabel::buildFinalLayout(const QString &displayText, const QVector<
     m_layout.endLayout();
 
     updateGeometry();
+}
+
+HighlightLabel::ElideInfo HighlightLabel::computeSmartElidedText(
+        const QString &text, int maxWidth, const QFontMetrics &fm) const
+{
+    ElideInfo info;
+    info.displayText = text;
+
+    if (text.isEmpty() || m_keywords.isEmpty())
+        return info;
+
+    if (textWidth(fm, text) <= maxWidth)
+        return info;
+
+    QVector<MatchRange> matchRanges = findMatchRanges(text, m_keywords);
+    if (matchRanges.isEmpty()) {
+        // No keyword matches — fall back to ElideRight
+        ElideResult fallback = elideWithTracking(text, Qt::ElideRight, maxWidth, fm);
+        info.displayText = fallback.text;
+        info.origPosMapping = fallback.origPositions;
+        info.elided = true;
+        return info;
+    }
+
+    // smartElideWithTracking handles full-text-fits, too-narrow, and expansion internally
+    ElideResult windowResult = smartElideWithTracking(text, maxWidth, fm, matchRanges);
+    if (windowResult.text.isEmpty()) {
+        // Should not happen since matchRanges is non-empty, but guard anyway
+        ElideResult fallback = elideWithTracking(text, Qt::ElideRight, maxWidth, fm);
+        info.displayText = fallback.text;
+        info.origPosMapping = fallback.origPositions;
+        info.elided = true;
+        return info;
+    }
+
+    info.displayText = windowResult.text;
+    info.origPosMapping = windowResult.origPositions;
+    info.elided = true;
+    return info;
 }
 
 QVector<QTextLayout::FormatRange> HighlightLabel::buildFormatRanges(

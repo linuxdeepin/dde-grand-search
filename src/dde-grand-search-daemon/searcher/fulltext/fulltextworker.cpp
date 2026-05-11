@@ -50,7 +50,7 @@ bool FullTextWorkerPrivate::doSearch()
     options.setMaxResults(MAX_SEARCH_NUM_GROUP);
 
     ContentOptionsAPI contentOptions(options);
-    contentOptions.setMaxPreviewLength(50);
+    contentOptions.setMaxPreviewLength(100);
     contentOptions.setFilenameContentMixedAndSearchEnabled(true);
 
     engine->setSearchOptions(options);

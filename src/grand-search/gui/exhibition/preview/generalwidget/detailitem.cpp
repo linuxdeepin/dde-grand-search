@@ -20,7 +20,7 @@ using namespace GrandSearch;
 DetailItem::DetailItem(QWidget *parent)
     : QWidget(parent)
 {
-    setFixedSize(360, 36);
+    setFixedWidth(360);
 
     m_backgroundColor = QColor(0, 0, 0, int(255*0.05));
 
@@ -41,7 +41,7 @@ DetailItem::DetailItem(QWidget *parent)
     m_tagLabel->setPalette(pa);
 
     m_contentLabel = new ReplicableLabel(this);
-    m_contentLabel->setAlignment(Qt::AlignLeft);
+    m_contentLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
     QFont contectFont = m_contentLabel->font();
     contectFont = DFontSizeManager::instance()->get(DFontSizeManager::T8, contectFont);
