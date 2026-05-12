@@ -48,7 +48,7 @@ bool ImagePreviewPlugin::previewItem(const ItemInfo &item)
     QStringList keywords;
     QString keywordsStr = item.value(PREVIEW_ITEMINFO_KEYWORDS);
     if (!keywordsStr.isEmpty()) {
-        keywords = keywordsStr.split(",", Qt::SkipEmptyParts);
+        keywords = keywordsStr.split(":", Qt::SkipEmptyParts);
     }
 
     qCDebug(logImagePreview) << "Previewing image - Path:" << path << "Type:" << type

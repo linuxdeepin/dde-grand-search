@@ -159,7 +159,7 @@ bool OcrTextWorkerPrivate::searchByDFMSearch()
 
     // Configure OCR options
     OcrTextOptionsAPI ocrOptions(options);
-    ocrOptions.setMaxPreviewLength(500);
+    ocrOptions.setMaxPreviewLength(50);
     // Enable filename-OCR content mixed search
     ocrOptions.setFilenameOcrContentMixedAndSearchEnabled(true);
 
