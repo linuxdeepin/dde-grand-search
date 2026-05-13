@@ -12,14 +12,16 @@
 
 #include <QHBoxLayout>
 #include <QGuiApplication>
+#include <QStylePainter>
+#include <QStyleOptionToolButton>
 
-#define TOOLBTN_WIDTH_NARROW    80
-#define TOOLBTN_WIDTH_WIDE      108
-#define TOOLBTN_MAX_PIXELSIZE   18
-#define TOOLBAR_HEIGHT          36
-#define TOOLBAR_LEFT_MARGIN     30
-#define TOOLBAR_RIGHT_MARGIN    30
-#define TOOLBAR_BOTTOM_MARGIN   10
+#define TOOLBTN_WIDTH_NARROW 80
+#define TOOLBTN_WIDTH_WIDE 108
+#define TOOLBTN_MAX_PIXELSIZE 18
+#define TOOLBAR_HEIGHT 36
+#define TOOLBAR_LEFT_MARGIN 30
+#define TOOLBAR_RIGHT_MARGIN 30
+#define TOOLBAR_BOTTOM_MARGIN 10
 
 using namespace GrandSearch;
 DWIDGET_USE_NAMESPACE
@@ -29,14 +31,7 @@ IconButton::IconButton(QWidget *parent)
     : QToolButton(parent)
 {
     setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-
-    QColor textColor(0, 0, 0, int(255 * 0.9));
-    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
-        textColor = QColor(255, 255, 255, int(255 * 0.9));
-    QPalette pa = palette();
-    pa.setColor(QPalette::ButtonText, textColor);
-    setPalette(pa);
-
+    updatePalette();
     DFontSizeManager::instance()->bind(this, DFontSizeManager::T6);
 
     if (this->font().pixelSize() < TOOLBTN_MAX_PIXELSIZE) {
@@ -48,6 +43,42 @@ IconButton::IconButton(QWidget *parent)
     }
 }
 
+void IconButton::updatePalette()
+{
+    bool isDark = DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType;
+    QColor textColor = isDark
+            ? QColor(255, 255, 255, int(255 * 0.9))
+            : QColor(0, 0, 0, int(255 * 0.9));
+    QColor bakgrdColor = DGuiApplicationHelper::instance()->applicationPalette().color(DPalette::ObviousBackground);
+
+    QPalette pa = palette();
+    pa.setColor(QPalette::ButtonText, textColor);
+    pa.setColor(QPalette::WindowText, textColor);
+    pa.setColor(QPalette::Button, bakgrdColor);
+    setPalette(pa);
+}
+
+void IconButton::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event);
+    QStylePainter painter(this);
+    QStyleOptionToolButton opt;
+    initStyleOption(&opt);
+
+    bool active = opt.state & QStyle::State_Sunken;
+    QPixmap pix = icon().pixmap(opt.iconSize, QIcon::Normal, QIcon::Off);
+    if (!pix.isNull() && active) {
+        QColor tintColor = palette().color(QPalette::Highlight);
+        QPainter p(&pix);
+        p.setCompositionMode(QPainter::CompositionMode_SourceIn);
+        p.fillRect(pix.rect(), tintColor);
+        p.end();
+        opt.icon = QIcon(pix);
+    }
+
+    painter.drawControl(QStyle::CE_ToolButtonLabel, opt);
+}
+
 GeneralToolBar::GeneralToolBar(QWidget *parent)
     : DWidget(parent)
 {
@@ -57,10 +88,10 @@ GeneralToolBar::GeneralToolBar(QWidget *parent)
 
 void GeneralToolBar::initUi()
 {
-    setFixedHeight(TOOLBAR_HEIGHT + TOOLBAR_BOTTOM_MARGIN); //高36 + 下边距10
+    setFixedHeight(TOOLBAR_HEIGHT + TOOLBAR_BOTTOM_MARGIN);   // 高36 + 下边距10
 
     m_hMainLayout = new QHBoxLayout(this);
-    //下边距10
+    // 下边距10
     m_hMainLayout->setContentsMargins(TOOLBAR_LEFT_MARGIN, 0, TOOLBAR_RIGHT_MARGIN, TOOLBAR_BOTTOM_MARGIN);
     m_hMainLayout->setSpacing(0);
 
@@ -79,7 +110,7 @@ void GeneralToolBar::initUi()
     m_copyPathBtn = new IconButton(this);
     m_copyPathBtn->setText(tr("Copy Path"));
     m_copyPathBtn->setIcon(QIcon(QString(":/icons/copypath%1.svg").arg(suffix)));
-    m_openPathBtn->setFixedWidth(TOOLBTN_WIDTH_WIDE);
+    m_copyPathBtn->setFixedWidth(TOOLBTN_WIDTH_WIDE);
 
     m_vLine1 = new DVerticalLine(this);
     m_vLine1->setFixedHeight(30);

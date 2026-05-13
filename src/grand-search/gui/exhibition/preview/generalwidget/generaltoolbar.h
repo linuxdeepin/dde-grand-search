@@ -20,6 +20,12 @@ class IconButton: public QToolButton
     Q_OBJECT
 public:
     explicit IconButton(QWidget *parent = nullptr);
+
+protected:
+    void paintEvent(QPaintEvent *event) override;
+
+private:
+    void updatePalette();
 };
 
 class GeneralToolBar : public Dtk::Widget::DWidget
