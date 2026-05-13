@@ -271,6 +271,8 @@ void GrandSearchListView::setData(const QModelIndex &index, const MatchedItem &i
         }
     }
 
+    if (itemIcon.isNull())
+        itemIcon = QIcon::fromTheme("unknown");
     m_model->setData(index, itemIcon, Qt::DecorationRole);
 
     // 异步请求缩略图

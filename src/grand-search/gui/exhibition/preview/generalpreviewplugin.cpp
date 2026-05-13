@@ -195,6 +195,9 @@ bool GeneralPreviewPlugin::previewItem(const ItemInfo &info)
     } else {
         pixmap = Utils::defaultIcon(item).pixmap(iconSize);
     }
+
+    if (pixmap.isNull())
+        pixmap = QIcon::fromTheme("unknown").pixmap(iconSize);
     d_p->m_iconLabel->setPixmap(pixmap);
 
     // 设置名称，关键词高亮在 HighlightLabel 内部处理
