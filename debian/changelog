@@ -1,3 +1,15 @@
+dde-grand-search (6.0.33) unstable; urgency=medium
+
+  * feat: enable OCR text search and fix keyword parsing
+  * fix: adjust OCR preview length and keyword delimiter
+  * fix: add fallback icon for null pixmap cases
+  * fix: correct button width and improve toolbar styling
+  * feat: add thumbnail support with rounded corners
+  * fix: handle Qt6 file time logic issues with statx fallback
+  * fix: fix dark mode background color setting
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Thu, 14 May 2026 22:02:59 +0800
+
 dde-grand-search (6.0.32) unstable; urgency=medium
 
   * refactor: extract full-text search into separate searcher
