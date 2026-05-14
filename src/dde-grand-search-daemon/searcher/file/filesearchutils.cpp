@@ -4,6 +4,7 @@
 
 #include "filesearchutils.h"
 #include "global/builtinsearch.h"
+#include "global/commontools.h"
 #include "utils/specialtools.h"
 #include "global/searchhelper.h"
 #include "global/searchconfigdefine.h"
@@ -229,7 +230,7 @@ QVariantHash FileSearchUtils::tailerData(const QFileInfo &info)
     }
 
     if (config->value(GRANDSEARCH_TAILER_TIMEMODEFIED, false)) {
-        auto timeModified = info.lastModified().toString("yyyy-MM-dd hh:mm ") + QObject::tr("modified");
+        auto timeModified = CommonTools::getFileModifiedTime(info.absoluteFilePath()).toString("yyyy-MM-dd hh:mm ") + QObject::tr("modified");
         datas.append(timeModified);
         qCDebug(logDaemon) << "Added modification time to tailer:" << timeModified;
     }

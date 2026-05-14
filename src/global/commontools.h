@@ -9,12 +9,18 @@
 #include <QPoint>
 #include <QColor>
 #include <QtDebug>
+#include <QFileInfo>
+#include <QDateTime>
 #include <QImage>
 #include <QPainter>
 #include <QMutex>
 
 #include <fstab.h>
 #include <sys/stat.h>
+#include <sys/syscall.h>
+#include <linux/stat.h>
+#include <unistd.h>
+#include <fcntl.h>
 
 namespace GrandSearch {
 
@@ -79,6 +85,40 @@ inline QString formatFileSize(qint64 num, bool withUnitVisible = true, int preci
 inline QString dateTimeFormat()
 {
     return "yyyy/MM/dd HH:mm";
+}
+
+// 在Qt6环境下，当文件时间存在逻辑问题时（如创建时间是今天，修改时间却为昨天等），
+// QFileInfo::lastModified()会返回无效的时间，此时需要使用statx系统调用直接获取文件时间
+inline QDateTime getFileModifiedTime(const QString &filePath)
+{
+    QFileInfo info(filePath);
+    QDateTime time = info.lastModified();
+    if (time.isValid())
+        return time;
+
+    QByteArray path = filePath.toLocal8Bit();
+    struct statx stx;
+    if (syscall(SYS_statx, AT_FDCWD, path.constData(), AT_SYMLINK_NOFOLLOW, STATX_MTIME, &stx) == 0 && (stx.stx_mask & STATX_MTIME))
+        return QDateTime::fromSecsSinceEpoch(static_cast<qint64>(stx.stx_mtime.tv_sec));
+
+    return {};
+}
+
+// 在Qt6环境下，当文件时间存在逻辑问题时（如创建时间是今天，访问时间却为昨天等），
+// QFileInfo::lastRead()会返回无效的时间，此时需要使用statx系统调用直接获取文件时间
+inline QDateTime getFileAccessTime(const QString &filePath)
+{
+    QFileInfo info(filePath);
+    QDateTime time = info.lastRead();
+    if (time.isValid())
+        return time;
+
+    QByteArray path = filePath.toLocal8Bit();
+    struct statx stx;
+    if (syscall(SYS_statx, AT_FDCWD, path.constData(), AT_SYMLINK_NOFOLLOW, STATX_ATIME, &stx) == 0 && (stx.stx_mask & STATX_ATIME))
+        return QDateTime::fromSecsSinceEpoch(static_cast<qint64>(stx.stx_atime.tv_sec));
+
+    return {};
 }
 
 inline QString durationString(qint64 seconds)

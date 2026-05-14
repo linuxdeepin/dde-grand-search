@@ -150,7 +150,7 @@ bool VideoPreviewPlugin::previewItem(const ItemInfo &item)
     m_infos.push_back(detailInfo);
 
     // 修改时间
-    auto lt = fileInfo.lastModified().toString(CommonTools::dateTimeFormat());
+    auto lt = CommonTools::getFileModifiedTime(path).toString(CommonTools::dateTimeFormat());
 
     tagInfos.clear();
     tagInfos.insert(DetailInfoProperty::Text, QVariant(kLabelTime));

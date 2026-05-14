@@ -13,6 +13,7 @@ extern "C" {
 
 #include "global/builtinsearch.h"
 #include "global/searchhelper.h"
+#include "global/commontools.h"
 #include "business/config/accessrecord/accessrecord.h"
 
 #include "interfaces/daemongrandsearchinterface.h"
@@ -368,8 +369,8 @@ double Utils::calcFileWeight(const QString &path, const QString &name, const QSt
 #else
     const QDateTime &createDateTime = fileInfo.created();
 #endif
-    const QDateTime &lastModifyTime = fileInfo.lastModified();
-    const QDateTime &lastReadTime = fileInfo.lastRead();
+    const QDateTime &lastModifyTime = CommonTools::getFileModifiedTime(path);
+    const QDateTime &lastReadTime = CommonTools::getFileAccessTime(path);
 
     qint64 createDayDiff = calcDateDiff(createDateTime, currentDateTime);
     qint64 lastModifyDayDiff = calcDateDiff(lastModifyTime, currentDateTime);
