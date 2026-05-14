@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "thumbnailcache.h"
+#include "global/commontools.h"
 
 #include <QCryptographicHash>
 #include <QDir>
@@ -141,8 +142,7 @@ void ThumbnailCache::put(const QString &filePath, const ThumbnailSize &size, con
     QString diskPath = cacheFilePath(filePath, size);
 
     // 获取文件修改时间
-    QFileInfo fileInfo(filePath);
-    qint64 mtime = fileInfo.lastModified().toSecsSinceEpoch();
+    qint64 mtime = CommonTools::getFileModifiedTime(filePath).toSecsSinceEpoch();
 
     // 转换为 QImage 以便添加元数据
     QImage image = thumbnail.toImage();
@@ -196,9 +196,7 @@ bool ThumbnailCache::isCacheExpired(const QString &filePath, const QString &cach
 
 bool ThumbnailCache::isCacheExpired(const QString &filePath, const QString &cachePath, const QImage &cacheImage)
 {
-    QFileInfo sourceFile(filePath);
-
-    if (!sourceFile.exists()) {
+    if (!QFile::exists(filePath)) {
         return true;
     }
 
@@ -211,7 +209,7 @@ bool ThumbnailCache::isCacheExpired(const QString &filePath, const QString &cach
 
     // 使用元数据中的 MTime 进行验证
     qint64 cachedMTime = mtimeStr.toLongLong();
-    qint64 sourceMTime = sourceFile.lastModified().toSecsSinceEpoch();
+    qint64 sourceMTime = CommonTools::getFileModifiedTime(filePath).toSecsSinceEpoch();
 
     // 如果源文件修改时间晚于缓存时间，则缓存过期
     return sourceMTime > cachedMTime;

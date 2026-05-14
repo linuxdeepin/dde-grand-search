@@ -129,7 +129,7 @@ bool ImagePreviewPlugin::previewItem(const ItemInfo &item)
     m_detailInfos.push_back(detailInfo);
 
     // 修改时间
-    auto time = fileInfo.lastModified();
+    auto time = CommonTools::getFileModifiedTime(path);
 
     tagInfos.clear();
     tagInfos.insert(DetailInfoProperty::Text, QVariant(tr("Time modified:")));

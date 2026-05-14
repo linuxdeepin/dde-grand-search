@@ -273,7 +273,7 @@ bool GeneralPreviewPlugin::previewItem(const ItemInfo &info)
     tagInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideNone));
 
     contentInfos.clear();
-    contentInfos.insert(DetailInfoProperty::Text, QVariant(fi.lastModified().toString(CommonTools::dateTimeFormat())));
+    contentInfos.insert(DetailInfoProperty::Text, QVariant(CommonTools::getFileModifiedTime(item.item).toString(CommonTools::dateTimeFormat())));
     contentInfos.insert(DetailInfoProperty::ElideMode, QVariant::fromValue(Qt::ElideMiddle));
 
     detailInfo = qMakePair(tagInfos, contentInfos);
