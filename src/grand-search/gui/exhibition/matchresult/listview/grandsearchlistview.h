@@ -12,7 +12,7 @@
 
 #include <QPixmap>
 
-#define ICON_ROLE Qt::UserRole + 1
+#define THUMBNAIL_ROLE Qt::UserRole + 1
 #define DATA_ROLE Qt::UserRole + 2
 
 namespace GrandSearch {
