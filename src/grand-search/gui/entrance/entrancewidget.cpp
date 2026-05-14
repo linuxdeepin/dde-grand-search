@@ -208,12 +208,11 @@ void EntranceWidget::initUI()
 
     QPalette palette;
     QColor colorText(0, 0, 0);
-    QColor colorBkg(0, 0, 0, 25);
     if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType) {
         colorText = QColor(255, 255, 255);
-        colorBkg = QColor(255, 255, 255, 25);
+        QColor colorBkg = QColor(255, 255, 255, 25);
+        palette.setColor(QPalette::Button, colorBkg);   // 背景色
     }
-    palette.setColor(QPalette::Button, colorBkg);   // 背景色
     palette.setColor(QPalette::Text, colorText);
     palette.setColor(QPalette::ButtonText, colorText);
 
