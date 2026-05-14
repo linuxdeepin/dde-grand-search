@@ -19,13 +19,13 @@
 #include <QApplication>
 #include <QToolTip>
 
-#define ListItemSpace             10       // 列表图标与文本间间距
-#define ListItemHeight            36       // 列表行高
-#define ListIconSize              24       // 列表图标大小
-#define ListRowWidth              740      // 列表行宽
-#define ListIconMargin            10       // 列表图标边距
-#define TailDataMargin            10       // 拖尾信息显示间隔
-#define TailMaxWidth              150      // 拖尾信息最大显示宽度
+#define ListItemSpace 10   // 列表图标与文本间间距
+#define ListItemHeight 36   // 列表行高
+#define ListIconSize 24   // 列表图标大小
+#define ListRowWidth 740   // 列表行宽
+#define ListIconMargin 10   // 列表图标边距
+#define TailDataMargin 10   // 拖尾信息显示间隔
+#define TailMaxWidth 150   // 拖尾信息最大显示宽度
 
 DWIDGET_USE_NAMESPACE
 DGUI_USE_NAMESPACE
@@ -38,7 +38,6 @@ GrandSearchListDelegate::GrandSearchListDelegate(QAbstractItemView *parent)
 
 GrandSearchListDelegate::~GrandSearchListDelegate()
 {
-
 }
 
 void GrandSearchListDelegate::initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const
@@ -57,18 +56,27 @@ bool GrandSearchListDelegate::editorEvent(QEvent *event, QAbstractItemModel *mod
 
 void GrandSearchListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    QStyledItemDelegate::paint(painter, option, index);
-
     painter->setRenderHint(QPainter::Antialiasing);
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     painter->setRenderHint(QPainter::HighQualityAntialiasing);
 #endif
 
-    // 绘制选中状态(UI设计图暂无选择外框线）
-    drawSelectState(painter, option, index);
+    // 让基类绘制背景和选中状态（不绘制图标和文本）
+    QStyleOptionViewItem viewOption(option);
+    initStyleOption(&viewOption, index);
+    viewOption.text = "";
+    viewOption.icon = QIcon();
+    QStyle *pStyle = viewOption.widget ? viewOption.widget->style() : QApplication::style();
+    pStyle->drawControl(QStyle::CE_ItemViewItem, &viewOption, painter, viewOption.widget);
+
+    // 绘制选中状态
+    drawSelectState(painter, viewOption, index);
+
+    // 绘制图标（普通图标或缩略图）
+    drawIcon(painter, viewOption, index);
 
     // 绘制匹配结果文本
-    drawSearchResultText(painter, option, index);
+    drawSearchResultText(painter, viewOption, index);
 }
 
 QSize GrandSearchListDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -114,6 +122,49 @@ bool GrandSearchListDelegate::helpEvent(QHelpEvent *event, QAbstractItemView *vi
     return DStyledItemDelegate::helpEvent(event, view, option, index);
 }
 
+void GrandSearchListDelegate::drawIcon(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    QVariant thumbnailData = index.data(THUMBNAIL_ROLE);
+    if (thumbnailData.isValid() && !thumbnailData.value<QPixmap>().isNull()) {
+        QPixmap thumbnail = thumbnailData.value<QPixmap>();
+        // 按实际比例缩放，宽高不超过 ListIconSize
+        QSize scaledSize = thumbnail.size().scaled(ListIconSize, ListIconSize, Qt::KeepAspectRatio);
+        QRect iconRect(QPoint(), scaledSize);
+        iconRect.moveCenter(QPoint(option.rect.x() + ListIconMargin + ListIconSize / 2,
+                                   option.rect.y() + option.rect.height() / 2));
+
+        painter->save();
+
+        // 圆角裁剪
+        QPainterPath clipPath;
+        clipPath.addRoundedRect(iconRect, 2, 2);
+        painter->setClipPath(clipPath);
+        painter->drawPixmap(iconRect, thumbnail);
+
+        // 内描边
+        painter->setClipping(false);
+        QColor borderColor = option.palette.color(QPalette::BrightText);
+        borderColor.setAlphaF(0.1);
+
+        QPen borderPen(borderColor, 1);
+        painter->setPen(borderPen);
+        painter->setBrush(Qt::NoBrush);
+        painter->drawRoundedRect(iconRect, 2, 2);
+        painter->restore();
+    } else {
+        // 绘制普通图标
+        QIcon icon = index.data(Qt::DecorationRole).value<QIcon>();
+        if (icon.isNull())
+            return;
+
+        QRect iconRect(option.rect.x() + ListIconMargin, option.rect.y() + (option.rect.height() - ListIconSize) / 2,
+                       ListIconSize, ListIconSize);
+        painter->save();
+        icon.paint(painter, iconRect);
+        painter->restore();
+    }
+}
+
 void GrandSearchListDelegate::drawSelectState(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     Q_UNUSED(index);
@@ -128,17 +179,16 @@ void GrandSearchListDelegate::drawSelectState(QPainter *painter, const QStyleOpt
         QColor hovertColor;
         const GrandSearchListView *listview = qobject_cast<const GrandSearchListView *>(option.widget);
         if ((listview->getThemeType() == DGuiApplicationHelper::DarkType)
-                || (index.isValid() && index == listview->currentIndex())) {
+            || (index.isValid() && index == listview->currentIndex())) {
             hovertColor = QColor(255, 255, 255, static_cast<int>(255 * 0.05));
         } else {
-            hovertColor = QColor(0, 0, 0, static_cast<int>(255*0.05));
+            hovertColor = QColor(0, 0, 0, static_cast<int>(255 * 0.05));
         }
         painter->setBrush(hovertColor);
         QRect selecteColorRect = option.rect.adjusted(0, 0, 0, 0);
         painter->drawRoundedRect(selecteColorRect, 8, 8);
         painter->restore();
     }
-
 }
 
 void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -147,7 +197,7 @@ void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QSty
     const GrandSearchListView *listview = qobject_cast<const GrandSearchListView *>(option.widget);
 
     if ((listview->getThemeType() == DGuiApplicationHelper::DarkType)
-            || (index.isValid() && index == listview->currentIndex())) {
+        || (index.isValid() && index == listview->currentIndex())) {
         nameTextColor = QColor("#FFFFFF");
     } else {
         nameTextColor = QColor("#000000");
@@ -172,14 +222,6 @@ void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QSty
         elidedName.append(markStr);
     }
 
-    QStyleOptionViewItem viewOption(option);
-    initStyleOption(&viewOption, index);
-    if (option.state.testFlag(QStyle::State_HasFocus))
-        viewOption.state = viewOption.state ^ QStyle::State_HasFocus;
-    QStyle *pStyle = viewOption.widget ? viewOption.widget->style() : QApplication::style();
-    viewOption.text = "";
-    pStyle->drawControl(QStyle::CE_ItemViewItem, &viewOption, painter, viewOption.widget);
-
     QTextDocument nameDocument;
     nameDocument.setDocumentMargin(0);
     nameDocument.setPlainText(elidedName);
@@ -200,7 +242,7 @@ void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QSty
     int nameMargin = static_cast<int>((option.rect.height() - nameFontMetrics.height()) / 2);
     int actualNameWidth = nameFontMetrics.size(Qt::TextSingleLine, elidedName).width();
     int actualStartX = ListIconMargin + ListIconSize + ListItemSpace;
-    QRect nameTextRect(actualStartX , option.rect.y() + nameMargin, actualNameWidth, option.rect.height());
+    QRect nameTextRect(actualStartX, option.rect.y() + nameMargin, actualNameWidth, option.rect.height());
 
     painter->save();
     painter->translate(nameTextRect.topLeft());
@@ -212,7 +254,6 @@ void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QSty
     if (!listview->isPreviewItem()) {
         drawTailText(painter, option, index, option.rect.width(), actualStartX + nameTextRect.width());
     }
-
 }
 
 void GrandSearchListDelegate::drawTailText(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index, int textMaxWidth, int actualStartX) const
@@ -251,7 +292,7 @@ void GrandSearchListDelegate::drawTailText(QPainter *painter, const QStyleOption
             const GrandSearchListView *listview = qobject_cast<const GrandSearchListView *>(option.widget);
 
             if ((listview->getThemeType() == DGuiApplicationHelper::DarkType)
-                    || (index.isValid() && index == listview->currentIndex())) {
+                || (index.isValid() && index == listview->currentIndex())) {
                 tailTextColor = QColor("#FFFFFF");
             } else {
                 tailTextColor = QColor("#000000");
@@ -339,9 +380,9 @@ QMap<int, QString> GrandSearchListDelegate::calcTailShowData(QStringList &string
 
 QMap<int, QString> GrandSearchListDelegate::calcTailShowDataByMaxWidth(QStringList &strings, const int &tailCount, int averageWidth, const QFontMetrics &fontMetrics) const
 {
-    QString tailString;             // 拖尾数据
-    QString elidedTailText;         // 实际显示的拖尾数据
-    QMap<int, QString> tailMap;     // 最终显示的数据--<拖尾序号，拖尾数据>
+    QString tailString;   // 拖尾数据
+    QString elidedTailText;   // 实际显示的拖尾数据
+    QMap<int, QString> tailMap;   // 最终显示的数据--<拖尾序号，拖尾数据>
 
     for (int i = 0; i < tailCount; i++) {
         tailString = strings.takeFirst();
@@ -355,12 +396,12 @@ QMap<int, QString> GrandSearchListDelegate::calcTailShowDataByMaxWidth(QStringLi
 
 QMap<int, QString> GrandSearchListDelegate::calcTailShowDataByOptimalWidth(QStringList &strings, const int &tailCount, int averageWidth, const QFontMetrics &fontMetrics) const
 {
-    QString tailString;             // 拖尾数据
-    QMap<int, QString> tailMap;     // 最终显示的数据--<拖尾序号，拖尾数据>
-    QMap<int, QString> pendMap;     // 推迟计算的拖尾数据(仅使用平均空间时会发生截断的拖尾数据)
-    int unUsedWidth = 0;            // 未使用空间
+    QString tailString;   // 拖尾数据
+    QMap<int, QString> tailMap;   // 最终显示的数据--<拖尾序号，拖尾数据>
+    QMap<int, QString> pendMap;   // 推迟计算的拖尾数据(仅使用平均空间时会发生截断的拖尾数据)
+    int unUsedWidth = 0;   // 未使用空间
     // 提取能够全量显示的拖尾信息
-    for (int i = 0; i < tailCount ; i++) {
+    for (int i = 0; i < tailCount; i++) {
         // 从前向后，逐个取出数据进行计算
         tailString = strings.takeFirst();
         int currentTailWidth = fontMetrics.size(Qt::TextSingleLine, tailString).width();
@@ -375,9 +416,9 @@ QMap<int, QString> GrandSearchListDelegate::calcTailShowDataByOptimalWidth(QStri
     }
 
     // 提取被截断显示的拖尾信息
-    int availableWidth;             // 当前项可利用的最大宽度
-    QString pendString;             // 待处理的原始信息
-    QString elidedTailText;         // 截断显示的拖尾数据
+    int availableWidth;   // 当前项可利用的最大宽度
+    QString pendString;   // 待处理的原始信息
+    QString elidedTailText;   // 截断显示的拖尾数据
     for (auto index : pendMap.keys()) {
 
         availableWidth = averageWidth;
@@ -407,4 +448,3 @@ QMap<int, QString> GrandSearchListDelegate::calcTailShowDataByOptimalWidth(QStri
 
     return tailMap;
 }
-

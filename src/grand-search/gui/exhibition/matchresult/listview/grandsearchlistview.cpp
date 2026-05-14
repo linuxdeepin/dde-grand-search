@@ -324,12 +324,8 @@ void GrandSearchListView::updateThumbnail(const QString &filePath, const QPixmap
 
         MatchedItem item = data.value<MatchedItem>();
         if (item.item == filePath) {
-            // 将缩略图缩放到视图的图标大小
-            QSize targetSize = this->iconSize();
-            QPixmap scaledThumbnail = thumbnail.scaled(targetSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-
-            // 更新缩略图
-            m_model->setData(index, scaledThumbnail, Qt::DecorationRole);
+            // 更新缩略图到独立角色，保留原始图标
+            m_model->setData(index, thumbnail, THUMBNAIL_ROLE);
             break;   // 找到后退出循环
         }
     }
