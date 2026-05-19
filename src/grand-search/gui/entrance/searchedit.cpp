@@ -139,7 +139,6 @@ void SearchEditPrivate::init()
     // 居中的搜索图标 + 占位文本容器
     m_iconWidget = new QWidget;
     m_iconWidget->setObjectName("iconWidget");
-    m_iconWidget->installEventFilter(q);
     QHBoxLayout *centerLayout = new QHBoxLayout(m_iconWidget);
     centerLayout->setContentsMargins(0, 0, 0, 0);
     centerLayout->setSpacing(6);
@@ -161,15 +160,16 @@ void SearchEditPrivate::init()
     m_placeHolder = SearchEdit::tr("Search");
     m_placeholderLabel->setText(m_placeHolder);
 
-    centerLayout->addWidget(searchIcon, 0, Qt::AlignVCenter);
+    centerLayout->addStretch(1);
+    centerLayout->addWidget(searchIcon, 0, Qt::AlignCenter);
     centerLayout->addWidget(m_placeholderLabel, 0, Qt::AlignCenter);
-    centerLayout->addSpacing(12 / qApp->devicePixelRatio());
+    centerLayout->addStretch(1);
 
     // QLineEdit 内部布局：左侧放 iconWidget（居中），聚焦后隐藏
     m_lineEditLayout = new QHBoxLayout(m_lineEdit);
     m_lineEditLayout->setContentsMargins(0, 0, 0, 0);
     m_lineEditLayout->setSpacing(0);
-    m_lineEditLayout->addWidget(m_iconWidget, 0, Qt::AlignCenter);
+    m_lineEditLayout->addWidget(m_iconWidget);
 
     // 左侧搜索图标 action（聚焦后显示）
     m_searchAction = new QAction(q);
@@ -402,11 +402,6 @@ void SearchEdit::setFocus()
 
 bool SearchEdit::eventFilter(QObject *watched, QEvent *event)
 {
-    if (watched == d->m_iconWidget && event->type() == QEvent::MouseButtonPress) {
-        d->m_lineEdit->setFocus();
-        return true;
-    }
-
     if (watched == d->m_lineEdit) {
         switch (event->type()) {
         case QEvent::FocusIn:
@@ -441,7 +436,7 @@ bool SearchEdit::eventFilter(QObject *watched, QEvent *event)
         }
         case QEvent::ContextMenu: {
             auto *ctxEvent = static_cast<QContextMenuEvent *>(event);
-            if (Q_LIKELY(ctxEvent)) {
+            if (Q_LIKELY(ctxEvent) && !d->m_iconWidget->isVisible()) {
                 d->showContextMenu(ctxEvent->globalPos());
                 return true;
             }
