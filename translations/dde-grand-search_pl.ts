@@ -526,22 +526,22 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="160"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Szukaj</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="256"/>
         <source>Cut</source>
-        <translation type="unfinished"/>
+        <translation>Wytnij</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="260"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Kopiuj</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="264"/>
         <source>Paste</source>
-        <translation type="unfinished"/>
+        <translation>Wklej</translation>
     </message>
 </context>
 <context>
