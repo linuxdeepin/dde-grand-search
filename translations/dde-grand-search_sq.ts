@@ -1,22 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="sq">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="sq">
 <context>
     <name>GrandSearch::AiToolBar</name>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="48"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation type="unfinished"></translation>
+        <translation>S’arrihet të përdoret %1, ju lutemi, kaloni te Shitore Aplikacionesh që të përditësoni së pari versionin e UOS AI-së.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="49"/>
         <source>Cancel</source>
-        <translation type="unfinished">Anuloje</translation>
+        <translation>Anuloje</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
         <source>Open App Store</source>
-        <translation type="unfinished"></translation>
+        <translation>Hap Shitore Aplikacionesh</translation>
     </message>
 </context>
 <context>
@@ -25,75 +23,75 @@
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="112"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="162"/>
         <source>Summary</source>
-        <translation type="unfinished"></translation>
+        <translation>Përmbledhje</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="113"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="163"/>
         <source>Translation</source>
-        <translation type="unfinished"></translation>
+        <translation>Përkthim</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="114"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="164"/>
         <source>Extension</source>
-        <translation type="unfinished"></translation>
+        <translation>Zgjerim</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="115"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="165"/>
         <source>Add to knowledge base</source>
-        <translation type="unfinished"></translation>
+        <translation>Shtoje te bazë dijesh</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="126"/>
         <source>Summarize document content with UOS AI</source>
-        <translation type="unfinished"></translation>
+        <translation>Përmblidhni dokumente me IA nga UOS</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="127"/>
         <source>Translate document content with UOS AI</source>
-        <translation type="unfinished"></translation>
+        <translation>Përktheni lëndë dokumentesh me IA nga UOS</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="128"/>
         <source>Extend document content with UOS AI</source>
-        <translation type="unfinished"></translation>
+        <translation>Zgjeroni lëndë dokumentesh me IA nga UOS</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="129"/>
         <source>Add document to UOS AI knowledge base</source>
-        <translation type="unfinished"></translation>
+        <translation>Shtoni dokument te bazë dijesh IA-ja UOS</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="299"/>
         <source>Summarize this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation type="unfinished"></translation>
+        <translation>Përmblidhe këtë dokument për mua dhe jepmë drejtpërdrejt një përfundim të qartë, pa çfarëdo lënde të panevojshme.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="315"/>
         <source>Translate this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation type="unfinished"></translation>
+        <translation>Përktheje këtë dokument për mua dhe jepmë drejtpërdrejt një përfundim të qartë, pa çfarëdo lënde të panevojshme.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="331"/>
         <source>Expand this document for me and provide me with a clear and expanded result directly, without any unnecessary content.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zgjeroje këtë dokument për mua dhe jepmë drejtpërdrejt një përfundim të qartë dhe të zgjerua, pa çfarëdo lënde të panevosjhme.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="447"/>
         <source>DDE Grand Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Kërkimi i Madh DDE</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="450"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation type="unfinished"></translation>
+        <translation>S’arrihet të përdoret %1, ju lutemi, kaloni te Shitore Aplikacionesh që të përditësoni së pari versionin e UOS AI-së.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
         <source>Open App Store</source>
-        <translation type="unfinished"></translation>
+        <translation>Hap Shitore Aplikacionesh</translation>
     </message>
 </context>
 <context>
@@ -164,18 +162,18 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <source>Installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Të instaluar</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="52"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="91"/>
         <source>Not Installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Jo të Instaluar</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/embeddingpluginwidget.cpp" line="107"/>
         <source>Install</source>
-        <translation type="unfinished"></translation>
+        <translation>Instaloje</translation>
     </message>
 </context>
 <context>
@@ -202,7 +200,7 @@
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="260"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="327"/>
         <source>Size:</source>
-        <translation type="unfinished">Madhësi:</translation>
+        <translation>Madhësi:</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="272"/>
@@ -233,29 +231,29 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="293"/>
         <source>Please go to %1 to install the ULLM, and %2 Automatic index update.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ju lutemi, kaloni te %1, që të instaloni ULLM dhe %2 për përditësim të Automatizuar treguesi.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="294"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="303"/>
         <source>Search configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Kërko në formësim</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="295"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="299"/>
         <source>turn on</source>
-        <translation type="unfinished"></translation>
+        <translation>aktivizoje</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="298"/>
         <source>Please %1 Automatic index update.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ju lutemi, %1 përditësim të Automatizuar treguesi.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="302"/>
         <source>Please go to %1 to install the ULLM.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ju lutemi, kaloni te %1 që të instaloni ULLM.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="355"/>
@@ -266,7 +264,7 @@
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="305"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="391"/>
         <source>No search results</source>
-        <translation type="unfinished">S’ka përfundime kërkimi</translation>
+        <translation>S’ka përfundime kërkimi</translation>
     </message>
 </context>
 <context>
@@ -280,91 +278,91 @@
 <context>
     <name>GrandSearch::IntelligentRetrievalWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="66"/>
-        <source>AI Smart Search</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="79"/>
         <source>When turned on, you can try to search for local documents using natural language descriptions, such as &quot;last week&apos;s documents&quot;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="101"/>
-        <source>Automatic index update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="120"/>
-        <source>Full Text Search</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="137"/>
-        <source>When turned on, full text search can be used in the file manager and grand search.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="157"/>
-        <source>Embedding Plugins</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="157"/>
-        <source>After installing the model, you can use services such as AI Search and UOS AI Assistant..</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="175"/>
-        <source>ULLM</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="175"/>
-        <source>After installing the ULLM, you can use the AI intelligent search function without an internet connection.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kur është e aktivizuar, mund të provoni të kërkoni për dokumente vendorë duke përdorur përshkrime në gjuhë të përditshme, fjala vjen, “dokumentet e javës së shkuar”.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="188"/>
         <source>Intelligent full text search</source>
-        <translation type="unfinished"></translation>
+        <translation>Kërkim i mençur “full text”</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="101"/>
+        <source>Automatic index update</source>
+        <translation>Përditësim i automatizuar i treguesit</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="66"/>
+        <source>AI Smart Search</source>
+        <translation>Kërkim i Mençur IA</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="120"/>
+        <source>Full Text Search</source>
+        <translation>Kërkim “Full Text”</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="137"/>
+        <source>When turned on, full text search can be used in the file manager and grand search.</source>
+        <translation>Kur është e aktivizuar, kërkimi “full text” mund të përdoret që nga përgjegjësi i kartelave dhe kërkimi i madh.</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="157"/>
+        <source>Embedding Plugins</source>
+        <translation>Shtojca të Trupëzuara</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="157"/>
+        <source>After installing the model, you can use services such as AI Search and UOS AI Assistant..</source>
+        <translation>Pasi të instaloni modelin, mund të përdorni shërbime të tilla si Kërkim Me IA dhe Asistent IA UOS-i.</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="175"/>
+        <source>ULLM</source>
+        <translation>ULLM</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="175"/>
+        <source>After installing the ULLM, you can use the AI intelligent search function without an internet connection.</source>
+        <translation>Pasi të instaloni ULLM, mund të përdorni funksionin për kërkim të mençur me IA pa lidhje internet.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="224"/>
         <source>When enabled, you can search the text of articles using disjointed and incomplete keywords.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kur aktivizohet, mund të kërkoni në tekst artikujsh duke përdorur fjalë të palidhura dhe të paplota.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="246"/>
         <source>Please install %0 in &lt;a href=&quot;%0&quot;&gt;the app store&lt;/a&gt; before turning on this configuration.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ju lutemi, instaloni %0 që nga &lt;a href=&quot;%0&quot;&gt;shitorja e aplikacioneve&lt;/a&gt;, para se të aktivizoni këtë formësim.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="286"/>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="412"/>
         <source>Intelligent search indexing is being updated, which may take up more resources, please keep the power access.</source>
-        <translation type="unfinished"></translation>
+        <translation>Indeksimi i kërkimit të mençur po përditësohet, çka mund të zërë më tepër burime, ju lutemi, ruani lidhjen me energjinë.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="290"/>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="416"/>
         <source>Smart Search indexing update is complete. Last update time: %0</source>
-        <translation type="unfinished"></translation>
+        <translation>Përditësimi i treguesit për Kërkim të Mençur u plotësua. Kohë e përditësimit të fundit: %0</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="293"/>
         <source>Indexing error!</source>
-        <translation type="unfinished"></translation>
+        <translation>Gabim indeksimi!</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="342"/>
         <source>To use AI Smart Search, you need to install the Embedding Plugins and ULLM first.</source>
-        <translation type="unfinished"></translation>
+        <translation>Që të përdorni Kërkim të Mençur IA, lypset së pari të instaloni Trupëzim Shtojcash dhe ULLM.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="343"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -373,92 +371,92 @@
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="62"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="387"/>
         <source>Not Installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Jo të Instaluar</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="79"/>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="386"/>
         <source>Install Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Instalo Model</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="95"/>
         <source>Update model</source>
-        <translation type="unfinished"></translation>
+        <translation>Përditësoje modelin</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="96"/>
         <source>Uninstall model</source>
-        <translation type="unfinished"></translation>
+        <translation>Çinstaloje modelin</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="148"/>
         <source>Installing</source>
-        <translation type="unfinished"></translation>
+        <translation>Po instalohet</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="214"/>
         <source>Are you sure you want to delete this model?</source>
-        <translation type="unfinished"></translation>
+        <translation>Jeni i sigurt se doni të fshihet ky model?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="215"/>
         <source>After uninstallation, functions such as AI Search and UOS AI Assistant will not work properly.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pas çinstalimi, funksione të tillë si Kërkim Me IA dhe Asistent IA UOS s’do të funksionojnë si duhet.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="216"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Anuloje</translation>
+        <translation>Anuloje</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="217"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation type="unfinished">Ripohojeni</translation>
+        <translation>Ripohojeni</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="326"/>
         <source>Installing </source>
-        <translation type="unfinished"></translation>
+        <translation>Po instalohet</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="346"/>
         <source>Installing the ULLM</source>
-        <translation type="unfinished"></translation>
+        <translation>Po instalohet ULLM</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="347"/>
         <source>Exiting will cause the installation to fail, do you still want to exit?</source>
-        <translation type="unfinished"></translation>
+        <translation>Dalja do të sjellë dështimin e instalimit, doni ende të dilni?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="348"/>
         <source>Exit</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Dalje</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="349"/>
         <source>Continue</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>Vazhdo</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="380"/>
         <source>UnInstall Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Çinstaloje Modelin</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="381"/>
         <source>Installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Të instaluar</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="392"/>
         <source>Please install the &quot;Embedding Plugins&quot; first before installing this model.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ju lutemi, së pari instaloni “Trupëzim Shtojcash”, para instalimit të këtij modeli.</translation>
     </message>
 </context>
 <context>
@@ -474,7 +472,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="90"/>
         <source>Guess you want to search the following</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -492,7 +490,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="53"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations, the contents you search while using the Application, the time of search, the type of requested large model.If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pjesëmarrja te programi rreth funksionimi kërkimesh do të thotë se na akordoni dhe autorizoni të grumbullojmë informacion të pajisjes dhe sistemit tuaj, ikona, lëndë dhe veti kartelash, aplikacione dhe formësime të tyre, lëndën që kërkoni teksa përdorni Aplikacionin, kohën e kërkimit, llojin e LMM-së së kërkuar. Nëse s’e pranoni grumbullimin dhe përdorimin nga ana jonë të informacioneve të përmendura më sipër, mos merrni pjesë në program.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="64"/>
@@ -528,22 +526,22 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="160"/>
         <source>Search</source>
-        <translation type="unfinished">Kërko</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="256"/>
         <source>Cut</source>
-        <translation type="unfinished">Prije</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="260"/>
         <source>Copy</source>
-        <translation type="unfinished">Kopjoje</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="264"/>
         <source>Paste</source>
-        <translation type="unfinished">Ngjite</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -591,7 +589,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="76"/>
         <source>360 AI Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Kërkim me 360 AI</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="77"/>
@@ -601,17 +599,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="78"/>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>Vetjake</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="99"/>
         <source>You need to use &quot;%0&quot; to replace the keyword in the URL</source>
-        <translation type="unfinished"></translation>
+        <translation>Lypset të përdorni “%0” që të zëvendësoni fjalëkyçin te URL-ja</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="167"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"></translation>
+        <translation>URL e pavlefshme</translation>
     </message>
 </context>
 <context>
@@ -632,7 +630,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="29"/>
         <source>It is displayed at the end of search results for better identification and distinction of items with duplicate names.</source>
-        <translation>Shfaqet në fund të përfundimeve të kërkimit, për identifikim dhe ndarje më të mirë të objekteve me emra të përsëdytur.</translation>
+        <translation>Shfaqet në fund të përfundimeve të kërkimit, për identifikim dhe dallim më të mirë të objekteve me emra të përsëdytur.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="38"/>
@@ -761,12 +759,12 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="35"/>
         <source>AI Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Kërkim me IA</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="36"/>
         <source>Text found in the image</source>
-        <translation type="unfinished"></translation>
+        <translation>Te figura u gjet tekst</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="28"/>
@@ -809,12 +807,12 @@
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="24"/>
         <source>GrandSearch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="81"/>
         <source>SearchConfig</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>
