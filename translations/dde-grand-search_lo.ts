@@ -181,49 +181,31 @@
 <context>
     <name>GrandSearch::EntranceWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="246"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="61"/>
         <source>Search</source>
         <translation>ຄົ້ນຫາ</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="247"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="62"/>
         <source>What would you like to search for?</source>
         <translation>ທ່ານຕ້ອງການຄົ້ນຫາຫຍັງ?</translation>
     </message>
 </context>
 <context>
-    <name>GrandSearch::EntranceWidgetPrivate</name>
-    <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="85"/>
-        <source>Cut</source>
-        <translation>ຕັດ</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="89"/>
-        <source>Copy</source>
-        <translation>ສຳເນົາ</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="93"/>
-        <source>Paste</source>
-        <translation>ວາງ</translation>
-    </message>
-</context>
-<context>
     <name>GrandSearch::GeneralPreviewPlugin</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="254"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="231"/>
         <source>Location:</source>
         <translation>ສະຖານທີ່:</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="283"/>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="350"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="260"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="327"/>
         <source>Size:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="295"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="272"/>
         <source>Time modified:</source>
         <translation>ເວລາທີ່ຖືກແກ້ໄຂ:</translation>
     </message>
@@ -231,17 +213,17 @@
 <context>
     <name>GrandSearch::GeneralToolBar</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="70"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="101"/>
         <source>Open</source>
         <translation>ເປີດ</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="75"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="106"/>
         <source>Open Path</source>
         <translation>ເປີດເສັ້ນທາງ</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="80"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="111"/>
         <source>Copy Path</source>
         <translation>ສຳເນົາເສັ້ນທາງ</translation>
     </message>
@@ -249,40 +231,40 @@
 <context>
     <name>GrandSearch::GroupWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="287"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="293"/>
         <source>Please go to %1 to install the ULLM, and %2 Automatic index update.</source>
         <translation>ກະລຸນາໄປທີ່ %1 ເພື່ອຕິດຕັ້ງ ULLM, ແລະ %2 ການອັບເດດດັດສະນີອັດຕະໂນມັດ</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="288"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="297"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="294"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="303"/>
         <source>Search configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="289"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="293"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="295"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="299"/>
         <source>turn on</source>
         <translation>ເປີດ</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="292"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="298"/>
         <source>Please %1 Automatic index update.</source>
         <translation>ກະລຸນາ %1 ການອັບເດດດັດສະນີອັດຕະໂນມັດ</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="296"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="302"/>
         <source>Please go to %1 to install the ULLM.</source>
         <translation>ກະລຸນາໄປທີ່ %1 ເພື່ອຕິດຕັ້ງ ULLM</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="349"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="355"/>
         <source>More</source>
         <translation>ຫຼາຍກວ່ານັ້ນ</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="299"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="385"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="305"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="391"/>
         <source>No search results</source>
         <translation>ບໍ່ມີຜົນການຄົ້ນຫາ</translation>
     </message>
@@ -542,6 +524,29 @@
     </message>
 </context>
 <context>
+    <name>GrandSearch::SearchEdit</name>
+    <message>
+        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="160"/>
+        <source>Search</source>
+        <translation type="unfinished">ຄົ້ນຫາ</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="256"/>
+        <source>Cut</source>
+        <translation type="unfinished">ຕັດ</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="260"/>
+        <source>Copy</source>
+        <translation type="unfinished">ສຳເນົາ</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="264"/>
+        <source>Paste</source>
+        <translation type="unfinished">ວາງ</translation>
+    </message>
+</context>
+<context>
     <name>GrandSearch::SearchEngineWidget</name>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="42"/>
@@ -794,7 +799,7 @@
         <translation>ເວລາທີ່ແກ້ໄຂ:</translation>
     </message>
     <message>
-        <location filename="../src/dde-grand-search-daemon/searcher/file/filesearchutils.cpp" line="272"/>
+        <location filename="../src/dde-grand-search-daemon/searcher/file/filesearchutils.cpp" line="233"/>
         <source>modified</source>
         <translation>ແກ້ໄຂແລ້ວ</translation>
     </message>
