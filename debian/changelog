@@ -1,3 +1,11 @@
+dde-grand-search (6.0.34) unstable; urgency=medium
+
+  * refactor: extract SearchEdit component from EntranceWidget
+  * fix: fix vertical line visibility in exhibition widget
+  * chore: update translations
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Wed, 20 May 2026 09:12:20 +0800
+
 dde-grand-search (6.0.33) unstable; urgency=medium
 
   * feat: enable OCR text search and fix keyword parsing
