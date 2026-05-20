@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="es">
 <context>
     <name>GrandSearch::AiToolBar</name>
     <message>
@@ -528,22 +526,22 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="160"/>
         <source>Search</source>
-        <translation type="unfinished">Buscar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="256"/>
         <source>Cut</source>
-        <translation type="unfinished">Cortar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="260"/>
         <source>Copy</source>
-        <translation type="unfinished">Copiar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="264"/>
         <source>Paste</source>
-        <translation type="unfinished">Pegar</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
