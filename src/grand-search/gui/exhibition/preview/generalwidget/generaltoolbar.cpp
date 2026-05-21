@@ -93,7 +93,7 @@ void GeneralToolBar::initUi()
     m_hMainLayout = new QHBoxLayout(this);
     // 下边距10
     m_hMainLayout->setContentsMargins(TOOLBAR_LEFT_MARGIN, 0, TOOLBAR_RIGHT_MARGIN, TOOLBAR_BOTTOM_MARGIN);
-    m_hMainLayout->setSpacing(0);
+    m_hMainLayout->setSpacing(2);
 
     QString suffix = Utils::iconThemeSuffix();
 
@@ -115,7 +115,7 @@ void GeneralToolBar::initUi()
     m_vLine1 = new DVerticalLine(this);
     m_vLine1->setFixedHeight(30);
     m_vLine2 = new DVerticalLine(this);
-    m_vLine1->setFixedHeight(30);
+    m_vLine2->setFixedHeight(30);
 
     m_hMainLayout->addWidget(m_openBtn);
     m_hMainLayout->addWidget(m_vLine1);

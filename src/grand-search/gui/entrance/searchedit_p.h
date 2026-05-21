@@ -16,8 +16,6 @@
 
 namespace GrandSearch {
 
-class SearchLineEdit;
-
 class SearchEditPrivate
 {
     SearchEditPrivate(SearchEdit *qq);
@@ -30,7 +28,7 @@ class SearchEditPrivate
 
     SearchEdit *q = nullptr;
 
-    SearchLineEdit *m_lineEdit = nullptr;
+    QLineEdit *m_lineEdit = nullptr;
     QWidget *m_iconWidget = nullptr;
     QLabel *m_placeholderLabel = nullptr;
     QLabel *m_appIconLabel = nullptr;
