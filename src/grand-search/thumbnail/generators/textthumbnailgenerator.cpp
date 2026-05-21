@@ -63,7 +63,7 @@ QPixmap TextThumbnailGenerator::generate(const QString &filePath, const QSize &s
     }
 
     // 渲染文本
-    QImage image = renderText(content, size);
+    QImage image = renderText(content, { static_cast<int>(size.width() * 0.70707070), size.height() });
     if (image.isNull()) {
         return QPixmap();
     }

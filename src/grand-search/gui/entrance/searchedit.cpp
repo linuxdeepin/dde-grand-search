@@ -30,88 +30,6 @@ static constexpr int DelayResponseTime = 50;
 static constexpr int AppIconSize = 32;
 static constexpr int SearchIconSize = 20;
 
-class SearchLineEditStyle : public QProxyStyle
-{
-public:
-    using QProxyStyle::QProxyStyle;
-
-    int pixelMetric(PixelMetric metric, const QStyleOption *option = nullptr,
-                    const QWidget *widget = nullptr) const override
-    {
-        if (metric == QStyle::PM_TextCursorWidth)
-            return 0;
-        return QProxyStyle::pixelMetric(metric, option, widget);
-    }
-};
-
-SearchLineEdit::SearchLineEdit(QWidget *parent)
-    : QLineEdit(parent),
-      m_proxyStyle(new SearchLineEditStyle),
-      m_cursorBlinkTimer(new QTimer(this)),
-      m_cursorVisible(true)
-{
-    setStyle(m_proxyStyle);
-
-    // 调色板（暗色/亮色主题）
-    QPalette pa = palette();
-    QColor colorText(0, 0, 0);
-    QColor colorBkg(0, 0, 0, 25);
-    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType) {
-        colorText = QColor(255, 255, 255);
-        colorBkg = QColor(255, 255, 255, 25);
-    }
-    pa.setColor(QPalette::Button, colorBkg);
-    pa.setColor(QPalette::Text, colorText);
-    pa.setColor(QPalette::ButtonText, colorText);
-    setPalette(pa);
-    DStyle::setFocusRectVisible(this, false);
-
-    m_cursorBlinkTimer->setInterval(500);
-    connect(m_cursorBlinkTimer, &QTimer::timeout, this, [this]() {
-        m_cursorVisible = !m_cursorVisible;
-        update();
-    });
-}
-
-SearchLineEdit::~SearchLineEdit()
-{
-    delete m_proxyStyle;
-}
-
-void SearchLineEdit::paintEvent(QPaintEvent *event)
-{
-    // 自绘光标
-    QPainter painter(this);
-    painter.setRenderHint(QPainter::Antialiasing);
-
-    if (m_cursorVisible && hasFocus()) {
-        QColor cursorColor(0, 0, 0);
-        if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
-            cursorColor = QColor(255, 255, 255);
-        QRect cursorRect = this->cursorRect();
-        cursorRect.setX(cursorRect.x() + 5);
-        cursorRect.setWidth(1);
-        cursorRect.setHeight(cursorRect.height() - 1);
-        painter.fillRect(cursorRect, cursorColor);
-    }
-
-    QLineEdit::paintEvent(event);
-}
-
-void SearchLineEdit::focusInEvent(QFocusEvent *event)
-{
-    QLineEdit::focusInEvent(event);
-    m_cursorVisible = true;
-    if (m_cursorBlinkTimer->interval() > 0)
-        m_cursorBlinkTimer->start();
-}
-
-void SearchLineEdit::focusOutEvent(QFocusEvent *event)
-{
-    m_cursorBlinkTimer->stop();
-    QLineEdit::focusOutEvent(event);
-}
-
 SearchEditPrivate::SearchEditPrivate(SearchEdit *qq)
     : q(qq)
 {
@@ -125,11 +43,25 @@ void SearchEditPrivate::init()
     QObject::connect(m_delayTimer, &QTimer::timeout, q, [this]() { notifyTextChanged(); });
 
     // 内部 QLineEdit
-    m_lineEdit = new SearchLineEdit(q);
+    m_lineEdit = new QLineEdit(q);
     m_lineEdit->installEventFilter(q);
     m_lineEdit->setMaxLength(512);
     m_lineEdit->setContextMenuPolicy(Qt::NoContextMenu);
     m_lineEdit->setClearButtonEnabled(false);
+
+    // 调色板（暗色/亮色主题）
+    QPalette pa = m_lineEdit->palette();
+    QColor colorText(0, 0, 0);
+    QColor colorBkg(0, 0, 0, 25);
+    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType) {
+        colorText = QColor(255, 255, 255);
+        colorBkg = QColor(255, 255, 255, 25);
+    }
+    pa.setColor(QPalette::Button, colorBkg);
+    pa.setColor(QPalette::Text, colorText);
+    pa.setColor(QPalette::ButtonText, colorText);
+    m_lineEdit->setPalette(pa);
+    DStyle::setFocusRectVisible(m_lineEdit, false);
 
     // 字体
     QFont lineFont = m_lineEdit->font();

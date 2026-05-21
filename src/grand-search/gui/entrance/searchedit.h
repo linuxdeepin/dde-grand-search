@@ -13,24 +13,6 @@ class QIcon;
 
 namespace GrandSearch {
 
-class SearchLineEdit : public QLineEdit
-{
-    Q_OBJECT
-public:
-    explicit SearchLineEdit(QWidget *parent = nullptr);
-    ~SearchLineEdit() override;
-
-protected:
-    void paintEvent(QPaintEvent *event) override;
-    void focusInEvent(QFocusEvent *event) override;
-    void focusOutEvent(QFocusEvent *event) override;
-
-private:
-    QStyle *m_proxyStyle = nullptr;
-    QTimer *m_cursorBlinkTimer = nullptr;
-    bool m_cursorVisible = true;
-};
-
 class SearchEditPrivate;
 class SearchEdit : public QWidget
 {
