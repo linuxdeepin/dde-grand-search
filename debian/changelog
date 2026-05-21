@@ -1,3 +1,9 @@
+dde-grand-search (6.0.35) unstable; urgency=medium
+
+  * refactor: simplify search edit and fix UI issues
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Thu, 21 May 2026 09:49:52 +0800
+
 dde-grand-search (6.0.34) unstable; urgency=medium
 
   * refactor: extract SearchEdit component from EntranceWidget
