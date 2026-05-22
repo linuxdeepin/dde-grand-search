@@ -22,7 +22,8 @@ DetailItem::DetailItem(QWidget *parent)
 {
     setFixedWidth(360);
 
-    m_backgroundColor = QColor(0, 0, 0, int(255*0.05));
+    m_backgroundColor = palette().color(QPalette::BrightText);
+    m_backgroundColor.setAlphaF(0.05);
 
     setContentsMargins(20, 0, 10, 0);
 

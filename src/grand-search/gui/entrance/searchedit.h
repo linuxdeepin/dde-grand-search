@@ -5,6 +5,8 @@
 #ifndef SEARCHEDIT_H
 #define SEARCHEDIT_H
 
+#include <DIconButton>
+
 #include <QLineEdit>
 #include <QScopedPointer>
 
@@ -12,6 +14,16 @@ class QLineEdit;
 class QIcon;
 
 namespace GrandSearch {
+
+class IconButton : public Dtk::Widget::DIconButton
+{
+    Q_OBJECT
+public:
+    explicit IconButton(QWidget *parent = nullptr);
+
+protected:
+    void paintEvent(QPaintEvent *event) override;
+};
 
 class SearchEditPrivate;
 class SearchEdit : public QWidget

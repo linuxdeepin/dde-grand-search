@@ -4,12 +4,14 @@
 
 #include "searchedit_p.h"
 #include "searchedit.h"
+#include "utils/utils.h"
 
 #include <DStyle>
 #include <DIconButton>
 #include <DIconTheme>
 #include <DFontSizeManager>
 #include <DGuiApplicationHelper>
+#include <DStyleOptionButton>
 
 #include <QLineEdit>
 #include <QHBoxLayout>
@@ -21,7 +23,6 @@
 #include <QKeyEvent>
 #include <QStyleOption>
 #include <QToolButton>
-#include <QProxyStyle>
 
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
@@ -29,6 +30,34 @@ using namespace GrandSearch;
 static constexpr int DelayResponseTime = 50;
 static constexpr int AppIconSize = 32;
 static constexpr int SearchIconSize = 20;
+
+IconButton::IconButton(QWidget *parent)
+    : DIconButton(parent)
+{
+}
+
+void IconButton::paintEvent(QPaintEvent *event)
+{
+    DStyleOptionButton opt;
+    initStyleOption(&opt);
+
+    if (opt.state & (QStyle::State_Sunken | QStyle::State_MouseOver)) {
+        DPalette dp = DGuiApplicationHelper::instance()->applicationPalette();
+        QColor bgColor = dp.color(DPalette::ObviousBackground);
+        if (opt.state & QStyle::State_Sunken)
+            bgColor.setAlphaF(0.2);
+
+        int radius = qMin(width(), height()) / 2;
+        QPainter p(this);
+        p.setRenderHint(QPainter::Antialiasing);
+        p.setPen(Qt::NoPen);
+        p.setBrush(bgColor);
+        p.drawEllipse(QPointF(width() / 2.0, height() / 2.0), radius, radius);
+    }
+
+    DStylePainter p(this);
+    p.drawControl(DStyle::CE_IconButton, opt);
+}
 
 SearchEditPrivate::SearchEditPrivate(SearchEdit *qq)
     : q(qq)
@@ -106,12 +135,13 @@ void SearchEditPrivate::init()
     // 左侧搜索图标 action（聚焦后显示）
     m_searchAction = new QAction(q);
     m_searchAction->setObjectName("_d_search_leftAction");
-    m_searchAction->setIcon(DStyle::standardIcon(q->style(), DStyle::SP_IndicatorSearch));
+    QString suffix = Utils::iconThemeSuffix();
+    m_searchAction->setIcon(QIcon(QString(":/icons/search%1.svg").arg(suffix)));
     m_lineEdit->addAction(m_searchAction, QLineEdit::LeadingPosition);
     m_searchAction->setVisible(false);
 
     // 应用图标（右侧）
-    m_appIconLabel = new QLabel;
+    m_appIconLabel = new QLabel(q);
     m_appIconLabel->setFixedSize(AppIconSize, AppIconSize);
     m_appIconLabel->setVisible(false);
 
@@ -120,8 +150,9 @@ void SearchEditPrivate::init()
     m_lineEdit->addAction(m_appIconAction, QLineEdit::TrailingPosition);
 
     // 清除按钮（QLineEdit 外部）
-    m_clearButton = new DIconButton(DStyle::SP_LineEditClearButton);
-    m_clearButton->setIconSize({ 18, 18 });
+    m_clearButton = new IconButton(q);
+    m_clearButton->setIconSize({ 20, 20 });
+    m_clearButton->setIcon(DDciIcon::fromTheme("clear"));
     m_clearButton->setFlat(true);
     m_clearButton->setFocusPolicy(Qt::NoFocus);
     m_clearButton->setVisible(false);
@@ -133,8 +164,8 @@ void SearchEditPrivate::init()
 
     // 主布局
     QHBoxLayout *mainLayout = new QHBoxLayout(q);
-    mainLayout->setSpacing(8);
-    mainLayout->setContentsMargins(0, 0, 10, 0);
+    mainLayout->setSpacing(6 / q->devicePixelRatio());
+    mainLayout->setContentsMargins(0, 0, 10 / q->devicePixelRatio(), 0);
     mainLayout->addWidget(m_lineEdit);
     mainLayout->addWidget(m_clearButton);
     mainLayout->addWidget(m_appIconLabel);
