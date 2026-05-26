@@ -539,17 +539,17 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="219"/>
         <source>Cut</source>
-        <translation type="unfinished"/>
+        <translation>Cortar</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="223"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Copiar</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="227"/>
         <source>Paste</source>
-        <translation type="unfinished"/>
+        <translation>Colar</translation>
     </message>
 </context>
 <context>
@@ -767,7 +767,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="36"/>
         <source>Text found in the image</source>
-        <translation type="unfinished"/>
+        <translation>Texto encontrado na imagem</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="28"/>
