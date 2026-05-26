@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="nl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="nl">
 <context>
     <name>GrandSearch::AiToolBar</name>
     <message>
@@ -11,12 +9,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="49"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuleren</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
         <source>Open App Store</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -93,7 +91,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
         <source>Open App Store</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -202,7 +200,7 @@
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="260"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="327"/>
         <source>Size:</source>
-        <translation type="unfinished">Grootte:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="272"/>
@@ -213,60 +211,68 @@
 <context>
     <name>GrandSearch::GeneralToolBar</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="101"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="100"/>
         <source>Open</source>
         <translation>Openen</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="106"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="105"/>
         <source>Open Path</source>
         <translation>Locatie openen</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="111"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="110"/>
         <source>Copy Path</source>
         <translation>Locatie kopiëren</translation>
     </message>
 </context>
 <context>
+    <name>GrandSearch::GrandSearchListDelegate</name>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/listview/grandsearchlistdelegate.cpp" line="250"/>
+        <source>Modified at </source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>GrandSearch::GroupWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="293"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="298"/>
         <source>Please go to %1 to install the ULLM, and %2 Automatic index update.</source>
         <translation>Ga naar %1 om de ULLM te installeren, en %2 Automatische index-update.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="294"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="303"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="299"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="308"/>
         <source>Search configuration</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="295"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="299"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="300"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="304"/>
         <source>turn on</source>
         <translation>aanzetten</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="298"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="303"/>
         <source>Please %1 Automatic index update.</source>
         <translation>Ga naar %1 voor automatische index-update.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="302"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="307"/>
         <source>Please go to %1 to install the ULLM.</source>
         <translation>Ga naar %1 om de ULLM te installeren.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="355"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="360"/>
         <source>More</source>
         <translation>Meer</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="305"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="391"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="310"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="396"/>
         <source>No search results</source>
-        <translation type="unfinished">Geen zoekresultaten</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -280,19 +286,24 @@
 <context>
     <name>GrandSearch::IntelligentRetrievalWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="66"/>
-        <source>AI Smart Search</source>
-        <translation>AI Slimme Zoekopdracht</translation>
-    </message>
-    <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="79"/>
         <source>When turned on, you can try to search for local documents using natural language descriptions, such as &quot;last week&apos;s documents&quot;.</source>
         <translation>Wanneer het aangezet is, kunt u proberen lokale documenten te zoeken met natuurlijke taalbeschrijvingen, zoals &apos;documenten van de afgelopen week&apos;.</translation>
     </message>
     <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="188"/>
+        <source>Intelligent full text search</source>
+        <translation>Intelligent volledige tekstzoek</translation>
+    </message>
+    <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="101"/>
         <source>Automatic index update</source>
         <translation>Automatische index-update</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="66"/>
+        <source>AI Smart Search</source>
+        <translation>AI Slimme Zoekopdracht</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="120"/>
@@ -323,11 +334,6 @@
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="175"/>
         <source>After installing the ULLM, you can use the AI intelligent search function without an internet connection.</source>
         <translation>Na het installeren van de ULLM kunt u de AI-geïntelligente zoekfunctie gebruiken zonder internetverbinding.</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="188"/>
-        <source>Intelligent full text search</source>
-        <translation>Intelligent volledige tekstzoek</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="224"/>
@@ -410,13 +416,13 @@
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="216"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Annuleren</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="217"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation type="unfinished">Oké</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="326"/>
@@ -526,24 +532,24 @@
 <context>
     <name>GrandSearch::SearchEdit</name>
     <message>
-        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="160"/>
+        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="121"/>
         <source>Search</source>
-        <translation type="unfinished">Zoeken</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="256"/>
+        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="219"/>
         <source>Cut</source>
-        <translation type="unfinished">Knippen</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="260"/>
+        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="223"/>
         <source>Copy</source>
-        <translation type="unfinished">Klonen</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="264"/>
+        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="227"/>
         <source>Paste</source>
-        <translation type="unfinished">Plakken</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -638,11 +644,6 @@
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="38"/>
         <source>Parent directory</source>
         <translation>Bovenliggende map</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="40"/>
-        <source>Time modified</source>
-        <translation>Laatst bewerkt om</translation>
     </message>
 </context>
 <context>
@@ -766,7 +767,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="36"/>
         <source>Text found in the image</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="28"/>
@@ -797,11 +798,6 @@
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="33"/>
         <source>Time modified:</source>
         <translation>Laatst bewerkt om</translation>
-    </message>
-    <message>
-        <location filename="../src/dde-grand-search-daemon/searcher/file/filesearchutils.cpp" line="233"/>
-        <source>modified</source>
-        <translation>bewerkt</translation>
     </message>
 </context>
 <context>
