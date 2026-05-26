@@ -231,7 +231,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/listview/grandsearchlistdelegate.cpp" line="250"/>
         <source>Modified at </source>
-        <translation type="unfinished"/>
+        <translation>Ndryshuar më</translation>
     </message>
 </context>
 <context>
@@ -534,7 +534,7 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="121"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Kërko</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="219"/>
