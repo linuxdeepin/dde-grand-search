@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ru">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ru">
 <context>
     <name>GrandSearch::AiToolBar</name>
     <message>
@@ -11,12 +9,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="49"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
         <source>Open App Store</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -93,7 +91,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
         <source>Open App Store</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -202,7 +200,7 @@
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="260"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="327"/>
         <source>Size:</source>
-        <translation type="unfinished">Размер:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="272"/>
@@ -213,60 +211,68 @@
 <context>
     <name>GrandSearch::GeneralToolBar</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="101"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="100"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="106"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="105"/>
         <source>Open Path</source>
         <translation>Открыть месторасположение файла</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="111"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="110"/>
         <source>Copy Path</source>
         <translation>Копировать Путь к Файлу</translation>
     </message>
 </context>
 <context>
+    <name>GrandSearch::GrandSearchListDelegate</name>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/listview/grandsearchlistdelegate.cpp" line="250"/>
+        <source>Modified at </source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>GrandSearch::GroupWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="293"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="298"/>
         <source>Please go to %1 to install the ULLM, and %2 Automatic index update.</source>
         <translation>Пожалуйста, перейдите по %1 для установки ULLM, и %2 автоматическое обновление индекса.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="294"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="303"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="299"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="308"/>
         <source>Search configuration</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="295"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="299"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="300"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="304"/>
         <source>turn on</source>
         <translation>включить</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="298"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="303"/>
         <source>Please %1 Automatic index update.</source>
         <translation>Пожалуйста, %1 автоматическое обновление индекса.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="302"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="307"/>
         <source>Please go to %1 to install the ULLM.</source>
         <translation>Пожалуйста, перейдите по %1 для установки ULLM.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="355"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="360"/>
         <source>More</source>
         <translation>Еще</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="305"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="391"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="310"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="396"/>
         <source>No search results</source>
-        <translation type="unfinished">Ничего не найдено</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -280,19 +286,24 @@
 <context>
     <name>GrandSearch::IntelligentRetrievalWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="66"/>
-        <source>AI Smart Search</source>
-        <translation>ИИ-умный поиск</translation>
-    </message>
-    <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="79"/>
         <source>When turned on, you can try to search for local documents using natural language descriptions, such as &quot;last week&apos;s documents&quot;.</source>
         <translation>Если включить, вы сможете искать локальные документы с помощью естественных описаний на естественном языке, например, &quot;документы прошлой недели&quot;.</translation>
     </message>
     <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="188"/>
+        <source>Intelligent full text search</source>
+        <translation>Умный полнотекстовый поиск</translation>
+    </message>
+    <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="101"/>
         <source>Automatic index update</source>
         <translation>Автоматическое обновление индекса</translation>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="66"/>
+        <source>AI Smart Search</source>
+        <translation>ИИ-умный поиск</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="120"/>
@@ -323,11 +334,6 @@
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="175"/>
         <source>After installing the ULLM, you can use the AI intelligent search function without an internet connection.</source>
         <translation>После установки ULLM вы можете использовать функцию умного поиска ИИ без подключения к интернету.</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="188"/>
-        <source>Intelligent full text search</source>
-        <translation>Умный полнотекстовый поиск</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="224"/>
@@ -410,13 +416,13 @@
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="216"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Отмена</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="217"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation type="unfinished">Подтвердить</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="326"/>
@@ -526,24 +532,24 @@
 <context>
     <name>GrandSearch::SearchEdit</name>
     <message>
-        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="160"/>
+        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="121"/>
         <source>Search</source>
-        <translation type="unfinished">Поиск</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="256"/>
+        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="219"/>
         <source>Cut</source>
-        <translation type="unfinished">Вырезать</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="260"/>
+        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="223"/>
         <source>Copy</source>
-        <translation type="unfinished">Копировать</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="264"/>
+        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="227"/>
         <source>Paste</source>
-        <translation type="unfinished">Вставить</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -638,11 +644,6 @@
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="38"/>
         <source>Parent directory</source>
         <translation>Родительский каталог</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="40"/>
-        <source>Time modified</source>
-        <translation>Изменен</translation>
     </message>
 </context>
 <context>
@@ -766,7 +767,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="36"/>
         <source>Text found in the image</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="28"/>
@@ -797,11 +798,6 @@
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="33"/>
         <source>Time modified:</source>
         <translation>Изменен:</translation>
-    </message>
-    <message>
-        <location filename="../src/dde-grand-search-daemon/searcher/file/filesearchutils.cpp" line="233"/>
-        <source>modified</source>
-        <translation>изменен</translation>
     </message>
 </context>
 <context>
