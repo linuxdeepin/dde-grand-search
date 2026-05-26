@@ -213,58 +213,66 @@
 <context>
     <name>GrandSearch::GeneralToolBar</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="101"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="100"/>
         <source>Open</source>
         <translation type="unfinished">Odpri</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="106"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="105"/>
         <source>Open Path</source>
         <translation type="unfinished">Odpri pot</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="111"/>
+        <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp" line="110"/>
         <source>Copy Path</source>
         <translation type="unfinished">Kopiraj pot</translation>
     </message>
 </context>
 <context>
+    <name>GrandSearch::GrandSearchListDelegate</name>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/listview/grandsearchlistdelegate.cpp" line="250"/>
+        <source>Modified at </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>GrandSearch::GroupWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="293"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="298"/>
         <source>Please go to %1 to install the ULLM, and %2 Automatic index update.</source>
         <translation>من فضلك اذهب إلى %1 لتثبيت ULLM، و%2 تحديث المؤشر تلقائيًا.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="294"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="303"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="299"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="308"/>
         <source>Search configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="295"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="299"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="300"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="304"/>
         <source>turn on</source>
         <translation>zapnite</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="298"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="303"/>
         <source>Please %1 Automatic index update.</source>
         <translation>Prosim %1 poskrbi za avtomatsko posodabljanje indeksa.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="302"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="307"/>
         <source>Please go to %1 to install the ULLM.</source>
         <translation>Prosim, odprite %1 za namestitev ULLM.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="355"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="360"/>
         <source>More</source>
         <translation type="unfinished">Več</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="305"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="391"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="310"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="396"/>
         <source>No search results</source>
         <translation type="unfinished">Ni rezultatov iskanja</translation>
     </message>
@@ -526,22 +534,22 @@
 <context>
     <name>GrandSearch::SearchEdit</name>
     <message>
-        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="160"/>
+        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="121"/>
         <source>Search</source>
         <translation type="unfinished">Iskanje</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="256"/>
+        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="219"/>
         <source>Cut</source>
         <translation type="unfinished">Izreži</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="260"/>
+        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="223"/>
         <source>Copy</source>
         <translation type="unfinished">Kopiraj</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="264"/>
+        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="227"/>
         <source>Paste</source>
         <translation type="unfinished">Prilepi</translation>
     </message>
@@ -638,11 +646,6 @@
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="38"/>
         <source>Parent directory</source>
         <translation>Začasna mapa</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="40"/>
-        <source>Time modified</source>
-        <translation>Čas spremembe</translation>
     </message>
 </context>
 <context>
@@ -797,11 +800,6 @@
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="33"/>
         <source>Time modified:</source>
         <translation>Čas spreminjanja:</translation>
-    </message>
-    <message>
-        <location filename="../src/dde-grand-search-daemon/searcher/file/filesearchutils.cpp" line="233"/>
-        <source>modified</source>
-        <translation>izmenjen</translation>
     </message>
 </context>
 <context>
