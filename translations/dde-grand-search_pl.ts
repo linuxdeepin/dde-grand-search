@@ -231,7 +231,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/listview/grandsearchlistdelegate.cpp" line="250"/>
         <source>Modified at </source>
-        <translation type="unfinished"/>
+        <translation>Zmodyfikowano</translation>
     </message>
 </context>
 <context>
