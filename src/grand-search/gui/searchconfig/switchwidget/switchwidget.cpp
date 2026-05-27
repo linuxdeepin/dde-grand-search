@@ -16,8 +16,6 @@
 
 Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
-#define ICONLABELSIZE   36
-
 DWIDGET_USE_NAMESPACE
 DGUI_USE_NAMESPACE
 using namespace GrandSearch;
@@ -35,7 +33,6 @@ SwitchWidget::SwitchWidget(QWidget *parent, QWidget *leftWidget)
     qCDebug(logGrandSearch) << "Creating SwitchWidget with custom left widget";
 
     m_iconLabel = new QLabel(this);
-    m_iconLabel->setFixedSize(ICONLABELSIZE, ICONLABELSIZE);
 
     if (!m_leftWidget) {
         m_leftWidget = new QLabel(this);
@@ -57,7 +54,7 @@ SwitchWidget::SwitchWidget(QWidget *parent, QWidget *leftWidget)
     m_mainLayout->setSpacing(10);
     m_mainLayout->setContentsMargins(10, 0, 10, 0);
     m_mainLayout->addWidget(m_iconLabel);
-    m_mainLayout->addLayout(labelLayout, 0);
+    m_mainLayout->addLayout(labelLayout, 1);
     m_mainLayout->addWidget(m_switchBtn, 0, Qt::AlignVCenter);
     setLayout(m_mainLayout);
 
