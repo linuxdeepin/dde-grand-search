@@ -1,3 +1,12 @@
+dde-grand-search (6.0.36) unstable; urgency=medium
+
+  * feat: optimize search UI icons and layout spacing
+  * feat: refactor search result display with fixed modification time
+  * chore: update translations
+  * refactor: migrate icons to theme-based system with DTK
+
+ -- Zhang Sheng <zhangsheng@uniontech.com>  Thu, 28 May 2026 19:48:46 +0800
+
 dde-grand-search (6.0.35) unstable; urgency=medium
 
   * refactor: simplify search edit and fix UI issues
