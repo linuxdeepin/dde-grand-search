@@ -38,6 +38,12 @@ public:
     void setSearchGroupName(const QString &searchGroupName);
     QString searchGroupName() const;
 
+    /**
+     * @brief 设置当前搜索关键词，传播到列表视图以管理高亮任务
+     * @param keyword 搜索关键词
+     */
+    void setSearchKeyword(const QString &keyword);
+
     void setGroupName(const QString &groupName);
     QString groupName() const;
 

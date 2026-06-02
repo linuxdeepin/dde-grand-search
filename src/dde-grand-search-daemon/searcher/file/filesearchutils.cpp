@@ -18,7 +18,7 @@ Q_DECLARE_LOGGING_CATEGORY(logDaemon)
 
 using namespace GrandSearch;
 
-MatchedItem FileSearchUtils::packItem(const QString &fileName, const QString &searcher, const QStringList &keywords, const QString &matchedContext)
+MatchedItem FileSearchUtils::packItem(const QString &fileName, const QString &searcher, const QStringList &keywords)
 {
     qCDebug(logDaemon) << "Packing file item - File:" << fileName << "Searcher:" << searcher;
     QFileInfo fileInfo(fileName);
@@ -29,7 +29,7 @@ MatchedItem FileSearchUtils::packItem(const QString &fileName, const QString &se
     item.type = mimeType.name();
     item.icon = mimeType.iconName();
     item.searcher = searcher;
-    item.extra = QVariant::fromValue(extraData(fileInfo, keywords, matchedContext));
+    item.extra = QVariant::fromValue(extraData(fileInfo, keywords));
 
     qCDebug(logDaemon) << "Item packed successfully - Name:" << item.name
                        << "Type:" << item.type << "Icon:" << item.icon;
@@ -200,7 +200,7 @@ FileSearchUtils::SearchInfo FileSearchUtils::parseContent(const QString &content
     return info;
 }
 
-QVariantHash FileSearchUtils::extraData(const QFileInfo &info, const QStringList &keywords, const QString &matchedContext)
+QVariantHash FileSearchUtils::extraData(const QFileInfo &info, const QStringList &keywords)
 {
     qCDebug(logDaemon) << "Generating tailer data for file:" << info.absoluteFilePath();
 
@@ -222,17 +222,6 @@ QVariantHash FileSearchUtils::extraData(const QFileInfo &info, const QStringList
     // Inject keywords for highlighting
     if (!keywords.isEmpty())
         hash.insert(GRANDSEARCH_PROPERTY_ITEM_KEYWORDS, keywords);
-
-    if (!matchedContext.isEmpty()) {
-        QString context = matchedContext;
-        // 去除首尾的省略符号
-        if (context.startsWith("…"))
-            context = context.mid(1);
-        if (context.endsWith("…"))
-            context.chop(1);
-        if (!context.isEmpty())
-            hash.insert(GRANDSEARCH_PROPERTY_ITEM_MATCHEDCONTEXT, context);
-    }
 
     hash.insert(GRANDSEARCH_PROPERTY_ITEM_TAILER, datas);
     return hash;

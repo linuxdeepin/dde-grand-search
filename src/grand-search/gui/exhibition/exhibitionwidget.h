@@ -31,6 +31,12 @@ public:
 
     void clearData();
 
+    /**
+     * @brief 设置搜索关键词，传播到 MatchWidget 以管理高亮任务
+     * @param keyword 搜索关键词
+     */
+    void setSearchKeyword(const QString &keyword);
+
 public slots:
     void onSelectNextItem();
     void onSelectPreviousItem();

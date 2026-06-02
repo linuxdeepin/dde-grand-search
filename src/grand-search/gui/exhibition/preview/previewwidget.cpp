@@ -4,6 +4,7 @@
 
 #include "previewwidget.h"
 #include "utils/utils.h"
+#include "utils/highlightprovider.h"
 #include "generalpreviewplugin.h"
 #include "generalwidget/detailwidget.h"
 #include "generalwidget/generaltoolbar.h"
@@ -186,6 +187,10 @@ void PreviewWidget::initConnect()
     connect(m_generalToolBar, &GeneralToolBar::sigOpenClicked, this, &PreviewWidget::onOpenClicked);
     connect(m_generalToolBar, &GeneralToolBar::sigOpenPathClicked, this, &PreviewWidget::onOpenpathClicked);
     connect(m_generalToolBar, &GeneralToolBar::sigCopyPathClicked, this, &PreviewWidget::onCopypathClicked);
+
+    // 连接高亮内容获取完成信号
+    connect(HighlightProvider::instance(), &HighlightProvider::highlightReady,
+            this, &PreviewWidget::updateHighlightContent);
 }
 
 void PreviewWidget::clearLayoutWidgets()
@@ -242,4 +247,37 @@ void PreviewWidget::onCopypathClicked()
     qCDebug(logGrandSearch) << "Preview copy path clicked:" << m_item.item;
     QClipboard *clipboard = QGuiApplication::clipboard();
     clipboard->setText(m_item.item);
+}
+
+void PreviewWidget::updateHighlightContent(const QString &filePath, const QString &content)
+{
+    // 仅当文件路径匹配当前预览项且内容非空时更新
+    if (filePath.isEmpty() || content.isEmpty()
+        || m_item.item != filePath || this->isHidden()) {
+        return;
+    }
+
+    qCDebug(logGrandSearch) << "Updating preview highlight for:" << m_item.name;
+
+    // 更新 m_item 中的 matchedContext
+    QVariantHash extraHash = m_item.extra.toHash();
+    extraHash.insert(GRANDSEARCH_PROPERTY_ITEM_MATCHEDCONTEXT, content);
+    m_item.extra = extraHash;
+
+    // 直接更新当前预览插件的内容标签，避免完整布局重建
+    if (m_preview) {
+        ItemInfo itemInfo;
+        itemInfo[PREVIEW_ITEMINFO_ITEM] = m_item.item;
+        itemInfo[PREVIEW_ITEMINFO_NAME] = m_item.name;
+        itemInfo[PREVIEW_ITEMINFO_ICON] = m_item.icon;
+        itemInfo[PREVIEW_ITEMINFO_TYPE] = m_item.type;
+        itemInfo[PREVIEW_ITEMINFO_SEARCHER] = m_item.searcher;
+        itemInfo[PREVIEW_ITEMINFO_MATCHEDCONTEXT] = content;
+
+        if (extraHash.contains(GRANDSEARCH_PROPERTY_ITEM_KEYWORDS)) {
+            itemInfo[PREVIEW_ITEMINFO_KEYWORDS] = extraHash.value(GRANDSEARCH_PROPERTY_ITEM_KEYWORDS).toStringList().join(":");
+        }
+
+        m_preview->previewItem(itemInfo);
+    }
 }

@@ -6,9 +6,13 @@
 #include "grandsearchlistmodel.h"
 #include "grandsearchlistdelegate.h"
 #include "utils/utils.h"
+#include "utils/highlightprovider.h"
 #include "global/matcheditem.h"
+#include "global/builtinsearch.h"
 #include "global/accessibility/acintelfunctions.h"
 #include "thumbnail/thumbnail.h"
+
+#include <dfm-search/dsearch_global.h>
 
 #include <DGuiApplicationHelper>
 #include <DStandardPaths>
@@ -170,6 +174,15 @@ void GrandSearchListView::clear()
         m_model->clear();
 }
 
+void GrandSearchListView::setSearchKeyword(const QString &keyword)
+{
+    // 关键词改变时，丢弃所有旧的高亮任务
+    if (!m_currentKeyword.isEmpty()) {
+        HighlightProvider::instance()->cancelTask(m_currentKeyword);
+    }
+    m_currentKeyword = keyword;
+}
+
 void GrandSearchListView::updatePreviewItemState(const bool preview)
 {
     m_isPreviewItem = preview;
@@ -286,6 +299,9 @@ void GrandSearchListView::setData(const QModelIndex &index, const MatchedItem &i
         if (ThumbnailProvider::instance()->isSupported(mimetype)) {
             ThumbnailProvider::instance()->requestThumbnail(item.item, mimetype, GrandSearch::ThumbnailSize::Large);
         }
+
+        // 异步请求高亮内容（仅对全文搜索和OCR搜索）
+        requestHighlightContent(item, true);
     }
 }
 
@@ -327,6 +343,88 @@ void GrandSearchListView::updateThumbnail(const QString &filePath, const QPixmap
             // 更新缩略图到独立角色，保留原始图标
             m_model->setData(index, thumbnail, THUMBNAIL_ROLE);
             break;   // 找到后退出循环
+        }
+    }
+}
+
+void GrandSearchListView::requestHighlightContent(const MatchedItem &item, bool highPriority)
+{
+    // 仅对全文搜索和 OCR 搜索请求高亮内容
+    if (item.searcher != GRANDSEARCH_CLASS_FILE_FULLTEXT
+        && item.searcher != GRANDSEARCH_CLASS_OCR_TEXT) {
+        return;
+    }
+
+    if (m_currentKeyword.isEmpty() || item.item.isEmpty()) {
+        return;
+    }
+
+    QVariantHash extraHash = item.extra.toHash();
+
+    // 如果已经有 matchedContext，不需要再请求
+    if (extraHash.contains(GRANDSEARCH_PROPERTY_ITEM_MATCHEDCONTEXT)
+        && !extraHash.value(GRANDSEARCH_PROPERTY_ITEM_MATCHEDCONTEXT).toString().isEmpty()) {
+        return;
+    }
+
+    // 从 item.extra 中获取实际搜索关键词（daemon 可能对用户输入做了转换/扩展）
+    QStringList keywords = extraHash.value(GRANDSEARCH_PROPERTY_ITEM_KEYWORDS, QStringList()).toStringList();
+    if (keywords.isEmpty()) {
+        return;
+    }
+
+    // 根据 searcher 类型确定 searchType
+    int searchType = 0;
+    if (item.searcher == GRANDSEARCH_CLASS_FILE_FULLTEXT) {
+        searchType = static_cast<int>(DFMSEARCH::SearchType::Content);
+    } else if (item.searcher == GRANDSEARCH_CLASS_OCR_TEXT) {
+        searchType = static_cast<int>(DFMSEARCH::SearchType::Ocr);
+    }
+
+    // 将关键词列表用空格连接为单个字符串，传给 fetchHighlight
+    HighlightProvider::instance()->requestHighlight(
+        m_currentKeyword, item.item, keywords.first(), searchType, highPriority);
+}
+
+void GrandSearchListView::onHighlightReady(const QString &keyword, const QString &filePath, const QString &content)
+{
+    Q_UNUSED(keyword)
+    if (content.isEmpty()) {
+        return;
+    }
+
+    updateHighlight(filePath, content);
+}
+
+void GrandSearchListView::updateHighlight(const QString &filePath, const QString &content)
+{
+    if (filePath.isEmpty() || content.isEmpty()) {
+        return;
+    }
+
+    // 遍历所有项，找到匹配的文件路径
+    for (int row = 0; row < m_model->rowCount(); ++row) {
+        QModelIndex index = m_model->index(row, 0);
+        if (!index.isValid()) {
+            continue;
+        }
+
+        QVariant data = m_model->data(index, DATA_ROLE);
+        if (!data.isValid()) {
+            continue;
+        }
+
+        MatchedItem item = data.value<MatchedItem>();
+        if (item.item == filePath) {
+            // 更新 extra hash 中的 matchedContext
+            QVariantHash extraHash = item.extra.toHash();
+            extraHash.insert(GRANDSEARCH_PROPERTY_ITEM_MATCHEDCONTEXT, content);
+            item.extra = extraHash;
+
+            QVariant searchMeta;
+            searchMeta.setValue(item);
+            m_model->setData(index, searchMeta, DATA_ROLE);
+            break;
         }
     }
 }

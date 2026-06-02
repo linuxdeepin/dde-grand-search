@@ -72,6 +72,12 @@ void GroupWidget::setGroupName(const QString &groupName)
     AC_SET_ACCESSIBLE_NAME(m_listView, groupName);
 }
 
+void GroupWidget::setSearchKeyword(const QString &keyword)
+{
+    Q_ASSERT(m_listView);
+    m_listView->setSearchKeyword(keyword);
+}
+
 void GroupWidget::appendMatchedItems(const MatchedItems &newItems, const QString &searchGroupName)
 {
     Q_UNUSED(searchGroupName)

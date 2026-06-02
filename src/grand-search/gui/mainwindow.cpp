@@ -193,6 +193,9 @@ void MainWindow::onMissionChanged(const QString &missionId, const QString &missi
 
     if (missionContent.isEmpty()) {
         onHideExhitionWidget();
+    } else {
+        // 搜索关键词改变，传播到 ExhibitionWidget 以管理高亮任务
+        d_p->m_exhibitionWidget->setSearchKeyword(missionContent);
     }
 }
 

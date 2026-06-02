@@ -97,11 +97,8 @@ bool OcrTextWorkerPrivate::processSearchResults(const DFMSEARCH::SearchResultExp
 
         m_tmpSearchResults << filePath;
 
-        // Get OCR content and store in extra field
-        DFMSEARCH::SearchResult mutableResult = const_cast<DFMSEARCH::SearchResult &>(file);
-        OcrTextResultAPI ocrResult(const_cast<SearchResult &>(mutableResult));
-        QString ocrContent = ocrResult.highlightedContent();
-        GrandSearch::MatchedItem item = FileSearchUtils::packItem(filePath, q->name(), m_keywords, ocrContent);
+        // 高亮内容改为客户端延迟加载，不再在搜索阶段提取
+        GrandSearch::MatchedItem item = FileSearchUtils::packItem(filePath, q->name(), m_keywords);
 
         {
             QMutexLocker lk(&m_mutex);
@@ -160,6 +157,7 @@ bool OcrTextWorkerPrivate::searchByDFMSearch()
     // Configure OCR options
     OcrTextOptionsAPI ocrOptions(options);
     ocrOptions.setMaxPreviewLength(50);
+    ocrOptions.setFullTextRetrievalEnabled(false);   // 关闭全文获取，高亮改为客户端延迟加载
     // Enable filename-OCR content mixed search
     ocrOptions.setFilenameOcrContentMixedAndSearchEnabled(true);
 

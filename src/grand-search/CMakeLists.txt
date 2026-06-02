@@ -40,6 +40,7 @@ find_package(${QT_NS} COMPONENTS
     DBus
     Network
 REQUIRED)
+find_package(dfm${DTK_VERSION_MAJOR}-search REQUIRED)
 
 set(DBUSSRC
     # dbus接口
@@ -228,6 +229,8 @@ set(CONTACTSSRC
 set(UTILSSRC
     utils/utils.h
     utils/utils.cpp
+    utils/highlightprovider.h
+    utils/highlightprovider.cpp
     utils/previewpluginconf.h
     utils/filestatisticsthread.h
     utils/filestatisticsthread.cpp
@@ -287,6 +290,7 @@ target_link_libraries(${BIN_NAME} PRIVATE
     ${Qt_LIBS}
     ${DTK_LIBS}
     ${GIO_LIB_LIBRARIES}
+    dfm${DTK_VERSION_MAJOR}-search
 )
 
 set(SRCS_SETTING

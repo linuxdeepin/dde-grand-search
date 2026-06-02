@@ -151,6 +151,9 @@ bool GeneralPreviewPlugin::previewItem(const ItemInfo &info)
 
     if (!keywords.isEmpty()) {
         QVariantHash extraHash { { GRANDSEARCH_PROPERTY_ITEM_KEYWORDS, keywords } };
+        if (!matchedContext.isEmpty()) {
+            extraHash.insert(GRANDSEARCH_PROPERTY_ITEM_MATCHEDCONTEXT, matchedContext);
+        }
         item.extra = extraHash;
     }
 
@@ -165,7 +168,10 @@ bool GeneralPreviewPlugin::previewItem(const ItemInfo &info)
             && d_p->m_item.name == item.name) {
         const auto &extra = d_p->m_item.extra.toHash();
         const auto &itemKeywords = extra.value(GRANDSEARCH_PROPERTY_ITEM_KEYWORDS, QStringList()).toStringList();
-        if (!keywords.isEmpty() && keywords == itemKeywords) {
+        const auto &oldMatchedContext = extra.value(GRANDSEARCH_PROPERTY_ITEM_MATCHEDCONTEXT).toString();
+
+        if (!keywords.isEmpty() && keywords == itemKeywords
+                && matchedContext == oldMatchedContext) {
             qCDebug(logGrandSearch) << "Item already previewed - skipping";
             return true;
         }

@@ -47,8 +47,22 @@ public:
     void updatePreviewItemState(const bool preview);
     bool isPreviewItem() const;
 
+    /**
+     * @brief 设置当前搜索关键词并清理旧的高亮任务
+     * @param keyword 新的搜索关键词
+     */
+    void setSearchKeyword(const QString &keyword);
+
 public slots:
     void onSetThemeType(int type);
+
+    /**
+     * @brief 处理高亮内容获取完成（由 MatchWidget 统一连接信号后路由调用）
+     * @param keyword 搜索关键词（taskId）
+     * @param filePath 文件路径
+     * @param content 高亮内容
+     */
+    void onHighlightReady(const QString &keyword, const QString &filePath, const QString &content);
 
 signals:
     void sigCurrentItemChanged(const MatchedItem &item);
@@ -78,6 +92,20 @@ private:
      */
     void updateThumbnail(const QString &filePath, const QPixmap &thumbnail);
 
+    /**
+     * @brief 更新指定文件路径对应的项的高亮内容
+     * @param filePath 文件路径
+     * @param content 高亮内容
+     */
+    void updateHighlight(const QString &filePath, const QString &content);
+
+    /**
+     * @brief 请求指定项的高亮内容（如果尚未请求）
+     * @param item 搜索结果项
+     * @param highPriority 是否为高优先级（可见区域）
+     */
+    void requestHighlightContent(const MatchedItem &item, bool highPriority = false);
+
 private:
     GrandSearchListModel *m_model = nullptr;
     GrandSearchListDelegate *m_delegate = nullptr;
@@ -86,6 +114,7 @@ private:
     MatchedItems m_matchedItems;
 
     bool m_isPreviewItem = false;
+    QString m_currentKeyword;  // 当前搜索关键词，用于高亮任务管理
 };
 
 }

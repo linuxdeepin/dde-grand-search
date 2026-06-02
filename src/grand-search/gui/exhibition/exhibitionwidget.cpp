@@ -54,6 +54,14 @@ void ExhibitionWidget::clearData()
     m_vLine->hide();
 }
 
+void ExhibitionWidget::setSearchKeyword(const QString &keyword)
+{
+    Q_ASSERT(m_matchWidget);
+
+    qCDebug(logGrandSearch) << "Setting search keyword for highlight:" << keyword;
+    m_matchWidget->setSearchKeyword(keyword);
+}
+
 void ExhibitionWidget::onSelectNextItem()
 {
     if (this->isHidden()) {

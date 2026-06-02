@@ -51,6 +51,7 @@ bool FullTextWorkerPrivate::doSearch()
 
     ContentOptionsAPI contentOptions(options);
     contentOptions.setMaxPreviewLength(100);
+    contentOptions.setFullTextRetrievalEnabled(false);   // 关闭全文获取，高亮改为客户端延迟加载
     contentOptions.setFilenameContentMixedAndSearchEnabled(true);
 
     engine->setSearchOptions(options);
@@ -105,11 +106,8 @@ bool FullTextWorkerPrivate::processResults(const SearchResultExpected &result)
 
         m_tmpSearchResults << filePath;
 
-        // Get highlighted content preview
-        SearchResult mutableResult = const_cast<SearchResult &>(file);
-        ContentResultAPI contentResult(mutableResult);
-        QString highlightedContent = contentResult.highlightedContent();
-        MatchedItem item = FileSearchUtils::packItem(filePath, q->name(), keywords, highlightedContent);
+        // 高亮内容改为客户端延迟加载，不再在搜索阶段提取
+        MatchedItem item = FileSearchUtils::packItem(filePath, q->name(), keywords);
 
         // Set higher weight so frontend dedup prefers content results over filename results
         QVariantHash extra = item.extra.toHash();

@@ -7,6 +7,7 @@
 #include "listview/grandsearchlistview.h"
 #include "viewmore/viewmorebutton.h"
 #include "utils/utils.h"
+#include "utils/highlightprovider.h"
 #include "gui/datadefine.h"
 
 #include <DScrollArea>
@@ -144,6 +145,19 @@ void MatchWidget::clearMatchedData()
     layout();
 
     m_customSelected = false;
+}
+
+void MatchWidget::setSearchKeyword(const QString &keyword)
+{
+    // 缓存当前搜索关键词，新建分组时同步设置
+    m_currentKeyword = keyword;
+
+    // 同时传播到已存在的分组
+    for (GroupWidget *groupWidget : std::as_const(m_groupWidgetMap)) {
+        if (groupWidget) {
+            groupWidget->setSearchKeyword(keyword);
+        }
+    }
 }
 
 void MatchWidget::onSearchCompleted()
@@ -557,6 +571,19 @@ void MatchWidget::initUi()
 
 void MatchWidget::initConnect()
 {
+    // 统一连接高亮信号，路由到所有包含该文件路径的 GroupWidget -> ListView
+    // 同一文件可能存在于多个分组（如文档分组和文件分组），需要全部更新
+    connect(HighlightProvider::instance(), &HighlightProvider::highlightReady,
+            this, [this](const QString &keyword, const QString &filePath, const QString &content) {
+        Q_UNUSED(keyword)
+        if (content.isEmpty())
+            return;
+        for (GroupWidget *groupWidget : std::as_const(m_groupWidgetMap)) {
+            if (groupWidget && groupWidget->findItemByPath(filePath).item == filePath) {
+                groupWidget->getListView()->onHighlightReady(keyword, filePath, content);
+            }
+        }
+    });
 }
 
 void MatchWidget::reLayout()
@@ -628,6 +655,11 @@ GroupWidget *MatchWidget::createGroupWidget(const QString &searchGroupName)
 
         groupWidget->setSearchGroupName(searchGroupName);
         d_p->setGroupIcon(groupWidget);
+
+        // 同步当前搜索关键词到新建的分组（setSearchKeyword 可能先于分组创建）
+        if (!m_currentKeyword.isEmpty()) {
+            groupWidget->setSearchKeyword(m_currentKeyword);
+        }
 
         const QString &groupName = GroupWidget::convertDisplayName(searchGroupName);
         groupWidget->setGroupName(groupName);
