@@ -64,6 +64,9 @@ void GrandSearchListDelegate::paint(QPainter *painter, const QStyleOptionViewIte
     painter->setRenderHint(QPainter::HighQualityAntialiasing);
 #endif
 
+    // 清除该行的 tooltip 区域缓存
+    m_tooltipRegionCache[index.row()].clear();
+
     // 让基类绘制背景和选中状态（不绘制图标和文本）
     QStyleOptionViewItem viewOption(option);
     initStyleOption(&viewOption, index);
@@ -122,27 +125,40 @@ static void hideTooltipImmediately()
 bool GrandSearchListDelegate::helpEvent(QHelpEvent *event, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index)
 {
     if (event->type() == QEvent::ToolTip) {
-        const QString tooltip = index.data(Qt::ToolTipRole).toString();
-
-        if (tooltip.isEmpty()) {
-            hideTooltipImmediately();
-        } else {
-            int tooltipsize = tooltip.size();
-            const int nlong = 32;
-            int lines = tooltipsize / nlong + 1;
-            QString strtooltip;
-            for (int i = 0; i < lines; ++i) {
-                strtooltip.append(tooltip.mid(i * nlong, nlong));
-                strtooltip.append("\n");
+        const QPoint itemLocalPos = event->pos();
+        const QList<TooltipRegion> &regions = m_tooltipRegionCache.value(index.row());
+        for (const TooltipRegion &region : regions) {
+            if (region.rect.contains(itemLocalPos)) {
+                int tooltipsize = region.fullText.size();
+                const int nlong = 32;
+                int lines = tooltipsize / nlong + 1;
+                QString strtooltip;
+                for (int i = 0; i < lines; ++i) {
+                    strtooltip.append(region.fullText.mid(i * nlong, nlong));
+                    strtooltip.append("\n");
+                }
+                strtooltip.chop(1);
+                QToolTip::showText(event->globalPos(), strtooltip, view, region.rect);
+                return true;
             }
-            strtooltip.chop(1);
-            QToolTip::showText(event->globalPos(), strtooltip, view);
         }
 
+        // 鼠标在非省略区域，隐藏 tooltip
+        hideTooltipImmediately();
         return true;
     }
 
     return DStyledItemDelegate::helpEvent(event, view, option, index);
+}
+
+void GrandSearchListDelegate::recordTooltipRegion(int row, const QRect &rect, const QString &fullText) const
+{
+    m_tooltipRegionCache[row].append({ rect, fullText });
+}
+
+void GrandSearchListDelegate::clearTooltipCache()
+{
+    m_tooltipRegionCache.clear();
 }
 
 void GrandSearchListDelegate::drawIcon(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -236,7 +252,7 @@ void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QSty
     int secondLineY = firstLineY + nameFontMetrics.height() + ContextLineSpacing;
 
     // 第一行：文件名
-    drawItemName(painter, option, item.name, item.searcher, keywords,
+    drawItemName(painter, index, option, item.name, item.searcher, keywords,
                  nameFont, nameFontMetrics, nameTextColor, isDark, firstLineY);
 
     // 第二行颜色（修改时间、拖尾共用）
@@ -263,8 +279,8 @@ void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QSty
                 currentX += ItemDataSpacing;
                 remainingWidth = option.rect.width() - currentX;
             }
-            currentX = drawTailText(painter, tailList, secondFont, secondFontMetrics, secondLineColor,
-                                    remainingWidth, currentX, secondLineY);
+            currentX = drawTailText(painter, index, tailList, secondFont, secondFontMetrics,
+                                    secondLineColor, remainingWidth, currentX, secondLineY);
             remainingWidth = option.rect.width() - currentX;
         }
     }
@@ -274,13 +290,13 @@ void GrandSearchListDelegate::drawSearchResultText(QPainter *painter, const QSty
         QString context = extraHash.value(GRANDSEARCH_PROPERTY_ITEM_MATCHEDCONTEXT).toString();
         if (!context.isEmpty()) {
             currentX += ItemDataSpacing;
-            drawMatchedContext(painter, option, context, keywords,
+            drawMatchedContext(painter, index, option, context, keywords,
                                secondFont, secondFontMetrics, isDark, secondLineY, currentX);
         }
     }
 }
 
-void GrandSearchListDelegate::drawItemName(QPainter *painter, const QStyleOptionViewItem &option,
+void GrandSearchListDelegate::drawItemName(QPainter *painter, const QModelIndex &index, const QStyleOptionViewItem &option,
                                            const QString &name, const QString &searcher,
                                            const QStringList &keywords, const QFont &font,
                                            const QFontMetrics &fontMetrics, const QColor &textColor,
@@ -333,6 +349,11 @@ void GrandSearchListDelegate::drawItemName(QPainter *painter, const QStyleOption
     int actualNameWidth = fontMetrics.size(Qt::TextSingleLine, elidedName).width();
     QRect drawRect(textStartX, startY, actualNameWidth, fontMetrics.height());
 
+    // 文件名被省略时，记录 tooltip 区域
+    if (elidedName != name) {
+        recordTooltipRegion(index.row(), drawRect, name);
+    }
+
     painter->save();
     painter->translate(drawRect.topLeft());
     painter->setClipRect(drawRect.translated(-drawRect.topLeft()));
@@ -340,7 +361,7 @@ void GrandSearchListDelegate::drawItemName(QPainter *painter, const QStyleOption
     painter->restore();
 }
 
-void GrandSearchListDelegate::drawMatchedContext(QPainter *painter, const QStyleOptionViewItem &option,
+void GrandSearchListDelegate::drawMatchedContext(QPainter *painter, const QModelIndex &index, const QStyleOptionViewItem &option,
                                                  const QString &matchedContext, const QStringList &keywords,
                                                  const QFont &font, const QFontMetrics &fontMetrics,
                                                  bool isDark, int startY, int startX) const
@@ -388,10 +409,18 @@ void GrandSearchListDelegate::drawMatchedContext(QPainter *painter, const QStyle
     painter->translate(startX, startY);
     layout.draw(painter, QPointF(0, 0));
     painter->restore();
+
+    // 摘要被省略时，记录 tooltip 区域
+    if (elideResult.text != matchedContext) {
+        QTextLine tl = layout.lineAt(0);
+        recordTooltipRegion(index.row(),
+                            QRect(startX, startY, int(tl.naturalTextWidth()), fontMetrics.height()),
+                            matchedContext);
+    }
 }
 
-int GrandSearchListDelegate::drawTailText(QPainter *painter, const QStringList &tailList, const QFont &font,
-                                          const QFontMetrics &fontMetrics, const QColor &color,
+int GrandSearchListDelegate::drawTailText(QPainter *painter, const QModelIndex &index, const QStringList &tailList,
+                                          const QFont &font, const QFontMetrics &fontMetrics, const QColor &color,
                                           int maxWidth, int startX, int startY) const
 {
     if (tailList.isEmpty())
@@ -410,7 +439,16 @@ int GrandSearchListDelegate::drawTailText(QPainter *painter, const QStringList &
     for (auto tailIndex : tailMap.keys()) {
         if (tailIndex != 0)
             currentX += ItemDataSpacing;
-        drawSecondLineText(painter, tailMap.value(tailIndex), font, fontMetrics, color, currentX, startY);
+        const QString &elidedTail = tailMap.value(tailIndex);
+
+        // 拖尾文本被截断时，记录 tooltip 区域
+        if (elidedTail != tailList.value(tailIndex)) {
+            int tailWidth = fontMetrics.size(Qt::TextSingleLine, elidedTail).width();
+            recordTooltipRegion(index.row(),
+                                QRect(currentX, startY, tailWidth, fontMetrics.height()),
+                                tailList.value(tailIndex));
+        }
+        drawSecondLineText(painter, elidedTail, font, fontMetrics, color, currentX, startY);
     }
 
     return currentX;
@@ -477,7 +515,7 @@ QMap<int, QString> GrandSearchListDelegate::calcTailShowDataByMaxWidth(QStringLi
 
     for (int i = 0; i < tailCount; i++) {
         tailString = strings.takeFirst();
-        elidedTailText = fontMetrics.elidedText(tailString, Qt::ElideLeft, averageWidth);
+        elidedTailText = fontMetrics.elidedText(tailString, Qt::ElideMiddle, averageWidth);
         if (!elidedTailText.isEmpty())
             tailMap.insert(i, elidedTailText);
     }
@@ -525,7 +563,7 @@ QMap<int, QString> GrandSearchListDelegate::calcTailShowDataByOptimalWidth(QStri
         }
 
         pendString = pendMap.value(index);
-        elidedTailText = fontMetrics.elidedText(pendString, Qt::ElideLeft, availableWidth);
+        elidedTailText = fontMetrics.elidedText(pendString, Qt::ElideMiddle, availableWidth);
         if (elidedTailText == pendString) {
             // 未截断显示，说明设置的可用空间还有剩余，需要退还给未使用空间
             int elidedTailWidth = fontMetrics.size(Qt::TextSingleLine, pendString).width();

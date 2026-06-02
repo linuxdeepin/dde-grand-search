@@ -28,7 +28,6 @@ DGUI_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
 
 #define ICON_SIZE 24
-#define ListItemTextMaxWidth 240   // 文本元素最大显示宽度
 
 GrandSearchListView::GrandSearchListView(QWidget *parent)
     : DListView(parent)
@@ -170,6 +169,8 @@ int GrandSearchListView::getThemeType() const
 
 void GrandSearchListView::clear()
 {
+    if (m_delegate)
+        m_delegate->clearTooltipCache();
     if (m_model)
         m_model->clear();
 }
@@ -259,13 +260,6 @@ void GrandSearchListView::setData(const QModelIndex &index, const MatchedItem &i
     QVariant searchMeta;
     searchMeta.setValue(item);
     m_model->setData(index, searchMeta, DATA_ROLE);
-
-    // 添加悬浮提示
-    QFontMetricsF fontWidth(DFontSizeManager::instance()->get(DFontSizeManager::T6));
-    QString mtext = fontWidth.elidedText(item.name, Qt::ElideRight, ListItemTextMaxWidth);
-    if (mtext != item.name) {
-        m_model->setData(index, item.name, Qt::ToolTipRole);
-    }
 
     // 设置icon - 先显示默认图标
     QIcon itemIcon = Utils::defaultIcon(item);
