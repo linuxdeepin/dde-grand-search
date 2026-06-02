@@ -44,6 +44,8 @@ GrandSearchListDelegate::~GrandSearchListDelegate()
 void GrandSearchListDelegate::initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const
 {
     DStyledItemDelegate::initStyleOption(option, index);
+    option->text = "";
+    option->icon = QIcon();
 }
 
 bool GrandSearchListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
@@ -65,13 +67,14 @@ void GrandSearchListDelegate::paint(QPainter *painter, const QStyleOptionViewIte
     // 让基类绘制背景和选中状态（不绘制图标和文本）
     QStyleOptionViewItem viewOption(option);
     initStyleOption(&viewOption, index);
-    viewOption.text = "";
-    viewOption.icon = QIcon();
     QStyle *pStyle = viewOption.widget ? viewOption.widget->style() : QApplication::style();
     pStyle->drawControl(QStyle::CE_ItemViewItem, &viewOption, painter, viewOption.widget);
 
     // 绘制选中状态
     drawSelectState(painter, viewOption, index);
+
+    // 调整右边距10px
+    viewOption.rect.adjust(0, 0, -10, 0);
 
     // 绘制图标（普通图标或缩略图）
     drawIcon(painter, viewOption, index);
@@ -388,8 +391,8 @@ void GrandSearchListDelegate::drawMatchedContext(QPainter *painter, const QStyle
 }
 
 int GrandSearchListDelegate::drawTailText(QPainter *painter, const QStringList &tailList, const QFont &font,
-                                            const QFontMetrics &fontMetrics, const QColor &color,
-                                            int maxWidth, int startX, int startY) const
+                                          const QFontMetrics &fontMetrics, const QColor &color,
+                                          int maxWidth, int startX, int startY) const
 {
     if (tailList.isEmpty())
         return startX;
@@ -414,8 +417,8 @@ int GrandSearchListDelegate::drawTailText(QPainter *painter, const QStringList &
 }
 
 void GrandSearchListDelegate::drawSecondLineText(QPainter *painter, const QString &text, const QFont &font,
-                                                     const QFontMetrics &fontMetrics, const QColor &color,
-                                                     int &startX, int startY) const
+                                                 const QFontMetrics &fontMetrics, const QColor &color,
+                                                 int &startX, int startY) const
 {
     int showWidth = fontMetrics.size(Qt::TextSingleLine, text).width();
 
@@ -424,7 +427,7 @@ void GrandSearchListDelegate::drawSecondLineText(QPainter *painter, const QStrin
     layout.setFont(font);
     QTextCharFormat fmt;
     fmt.setForeground(color);
-    layout.setFormats({QTextLayout::FormatRange{0, static_cast<int>(text.length()), fmt}});
+    layout.setFormats({ QTextLayout::FormatRange { 0, static_cast<int>(text.length()), fmt } });
 
     layout.beginLayout();
     layout.createLine();

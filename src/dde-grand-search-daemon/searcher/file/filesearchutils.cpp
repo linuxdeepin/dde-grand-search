@@ -191,11 +191,11 @@ FileSearchUtils::SearchInfo FileSearchUtils::parseContent(const QString &content
             continue;
         }
 
-        keywordList.append(searchHelper->tropeInputSymbol(key));
+        keywordList.append(key);
         qCDebug(logDaemon) << "Added keyword to search:" << key;
     }
 
-    info.keyword = QString(R"((%1).*)").arg(keywordList.join('|'));
+    info.keyword = content;
     info.typeKeywords = keywordList;
     return info;
 }

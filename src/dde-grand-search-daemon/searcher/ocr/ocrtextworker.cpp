@@ -124,7 +124,7 @@ QStringList OcrTextWorkerPrivate::parserKeywords(const QString &context)
     QJsonParseError error;
     QJsonDocument doc = QJsonDocument::fromJson(context.toLocal8Bit(), &error);
     if (error.error != QJsonParseError::NoError || doc.isEmpty())
-        return searchHelper->tropeInputSymbol(context).split(" ");
+        return context.split(" ");
 
     // 应用搜索类目，只需要获取关键字信息
     QStringList keywordList;
@@ -134,11 +134,11 @@ QStringList OcrTextWorkerPrivate::parserKeywords(const QString &context)
         const QString &key = arr[i].toString();
         if (key.isEmpty())
             continue;
-        keywordList.append(searchHelper->tropeInputSymbol(key));
+        keywordList.append(key);
     }
 
     if (keywordList.isEmpty())
-        return { searchHelper->tropeInputSymbol(context) };
+        return { context };
 
     return keywordList;
 }
