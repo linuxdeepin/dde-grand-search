@@ -33,48 +33,11 @@ AppletItem {
         scale: Panel.rootObject.dockItemMaxSize * 9 / 14 / Dock.MAX_DOCK_TASKMANAGER_ICON_SIZE
         // 9:14 (iconSize/dockHeight)
         sourceSize: Qt.size(Dock.MAX_DOCK_TASKMANAGER_ICON_SIZE, Dock.MAX_DOCK_TASKMANAGER_ICON_SIZE)
-        Timer {
-            id: toolTipShowTimer
-            interval: 50
-            onTriggered: {
-                var point = Applet.rootObject.mapToItem(null, Applet.rootObject.width / 2, Applet.rootObject.height / 2)
-                toolTip.DockPanelPositioner.bounding = Qt.rect(point.x, point.y, toolTip.width, toolTip.height)
-                toolTip.open()
-            }
-        }
-        TapHandler {
-            acceptedButtons: Qt.LeftButton
-            onTapped: {
-                Applet.toggleGrandSearch()
-                toolTip.close()
-            }
-        }
-        HoverHandler {
-            onHoveredChanged: {
-                if (hovered) {
-                    toolTipShowTimer.start()
-                } else {
-                    if (toolTipShowTimer.running) {
-                        toolTipShowTimer.stop()
-                    }
-
-                    toolTip.close()
-                }
-            }
-        }
-        MouseArea {
-            anchors.fill: parent
-            acceptedButtons: Qt.RightButton
-            onClicked: {
-                platformMenuLoader.active = true
-                platformMenuLoader.item.open()
-            }
-        }
     }
 
     Loader {
         id: platformMenuLoader
-        active: false
+        active: true
         sourceComponent: LP.Menu {
             id: platformMenu
             LP.MenuItem {
@@ -82,6 +45,45 @@ AppletItem {
                 onTriggered: {
                     Applet.toggleGrandSearchConfig()
                 }
+            }
+        }
+    }
+
+    Timer {
+        id: toolTipShowTimer
+        interval: 50
+        onTriggered: {
+            var point = Applet.rootObject.mapToItem(null, Applet.rootObject.width / 2, Applet.rootObject.height / 2)
+            toolTip.DockPanelPositioner.bounding = Qt.rect(point.x, point.y, toolTip.width, toolTip.height)
+            toolTip.open()
+        }
+    }
+    HoverHandler {
+        onHoveredChanged: {
+            if (hovered) {
+                toolTipShowTimer.start()
+            } else {
+                if (toolTipShowTimer.running) {
+                    toolTipShowTimer.stop()
+                }
+
+                toolTip.close()
+            }
+        }
+    }
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+        onPressed: function(mouse) {
+            if (mouse.button === Qt.RightButton) {
+                mouse.accepted = true
+                platformMenuLoader.item.open()
+            }
+        }
+        onClicked: function(mouse) {
+            if (mouse.button === Qt.LeftButton) {
+                Applet.toggleGrandSearch()
+                toolTip.close()
             }
         }
     }
