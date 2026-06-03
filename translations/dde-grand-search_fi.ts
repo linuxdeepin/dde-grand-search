@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="fi">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="fi">
 <context>
     <name>GrandSearch::AiToolBar</name>
     <message>
@@ -233,7 +231,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/listview/grandsearchlistdelegate.cpp" line="250"/>
         <source>Modified at </source>
-        <translation type="unfinished"></translation>
+        <translation>Muokattu</translation>
     </message>
 </context>
 <context>
@@ -536,22 +534,22 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="121"/>
         <source>Search</source>
-        <translation type="unfinished">Etsi</translation>
+        <translation>Haku</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="219"/>
         <source>Cut</source>
-        <translation type="unfinished">Leikkaa</translation>
+        <translation>Leikkaa</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="223"/>
         <source>Copy</source>
-        <translation type="unfinished">Kopioi</translation>
+        <translation>Kopioi</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="227"/>
         <source>Paste</source>
-        <translation type="unfinished">Liitä</translation>
+        <translation>Liitä</translation>
     </message>
 </context>
 <context>
