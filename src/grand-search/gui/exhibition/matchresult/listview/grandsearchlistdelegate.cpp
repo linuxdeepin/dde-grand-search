@@ -20,7 +20,6 @@
 #include <QApplication>
 #include <QToolTip>
 
-#define ListItemHeight 36   // 列表行高（单行）
 #define ListIconSize 24   // 列表图标大小
 #define ListRowWidth 740   // 列表行宽
 #define ItemDataSpacing 10   // 信息显示间隔
@@ -101,13 +100,13 @@ QSize GrandSearchListDelegate::sizeHint(const QStyleOptionViewItem &option, cons
         }
     }
 
-    if (!hasSecondLine)
-        return QSize(ListRowWidth, ListItemHeight);
-
     QFontMetrics nameFm(DFontSizeManager::instance()->get(DFontSizeManager::T6));
-    QFontMetrics contextFm(DFontSizeManager::instance()->get(DFontSizeManager::T8));
-    int totalHeight = ListLineMargin + nameFm.height() + ContextLineSpacing + contextFm.height() + ListLineMargin;
-    totalHeight = qMax(totalHeight, ListItemHeight);
+    int totalHeight = ListLineMargin * 2 + nameFm.height();
+
+    if (hasSecondLine) {
+        QFontMetrics contextFm(DFontSizeManager::instance()->get(DFontSizeManager::T8));
+        totalHeight += ContextLineSpacing + contextFm.height();
+    }
 
     return QSize(ListRowWidth, totalHeight);
 }
@@ -309,7 +308,8 @@ void GrandSearchListDelegate::drawItemName(QPainter *painter, const QModelIndex 
     if (elidedName != name && GRANDSEARCH_CLASS_WEB_STATICTEXT == searcher) {
         static const QString markStr = name.right(1);
         static const int markWidth = fontMetrics.size(Qt::TextSingleLine, markStr).width();
-        elidedName = fontMetrics.elidedText(name.left(name.size() - 1), Qt::ElideRight, nameTextMaxWidth - markWidth);
+        nameTextMaxWidth -= markWidth;
+        elidedName = fontMetrics.elidedText(name.left(name.size() - 1), Qt::ElideRight, nameTextMaxWidth);
         elidedName.append(markStr);
     }
 
@@ -346,8 +346,7 @@ void GrandSearchListDelegate::drawItemName(QPainter *painter, const QModelIndex 
     nameCursor.endEditBlock();
 
     QAbstractTextDocumentLayout::PaintContext paintContext;
-    int actualNameWidth = fontMetrics.size(Qt::TextSingleLine, elidedName).width();
-    QRect drawRect(textStartX, startY, actualNameWidth, fontMetrics.height());
+    QRect drawRect(textStartX, startY, nameTextMaxWidth, fontMetrics.height());
 
     // 文件名被省略时，记录 tooltip 区域
     if (elidedName != name) {
