@@ -1,3 +1,14 @@
+dde-grand-search (6.0.37) unstable; urgency=medium
+
+  * refactor: move highlight content extraction from daemon to client-side
+  * fix: remove symbol preprocessing and fix list delegate rect
+  * feat: refine tooltip to only show on omitted text regions
+  * refactor: restructure search item event handling and loader
+  * fix: toggleGrandSearch now toggles visibility
+  * fix: adjust list item height calculation for dynamic rows
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Thu, 04 Jun 2026 20:06:50 +0800
+
 dde-grand-search (6.0.36) unstable; urgency=medium
 
   * feat: optimize search UI icons and layout spacing
