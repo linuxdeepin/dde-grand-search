@@ -11,6 +11,10 @@
 #include <DGuiApplicationHelper>
 
 #include <QBuffer>
+#include <QDBusConnection>
+#include <QDBusConnectionInterface>
+#include <QDBusMessage>
+#include <QDBusReply>
 #include <QGuiApplication>
 #include <QProcess>
 #include <QLoggingCategory>
@@ -18,8 +22,7 @@
 Q_LOGGING_CATEGORY(logShell, "org.deepin.dde.dock.shell.grandsearch")
 
 DGUI_USE_NAMESPACE
-namespace dock
-{
+namespace dock {
 
 const QString grandSearchService = "com.deepin.dde.GrandSearch";
 const QString grandSearchPath = "/com/deepin/dde/GrandSearch";
@@ -30,17 +33,24 @@ static DDBusSender searchDbus()
 }
 
 SearchItem::SearchItem(QObject *parent)
-    : DApplet(parent)
-    , m_visible(true)
-    , m_grandSearchVisible(false)
+    : DApplet(parent), m_visible(true), m_grandSearchVisible(false)
 {
     qCDebug(logShell) << "Grand Search shell plugin initialized";
+
+    // Connect to VisibleChanged D-Bus signal directly
+    QDBusConnection::sessionBus().connect(
+            grandSearchService,
+            grandSearchPath,
+            grandSearchInterface,
+            "VisibleChanged",
+            this,
+            SLOT(onGrandSearchVisibleChanged(bool)));
 }
 
 void SearchItem::toggleGrandSearch()
 {
     qCDebug(logShell) << "Toggling Grand Search visibility via shell plugin";
-    searchDbus().method("SetVisible").arg(true).call();
+    searchDbus().method("SetVisible").arg(!m_grandSearchVisible).call();
 }
 
 void SearchItem::toggleGrandSearchConfig()
