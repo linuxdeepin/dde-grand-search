@@ -66,10 +66,13 @@ TEST_F(TestDdeGrandSearchDockPlugin, init)
 {
     EXPECT_NE(plugin->m_tipsWidget.get(), nullptr);
     EXPECT_NE(plugin->m_searchWidget.get(), nullptr);
+#if (QT_VERSION_MAJOR < 6)
+    // m_gsettings only exists under Qt5 (gated by #if QT_VERSION_MAJOR < 6 in header)
     if (QGSettings::isSchemaInstalled("com.deepin.dde.dock.module.grand-search"))
         EXPECT_NE(plugin->m_gsettings.get(), nullptr);
     else
         EXPECT_EQ(plugin->m_gsettings.get(), nullptr);
+#endif
 }
 
 TEST_F(TestDdeGrandSearchDockPlugin, itemWidget)
@@ -157,7 +160,10 @@ TEST_F(TestDdeGrandSearchDockPlugin, invokedMenuItem)
 {
     bool ut_startDetached = false;
 
-    stu.set_lamda((bool(*)(const QString &, const QStringList &))ADDR(QProcess, startDetached), [&](){
+    // Qt6: startDetached has 4 params (workingDirectory + pid with defaults)
+    using StartDetachedFunc = bool(*)(const QString &, const QStringList &, const QString &, qint64 *);
+    StartDetachedFunc startDetachedFunc = &QProcess::startDetached;
+    stu.set_lamda(startDetachedFunc, [&](){
        ut_startDetached = true;
        return ut_startDetached;
     });
@@ -174,9 +180,12 @@ TEST_F(TestDdeGrandSearchDockPlugin, invokedMenuItem)
     EXPECT_TRUE(ut_startDetached);
 }
 
+// FIXME Qt6: onGsettingsChanged/m_gsettings gated by #if QT_VERSION_MAJOR < 6 in header
+#if (QT_VERSION_MAJOR < 6)
 TEST_F(TestDdeGrandSearchDockPlugin, onGsettingsChanged)
 {
     QString testKey("menuEnable");
     if (plugin->m_gsettings.get())
         EXPECT_NO_FATAL_FAILURE(plugin->onGsettingsChanged(testKey));
 }
+#endif

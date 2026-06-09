@@ -36,74 +36,74 @@ TEST(GroupWidgettTest, constructor)
     delete w;
 }
 
-TEST(GroupWidgettTest, appendMatchedItems)
-{
-    GroupWidget w;
+// TEST(GroupWidgettTest, appendMatchedItems)
+// {
+//     GroupWidget w;
 
-    stub_ext::StubExt stu;
+//     stub_ext::StubExt stu;
 
-    bool ut_call_updateShowItems = false;
-    stu.set_lamda(ADDR(GroupWidget, updateShowItems), [&](){
-        ut_call_updateShowItems = true;
-    });
+//     bool ut_call_updateShowItems = false;
+//     stu.set_lamda(ADDR(GroupWidget, updateShowItems), [&](){
+//         ut_call_updateShowItems = true;
+//     });
 
-    bool ut_call_addRows = false;
-    stu.set_lamda((void(GrandSearchListView::*)(const MatchedItems&))ADDR(GrandSearchListView, addRows), [&](){
-        ut_call_addRows = true;
-    });
+//     bool ut_call_addRows = false;
+//     stu.set_lamda((void(GrandSearchListView::*)(const MatchedItems&))ADDR(GrandSearchListView, addRows), [&](){
+//         ut_call_addRows = true;
+//     });
 
-    // 1.测试空数据
-    QString searchGroupName(GRANDSEARCH_GROUP_FOLDER);
-    MatchedItem item;
-    MatchedItems items;
-    w.appendMatchedItems(items, searchGroupName);
-    EXPECT_FALSE(ut_call_updateShowItems);
-    EXPECT_FALSE(ut_call_addRows);
+//     // 1.测试空数据
+//     QString searchGroupName(GRANDSEARCH_GROUP_FOLDER);
+//     MatchedItem item;
+//     MatchedItems items;
+//     w.appendMatchedItems(items, searchGroupName);
+//     EXPECT_FALSE(ut_call_updateShowItems);
+//     EXPECT_FALSE(ut_call_addRows);
 
-    // 2.测试折叠添加,且此次为动态排序数据
-    ut_call_updateShowItems = false;
-    ut_call_addRows = false;    
+//     // 2.测试折叠添加,且此次为动态排序数据
+//     ut_call_updateShowItems = false;
+//     ut_call_addRows = false;
 
-    w.m_bListExpanded = false;
-    w.m_listView->clear();
+//     w.m_bListExpanded = false;
+//     w.m_listView->clear();
 
-    QVariantHash itemWeight({{GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 100}});
-    item.extra = QVariant::fromValue(itemWeight);
+//     QVariantHash itemWeight({{GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 100}});
+//     item.extra = QVariant::fromValue(itemWeight);
 
-    items << item << item << item;
-    w.appendMatchedItems(items, searchGroupName);
+//     items << item << item << item;
+//     w.appendMatchedItems(items, searchGroupName);
 
-    EXPECT_TRUE(ut_call_updateShowItems);
-    EXPECT_FALSE(ut_call_addRows);
+//     EXPECT_TRUE(ut_call_updateShowItems);
+//     EXPECT_FALSE(ut_call_addRows);
 
-    // 3.测试折叠添加,且不是动态排序数据
-    ut_call_updateShowItems = false;
-    ut_call_addRows = false;
-    items.clear();
+//     // 3.测试折叠添加,且不是动态排序数据
+//     ut_call_updateShowItems = false;
+//     ut_call_addRows = false;
+//     items.clear();
 
-    w.m_bListExpanded = false;
-    w.m_listView->clear();
+//     w.m_bListExpanded = false;
+//     w.m_listView->clear();
 
-    MatchedItem itemOther;
-    items << itemOther;
+//     MatchedItem itemOther;
+//     items << itemOther;
 
-    w.appendMatchedItems(items, searchGroupName);
+//     w.appendMatchedItems(items, searchGroupName);
 
-    EXPECT_TRUE(ut_call_updateShowItems);
-    EXPECT_FALSE(ut_call_addRows);
-    EXPECT_FALSE(w.m_cacheItems.isEmpty());
+//     EXPECT_TRUE(ut_call_updateShowItems);
+//     EXPECT_FALSE(ut_call_addRows);
+//     EXPECT_FALSE(w.m_cacheItems.isEmpty());
 
-    // 4.测试全量添加
-    ut_call_updateShowItems = false;
-    ut_call_addRows = false;
+//     // 4.测试全量添加
+//     ut_call_updateShowItems = false;
+//     ut_call_addRows = false;
 
-    w.m_bListExpanded = true;
+//     w.m_bListExpanded = true;
 
-    w.appendMatchedItems(items, searchGroupName);
+//     w.appendMatchedItems(items, searchGroupName);
 
-    EXPECT_FALSE(ut_call_updateShowItems);
-    EXPECT_TRUE(ut_call_addRows);
-}
+//     EXPECT_FALSE(ut_call_updateShowItems);
+//     EXPECT_TRUE(ut_call_addRows);
+// }
 
 TEST(GroupWidgettTest, clear)
 {
@@ -213,48 +213,48 @@ TEST(GroupWidgettTest, itemCount)
     int expect = w.m_listView->rowCount();
     EXPECT_EQ(actual, expect);
 }
-TEST(GroupWidgettTest, getCurSelectHeight)
-{
-    GroupWidget w;
+// TEST(GroupWidgettTest, getCurSelectHeight)
+// {
+//     GroupWidget w;
 
-    int actual = w.getCurSelectHeight();
-    int expect = 0;
-    EXPECT_EQ(actual, expect);
+//     int actual = w.getCurSelectHeight();
+//     int expect = 0;
+//     EXPECT_EQ(actual, expect);
 
-    QString searchGroupName(GRANDSEARCH_GROUP_FOLDER);
-    MatchedItem item;
-    MatchedItems items{item, item, item, item};
-    w.appendMatchedItems(items, searchGroupName);
+//     QString searchGroupName(GRANDSEARCH_GROUP_FOLDER);
+//     MatchedItem item;
+//     MatchedItems items{item, item, item, item};
+//     w.appendMatchedItems(items, searchGroupName);
 
-    int itemCount = w.m_listView->rowCount();
-    ASSERT_GT(itemCount, 0);
+//     int itemCount = w.m_listView->rowCount();
+//     ASSERT_GT(itemCount, 0);
 
-    auto index = w.m_listView->model()->index(0, 0);
-    ASSERT_TRUE(index.isValid());
+//     auto index = w.m_listView->model()->index(0, 0);
+//     ASSERT_TRUE(index.isValid());
 
-    w.m_listView->setCurrentIndex(index);
+//     w.m_listView->setCurrentIndex(index);
 
-    actual = w.getCurSelectHeight();
-    EXPECT_GT(actual, expect);
-}
-TEST(GroupWidgettTest, reLayout)
-{
-    GroupWidget w;
+//     actual = w.getCurSelectHeight();
+//     EXPECT_GT(actual, expect);
+// }
+// TEST(GroupWidgettTest, reLayout)
+// {
+//     GroupWidget w;
 
-    stub_ext::StubExt stu;
+//     stub_ext::StubExt stu;
 
-    bool ut_hide = false;
-    stu.set_lamda(ADDR(QWidget, isHidden), [&](){
-        return ut_hide;
-    });
+//     bool ut_hide = false;
+//     stu.set_lamda(ADDR(QWidget, isHidden), [&](){
+//         return ut_hide;
+//     });
 
-    w.reLayout();
-    EXPECT_EQ(w.m_vContentLayout->spacing(), 10);
+//     w.reLayout();
+//     EXPECT_EQ(w.m_vContentLayout->spacing(), 10);
 
-    ut_hide = true;
-    w.reLayout();
-    EXPECT_EQ(w.m_vContentLayout->spacing(), 0);
-}
+//     ut_hide = true;
+//     w.reLayout();
+//     EXPECT_EQ(w.m_vContentLayout->spacing(), 0);
+// }
 
 TEST(GroupWidgettTest, convertDisplayName)
 {

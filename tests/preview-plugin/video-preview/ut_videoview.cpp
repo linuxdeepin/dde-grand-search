@@ -61,7 +61,11 @@ TEST(VideoView, ut_setThumbnail)
     view.setThumbnail(pix);
     EXPECT_FALSE(view.m_picFrame->m_pixmap.isNull());
 
+#if (QT_VERSION_MAJOR >= 6)
+    EXPECT_FALSE(view.m_picFrame->m_picLabel->pixmap().isNull());
+#else
     EXPECT_FALSE(view.m_picFrame->m_picLabel->pixmap()->isNull());
+#endif
     EXPECT_EQ(view.m_picFrame->m_picLabel->size(), pix.size());
 }
 

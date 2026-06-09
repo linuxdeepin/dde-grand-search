@@ -10,6 +10,7 @@
 #include <gtest/gtest.h>
 
 #include <DLabel>
+#include <global/widgets/highlightlabel.h>
 
 #include <QSize>
 #include <QMovie>

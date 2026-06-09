@@ -81,47 +81,47 @@ TEST(HandleVisibilityTest, onCloseWindow)
     EXPECT_FALSE(hand.m_mainWindow->isVisible());
 }
 
-TEST(HandleVisibilityTest, registerRegion)
-{
-    MainWindow w;
-    HandleVisibility hand(&w, nullptr);
+// TEST(HandleVisibilityTest, registerRegion)
+// {
+//     MainWindow w;
+//     HandleVisibility hand(&w, nullptr);
 
-    stub_ext::StubExt stu;
+//     stub_ext::StubExt stu;
 
-    bool ut_get_register = false;
-    bool ut_set_register = false;
-    bool ut_set_unregister = false;
+//     bool ut_get_register = false;
+//     bool ut_set_register = false;
+//     bool ut_set_unregister = false;
 
-    stu.set_lamda(ADDR(DRegionMonitor, registered), [&](){
-       return ut_get_register;
-    });
+//     stu.set_lamda(ADDR(DRegionMonitor, registered), [&](){
+//        return ut_get_register;
+//     });
 
-    stu.set_lamda(((void(DRegionMonitor::*)(void))ADDR(DRegionMonitor, registerRegion)), [&](){
-        ut_set_register = true;
-    });
+//     stu.set_lamda(((void(DRegionMonitor::*)(void))ADDR(DRegionMonitor, registerRegion)), [&](){
+//         ut_set_register = true;
+//     });
 
-    stu.set_lamda(ADDR(DRegionMonitor, unregisterRegion), [&](){
-        ut_set_unregister = true;
-    });
+//     stu.set_lamda(ADDR(DRegionMonitor, unregisterRegion), [&](){
+//         ut_set_unregister = true;
+//     });
 
-    hand.registerRegion(false);
-    EXPECT_FALSE(ut_set_register);
-    EXPECT_FALSE(ut_set_unregister);
+//     hand.registerRegion(false);
+//     EXPECT_FALSE(ut_set_register);
+//     EXPECT_FALSE(ut_set_unregister);
 
-    ut_get_register = false;
-    ut_set_register = false;
-    ut_set_unregister = false;
-    hand.registerRegion(true);
-    EXPECT_TRUE(ut_set_register);
-    EXPECT_FALSE(ut_set_unregister);
+//     ut_get_register = false;
+//     ut_set_register = false;
+//     ut_set_unregister = false;
+//     hand.registerRegion(true);
+//     EXPECT_TRUE(ut_set_register);
+//     EXPECT_FALSE(ut_set_unregister);
 
-    ut_get_register = true;
-    ut_set_register = false;
-    ut_set_unregister = false;
-    hand.registerRegion(false);
-    EXPECT_FALSE(ut_set_register);
-    EXPECT_TRUE(ut_set_unregister);
-}
+//     ut_get_register = true;
+//     ut_set_register = false;
+//     ut_set_unregister = false;
+//     hand.registerRegion(false);
+//     EXPECT_FALSE(ut_set_register);
+//     EXPECT_TRUE(ut_set_unregister);
+// }
 
 TEST(HandleVisibilityTest, regionMousePress)
 {

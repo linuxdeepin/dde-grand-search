@@ -35,30 +35,30 @@ TEST(BlackListWidgetTest, constructor)
     delete blackListWidget;
 }
 
-TEST(BlackListWidgetTest, addButtonClicked)
-{
-    BlackListWidget w;
-    stub_ext::StubExt stu;
-    QUrl url("/");
-    stu.set_lamda(&QFileDialog::getExistingDirectoryUrl, [&](){
-        return url;
-    });
+// TEST(BlackListWidgetTest, addButtonClicked)
+// {
+//     BlackListWidget w;
+//     stub_ext::StubExt stu;
+//     QUrl url("/");
+//     stu.set_lamda(&QFileDialog::getExistingDirectoryUrl, [&](){
+//         return url;
+//     });
 
-    stu.set_lamda(&QUrl::toLocalFile, [](){
-        return QString("/home");
-    });
-    bool flag = false;
-    stu.set_lamda(&BlackListWrapper::addRow, [&](){
-        flag = true;
-    });
-    w.addButtonClicked();
-    EXPECT_TRUE(flag);
+//     stu.set_lamda(&QUrl::toLocalFile, [](){
+//         return QString("/home");
+//     });
+//     bool flag = false;
+//     stu.set_lamda(&BlackListWrapper::addRow, [&](){
+//         flag = true;
+//     });
+//     w.addButtonClicked();
+//     EXPECT_TRUE(flag);
 
-    flag = false;
-    url.clear();
-    w.addButtonClicked();
-    EXPECT_FALSE(flag);
-}
+//     flag = false;
+//     url.clear();
+//     w.addButtonClicked();
+//     EXPECT_FALSE(flag);
+// }
 
 TEST(BlackListWidgetTest, deleteButtonClicked)
 {

@@ -22,9 +22,9 @@ set(BIN_NAME test-libdde-grand-search-daemon)
 
 # 依赖包
 find_package(PkgConfig REQUIRED)
-find_package(DtkCore REQUIRED)
+find_package(${DTK_CORE_PKG} REQUIRED)
 #find_package(DtkCMake REQUIRED)
-find_package(Qt5 COMPONENTS
+find_package(${QT_NS} COMPONENTS
     Core
     Gui
     Concurrent
@@ -36,20 +36,28 @@ set(PROJECT_TOOLS_PATH "${PROJECT_SOURCE_PATH}/tools")
 include_directories(${PROJECT_DAEMONSRC_PATH})
 include_directories(${PROJECT_TOOLS_PATH})
 
-ADD_DEFINITIONS(-DENABLE_FSEARCH)
+# ENABLE_FSEARCH / ENABLE_DEEPINANYTHING 不再使用：源码无引用，
+# 3rdparty/fsearch 和 anything_interface 已移除，注释掉以避免编译缺失文件
+# ADD_DEFINITIONS(-DENABLE_FSEARCH)
 
-qt5_add_dbus_interface(IFS_SRC ${PROJECT_3RDPARTY_PATH}/interfaces/org.deepin.ai.daemon.AnalyzeServer.xml analyzeserver)
+# FIXME: AnalyzeServer.xml 已从 3rdparty 移除，注释掉 dbus 接口生成
+# if (QT_VERSION_MAJOR EQUAL 6)
+#     qt6_add_dbus_interface(IFS_SRC ${PROJECT_3RDPARTY_PATH}/interfaces/org.deepin.ai.daemon.AnalyzeServer.xml analyzeserver)
+# else()
+#     qt5_add_dbus_interface(IFS_SRC ${PROJECT_3RDPARTY_PATH}/interfaces/org.deepin.ai.daemon.AnalyzeServer.xml analyzeserver)
+# endif()
 
 FILE(GLOB 3RD_FSEARCH_SRC
     ${PROJECT_3RDPARTY_PATH}/fsearch/*
     ${PROJECT_3RDPARTY_PATH}/lucene/*
     )
 pkg_check_modules(GLIB REQUIRED glib-2.0)
-pkg_check_modules(PCRE REQUIRED libpcre)
+pkg_check_modules(PCRE libpcre)
 pkg_check_modules(Lucene REQUIRED IMPORTED_TARGET liblucene++ liblucene++-contrib)
 
 if (NOT (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "sw"))
-    ADD_DEFINITIONS(-DENABLE_DEEPINANYTHING)
+    # ENABLE_DEEPINANYTHING 已不再需要：anything_interface 已移除
+    # ADD_DEFINITIONS(-DENABLE_DEEPINANYTHING)
 else()
     # 移除不支持的文件
     FILE(GLOB_RECURSE RM_DASRC
@@ -81,10 +89,10 @@ list(REMOVE_ITEM PRO_SRC ${RM_SRC} ${RM_DASRC})
 FILE(GLOB_RECURSE UT_SRC "./*/*.cpp")
 
 set(Qt_LIBS
-    Qt5::Core
-    Qt5::Gui
-    Qt5::DBus
-    Qt5::Concurrent
+    ${QT_NS}::Core
+    ${QT_NS}::Gui
+    ${QT_NS}::DBus
+    ${QT_NS}::Concurrent
 )
 
 set(SRCS
@@ -93,12 +101,9 @@ set(SRCS
     ${GLOBAL_SRC}
     ${PRO_SRC}
     ${TOOL_SRC}
-    ${IFS_SRC}
     ${UT_SRC}
     ${CPP_STUB_SRC}
     ${3RD_FSEARCH_SRC}
-    "${PROJECT_3RDPARTY_PATH}/interfaces/anything_interface.h"
-    "${PROJECT_3RDPARTY_PATH}/interfaces/anything_interface.cpp"
 )
 
 # 可执行程序
@@ -116,7 +121,7 @@ target_link_libraries(${BIN_NAME} PRIVATE
     ${Qt_LIBS}
     ${DtkCore_LIBRARIES}
     ${GTEST_LIBRARIES}
-    ${Qt5Test_LIBRARIES}
+    ${QT_NS}::Test
     ${GLIB_LIBRARIES}
     ${PCRE_LIBRARIES}
     ${Lucene_LIBRARIES}

@@ -18,7 +18,7 @@
 #include <QPaintEvent>
 #include <QMouseEvent>
 #include <QPixmap>
-#include <QtTest>
+#include <QTest>
 
 using namespace testing;
 DGUI_USE_NAMESPACE
@@ -71,7 +71,7 @@ TEST(GrandSearchWidgetTest, paintEvent)
     GrandSearchWidget w;
     QPaintEvent event((QRect()));
 
-    // 1.测试绘制背景阴影
+    // 测试绘制背景阴影
     w.setFixedHeight(PLUGIN_BACKGROUND_MIN_SIZE + 100);
 
     stub_ext::StubExt stu;
@@ -81,32 +81,22 @@ TEST(GrandSearchWidgetTest, paintEvent)
         return ut_themeType;
     });
 
-    bool ut_call_loadSvg = false;
-    stu.set_lamda(&GrandSearchWidget::loadSvg, [&]() {
-        ut_call_loadSvg = true;
-        return QPixmap();
-    });
-    // 1.1 浅色主题
+    // 浅色主题
     w.m_hover = true;
     w.m_pressed = true;
 
-    w.paintEvent(&event);
-    EXPECT_TRUE(ut_call_loadSvg);
+    EXPECT_NO_FATAL_FAILURE(w.paintEvent(&event));
 
-    // 1.2 深色主题
+    // 深色主题
     ut_themeType = DGuiApplicationHelper::DarkType;
-    ut_call_loadSvg = false;
 
-    w.paintEvent(&event);
-    EXPECT_TRUE(ut_call_loadSvg);
+    EXPECT_NO_FATAL_FAILURE(w.paintEvent(&event));
 
-    // 2.测试最小尺寸无背景阴影
+    // 最小尺寸无背景阴影
     w.setFixedHeight(PLUGIN_BACKGROUND_MIN_SIZE - 100);
     ut_themeType = DGuiApplicationHelper::LightType;
-    ut_call_loadSvg = false;
 
-    w.paintEvent(&event);
-    EXPECT_TRUE(ut_call_loadSvg);
+    EXPECT_NO_FATAL_FAILURE(w.paintEvent(&event));
 }
 
 TEST(GrandSearchWidgetTest, mousePressEvent)
@@ -164,6 +154,8 @@ TEST(GrandSearchWidgetTest, leaveEvent)
     EXPECT_FALSE(w.m_pressed);
 }
 
+// FIXME Qt6: loadSvg() removed from production code (replaced by DDciIcon::fromTheme)
+#if (QT_VERSION_MAJOR < 6)
 TEST(GrandSearchWidgetTest, loadSvg)
 {
     GrandSearchWidget w;
@@ -173,3 +165,4 @@ TEST(GrandSearchWidgetTest, loadSvg)
 
     EXPECT_NO_FATAL_FAILURE(w.loadSvg(fileName, size));
 }
+#endif

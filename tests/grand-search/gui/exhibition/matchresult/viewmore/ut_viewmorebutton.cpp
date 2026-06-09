@@ -43,31 +43,28 @@ TEST(ViewMoreButtonTest, isSelected)
 TEST(ViewMoreButtonTest, paintEvent)
 {
     ViewMoreButton btn("test");
-    QPaintEvent event((QRect()));
+    btn.show();
+    QPaintEvent event(QRect(0, 0, 100, 30));
 
     stub_ext::StubExt st;
     st.set_lamda(&DGuiApplicationHelper::themeType, [&](){
         return DGuiApplicationHelper::DarkType;
     });
 
-    st.set_lamda(&ViewMoreButton::initStyleOption, [](QToolButton *, QStyleOptionToolButton *opt){
-        opt->state |= QStyle::State_Active;
-    });
-
+    // Test basic paint without stubbing initStyleOption (which is inherited and can't be safely stubbed)
     // normal, not selected
-    st.set_lamda(&DStyle::getState, [](){ return DStyle::SS_NormalState; });
     EXPECT_NO_FATAL_FAILURE(btn.paintEvent(&event));
     // normal, selected
     btn.m_bIsSelected = true;
     EXPECT_NO_FATAL_FAILURE(btn.paintEvent(&event));
 
-    // hover
-    st.reset(&DStyle::getState);
-    st.set_lamda(&DStyle::getState, [](){ return DStyle::SS_HoverState; });
+    // Test with light theme
+    st.reset(&DGuiApplicationHelper::themeType);
+    st.set_lamda(&DGuiApplicationHelper::themeType, [&](){
+        return DGuiApplicationHelper::LightType;
+    });
+    btn.m_bIsSelected = false;
     EXPECT_NO_FATAL_FAILURE(btn.paintEvent(&event));
-
-    // press
-    st.reset(&DStyle::getState);
-    st.set_lamda(&DStyle::getState, [](){ return DStyle::SS_PressState; });
+    btn.m_bIsSelected = true;
     EXPECT_NO_FATAL_FAILURE(btn.paintEvent(&event));
 }

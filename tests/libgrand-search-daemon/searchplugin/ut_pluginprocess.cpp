@@ -102,7 +102,7 @@ TEST(PluginProcess, ut_startProgram)
 
     bool started = false;
     stub_ext::StubExt st;
-    auto startFunc = (void (QProcess::*)(QProcess::OpenMode))(&QProcess::start);
+    auto startFunc = (void (QProcess::*)())(&QProcess::start);
     st.set_lamda(startFunc, [&started]() {
         started = true;
     });

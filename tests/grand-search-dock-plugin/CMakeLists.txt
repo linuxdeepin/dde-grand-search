@@ -11,15 +11,15 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wl,--as-need -fPIE")
 set(BIN_NAME test-dde-grand-search-dock-plugin)
 
 # 查找gmock的cmake文件
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../tests/cmake/modules)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../tests/cmake/modules)
 
 # 依赖包
 find_package(PkgConfig REQUIRED)
-find_package(DtkWidget REQUIRED)
-find_package(DtkGui REQUIRED)
-find_package(DtkCMake REQUIRED)
+find_package(${DTK_WIDGET_PKG} REQUIRED)
+find_package(${DTK_GUI_PKG} REQUIRED)
+find_package(${DTK_CMAKE_PKG} REQUIRED)
 find_package(GMock REQUIRED)
-find_package(Qt5 COMPONENTS
+find_package(${QT_NS} COMPONENTS
     Core
     Gui
     Widgets
@@ -28,11 +28,11 @@ find_package(Qt5 COMPONENTS
 REQUIRED)
 
 set(Qt_LIBS
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Widgets
-    Qt5::DBus
-    Qt5::Concurrent
+    ${QT_NS}::Core
+    ${QT_NS}::Gui
+    ${QT_NS}::Widgets
+    ${QT_NS}::DBus
+    ${QT_NS}::Concurrent
 )
 
 pkg_check_modules(DdeDockInterface REQUIRED dde-dock)
@@ -77,7 +77,7 @@ target_link_libraries(${BIN_NAME} PRIVATE
     ${GTEST_LIBRARIES}
     ${GMOCK_LIBRARIES}
     ${GMOCK_LIBRARIES}
-    ${Qt5Test_LIBRARIES}
+    ${QT_NS}::Test
     -lpthread
 )
 

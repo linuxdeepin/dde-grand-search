@@ -12,10 +12,10 @@ set(BIN_NAME test-preview-plugin)
 
 # 依赖包
 find_package(PkgConfig REQUIRED)
-find_package(DtkWidget REQUIRED)
-find_package(DtkGui REQUIRED)
-find_package(DtkCMake REQUIRED)
-find_package(Qt5 COMPONENTS
+find_package(${DTK_WIDGET_PKG} REQUIRED)
+find_package(${DTK_GUI_PKG} REQUIRED)
+find_package(${DTK_CMAKE_PKG} REQUIRED)
+find_package(${QT_NS} COMPONENTS
     Core
     Gui
     Widgets
@@ -23,10 +23,10 @@ find_package(Qt5 COMPONENTS
 REQUIRED)
 
 set(Qt_LIBS
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Widgets
-    Qt5::Concurrent
+    ${QT_NS}::Core
+    ${QT_NS}::Gui
+    ${QT_NS}::Widgets
+    ${QT_NS}::Concurrent
 )
 
 # audio
@@ -89,7 +89,7 @@ target_link_libraries(${BIN_NAME} PRIVATE
     ${DtkWidget_LIBRARIES}
     ${DtkGUI_LIBRARIES}
     ${GTEST_LIBRARIES}
-    ${Qt5Test_LIBRARIES}
+    ${QT_NS}::Test
     ${TAGLIB_LIBRARIES}
     ${AVFORMAT_LIBRARIES}
     ${ICU_LIBRARIES}
@@ -97,6 +97,7 @@ target_link_libraries(${BIN_NAME} PRIVATE
     ${JPEG_LIBRARIES}
     ${Avformat_LIBRARIES}
     ${Ffm_LIBRARIES}
+    ${QT_NS}::Core5Compat
     -lpthread
 )
 

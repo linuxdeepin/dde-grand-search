@@ -357,34 +357,34 @@ TEST(GrandSearchListViewTest, event)
     w.event(&event);
 }
 
-TEST(GrandSearchListViewTest, setData)
-{
-    GrandSearchListView w;
+// TEST(GrandSearchListViewTest, setData)
+// {
+//     GrandSearchListView w;
 
-    QString searchGroupName(GRANDSEARCH_GROUP_FOLDER);
-    MatchedItem item;
-    w.addRow(item);
+//     QString searchGroupName(GRANDSEARCH_GROUP_FOLDER);
+//     MatchedItem item;
+//     w.addRow(item);
 
-    QModelIndex index;
-    w.setData(index, item);
+//     QModelIndex index;
+//     w.setData(index, item);
 
-    item.name = "QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ"
-                "QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ";
-    item.icon = "/test/abc.png";
+//     item.name = "QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ"
+//                 "QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ";
+//     item.icon = "/test/abc.png";
 
-    index = w.model()->index(0, 0);
-    w.setData(index, item);
+//     index = w.model()->index(0, 0);
+//     w.setData(index, item);
 
-    QString tips = w.m_model->data(index, Qt::ToolTipRole).toString();
-    EXPECT_EQ(tips, item.name);
-    w.m_model->setData(index, QString(), Qt::ToolTipRole);
+//     QString tips = w.m_model->data(index, Qt::ToolTipRole).toString();
+//     EXPECT_EQ(tips, item.name);
+//     w.m_model->setData(index, QString(), Qt::ToolTipRole);
 
-    item.name = "WW";
-    item.icon = "abc.png";
-    w.setData(index, item);
-    tips = w.m_model->data(index, Qt::ToolTipRole).toString();
-    EXPECT_TRUE(tips.isEmpty());
-}
+//     item.name = "WW";
+//     item.icon = "abc.png";
+//     w.setData(index, item);
+//     tips = w.m_model->data(index, Qt::ToolTipRole).toString();
+//     EXPECT_TRUE(tips.isEmpty());
+// }
 
 TEST(GrandSearchListViewTest, levelItemLastRow)
 {

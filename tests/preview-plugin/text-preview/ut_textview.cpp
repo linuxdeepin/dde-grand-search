@@ -5,6 +5,7 @@
 #include "text-preview/textpreview_global.h"
 #include "text-preview/textview.h"
 
+#include <QFile>
 #include <QLayout>
 #include <QStackedWidget>
 #include <QPaintEvent>
@@ -69,7 +70,7 @@ TEST(TextView, ut_paintEvent)
 TEST(PlainTextEdit, ut_mouseMoveEvent)
 {
    PlainTextEdit edit;
-   QMouseEvent e(QMouseEvent::MouseMove, QPointF(0,0), QPointF(0,0), QPointF(0,0),
+   QMouseEvent e(QEvent::MouseMove, QPointF(0,0), QPointF(0,0), QPointF(0,0),
                  Qt::LeftButton, Qt::LeftButton, Qt::NoModifier, Qt::MouseEventNotSynthesized);
    EXPECT_NO_FATAL_FAILURE(edit.mouseMoveEvent(&e));
 }

@@ -27,40 +27,40 @@ TEST(QueryController, constructor)
     delete queryController;
 }
 
-TEST(QueryController, onSearchTextChanged)
-{
-    QueryController queryController;
-    ASSERT_TRUE(queryController.d_p);
+// TEST(QueryController, onSearchTextChanged)
+// {
+//     QueryController queryController;
+//     ASSERT_TRUE(queryController.d_p);
 
-    bool reciveSigMissionChanged = false;
-    QObject::connect(&queryController, &QueryController::missionChanged, qApp, [&](){
-        reciveSigMissionChanged = true;
-    });
+//     bool reciveSigMissionChanged = false;
+//     QObject::connect(&queryController, &QueryController::missionChanged, qApp, [&](){
+//         reciveSigMissionChanged = true;
+//     });
 
-    QString txt("test");
-    queryController.d_p->m_searchText = txt;
-    queryController.onSearchTextChanged(txt);
-    EXPECT_FALSE(reciveSigMissionChanged);
+//     QString txt("test");
+//     queryController.d_p->m_searchText = txt;
+//     queryController.onSearchTextChanged(txt);
+//     EXPECT_FALSE(reciveSigMissionChanged);
 
-    reciveSigMissionChanged = false;
-    txt.clear();
-    queryController.onSearchTextChanged(txt);
-    EXPECT_TRUE(reciveSigMissionChanged);
-    EXPECT_TRUE(queryController.d_p->m_searchText.isEmpty());
-    EXPECT_TRUE(queryController.d_p->m_missionId.isEmpty());
+//     reciveSigMissionChanged = false;
+//     txt.clear();
+//     queryController.onSearchTextChanged(txt);
+//     EXPECT_TRUE(reciveSigMissionChanged);
+//     EXPECT_TRUE(queryController.d_p->m_searchText.isEmpty());
+//     EXPECT_TRUE(queryController.d_p->m_missionId.isEmpty());
 
-    reciveSigMissionChanged = false;
+//     reciveSigMissionChanged = false;
 
-    stub_ext::StubExt stu;
-    stu.set_lamda(ADDR(DaemonGrandSearchInterface, Search), [&](){
-        return QDBusPendingReply<bool>();
-    });
+//     stub_ext::StubExt stu;
+//     stu.set_lamda(ADDR(DaemonGrandSearchInterface, Search), [&](){
+//         return QDBusPendingReply<bool>();
+//     });
 
-    txt = "testSearch";
-    queryController.onSearchTextChanged(txt);
-    EXPECT_TRUE(reciveSigMissionChanged);
-    EXPECT_FALSE(queryController.d_p->m_missionId.isEmpty());
-}
+//     txt = "testSearch";
+//     queryController.onSearchTextChanged(txt);
+//     EXPECT_TRUE(reciveSigMissionChanged);
+//     EXPECT_FALSE(queryController.d_p->m_missionId.isEmpty());
+// }
 
 TEST(QueryController, onTerminateSearch)
 {

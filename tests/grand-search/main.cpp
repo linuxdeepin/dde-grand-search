@@ -10,16 +10,20 @@
 
 #include <DApplication>
 #include <QAccessible>
+#include <QLoggingCategory>
 
 #include <unistd.h>
+
+// 定义生产代码中使用的日志类别
+Q_LOGGING_CATEGORY(logGrandSearch, "org.deepin.dde.GrandSearch.GrandSearch")
+
+DWIDGET_USE_NAMESPACE
 
 static void noMessageHandler(QtMsgType type, const QMessageLogContext &context,
                                    const QString &message)
 {
     return;
 }
-
-DWIDGET_USE_NAMESPACE
 
 int main(int argc, char *argv[])
 {

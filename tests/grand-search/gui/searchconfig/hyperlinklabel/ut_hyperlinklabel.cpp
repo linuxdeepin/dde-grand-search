@@ -50,7 +50,7 @@ TEST(HyperlinkLabelTest, paintEvent)
         return region;
     });
 
-    QPaintEvent event(region);
+    QPaintEvent event(rect);
 
     w.paintEvent(&event);
     EXPECT_EQ(w.m_hyperlinkRegion, region);

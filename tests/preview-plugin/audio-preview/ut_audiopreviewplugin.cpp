@@ -33,7 +33,8 @@ TEST(AudioPreviewPluginTest, ut_previewItem)
         return data;
     });
     st.set_lamda(&AudioView::setItemInfo, [](){ return; });
-    st.set_lamda(&QFileInfo::lastModified, [](){
+    auto lastModFunc = (QDateTime (QFileInfo::*)() const)&QFileInfo::lastModified;
+    st.set_lamda(lastModFunc, [](){
         return QDateTime::currentDateTime();
     });
     st.set_lamda(&QFileInfo::absoluteFilePath, [](){ return "/home"; });

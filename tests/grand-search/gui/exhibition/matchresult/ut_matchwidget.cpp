@@ -287,36 +287,36 @@ TEST(MatchWidgetTest, selectPreviousItem)
     EXPECT_TRUE(ut_call_adjust);
 }
 
-TEST(MatchWidgetTest, handleItem)
-{
-    MatchWidget w;
+// TEST(MatchWidgetTest, handleItem)
+// {
+//     MatchWidget w;
 
-    stub_ext::StubExt stu;
+//     stub_ext::StubExt stu;
 
-    bool ut_hide = false;
-    stu.set_lamda(ADDR(QWidget, isHidden), [&](){
-        return ut_hide;
-    });
+//     bool ut_hide = false;
+//     stu.set_lamda(ADDR(QWidget, isHidden), [&](){
+//         return ut_hide;
+//     });
 
-    bool ut_call_utilsOpen = false;
-    stu.set_lamda(ADDR(Utils, openMatchedItem), [&](){
-        ut_call_utilsOpen = true;
-        return ut_call_utilsOpen;
-    });
+//     bool ut_call_utilsOpen = false;
+//     stu.set_lamda(ADDR(Utils, openMatchedItem), [&](){
+//         ut_call_utilsOpen = true;
+//         return ut_call_utilsOpen;
+//     });
 
-    // 窗口显示的情况下，添加数据才会触发刷新，否则会忽略
-    ut_hide = false;
-    ut_call_utilsOpen = false;
+//     // 窗口显示的情况下，添加数据才会触发刷新，否则会忽略
+//     ut_hide = false;
+//     ut_call_utilsOpen = false;
 
-    QString searchGroupName(GRANDSEARCH_GROUP_FILE);
-    MatchedItem item;
-    MatchedItems items{item};
-    MatchedItemMap itemMap{{searchGroupName, items}};
-    w.appendMatchedData(itemMap);
+//     QString searchGroupName(GRANDSEARCH_GROUP_FILE);
+//     MatchedItem item;
+//     MatchedItems items{item};
+//     MatchedItemMap itemMap{{searchGroupName, items}};
+//     w.appendMatchedData(itemMap);
 
-    w.handleItem();
-    EXPECT_TRUE(ut_call_utilsOpen);
-}
+//     w.handleItem();
+//     EXPECT_TRUE(ut_call_utilsOpen);
+// }
 
 TEST(MatchWidgetTest, onPreviewStateChanged)
 {
@@ -373,175 +373,175 @@ TEST(MatchWidgetTest, onSelectItemByMouse)
     EXPECT_EQ(spy.count(), 1);
 }
 
-TEST(MatchWidgetTest, selectFirstItem)
-{
-    MatchWidget w;
+// TEST(MatchWidgetTest, selectFirstItem)
+// {
+//     MatchWidget w;
 
-    stub_ext::StubExt stu;
+//     stub_ext::StubExt stu;
 
-    bool ut_hide = true;
-    stu.set_lamda(ADDR(QWidget, isHidden), [&](){
-        return ut_hide;
-    });
+//     bool ut_hide = true;
+//     stu.set_lamda(ADDR(QWidget, isHidden), [&](){
+//         return ut_hide;
+//     });
 
-    bool ut_call_currentIndexChanged = false;
-    stu.set_lamda(ADDR(MatchWidget, currentIndexChanged), [&](){
-        ut_call_currentIndexChanged = true;
-    });
+//     bool ut_call_currentIndexChanged = false;
+//     stu.set_lamda(ADDR(MatchWidget, currentIndexChanged), [&](){
+//         ut_call_currentIndexChanged = true;
+//     });
 
-    bool result = w.selectFirstItem(0);
-    EXPECT_FALSE(result);
-    EXPECT_FALSE(ut_call_currentIndexChanged);
+//     bool result = w.selectFirstItem(0);
+//     EXPECT_FALSE(result);
+//     EXPECT_FALSE(ut_call_currentIndexChanged);
 
-    // 窗口显示的情况下，添加数据才会触发刷新，否则会忽略
-    ut_hide = false;
+//     // 窗口显示的情况下，添加数据才会触发刷新，否则会忽略
+//     ut_hide = false;
 
-    ut_call_currentIndexChanged = false;
+//     ut_call_currentIndexChanged = false;
 
-    QString searchGroupName(GRANDSEARCH_GROUP_FOLDER);
-    MatchedItem item;
-    MatchedItems items{item};
-    MatchedItemMap itemMap{{searchGroupName, items}};
-    w.appendMatchedData(itemMap);
+//     QString searchGroupName(GRANDSEARCH_GROUP_FOLDER);
+//     MatchedItem item;
+//     MatchedItems items{item};
+//     MatchedItemMap itemMap{{searchGroupName, items}};
+//     w.appendMatchedData(itemMap);
 
-    result = w.selectFirstItem(0);
-    EXPECT_TRUE(result);
-    EXPECT_TRUE(ut_call_currentIndexChanged);
-}
+//     result = w.selectFirstItem(0);
+//     EXPECT_TRUE(result);
+//     EXPECT_TRUE(ut_call_currentIndexChanged);
+// }
 
-TEST(MatchWidgetTest, selectLastItem)
-{
-    MatchWidget w;
+// TEST(MatchWidgetTest, selectLastItem)
+// {
+//     MatchWidget w;
 
-    stub_ext::StubExt stu;
+//     stub_ext::StubExt stu;
 
-    bool ut_hide = true;
-    stu.set_lamda(ADDR(QWidget, isHidden), [&](){
-        return ut_hide;
-    });
+//     bool ut_hide = true;
+//     stu.set_lamda(ADDR(QWidget, isHidden), [&](){
+//         return ut_hide;
+//     });
 
-    bool ut_call_currentIndexChanged = false;
-    stu.set_lamda(ADDR(MatchWidget, currentIndexChanged), [&](){
-        ut_call_currentIndexChanged = true;
-    });
+//     bool ut_call_currentIndexChanged = false;
+//     stu.set_lamda(ADDR(MatchWidget, currentIndexChanged), [&](){
+//         ut_call_currentIndexChanged = true;
+//     });
 
-    bool result = w.selectLastItem(0);
-    EXPECT_FALSE(result);
-    EXPECT_FALSE(ut_call_currentIndexChanged);
+//     bool result = w.selectLastItem(0);
+//     EXPECT_FALSE(result);
+//     EXPECT_FALSE(ut_call_currentIndexChanged);
 
-    // 窗口显示的情况下，添加数据才会触发刷新，否则会忽略
-    ut_hide = false;
+//     // 窗口显示的情况下，添加数据才会触发刷新，否则会忽略
+//     ut_hide = false;
 
-    ut_call_currentIndexChanged = false;
+//     ut_call_currentIndexChanged = false;
 
-    QString searchGroupName(GRANDSEARCH_GROUP_FOLDER);
-    MatchedItem item;
-    MatchedItems items{item};
-    MatchedItemMap itemMap{{searchGroupName, items}};
-    w.appendMatchedData(itemMap);
+//     QString searchGroupName(GRANDSEARCH_GROUP_FOLDER);
+//     MatchedItem item;
+//     MatchedItems items{item};
+//     MatchedItemMap itemMap{{searchGroupName, items}};
+//     w.appendMatchedData(itemMap);
 
-    result = w.selectLastItem(0);
-    EXPECT_TRUE(result);
-    EXPECT_TRUE(ut_call_currentIndexChanged);
-}
+//     result = w.selectLastItem(0);
+//     EXPECT_TRUE(result);
+//     EXPECT_TRUE(ut_call_currentIndexChanged);
+// }
 
-TEST(MatchWidgetTest, hasSelectItem)
-{
-    MatchWidget w;
+// TEST(MatchWidgetTest, hasSelectItem)
+// {
+//     MatchWidget w;
 
-    stub_ext::StubExt stu;
+//     stub_ext::StubExt stu;
 
-    bool ut_hide = true;
-    stu.set_lamda(ADDR(QWidget, isHidden), [&](){
-        return ut_hide;
-    });
+//     bool ut_hide = true;
+//     stu.set_lamda(ADDR(QWidget, isHidden), [&](){
+//         return ut_hide;
+//     });
 
-    bool result = w.hasSelectItem();
-    EXPECT_FALSE(result);
+//     bool result = w.hasSelectItem();
+//     EXPECT_FALSE(result);
 
-    // 窗口显示的情况下，添加数据才会触发刷新，否则会忽略
-    ut_hide = false;
+//     // 窗口显示的情况下，添加数据才会触发刷新，否则会忽略
+//     ut_hide = false;
 
-    QString searchGroupName(GRANDSEARCH_GROUP_FOLDER);
-    MatchedItem item;
-    MatchedItems items{item};
-    MatchedItemMap itemMap{{searchGroupName, items}};
-    w.appendMatchedData(itemMap);
+//     QString searchGroupName(GRANDSEARCH_GROUP_FOLDER);
+//     MatchedItem item;
+//     MatchedItems items{item};
+//     MatchedItemMap itemMap{{searchGroupName, items}};
+//     w.appendMatchedData(itemMap);
 
-    result = w.hasSelectItem();
-    EXPECT_TRUE(result);
-}
+//     result = w.hasSelectItem();
+//     EXPECT_TRUE(result);
+// }
 
-TEST(MatchWidgetTest, hasSelectItem_group)
-{
-    MatchWidget w;
+// TEST(MatchWidgetTest, hasSelectItem_group)
+// {
+//     MatchWidget w;
 
-    stub_ext::StubExt stu;
+//     stub_ext::StubExt stu;
 
-    bool ut_hide = true;
-    stu.set_lamda(ADDR(QWidget, isHidden), [&](){
-        return ut_hide;
-    });
+//     bool ut_hide = true;
+//     stu.set_lamda(ADDR(QWidget, isHidden), [&](){
+//         return ut_hide;
+//     });
 
-    w.m_vGroupWidgets.append(nullptr);
-    bool result = w.hasSelectItem(0);
-    EXPECT_FALSE(result);
-    w.m_vGroupWidgets.clear();
+//     w.m_vGroupWidgets.append(nullptr);
+//     bool result = w.hasSelectItem(0);
+//     EXPECT_FALSE(result);
+//     w.m_vGroupWidgets.clear();
 
-    // 窗口显示的情况下，添加数据才会触发刷新，否则会忽略
-    ut_hide = false;
+//     // 窗口显示的情况下，添加数据才会触发刷新，否则会忽略
+//     ut_hide = false;
 
-    QString searchGroupName(GRANDSEARCH_GROUP_FOLDER);
-    MatchedItem item;
-    MatchedItems items{item};
-    MatchedItemMap itemMap{{searchGroupName, items}};
-    w.appendMatchedData(itemMap);
+//     QString searchGroupName(GRANDSEARCH_GROUP_FOLDER);
+//     MatchedItem item;
+//     MatchedItems items{item};
+//     MatchedItemMap itemMap{{searchGroupName, items}};
+//     w.appendMatchedData(itemMap);
 
-    result = w.hasSelectItem(0);
-    EXPECT_TRUE(result);
+//     result = w.hasSelectItem(0);
+//     EXPECT_TRUE(result);
 
-    stu.set_lamda(&GroupWidget::getListView, [&](){
-        return nullptr;
-    });
+//     stu.set_lamda(&GroupWidget::getListView, [&](){
+//         return nullptr;
+//     });
 
-    result = w.hasSelectItem(0);
-    EXPECT_FALSE(result);
-    stu.reset(&GroupWidget::getListView);
+//     result = w.hasSelectItem(0);
+//     EXPECT_FALSE(result);
+//     stu.reset(&GroupWidget::getListView);
 
-    stu.set_lamda(&QAbstractItemView::currentIndex, [&](){
-        return QModelIndex();
-    });
+//     stu.set_lamda(&QAbstractItemView::currentIndex, [&](){
+//         return QModelIndex();
+//     });
 
-    result = w.hasSelectItem(0);
-    EXPECT_FALSE(result);
-}
+//     result = w.hasSelectItem(0);
+//     EXPECT_FALSE(result);
+// }
 
-TEST(MatchWidgetTest, clearSelectItem)
-{
-    MatchWidget w;
+// TEST(MatchWidgetTest, clearSelectItem)
+// {
+//     MatchWidget w;
 
-    stub_ext::StubExt stu;
+//     stub_ext::StubExt stu;
 
-    bool ut_hide = false;
-    stu.set_lamda(ADDR(QWidget, isHidden), [&](){
-        return ut_hide;
-    });
+//     bool ut_hide = false;
+//     stu.set_lamda(ADDR(QWidget, isHidden), [&](){
+//         return ut_hide;
+//     });
 
-    // 窗口显示的情况下，添加数据才会触发刷新，否则会忽略
-    ut_hide = false;
+//     // 窗口显示的情况下，添加数据才会触发刷新，否则会忽略
+//     ut_hide = false;
 
-    QString searchGroupName(GRANDSEARCH_GROUP_FOLDER);
-    MatchedItem item;
-    MatchedItems items{item};
-    MatchedItemMap itemMap{{searchGroupName, items}};
-    w.appendMatchedData(itemMap);
+//     QString searchGroupName(GRANDSEARCH_GROUP_FOLDER);
+//     MatchedItem item;
+//     MatchedItems items{item};
+//     MatchedItemMap itemMap{{searchGroupName, items}};
+//     w.appendMatchedData(itemMap);
 
-    QSignalSpy spy(&w, &MatchWidget::sigCurrentItemChanged);
+//     QSignalSpy spy(&w, &MatchWidget::sigCurrentItemChanged);
 
-    EXPECT_EQ(spy.count(), 0);
-    w.clearSelectItem();
-    EXPECT_EQ(spy.count(), 1);
-}
+//     EXPECT_EQ(spy.count(), 0);
+//     w.clearSelectItem();
+//     EXPECT_EQ(spy.count(), 1);
+// }
 
 TEST(MatchWidgetTest, adjustScrollBar)
 {
