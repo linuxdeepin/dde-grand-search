@@ -74,7 +74,11 @@ void EntranceWidget::initConnections()
     Q_ASSERT(d_p->m_searchEdit);
 
     connect(d_p->m_searchEdit, &SearchEdit::debouncedTextChanged, this, &EntranceWidget::searchTextChanged);
-    connect(d_p->m_searchEdit, &SearchEdit::debouncedTextChanged, this, [this](const QString &) {
+    connect(d_p->m_searchEdit, &SearchEdit::debouncedTextChanged, this, [this](const QString &text) {
+        if (text == d_p->m_currentSearchText)
+            return;
+
+        d_p->m_currentSearchText = text;
         MatchedItem item;
         onAppIconChanged(QString(), item);
     });

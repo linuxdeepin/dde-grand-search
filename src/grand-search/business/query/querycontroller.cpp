@@ -102,13 +102,8 @@ void QueryController::onSearchTextChanged(const QString &txt)
     QString normalizedText = txt;
     normalizedText.replace('\n', ' ').replace('\r', ' ');
 
-    // 如果文本没有变化，直接返回
-    if (normalizedText == d_p->m_searchText && normalizedText == d_p->m_pendingSearchText)
-        return;
-
     // 停止已有的定时器
     d_p->m_debounceTimer->stop();
-
     if (normalizedText.isEmpty()) {
         // 停止搜索相关的所有活动
         onTerminateSearch();
@@ -123,6 +118,10 @@ void QueryController::onSearchTextChanged(const QString &txt)
 
         return;
     }
+
+    // 如果文本没有变化（与当前搜索文本相同），直接返回
+    if (normalizedText == d_p->m_searchText)
+        return;
 
     // 存储待处理的搜索文本
     d_p->m_pendingSearchText = normalizedText;

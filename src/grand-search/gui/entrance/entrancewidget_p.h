@@ -25,6 +25,7 @@ public:
     QHBoxLayout *m_mainLayout = nullptr;
 
     QString m_appIconName;
+    QString m_currentSearchText;
 };
 
 }
