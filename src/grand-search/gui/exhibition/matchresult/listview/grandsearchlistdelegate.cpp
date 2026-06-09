@@ -19,6 +19,7 @@
 #include <QAbstractTextDocumentLayout>
 #include <QApplication>
 #include <QToolTip>
+#include <QFontMetricsF>
 
 #define ListIconSize 24   // 列表图标大小
 #define ListRowWidth 740   // 列表行宽
@@ -304,59 +305,61 @@ void GrandSearchListDelegate::drawItemName(QPainter *painter, const QModelIndex 
     int textStartX = ItemDataSpacing + ListIconSize + ItemDataSpacing;
     int nameTextMaxWidth = option.rect.width() - textStartX;
 
-    QString elidedName = fontMetrics.elidedText(name, Qt::ElideRight, nameTextMaxWidth);
-    if (elidedName != name && GRANDSEARCH_CLASS_WEB_STATICTEXT == searcher) {
-        static const QString markStr = name.right(1);
-        static const int markWidth = fontMetrics.size(Qt::TextSingleLine, markStr).width();
-        nameTextMaxWidth -= markWidth;
-        elidedName = fontMetrics.elidedText(name.left(name.size() - 1), Qt::ElideRight, nameTextMaxWidth);
-        elidedName.append(markStr);
-    }
+    // 使用 QFontMetricsF 进行精确的字体宽度计算
+    QFontMetricsF fontMetricsF(fontMetrics);
 
-    QTextDocument nameDocument;
-    nameDocument.setDocumentMargin(0);
-    nameDocument.setPlainText(elidedName);
-    QTextCursor nameCursor(&nameDocument);
-
-    nameCursor.beginEditBlock();
-    nameCursor.select(QTextCursor::LineUnderCursor);
-    QTextCharFormat nameFmt;
-    nameFmt.setForeground(textColor);
-    nameFmt.setFont(font);
-    nameCursor.mergeCharFormat(nameFmt);
+    // 使用智能省略，确保高亮关键词优先显示
+    HighlightUtils::ElideResult elideResult;
 
     if (!keywords.isEmpty()) {
-        QTextCharFormat hlFmt;
-        hlFmt.setFontWeight(QFont::DemiBold);
-        hlFmt.setForeground(isDark ? QColor("#FFFFFF") : QColor("#000000"));
-        for (const QString &kw : keywords) {
-            if (kw.isEmpty()) continue;
-            QTextCursor searchCursor(&nameDocument);
-            while (!searchCursor.isNull() && !searchCursor.atEnd()) {
-                searchCursor = nameDocument.find(kw, searchCursor,
-                                                 QTextDocument::FindCaseSensitively);
-                if (!searchCursor.isNull())
-                    searchCursor.mergeCharFormat(hlFmt);
-            }
+        auto matchRanges = HighlightUtils::findMatchRanges(name, keywords);
+        if (!matchRanges.isEmpty()) {
+            elideResult = HighlightUtils::smartElideWithTracking(name, nameTextMaxWidth, fontMetricsF, matchRanges);
+        }
+    }
+    if (elideResult.text.isEmpty())
+        elideResult = HighlightUtils::elideWithTracking(name, Qt::ElideRight, nameTextMaxWidth, fontMetricsF);
+
+    QString displayText = elideResult.text;
+
+    // Web 搜索器特殊处理：保留末尾的标记字符
+    if (elideResult.text != name && GRANDSEARCH_CLASS_WEB_STATICTEXT == searcher) {
+        QString lastChar = name.right(1);
+        int lastCharWidth = static_cast<int>(fontMetricsF.horizontalAdvance(lastChar));
+        nameTextMaxWidth -= lastCharWidth;
+        if (nameTextMaxWidth > 0) {
+            elideResult = HighlightUtils::elideWithTracking(name.left(name.size() - 1), Qt::ElideRight, nameTextMaxWidth, fontMetricsF);
+            displayText = elideResult.text + lastChar;
         }
     }
 
-    nameCursor.clearSelection();
-    nameCursor.movePosition(QTextCursor::EndOfLine);
-    nameCursor.endEditBlock();
+    // 构建高亮格式（映射到省略后的文本位置）
+    QTextCharFormat hlFmt;
+    hlFmt.setFontWeight(QFont::DemiBold);
+    hlFmt.setForeground(isDark ? QColor("#FFFFFF") : QColor("#000000"));
+    auto formats = HighlightUtils::buildFormatRanges(
+            displayText, elideResult.origPositions, name, keywords, hlFmt);
 
-    QAbstractTextDocumentLayout::PaintContext paintContext;
+    // 使用 QTextLayout 绘制
+    QTextLayout layout;
+    layout.setText(displayText);
+    layout.setFont(font);
+    layout.setFormats(formats);
+    layout.beginLayout();
+    layout.createLine();
+    layout.endLayout();
+
     QRect drawRect(textStartX, startY, nameTextMaxWidth, fontMetrics.height());
 
     // 文件名被省略时，记录 tooltip 区域
-    if (elidedName != name) {
+    if (elideResult.text != name) {
         recordTooltipRegion(index.row(), drawRect, name);
     }
 
     painter->save();
-    painter->translate(drawRect.topLeft());
-    painter->setClipRect(drawRect.translated(-drawRect.topLeft()));
-    nameDocument.documentLayout()->draw(painter, paintContext);
+    painter->translate(textStartX, startY);
+    painter->setPen(textColor);
+    layout.draw(painter, QPointF(0, 0));
     painter->restore();
 }
 
@@ -369,6 +372,9 @@ void GrandSearchListDelegate::drawMatchedContext(QPainter *painter, const QModel
         startX = ItemDataSpacing + ListIconSize + ItemDataSpacing;
     int maxWidth = option.rect.width() - startX;
 
+    // 使用 QFontMetricsF 进行精确的字体宽度计算
+    QFontMetricsF fontMetricsF(fontMetrics);
+
     QColor textColor = isDark ? QColor(255, 255, 255, int(255 * 0.5)) : QColor(0, 0, 0, int(255 * 0.5));
     QColor highlightColor = isDark ? QColor(255, 255, 255, int(255 * 0.8)) : QColor(0, 0, 0, int(255 * 0.85));
 
@@ -380,9 +386,9 @@ void GrandSearchListDelegate::drawMatchedContext(QPainter *painter, const QModel
 
     HighlightUtils::ElideResult elideResult;
     if (!leftmostOnly.isEmpty())
-        elideResult = HighlightUtils::smartElideWithTracking(matchedContext, maxWidth, fontMetrics, leftmostOnly);
+        elideResult = HighlightUtils::smartElideWithTracking(matchedContext, maxWidth, fontMetricsF, leftmostOnly);
     if (elideResult.text.isEmpty())
-        elideResult = HighlightUtils::elideWithTracking(matchedContext, Qt::ElideRight, maxWidth, fontMetrics);
+        elideResult = HighlightUtils::elideWithTracking(matchedContext, Qt::ElideRight, maxWidth, fontMetricsF);
 
     // 构建高亮格式
     QTextCharFormat hlFmt;
@@ -398,9 +404,7 @@ void GrandSearchListDelegate::drawMatchedContext(QPainter *painter, const QModel
     layout.setFont(font);
     layout.setFormats(formats);
     layout.beginLayout();
-    QTextLine line = layout.createLine();
-    if (line.isValid())
-        line.setLineWidth(maxWidth);
+    layout.createLine();
     layout.endLayout();
 
     painter->save();

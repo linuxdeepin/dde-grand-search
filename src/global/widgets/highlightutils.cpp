@@ -5,29 +5,22 @@
 #include "highlightutils.h"
 
 #include <QPainter>
-#include <QFontMetrics>
+#include <QFontMetricsF>
 #include <QRegularExpression>
 #include <QPalette>
+#include <QFont>
 #include <algorithm>
 
 namespace HighlightUtils {
 
-static int charWidth(const QFontMetrics &fm, QChar ch)
+static double charWidth(const QFontMetricsF &fm, QChar ch)
 {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    return fm.width(ch);
-#else
     return fm.horizontalAdvance(ch);
-#endif
 }
 
-static int textWidth(const QFontMetrics &fm, const QString &text)
+static double textWidth(const QFontMetricsF &fm, const QString &text)
 {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    return fm.width(text);
-#else
     return fm.horizontalAdvance(text);
-#endif
 }
 
 QVector<MatchRange> findMatchRanges(const QString &text, const QStringList &keywords)
@@ -58,16 +51,16 @@ QVector<MatchRange> findMatchRanges(const QString &text, const QStringList &keyw
 }
 
 static ElideResult buildWindowElide(const QString &text, int keepStart, int keepEnd,
-                                    int maxWidth, const QFontMetrics &fm)
+                                    int maxWidth, const QFontMetricsF &fm)
 {
     ElideResult result;
     const QString ellipsis = QStringLiteral("…");
-    int ellipsisWidth = charWidth(fm, QChar(0x2026));
+    double ellipsisWidth = charWidth(fm, QChar(0x2026));
 
     bool needLeft = (keepStart > 0);
     bool needRight = (keepEnd < text.length());
     int numEllipsis = (needLeft ? 1 : 0) + (needRight ? 1 : 0);
-    int budget = maxWidth - numEllipsis * ellipsisWidth;
+    double budget = maxWidth - numEllipsis * ellipsisWidth;
     if (budget <= 0) {
         result.text = ellipsis;
         result.origPositions = { -1 };
@@ -76,10 +69,10 @@ static ElideResult buildWindowElide(const QString &text, int keepStart, int keep
 
     int keepLen = keepEnd - keepStart;
     int trimLeft = 0, trimRight = 0;
-    int w = textWidth(fm, text.mid(keepStart, keepLen));
+    double w = textWidth(fm, text.mid(keepStart, keepLen));
     while (w > budget && keepLen > 0) {
-        int lNext = charWidth(fm, text[keepStart + trimLeft]);
-        int rNext = charWidth(fm, text[keepEnd - 1 - trimRight]);
+        double lNext = charWidth(fm, text[keepStart + trimLeft]);
+        double rNext = charWidth(fm, text[keepEnd - 1 - trimRight]);
         if (trimRight >= keepLen - trimLeft - 1) {
             w -= lNext;
             ++trimLeft;
@@ -116,11 +109,11 @@ static ElideResult buildWindowElide(const QString &text, int keepStart, int keep
 }
 
 ElideResult smartElideWithTracking(const QString &text, int maxWidth,
-                                   const QFontMetrics &fm,
+                                   const QFontMetricsF &fm,
                                    const QVector<MatchRange> &matchRanges)
 {
     const QString ellipsis = QStringLiteral("…");
-    int ellipsisWidth = charWidth(fm, QChar(0x2026));
+    double ellipsisWidth = charWidth(fm, QChar(0x2026));
 
     if (textWidth(fm, text) <= maxWidth) {
         ElideResult result;
@@ -152,9 +145,9 @@ ElideResult smartElideWithTracking(const QString &text, int maxWidth,
         bool needLeft = (keepStart > 0);
         bool needRight = (keepEnd < text.length());
         int numEllipsis = (needLeft ? 1 : 0) + (needRight ? 1 : 0);
-        int budget = maxWidth - numEllipsis * ellipsisWidth;
+        double budget = maxWidth - numEllipsis * ellipsisWidth;
 
-        int keptWidth = textWidth(fm, text.mid(keepStart, keepEnd - keepStart));
+        double keptWidth = textWidth(fm, text.mid(keepStart, keepEnd - keepStart));
         if (keptWidth > budget)
             break;
 
@@ -163,20 +156,20 @@ ElideResult smartElideWithTracking(const QString &text, int maxWidth,
 
         bool expanded = false;
         if (keepStart > 0) {
-            int cw = charWidth(fm, text[keepStart - 1]);
+            double cw = charWidth(fm, text[keepStart - 1]);
             int newNeedLeft = (keepStart - 1 > 0);
             int newNumEllipsis = (newNeedLeft ? 1 : 0) + (needRight ? 1 : 0);
-            int newBudget = maxWidth - newNumEllipsis * ellipsisWidth;
+            double newBudget = maxWidth - newNumEllipsis * ellipsisWidth;
             if (keptWidth + cw <= newBudget) {
                 --keepStart;
                 expanded = true;
             }
         }
         if (!expanded && keepEnd < text.length()) {
-            int cw = charWidth(fm, text[keepEnd]);
+            double cw = charWidth(fm, text[keepEnd]);
             int newNeedRight = (keepEnd + 1 < text.length());
             int newNumEllipsis = (needLeft ? 1 : 0) + (newNeedRight ? 1 : 0);
-            int newBudget = maxWidth - newNumEllipsis * ellipsisWidth;
+            double newBudget = maxWidth - newNumEllipsis * ellipsisWidth;
             if (keptWidth + cw <= newBudget) {
                 ++keepEnd;
                 expanded = true;
@@ -190,14 +183,14 @@ ElideResult smartElideWithTracking(const QString &text, int maxWidth,
 }
 
 ElideResult elideWithTracking(const QString &text, Qt::TextElideMode mode,
-                              int maxWidth, const QFontMetrics &fm)
+                              int maxWidth, const QFontMetricsF &fm)
 {
     ElideResult result;
     if (text.isEmpty())
         return result;
 
     const QString ellipsis = QStringLiteral("…");
-    int ellipsisWidth = charWidth(fm, QChar(0x2026));
+    double ellipsisWidth = charWidth(fm, QChar(0x2026));
 
     if (textWidth(fm, text) <= maxWidth) {
         result.text = text;
@@ -213,14 +206,14 @@ ElideResult elideWithTracking(const QString &text, Qt::TextElideMode mode,
         return result;
     }
 
-    int availWidth = maxWidth - ellipsisWidth;
+    double availWidth = maxWidth - ellipsisWidth;
 
     switch (mode) {
     case Qt::ElideRight: {
-        int w = 0;
+        double w = 0;
         int keep = 0;
         for (int i = 0; i < text.length(); ++i) {
-            int cw = charWidth(fm, text[i]);
+            double cw = charWidth(fm, text[i]);
             if (w + cw > availWidth)
                 break;
             w += cw;
@@ -241,7 +234,7 @@ ElideResult elideWithTracking(const QString &text, Qt::TextElideMode mode,
             int tail = tryChars - head;
             if (head < 0 || tail < 0 || head + tail > total)
                 continue;
-            int w = textWidth(fm, text.left(head)) + textWidth(fm, text.right(tail));
+            double w = textWidth(fm, text.left(head)) + textWidth(fm, text.right(tail));
             if (w <= availWidth) {
                 bestKeep = tryChars;
                 break;
@@ -264,10 +257,10 @@ ElideResult elideWithTracking(const QString &text, Qt::TextElideMode mode,
         break;
     }
     case Qt::ElideLeft: {
-        int w = 0;
+        double w = 0;
         int keep = 0;
         for (int i = text.length() - 1; i >= 0; --i) {
-            int cw = charWidth(fm, text[i]);
+            double cw = charWidth(fm, text[i]);
             if (w + cw > availWidth)
                 break;
             w += cw;
@@ -293,11 +286,11 @@ ElideResult elideWithTracking(const QString &text, Qt::TextElideMode mode,
 }
 
 QVector<QTextLayout::FormatRange> buildFormatRanges(
-    const QString &displayText,
-    const QVector<int> &origPosMapping,
-    const QString &originalText,
-    const QStringList &keywords,
-    const QTextCharFormat &format)
+        const QString &displayText,
+        const QVector<int> &origPosMapping,
+        const QString &originalText,
+        const QStringList &keywords,
+        const QTextCharFormat &format)
 {
     QVector<QTextLayout::FormatRange> ranges;
 
@@ -371,74 +364,6 @@ QTextCharFormat defaultHighlightFormat(const QFont &baseFont, const QPalette &pa
     fmt.setFontWeight(QFont::DemiBold);
     fmt.setForeground(palette.color(QPalette::BrightText));
     return fmt;
-}
-
-void drawHighlightedText(QPainter *painter, const QString &text,
-                         const QStringList &keywords,
-                         const QFont &font, const QColor &textColor,
-                         const QColor &highlightColor,
-                         const QRect &rect, Qt::Alignment alignment)
-{
-    if (text.isEmpty())
-        return;
-
-    QFontMetrics fm(font);
-    int maxWidth = rect.width();
-
-    // Elide
-    QVector<MatchRange> matchRanges = findMatchRanges(text, keywords);
-    ElideResult elideResult;
-
-    if (!matchRanges.isEmpty()) {
-        elideResult = smartElideWithTracking(text, maxWidth, fm, matchRanges);
-    }
-    if (elideResult.text.isEmpty()) {
-        elideResult = elideWithTracking(text, Qt::ElideRight, maxWidth, fm);
-    }
-
-    const QString &displayText = elideResult.text;
-    const QVector<int> &origPosMapping = elideResult.origPositions;
-
-    // Build format ranges for keywords
-    QVector<QTextLayout::FormatRange> formats;
-    if (!keywords.isEmpty()) {
-        QTextCharFormat fmt;
-        fmt.setFont(font);
-        fmt.setFontWeight(QFont::DemiBold);
-        fmt.setForeground(highlightColor);
-
-        // Create a temporary palette with our desired highlight color
-        QPalette tempPalette;
-        tempPalette.setColor(QPalette::BrightText, highlightColor);
-
-        formats = buildFormatRanges(displayText, origPosMapping, text, keywords, fmt);
-    }
-
-    // Setup QTextLayout
-    QTextLayout layout;
-    layout.setText(displayText);
-    layout.setFont(font);
-    layout.setFormats(formats);
-
-    layout.beginLayout();
-    QTextLine line = layout.createLine();
-    if (line.isValid())
-        line.setLineWidth(maxWidth);
-    layout.endLayout();
-
-    // Vertical alignment
-    int textHeight = fm.height();
-    int y = rect.y();
-    if (alignment & Qt::AlignVCenter)
-        y += (rect.height() - textHeight) / 2;
-    else if (alignment & Qt::AlignBottom)
-        y += rect.height() - textHeight;
-
-    painter->save();
-    painter->setPen(textColor);
-    painter->translate(rect.x(), y);
-    layout.draw(painter, QPointF(0, 0));
-    painter->restore();
 }
 
 }   // namespace HighlightUtils
