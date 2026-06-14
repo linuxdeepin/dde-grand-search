@@ -498,7 +498,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="53"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations, the contents you search while using the Application, the time of search, the type of requested large model.If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation>Al unirte al programa de experiencia de búsqueda, nos autoriza a recopilar información sobre tu dispositivo y sistema, iconos de archivos, contenido y propiedades, aplicaciones y sus configuraciones, el contenido que buscas al usar la aplicación, la hora de la búsqueda y el tipo de modelo solicitado. Si rechazas la recopilación y el uso de la información mencionada, no te unas al programa.</translation>
+        <translation>Al unirte al programa de experiencia de búsqueda, nos autoriza a recopilar información sobre su dispositivo y sistema, iconos de archivos, contenido y propiedades, aplicaciones y sus configuraciones, el contenido que busca al usar la aplicación, la hora de la búsqueda y el tipo de modelo solicitado. Si rechaza la recopilación y el uso de la información mencionada, no se una al programa.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="64"/>
