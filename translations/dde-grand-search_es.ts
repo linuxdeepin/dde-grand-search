@@ -405,7 +405,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="214"/>
         <source>Are you sure you want to delete this model?</source>
-        <translation>¿Estás seguro de que quieres eliminar este modelo?</translation>
+        <translation>¿Está seguro de que quiere eliminar este modelo?</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/llmwidget/llmwidget.cpp" line="215"/>
@@ -480,7 +480,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/matchwidget.cpp" line="90"/>
         <source>Guess you want to search the following</source>
-        <translation>Supongo que quieres buscar lo siguiente</translation>
+        <translation>Supongo que quiere buscar lo siguiente</translation>
     </message>
 </context>
 <context>
