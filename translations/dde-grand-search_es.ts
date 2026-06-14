@@ -288,7 +288,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="79"/>
         <source>When turned on, you can try to search for local documents using natural language descriptions, such as &quot;last week&apos;s documents&quot;.</source>
-        <translation>Cuando está activada, puedes intentar buscar documentos locales utilizando descripciones en lenguaje natural, como por ejemplo &quot;documentos de la semana pasada&quot;.</translation>
+        <translation>Cuando está activada, puede intentar buscar documentos locales utilizando descripciones en lenguaje natural, como por ejemplo &quot;documentos de la semana pasada&quot;.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="188"/>
@@ -338,7 +338,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="224"/>
         <source>When enabled, you can search the text of articles using disjointed and incomplete keywords.</source>
-        <translation>Cuando está habilitada, puedes buscar en el texto de los artículos utilizando palabras clave inconexas e incompletas.</translation>
+        <translation>Cuando está habilitada, puede buscar en el texto de los artículos utilizando palabras clave inconexas e incompletas.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp" line="246"/>
