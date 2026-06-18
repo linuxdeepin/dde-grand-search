@@ -76,6 +76,9 @@ set(GUISRC
     gui/mainwindow_p.h
     gui/mainwindow.h
     gui/mainwindow.cpp
+    # 公共控件
+    gui/iconbutton.h
+    gui/iconbutton.cpp
     # 可见性/退出处理
     gui/handlevisibility/handlevisibility.h
     gui/handlevisibility/handlevisibility.cpp
@@ -95,6 +98,8 @@ set(GUISRC
     gui/exhibition/matchresult/matchwidget_p.h
     gui/exhibition/matchresult/matchwidget.h
     gui/exhibition/matchresult/matchwidget.cpp
+    gui/exhibition/matchresult/authpromptwidget.h
+    gui/exhibition/matchresult/authpromptwidget.cpp
     gui/exhibition/matchresult/groupwidget_p.h
     gui/exhibition/matchresult/groupwidget.h
     gui/exhibition/matchresult/groupwidget.cpp
@@ -156,14 +161,6 @@ set(GUISRC
     gui/searchconfig/checkboxwidget/checkboxitem.h
     gui/searchconfig/switchwidget/switchwidget.cpp
     gui/searchconfig/switchwidget/switchwidget.h
-    gui/searchconfig/llmwidget/llmwidget.cpp
-    gui/searchconfig/llmwidget/llmwidget.h
-    gui/searchconfig/llmwidget/modelmanagebutton.cpp
-    gui/searchconfig/llmwidget/modelmanagebutton.h
-    gui/searchconfig/llmwidget/downloader.h
-    gui/searchconfig/llmwidget/downloader.cpp
-    gui/searchconfig/llmwidget/embeddingpluginwidget.cpp
-    gui/searchconfig/llmwidget/embeddingpluginwidget.h
     gui/searchconfig/hyperlinklabel/hyperlinklabel.cpp
     gui/searchconfig/hyperlinklabel/hyperlinklabel.h
     gui/searchconfig/comboboxwidget/comboboxwidget.h
@@ -182,14 +179,10 @@ set(GUISRC
     gui/searchconfig/blacklistwidget.h
     gui/searchconfig/indexwidget.cpp
     gui/searchconfig/indexwidget.h
-    gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.h
-    gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.cpp
+    gui/searchconfig/smartsearchwidget.cpp
+    gui/searchconfig/smartsearchwidget.h
     gui/searchconfig/roundedbackground.h
     gui/searchconfig/roundedbackground.cpp
-    gui/searchconfig/intelligentretrieval/detailcheckbox.cpp
-    gui/searchconfig/intelligentretrieval/detailcheckbox.h
-    gui/searchconfig/intelligentretrieval/autoindexstatus.cpp
-    gui/searchconfig/intelligentretrieval/autoindexstatus.h
     gui/searchconfig/tipslabel.h
     gui/searchconfig/tipslabel.cpp
     # shared widgets

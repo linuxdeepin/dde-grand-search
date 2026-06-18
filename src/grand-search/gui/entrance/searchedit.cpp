@@ -11,7 +11,6 @@
 #include <DIconTheme>
 #include <DFontSizeManager>
 #include <DGuiApplicationHelper>
-#include <DStyleOptionButton>
 
 #include <QLineEdit>
 #include <QHBoxLayout>
@@ -30,34 +29,6 @@ using namespace GrandSearch;
 static constexpr int DelayResponseTime = 50;
 static constexpr int AppIconSize = 32;
 static constexpr int SearchIconSize = 20;
-
-IconButton::IconButton(QWidget *parent)
-    : DIconButton(parent)
-{
-}
-
-void IconButton::paintEvent(QPaintEvent *event)
-{
-    DStyleOptionButton opt;
-    initStyleOption(&opt);
-
-    if (opt.state & (QStyle::State_Sunken | QStyle::State_MouseOver)) {
-        DPalette dp = DGuiApplicationHelper::instance()->applicationPalette();
-        QColor bgColor = dp.color(DPalette::ObviousBackground);
-        if (opt.state & QStyle::State_Sunken)
-            bgColor.setAlphaF(0.2);
-
-        int radius = qMin(width(), height()) / 2;
-        QPainter p(this);
-        p.setRenderHint(QPainter::Antialiasing);
-        p.setPen(Qt::NoPen);
-        p.setBrush(bgColor);
-        p.drawEllipse(QPointF(width() / 2.0, height() / 2.0), radius, radius);
-    }
-
-    DStylePainter p(this);
-    p.drawControl(DStyle::CE_IconButton, opt);
-}
 
 SearchEditPrivate::SearchEditPrivate(SearchEdit *qq)
     : q(qq)

@@ -19,7 +19,6 @@
 #define TOOLBTN_WIDTH_WIDE 108
 #define TOOLBTN_MAX_PIXELSIZE 18
 #define TOOLBAR_HEIGHT 36
-#define TOOLBAR_BOTTOM_MARGIN 10
 
 using namespace GrandSearch;
 DWIDGET_USE_NAMESPACE
@@ -87,11 +86,11 @@ GeneralToolBar::GeneralToolBar(QWidget *parent)
 
 void GeneralToolBar::initUi()
 {
-    setFixedHeight(TOOLBAR_HEIGHT + TOOLBAR_BOTTOM_MARGIN);   // 高36 + 下边距10
+    setFixedHeight(TOOLBAR_HEIGHT);
 
     m_hMainLayout = new QHBoxLayout(this);
     // 下边距10
-    m_hMainLayout->setContentsMargins(0, 0, 0, TOOLBAR_BOTTOM_MARGIN);
+    m_hMainLayout->setContentsMargins(0, 0, 0, 0);
     m_hMainLayout->setSpacing(0);
 
     QString suffix = Utils::iconThemeSuffix();

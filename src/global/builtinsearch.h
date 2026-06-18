@@ -33,7 +33,7 @@
 #define GRANDSEARCH_GROUP_FILE_PICTURE       "com.deepin.dde-grand-search.group.files.picture"
 #define GRANDSEARCH_GROUP_FILE_DOCUMNET      "com.deepin.dde-grand-search.group.files.document"
 
-#define GRANDSEARCH_GROUP_FILE_INFERENCE    "com.deepin.dde-grand-search.group.files.inference"
+#define GRANDSEARCH_GROUP_FILE_SMART    "com.deepin.dde-grand-search.group.files.smart"
 #define GRANDSEARCH_GROUP_FILE_OCR           "com.deepin.dde-grand-search.group.files.ocr"
 
 /****************** 扩展数据 *********************************/

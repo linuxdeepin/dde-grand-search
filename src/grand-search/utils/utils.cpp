@@ -1017,9 +1017,9 @@ QIcon Utils::defaultIcon(const MatchedItem &item)
 {
     if (item.searcher == GRANDSEARCH_CLASS_APP_DESKTOP)
         return QIcon::fromTheme("application-x-desktop");
-    else if (item.searcher == GRANDSEARCH_CLASS_FILE_DEEPIN ||
-             item.searcher == GRANDSEARCH_CLASS_FILE_FULLTEXT ||
-             item.searcher == GRANDSEARCH_CLASS_OCR_TEXT) {
+    else if (item.searcher == GRANDSEARCH_CLASS_FILE_DEEPIN
+             || item.searcher == GRANDSEARCH_CLASS_FILE_FULLTEXT
+             || item.searcher == GRANDSEARCH_CLASS_OCR_TEXT) {
         return QIcon::fromTheme(m_mimeDb.mimeTypeForFile(item.item).genericIconName());
     } else if (item.searcher == GRANDSEARCH_CLASS_WEB_STATICTEXT) {
         // 使用默认浏览器的图标
@@ -1053,7 +1053,12 @@ bool Utils::isLevelItem(const MatchedItem &item, int &level)
 bool Utils::isLevelGroup(const QString &searchGroupName)
 {
     static const QStringList containLevelGroup {
-        GRANDSEARCH_GROUP_FILE_VIDEO, GRANDSEARCH_GROUP_FILE_AUDIO, GRANDSEARCH_GROUP_FILE_PICTURE, GRANDSEARCH_GROUP_FILE_DOCUMNET, GRANDSEARCH_GROUP_FILE, GRANDSEARCH_GROUP_FILE_OCR
+        GRANDSEARCH_GROUP_FILE_VIDEO,
+        GRANDSEARCH_GROUP_FILE_AUDIO,
+        GRANDSEARCH_GROUP_FILE_PICTURE,
+        GRANDSEARCH_GROUP_FILE_DOCUMNET,
+        GRANDSEARCH_GROUP_FILE,
+        GRANDSEARCH_GROUP_FILE_OCR
     };
 
     return containLevelGroup.contains(searchGroupName);
@@ -1062,7 +1067,14 @@ bool Utils::isLevelGroup(const QString &searchGroupName)
 bool Utils::canPreview(const QString &searchGroupName)
 {
     static const QStringList containPreviewGroup {
-        GRANDSEARCH_GROUP_FOLDER, GRANDSEARCH_GROUP_FILE, GRANDSEARCH_GROUP_FILE_VIDEO, GRANDSEARCH_GROUP_FILE_AUDIO, GRANDSEARCH_GROUP_FILE_PICTURE, GRANDSEARCH_GROUP_FILE_DOCUMNET, GRANDSEARCH_GROUP_FILE_INFERENCE, GRANDSEARCH_GROUP_FILE_OCR
+        GRANDSEARCH_GROUP_FOLDER,
+        GRANDSEARCH_GROUP_FILE,
+        GRANDSEARCH_GROUP_FILE_VIDEO,
+        GRANDSEARCH_GROUP_FILE_AUDIO,
+        GRANDSEARCH_GROUP_FILE_PICTURE,
+        GRANDSEARCH_GROUP_FILE_DOCUMNET,
+        GRANDSEARCH_GROUP_FILE_SMART,
+        GRANDSEARCH_GROUP_FILE_OCR
     };
 
     return containPreviewGroup.contains(searchGroupName);

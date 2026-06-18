@@ -11,6 +11,7 @@
 #include "gui/datadefine.h"
 
 #include <DScrollArea>
+#include <DHorizontalLine>
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 #include <DGuiApplicationHelper>
 #else
@@ -43,7 +44,7 @@ void MatchWidgetPrivate::setGroupIcon(GroupWidget *wid)
     if (!wid)
         return;
 
-    if (wid->searchGroupName() == GRANDSEARCH_GROUP_FILE_INFERENCE) {
+    if (wid->searchGroupName() == GRANDSEARCH_GROUP_FILE_SMART) {
         wid->setIcon(QIcon(":/icons/aisearch.svg"));
     }
 }
@@ -51,7 +52,7 @@ void MatchWidgetPrivate::setGroupIcon(GroupWidget *wid)
 MatchWidget::MatchWidget(QWidget *parent)
     : DWidget(parent), d_p(new MatchWidgetPrivate(this))
 {
-    m_groupHashShowOrder << GRANDSEARCH_GROUP_BEST << GRANDSEARCH_GROUP_FILE_INFERENCE
+    m_groupHashShowOrder << GRANDSEARCH_GROUP_BEST << GRANDSEARCH_GROUP_FILE_SMART
                          << GRANDSEARCH_GROUP_APP << GRANDSEARCH_GROUP_SETTING
                          << GRANDSEARCH_GROUP_WEB << GRANDSEARCH_GROUP_FILE_VIDEO
                          << GRANDSEARCH_GROUP_FILE_AUDIO << GRANDSEARCH_GROUP_FILE_OCR
@@ -81,14 +82,6 @@ void MatchWidget::appendMatchedData(const MatchedItemMap &matchedData)
         if (!groupWidget) {
             itData++;
             continue;
-        }
-
-        // ai搜索的动态名称
-        if (groupWidget->searchGroupName() == GRANDSEARCH_GROUP_FILE_INFERENCE && groupWidget->itemCount() == 0) {
-            if (itData.value().isEmpty())
-                groupWidget->setGroupName(GroupWidget::convertDisplayName(groupWidget->searchGroupName()));
-            else
-                groupWidget->setGroupName(tr("Guess you want to search the following"));
         }
 
         // 追加匹配数据到类目列表中
@@ -545,6 +538,7 @@ void MatchWidget::initUi()
     m_vMainLayout = new QVBoxLayout(this);
     m_vMainLayout->setContentsMargins(0, 0, 0, 0);
     m_vMainLayout->setSpacing(0);
+
     m_scrollArea = new DScrollArea(this);
     m_scrollArea->setFocusPolicy(Qt::NoFocus);
     m_scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

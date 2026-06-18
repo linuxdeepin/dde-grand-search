@@ -6,6 +6,7 @@
 #define EXHIBITIONWIDGET_H
 
 #include "global/matcheditem.h"
+#include "gui/exhibition/matchresult/authpromptwidget.h"
 
 #include <DWidget>
 #include <DVerticalLine>
@@ -42,7 +43,7 @@ public slots:
     void onSelectPreviousItem();
     void onHandleItem();
 
-    void appendMatchedData(const MatchedItemMap &matchedData);//追加显示匹配数据
+    void appendMatchedData(const MatchedItemMap &matchedData);   // 追加显示匹配数据
     void onSearchCompleted();
     void previewItem(const QString &searchGroupName, const MatchedItem &item);
 
@@ -69,8 +70,9 @@ private:
     MatchWidget *m_matchWidget = nullptr;
     PreviewWidget *m_previewWidget = nullptr;
     Dtk::Widget::DVerticalLine *m_vLine = nullptr;
+    AuthPromptWidget *m_authPromptWidget = nullptr;   // 授权提示控件
 };
 
 }
 
-#endif // EXHIBITIONWIDGET_H
+#endif   // EXHIBITIONWIDGET_H

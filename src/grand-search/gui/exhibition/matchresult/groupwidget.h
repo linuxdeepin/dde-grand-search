@@ -76,7 +76,6 @@ private:
     void initConnect();
     void updateShowItems(MatchedItems &items);
     void deduplicateByPath(MatchedItems &newItems);
-    void onOpenConfig(const QString& link);
 
 signals:
     void showMore();

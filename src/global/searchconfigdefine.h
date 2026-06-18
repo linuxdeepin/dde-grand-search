@@ -30,6 +30,14 @@
 #define GRANDSEARCH_BLACKLIST_GROUP         "Blacklist_Group"
 #define GRANDSEARCH_BLACKLIST_PATH          "Blacklist.path"
 
+// 智能搜索
+#define GRANDSEARCH_SMARTSEARCH_GROUP       "SmartSearch_Group"
+#define GRANDSEARCH_SMARTSEARCH_ENABLED     "smartSearch.enabled"
+
+// 授权提示控件
+#define GRANDSEARCH_AUTHPROMPT_GROUP       "AuthPrompt_Group"
+#define GRANDSEARCH_AUTHPROMPT_DISMISSED   "authPrompt.dismissed"
+
 // 最佳匹配项
 #define GRANDSEARCH_CUSTOM_GROUP                        "Custom_Group"
 #define GRANDSEARCH_CUSTOM_BESTMATCH                    "custom.bestMatch"

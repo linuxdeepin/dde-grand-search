@@ -26,12 +26,10 @@ using namespace GrandSearch;
 ExhibitionWidgetPrivate::ExhibitionWidgetPrivate(ExhibitionWidget *parent)
     : q_p(parent)
 {
-
 }
 
 ExhibitionWidget::ExhibitionWidget(QWidget *parent)
-    : DWidget(parent)
-    , d_p(new ExhibitionWidgetPrivate(this))
+    : DWidget(parent), d_p(new ExhibitionWidgetPrivate(this))
 {
     qCDebug(logGrandSearch) << "Creating ExhibitionWidget";
     initUi();
@@ -144,10 +142,16 @@ void ExhibitionWidget::previewItem(const QString &searchGroupName, const Matched
 
 void ExhibitionWidget::initUi()
 {
-    m_hLayout = new QHBoxLayout(this);
+    QVBoxLayout *vLayout = new QVBoxLayout(this);
+    vLayout->setContentsMargins(0, 0, 0, 0);
+    vLayout->setSpacing(0);
+
+    m_authPromptWidget = new AuthPromptWidget(this);
+    vLayout->addWidget(m_authPromptWidget);
+
+    m_hLayout = new QHBoxLayout();
     m_hLayout->setContentsMargins(MARGIN_SIZE, 0, 0, MARGIN_SIZE);
     m_hLayout->setSpacing(0);
-    this->setLayout(m_hLayout);
 
     m_matchWidget = new MatchWidget(this);
     m_matchWidget->setFocusPolicy(Qt::NoFocus);
@@ -158,6 +162,7 @@ void ExhibitionWidget::initUi()
 
     m_previewWidget = new PreviewWidget(this);
     m_hLayout->addWidget(m_previewWidget);
+    vLayout->addLayout(m_hLayout);
 }
 
 void ExhibitionWidget::initConnect()

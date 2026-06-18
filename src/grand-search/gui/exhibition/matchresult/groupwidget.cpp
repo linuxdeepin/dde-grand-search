@@ -8,7 +8,6 @@
 #include "viewmore/viewmorebutton.h"
 #include "utils/utils.h"
 #include "global/accessibility/acintelfunctions.h"
-#include "gui/searchconfig/intelligentretrieval/intelligentretrievalwidget.h"
 
 #include <DLabel>
 #include <DPushButton>
@@ -281,47 +280,22 @@ void GroupWidget::showLabel(bool bShow)
 {
     m_listView->setVisible(!bShow);
     m_resultLabel->setVisible(bShow);
-    if (bShow && m_searchGroupName == GRANDSEARCH_GROUP_FILE_INFERENCE) {
-        // 有无索引文件
-        QString idxDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + "/.cache/deepin/deepin-ai-daemon/index";
-        bool hasIdx = QFile::exists(idxDir);
-        // 有无自动更新索引
-        bool isUpdateIdx = IntelligentRetrievalWidget::isUpdateIndex();
-        // 有无安装大模型
-        bool hasModel = IntelligentRetrievalWidget::isQueryLangSupported();
-        qCDebug(logGrandSearch) << "AI inference state - Index directory:" << idxDir
-                                << "Has index:" << hasIdx
-                                << "Auto-update enabled:" << isUpdateIdx
-                                << "Model available:" << hasModel;
-
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-        const QColor &color = DPaletteHelper::instance()->palette(m_resultLabel).color(DPalette::Normal, DPalette::Highlight);
-#else
-        const QColor &color = DApplicationHelper::instance()->palette(m_resultLabel).color(DPalette::Normal, DPalette::Highlight);
-#endif
-        if (!hasIdx && !isUpdateIdx && !hasModel) {
-            // 请先前往搜索配置安装UOS AI大模型，并开启自动更新索引 Please go to Search configuration to install the ULLM, and turn on Automatic index update.
-            m_resultLabel->setText(tr("Please go to %1 to install the ULLM, and %2 Automatic index update.")
-                                           .arg(QString("<a href=\"config\" style=\"color:%1; text-decoration: none;\">%2</a>").arg(color.name()).arg(tr("Search configuration")))
-                                           .arg(QString("<a href=\"update index\" style=\"color:%1; text-decoration: none;\">%2</a>").arg(color.name()).arg(tr("turn on"))));
-        } else if (!hasIdx && !isUpdateIdx) {
-            // 请先开启自动更新索引 Please turn on Automatic index update.
-            m_resultLabel->setText(tr("Please %1 Automatic index update.")
-                                           .arg(QString("<a href=\"update index\" style=\"color:%1; text-decoration: none;\">%2</a>").arg(color.name()).arg(tr("turn on"))));
-        } else if (!hasModel) {
-            // 请先前往搜索配置安装UOS AI大模型 Please go to Search configuration to install the UOS AI large model.
-            m_resultLabel->setText(tr("Please go to %1 to install the ULLM.")
-                                           .arg(QString("<a href=\"config\" style=\"color:%1; text-decoration: none;\">%2</a>").arg(color.name()).arg(tr("Search configuration"))));
-        } else {
-            m_resultLabel->setText(tr("No search results"));
-        }
-    }
 }
 
 QString GroupWidget::convertDisplayName(const QString &searchGroupName)
 {
     static const QHash<QString, QString> groupDisplayName {
-        { GRANDSEARCH_GROUP_BEST, GroupName_Best }, { GRANDSEARCH_GROUP_APP, GroupName_App }, { GRANDSEARCH_GROUP_SETTING, GroupName_Setting }, { GRANDSEARCH_GROUP_FILE_VIDEO, GroupName_Video }, { GRANDSEARCH_GROUP_FILE_AUDIO, GroupName_Audio }, { GRANDSEARCH_GROUP_FILE_PICTURE, GroupName_Picture }, { GRANDSEARCH_GROUP_FILE_DOCUMNET, GroupName_Document }, { GRANDSEARCH_GROUP_FOLDER, GroupName_Folder }, { GRANDSEARCH_GROUP_FILE, GroupName_File }, { GRANDSEARCH_GROUP_WEB, GroupName_Web }, { GRANDSEARCH_GROUP_FILE_INFERENCE, GroupName_Inference }, { GRANDSEARCH_GROUP_FILE_OCR, GroupName_Ocr }
+        { GRANDSEARCH_GROUP_BEST, GroupName_Best },
+        { GRANDSEARCH_GROUP_APP, GroupName_App },
+        { GRANDSEARCH_GROUP_SETTING, GroupName_Setting },
+        { GRANDSEARCH_GROUP_FILE_VIDEO, GroupName_Video },
+        { GRANDSEARCH_GROUP_FILE_AUDIO, GroupName_Audio },
+        { GRANDSEARCH_GROUP_FILE_PICTURE, GroupName_Picture },
+        { GRANDSEARCH_GROUP_FILE_DOCUMNET, GroupName_Document },
+        { GRANDSEARCH_GROUP_FOLDER, GroupName_Folder },
+        { GRANDSEARCH_GROUP_FILE, GroupName_File },
+        { GRANDSEARCH_GROUP_WEB, GroupName_Web },
+        { GRANDSEARCH_GROUP_FILE_OCR, GroupName_Ocr }
     };
 
     return groupDisplayName.value(searchGroupName, searchGroupName);
@@ -435,7 +409,6 @@ void GroupWidget::initConnect()
     Q_ASSERT(m_viewMoreButton);
 
     connect(m_viewMoreButton, &DPushButton::clicked, this, &GroupWidget::onMoreBtnClicked);
-    connect(m_resultLabel, &DLabel::linkActivated, this, &GroupWidget::onOpenConfig);
 }
 
 void GroupWidget::deduplicateByPath(MatchedItems &newItems)
@@ -445,8 +418,8 @@ void GroupWidget::deduplicateByPath(MatchedItems &newItems)
 
     auto weightOf = [](const MatchedItem &item) {
         return item.extra.toHash()
-                     .value(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 0)
-                     .toDouble();
+                .value(GRANDSEARCH_PROPERTY_ITEM_WEIGHT, 0)
+                .toDouble();
     };
 
     for (const auto &newItem : newItems) {
@@ -526,17 +499,6 @@ void GroupWidget::onMoreBtnClicked()
     }
 
     m_bListExpanded = true;
-}
-
-void GroupWidget::onOpenConfig(const QString &link)
-{
-    const QStringList args = { "-s", "--position", "aiconfig" };
-    if (link == "update index") {
-        IntelligentRetrievalWidget::setAutoIndex(true);
-        QProcess::startDetached("dde-grand-search", args);
-    } else if (link == "config") {
-        QProcess::startDetached("dde-grand-search", args);
-    }
 }
 
 MatchedItem GroupWidget::findItemByPath(const QString &path) const

@@ -13,7 +13,8 @@
 namespace GrandSearch {
 
 class BlackListWidget;
-class IntelligentRetrievalWidget;
+class SmartSearchWidget;
+
 class IndexWidget : public Dtk::Widget::DWidget
 {
     Q_OBJECT
@@ -21,13 +22,11 @@ public:
     explicit IndexWidget(QWidget *parent = nullptr);
     ~IndexWidget();
 
-    bool onCloseEvent();
-
 private:
     QVBoxLayout *m_mainLayout = nullptr;
     QLabel *m_groupLabel = nullptr;
+    SmartSearchWidget *m_smartSearchWidget = nullptr;
     BlackListWidget *m_blackListWidget = nullptr;
-    IntelligentRetrievalWidget *m_intelligent = nullptr;
 };
 
 }
