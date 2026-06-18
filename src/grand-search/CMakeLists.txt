@@ -305,3 +305,14 @@ install(DIRECTORY ${CMAKE_SOURCE_DIR}/assets/manual/dde-grand-search
 
 # desktop
 install(FILES dde-grand-search.desktop DESTINATION share/applications)
+
+# app icon into the icon theme so that dde-manual's app list (and other theme
+# icon lookups) can resolve "dde-grand-search".
+# bloom is the UOS default theme and the one deepin-manual actually loads icons
+# from (its Inherits=Papirus does not fall back to hicolor), so install there to
+# match how dde/dde-file-manager ship their icons. hicolor is kept as the generic
+# fallback for other themes/environments.
+install(FILES ${CMAKE_SOURCE_DIR}/assets/manual/dde-grand-search/grand-search/common/dde-grand-search.svg
+    DESTINATION share/icons/bloom/apps/96)
+install(FILES ${CMAKE_SOURCE_DIR}/assets/manual/dde-grand-search/grand-search/common/dde-grand-search.svg
+    DESTINATION share/icons/hicolor/scalable/apps)
