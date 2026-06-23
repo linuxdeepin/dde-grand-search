@@ -30,10 +30,6 @@
 #define GRANDSEARCH_BLACKLIST_GROUP         "Blacklist_Group"
 #define GRANDSEARCH_BLACKLIST_PATH          "Blacklist.path"
 
-// 智能搜索
-#define GRANDSEARCH_SMARTSEARCH_GROUP       "SmartSearch_Group"
-#define GRANDSEARCH_SMARTSEARCH_ENABLED     "smartSearch.enabled"
-
 // 授权提示控件
 #define GRANDSEARCH_AUTHPROMPT_GROUP       "AuthPrompt_Group"
 #define GRANDSEARCH_AUTHPROMPT_DISMISSED   "authPrompt.dismissed"
@@ -58,8 +54,9 @@
 #define GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM         "Custom"
 #define GRANDSEARCH_WEB_SEARCHENGINE_CUSTOM_ADDR    "web.searchEngine.customAddr"
 
-// AI搜索引擎
-#define GRANDSEARCH_SEMANTIC_GROUP  "Semantic_Group"
+// 语义搜索
+#define GRANDSEARCH_SEMANTIC_GROUP          "Semantic_Group"
+#define GRANDSEARCH_SEMANTIC_ENABLED        "semantic.enabled"
 
 // 配置切换界面参数
 #define SWITCHWIDGETWIDTH       476

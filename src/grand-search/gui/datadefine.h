@@ -33,6 +33,7 @@
 #define GroupName_File              QObject::tr("Files")
 #define GroupName_Web               QObject::tr("Web")
 #define GroupName_Ocr               QObject::tr("Text found in the image")
+#define GroupName_Semantic          QObject::tr("Smart match")
 
 #define GROUP_MAX_SHOW              5   // 每组默认显示数量
 

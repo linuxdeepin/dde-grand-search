@@ -295,7 +295,8 @@ QString GroupWidget::convertDisplayName(const QString &searchGroupName)
         { GRANDSEARCH_GROUP_FOLDER, GroupName_Folder },
         { GRANDSEARCH_GROUP_FILE, GroupName_File },
         { GRANDSEARCH_GROUP_WEB, GroupName_Web },
-        { GRANDSEARCH_GROUP_FILE_OCR, GroupName_Ocr }
+        { GRANDSEARCH_GROUP_FILE_OCR, GroupName_Ocr },
+        { GRANDSEARCH_GROUP_FILE_SEMANTIC, GroupName_Semantic },
     };
 
     return groupDisplayName.value(searchGroupName, searchGroupName);
@@ -390,6 +391,9 @@ void GroupWidget::initUi()
 
     // 分割线
     m_line = new DHorizontalLine;
+    QHBoxLayout *lineLayout = new QHBoxLayout;
+    lineLayout->setContentsMargins(10, 0, 10, 0);
+    lineLayout->addWidget(m_line);
 
     // 列表和分割线放到内容布局内
     m_vContentLayout = new QVBoxLayout();
@@ -397,7 +401,7 @@ void GroupWidget::initUi()
     m_vContentLayout->setSpacing(0);
     m_vContentLayout->addWidget(m_listView);
     m_vContentLayout->addWidget(m_resultLabel);
-    m_vContentLayout->addWidget(m_line);
+    m_vContentLayout->addLayout(lineLayout);
 
     // 标题栏布局和内容布局放到主布局内
     m_vLayout->addLayout(m_hTitelLayout);

@@ -13,7 +13,7 @@
 namespace GrandSearch {
 
 class BlackListWidget;
-class SmartSearchWidget;
+class SemanticSearchWidget;
 
 class IndexWidget : public Dtk::Widget::DWidget
 {
@@ -25,7 +25,7 @@ public:
 private:
     QVBoxLayout *m_mainLayout = nullptr;
     QLabel *m_groupLabel = nullptr;
-    SmartSearchWidget *m_smartSearchWidget = nullptr;
+    SemanticSearchWidget *m_semanticSearchWidget = nullptr;
     BlackListWidget *m_blackListWidget = nullptr;
 };
 

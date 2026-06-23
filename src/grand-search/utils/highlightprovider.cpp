@@ -23,8 +23,12 @@ HighlightProvider::HighlightProvider(QObject *parent)
     // 在工作线程启动前设置回调，避免主线程/工作线程数据竞争
     m_fetchCallback = [](const QString &path, const QString &keyword, int searchType) -> QString {
         thread_local DFMSEARCH::ContentRetriever retriever;
+        DFMSEARCH::HighlightOptions opt;
+        opt.setMaxPreviewLength(200);
+        opt.setPositioningMaxLength(80);
         return retriever.fetchHighlight(path, keyword,
-                                        static_cast<DFMSEARCH::SearchType>(searchType));
+                                        static_cast<DFMSEARCH::SearchType>(searchType),
+                                        opt);
     };
 
     m_workerThread = new QThread(this);

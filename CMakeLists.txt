@@ -128,15 +128,10 @@ else()
     message("catch BUILD_OS_VERSION ${BUILD_OS_VERSION}")
 endif()
 
-# option
-option(OPT_ENABLE_AI_SEARCH "Enable AI search feature" OFF)
-
 add_subdirectory(src/grand-search)
 add_subdirectory(src/dde-grand-search-daemon)
 add_subdirectory(src/grand-search-dock-plugin)
 add_subdirectory(src/preview-plugin)
-add_subdirectory(src/tools/semanticparser)
-add_subdirectory(src/tools/luceneengine)
 
 # shell-plugin仅在Qt6下被include
 if (${BUILD_OS_VERSION} GREATER_EQUAL "25" AND QT_VERSION_MAJOR EQUAL 6)

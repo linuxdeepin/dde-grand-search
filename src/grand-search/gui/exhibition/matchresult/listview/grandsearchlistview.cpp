@@ -343,9 +343,14 @@ void GrandSearchListView::updateThumbnail(const QString &filePath, const QPixmap
 
 void GrandSearchListView::requestHighlightContent(const MatchedItem &item, bool highPriority)
 {
-    // 仅对全文搜索和 OCR 搜索请求高亮内容
-    if (item.searcher != GRANDSEARCH_CLASS_FILE_FULLTEXT
-        && item.searcher != GRANDSEARCH_CLASS_OCR_TEXT) {
+    // 高亮内容
+    static QMap<QString, int> supportHighlightSearchers {
+        { GRANDSEARCH_CLASS_FILE_FULLTEXT, DFMSEARCH::SearchType::Content },
+        { GRANDSEARCH_CLASS_OCR_TEXT, DFMSEARCH::SearchType::Ocr },
+        { GRANDSEARCH_CLASS_FILE_SEMANTIC, DFMSEARCH::SearchType::Semantic }
+    };
+
+    if (!supportHighlightSearchers.contains(item.searcher)) {
         return;
     }
 
@@ -367,17 +372,9 @@ void GrandSearchListView::requestHighlightContent(const MatchedItem &item, bool 
         return;
     }
 
-    // 根据 searcher 类型确定 searchType
-    int searchType = 0;
-    if (item.searcher == GRANDSEARCH_CLASS_FILE_FULLTEXT) {
-        searchType = static_cast<int>(DFMSEARCH::SearchType::Content);
-    } else if (item.searcher == GRANDSEARCH_CLASS_OCR_TEXT) {
-        searchType = static_cast<int>(DFMSEARCH::SearchType::Ocr);
-    }
-
     // 将关键词列表用空格连接为单个字符串，传给 fetchHighlight
-    HighlightProvider::instance()->requestHighlight(
-        m_currentKeyword, item.item, keywords.first(), searchType, highPriority);
+    HighlightProvider::instance()->requestHighlight(m_currentKeyword, item.item, keywords.first(),
+                                                    supportHighlightSearchers.value(item.searcher), highPriority);
 }
 
 void GrandSearchListView::onHighlightReady(const QString &keyword, const QString &filePath, const QString &content)

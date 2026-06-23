@@ -45,9 +45,13 @@ private:
     void initConnect();
     void adjustElidedText();
     void updatePromptContent();
+    void enableSearchindexes();
+    bool contentSearchAvailable();
+    bool ocrTextSearchAvailable();
+    bool semanticSearchAvailable();
 
     // 索引可用性检查
-    QStringList checkUnavailableFeatures() const;
+    QStringList checkUnavailableFeatures();
 
     // 文本省略计算
     QString buildElidedText(int availableWidth) const;

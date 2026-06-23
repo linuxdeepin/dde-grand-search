@@ -113,21 +113,6 @@ set(SEARCHER
     searcher/fulltext/fulltextworker_p.h
 )
 
-if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64" AND OPT_ENABLE_AI_SEARCH)
-    ADD_DEFINITIONS(-DENABLE_SEMANTIC)
-    set(SEARCHER
-        ${SEARCHER}
-        ${SEMANTIC_FILES}
-    )
-
-    set(LINK_LIBS
-        ${LINK_LIBS}
-        semanticparser
-        luceneengine
-        antlr4_static
-    )
-endif()
-
 # 手动生成xml描述文件
 # qdbuscpp2xml -A grandsearchplugininterfacev1.h -o com.deepin.dde.grandsearch.searchplugin.xml
 set(PLUGIN_ABSTRACT_IFS
@@ -192,6 +177,7 @@ set(SRCS
     ${DBUS}
     ${MAINCTRL}
     ${SEARCHER}
+    ${SEMANTIC_FILES}
     ${SEARCHPLUGIN}
     ${GDCONFIGURATION}
 )

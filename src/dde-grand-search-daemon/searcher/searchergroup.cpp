@@ -37,11 +37,9 @@ void SearcherGroupPrivate::initBuiltin()
     auto stWebSearcher = new StaticTextEchoer(this);
     m_builtin << stWebSearcher;
 
-#ifdef ENABLE_SEMANTIC
-    qInfo() << "create SemanticSearcher.";
+    qCInfo(logDaemon) << "Initializing SemanticSearcher";
     auto semanticSearcher = new SemanticSearcher(this);
     m_builtin << semanticSearcher;
-#endif
 
     qCInfo(logDaemon) << "Initializing OcrTextSearcher";
     auto ocrSearcher = new OcrTextSearcher(this);

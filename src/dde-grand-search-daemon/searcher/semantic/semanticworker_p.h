@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 - 2026 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -6,43 +6,43 @@
 #define SEMANTICWORKER_P_H
 
 #include "semanticworker.h"
-#include "semantichelper.h"
-#include "semanticparser/semanticparser.h"
+#include "searcher/file/filesearchutils.h"
+
+#include <dfm-search/semanticsearcher.h>
+#include <dfm-search/semantic_types.h>
+
+#include <QMutex>
+#include <QAtomicInt>
+#include <QElapsedTimer>
+#include <QSet>
 
 namespace GrandSearch {
-class BaseCond;
+
 class SemanticWorkerPrivate
 {
 public:
-    struct QueryFunction
-    {
-        void *object;
-        void (*function)(void *object, PushItemCallBack, void *worker);
-        void *worker;
-    };
-public:
-    explicit SemanticWorkerPrivate(SemanticWorker *parent);
+    explicit SemanticWorkerPrivate(SemanticWorker *qq);
     ~SemanticWorkerPrivate();
-    //void tryNotify();
-    static bool pushItem(const MatchedItemMap &items, void *ptr);
-    static void run(const QueryFunction &func);
-    static void sortItems(MatchedItemMap &items, const QHash<QString, double> &weight);
-    static void mergeExtra(MatchedItemMap &items, const QHash<QString, QVariantHash> &extra);
-public:
-    QString m_context;
-    QAtomicInt m_status = ProxyWorker::Ready;
-    mutable QMutex m_mtx;
-    MatchedItemMap m_items;
 
-    //计时
+    bool doSearch();
+    void processResults(const DFMSEARCH::SearchResultList &results);
+    void tryNotify();
+    int itemCount() const;
+
+public:
+    SemanticWorker *q_ptr = nullptr;
+    QAtomicInt m_status = ProxyWorker::Ready;
+    QString m_context;                      // 搜索上下文（自然语言查询）
+    QStringList m_keywords;                 // 从 intentParsed 提取的关键词
+
+    mutable QMutex m_mutex;
+    MatchedItems m_items;
+    QSet<QString> m_tmpSearchResults;       // 用于去重
+
     QElapsedTimer m_time;
     int m_lastEmit = 0;
 
-    bool m_doSemantic = false;
-    bool m_doVector = false;
-    bool m_doFulltext = false;
-private:
-    SemanticWorker *q;
+    Q_DECLARE_PUBLIC(SemanticWorker)
 };
 
 }

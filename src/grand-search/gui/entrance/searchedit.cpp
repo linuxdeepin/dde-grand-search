@@ -107,7 +107,7 @@ void SearchEditPrivate::init()
     m_searchAction = new QAction(q);
     m_searchAction->setObjectName("_d_search_leftAction");
     QString suffix = Utils::iconThemeSuffix();
-    m_searchAction->setIcon(QIcon(QString(":/icons/search%1.svg").arg(suffix)));
+    m_searchAction->setIcon(QIcon(QString(":/icons/deepin/builtin/texts/search%1.svg").arg(suffix)));
     m_lineEdit->addAction(m_searchAction, QLineEdit::LeadingPosition);
     m_searchAction->setVisible(false);
 

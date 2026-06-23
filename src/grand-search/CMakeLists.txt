@@ -17,12 +17,9 @@ if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips"
         OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64"
         OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "sw"
         OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "loongarch64"
-        OR NOT OPT_ENABLE_AI_SEARCH
         )
-    message("${CMAKE_SYSTEM_PROCESSOR} : disable ai search")
-else()
-    message("${CMAKE_SYSTEM_PROCESSOR} : enable ai search")
-    ADD_DEFINITIONS(-DENABLE_AI_SEARCH)
+    ADD_DEFINITIONS(-DDISABLE_AI_KNOWLEDGE)
+    message("${CMAKE_SYSTEM_PROCESSOR} : disable ai knowledge")
 endif()
 
 # 依赖包
@@ -179,8 +176,8 @@ set(GUISRC
     gui/searchconfig/blacklistwidget.h
     gui/searchconfig/indexwidget.cpp
     gui/searchconfig/indexwidget.h
-    gui/searchconfig/smartsearchwidget.cpp
-    gui/searchconfig/smartsearchwidget.h
+    gui/searchconfig/semanticsearchwidget.cpp
+    gui/searchconfig/semanticsearchwidget.h
     gui/searchconfig/roundedbackground.h
     gui/searchconfig/roundedbackground.cpp
     gui/searchconfig/tipslabel.h

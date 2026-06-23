@@ -4,7 +4,7 @@
 
 #include "indexwidget.h"
 #include "blacklistwidget.h"
-#include "smartsearchwidget.h"
+#include "semanticsearchwidget.h"
 
 #include <DFontSizeManager>
 #include <QLabel>
@@ -26,13 +26,13 @@ IndexWidget::IndexWidget(QWidget *parent)
     m_mainLayout->setContentsMargins(0, 0, 0, 0);
     m_mainLayout->setSpacing(10);
 
-    m_smartSearchWidget = new SmartSearchWidget(this);
+    m_semanticSearchWidget = new SemanticSearchWidget(this);
     m_blackListWidget = new BlackListWidget(this);
     m_groupLabel = new QLabel(tr("Index"), this);
     DFontSizeManager::instance()->bind(m_groupLabel, DFontSizeManager::T5, QFont::Bold);
 
     m_mainLayout->addWidget(m_groupLabel);
-    m_mainLayout->addWidget(m_smartSearchWidget);
+    m_mainLayout->addWidget(m_semanticSearchWidget);
     m_mainLayout->addWidget(m_blackListWidget);
 
     qCDebug(logGrandSearch) << "IndexWidget created successfully";

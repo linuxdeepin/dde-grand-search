@@ -9,6 +9,7 @@
 
 #include <dfm-search/dsearch_global.h>
 
+#include <DConfig>
 #include <DDciIcon>
 #include <DFontSizeManager>
 
@@ -18,7 +19,15 @@
 Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 DWIDGET_USE_NAMESPACE
+DCORE_USE_NAMESPACE
 using namespace GrandSearch;
+
+inline constexpr char kCfgAppId[] { "org.deepin.dde.file-manager" };
+inline constexpr char kSearchCfgPath[] { "org.deepin.dde.file-manager.search" };
+inline constexpr char kEnableFileIndexSearch[] { "enableFileIndexSearch" };
+inline constexpr char kEnableFullTextSearch[] { "enableFullTextSearch" };
+inline constexpr char kEnableOcrTextSearch[] { "enableOcrTextSearch" };
+inline constexpr int kMargin { 20 };
 
 AuthPromptWidget::AuthPromptWidget(QWidget *parent)
     : DWidget(parent)
@@ -32,27 +41,23 @@ AuthPromptWidget::~AuthPromptWidget()
 {
 }
 
-QStringList AuthPromptWidget::checkUnavailableFeatures() const
+QStringList AuthPromptWidget::checkUnavailableFeatures()
 {
     QStringList features;
 
     // 全文搜索索引
-    if (!DFMSEARCH::Global::isContentIndexAvailable())
+    if (!contentSearchAvailable())
         features << tr("full-text search");
 
     // 图片文本内容搜索（OCR）索引
-    if (!DFMSEARCH::Global::isOcrTextIndexAvailable())
+    if (!ocrTextSearchAvailable())
         features << tr("image text content search");
 
-    // 智能搜索：需要用户启用 + 文件名索引可用
-    const bool enabled = SearchConfig::instance()->getConfig(GRANDSEARCH_SMARTSEARCH_GROUP, GRANDSEARCH_SMARTSEARCH_ENABLED, false).toBool();
-    const bool indexReady = DFMSEARCH::Global::isFileNameIndexReadyForSearch();
-    if (!enabled || !indexReady)
+    // 智能搜索
+    if (!semanticSearchAvailable())
         features << tr("smart search");
 
-    qCDebug(logGrandSearch) << "Unavailable features:" << features
-                            << "(smartSearch enabled:" << enabled
-                            << ", fileNameIndex ready:" << indexReady << ")";
+    qCDebug(logGrandSearch) << "Unavailable features:" << features;
 
     return features;
 }
@@ -80,13 +85,85 @@ void AuthPromptWidget::updatePromptContent()
     m_featuresText = quoted.join(tr(", "));
 
     show();
-    adjustElidedText();
+}
+
+void AuthPromptWidget::enableSearchindexes()
+{
+    DConfig *dcfg = DConfig::create(kCfgAppId, kSearchCfgPath);
+    if (!dcfg) {
+        qCWarning(logGrandSearch) << "Failed to create DConfig for file manager search";
+        return;
+    }
+
+    bool enabled = dcfg->value(kEnableFileIndexSearch, false).toBool();
+    if (!enabled) {
+        dcfg->setValue(kEnableFileIndexSearch, true);
+        qCDebug(logGrandSearch) << "Enabled file search index";
+    }
+
+    enabled = dcfg->value(kEnableFullTextSearch, false).toBool();
+    if (!enabled) {
+        dcfg->setValue(kEnableFullTextSearch, true);
+        qCDebug(logGrandSearch) << "Enabled full-text search index";
+    }
+
+    enabled = dcfg->value(kEnableOcrTextSearch, false).toBool();
+    if (!enabled) {
+        dcfg->setValue(kEnableOcrTextSearch, true);
+        qCDebug(logGrandSearch) << "Enabled OCR text search index";
+    }
+
+    delete dcfg;
+}
+
+bool AuthPromptWidget::contentSearchAvailable()
+{
+    return false;
+    DConfig *dcfg = DConfig::create(kCfgAppId, kSearchCfgPath);
+    if (!dcfg) {
+        qCWarning(logGrandSearch) << "Failed to create DConfig for file manager search";
+        return false;
+    }
+
+    bool enabled = dcfg->value(kEnableFullTextSearch, false).toBool();
+    delete dcfg;
+    return enabled && DFMSEARCH::Global::isContentIndexAvailable();
+}
+
+bool AuthPromptWidget::ocrTextSearchAvailable()
+{
+    return false;
+    DConfig *dcfg = DConfig::create(kCfgAppId, kSearchCfgPath);
+    if (!dcfg) {
+        qCWarning(logGrandSearch) << "Failed to create DConfig for file manager search";
+        return false;
+    }
+
+    bool enabled = dcfg->value(kEnableOcrTextSearch, false).toBool();
+    delete dcfg;
+    return enabled && DFMSEARCH::Global::isOcrTextIndexAvailable();
+}
+
+bool AuthPromptWidget::semanticSearchAvailable()
+{
+    return false;
+    DConfig *dcfg = DConfig::create(kCfgAppId, kSearchCfgPath);
+    if (!dcfg) {
+        qCWarning(logGrandSearch) << "Failed to create DConfig for file manager search";
+        return false;
+    }
+
+    bool enabled = dcfg->value(kEnableFileIndexSearch, false).toBool();
+    delete dcfg;
+
+    bool cfgEnabled = SearchConfig::instance()->getConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_SEMANTIC_ENABLED, true).toBool();
+    return enabled && cfgEnabled && DFMSEARCH::Global::isFileNameIndexReadyForSearch();
 }
 
 void AuthPromptWidget::initUi()
 {
     m_vLayout = new QVBoxLayout(this);
-    m_vLayout->setContentsMargins(10, 0, 10, 0);
+    m_vLayout->setContentsMargins(kMargin, 0, kMargin, 0);
     m_vLayout->setSpacing(10);
 
     m_hLayout = new QHBoxLayout();
@@ -123,8 +200,8 @@ void AuthPromptWidget::initConnect()
     // 一键授权链接点击
     connect(m_contentLabel, &DLabel::linkActivated, this, [this](const QString &link) {
         if (link == QLatin1String("authorize")) {
-            // TODO: 实现授权逻辑
-            SearchConfig::instance()->setConfig(GRANDSEARCH_SMARTSEARCH_GROUP, GRANDSEARCH_SMARTSEARCH_ENABLED, true);
+            enableSearchindexes();
+            SearchConfig::instance()->setConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_SEMANTIC_ENABLED, true);
             hide();
         }
     });
@@ -194,7 +271,7 @@ void AuthPromptWidget::adjustElidedText()
     const int closeBtnW = m_closeButton->isVisible()
             ? (m_closeButton->width() + m_hLayout->spacing())
             : 0;
-    const int availableWidth = width() - 10 * 2 - closeBtnW;
+    const int availableWidth = width() - kMargin * 2 - closeBtnW;
 
     m_contentLabel->setText(buildElidedText(availableWidth));
 }

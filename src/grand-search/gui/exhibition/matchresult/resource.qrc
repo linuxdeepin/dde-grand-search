@@ -1,8 +1,9 @@
 <RCC>
-    <qresource prefix="/">
-        <file>icons/aisearch.svg</file>
-        <file>icons/search-light.svg</file>
-        <file>icons/search-dark.svg</file>
+    <qresource prefix="/icons/deepin">
+        <file>builtin/icons/aisearch.svg</file>
+        <file>builtin/texts/search-dark.svg</file>
+        <file>builtin/texts/search-light.svg</file>
+        <file>builtin/texts/semantic_16px.svg</file>
     </qresource>
     <qresource prefix="/dsg">
         <file>built-in-icons/clear.dci</file>

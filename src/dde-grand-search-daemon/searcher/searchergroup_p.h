@@ -10,8 +10,8 @@
 #include "app/desktopappsearcher.h"
 #include "extend/extendsearcher.h"
 #include "web/statictextechoer.h"
-#include "semantic/semanticsearcher.h"
 #include "file/filenamesearcher.h"
+#include "semantic/semanticsearcher.h"
 
 namespace GrandSearch {
 

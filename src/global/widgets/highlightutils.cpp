@@ -131,15 +131,19 @@ ElideResult smartElideWithTracking(const QString &text, int maxWidth,
         return result;
     }
 
-    int keepStart = text.length();
-    int keepEnd = 0;
-    for (const auto &mr : matchRanges) {
-        keepStart = std::min(keepStart, mr.start);
-        keepEnd = std::max(keepEnd, mr.end);
-    }
-
-    if (keepStart >= keepEnd)
+    if (matchRanges.isEmpty())
         return {};
+
+    // 以第一个匹配的关键词为锚点，并尽量让它显示在可见窗口的中间。
+    // 初始窗口只包含第一个匹配，随后向两侧平衡扩展以填充可用宽度，
+    // 避免总是先填满某一侧而把关键词挤到边缘。
+    const MatchRange &first = matchRanges.constFirst();
+    int keepStart = first.start;
+    int keepEnd = first.end;
+
+    double keptWidth = textWidth(fm, text.mid(keepStart, keepEnd - keepStart));
+    double leftWidth = 0;    // 第一个匹配左侧已扩展的像素宽度
+    double rightWidth = 0;   // 第一个匹配右侧已扩展的像素宽度
 
     while (true) {
         bool needLeft = (keepStart > 0);
@@ -147,34 +151,50 @@ ElideResult smartElideWithTracking(const QString &text, int maxWidth,
         int numEllipsis = (needLeft ? 1 : 0) + (needRight ? 1 : 0);
         double budget = maxWidth - numEllipsis * ellipsisWidth;
 
-        double keptWidth = textWidth(fm, text.mid(keepStart, keepEnd - keepStart));
         if (keptWidth > budget)
             break;
-
         if (!needLeft && !needRight)
             break;
 
-        bool expanded = false;
-        if (keepStart > 0) {
-            double cw = charWidth(fm, text[keepStart - 1]);
-            int newNeedLeft = (keepStart - 1 > 0);
-            int newNumEllipsis = (newNeedLeft ? 1 : 0) + (needRight ? 1 : 0);
-            double newBudget = maxWidth - newNumEllipsis * ellipsisWidth;
-            if (keptWidth + cw <= newBudget) {
-                --keepStart;
-                expanded = true;
+        // 向已累积像素宽度更窄的一侧扩展，使第一个匹配尽量居中。
+        bool tryLeft;
+        if (needLeft && needRight)
+            tryLeft = (leftWidth <= rightWidth);
+        else
+            tryLeft = needLeft;
+
+        // 向指定一侧扩展一个字符；放得下则更新窗口与累计像素宽度。
+        auto tryExpand = [&](bool left) -> bool {
+            if (left && keepStart > 0) {
+                double cw = charWidth(fm, text[keepStart - 1]);
+                int newNeedLeft = (keepStart - 1 > 0);
+                int newNumEllipsis = (newNeedLeft ? 1 : 0) + (needRight ? 1 : 0);
+                double newBudget = maxWidth - newNumEllipsis * ellipsisWidth;
+                if (keptWidth + cw <= newBudget) {
+                    --keepStart;
+                    keptWidth += cw;
+                    leftWidth += cw;
+                    return true;
+                }
+            } else if (!left && keepEnd < text.length()) {
+                double cw = charWidth(fm, text[keepEnd]);
+                int newNeedRight = (keepEnd + 1 < text.length());
+                int newNumEllipsis = (needLeft ? 1 : 0) + (newNeedRight ? 1 : 0);
+                double newBudget = maxWidth - newNumEllipsis * ellipsisWidth;
+                if (keptWidth + cw <= newBudget) {
+                    ++keepEnd;
+                    keptWidth += cw;
+                    rightWidth += cw;
+                    return true;
+                }
             }
-        }
-        if (!expanded && keepEnd < text.length()) {
-            double cw = charWidth(fm, text[keepEnd]);
-            int newNeedRight = (keepEnd + 1 < text.length());
-            int newNumEllipsis = (needLeft ? 1 : 0) + (newNeedRight ? 1 : 0);
-            double newBudget = maxWidth - newNumEllipsis * ellipsisWidth;
-            if (keptWidth + cw <= newBudget) {
-                ++keepEnd;
-                expanded = true;
-            }
-        }
+            return false;
+        };
+
+        // 首选侧放不下时回退到另一侧；两侧都放不下则结束扩展。
+        bool expanded = tryExpand(tryLeft);
+        if (!expanded)
+            expanded = tryExpand(!tryLeft);
         if (!expanded)
             break;
     }

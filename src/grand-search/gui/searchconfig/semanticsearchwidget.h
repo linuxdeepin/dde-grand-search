@@ -2,8 +2,8 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#ifndef SMARTSEARCHWIDGET_H
-#define SMARTSEARCHWIDGET_H
+#ifndef SEMANTICSEARCHWIDGET_H
+#define SEMANTICSEARCHWIDGET_H
 
 #include <DWidget>
 #include <DSwitchButton>
@@ -12,12 +12,12 @@ namespace GrandSearch {
 
 class TipsLabel;
 
-class SmartSearchWidget : public Dtk::Widget::DWidget
+class SemanticSearchWidget : public Dtk::Widget::DWidget
 {
     Q_OBJECT
 public:
-    explicit SmartSearchWidget(QWidget *parent = nullptr);
-    ~SmartSearchWidget() override;
+    explicit SemanticSearchWidget(QWidget *parent = nullptr);
+    ~SemanticSearchWidget() override;
 
 private slots:
     void onSwitchToggled(bool checked);
@@ -32,4 +32,4 @@ private:
 
 }
 
-#endif // SMARTSEARCHWIDGET_H
+#endif // SEMANTICSEARCHWIDGET_H

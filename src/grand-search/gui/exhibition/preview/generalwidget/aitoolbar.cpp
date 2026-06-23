@@ -372,7 +372,7 @@ void AiToolBarInner::adjustBts()
     m_omitBt->setVisible(false);
 
     if (sumWidth <= MAX_WIDTH) {
-#ifndef ENABLE_AI_SEARCH
+#ifdef DISABLE_AI_KNOWLEDGE
         if (m_knowledgeBt->isVisible()) {
             m_knowledgeBt->setVisible(false);
         }
@@ -423,7 +423,7 @@ void AiToolBarInner::adjustBts()
         }
     }
 
-#ifndef ENABLE_AI_SEARCH
+#ifdef DISABLE_AI_KNOWLEDGE
     if (m_knowledgeBt->isVisible()) {
         m_knowledgeBt->setVisible(false);
     } else {

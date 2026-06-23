@@ -325,7 +325,7 @@ bool Utils::setWeightMethod(MatchedItem &item)
 
     const QString &search = item.searcher;
     if (search == GRANDSEARCH_CLASS_FILE_DEEPIN || search == GRANDSEARCH_CLASS_OCR_TEXT
-        || search == GRANDSEARCH_CLASS_FILE_FULLTEXT) {
+        || search == GRANDSEARCH_CLASS_FILE_FULLTEXT || search == GRANDSEARCH_CLASS_FILE_SEMANTIC) {
         ext.insert(GRANDSEARCH_PROPERTY_WEIGHT_METHOD,
                    GRANDSEARCH_PROPERTY_WEIGHT_METHOD_LOCALFILE);
     } else if (search == GRANDSEARCH_CLASS_APP_DESKTOP) {
@@ -498,6 +498,7 @@ void Utils::packageBestMatch(MatchedItemMap &map, int maxQuantity)
         { GRANDSEARCH_CLASS_APP_DESKTOP, true },
         { GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, true },
         { GRANDSEARCH_CLASS_OCR_TEXT, true },
+        { GRANDSEARCH_CLASS_FILE_SEMANTIC, true }
     };
 
     // 待文件搜索各组去重后删除该黑名单
@@ -506,7 +507,13 @@ void Utils::packageBestMatch(MatchedItemMap &map, int maxQuantity)
         { GRANDSEARCH_GROUP_FILE_AUDIO, false },
         { GRANDSEARCH_GROUP_FILE_PICTURE, false },
         { GRANDSEARCH_GROUP_FILE_DOCUMNET, false },
-        { GRANDSEARCH_GROUP_FOLDER, false }
+        { GRANDSEARCH_GROUP_FOLDER, false },
+    };
+
+    // 不用去重的组别
+    static const QStringList noNeedDeduplicationGroup = {
+        GRANDSEARCH_GROUP_FILE_OCR,
+        GRANDSEARCH_GROUP_FILE_SEMANTIC
     };
 
     MatchedItems bestList;
@@ -564,16 +571,18 @@ void Utils::packageBestMatch(MatchedItemMap &map, int maxQuantity)
     }
 
     for (auto list : tempBestList) {
-        // 在原分组中移除最佳匹配项
+        if (!noNeedDeduplicationGroup.contains(list.second)) {
+            // 在原分组中移除最佳匹配项
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-        auto &items = map[list.second];
-        auto it = std::find(items.begin(), items.end(), list.first);
-        if (it != items.end()) {
-            items.erase(it);
-        }
+            auto &items = map[list.second];
+            auto it = std::find(items.begin(), items.end(), list.first);
+            if (it != items.end()) {
+                items.erase(it);
+            }
 #else
-        map[list.second].removeOne(list.first);
+            map[list.second].removeOne(list.first);
 #endif
+        }
 
         bestList.append(list.first);
 
@@ -1019,7 +1028,8 @@ QIcon Utils::defaultIcon(const MatchedItem &item)
         return QIcon::fromTheme("application-x-desktop");
     else if (item.searcher == GRANDSEARCH_CLASS_FILE_DEEPIN
              || item.searcher == GRANDSEARCH_CLASS_FILE_FULLTEXT
-             || item.searcher == GRANDSEARCH_CLASS_OCR_TEXT) {
+             || item.searcher == GRANDSEARCH_CLASS_OCR_TEXT
+             || item.searcher == GRANDSEARCH_CLASS_FILE_SEMANTIC) {
         return QIcon::fromTheme(m_mimeDb.mimeTypeForFile(item.item).genericIconName());
     } else if (item.searcher == GRANDSEARCH_CLASS_WEB_STATICTEXT) {
         // 使用默认浏览器的图标
@@ -1058,7 +1068,8 @@ bool Utils::isLevelGroup(const QString &searchGroupName)
         GRANDSEARCH_GROUP_FILE_PICTURE,
         GRANDSEARCH_GROUP_FILE_DOCUMNET,
         GRANDSEARCH_GROUP_FILE,
-        GRANDSEARCH_GROUP_FILE_OCR
+        GRANDSEARCH_GROUP_FILE_OCR,
+        GRANDSEARCH_GROUP_FILE_SEMANTIC
     };
 
     return containLevelGroup.contains(searchGroupName);
@@ -1073,7 +1084,7 @@ bool Utils::canPreview(const QString &searchGroupName)
         GRANDSEARCH_GROUP_FILE_AUDIO,
         GRANDSEARCH_GROUP_FILE_PICTURE,
         GRANDSEARCH_GROUP_FILE_DOCUMNET,
-        GRANDSEARCH_GROUP_FILE_SMART,
+        GRANDSEARCH_GROUP_FILE_SEMANTIC,
         GRANDSEARCH_GROUP_FILE_OCR
     };
 

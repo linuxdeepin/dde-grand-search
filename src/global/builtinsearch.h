@@ -10,14 +10,9 @@
 #define GRANDSEARCH_CLASS_APP_DESKTOP "com.deepin.dde-grand-search.app-desktop"
 #define GRANDSEARCH_CLASS_SETTING_CONTROLCENTER "com.deepin.dde-grand-search.dde-control-center-setting"
 #define GRANDSEARCH_CLASS_WEB_STATICTEXT "com.deepin.dde-grand-search.web-statictext"
-#define GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC "com.deepin.dde-grand-search.generalfile-semantic"
+#define GRANDSEARCH_CLASS_FILE_SEMANTIC "com.deepin.dde-grand-search.semantic"
 #define GRANDSEARCH_CLASS_OCR_TEXT "com.deepin.dde-grand-search.ocr-text"
 #define GRANDSEARCH_CLASS_FILE_FULLTEXT "com.deepin.dde-grand-search.file-fulltext"
-
-// AI搜索子项
-#define GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC".analysis"
-#define GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC".vector"
-#define GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_FULLTEXT GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC".fulltext"
 
 // 搜索项所属组
 #define GRANDSEARCH_GROUP_BEST               "com.deepin.dde-grand-search.group.best-match"
@@ -33,8 +28,8 @@
 #define GRANDSEARCH_GROUP_FILE_PICTURE       "com.deepin.dde-grand-search.group.files.picture"
 #define GRANDSEARCH_GROUP_FILE_DOCUMNET      "com.deepin.dde-grand-search.group.files.document"
 
-#define GRANDSEARCH_GROUP_FILE_SMART    "com.deepin.dde-grand-search.group.files.smart"
 #define GRANDSEARCH_GROUP_FILE_OCR           "com.deepin.dde-grand-search.group.files.ocr"
+#define GRANDSEARCH_GROUP_FILE_SEMANTIC      "com.deepin.dde-grand-search.group.files.semantic"
 
 /****************** 扩展数据 *********************************/
 // 搜索项在组内的显示等级
@@ -71,7 +66,7 @@ static const QStringList predefBuiltinSearches { \
 GRANDSEARCH_CLASS_FILE_DEEPIN, \
 GRANDSEARCH_CLASS_APP_DESKTOP, \
 GRANDSEARCH_CLASS_WEB_STATICTEXT, \
-GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC, \
+GRANDSEARCH_CLASS_FILE_SEMANTIC, \
 GRANDSEARCH_CLASS_FILE_FULLTEXT, \
 GRANDSEARCH_CLASS_OCR_TEXT \
 }

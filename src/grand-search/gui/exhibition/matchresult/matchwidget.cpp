@@ -44,15 +44,15 @@ void MatchWidgetPrivate::setGroupIcon(GroupWidget *wid)
     if (!wid)
         return;
 
-    if (wid->searchGroupName() == GRANDSEARCH_GROUP_FILE_SMART) {
-        wid->setIcon(QIcon(":/icons/aisearch.svg"));
+    if (wid->searchGroupName() == GRANDSEARCH_GROUP_FILE_SEMANTIC) {
+        wid->setIcon(QIcon::fromTheme("semantic"));
     }
 }
 
 MatchWidget::MatchWidget(QWidget *parent)
     : DWidget(parent), d_p(new MatchWidgetPrivate(this))
 {
-    m_groupHashShowOrder << GRANDSEARCH_GROUP_BEST << GRANDSEARCH_GROUP_FILE_SMART
+    m_groupHashShowOrder << GRANDSEARCH_GROUP_BEST << GRANDSEARCH_GROUP_FILE_SEMANTIC
                          << GRANDSEARCH_GROUP_APP << GRANDSEARCH_GROUP_SETTING
                          << GRANDSEARCH_GROUP_WEB << GRANDSEARCH_GROUP_FILE_VIDEO
                          << GRANDSEARCH_GROUP_FILE_AUDIO << GRANDSEARCH_GROUP_FILE_OCR
@@ -710,7 +710,9 @@ MatchedItems MatchWidget::deduplicateAgainstBestMatch(const MatchedItems &items,
         GRANDSEARCH_GROUP_FILE_AUDIO,
         GRANDSEARCH_GROUP_FILE_PICTURE,
         GRANDSEARCH_GROUP_FILE_DOCUMNET,
-        GRANDSEARCH_GROUP_FOLDER
+        GRANDSEARCH_GROUP_FOLDER,
+        GRANDSEARCH_GROUP_FILE_SEMANTIC,
+        GRANDSEARCH_GROUP_FILE_OCR
     };
     if (blackGroup.contains(groupName))
         return items;

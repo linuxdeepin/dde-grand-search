@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "smartsearchwidget.h"
+#include "semanticsearchwidget.h"
 #include "tipslabel.h"
 #include "global/searchconfigdefine.h"
 #include "business/config/searchconfig.h"
@@ -16,18 +16,18 @@ DWIDGET_USE_NAMESPACE
 
 using namespace GrandSearch;
 
-SmartSearchWidget::SmartSearchWidget(QWidget *parent)
+SemanticSearchWidget::SemanticSearchWidget(QWidget *parent)
     : DWidget(parent)
 {
     initUi();
     initConnect();
 }
 
-SmartSearchWidget::~SmartSearchWidget()
+SemanticSearchWidget::~SemanticSearchWidget()
 {
 }
 
-void SmartSearchWidget::initUi()
+void SemanticSearchWidget::initUi()
 {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -42,7 +42,7 @@ void SmartSearchWidget::initUi()
     switchLayout->addWidget(m_switchBtn);
 
     // 从配置加载初始状态
-    bool enabled = SearchConfig::instance()->getConfig(GRANDSEARCH_SMARTSEARCH_GROUP, GRANDSEARCH_SMARTSEARCH_ENABLED, true).toBool();
+    bool enabled = SearchConfig::instance()->getConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_SEMANTIC_ENABLED, true).toBool();
     m_switchBtn->setChecked(enabled);
 
     // 描述信息
@@ -53,13 +53,13 @@ void SmartSearchWidget::initUi()
     mainLayout->addWidget(tipsLabel);
 }
 
-void SmartSearchWidget::initConnect()
+void SemanticSearchWidget::initConnect()
 {
-    connect(m_switchBtn, &DSwitchButton::checkedChanged, this, &SmartSearchWidget::onSwitchToggled);
+    connect(m_switchBtn, &DSwitchButton::checkedChanged, this, &SemanticSearchWidget::onSwitchToggled);
 }
 
-void SmartSearchWidget::onSwitchToggled(bool checked)
+void SemanticSearchWidget::onSwitchToggled(bool checked)
 {
     qCDebug(logGrandSearch) << "Smart search configuration changed - Enabled:" << checked;
-    SearchConfig::instance()->setConfig(GRANDSEARCH_SMARTSEARCH_GROUP, GRANDSEARCH_SMARTSEARCH_ENABLED, checked);
+    SearchConfig::instance()->setConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_SEMANTIC_ENABLED, checked);
 }

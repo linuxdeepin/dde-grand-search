@@ -34,14 +34,13 @@ ConfigerPrivate::ConfigerPrivate(Configer *parent)
 UserPreferencePointer ConfigerPrivate::defaultSearcher()
 {
     QVariantHash data = {
-                        {GRANDSEARCH_CLASS_FILE_DEEPIN, true},
-                        {GRANDSEARCH_CLASS_APP_DESKTOP, true},
-                        {GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, true},
-                        {GRANDSEARCH_CLASS_WEB_STATICTEXT, true},
-                        {GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC, true},
-                        {GRANDSEARCH_CLASS_FILE_FULLTEXT, true},
-                        {GRANDSEARCH_CLASS_OCR_TEXT, true}
-                        };
+        { GRANDSEARCH_CLASS_FILE_DEEPIN, true },
+        { GRANDSEARCH_CLASS_APP_DESKTOP, true },
+        { GRANDSEARCH_CLASS_SETTING_CONTROLCENTER, true },
+        { GRANDSEARCH_CLASS_WEB_STATICTEXT, true },
+        { GRANDSEARCH_CLASS_FILE_FULLTEXT, true },
+        { GRANDSEARCH_CLASS_OCR_TEXT, true }
+    };
 
     return UserPreferencePointer(new UserPreference(data));
 }
@@ -87,7 +86,7 @@ UserPreferencePointer ConfigerPrivate::webSearchEngine()
 
 UserPreferencePointer ConfigerPrivate::semanticEngine()
 {
-    QVariantHash data { { GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, true }, { GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR, true } };
+    QVariantHash data { { GRANDSEARCH_SEMANTIC_ENABLED, true } };
 
     return UserPreferencePointer(new UserPreference(data));
 }
@@ -106,7 +105,7 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
 
     // 文件搜索相关配置
     {
-        //初始化文件搜索的子类目
+        // 初始化文件搜索的子类目
         if (UserPreferencePointer conf = m_root->group(GRANDSEARCH_CLASS_FILE_DEEPIN)) {
             // 若所有的文件类搜索都关闭，则关闭文件搜索项
             bool on = false;
@@ -171,31 +170,16 @@ bool ConfigerPrivate::updateConfig1(QSettings *set)
 
     set->endGroup();
 
-    // AI搜索子项开关
-    {
-        set->beginGroup(GRANDSEARCH_SEMANTIC_GROUP);
-        if (UserPreferencePointer conf = m_root->group(GRANDSEARCH_SEMANTIC_GROUP)) {
-            bool on = false;
-            bool ret = set->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, true).toBool();
-            conf->setValue(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_ANALYSIS, ret);
-            on |= ret;
-
-            ret = set->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR, true).toBool();
-            conf->setValue(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_VECTOR, ret);
-            on |= ret;
-
-            ret = set->value(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_FULLTEXT, false).toBool();
-            conf->setValue(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC_FULLTEXT, ret);
-
-            // 设置是否启用AI搜索项
-            searcherConfig->setValue(GRANDSEARCH_CLASS_GENERALFILE_SEMANTIC, on);
-            qCDebug(logDaemon) << "Semantic search configuration updated - Enabled:" << on;
-        } else {
-            qCWarning(logDaemon) << "Configuration not found:" << GRANDSEARCH_SEMANTIC_GROUP;
-        }
-
-        set->endGroup();
+    // 语义搜索开关
+    set->beginGroup(GRANDSEARCH_SEMANTIC_GROUP);
+    if (UserPreferencePointer conf = m_root->group(GRANDSEARCH_SEMANTIC_GROUP)) {
+        bool ret = set->value(GRANDSEARCH_SEMANTIC_ENABLED, true).toBool();
+        conf->setValue(GRANDSEARCH_SEMANTIC_ENABLED, ret);
+        qCDebug(logDaemon) << "Semantic search configuration updated - Enabled:" << ret;
+    } else {
+        qCWarning(logDaemon) << "Configuration not found:" << GRANDSEARCH_SEMANTIC_GROUP;
     }
+    set->endGroup();
 
     // 拖尾
     set->beginGroup(GRANDSEARCH_TAILER_GROUP);
@@ -352,7 +336,7 @@ void Configer::initDefault()
     // 初始化搜索项是否可用
     rootData.insert(GRANDSEARCH_PREF_SEARCHERENABLED, QVariant::fromValue(d->defaultSearcher()));
 
-    //初始化文件搜索的子类目
+    // 初始化文件搜索的子类目
     rootData.insert(GRANDSEARCH_CLASS_FILE_DEEPIN, QVariant::fromValue(d->fileSearcher()));
 
     // 拖尾
@@ -364,7 +348,7 @@ void Configer::initDefault()
     // 搜索引擎
     rootData.insert(GRANDSEARCH_WEB_GROUP, QVariant::fromValue(d->webSearchEngine()));
 
-    // AI搜索子项
+    // 语义搜索
     rootData.insert(GRANDSEARCH_SEMANTIC_GROUP, QVariant::fromValue(d->semanticEngine()));
 
     {
