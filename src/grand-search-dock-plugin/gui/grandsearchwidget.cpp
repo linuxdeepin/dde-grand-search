@@ -22,6 +22,7 @@
 #include <QDebug>
 #include <QVBoxLayout>
 #include <QLoggingCategory>
+#include <QGraphicsOpacityEffect>
 
 Q_DECLARE_LOGGING_CATEGORY(logDock)
 
@@ -230,6 +231,10 @@ QuickPanel::QuickPanel(const QString &desc, QWidget *parent)
 
     setLayout(lay);
 
+    QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect(this);
+    effect->setOpacity(kOpacityNormal);
+    setGraphicsEffect(effect);
+
     updateIcon();
 
     connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &QuickPanel::updateIcon);
@@ -245,4 +250,28 @@ void QuickPanel::updateIcon()
     iconLabel->setPixmap(pixmap);
 
     update();
+}
+
+void QuickPanel::updateOpacity()
+{
+    if (auto *effect = qobject_cast<QGraphicsOpacityEffect *>(graphicsEffect()))
+        effect->setOpacity(m_hover ? kOpacityHover : kOpacityNormal);
+}
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+void QuickPanel::enterEvent(QEvent *event)
+#else
+void QuickPanel::enterEvent(QEnterEvent *event)
+#endif
+{
+    m_hover = true;
+    updateOpacity();
+    QWidget::enterEvent(event);
+}
+
+void QuickPanel::leaveEvent(QEvent *event)
+{
+    m_hover = false;
+    updateOpacity();
+    QWidget::leaveEvent(event);
 }

@@ -52,8 +52,22 @@ public:
 public slots:
     void updateIcon();
 
+protected:
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    void enterEvent(QEnterEvent *event) override;
+#else
+    void enterEvent(QEvent *event) override;
+#endif
+    void leaveEvent(QEvent *event) override;
+
 private:
+    void updateOpacity();
+
+    static constexpr qreal kOpacityNormal = 0.7;
+    static constexpr qreal kOpacityHover = 1.0;
+
     DTK_WIDGET_NAMESPACE::DLabel *iconLabel = nullptr;
+    bool m_hover = false;
 };
 }
 
