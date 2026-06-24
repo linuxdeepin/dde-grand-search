@@ -309,10 +309,7 @@ void SearchEdit::setAppIcon(const QString &iconName)
         return;
 
     d->m_appIconName = iconName;
-    auto pixmap = QIcon::fromTheme(iconName).pixmap(AppIconSize);
-    pixmap.setDevicePixelRatio(qApp->devicePixelRatio());
-    d->m_appIconLabel->setPixmap(pixmap);
-    setAppIconVisible(true);
+    setAppIcon(QIcon::fromTheme(iconName));
 }
 
 void SearchEdit::setAppIcon(const QIcon &icon)
@@ -323,8 +320,9 @@ void SearchEdit::setAppIcon(const QIcon &icon)
         return;
     }
 
-    auto pixmap = icon.pixmap(AppIconSize);
-    pixmap.setDevicePixelRatio(qApp->devicePixelRatio());
+    auto iconSize = QCoreApplication::testAttribute(Qt::AA_UseHighDpiPixmaps) ? AppIconSize : (AppIconSize * devicePixelRatioF());
+    auto pixmap = icon.pixmap(iconSize);
+    pixmap.setDevicePixelRatio(devicePixelRatioF());
     d->m_appIconLabel->setPixmap(pixmap);
     setAppIconVisible(true);
 }
