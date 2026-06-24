@@ -1,3 +1,9 @@
+dde-grand-search (6.0.39) unstable; urgency=medium
+
+  * fix: fix app icon scaling on high DPI displays
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Wed, 24 Jun 2026 13:56:27 +0800
+
 dde-grand-search (6.0.38) unstable; urgency=medium
 
   * fix: update French translations for grand search UI
