@@ -1,12 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="fi">
-<context>
-    <name>dock::SearchItem</name>
-    <message>
-        <location filename="../searchitem.cpp" line="47"/>
-        <source>GrandSearch</source>
-        <translation>Haku</translation>
-    </message>
-</context>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="fi">
 <context>
     <name>searchitem</name>
     <message>
@@ -15,7 +9,7 @@
         <translation>Haku</translation>
     </message>
     <message>
-        <location filename="../package/searchitem.qml" line="53"/>
+        <location filename="../package/searchitem.qml" line="44"/>
         <source>SearchConfig</source>
         <translation>Hakuasetukset</translation>
     </message>

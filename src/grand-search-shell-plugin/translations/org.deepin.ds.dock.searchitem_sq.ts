@@ -1,3 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1"/>
+<TS version="2.1" language="sq">
+<context>
+    <name>searchitem</name>
+    <message>
+        <location filename="../package/searchitem.qml" line="24"/>
+        <source>GrandSearch</source>
+        <translation>Kërkim global</translation>
+    </message>
+    <message>
+        <location filename="../package/searchitem.qml" line="44"/>
+        <source>SearchConfig</source>
+        <translation>Konfigurimi i kërkimit</translation>
+    </message>
+</context>
+</TS>
