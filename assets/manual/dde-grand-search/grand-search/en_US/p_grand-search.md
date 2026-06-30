@@ -23,13 +23,6 @@ Grand Search is a system-level quick retrieval tool that can be invoked via the 
 
 <img src="fig/search2.png" alt=" " style="zoom:80%;" />
 
-### AI Search
-* Enter a natural language description related to files. AI Search will find files based on your description.
-* For documents, describe time or content, e.g., "Last week's documents."
-* For images, describe text within the image, e.g., "Images containing 'search'."
-
-<img src="fig/search3.png" alt=" " style="zoom:80%;" />
-
 ### Web Search
 * Under the **Web Search** category in results, click **Search in Browser** to find information online.
 
@@ -51,14 +44,6 @@ Right-click ![ ](../common/dde-grand-search.svg) on the taskbar and select **Sea
 * Toggle categories (**Files, Folders, Documents, Apps, Settings, Videos, Music, Images, Web Search**) to include/exclude them from results.
 
 ### Indexing
-**AI Smart Search**
-* Enable **AI Smart Search** to use AI features.
-* Install **Vectorization Model Plugin** and **Tongxin Youreng LLM**.
-* Enable **Auto-Update Index** for real-time AI indexing.
-* Enable **Full-Text Search** to search file contents via AI.
-
-<img src="fig/search_setting2.png" alt=" " style="zoom:80%;" />
-
 **Path Blacklist**
 * Add paths you wish to exclude from searches using the ![ ](../common/+.svg)/![ ](../common/-.svg) buttons. Files in these paths won’t appear in results.
 
