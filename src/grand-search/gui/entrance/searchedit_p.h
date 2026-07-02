@@ -31,7 +31,7 @@ class SearchEditPrivate
     QLineEdit *m_lineEdit = nullptr;
     QWidget *m_iconWidget = nullptr;
     QLabel *m_placeholderLabel = nullptr;
-    QLabel *m_appIconLabel = nullptr;
+    DTK_WIDGET_NAMESPACE::DIconButton *m_appIconLabel = nullptr;
     DTK_WIDGET_NAMESPACE::DIconButton *m_clearButton = nullptr;
     QAction *m_searchAction = nullptr;
     QAction *m_clearAction = nullptr;

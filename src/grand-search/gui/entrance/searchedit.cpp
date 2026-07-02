@@ -141,8 +141,11 @@ void SearchEditPrivate::init()
     m_searchAction->setVisible(false);
 
     // 应用图标（右侧）
-    m_appIconLabel = new QLabel(q);
-    m_appIconLabel->setFixedSize(AppIconSize, AppIconSize);
+    m_appIconLabel = new DIconButton(q);
+    m_appIconLabel->setIconSize({ AppIconSize, AppIconSize });
+    m_appIconLabel->setFlat(true);
+    m_appIconLabel->setFocusPolicy(Qt::NoFocus);
+    m_appIconLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
     m_appIconLabel->setVisible(false);
 
     m_appIconAction = new QAction(q);
@@ -320,10 +323,7 @@ void SearchEdit::setAppIcon(const QIcon &icon)
         return;
     }
 
-    auto iconSize = QCoreApplication::testAttribute(Qt::AA_UseHighDpiPixmaps) ? AppIconSize : (AppIconSize * devicePixelRatioF());
-    auto pixmap = icon.pixmap(iconSize);
-    pixmap.setDevicePixelRatio(devicePixelRatioF());
-    d->m_appIconLabel->setPixmap(pixmap);
+    d->m_appIconLabel->setIcon(icon);
     setAppIconVisible(true);
 }
 
