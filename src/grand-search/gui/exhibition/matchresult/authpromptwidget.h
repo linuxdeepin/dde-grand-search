@@ -7,10 +7,8 @@
 
 #include <DWidget>
 #include <DLabel>
-#include <DHorizontalLine>
 
 #include <QHBoxLayout>
-#include <QVBoxLayout>
 
 namespace GrandSearch {
 
@@ -46,28 +44,18 @@ private:
     void adjustElidedText();
     void updatePromptContent();
     void enableSearchindexes();
-    bool contentSearchAvailable();
-    bool ocrTextSearchAvailable();
-    bool semanticSearchAvailable();
-
-    // 索引可用性检查
-    QStringList checkUnavailableFeatures();
+    QStringList disabledSearchModes();
 
     // 文本省略计算
     QString buildElidedText(int availableWidth) const;
 
 private:
-    // 布局
-    QVBoxLayout *m_vLayout = nullptr;
     QHBoxLayout *m_hLayout = nullptr;
     Dtk::Widget::DLabel *m_contentLabel = nullptr;
-    Dtk::Widget::DHorizontalLine *m_separator = nullptr;
     IconButton *m_closeButton = nullptr;
-
-    // 内容缓存
-    QString m_featuresText;  // 不可用功能列表文本
+    QString m_featuresText;   // 不可用功能列表文本
 };
 
 }
 
-#endif // AUTHPROMPTWIDGET_H
+#endif   // AUTHPROMPTWIDGET_H

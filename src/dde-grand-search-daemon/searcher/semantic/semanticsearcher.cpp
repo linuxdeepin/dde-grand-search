@@ -9,11 +9,14 @@
 
 #include <dfm-search/dsearch_global.h>
 
+#include <DConfig>
+
 #include <QLoggingCategory>
 
 Q_DECLARE_LOGGING_CATEGORY(logDaemon)
 
 DFM_SEARCH_USE_NS
+DCORE_USE_NAMESPACE
 
 using namespace GrandSearch;
 
@@ -30,8 +33,16 @@ QString SemanticSearcher::name() const
 
 bool SemanticSearcher::isActive() const
 {
-    if (!Global::isFileNameIndexReadyForSearch()) {
-        qCDebug(logDaemon) << "SemanticSearcher inactive: filename index not ready";
+    DConfig *dcfg = DConfig::create("org.deepin.dde.file-manager", "org.deepin.dde.file-manager.search");
+    if (!dcfg) {
+        qCDebug(logDaemon) << "SemanticSearcher inactive: failed to create DConfig";
+        return false;
+    }
+
+    bool enabled = dcfg->value("enableFileIndexSearch").toBool() && DFMSEARCH::Global::isFileNameIndexReadyForSearch();
+    delete dcfg;
+    if (!enabled) {
+        qCDebug(logDaemon) << "SemanticSearcher inactive: file index search not enabled or index not ready";
         return false;
     }
 
