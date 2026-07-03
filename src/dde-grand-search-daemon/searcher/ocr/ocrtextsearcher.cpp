@@ -33,6 +33,9 @@ bool OcrTextSearcher::isActive() const
 {
     // Check if OCR search is enabled via DConfig
     DConfig *dcfg = DConfig::create("org.deepin.dde.file-manager", "org.deepin.dde.file-manager.search");
+    if (!dcfg)
+        return false;
+
     bool enabled = dcfg->value("enableOcrTextSearch").toBool() && DFMSEARCH::Global::isOcrTextIndexAvailable();
     delete dcfg;
 

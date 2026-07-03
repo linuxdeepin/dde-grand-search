@@ -6,15 +6,20 @@
 #include "gui/iconbutton.h"
 #include "business/config/searchconfig.h"
 #include "global/searchconfigdefine.h"
+#include "utils/utils.h"
 
 #include <dfm-search/dsearch_global.h>
 
 #include <DConfig>
 #include <DDciIcon>
 #include <DFontSizeManager>
+#include <DHorizontalLine>
 
 #include <QFontMetrics>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QLoggingCategory>
+#include <QScopedPointer>
 
 Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
@@ -27,6 +32,7 @@ inline constexpr char kSearchCfgPath[] { "org.deepin.dde.file-manager.search" };
 inline constexpr char kEnableFileIndexSearch[] { "enableFileIndexSearch" };
 inline constexpr char kEnableFullTextSearch[] { "enableFullTextSearch" };
 inline constexpr char kEnableOcrTextSearch[] { "enableOcrTextSearch" };
+inline constexpr char kSearchSettingGroup[] { "10_advance.00_search" };
 inline constexpr int kMargin { 20 };
 
 AuthPromptWidget::AuthPromptWidget(QWidget *parent)
@@ -41,27 +47,6 @@ AuthPromptWidget::~AuthPromptWidget()
 {
 }
 
-QStringList AuthPromptWidget::checkUnavailableFeatures()
-{
-    QStringList features;
-
-    // 全文搜索索引
-    if (!contentSearchAvailable())
-        features << tr("full-text search");
-
-    // 图片文本内容搜索（OCR）索引
-    if (!ocrTextSearchAvailable())
-        features << tr("image text content search");
-
-    // 智能搜索
-    if (!semanticSearchAvailable())
-        features << tr("smart search");
-
-    qCDebug(logGrandSearch) << "Unavailable features:" << features;
-
-    return features;
-}
-
 void AuthPromptWidget::updatePromptContent()
 {
     // 用户已关闭过，不再显示
@@ -71,100 +56,82 @@ void AuthPromptWidget::updatePromptContent()
         return;
     }
 
-    // 检查索引可用性
-    QStringList unavailable = checkUnavailableFeatures();
-    if (unavailable.isEmpty()) {
+    QStringList disabledModes = disabledSearchModes();
+    if (disabledModes.isEmpty()) {
         hide();
         return;
     }
 
-    // 构建功能列表文本（中文引号包裹，逗号分隔）
-    QStringList quoted;
-    for (const QString &f : unavailable)
-        quoted << QString("\"%1\"").arg(f);
-    m_featuresText = quoted.join(tr(", "));
-
+    // 构建功能列表文本
+    m_featuresText = QLocale().createSeparatedList(disabledModes);
     show();
+}
+
+// 创建文件管理器搜索 DConfig，失败时返回 nullptr 并记录日志
+static QScopedPointer<DConfig> createSearchDConfig()
+{
+    DConfig *raw = DConfig::create(kCfgAppId, kSearchCfgPath);
+    if (!raw)
+        qCWarning(logGrandSearch) << "Failed to create DConfig for file manager search";
+    return QScopedPointer<DConfig>(raw);
 }
 
 void AuthPromptWidget::enableSearchindexes()
 {
-    DConfig *dcfg = DConfig::create(kCfgAppId, kSearchCfgPath);
-    if (!dcfg) {
-        qCWarning(logGrandSearch) << "Failed to create DConfig for file manager search";
+    auto dcfg = createSearchDConfig();
+    if (!dcfg)
         return;
-    }
 
-    bool enabled = dcfg->value(kEnableFileIndexSearch, false).toBool();
-    if (!enabled) {
-        dcfg->setValue(kEnableFileIndexSearch, true);
-        qCDebug(logGrandSearch) << "Enabled file search index";
-    }
+    // 非智能搜索未开启时，需要进行通知
+    bool needNotified = !dcfg->value(kEnableFullTextSearch, false).toBool()
+            && !dcfg->value(kEnableOcrTextSearch, false).toBool();
 
-    enabled = dcfg->value(kEnableFullTextSearch, false).toBool();
-    if (!enabled) {
-        dcfg->setValue(kEnableFullTextSearch, true);
-        qCDebug(logGrandSearch) << "Enabled full-text search index";
-    }
+    dcfg->setValue(kEnableFileIndexSearch, true);
+    dcfg->setValue(kEnableFullTextSearch, true);
+    dcfg->setValue(kEnableOcrTextSearch, true);
 
-    enabled = dcfg->value(kEnableOcrTextSearch, false).toBool();
-    if (!enabled) {
-        dcfg->setValue(kEnableOcrTextSearch, true);
-        qCDebug(logGrandSearch) << "Enabled OCR text search index";
-    }
+    SearchConfig::instance()->setConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_SEMANTIC_ENABLED, true);
 
-    delete dcfg;
+    if (needNotified) {
+        const QStringList actions = { "view-index-status", tr("View index status") };
+        QJsonObject paramObj;
+        paramObj.insert("group", kSearchSettingGroup);
+        QJsonObject argsObj;
+        argsObj.insert("action", "settings");
+        argsObj.insert("params", paramObj);
+        const QStringList cmdShowSettings { "file-manager.sh",
+                                            "--event",
+                                            QJsonDocument(argsObj).toJson(QJsonDocument::Compact) };
+        QVariantMap hints = { { "x-deepin-action-view-index-status", cmdShowSettings } };
+        Utils::notifyMessage(tr("Smart search"),
+                             tr("Indexing is in progress. You can check the index status in file manager settings."),
+                             actions, hints);
+    }
 }
 
-bool AuthPromptWidget::contentSearchAvailable()
+QStringList AuthPromptWidget::disabledSearchModes()
 {
-    return false;
-    DConfig *dcfg = DConfig::create(kCfgAppId, kSearchCfgPath);
-    if (!dcfg) {
-        qCWarning(logGrandSearch) << "Failed to create DConfig for file manager search";
-        return false;
-    }
+    auto dcfg = createSearchDConfig();
+    if (!dcfg)
+        return {};
 
-    bool enabled = dcfg->value(kEnableFullTextSearch, false).toBool();
-    delete dcfg;
-    return enabled && DFMSEARCH::Global::isContentIndexAvailable();
-}
-
-bool AuthPromptWidget::ocrTextSearchAvailable()
-{
-    return false;
-    DConfig *dcfg = DConfig::create(kCfgAppId, kSearchCfgPath);
-    if (!dcfg) {
-        qCWarning(logGrandSearch) << "Failed to create DConfig for file manager search";
-        return false;
-    }
-
-    bool enabled = dcfg->value(kEnableOcrTextSearch, false).toBool();
-    delete dcfg;
-    return enabled && DFMSEARCH::Global::isOcrTextIndexAvailable();
-}
-
-bool AuthPromptWidget::semanticSearchAvailable()
-{
-    return false;
-    DConfig *dcfg = DConfig::create(kCfgAppId, kSearchCfgPath);
-    if (!dcfg) {
-        qCWarning(logGrandSearch) << "Failed to create DConfig for file manager search";
-        return false;
-    }
-
-    bool enabled = dcfg->value(kEnableFileIndexSearch, false).toBool();
-    delete dcfg;
-
+    QStringList modes;
+    if (!dcfg->value(kEnableFullTextSearch, false).toBool())
+        modes << tr("\"Full-Text search\"");
+    if (!dcfg->value(kEnableOcrTextSearch, false).toBool())
+        modes << tr("\"Image-Content search\"");
     bool cfgEnabled = SearchConfig::instance()->getConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_SEMANTIC_ENABLED, true).toBool();
-    return enabled && cfgEnabled && DFMSEARCH::Global::isFileNameIndexReadyForSearch();
+    if (!cfgEnabled || !dcfg->value(kEnableFileIndexSearch, false).toBool())
+        modes << tr("\"Smart search\"");
+
+    return modes;
 }
 
 void AuthPromptWidget::initUi()
 {
-    m_vLayout = new QVBoxLayout(this);
-    m_vLayout->setContentsMargins(kMargin, 0, kMargin, 0);
-    m_vLayout->setSpacing(10);
+    QVBoxLayout *vLayout = new QVBoxLayout(this);
+    vLayout->setContentsMargins(kMargin, 0, kMargin, 0);
+    vLayout->setSpacing(10);
 
     m_hLayout = new QHBoxLayout();
     m_hLayout->setContentsMargins(0, 0, 0, 0);
@@ -189,10 +156,10 @@ void AuthPromptWidget::initUi()
     m_hLayout->addWidget(m_closeButton, 0);
 
     // 底部分隔线
-    m_separator = new DHorizontalLine(this);
+    DHorizontalLine *separator = new DHorizontalLine(this);
 
-    m_vLayout->addLayout(m_hLayout);
-    m_vLayout->addWidget(m_separator);
+    vLayout->addLayout(m_hLayout);
+    vLayout->addWidget(separator);
 }
 
 void AuthPromptWidget::initConnect()
@@ -201,7 +168,6 @@ void AuthPromptWidget::initConnect()
     connect(m_contentLabel, &DLabel::linkActivated, this, [this](const QString &link) {
         if (link == QLatin1String("authorize")) {
             enableSearchindexes();
-            SearchConfig::instance()->setConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_SEMANTIC_ENABLED, true);
             hide();
         }
     });
@@ -221,7 +187,7 @@ QString AuthPromptWidget::buildElidedText(int availableWidth) const
 
     // 构建链接（始终完整显示，不省略）
     const auto &linkColor = palette().color(QPalette::Highlight);
-    const QString linkText = tr("Authorize with one click");
+    const QString linkText = tr("one-click authorization");
     const QString linkTag = QString("<a href=\"authorize\" style=\"color:%1; text-decoration: none;\">%2</a>")
                                     .arg(linkColor.name(), linkText);
 

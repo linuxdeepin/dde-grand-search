@@ -24,6 +24,7 @@ extern "C" {
 #include <DDesktopServices>
 #include <DUtil>
 #include <DSysInfo>
+#include <DDBusSender>
 
 #include <QCollator>
 #include <QFileInfo>
@@ -1106,4 +1107,23 @@ bool Utils::isWayland()
     static bool wayland = QApplication::platformName() == "wayland";
 
     return wayland;
+}
+
+void Utils::notifyMessage(const QString &title, const QString &msg,
+                          const QStringList &actions, const QVariantMap &hints)
+{
+    DDBusSender()
+            .service("org.freedesktop.Notifications")
+            .path("/org/freedesktop/Notifications")
+            .interface("org.freedesktop.Notifications")
+            .method(QString("Notify"))
+            .arg(QObject::tr("dde-grand-search"))
+            .arg(static_cast<uint>(0))
+            .arg(QString("dde-grand-search"))
+            .arg(title)
+            .arg(msg)
+            .arg(actions)
+            .arg(hints)
+            .arg(5000)
+            .call();
 }

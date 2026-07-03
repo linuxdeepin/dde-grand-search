@@ -117,6 +117,9 @@ public:
 
     static bool isWayland();
 
+    static void notifyMessage(const QString &title, const QString &msg,
+                              const QStringList &actions, const QVariantMap &hints);
+
 private:
     static QMap<QString, QString> m_appIconNameMap;// 存放应用desktop文件对应的图标名称，用于搜索框应用图标刷新
     static QMimeDatabase m_mimeDb;

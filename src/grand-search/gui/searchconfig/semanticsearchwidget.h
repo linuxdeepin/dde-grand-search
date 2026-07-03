@@ -25,6 +25,8 @@ private slots:
 private:
     void initUi();
     void initConnect();
+    bool isFileIndexSearchEnabled() const;
+    void setFileIndexSearchEnabled(bool enabled);
 
 private:
     DTK_WIDGET_NAMESPACE::DSwitchButton *m_switchBtn = nullptr;
