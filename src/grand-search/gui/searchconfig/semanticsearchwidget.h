@@ -8,6 +8,8 @@
 #include <DWidget>
 #include <DSwitchButton>
 
+namespace Dtk { namespace Core { class DConfig; } }
+
 namespace GrandSearch {
 
 class TipsLabel;
@@ -21,6 +23,7 @@ public:
 
 private slots:
     void onSwitchToggled(bool checked);
+    void onFileIndexChanged(const QString &key);
 
 private:
     void initUi();
@@ -30,6 +33,7 @@ private:
 
 private:
     DTK_WIDGET_NAMESPACE::DSwitchButton *m_switchBtn = nullptr;
+    Dtk::Core::DConfig *m_searchDConfig = nullptr;
 };
 
 }

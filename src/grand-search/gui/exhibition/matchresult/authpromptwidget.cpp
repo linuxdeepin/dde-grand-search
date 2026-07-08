@@ -19,7 +19,6 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QLoggingCategory>
-#include <QScopedPointer>
 
 Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
@@ -38,6 +37,10 @@ inline constexpr int kMargin { 20 };
 AuthPromptWidget::AuthPromptWidget(QWidget *parent)
     : DWidget(parent)
 {
+    m_searchDConfig = DConfig::create(kCfgAppId, kSearchCfgPath);
+    if (!m_searchDConfig)
+        qCWarning(logGrandSearch) << "Failed to create DConfig for file manager search";
+
     initUi();
     initConnect();
     updatePromptContent();
@@ -45,6 +48,7 @@ AuthPromptWidget::AuthPromptWidget(QWidget *parent)
 
 AuthPromptWidget::~AuthPromptWidget()
 {
+    delete m_searchDConfig;
 }
 
 void AuthPromptWidget::updatePromptContent()
@@ -52,6 +56,12 @@ void AuthPromptWidget::updatePromptContent()
     // 用户已关闭过，不再显示
     if (SearchConfig::instance()->getConfig(GRANDSEARCH_AUTHPROMPT_GROUP, GRANDSEARCH_AUTHPROMPT_DISMISSED, false).toBool()) {
         qCDebug(logGrandSearch) << "Auth prompt was previously dismissed";
+        hide();
+        return;
+    }
+
+    // 文件索引已开启时无需提示
+    if (isFileIndexSearchEnabled()) {
         hide();
         return;
     }
@@ -67,64 +77,65 @@ void AuthPromptWidget::updatePromptContent()
     show();
 }
 
-// 创建文件管理器搜索 DConfig，失败时返回 nullptr 并记录日志
-static QScopedPointer<DConfig> createSearchDConfig()
+void AuthPromptWidget::setSearchindexesEnable()
 {
-    DConfig *raw = DConfig::create(kCfgAppId, kSearchCfgPath);
-    if (!raw)
-        qCWarning(logGrandSearch) << "Failed to create DConfig for file manager search";
-    return QScopedPointer<DConfig>(raw);
-}
-
-void AuthPromptWidget::enableSearchindexes()
-{
-    auto dcfg = createSearchDConfig();
-    if (!dcfg)
+    if (!m_searchDConfig)
         return;
 
-    // 非智能搜索未开启时，需要进行通知
-    bool needNotified = !dcfg->value(kEnableFullTextSearch, false).toBool()
-            && !dcfg->value(kEnableOcrTextSearch, false).toBool();
-
-    dcfg->setValue(kEnableFileIndexSearch, true);
-    dcfg->setValue(kEnableFullTextSearch, true);
-    dcfg->setValue(kEnableOcrTextSearch, true);
+    m_searchDConfig->setValue(kEnableFileIndexSearch, true);
+    m_searchDConfig->setValue(kEnableFullTextSearch, true);
+    m_searchDConfig->setValue(kEnableOcrTextSearch, true);
 
     SearchConfig::instance()->setConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_SEMANTIC_ENABLED, true);
 
-    if (needNotified) {
-        const QStringList actions = { "view-index-status", tr("View index status") };
-        QJsonObject paramObj;
-        paramObj.insert("group", kSearchSettingGroup);
-        QJsonObject argsObj;
-        argsObj.insert("action", "settings");
-        argsObj.insert("params", paramObj);
-        const QStringList cmdShowSettings { "file-manager.sh",
-                                            "--event",
-                                            QJsonDocument(argsObj).toJson(QJsonDocument::Compact) };
-        QVariantMap hints = { { "x-deepin-action-view-index-status", cmdShowSettings } };
-        Utils::notifyMessage(tr("Smart search"),
-                             tr("Indexing is in progress. You can check the index status in file manager settings."),
-                             actions, hints);
-    }
+    const QStringList actions = { "view-index-status", tr("View index status") };
+    QJsonObject paramObj;
+    paramObj.insert("group", kSearchSettingGroup);
+    QJsonObject argsObj;
+    argsObj.insert("action", "settings");
+    argsObj.insert("params", paramObj);
+    const QStringList cmdShowSettings { "file-manager.sh",
+                                        "--event",
+                                        QJsonDocument(argsObj).toJson(QJsonDocument::Compact) };
+    QVariantMap hints = { { "x-deepin-action-view-index-status", cmdShowSettings } };
+    Utils::notifyMessage(tr("Smart search"),
+                         tr("Indexing is in progress. You can check the index status in file manager settings."),
+                         actions, hints);
 }
 
 QStringList AuthPromptWidget::disabledSearchModes()
 {
-    auto dcfg = createSearchDConfig();
-    if (!dcfg)
-        return {};
-
     QStringList modes;
-    if (!dcfg->value(kEnableFullTextSearch, false).toBool())
+    if (!isFullTextSearchEnabled())
         modes << tr("\"Full-Text search\"");
-    if (!dcfg->value(kEnableOcrTextSearch, false).toBool())
+    if (!isOcrTextSearchEnabled())
         modes << tr("\"Image-Content search\"");
-    bool cfgEnabled = SearchConfig::instance()->getConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_SEMANTIC_ENABLED, true).toBool();
-    if (!cfgEnabled || !dcfg->value(kEnableFileIndexSearch, false).toBool())
+    if (!isSemanticSearchEnabled())
         modes << tr("\"Smart search\"");
 
     return modes;
+}
+
+bool AuthPromptWidget::isFileIndexSearchEnabled() const
+{
+    return m_searchDConfig && m_searchDConfig->value(kEnableFileIndexSearch, false).toBool();
+}
+
+bool AuthPromptWidget::isFullTextSearchEnabled() const
+{
+    return m_searchDConfig && m_searchDConfig->value(kEnableFullTextSearch, false).toBool();
+}
+
+bool AuthPromptWidget::isOcrTextSearchEnabled() const
+{
+    return m_searchDConfig && m_searchDConfig->value(kEnableOcrTextSearch, false).toBool();
+}
+
+bool AuthPromptWidget::isSemanticSearchEnabled() const
+{
+    // 智能搜索需同时满足自身配置开启和文件索引开启
+    bool cfgEnabled = SearchConfig::instance()->getConfig(GRANDSEARCH_SEMANTIC_GROUP, GRANDSEARCH_SEMANTIC_ENABLED, true).toBool();
+    return cfgEnabled && isFileIndexSearchEnabled();
 }
 
 void AuthPromptWidget::initUi()
@@ -167,7 +178,7 @@ void AuthPromptWidget::initConnect()
     // 一键授权链接点击
     connect(m_contentLabel, &DLabel::linkActivated, this, [this](const QString &link) {
         if (link == QLatin1String("authorize")) {
-            enableSearchindexes();
+            setSearchindexesEnable();
             hide();
         }
     });

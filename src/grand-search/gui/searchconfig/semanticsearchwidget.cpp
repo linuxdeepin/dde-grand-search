@@ -25,12 +25,17 @@ inline constexpr char kEnableFileIndexSearch[] { "enableFileIndexSearch" };
 SemanticSearchWidget::SemanticSearchWidget(QWidget *parent)
     : DWidget(parent)
 {
+    m_searchDConfig = DConfig::create(kCfgAppId, kSearchCfgPath);
+    if (!m_searchDConfig)
+        qCWarning(logGrandSearch) << "Failed to create DConfig for file manager search";
+
     initUi();
     initConnect();
 }
 
 SemanticSearchWidget::~SemanticSearchWidget()
 {
+    delete m_searchDConfig;
 }
 
 void SemanticSearchWidget::initUi()
@@ -65,6 +70,11 @@ void SemanticSearchWidget::initUi()
 void SemanticSearchWidget::initConnect()
 {
     connect(m_switchBtn, &DSwitchButton::checkedChanged, this, &SemanticSearchWidget::onSwitchToggled);
+
+    // 监听文管搜索 DConfig 变化，当文件名索引被关闭时同步关闭语义搜索开关
+    if (m_searchDConfig) {
+        connect(m_searchDConfig, &DConfig::valueChanged, this, &SemanticSearchWidget::onFileIndexChanged);
+    }
 }
 
 void SemanticSearchWidget::onSwitchToggled(bool checked)
@@ -78,27 +88,30 @@ void SemanticSearchWidget::onSwitchToggled(bool checked)
     }
 }
 
+void SemanticSearchWidget::onFileIndexChanged(const QString &key)
+{
+    if (key != QLatin1String(kEnableFileIndexSearch))
+        return;
+
+    // 文件名索引被关闭时，同步关闭语义搜索开关
+    if (!isFileIndexSearchEnabled() && m_switchBtn->isChecked()) {
+        qCDebug(logGrandSearch) << "File index search disabled, unchecking smart search switch";
+        m_switchBtn->setChecked(false);
+    }
+}
+
 bool SemanticSearchWidget::isFileIndexSearchEnabled() const
 {
-    DConfig *dcfg = DConfig::create(kCfgAppId, kSearchCfgPath);
-    if (!dcfg) {
-        qCWarning(logGrandSearch) << "Failed to create DConfig for file manager search";
+    if (!m_searchDConfig)
         return false;
-    }
 
-    bool enabled = dcfg->value(kEnableFileIndexSearch, false).toBool();
-    delete dcfg;
-    return enabled;
+    return m_searchDConfig->value(kEnableFileIndexSearch, false).toBool();
 }
 
 void SemanticSearchWidget::setFileIndexSearchEnabled(bool enabled)
 {
-    DConfig *dcfg = DConfig::create(kCfgAppId, kSearchCfgPath);
-    if (!dcfg) {
-        qCWarning(logGrandSearch) << "Failed to create DConfig for file manager search";
+    if (!m_searchDConfig)
         return;
-    }
 
-    dcfg->setValue(kEnableFileIndexSearch, enabled);
-    delete dcfg;
+    m_searchDConfig->setValue(kEnableFileIndexSearch, enabled);
 }

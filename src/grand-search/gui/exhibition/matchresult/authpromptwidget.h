@@ -10,6 +10,8 @@
 
 #include <QHBoxLayout>
 
+namespace Dtk { namespace Core { class DConfig; } }
+
 namespace GrandSearch {
 
 class IconButton;
@@ -43,7 +45,15 @@ private:
     void initConnect();
     void adjustElidedText();
     void updatePromptContent();
-    void enableSearchindexes();
+    void setSearchindexesEnable();
+
+    // 检查文件管理器搜索 DConfig 中各功能项的开启状态
+    bool isFileIndexSearchEnabled() const;
+    bool isFullTextSearchEnabled() const;
+    bool isOcrTextSearchEnabled() const;
+    bool isSemanticSearchEnabled() const;
+
+    // 返回当前未开启的搜索模式名称列表（为空表示全部已开启）
     QStringList disabledSearchModes();
 
     // 文本省略计算
@@ -54,6 +64,7 @@ private:
     Dtk::Widget::DLabel *m_contentLabel = nullptr;
     IconButton *m_closeButton = nullptr;
     QString m_featuresText;   // 不可用功能列表文本
+    Dtk::Core::DConfig *m_searchDConfig = nullptr;
 };
 
 }
