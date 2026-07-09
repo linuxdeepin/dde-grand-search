@@ -99,7 +99,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="91"/>
         <source>View index status</source>
-        <translation type="unfinished"/>
+        <translation>Wyświetl status indeksowania</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="101"/>
