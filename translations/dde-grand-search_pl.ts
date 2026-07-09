@@ -119,27 +119,27 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="112"/>
         <source>&quot;Image-Content search&quot;</source>
-        <translation type="unfinished"/>
+        <translation>&quot;Wyszukiwanie zawartości obrazu&quot;</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="114"/>
         <source>&quot;Smart search&quot;</source>
-        <translation type="unfinished"/>
+        <translation>&quot;Inteligentne wyszukiwanie&quot;</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="201"/>
         <source>one-click authorization</source>
-        <translation type="unfinished"/>
+        <translation>uwierzytelnienia jednym kliknięciem</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="206"/>
         <source>Supports </source>
-        <translation type="unfinished"/>
+        <translation>Wsparcie</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="207"/>
         <source>, click </source>
-        <translation type="unfinished"/>
+        <translation>, kliknij</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="208"/>
