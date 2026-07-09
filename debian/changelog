@@ -1,3 +1,15 @@
+dde-grand-search (6.0.40) unstable; urgency=medium
+
+  * chore: update translations
+  * refactor: replace QLabel with DIconButton for app icon
+  * refactor: rename inference to smart search
+  * refactor: replace AI search pipeline with dfm-search semantic searcher
+  * feat: refine semantic search activation and auth prompt logic
+  * refactor: optimize DConfig usage and sync smart search with file index
+  * chore: update transltations
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Thu, 09 Jul 2026 19:04:10 +0800
+
 dde-grand-search (6.0.39) unstable; urgency=medium
 
   * fix: fix app icon scaling on high DPI displays
