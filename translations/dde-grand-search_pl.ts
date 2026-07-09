@@ -444,7 +444,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/semanticsearchwidget.cpp" line="61"/>
         <source>When enabled, natural language search is supported in grand search, e.g., &quot;PPT documents edited yesterday&quot;.Using this feature requires file indexing to be enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Po włączeniu tej funkcji zostanie uruchomione wsparcie sztucznej inteligencji w wyszukiwarce, co pozwoli na np. &quot;Znajdź dokumenty PPT edytowane wczoraj&quot;. Opcja wymaga włączonego indeksowania plików.</translation>
     </message>
 </context>
 <context>
