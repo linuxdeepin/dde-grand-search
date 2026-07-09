@@ -104,7 +104,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="101"/>
         <source>Smart search</source>
-        <translation type="unfinished"/>
+        <translation>Inteligentne wyszukiwanie</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="102"/>
