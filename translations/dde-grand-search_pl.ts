@@ -444,7 +444,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/semanticsearchwidget.cpp" line="61"/>
         <source>When enabled, natural language search is supported in grand search, e.g., &quot;PPT documents edited yesterday&quot;.Using this feature requires file indexing to be enabled.</source>
-        <translation>Po włączeniu tej funkcji zostanie uruchomione wsparcie sztucznej inteligencji w wyszukiwarce, co pozwoli na np. &quot;Znajdź dokumenty PPT edytowane wczoraj&quot;. Opcja wymaga włączonego indeksowania plików.</translation>
+        <translation>Po włączeniu tej funkcji zostanie uruchomione wsparcie sztucznej inteligencji w wyszukiwarce, co pozwoli na wpisanie np. &quot;Znajdź dokumenty PPT edytowane wczoraj&quot;. Opcja wymaga włączonego indeksowania plików.</translation>
     </message>
 </context>
 <context>
@@ -589,7 +589,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="36"/>
         <source>Smart match</source>
-        <translation type="unfinished"/>
+        <translation>Inteligentne dopasowanie</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="35"/>
@@ -629,7 +629,7 @@
     <message>
         <location filename="../src/grand-search/utils/utils.cpp" line="1120"/>
         <source>dde-grand-search</source>
-        <translation type="unfinished"/>
+        <translation>dde-grand-search</translation>
     </message>
 </context>
 <context>
