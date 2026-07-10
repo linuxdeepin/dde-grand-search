@@ -144,7 +144,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="208"/>
         <source> to experience immediately</source>
-        <translation type="unfinished"/>
+        <translation>per experimentar immediatament</translation>
     </message>
 </context>
 <context>
@@ -439,12 +439,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/semanticsearchwidget.cpp" line="50"/>
         <source>Smart search</source>
-        <translation type="unfinished"/>
+        <translation>Cerca intel·ligent</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/semanticsearchwidget.cpp" line="61"/>
         <source>When enabled, natural language search is supported in grand search, e.g., &quot;PPT documents edited yesterday&quot;.Using this feature requires file indexing to be enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Quan està activada, la cerca en llenguatge natural és compatible amb la cerca general (p. ex., &quot;documents PPT editats ahir&quot;). L&apos;ús d&apos;aquesta funcionalitat requereix que la indexació de fitxers estigui activada.</translation>
     </message>
 </context>
 <context>
@@ -589,7 +589,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="36"/>
         <source>Smart match</source>
-        <translation type="unfinished"/>
+        <translation>Coincidència intel·ligent</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="35"/>
