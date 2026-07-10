@@ -444,7 +444,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/semanticsearchwidget.cpp" line="61"/>
         <source>When enabled, natural language search is supported in grand search, e.g., &quot;PPT documents edited yesterday&quot;.Using this feature requires file indexing to be enabled.</source>
-        <translation>Quan està activada, la cerca en llenguatge natural és compatible amb la cerca general (p. ex., &quot;documents PPT editats ahir&quot;). L&apos;ús d&apos;aquesta funcionalitat requereix que la indexació de fitxers estigui activada.</translation>
+        <translation>Quan està activada, la cerca en llenguatge natural és compatible amb la cerca general, p. ex., &quot;documents PPT editats ahir&quot;. L&apos;ús d&apos;aquesta funcionalitat requereix que la indexació de fitxers estigui activada.</translation>
     </message>
 </context>
 <context>
@@ -629,7 +629,7 @@
     <message>
         <location filename="../src/grand-search/utils/utils.cpp" line="1120"/>
         <source>dde-grand-search</source>
-        <translation type="unfinished"/>
+        <translation>Gran cerca de DDE</translation>
     </message>
 </context>
 <context>
