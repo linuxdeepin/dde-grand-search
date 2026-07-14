@@ -242,7 +242,8 @@ void PreviewWidget::clearLayoutWidgets()
 
 int PreviewWidget::calculateContentHeight(bool hasDetailInfo, bool showAiToolBar) const
 {
-    int totalHeight = this->height();
+    // 使用 contentsRect 以纳入 widget 的 contentsMargins（如授权提示可见时设置的 10px 上边距）
+    int totalHeight = this->contentsRect().height();
     if (totalHeight <= 0)
         return 0;
 

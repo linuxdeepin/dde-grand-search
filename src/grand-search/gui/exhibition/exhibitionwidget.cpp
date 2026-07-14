@@ -133,6 +133,11 @@ void ExhibitionWidget::previewItem(const QString &searchGroupName, const Matched
     // 显示预览界面，主界面右侧需要与左侧间隙相同
     m_hLayout->setContentsMargins(MARGIN_SIZE, 0, MARGIN_SIZE, MARGIN_SIZE);
 
+    // 授权提示可见时，预览区上方留出间隔，避免与提示控件分隔线过近
+    auto margins = m_previewWidget->contentsMargins();
+    margins.setTop(m_authPromptWidget->isVisible() ? MARGIN_SIZE : 0);
+    m_previewWidget->setContentsMargins(margins);
+
     // 预览界面预览选择的匹配结果项
     m_previewWidget->previewItem(item);
     m_vLine->show();

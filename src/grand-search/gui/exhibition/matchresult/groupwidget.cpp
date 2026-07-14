@@ -12,6 +12,7 @@
 #include <DLabel>
 #include <DPushButton>
 #include <DHorizontalLine>
+#include <DIconButton>
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 #    include <DGuiApplicationHelper>
 #else
@@ -260,7 +261,7 @@ void GroupWidget::setIcon(const QIcon &icon)
     if (icon.isNull()) {
         m_groupIcon->hide();
     } else {
-        m_groupIcon->setPixmap(icon.pixmap(QSize(18, 18)));
+        m_groupIcon->setIcon(icon);
         m_groupIcon->show();
     }
 }
@@ -326,9 +327,10 @@ void GroupWidget::initUi()
     m_groupLabel->setWordWrap(true);
 
     // 组名图标
-    m_groupIcon = new DLabel("", this);
-    m_groupIcon->setFixedSize(QSize(23, GroupLabelHeight));   // 18px of icon and 5px space
-    m_groupIcon->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
+    m_groupIcon = new DIconButton(this);
+    m_groupIcon->setIconSize({ 18, 18 });
+    m_groupIcon->setFlat(true);
+    m_groupIcon->setAttribute(Qt::WA_TransparentForMouseEvents);
     m_groupLabel->setContentsMargins(0, 5, 5, 5);
     m_groupIcon->hide();
 
