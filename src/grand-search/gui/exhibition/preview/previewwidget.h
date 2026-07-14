@@ -41,8 +41,8 @@ public:
 private:
     void initUi();
     void initConnect();
-    void reLayout();
     void clearLayoutWidgets();
+    int calculateContentHeight(bool hasDetailInfo, bool showAiToolBar) const;
 
     void onOpenClicked();
     void onOpenpathClicked();

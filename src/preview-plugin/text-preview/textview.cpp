@@ -5,7 +5,6 @@
 #include "textpreview_global.h"
 #include "textview.h"
 #include "global/commontools.h"
-#include "grand-search/gui/exhibition/preview/generalwidget/aitoolbar.h"
 
 #include <QHBoxLayout>
 #include <QStackedWidget>
@@ -15,8 +14,6 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QLabel>
-#include <QDBusInterface>
-#include <QDBusReply>
 #include <QFile>
 #include <QLoggingCategory>
 
@@ -35,18 +32,6 @@ void PlainTextEdit::mouseMoveEvent(QMouseEvent *e)
     }
 
     QPlainTextEdit::mouseMoveEvent(e);
-}
-
-bool TextView::checkUosAiInstalled() {
-    QDBusInterface iface("org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus");
-    QDBusReply<QStringList> reply = iface.call("ListActivatableNames");
-    if (reply.isValid()) {
-        if (reply.value().contains("com.deepin.copilot")) {
-            return true;
-        }
-    }
-
-    return false;
 }
 
 QString TextView::toUnicode(const QByteArray &data)
@@ -75,11 +60,8 @@ void TextView::showErrorPage()
     layout()->setContentsMargins(10, 0, 0, 0);
     m_stackedWidget->setCurrentWidget(m_errLabel);
 
-    static int width = 360;
-    static int height = 350;
-    if (!m_isShowAiToolBar) {
-        height = 386;
-    }
+    int width = 360;
+    int height = this->height() > 0 ? this->height() : 350;
     QImage errImg(":/icons/file_damaged.svg");
     errImg = errImg.scaled(70, 70);
     errImg = CommonTools::creatErrorImage({width, height}, errImg);
@@ -129,7 +111,6 @@ void TextView::initUI()
     this->setLayout(layout);
 
     layout->setSpacing(0);
-    this->setMinimumHeight(350);
 
     m_errLabel = new QLabel(this);
     m_stackedWidget = new QStackedWidget(this);
@@ -172,17 +153,13 @@ void TextView::setSource(const QString &path)
 {
     qCDebug(logTextPreview) << "Setting text source:" << path;
     m_browser->clear();
-    QString lowerPath = path.toLower();
-    m_isShowAiToolBar = lowerPath.endsWith(".txt") || lowerPath.endsWith(".doc") || lowerPath.endsWith(".docx")  || lowerPath.endsWith(".xls")
-            || lowerPath.endsWith(".xlsx") || lowerPath.endsWith(".ppt") || lowerPath.endsWith(".pptx") || lowerPath.endsWith(".pdf");
-    m_isShowAiToolBar = m_isShowAiToolBar && TextView::checkUosAiInstalled();
-    this->setMinimumHeight(m_isShowAiToolBar ? 350 : 386);
+
+    //恢复边距
+    layout()->setContentsMargins(10 + 10, 0, 0 + 10, 0);
+    m_stackedWidget->setCurrentWidget(m_browser);
 
     QFile file(path);
     if (file.open(QFile::ReadOnly)) {
-        //恢复边距
-        layout()->setContentsMargins(10 + 10, 0, 0 + 10, 0);
-        m_stackedWidget->setCurrentWidget(m_browser);
         auto datas = file.read(2048);
         qCDebug(logTextPreview) << "Text file loaded successfully - Size:" << datas.size() << "bytes";
         m_browser->setPlainText(toUnicode(datas));

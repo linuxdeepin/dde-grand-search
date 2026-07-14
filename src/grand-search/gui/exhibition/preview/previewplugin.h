@@ -75,6 +75,12 @@ public:
      * @return bool true: 预览主界面显示工具栏, false: 预览主界面不显示工具栏
      */
     virtual bool showToolBar() const = 0;
+
+    /**
+     * @brief  查询接口，供预览主界面调用
+     * @return bool true: contentWidget 尽可能占用剩余垂直空间, false: contentWidget 使用自身高度
+     */
+    virtual bool expandContent() const { return false; }
 };
 
 }

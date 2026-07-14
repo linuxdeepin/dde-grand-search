@@ -26,6 +26,7 @@ public:
     QWidget *toolBarWidget() const Q_DECL_OVERRIDE;
     bool showToolBar() const Q_DECL_OVERRIDE;
     DetailInfoList getAttributeDetailInfo() const Q_DECL_OVERRIDE;
+    bool expandContent() const Q_DECL_OVERRIDE { return true; }
 protected:
     ItemInfo m_item;
     TextView *m_view = nullptr;

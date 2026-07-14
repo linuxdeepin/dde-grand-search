@@ -111,8 +111,6 @@ bool PreviewWidget::previewItem(const MatchedItem &item)
         // 1. 更换新插件界面内容部件到主界面布局
         if (QWidget* contentWidget = preview->contentWidget()) {
             contentWidget->setFixedWidth(CONTENT_WIDTH);
-            contentWidget->adjustSize();
-
             m_vMainLayout->addWidget(contentWidget);
             contentWidget->setVisible(true);
         }
@@ -146,19 +144,31 @@ bool PreviewWidget::previewItem(const MatchedItem &item)
     m_aiToolBar->setVisible(isShowAiToolBar);
     m_aiToolBar->setFilePath(item.item);
 
+    bool hasDetailInfo = !preview->getAttributeDetailInfo().isEmpty();
     m_detailInfoWidget->setDetailInfoList(preview->getAttributeDetailInfo());
     if (isShowAiToolBar) {
-        if (preview->getAttributeDetailInfo().isEmpty()) {
-            m_detailInfoWidget->setVisible(false);
-            m_aiToolBar->setTopSpace(10);
-            m_aiToolBar->adjustSize();
-        } else {
+        if (hasDetailInfo) {
             m_detailInfoWidget->setVisible(true);
             m_aiToolBar->setTopSpace(0);
-            m_aiToolBar->adjustSize();
+        } else {
+            m_detailInfoWidget->setVisible(false);
+            m_aiToolBar->setTopSpace(10);
         }
+        m_aiToolBar->adjustSize();
     } else {
         m_detailInfoWidget->setVisible(true);
+    }
+
+    // 内容部件高度控制：每次预览都重新计算
+    if (QWidget* contentWidget = preview->contentWidget()) {
+        contentWidget->setFixedWidth(CONTENT_WIDTH);
+        if (preview->expandContent()) {
+            int contentHeight = calculateContentHeight(hasDetailInfo, isShowAiToolBar);
+            if (contentHeight > 0)
+                contentWidget->setFixedHeight(contentHeight);
+        } else {
+            contentWidget->adjustSize();
+        }
     }
 
     this->show();
@@ -228,6 +238,35 @@ void PreviewWidget::clearLayoutWidgets()
             m_vMainLayout->removeWidget(m_generalPreview->toolBarWidget());
         }
     }
+}
+
+int PreviewWidget::calculateContentHeight(bool hasDetailInfo, bool showAiToolBar) const
+{
+    int totalHeight = this->height();
+    if (totalHeight <= 0)
+        return 0;
+
+    int reservedHeight = 0;
+
+    // 工具栏（通用工具栏或自定义工具栏）
+    if (m_preview && m_preview->showToolBar()) {
+        QWidget *toolBar = m_preview->toolBarWidget();
+        if (!toolBar)
+            toolBar = m_generalToolBar;
+        reservedHeight += toolBar->sizeHint().height();
+    }
+
+    // AI工具栏
+    if (showAiToolBar) {
+        reservedHeight += m_aiToolBar->sizeHint().height();
+    }
+
+    // 属性详情部件
+    if (hasDetailInfo) {
+        reservedHeight += m_detailInfoWidget->sizeHint().height();
+    }
+
+    return qMax(0, totalHeight - reservedHeight);
 }
 
 void PreviewWidget::onOpenClicked()
