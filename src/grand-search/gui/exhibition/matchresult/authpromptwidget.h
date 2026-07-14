@@ -6,7 +6,7 @@
 #define AUTHPROMPTWIDGET_H
 
 #include <DWidget>
-#include <DLabel>
+#include <DTipLabel>
 
 #include <QHBoxLayout>
 
@@ -61,7 +61,7 @@ private:
 
 private:
     QHBoxLayout *m_hLayout = nullptr;
-    Dtk::Widget::DLabel *m_contentLabel = nullptr;
+    Dtk::Widget::DTipLabel *m_contentLabel = nullptr;
     IconButton *m_closeButton = nullptr;
     QString m_featuresText;   // 不可用功能列表文本
     Dtk::Core::DConfig *m_searchDConfig = nullptr;

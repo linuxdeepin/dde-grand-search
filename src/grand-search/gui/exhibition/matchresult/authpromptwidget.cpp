@@ -142,22 +142,22 @@ void AuthPromptWidget::initUi()
 {
     QVBoxLayout *vLayout = new QVBoxLayout(this);
     vLayout->setContentsMargins(kMargin, 0, kMargin, 0);
-    vLayout->setSpacing(10);
+    vLayout->setSpacing(8);
 
     m_hLayout = new QHBoxLayout();
     m_hLayout->setContentsMargins(0, 0, 0, 0);
     m_hLayout->setSpacing(10);
 
     // 文本标签（单行不换行）
-    m_contentLabel = new DLabel(this);
+    m_contentLabel = new DTipLabel("", this);
     m_contentLabel->setWordWrap(false);
     m_contentLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
     QFont contentFont = m_contentLabel->font();
-    m_contentLabel->setFont(DFontSizeManager::instance()->get(DFontSizeManager::T6, contentFont));
+    m_contentLabel->setFont(DFontSizeManager::instance()->get(DFontSizeManager::T8, contentFont));
 
     // 关闭按钮（hover 时显示）
     m_closeButton = new IconButton(this);
-    m_closeButton->setIconSize({ 20, 20 });
+    m_closeButton->setIconSize({ 18, 18 });
     m_closeButton->setIcon(DDciIcon::fromTheme("clear"));
     m_closeButton->setFlat(true);
     m_closeButton->setFocusPolicy(Qt::NoFocus);

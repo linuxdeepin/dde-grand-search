@@ -57,6 +57,7 @@ protected:
     void initUi();
     void initConnect();
 
+    bool eventFilter(QObject *obj, QEvent *e) override;
     void paintEvent(QPaintEvent *event) override;
 
 private:
