@@ -328,7 +328,7 @@ void GroupWidget::initUi()
 
     // 组名图标
     m_groupIcon = new DIconButton(this);
-    m_groupIcon->setIconSize({ 18, 18 });
+    m_groupIcon->setIconSize({ 16, 16 });
     m_groupIcon->setFlat(true);
     m_groupIcon->setAttribute(Qt::WA_TransparentForMouseEvents);
     m_groupLabel->setContentsMargins(0, 5, 5, 5);
@@ -364,7 +364,7 @@ void GroupWidget::initUi()
     // 组列表标题栏布局
     m_hTitelLayout = new QHBoxLayout();
     m_hTitelLayout->setContentsMargins(LayoutMagrinSize, 0, 0, 0);
-    m_hTitelLayout->setSpacing(0);
+    m_hTitelLayout->setSpacing(2);
     m_hTitelLayout->addWidget(m_groupIcon);
     m_hTitelLayout->addWidget(m_groupLabel);
     m_hTitelLayout->addSpacerItem(new QSpacerItem(SpacerWidth, SpacerHeight, QSizePolicy::Expanding, QSizePolicy::Minimum));
