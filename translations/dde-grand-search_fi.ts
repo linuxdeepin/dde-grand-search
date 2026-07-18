@@ -109,12 +109,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="102"/>
         <source>Indexing is in progress. You can check the index status in file manager settings.</source>
-        <translation type="unfinished"/>
+        <translation>Indeksointi on käynnissä. Voit tarkistaa indeksoinnin tilan tiedostonhallinnan asetuksista.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="110"/>
         <source>&quot;Full-Text search&quot;</source>
-        <translation type="unfinished"/>
+        <translation>&quot;Täysi tekstihaku&quot;</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="112"/>
