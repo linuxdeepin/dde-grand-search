@@ -139,7 +139,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="207"/>
         <source>, click </source>
-        <translation type="unfinished"/>
+        <translation>, paina</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="208"/>
