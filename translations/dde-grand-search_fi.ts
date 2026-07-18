@@ -444,7 +444,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/semanticsearchwidget.cpp" line="61"/>
         <source>When enabled, natural language search is supported in grand search, e.g., &quot;PPT documents edited yesterday&quot;.Using this feature requires file indexing to be enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Kun ominaisuus on käytössä, hakua käyttäjän omalla kielellä tuetaan, esim. &quot;Eilen muokatut PPT-dokumentit&quot;. Ominaisuus edellyttää, että tiedostojen indeksointi on käytössä.</translation>
     </message>
 </context>
 <context>
