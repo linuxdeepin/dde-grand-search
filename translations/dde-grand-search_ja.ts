@@ -119,7 +119,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="112"/>
         <source>&quot;Image-Content search&quot;</source>
-        <translation type="unfinished"/>
+        <translation>&quot;画像内検索&quot;</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="114"/>
@@ -629,7 +629,7 @@
     <message>
         <location filename="../src/grand-search/utils/utils.cpp" line="1120"/>
         <source>dde-grand-search</source>
-        <translation type="unfinished"/>
+        <translation>dde-grand-search</translation>
     </message>
 </context>
 <context>
@@ -642,7 +642,7 @@
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="44"/>
         <source>SearchConfig</source>
-        <translation type="unfinished"/>
+        <translation>検索設定</translation>
     </message>
 </context>
 </TS>
