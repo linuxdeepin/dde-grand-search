@@ -86,7 +86,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="450"/>
         <source>Unable to use %1, please go to the App Store to update the UOS AI version first.</source>
-        <translation type="unfinished"/>
+        <translation>%1を使用できません。アプリストアからUOS AIを最新版にアップデートしてください。</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
@@ -109,7 +109,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="102"/>
         <source>Indexing is in progress. You can check the index status in file manager settings.</source>
-        <translation type="unfinished"/>
+        <translation>インデックスが進行中です。ファイルマネージャーの設定から状態を確認できます。</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="110"/>
