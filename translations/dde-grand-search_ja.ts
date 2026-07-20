@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
         <source>Open App Store</source>
-        <translation type="unfinished"/>
+        <translation>アプリストアを開く</translation>
     </message>
 </context>
 <context>
@@ -91,7 +91,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
         <source>Open App Store</source>
-        <translation type="unfinished"/>
+        <translation>アプリストアを開く</translation>
     </message>
 </context>
 <context>
@@ -124,7 +124,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="114"/>
         <source>&quot;Smart search&quot;</source>
-        <translation type="unfinished"/>
+        <translation>&quot;Smart search&quot;</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="201"/>
