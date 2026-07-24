@@ -12,24 +12,51 @@
 
 #include <dfm-search/dsearch_global.h>
 
+#include <DDesktopEntry>
+
 #include <QLoggingCategory>
 
 Q_DECLARE_LOGGING_CATEGORY(logDaemon)
 
 using namespace GrandSearch;
+DCORE_USE_NAMESPACE
 
 MatchedItem FileSearchUtils::packItem(const QString &fileName, const QString &searcher, const QStringList &keywords)
 {
     qCDebug(logDaemon) << "Packing file item - File:" << fileName << "Searcher:" << searcher;
     QFileInfo fileInfo(fileName);
-    QMimeType mimeType = SpecialTools::getMimeType(fileInfo);
     GrandSearch::MatchedItem item;
     item.item = fileName;
+    item.searcher = searcher;
+    item.extra = QVariant::fromValue(extraData(fileInfo, keywords));
+
+    // .desktop 文件（含符号链接指向 .desktop）：解析出本地化应用名称和应用图标
+    QString desktopPath = fileName;
+    if (fileInfo.suffix().compare("desktop", Qt::CaseInsensitive) != 0 && fileInfo.isSymLink()) {
+        QString target = fileInfo.symLinkTarget();
+        if (QFileInfo(target).suffix().compare("desktop", Qt::CaseInsensitive) == 0)
+            desktopPath = target;
+    }
+
+    if (desktopPath != fileName || fileInfo.suffix().compare("desktop", Qt::CaseInsensitive) == 0) {
+        DDesktopEntry desktopEntry(desktopPath);
+        QString displayName = desktopEntry.ddeDisplayName();
+        if (!displayName.isEmpty()) {
+            item.name = displayName;
+            item.icon = desktopEntry.stringValue("Icon", "Desktop Entry", "application-x-desktop");
+            item.type = "application/x-desktop";
+
+            qCDebug(logDaemon) << "Desktop file parsed - Name:" << item.name
+                               << "Type:" << item.type << "Icon:" << item.icon;
+            return item;
+        }
+    }
+
+    // 普通文件：使用 MIME 类型信息
+    QMimeType mimeType = SpecialTools::getMimeType(fileInfo);
     item.name = fileInfo.fileName();
     item.type = mimeType.name();
     item.icon = mimeType.iconName();
-    item.searcher = searcher;
-    item.extra = QVariant::fromValue(extraData(fileInfo, keywords));
 
     qCDebug(logDaemon) << "Item packed successfully - Name:" << item.name
                        << "Type:" << item.type << "Icon:" << item.icon;
