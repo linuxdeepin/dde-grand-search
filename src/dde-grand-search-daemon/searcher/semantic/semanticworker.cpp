@@ -4,6 +4,7 @@
 
 #include "semanticworker_p.h"
 #include "global/builtinsearch.h"
+#include "configuration/configer.h"
 
 #include <QDebug>
 #include <QFileInfo>
@@ -44,6 +45,11 @@ bool SemanticWorkerPrivate::doSearch()
         qCDebug(logDaemon) << "Input is not a semantic query, skipping semantic search";
         return false;
     }
+
+    // 排除黑名单路径，避免搜索出黑名单目录下的文件
+    auto blacklistConfig = Configer::instance()->group(GRANDSEARCH_BLACKLIST_GROUP);
+    auto blacklist = blacklistConfig->value(GRANDSEARCH_BLACKLIST_PATH, QStringList());
+    dfmSearcher.setSearchExcludedPaths(blacklist);
 
     // 通过 intentParsed 信号提取关键词
     // searchSync 内部会发出 intentParsed 信号，但使用 searchSync 时
