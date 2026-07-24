@@ -1,3 +1,15 @@
+dde-grand-search (6.1.0) unstable; urgency=medium
+
+  * fix(quick-panel): add hover opacity effect
+  * feat: add expandContent interface for preview plugins
+  * refactor: replace DLabel with DIconButton for group icon
+  * style: adjust auth prompt widget UI spacing and font size
+  * fix: adjust group icon size and title layout spacing
+  * fix: add X-Deepin-Singleton flag to desktop file
+  * fix: respect blacklist paths in semantic search
+
+ -- Zhang Sheng <zhangsheng@uniontech.com>  Fri, 24 Jul 2026 13:33:21 +0800
+
 dde-grand-search (6.0.40) unstable; urgency=medium
 
   * chore: update translations
