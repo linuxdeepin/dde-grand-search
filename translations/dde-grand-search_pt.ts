@@ -99,7 +99,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="91"/>
         <source>View index status</source>
-        <translation>Ver estado de indexação</translation>
+        <translation>Ver estado da indexação</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="101"/>
@@ -444,7 +444,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/semanticsearchwidget.cpp" line="61"/>
         <source>When enabled, natural language search is supported in grand search, e.g., &quot;PPT documents edited yesterday&quot;.Using this feature requires file indexing to be enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Quando ativada, a pesquisa por linguagem natural é suportada na grande pesquisa, ex: &quot;documentos PPT editados ontem&quot;. Usar esta funcionalidade requer que a indexação de ficheiros esteja ativada.</translation>
     </message>
 </context>
 <context>
@@ -589,7 +589,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="36"/>
         <source>Smart match</source>
-        <translation type="unfinished"/>
+        <translation>Correspondência inteligente</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="35"/>
@@ -629,7 +629,7 @@
     <message>
         <location filename="../src/grand-search/utils/utils.cpp" line="1120"/>
         <source>dde-grand-search</source>
-        <translation type="unfinished"/>
+        <translation>dde-grand-search</translation>
     </message>
 </context>
 <context>
