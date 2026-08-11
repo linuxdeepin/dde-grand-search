@@ -363,7 +363,7 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="201"/>
         <source>Paste</source>
-        <translation type="unfinished"/>
+        <translation>Вставить</translation>
     </message>
 </context>
 <context>
@@ -439,12 +439,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/semanticsearchwidget.cpp" line="50"/>
         <source>Smart search</source>
-        <translation type="unfinished"/>
+        <translation>Разумный поиск</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/semanticsearchwidget.cpp" line="61"/>
         <source>When enabled, natural language search is supported in grand search, e.g., &quot;PPT documents edited yesterday&quot;.Using this feature requires file indexing to be enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Если эта функция включена, в расширенном поиске поддерживается поиск с использованием естественного языка, например: «документы PPT, отредактированные вчера». Для использования этой функции необходимо включить индексирование файлов.</translation>
     </message>
 </context>
 <context>
@@ -589,12 +589,12 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="36"/>
         <source>Smart match</source>
-        <translation type="unfinished"/>
+        <translation>Интеллектуальный подбор</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="35"/>
         <source>Text found in the image</source>
-        <translation type="unfinished"/>
+        <translation>Текст, обнаруженный на изображении</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="28"/>
