@@ -278,7 +278,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="377"/>
         <source>No search results</source>
-        <translation type="unfinished"/>
+        <translation>Результаты поиска отсутствуют</translation>
     </message>
 </context>
 <context>
@@ -348,17 +348,17 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="92"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Поиск</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="193"/>
         <source>Cut</source>
-        <translation type="unfinished"/>
+        <translation>Вырезать</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="197"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Копировать</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="201"/>
@@ -629,7 +629,7 @@
     <message>
         <location filename="../src/grand-search/utils/utils.cpp" line="1120"/>
         <source>dde-grand-search</source>
-        <translation type="unfinished"/>
+        <translation>dde-расширенный-поиск</translation>
     </message>
 </context>
 <context>
