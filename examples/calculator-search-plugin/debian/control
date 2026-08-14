@@ -1,0 +1,26 @@
+Source: calculator-search-plugin
+Section: utils
+Priority: optional
+Maintainer: Deepin Packages Builder <packages@linuxdeepin.com>
+Build-Depends: debhelper (>= 11),
+               cmake,
+               qtbase5-dev | qt6-base-dev,
+               qtbase5-dev-tools | qt6-base-dev-tools,
+               libqt5gui5 | qt6-base-dev
+Standards-Version: 4.5.1
+
+Package: calculator-search-plugin
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends},
+         dde-grand-search
+Description: Calculator search plugin for DDE Grand Search
+ A DDE Grand Search plugin that provides real-time mathematical
+ expression evaluation in the global search bar. Users can type
+ expressions like "1+2*3", "sin(0.5)", or "(3+4)^2" and get instant
+ results. Clicking a result copies the value to the clipboard.
+ .
+ Features include:
+  * Real-time expression parsing powered by ExprTk
+  * Support for arithmetic, trigonometry, and common math functions
+  * Click-to-copy result to system clipboard
+  * Auto-mode integration with dde-grand-search-daemon
