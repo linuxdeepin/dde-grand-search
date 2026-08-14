@@ -1,0 +1,9 @@
+[Grand Search]
+Name=com.example.CalculatorSearch
+Mode=Auto
+Priority=1
+DBusService=com.example.CalculatorSearch
+DBusAddress=/com/example/CalculatorSearch
+DBusInterface=com.example.CalculatorSearch.SearchPlugin
+InterfaceVersion=1.0
+Exec=@CALCULATOR_PLUGIN_EXEC@
