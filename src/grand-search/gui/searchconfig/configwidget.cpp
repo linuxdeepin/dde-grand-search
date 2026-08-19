@@ -21,8 +21,8 @@
 
 Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
-#define MAINWINDOW_WIDTH    696
-#define MAINWINDOW_HEIGHT   529
+#define MAINWINDOW_WIDTH    780
+#define MAINWINDOW_HEIGHT   600
 
 using namespace GrandSearch;
 DWIDGET_USE_NAMESPACE
@@ -43,7 +43,9 @@ ConfigWidget::~ConfigWidget()
 
 void ConfigWidget::initUI()
 {
-    setFixedSize(MAINWINDOW_WIDTH, MAINWINDOW_HEIGHT);
+    // 设置窗口最小尺寸并允许用户拖拽缩放，初始尺寸为主窗口尺寸
+    setMinimumSize(MAINWINDOW_WIDTH, MAINWINDOW_HEIGHT);
+    resize(MAINWINDOW_WIDTH, MAINWINDOW_HEIGHT);
 
     // 禁用最小、最大化按钮
     setWindowFlag(Qt::WindowMinMaxButtonsHint, false);
@@ -72,7 +74,7 @@ void ConfigWidget::initUI()
 
     m_scrollAreaContent = new QWidget(m_scrollArea);
     m_scrollLayout = new QVBoxLayout(m_scrollAreaContent);
-    m_scrollLayout->setContentsMargins(109, 20, 109, 20);
+    m_scrollLayout->setContentsMargins(40, 20, 40, 20);
     m_scrollLayout->setSpacing(20);
     m_scrollAreaContent->setLayout(m_scrollLayout);
 
