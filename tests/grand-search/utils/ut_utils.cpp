@@ -1333,7 +1333,9 @@ TEST(UtilsTest, launchAppByGio)
     result = Utils::launchAppByGio(desktopFile, filePaths);
     EXPECT_FALSE(result);
     EXPECT_TRUE(ut_gio_launch);
-    EXPECT_TRUE(ut_startDetached);
+    // The redundant `gio open` fallback loop was removed from launchAppByGio;
+    // only g_app_info_launch starts the app now, so startDetached must NOT be called.
+    EXPECT_FALSE(ut_startDetached);
 }
 
 TEST(UtilsTest, openWithBrowser)

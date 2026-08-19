@@ -979,13 +979,6 @@ bool Utils::launchAppByGio(const QString &desktopFile, const QStringList &filePa
     g_object_unref(appInfo);
     g_list_free(g_files);
 
-    for (auto filePath : filePaths) {
-        if (!filePath.isEmpty()) {
-            qCDebug(logGrandSearch) << "Opening file with gio:" << filePath;
-            QProcess::startDetached("gio", QStringList() << "open" << filePath);
-        }
-    }
-
     return ok;
 }
 
