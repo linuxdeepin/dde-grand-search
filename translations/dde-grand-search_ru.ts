@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ru">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ru">
 <context>
     <name>GrandSearch::AiToolBar</name>
     <message>
@@ -11,12 +9,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="49"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Отменить</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
         <source>Open App Store</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть App Store</translation>
     </message>
 </context>
 <context>
@@ -93,7 +91,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
         <source>Open App Store</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть App Store</translation>
     </message>
 </context>
 <context>
@@ -101,52 +99,52 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="91"/>
         <source>View index status</source>
-        <translation type="unfinished"></translation>
+        <translation>Просмотреть статус индекса</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="101"/>
         <source>Smart search</source>
-        <translation type="unfinished"></translation>
+        <translation>Разумный поиск</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="102"/>
         <source>Indexing is in progress. You can check the index status in file manager settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>В настоящее время выполняется индексирование. Вы можете проверить статус индекса в настройках файлового менеджера.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="110"/>
         <source>&quot;Full-Text search&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>«Полнотекстовый поиск»</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="112"/>
         <source>&quot;Image-Content search&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>«Поиск по изображениям и контенту»</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="114"/>
         <source>&quot;Smart search&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>«Умный поиск»</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="201"/>
         <source>one-click authorization</source>
-        <translation type="unfinished"></translation>
+        <translation>авторизация в один клик</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="206"/>
         <source>Supports </source>
-        <translation type="unfinished"></translation>
+        <translation>Поддерживает</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="207"/>
         <source>, click </source>
-        <translation type="unfinished"></translation>
+        <translation>, нажмите</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="208"/>
         <source> to experience immediately</source>
-        <translation type="unfinished"></translation>
+        <translation> чтобы сразу же испытать</translation>
     </message>
 </context>
 <context>
@@ -236,7 +234,7 @@
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="266"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="333"/>
         <source>Size:</source>
-        <translation type="unfinished">Размер:</translation>
+        <translation>Размер:</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="278"/>
@@ -267,7 +265,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/listview/grandsearchlistdelegate.cpp" line="269"/>
         <source>Modified at </source>
-        <translation type="unfinished"></translation>
+        <translation>Изменено в</translation>
     </message>
 </context>
 <context>
@@ -280,7 +278,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="377"/>
         <source>No search results</source>
-        <translation type="unfinished">Ничего не найдено</translation>
+        <translation>Результаты поиска отсутствуют</translation>
     </message>
 </context>
 <context>
@@ -350,22 +348,22 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="92"/>
         <source>Search</source>
-        <translation type="unfinished">Поиск</translation>
+        <translation>Поиск</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="193"/>
         <source>Cut</source>
-        <translation type="unfinished">Вырезать</translation>
+        <translation>Вырезать</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="197"/>
         <source>Copy</source>
-        <translation type="unfinished">Копировать</translation>
+        <translation>Копировать</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="201"/>
         <source>Paste</source>
-        <translation type="unfinished">Вставить</translation>
+        <translation>Вставить</translation>
     </message>
 </context>
 <context>
@@ -441,12 +439,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/semanticsearchwidget.cpp" line="50"/>
         <source>Smart search</source>
-        <translation type="unfinished"></translation>
+        <translation>Разумный поиск</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/semanticsearchwidget.cpp" line="61"/>
         <source>When enabled, natural language search is supported in grand search, e.g., &quot;PPT documents edited yesterday&quot;.Using this feature requires file indexing to be enabled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Если эта функция включена, в расширенном поиске поддерживается поиск с использованием естественного языка, например: «документы PPT, отредактированные вчера». Для использования этой функции необходимо включить индексирование файлов.</translation>
     </message>
 </context>
 <context>
@@ -591,12 +589,12 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="36"/>
         <source>Smart match</source>
-        <translation type="unfinished"></translation>
+        <translation>Интеллектуальный подбор</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="35"/>
         <source>Text found in the image</source>
-        <translation type="unfinished"></translation>
+        <translation>Текст, обнаруженный на изображении</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="28"/>
@@ -631,7 +629,7 @@
     <message>
         <location filename="../src/grand-search/utils/utils.cpp" line="1120"/>
         <source>dde-grand-search</source>
-        <translation type="unfinished"></translation>
+        <translation>dde-расширенный-поиск</translation>
     </message>
 </context>
 <context>
