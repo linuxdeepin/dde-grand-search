@@ -57,6 +57,12 @@ void EntranceWidgetPrivate::delayChangeText()
     Q_ASSERT(m_delayChangeTimer);
 
     qCDebug(logGrandSearch) << "Search text input changed - Starting delay timer";
+
+    // 文本变化时立即隐藏应用图标，使其与 QLineEdit 内置清除按钮的可见性同步切换，
+    // 消除 50ms 防抖定时器延迟导致的清除按钮与应用图标并存的时序窗口
+    MatchedItem item;
+    q_p->onAppIconChanged(QString(), item);
+
     m_delayChangeTimer->start();
 }
 
