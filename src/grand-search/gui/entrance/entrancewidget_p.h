@@ -14,6 +14,7 @@
 DWIDGET_BEGIN_NAMESPACE
 class DSearchEdit;
 class DLabel;
+class DIconButton;
 DWIDGET_END_NAMESPACE
 
 class QHBoxLayout;
@@ -38,6 +39,7 @@ public:
     EntranceWidget *q_p = nullptr;
     Dtk::Widget::DSearchEdit *m_searchEdit = nullptr;   // 搜索输入框控件
     QLineEdit *m_lineEdit = nullptr;                    // 输入控件
+    Dtk::Widget::DIconButton *m_clearButton = nullptr;   // 自建清除按钮（替代 QLineEdit 内置清除按钮）
     Dtk::Widget::DLabel *m_appIconLabel = nullptr;      // 应用图标显示label
     QAction *m_appIconAction = nullptr;                 // 应用图标显示区域占位action
     QHBoxLayout *m_mainLayout = nullptr;

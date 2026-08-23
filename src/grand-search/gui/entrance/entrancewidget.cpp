@@ -9,6 +9,7 @@
 
 #include <DSearchEdit>
 #include <DStyle>
+#include <DIconButton>
 #include <DLabel>
 #include <DFontSizeManager>
 #include <DGuiApplicationHelper>
@@ -200,6 +201,8 @@ void EntranceWidget::initUI()
 
     d_p->m_lineEdit = d_p->m_searchEdit->lineEdit();
     d_p->m_lineEdit->setMaxLength(SearchMaxLength);
+    // 禁用 QLineEdit 内置清除按钮，避免与应用图标叠加显示两个关闭图标
+    d_p->m_lineEdit->setClearButtonEnabled(false);
     d_p->m_lineEdit->installEventFilter(this);
 
     QFont lineFont = d_p->m_lineEdit->font();
@@ -223,9 +226,16 @@ void EntranceWidget::initUI()
     d_p->m_appIconLabel = new DLabel(d_p->m_searchEdit);
     d_p->m_appIconLabel->setFixedSize(LabelSize, LabelSize);
 
+    // 自建可控清除按钮，替代已禁用的 QLineEdit 内置清除按钮
+    d_p->m_clearButton = new DIconButton(DStyle::SP_LineEditClearButton, d_p->m_searchEdit);
+    d_p->m_clearButton->setIconSize(QSize(18, 18));
+    d_p->m_clearButton->setFlat(true);
+    d_p->m_clearButton->setFocusPolicy(Qt::NoFocus);
+    d_p->m_clearButton->setVisible(false);
+
     d_p->m_appIconAction = new QAction(this);
     d_p->m_lineEdit->addAction(d_p->m_appIconAction, QLineEdit::TrailingPosition);
-    d_p->m_searchEdit->setRightWidgets(QList<QWidget *>() << d_p->m_appIconLabel);
+    d_p->m_searchEdit->setRightWidgets(QList<QWidget *>() << d_p->m_clearButton << d_p->m_appIconLabel);
 
     // 搜索框界面布局设置
     // 必须对搜索框控件的边距和间隔设置为0,否则其内含的LineEdit不满足大小显示要求
@@ -266,6 +276,17 @@ void EntranceWidget::initConnections()
 
     // 终止搜索时，强制设置焦点
     connect(d_p->m_searchEdit, &DSearchEdit::searchAborted, d_p->m_lineEdit, qOverload<>(&QLineEdit::setFocus));
+
+    // 有文本时显示清除按钮，无文本时隐藏
+    connect(d_p->m_lineEdit, &QLineEdit::textChanged, d_p.data(), [this](const QString &text) {
+        d_p->m_clearButton->setVisible(!text.isEmpty());
+    });
+
+    // 点击清除按钮：清空文本并中止搜索（等价于内置清除按钮的 searchAborted 语义）
+    connect(d_p->m_clearButton, &DIconButton::clicked, d_p.data(), [this]() {
+        d_p->m_lineEdit->clear();
+        d_p->m_lineEdit->setFocus();
+    });
 }
 
 void EntranceWidget::onAppIconChanged(const QString &searchGroupName, const MatchedItem &item)
