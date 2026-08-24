@@ -56,12 +56,17 @@ set(GUISRC
     gui/mainwindow_p.h
     gui/mainwindow.h
     gui/mainwindow.cpp
+    gui/iconbutton.h
+    gui/iconbutton.cpp
     # 可见性/退出处理
     gui/handlevisibility/handlevisibility.h
     gui/handlevisibility/handlevisibility.cpp
     # 界面相关数据定义
     gui/datadefine.h
     # 入口界面
+    gui/entrance/searchedit_p.h
+    gui/entrance/searchedit.h
+    gui/entrance/searchedit.cpp
     gui/entrance/entrancewidget_p.h
     gui/entrance/entrancewidget.h
     gui/entrance/entrancewidget.cpp
