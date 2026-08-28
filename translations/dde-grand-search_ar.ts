@@ -11,12 +11,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="49"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>إلغاء</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="50"/>
         <source>Open App Store</source>
-        <translation type="unfinished"></translation>
+        <translation>فتح متجر التطبيقات</translation>
     </message>
 </context>
 <context>
@@ -93,7 +93,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="451"/>
         <source>Open App Store</source>
-        <translation type="unfinished"></translation>
+        <translation>فتح متجر التطبيقات</translation>
     </message>
 </context>
 <context>
@@ -101,52 +101,52 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="91"/>
         <source>View index status</source>
-        <translation type="unfinished"></translation>
+        <translation>عرض حالة الفهرسة</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="101"/>
         <source>Smart search</source>
-        <translation type="unfinished"></translation>
+        <translation>بحث ذكي</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="102"/>
         <source>Indexing is in progress. You can check the index status in file manager settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>جاري الفهرسة. يمكنك التحقق من حالة الفهرسة في إعدادات مدير الملفات.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="110"/>
         <source>&quot;Full-Text search&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>"بحث في النص الكامل"</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="112"/>
         <source>&quot;Image-Content search&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>"بحث في محتوى الصور"</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="114"/>
         <source>&quot;Smart search&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>"بحث ذكي"</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="201"/>
         <source>one-click authorization</source>
-        <translation type="unfinished"></translation>
+        <translation>تفويض بنقرة واحدة</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="206"/>
         <source>Supports </source>
-        <translation type="unfinished"></translation>
+        <translation>يدعم </translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="207"/>
         <source>, click </source>
-        <translation type="unfinished"></translation>
+        <translation>، انقر </translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/authpromptwidget.cpp" line="208"/>
         <source> to experience immediately</source>
-        <translation type="unfinished"></translation>
+        <translation> للتجربة فوراً</translation>
     </message>
 </context>
 <context>
@@ -236,7 +236,7 @@
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="266"/>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="333"/>
         <source>Size:</source>
-        <translation type="unfinished">الحجم:</translation>
+        <translation>الحجم:</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalpreviewplugin.cpp" line="278"/>
@@ -267,7 +267,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/listview/grandsearchlistdelegate.cpp" line="269"/>
         <source>Modified at </source>
-        <translation type="unfinished"></translation>
+        <translation>آخر تعديل </translation>
     </message>
 </context>
 <context>
@@ -280,7 +280,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="377"/>
         <source>No search results</source>
-        <translation type="unfinished">No search results</translation>
+        <translation>لا توجد نتائج بحث</translation>
     </message>
 </context>
 <context>
@@ -296,7 +296,7 @@
     <message>
         <location filename="../src/grand-search/gui/mainwindow.cpp" line="232"/>
         <source>No search results</source>
-        <translation type="unfinished">No search results</translation>
+        <translation>لا توجد نتائج بحث</translation>
     </message>
 </context>
 <context>
@@ -304,37 +304,37 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="32"/>
         <source>Search experience program</source>
-        <translation type="unfinished"></translation>
+        <translation>برنامج تجربة البحث</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="40"/>
         <source>Join search experience program</source>
-        <translation type="unfinished"></translation>
+        <translation>الانضمام إلى برنامج تجربة البحث</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="53"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations, the contents you search while using the Application, the time of search, the type of requested large model.If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation type="unfinished"></translation>
+        <translation>يعني الانضمام إلى برنامج تجربة البحث أنك تمنحنا وتفوضنا بجمع معلومات جهازك ونظامك، وأيقونات الملفات، والمحتوى والخصائص، والتطبيقات وتكويناتها، والمحتوى الذي تبحث عنه أثناء استخدام التطبيق، ووقت البحث، ونوع النموذج الكبير المطلوب. إذا رفضت جمع واستخدام المعلومات المذكورة أعلاه، فلا تنضم إلى البرنامج.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="64"/>
         <source>To know more about the management of your data, please refer to the UnionTech Software Privacy Policy (</source>
-        <translation type="unfinished"></translation>
+        <translation>لمعرفة المزيد حول إدارة بياناتك، يرجى الرجوع إلى سياسة خصوصية برنامج UnionTech (</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="66"/>
         <source>https://www.uniontech.com/agreement/privacy-en</source>
-        <translation type="unfinished"></translation>
+        <translation>https://www.uniontech.com/agreement/privacy-en</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="67"/>
         <source>https://www.deepin.org/en/agreement/privacy/</source>
-        <translation type="unfinished"></translation>
+        <translation>https://www.deepin.org/en/agreement/privacy/</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="69"/>
         <source>).</source>
-        <translation type="unfinished"></translation>
+        <translation>).</translation>
     </message>
 </context>
 <context>
@@ -342,7 +342,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/scopewidget.cpp" line="33"/>
         <source>Search contents</source>
-        <translation type="unfinished"></translation>
+        <translation>البحث في المحتويات</translation>
     </message>
 </context>
 <context>
@@ -350,22 +350,22 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="92"/>
         <source>Search</source>
-        <translation type="unfinished">بحث</translation>
+        <translation>بحث</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="193"/>
         <source>Cut</source>
-        <translation type="unfinished">قص</translation>
+        <translation>قص</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="197"/>
         <source>Copy</source>
-        <translation type="unfinished">نسخ</translation>
+        <translation>نسخ</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="201"/>
         <source>Paste</source>
-        <translation type="unfinished">لصق</translation>
+        <translation>لصق</translation>
     </message>
 </context>
 <context>
@@ -373,17 +373,17 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="42"/>
         <source>Default search engine</source>
-        <translation type="unfinished"></translation>
+        <translation>محرك البحث الافتراضي</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="50"/>
         <source>Search for keywords by the default search engine.</source>
-        <translation type="unfinished"></translation>
+        <translation>البحث عن الكلمات الرئيسية بواسطة محرك البحث الافتراضي.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="62"/>
         <source>Default search engine is</source>
-        <translation type="unfinished"></translation>
+        <translation>محرك البحث الافتراضي هو</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="71"/>
@@ -441,12 +441,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/semanticsearchwidget.cpp" line="50"/>
         <source>Smart search</source>
-        <translation type="unfinished"></translation>
+        <translation>بحث ذكي</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/semanticsearchwidget.cpp" line="61"/>
         <source>When enabled, natural language search is supported in grand search, e.g., &quot;PPT documents edited yesterday&quot;.Using this feature requires file indexing to be enabled.</source>
-        <translation type="unfinished"></translation>
+        <translation>عند التفعيل، يتم دعم البحث باللغة الطبيعية في البحث الشامل، مثلاً، "مستندات PPT تم تحريرها أمس". يتطلب استخدام هذه الميزة تفعيل فهرسة الملفات.</translation>
     </message>
 </context>
 <context>
@@ -591,12 +591,12 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="36"/>
         <source>Smart match</source>
-        <translation type="unfinished"></translation>
+        <translation>مطابقة ذكية</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="35"/>
         <source>Text found in the image</source>
-        <translation type="unfinished"></translation>
+        <translation>تم العثور على نص في الصورة</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="28"/>
@@ -631,7 +631,7 @@
     <message>
         <location filename="../src/grand-search/utils/utils.cpp" line="1120"/>
         <source>dde-grand-search</source>
-        <translation type="unfinished"></translation>
+        <translation>dde-grand-search</translation>
     </message>
 </context>
 <context>
