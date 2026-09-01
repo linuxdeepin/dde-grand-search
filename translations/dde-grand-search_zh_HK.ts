@@ -421,37 +421,37 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="276"/>
         <source>Waiting for index service upgrade.</source>
-        <translation>正在等待索引服務升級。</translation>
+        <translation>等待索引服務升級。</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="278"/>
         <source>Running on battery. Some content indexing has been paused.</source>
-        <translation>當前使用電池供電，部分內容索引已暫停。</translation>
+        <translation>當前使用電池，部分內容索引已暫停。</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="280"/>
         <source>Power save mode is enabled. Some content indexing has been paused.</source>
-        <translation>已開啟省電模式，部分內容索引已暫停。</translation>
+        <translation>節能模式已開啟，部分內容索引已暫停。</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="282"/>
         <source>Waiting for the device to become idle to continue updating.</source>
-        <translation>正在等待設備空閒以繼續更新。</translation>
+        <translation>等待設備空閒後繼續更新。</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="297"/>
         <source>Index is being updated. File name and file content search are available.</source>
-        <translation>索引更新中，支持按文件名和文件內容搜索。</translation>
+        <translation>索引更新中，已支持文件名、文件內容搜索。</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="299"/>
         <source>Index is being updated. File name and image content search are available.</source>
-        <translation>索引更新中，支持按文件名和圖片內容搜索。</translation>
+        <translation>索引更新中，已支持文件名、圖片內容搜索。</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="300"/>
         <source>Index is being updated. File name search is available.</source>
-        <translation>索引更新中，支持按文件名搜索。</translation>
+        <translation>索引更新中，已支持文件名搜索。</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="481"/>
@@ -476,7 +476,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="535"/>
         <source>Retry update</source>
-        <translation>重試更新</translation>
+        <translation>立即更新</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="536"/>
@@ -494,7 +494,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="543"/>
         <source>Continue updating</source>
-        <translation>繼續更新</translation>
+        <translation>仍要更新</translation>
     </message>
 </context>
 <context>
