@@ -306,7 +306,6 @@ void SearchHintWidget::onLinkActivated(const QString &link)
         setSearchindexesEnable();
         hide();
     } else if (link == QLatin1String("retry-update")
-               || link == QLatin1String("update-now")
                || link == QLatin1String("continue-update")) {
         // 更新类操作统一按当前提示类型分发（目标状态与 manual 语义见 requestUpdateForHint）
         requestUpdateForHint(m_currentType);
@@ -427,16 +426,16 @@ void SearchHintWidget::initConnect()
     // 索引状态查询结果（success=false 表示服务不可用，保持状态无效即不显示索引提示）
     connect(m_indexMonitor, &IndexStatusMonitor::indexStatusResult,
             this, [this](IndexStatusMonitor::Index idx, const QString &state, const QString &grade, bool success) {
-        if (!success)
-            return;
-        updateIndexStatus(idx, state, grade);
-    });
+                if (!success)
+                    return;
+                updateIndexStatus(idx, state, grade);
+            });
 
     // 索引状态实时变化
     connect(m_indexMonitor, &IndexStatusMonitor::indexStatusChanged,
             this, [this](IndexStatusMonitor::Index idx, const QString &state, const QString &grade) {
-        updateIndexStatus(idx, state, grade);
-    });
+                updateIndexStatus(idx, state, grade);
+            });
 
     // 文管搜索配置变化（如在文管设置中开/关文件索引）时重新评估
     if (m_searchDConfig) {
@@ -535,7 +534,7 @@ QString SearchHintWidget::buildIndexElidedText(int availableWidth) const
         links << Link { QStringLiteral("retry-update"), tr("Retry update") };
         links << Link { QStringLiteral("view-status"), tr("View") };
     } else if (m_currentType == HintType::IndexWaitingUpgrade) {
-        links << Link { QStringLiteral("update-now"), tr("Update index now") };
+        links << Link { QStringLiteral("retry-update"), tr("Retry update") };
         links << Link { QStringLiteral("view-status"), tr("View") };
     } else if (m_currentType == HintType::IndexPausedBattery
                || m_currentType == HintType::IndexPausedPowerSave
