@@ -6,7 +6,7 @@
 #define EXHIBITIONWIDGET_H
 
 #include "global/matcheditem.h"
-#include "gui/exhibition/matchresult/authpromptwidget.h"
+#include "gui/exhibition/matchresult/searchhintwidget.h"
 
 #include <DWidget>
 #include <DVerticalLine>
@@ -71,7 +71,7 @@ private:
     MatchWidget *m_matchWidget = nullptr;
     PreviewWidget *m_previewWidget = nullptr;
     Dtk::Widget::DVerticalLine *m_vLine = nullptr;
-    AuthPromptWidget *m_authPromptWidget = nullptr;   // 授权提示控件
+    SearchHintWidget *m_searchHintWidget = nullptr;   // 搜索提示控件（授权/索引状态）
 };
 
 }

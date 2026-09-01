@@ -95,8 +95,8 @@ set(GUISRC
     gui/exhibition/matchresult/matchwidget_p.h
     gui/exhibition/matchresult/matchwidget.h
     gui/exhibition/matchresult/matchwidget.cpp
-    gui/exhibition/matchresult/authpromptwidget.h
-    gui/exhibition/matchresult/authpromptwidget.cpp
+    gui/exhibition/matchresult/searchhintwidget.h
+    gui/exhibition/matchresult/searchhintwidget.cpp
     gui/exhibition/matchresult/groupwidget_p.h
     gui/exhibition/matchresult/groupwidget.h
     gui/exhibition/matchresult/groupwidget.cpp
@@ -205,6 +205,9 @@ set(BUSINESSSRC
     # 访问记录
     business/config/accessrecord/accessrecord.h
     business/config/accessrecord/accessrecord.cpp
+    # 文管索引状态监听
+    business/dbus/indexstatusmonitor.h
+    business/dbus/indexstatusmonitor.cpp
     )
 
 # contacts

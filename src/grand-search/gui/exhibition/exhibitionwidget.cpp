@@ -146,9 +146,9 @@ void ExhibitionWidget::initUi()
     vLayout->setContentsMargins(0, 0, 0, 0);
     vLayout->setSpacing(0);
 
-    m_authPromptWidget = new AuthPromptWidget(this);
-    m_authPromptWidget->installEventFilter(this);
-    vLayout->addWidget(m_authPromptWidget);
+    m_searchHintWidget = new SearchHintWidget(this);
+    m_searchHintWidget->installEventFilter(this);
+    vLayout->addWidget(m_searchHintWidget);
 
     m_hLayout = new QHBoxLayout();
     m_hLayout->setContentsMargins(MARGIN_SIZE, 0, 0, MARGIN_SIZE);
@@ -180,10 +180,10 @@ void ExhibitionWidget::initConnect()
 
 bool ExhibitionWidget::eventFilter(QObject *obj, QEvent *e)
 {
-    if (obj == m_authPromptWidget && (e->type() == QEvent::Show || e->type() == QEvent::Hide)) {
-        // 授权提示可见时，预览区上方留出间隔，避免与提示控件分隔线过近
+    if (obj == m_searchHintWidget && (e->type() == QEvent::Show || e->type() == QEvent::Hide)) {
+        // 提示条可见时，预览区上方留出间隔，避免与提示控件分隔线过近
         auto margins = m_previewWidget->contentsMargins();
-        margins.setTop(m_authPromptWidget->isVisible() ? MARGIN_SIZE : 0);
+        margins.setTop(m_searchHintWidget->isVisible() ? MARGIN_SIZE : 0);
         m_previewWidget->setContentsMargins(margins);
     }
 
