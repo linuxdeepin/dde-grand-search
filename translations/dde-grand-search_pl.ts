@@ -406,7 +406,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="130"/>
         <source>&quot;Image-Content search&quot;</source>
-        <translation>&quot;Przeszukiwanie zawartości obrazu&quot;</translation>
+        <translation>&quot;Przeszukiwanie zawartości obrazów&quot;</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="132"/>
@@ -416,12 +416,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="274"/>
         <source>Some index updates failed. Search results may be incomplete.</source>
-        <translation type="unfinished"/>
+        <translation>Błąd aktualizacji niektórych indeksów. Wyniki wyszukiwania mogą być niekompletne.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="276"/>
         <source>Waiting for index service upgrade.</source>
-        <translation type="unfinished"/>
+        <translation>Oczekiwanie na aktualizację usługi indeksowania.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="278"/>
