@@ -386,27 +386,27 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="110"/>
         <source>View index status</source>
-        <translation type="unfinished"/>
+        <translation>Indeksin tila</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="113"/>
         <source>Smart search</source>
-        <translation type="unfinished"/>
+        <translation>Älykäs haku</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="114"/>
         <source>Indexing is in progress. You can check the index status in file manager settings.</source>
-        <translation type="unfinished"/>
+        <translation>Indeksointi on käynnissä. Voit tarkistaa indeksoinnin tilan tiedostonhallinnan asetuksista.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="128"/>
         <source>&quot;Full-Text search&quot;</source>
-        <translation type="unfinished"/>
+        <translation>&quot;Täysi tekstihaku&quot;</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="130"/>
         <source>&quot;Image-Content search&quot;</source>
-        <translation type="unfinished"/>
+        <translation>&quot;Kuvan tekstisisällön haku&quot;</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="132"/>
