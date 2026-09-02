@@ -451,17 +451,17 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="300"/>
         <source>Index is being updated. File name search is available.</source>
-        <translation type="unfinished"/>
+        <translation>Indeksointi käytössä. Tiedostohaku on käytettävissä.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="480"/>
         <source>one-click authorization</source>
-        <translation type="unfinished"/>
+        <translation>Valtuutus yhdellä painalluksella</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="485"/>
         <source>Supports </source>
-        <translation type="unfinished"/>
+        <translation>Tukee </translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="486"/>
