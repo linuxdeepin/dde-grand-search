@@ -416,12 +416,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="274"/>
         <source>Some index updates failed. Search results may be incomplete.</source>
-        <translation type="unfinished"/>
+        <translation>Jokin indeksipäivitys epäonnistui. Hakutulokset saattavat olla puutteellisia.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="276"/>
         <source>Waiting for index service upgrade.</source>
-        <translation type="unfinished"/>
+        <translation>Odotetaan indeksipalvelun päivittymistä.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="278"/>
