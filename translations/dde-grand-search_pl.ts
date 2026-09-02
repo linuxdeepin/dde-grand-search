@@ -454,45 +454,41 @@
         <translation>Indeks jest aktualizowany. Dostępne wyszukiwanie według nazwy pliku.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="481"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="480"/>
         <source>one-click authorization</source>
         <translation>uwierzytelnienia jednym kliknięciem</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="486"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="485"/>
         <source>Supports </source>
         <translation>Wsparcie </translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="487"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="486"/>
         <source>, click </source>
         <translation>, kliknij </translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="488"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="487"/>
         <source> to experience immediately</source>
         <translation> aby włączyć</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="535"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="534"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="537"/>
         <source>Retry update</source>
         <translation>Ponów aktualizację</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="536"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="539"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="544"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="546"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="535"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="538"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="543"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="545"/>
         <source>View</source>
         <translation>Wyświetl</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="538"/>
-        <source>Update index now</source>
-        <translation>Zaktualizuj indeks teraz</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="543"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="542"/>
         <source>Continue updating</source>
         <translation>Wznów aktualizację</translation>
     </message>
