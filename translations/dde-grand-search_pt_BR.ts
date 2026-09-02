@@ -386,7 +386,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="110"/>
         <source>View index status</source>
-        <translation type="unfinished"/>
+        <translation>Visualizar status do índice</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="113"/>
