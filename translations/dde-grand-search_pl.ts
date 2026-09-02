@@ -81,7 +81,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="447"/>
         <source>DDE Grand Search</source>
-        <translation>DDE Grand Search</translation>
+        <translation>Wyszukiwarka DDE</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="450"/>
@@ -368,7 +368,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="78"/>
         <source>Custom</source>
-        <translation>Niestandardowy</translation>
+        <translation>Własny</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="99"/>
@@ -528,7 +528,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="29"/>
         <source>It is displayed at the end of search results for better identification and distinction of items with duplicate names.</source>
-        <translation>Jest to wyświetlane pod koniec wyników wyszukiwania dla lepszej identyfikacji i rozróżnienia przedmiotów z taką samą nazwą.</translation>
+        <translation>Wyświetlane pod koniec wyników wyszukiwania dla lepszej identyfikacji i rozróżnienia przedmiotów z taką samą nazwą.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="38"/>
@@ -637,7 +637,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="32"/>
         <source>Folders</source>
-        <translation>Katalogi</translation>
+        <translation>Foldery</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="33"/>
