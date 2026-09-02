@@ -441,12 +441,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="297"/>
         <source>Index is being updated. File name and file content search are available.</source>
-        <translation type="unfinished"/>
+        <translation>O índice está sendo atualizado. A pesquisa por nome e conteúdo de arquivos está disponível.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="299"/>
         <source>Index is being updated. File name and image content search are available.</source>
-        <translation type="unfinished"/>
+        <translation>O índice está sendo atualizado. A pesquisa por nome de arquivo e conteúdo de imagens está disponível.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="300"/>
