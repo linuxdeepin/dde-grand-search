@@ -456,28 +456,28 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="480"/>
         <source>one-click authorization</source>
-        <translation>Autorització d&apos;un sol clic</translation>
+        <translation>autorització d&apos;un sol clic</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="485"/>
         <source>Supports </source>
-        <translation type="unfinished"/>
+        <translation>Admet</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="486"/>
         <source>, click </source>
-        <translation type="unfinished"/>
+        <translation>, clic</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="487"/>
         <source> to experience immediately</source>
-        <translation type="unfinished"/>
+        <translation>per experimentar immediatament</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="534"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="537"/>
         <source>Retry update</source>
-        <translation type="unfinished"/>
+        <translation>Reintenta l&apos;actualització</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="535"/>
@@ -485,7 +485,7 @@
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="543"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="545"/>
         <source>View</source>
-        <translation type="unfinished"/>
+        <translation>Mostra</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="542"/>
