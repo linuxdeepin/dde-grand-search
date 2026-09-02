@@ -485,12 +485,12 @@
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="543"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="545"/>
         <source>View</source>
-        <translation type="unfinished"/>
+        <translation>Visualizar</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="542"/>
         <source>Continue updating</source>
-        <translation type="unfinished"/>
+        <translation>Continuar atualização</translation>
     </message>
 </context>
 <context>
