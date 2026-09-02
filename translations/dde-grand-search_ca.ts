@@ -386,42 +386,42 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="110"/>
         <source>View index status</source>
-        <translation type="unfinished"/>
+        <translation>Mostra l&apos;estat de l&apos;índex</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="113"/>
         <source>Smart search</source>
-        <translation type="unfinished"/>
+        <translation>Cerca intel·ligent</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="114"/>
         <source>Indexing is in progress. You can check the index status in file manager settings.</source>
-        <translation type="unfinished"/>
+        <translation>La indexació està en curs. En podeu comprovar l&apos;estat a la configuració del gestor de fitxers.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="128"/>
         <source>&quot;Full-Text search&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Cerca de text complet</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="130"/>
         <source>&quot;Image-Content search&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Cerca per contingut de la imatge</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="132"/>
         <source>&quot;Smart search&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Cerca intel·ligent</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="274"/>
         <source>Some index updates failed. Search results may be incomplete.</source>
-        <translation type="unfinished"/>
+        <translation>Algunes actualitzacions de l&apos;índex han fallat. És possible que els resultats de la cerca estiguin incomplets.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="276"/>
         <source>Waiting for index service upgrade.</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;espera l&apos;actualització del servei d&apos;índex.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="278"/>
