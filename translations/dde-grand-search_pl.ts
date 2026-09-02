@@ -66,7 +66,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="299"/>
         <source>Summarize this document for me and provide me with a clear result directly, without any unnecessary content.</source>
-        <translation>Podsumuj ten dokument dla mnie i podaj mi jasny wynik bezpośrednio, bez żadnych zbędnych treści.</translation>
+        <translation>Podsumuj dla mnie ten dokument i podaj mi jasny wynik bez żadnych zbędnych treści.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.cpp" line="315"/>
