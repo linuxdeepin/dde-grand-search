@@ -466,12 +466,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="486"/>
         <source>, click </source>
-        <translation type="unfinished"/>
+        <translation>, paina</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="487"/>
         <source> to experience immediately</source>
-        <translation type="unfinished"/>
+        <translation> koe tämä heti</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="534"/>
