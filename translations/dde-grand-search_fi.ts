@@ -490,7 +490,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="542"/>
         <source>Continue updating</source>
-        <translation type="unfinished"/>
+        <translation>Jatka päivitystä</translation>
     </message>
 </context>
 <context>
