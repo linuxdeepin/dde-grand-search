@@ -259,7 +259,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="53"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations, the contents you search while using the Application, the time of search, the type of requested large model.If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation>Dołączenie do programu doświadczenia wyszukiwania oznacza, że udzielasz i授权 nas uprawnień do zbierania informacji o Twoim urządzeniu i systemie, ikonach plików, zawartości i właściwościach, aplikacjach i ich konfiguracjach, zawartości, którą wyszukujesz, korzystając z aplikacji, czasu wyszukiwania, typu żądanego dużego modelu. Jeśli odmówisz naszemu zbieraniu i wykorzystywaniu powyższych informacji, nie dołączaj do programu.</translation>
+        <translation>Przystąpienie do programu wyszukiwania oznacza wyrażenie zgody i upoważnienie nas do gromadzenia informacji o Twoim urządzeniu, systemie, ikonach, aplikacjach i ich ustawieniach, właściwościach, zawartości i datach wyszukiwań oraz używanym modelu językowym. Jeśli nie zgadzasz się na gromadzenie i wykorzystywanie powyższych informacji, nie dołączaj do programu.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="64"/>
