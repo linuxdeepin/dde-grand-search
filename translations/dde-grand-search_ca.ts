@@ -436,27 +436,27 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="282"/>
         <source>Waiting for the device to become idle to continue updating.</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;espera que el dispositiu quedi inactiu per continuar actualitzant.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="297"/>
         <source>Index is being updated. File name and file content search are available.</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;actualitza l&apos;índex. Estan disponibles la cerca per nom de fitxer i la cerca per contingut del fitxer.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="299"/>
         <source>Index is being updated. File name and image content search are available.</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;actualitza l&apos;índex. Estan disponibles la cerca per nom de fitxer i la cerca pel contingut de la imatge.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="300"/>
         <source>Index is being updated. File name search is available.</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;actualitza l&apos;índex. La cerca per nom de fitxer està disponible.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="480"/>
         <source>one-click authorization</source>
-        <translation type="unfinished"/>
+        <translation>Autorització d&apos;un sol clic</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="485"/>
