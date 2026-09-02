@@ -426,7 +426,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="278"/>
         <source>Running on battery. Some content indexing has been paused.</source>
-        <translation type="unfinished"/>
+        <translation>Executando com bateria. A indexação de alguns conteúdos foi pausada.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="280"/>
