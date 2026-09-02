@@ -391,7 +391,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="113"/>
         <source>Smart search</source>
-        <translation type="unfinished"/>
+        <translation>Pesquisa inteligente</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="114"/>
