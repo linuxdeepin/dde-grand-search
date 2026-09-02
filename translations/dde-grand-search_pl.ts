@@ -401,17 +401,17 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="128"/>
         <source>&quot;Full-Text search&quot;</source>
-        <translation type="unfinished"/>
+        <translation>&quot;Wyszukiwanie Full-Text&quot;</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="130"/>
         <source>&quot;Image-Content search&quot;</source>
-        <translation type="unfinished"/>
+        <translation>&quot;Przeszukiwanie zawartości obrazu&quot;</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="132"/>
         <source>&quot;Smart search&quot;</source>
-        <translation type="unfinished"/>
+        <translation>&quot;Inteligentne wyszukiwanie&quot;</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="274"/>
