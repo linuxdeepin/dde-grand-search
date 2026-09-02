@@ -466,17 +466,17 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="487"/>
         <source>, click </source>
-        <translation type="unfinished"/>
+        <translation>, kliknij </translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="488"/>
         <source> to experience immediately</source>
-        <translation type="unfinished"/>
+        <translation> aby włączyć</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="535"/>
         <source>Retry update</source>
-        <translation type="unfinished"/>
+        <translation>Ponów aktualizację</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="536"/>
@@ -484,17 +484,17 @@
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="544"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="546"/>
         <source>View</source>
-        <translation type="unfinished"/>
+        <translation>Wyświetl</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="538"/>
         <source>Update index now</source>
-        <translation type="unfinished"/>
+        <translation>Zaktualizuj indeks teraz</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="543"/>
         <source>Continue updating</source>
-        <translation type="unfinished"/>
+        <translation>Wznów aktualizację</translation>
     </message>
 </context>
 <context>
