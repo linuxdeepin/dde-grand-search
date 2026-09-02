@@ -471,13 +471,13 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="487"/>
         <source> to experience immediately</source>
-        <translation type="unfinished"/>
+        <translation>para experimentar imediatamente</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="534"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="537"/>
         <source>Retry update</source>
-        <translation type="unfinished"/>
+        <translation>Tentar atualizar novamente</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="535"/>
