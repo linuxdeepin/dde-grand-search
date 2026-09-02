@@ -426,22 +426,22 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="278"/>
         <source>Running on battery. Some content indexing has been paused.</source>
-        <translation type="unfinished"/>
+        <translation>Aktualizacja niektórych indeksów jest wstrzymana podczas zasilania na baterii.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="280"/>
         <source>Power save mode is enabled. Some content indexing has been paused.</source>
-        <translation type="unfinished"/>
+        <translation>Aktualizacja niektórych indeksów jest wstrzymana w trybie oszczędzania energii.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="282"/>
         <source>Waiting for the device to become idle to continue updating.</source>
-        <translation type="unfinished"/>
+        <translation>Aktualizacja zostanie wznowiona po przejściu w stan bezczynności.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="297"/>
         <source>Index is being updated. File name and file content search are available.</source>
-        <translation type="unfinished"/>
+        <translation>Indeks jest aktualizowany. Dostępne wyszukiwanie według nazwy lub zawartości pliku.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="299"/>
