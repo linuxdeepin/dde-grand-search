@@ -477,7 +477,7 @@
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="534"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="537"/>
         <source>Retry update</source>
-        <translation type="unfinished"/>
+        <translation>Päivitä uudelleen</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="535"/>
@@ -485,7 +485,7 @@
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="543"/>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="545"/>
         <source>View</source>
-        <translation type="unfinished"/>
+        <translation>Näytä</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="542"/>
