@@ -431,7 +431,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="280"/>
         <source>Power save mode is enabled. Some content indexing has been paused.</source>
-        <translation type="unfinished"/>
+        <translation>Virransäästössä osa indeksoinnista on keskeytetty.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="282"/>
