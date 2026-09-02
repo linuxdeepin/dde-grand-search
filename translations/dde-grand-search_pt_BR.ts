@@ -436,7 +436,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="282"/>
         <source>Waiting for the device to become idle to continue updating.</source>
-        <translation type="unfinished"/>
+        <translation>Aguardando o dispositivo ficar ocioso para continuar a atualização.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="297"/>
