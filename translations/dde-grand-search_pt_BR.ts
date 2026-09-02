@@ -396,12 +396,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="114"/>
         <source>Indexing is in progress. You can check the index status in file manager settings.</source>
-        <translation type="unfinished"/>
+        <translation>A indexação está em andamento. Você pode verificar o status do índice nas configurações do gerenciador de arquivos.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="128"/>
         <source>&quot;Full-Text search&quot;</source>
-        <translation type="unfinished"/>
+        <translation>&quot;Pesquisa de texto completo&quot;</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="130"/>
