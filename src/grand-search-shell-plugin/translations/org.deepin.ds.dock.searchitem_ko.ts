@@ -10,7 +10,7 @@
     </message>
     <message>
         <location filename="../package/searchitem.qml" line="44"/>
-        <source>SearchConfig</source>
+        <source>Search settings</source>
         <translation>검색 설정</translation>
     </message>
 </context>
