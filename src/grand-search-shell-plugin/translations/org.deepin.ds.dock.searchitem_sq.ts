@@ -10,8 +10,8 @@
     </message>
     <message>
         <location filename="../package/searchitem.qml" line="44"/>
-        <source>SearchConfig</source>
-        <translation>Konfigurimi i kërkimit</translation>
+        <source>Search settings</source>
+        <translation>Rregullime kërkimi</translation>
     </message>
 </context>
 </TS>

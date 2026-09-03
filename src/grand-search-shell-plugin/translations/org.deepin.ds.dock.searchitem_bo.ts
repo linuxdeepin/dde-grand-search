@@ -10,8 +10,8 @@
     </message>
     <message>
         <location filename="../package/searchitem.qml" line="44"/>
-        <source>SearchConfig</source>
-        <translation>འཚོལ་བཤེར་སྒྲིག་བཀོད།</translation>
+        <source>Search settings</source>
+        <translation>བཤེར་འཚོལ་སྒྲིག་འགོད།</translation>
     </message>
 </context>
 </TS>

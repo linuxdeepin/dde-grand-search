@@ -10,8 +10,8 @@
     </message>
     <message>
         <location filename="../package/searchitem.qml" line="44"/>
-        <source>SearchConfig</source>
-        <translation>Axtarış konfiqurasiyası</translation>
+        <source>Search settings</source>
+        <translation>Axtarış ayarları</translation>
     </message>
 </context>
 </TS>
