@@ -6,7 +6,7 @@
     <message>
         <location filename="../package/searchitem.qml" line="24"/>
         <source>GrandSearch</source>
-        <translation>GrandSearch</translation>
+        <translation>Kërkim global</translation>
     </message>
     <message>
         <location filename="../package/searchitem.qml" line="44"/>

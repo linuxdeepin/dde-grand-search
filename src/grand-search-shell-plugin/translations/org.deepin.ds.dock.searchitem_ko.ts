@@ -6,7 +6,7 @@
     <message>
         <location filename="../package/searchitem.qml" line="24"/>
         <source>GrandSearch</source>
-        <translation>그랜드 검색</translation>
+        <translation>글로벌 검색</translation>
     </message>
     <message>
         <location filename="../package/searchitem.qml" line="44"/>
