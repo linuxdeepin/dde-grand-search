@@ -46,6 +46,8 @@ public:
 
     void setFocus();
 
+    void setSearching(bool searching);
+
 signals:
     void debouncedTextChanged(const QString &text);
 

@@ -82,6 +82,7 @@ void QueryControllerPrivate::performSearch()
         m_keepAliveTimer->start();
     } else {
         qCWarning(logGrandSearch) << "Search failed to start - Mission:" << m_missionId;
+        emit q_p->searchFailed();
     }
 }
 
