@@ -11,10 +11,12 @@
 #include <DIconTheme>
 #include <DFontSizeManager>
 #include <DGuiApplicationHelper>
+#include <DSpinner>
 
 #include <QLineEdit>
 #include <QHBoxLayout>
 #include <QAction>
+#include <QWidgetAction>
 #include <QTimer>
 #include <QMenu>
 #include <QGuiApplication>
@@ -29,6 +31,7 @@ using namespace GrandSearch;
 static constexpr int DelayResponseTime = 50;
 static constexpr int AppIconSize = 32;
 static constexpr int SearchIconSize = 20;
+static constexpr int SearchIndicatorWidth = 40;
 
 SearchEditPrivate::SearchEditPrivate(SearchEdit *qq)
     : q(qq)
@@ -111,6 +114,26 @@ void SearchEditPrivate::init()
     m_lineEdit->addAction(m_searchAction, QLineEdit::LeadingPosition);
     m_searchAction->setVisible(false);
 
+    // 左侧搜索中 spinner action（搜索进行时显示，与搜索图标二选一）
+    m_spinner = new DSpinner;
+    m_spinner->setAttribute(Qt::WA_TransparentForMouseEvents);
+    m_spinner->setFocusPolicy(Qt::NoFocus);
+    m_spinner->setFixedSize(QSize(SearchIconSize, SearchIconSize));
+
+    // 固定宽度的容器，保证 spinner 与搜索图标占位一致，避免文字跳动
+    m_spinnerContainer = new QWidget;
+    QHBoxLayout *spinnerLayout = new QHBoxLayout(m_spinnerContainer);
+    spinnerLayout->setContentsMargins(0, 0, 0, 0);
+    spinnerLayout->setSpacing(0);
+    spinnerLayout->addWidget(m_spinner, 0, Qt::AlignCenter);
+    m_spinnerContainer->setFixedWidth(SearchIndicatorWidth);
+
+    m_spinnerAction = new QWidgetAction(q);
+    m_spinnerAction->setObjectName("_d_search_spinnerAction");
+    m_spinnerAction->setDefaultWidget(m_spinnerContainer);
+    m_lineEdit->addAction(m_spinnerAction, QLineEdit::LeadingPosition);
+    m_spinnerAction->setVisible(false);
+
     // 应用图标（右侧）
     m_appIconLabel = new DIconButton(q);
     m_appIconLabel->setIconSize({ AppIconSize, AppIconSize });
@@ -149,7 +172,7 @@ void SearchEditPrivate::init()
         if (list.at(i)->defaultAction() == m_searchAction) {
             QToolButton *searchBtn = list.at(i);
             searchBtn->setIconSize({ 16, 16 });
-            searchBtn->setFixedWidth(40);
+            searchBtn->setFixedWidth(SearchIndicatorWidth);
             break;
         }
     }
@@ -174,15 +197,35 @@ void SearchEditPrivate::init()
 
 void SearchEditPrivate::toEditMode(bool focus)
 {
-    if (focus || m_lineEdit->hasFocus() || !m_lineEdit->text().isEmpty()) {
-        m_searchAction->setVisible(true);
-        m_iconWidget->setVisible(false);
-        m_lineEdit->setPlaceholderText(m_placeholderText);
-    } else {
-        m_searchAction->setVisible(false);
-        m_iconWidget->setVisible(true);
-        m_lineEdit->setPlaceholderText(QString());
-    }
+    const bool inEditMode = focus || m_lineEdit->hasFocus() || !m_lineEdit->text().isEmpty();
+
+    // 编辑态显示左侧图标（搜索图标或 spinner），非编辑态显示居中占位
+    m_iconWidget->setVisible(!inEditMode);
+    m_lineEdit->setPlaceholderText(inEditMode ? m_placeholderText : QString());
+    updateSearchIndicator(inEditMode);
+}
+
+void SearchEditPrivate::updateSearchIndicator(bool inEditMode)
+{
+    const bool showSpinner = inEditMode && m_searching;
+
+    m_searchAction->setVisible(inEditMode && !m_searching);
+    m_spinnerAction->setVisible(showSpinner);
+    // spinner 是容器子控件，隐藏容器即可一并隐藏，避免残留占位
+    m_spinnerContainer->setVisible(showSpinner);
+
+    if (showSpinner)
+        m_spinner->start();
+    else
+        m_spinner->stop();
+}
+
+void SearchEditPrivate::setSearching(bool searching)
+{
+    if (m_searching == searching)
+        return;
+    m_searching = searching;
+    toEditMode(false);
 }
 
 void SearchEditPrivate::showContextMenu(const QPoint &pos)
@@ -330,6 +373,11 @@ void SearchEdit::clearEdit()
 void SearchEdit::setFocus()
 {
     d->m_lineEdit->setFocus();
+}
+
+void SearchEdit::setSearching(bool searching)
+{
+    d->setSearching(searching);
 }
 
 bool SearchEdit::eventFilter(QObject *watched, QEvent *event)

@@ -83,9 +83,20 @@ void MainWindow::connectToController()
     connect(d_p->m_queryController, &QueryController::missionChanged, d_p->m_matchController, &MatchController::onMissionChanged);
     connect(d_p->m_queryController, &QueryController::missionChanged, this, &MainWindow::onMissionChanged);
 
+    // 搜索状态驱动入口输入框的加载动画：非空任务开始，空任务/结束/失败则停止
+    connect(d_p->m_queryController, &QueryController::missionChanged, d_p->m_entranceWidget, [this](const QString &missionId, const QString &) {
+        d_p->m_entranceWidget->setSearching(!missionId.isEmpty());
+    });
+
     // 匹配结果解析显示
     connect(d_p->m_matchController, &MatchController::matchedResult, d_p->m_exhibitionWidget, &ExhibitionWidget::appendMatchedData);
     connect(d_p->m_matchController, &MatchController::searchCompleted, d_p->m_exhibitionWidget, &ExhibitionWidget::onSearchCompleted);
+    connect(d_p->m_matchController, &MatchController::searchCompleted, d_p->m_entranceWidget, [this]() {
+        d_p->m_entranceWidget->setSearching(false);
+    });
+    connect(d_p->m_queryController, &QueryController::searchFailed, d_p->m_entranceWidget, [this]() {
+        d_p->m_entranceWidget->setSearching(false);
+    });
 
     qCInfo(logGrandSearch) << "Controller connections established";
 }

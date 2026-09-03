@@ -32,6 +32,7 @@ private:
 
 public slots:
     void onAppIconChanged(const QString &searchGroupName, const MatchedItem &item);
+    void setSearching(bool searching);
 
 signals:
     void searchTextChanged(const QString &txt);

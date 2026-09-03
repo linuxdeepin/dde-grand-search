@@ -8,11 +8,13 @@
 #include "searchedit.h"
 
 #include <DIconButton>
+#include <DSpinner>
 
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QTimer>
 #include <QAction>
+#include <QWidgetAction>
 
 namespace GrandSearch {
 
@@ -22,9 +24,11 @@ class SearchEditPrivate
 
     void init();
     void toEditMode(bool focus);
+    void updateSearchIndicator(bool inEditMode);
     void showContextMenu(const QPoint &pos);
     void delayTextChanged();
     void notifyTextChanged();
+    void setSearching(bool searching);
 
     SearchEdit *q = nullptr;
 
@@ -36,10 +40,15 @@ class SearchEditPrivate
     QAction *m_searchAction = nullptr;
     QAction *m_clearAction = nullptr;
     QAction *m_appIconAction = nullptr;
+    QWidgetAction *m_spinnerAction = nullptr;
+    DTK_WIDGET_NAMESPACE::DSpinner *m_spinner = nullptr;
+    QWidget *m_spinnerContainer = nullptr;
 
     QHBoxLayout *m_lineEditLayout = nullptr;
 
     QTimer *m_delayTimer = nullptr;
+
+    bool m_searching = false;
 
     QString m_placeHolder;
     QString m_placeholderText;
