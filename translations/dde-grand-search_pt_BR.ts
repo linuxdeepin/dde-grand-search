@@ -706,7 +706,7 @@
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="44"/>
         <source>Search settings</source>
-        <translation type="unfinished"/>
+        <translation>Configurações de pesquisa</translation>
     </message>
 </context>
 </TS>
