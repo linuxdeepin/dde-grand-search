@@ -160,12 +160,12 @@
 <context>
     <name>GrandSearch::EntranceWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="61"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="67"/>
         <source>Search</source>
         <translation>Szukaj</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="62"/>
+        <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="68"/>
         <source>What would you like to search for?</source>
         <translation>Co chciałbyś wyszukać?</translation>
     </message>
@@ -239,7 +239,7 @@
 <context>
     <name>GrandSearch::MainWindow</name>
     <message>
-        <location filename="../src/grand-search/gui/mainwindow.cpp" line="232"/>
+        <location filename="../src/grand-search/gui/mainwindow.cpp" line="243"/>
         <source>No search results</source>
         <translation>Brak wyników wyszukiwania</translation>
     </message>
@@ -293,22 +293,22 @@
 <context>
     <name>GrandSearch::SearchEdit</name>
     <message>
-        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="92"/>
+        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="95"/>
         <source>Search</source>
         <translation>Szukaj</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="193"/>
+        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="236"/>
         <source>Cut</source>
         <translation>Wytnij</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="197"/>
+        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="240"/>
         <source>Copy</source>
         <translation>Kopiuj</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="201"/>
+        <location filename="../src/grand-search/gui/entrance/searchedit.cpp" line="244"/>
         <source>Paste</source>
         <translation>Wklej</translation>
     </message>
@@ -384,111 +384,116 @@
 <context>
     <name>GrandSearch::SearchHintWidget</name>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="110"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="111"/>
         <source>View index status</source>
         <translation>Wyświetl status indeksowania</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="113"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="114"/>
         <source>Smart search</source>
         <translation>Inteligentne wyszukiwanie</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="114"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="115"/>
         <source>Indexing is in progress. You can check the index status in file manager settings.</source>
         <translation>Indeksowanie w toku. Sprawdź status w ustawieniach Menedżera plików.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="128"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="129"/>
         <source>&quot;Full-Text search&quot;</source>
         <translation>&quot;Wyszukiwanie Full-Text&quot;</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="130"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="131"/>
         <source>&quot;Image-Content search&quot;</source>
         <translation>&quot;Przeszukiwanie zawartości obrazów&quot;</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="132"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="133"/>
         <source>&quot;Smart search&quot;</source>
         <translation>&quot;Inteligentne wyszukiwanie&quot;</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="274"/>
-        <source>Some index updates failed. Search results may be incomplete.</source>
-        <translation>Błąd aktualizacji niektórych indeksów. Wyniki wyszukiwania mogą być niekompletne.</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="276"/>
-        <source>Waiting for index service upgrade.</source>
-        <translation>Oczekiwanie na aktualizację usługi indeksowania.</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="278"/>
-        <source>Running on battery. Some content indexing has been paused.</source>
-        <translation>Aktualizacja niektórych indeksów jest wstrzymana podczas zasilania na baterii.</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="280"/>
-        <source>Power save mode is enabled. Some content indexing has been paused.</source>
-        <translation>Aktualizacja niektórych indeksów jest wstrzymana w trybie oszczędzania energii.</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="282"/>
-        <source>Waiting for the device to become idle to continue updating.</source>
-        <translation>Aktualizacja zostanie wznowiona po przejściu w stan bezczynności.</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="297"/>
-        <source>Index is being updated. File name and file content search are available.</source>
-        <translation>Indeks jest aktualizowany. Dostępne wyszukiwanie według nazwy lub zawartości pliku.</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="299"/>
-        <source>Index is being updated. File name and image content search are available.</source>
-        <translation>Indeks jest aktualizowany. Dostępne wyszukiwanie według nazwy lub zawartości obrazu.</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="300"/>
-        <source>Index is being updated. File name search is available.</source>
-        <translation>Indeks jest aktualizowany. Dostępne wyszukiwanie według nazwy pliku.</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="480"/>
-        <source>one-click authorization</source>
-        <translation>uwierzytelnienia jednym kliknięciem</translation>
-    </message>
-    <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="485"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="273"/>
         <source>Supports </source>
         <translation>Wsparcie </translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="486"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="275"/>
+        <source>Some index updates failed. Search results may be incomplete</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="277"/>
+        <source>Waiting for index service upgrade</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="279"/>
+        <source>Running on battery. Some content indexing has been paused</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="281"/>
+        <source>Power save mode is enabled. Some content indexing has been paused</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="283"/>
+        <source>Waiting for the device to become idle to continue updating</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="299"/>
+        <source>Index is being updated. File name and file content search are available</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="301"/>
+        <source>Index is being updated. File name and image content search are available</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="302"/>
+        <source>Index is being updated. File name search is available</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="491"/>
+        <source>authorize</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="508"/>
         <source>, click </source>
         <translation>, kliknij </translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="487"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="509"/>
+        <source> or </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="510"/>
         <source> to experience immediately</source>
         <translation> aby włączyć</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="534"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="537"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="493"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="496"/>
         <source>Retry update</source>
         <translation>Ponów aktualizację</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="535"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="538"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="543"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="545"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="494"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="497"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="502"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="504"/>
         <source>View</source>
         <translation>Wyświetl</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="542"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="501"/>
         <source>Continue updating</source>
         <translation>Wznów aktualizację</translation>
     </message>
@@ -700,8 +705,8 @@
     </message>
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="44"/>
-        <source>SearchConfig</source>
-        <translation>Konfiguracja wyszukiwania</translation>
+        <source>Search settings</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>
