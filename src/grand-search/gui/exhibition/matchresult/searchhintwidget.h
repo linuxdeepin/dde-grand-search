@@ -15,7 +15,7 @@
 
 namespace Dtk { namespace Core { class DConfig; } }
 
-namespace Dtk { namespace Widget { class DSpinner; } }
+namespace Dtk { namespace Widget { class DSpinner; class DIconButton; } }
 
 namespace GrandSearch {
 
@@ -104,13 +104,12 @@ private:
     QString hintText(HintType type) const;
     QString updatingHintText() const;
     QString buildElidedText(int availableWidth) const;
-    QString buildAuthElidedText(int availableWidth) const;
-    QString buildIndexElidedText(int availableWidth) const;
     void adjustElidedText();
 
 private:
     QHBoxLayout *m_hLayout = nullptr;
     Dtk::Widget::DSpinner *m_spinner = nullptr;
+    Dtk::Widget::DIconButton *m_iconButton = nullptr;
     Dtk::Widget::DTipLabel *m_contentLabel = nullptr;
     IconButton *m_closeButton = nullptr;
     Dtk::Core::DConfig *m_searchDConfig = nullptr;
@@ -118,7 +117,6 @@ private:
 
     HintType m_currentType = HintType::None;
     QString m_currentText;                  // 当前提示描述文本
-    QString m_featuresText;                 // 授权提示的不可用功能列表文本
     QSet<HintType> m_dismissedTypes;        // 会话内已关闭的索引提示类型
 
     // 文管索引状态缓存
