@@ -1,3 +1,27 @@
+dde-grand-search (6.1.1) unstable; urgency=medium
+
+  * feat: parse .desktop files for localized app name and icon
+  * feat: add plugin development guide and calculator search plugin example
+  * chore: Sync by https://github.com/linuxdeepin/.github/commit/a300f8523d4876677112edab6a0772f7ad112976
+  * fix: update Arabic (ar) translations
+  * i18n: Translate dde-grand-search.ts in pt
+  * i18n: Translate dde-grand-search.ts in pt
+  * i18n: Translate dde-grand-search.ts in pt
+  * i18n: Translate dde-grand-search.ts in pt
+  * i18n: Translate dde-grand-search.ts in ru
+  * i18n: Translate dde-grand-search.ts in ru
+  * i18n: Translate dde-grand-search.ts in ru
+  * i18n: Translate dde-grand-search.ts in ru
+  * i18n: Translate dde-grand-search.ts in ru
+  * feat: add index status monitor and hint widget
+  * chore: update translations
+  * feat: add search loading spinner indicator
+  * feat: improve search settings menu label
+  * feat: add status icons for search hint widget
+  * chore: update translations
+
+ -- Liu Zhangjian <liuzhangjian@uniontech.com>  Mon, 07 Sep 2026 17:20:24 +0800
+
 dde-grand-search (6.1.0) unstable; urgency=medium
 
   * fix(quick-panel): add hover opacity effect
