@@ -456,12 +456,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="302"/>
         <source>Index is being updated. File name search is available</source>
-        <translation type="unfinished"/>
+        <translation>O índice está sendo atualizado. A pesquisa por nome de arquivos está disponível</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="491"/>
         <source>authorize</source>
-        <translation type="unfinished"/>
+        <translation>Autorizar</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="508"/>
@@ -471,7 +471,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="509"/>
         <source> or </source>
-        <translation type="unfinished"/>
+        <translation>ou</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="510"/>
