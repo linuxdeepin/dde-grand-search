@@ -15,6 +15,7 @@
 #include <DDciIcon>
 #include <DFontSizeManager>
 #include <DHorizontalLine>
+#include <DIconButton>
 #include <DSpinner>
 
 #include <QFontMetrics>
@@ -179,31 +180,35 @@ void SearchHintWidget::evaluateAndShow()
     if (newType == HintType::None) {
         m_currentType = HintType::None;
         m_currentText.clear();
-        m_featuresText.clear();
         m_spinner->stop();
         m_spinner->hide();
+        m_iconButton->hide();
         m_contentLabel->clear();
         hide();
         return;
     }
 
-    if (newType == HintType::AuthHint)
-        m_featuresText = QLocale().createSeparatedList(disabledSearchModes());
-
     const QString newText = hintText(newType);
     if (newType == m_currentType && newText == m_currentText)
         return;
 
-    const HintType oldType = m_currentType;
     m_currentType = newType;
     m_currentText = newText;
 
     if (newType == HintType::IndexUpdating) {
         m_spinner->show();
         m_spinner->start();
-    } else if (oldType == HintType::IndexUpdating) {
+        m_iconButton->hide();
+    } else {
         m_spinner->stop();
         m_spinner->hide();
+        const char *iconName = "waiting";
+        if (newType == HintType::IndexFailed)
+            iconName = "warning";
+        else if (newType == HintType::AuthHint)
+            iconName = "alert";
+        m_iconButton->setIcon(DDciIcon::fromTheme(iconName));
+        m_iconButton->show();
     }
 
     adjustElidedText();
@@ -215,10 +220,6 @@ SearchHintWidget::HintType SearchHintWidget::evaluateHint() const
     // 1. 授权提示（最高优先级）
     if (!m_dismissedTypes.contains(HintType::AuthHint) && shouldShowAuthHint())
         return HintType::AuthHint;
-
-    // 索引提示仅在文件索引搜索开启时显示（与文管一致）
-    if (!isFileIndexSearchEnabled())
-        return HintType::None;
 
     // 2. 索引失败
     if (!m_dismissedTypes.contains(HintType::IndexFailed)) {
@@ -269,17 +270,17 @@ QString SearchHintWidget::hintText(HintType type) const
 {
     switch (type) {
     case HintType::AuthHint:
-        return m_featuresText;
+        return tr("Supports ") + QLocale().createSeparatedList(disabledSearchModes());
     case HintType::IndexFailed:
-        return tr("Some index updates failed. Search results may be incomplete.");
+        return tr("Some index updates failed. Search results may be incomplete");
     case HintType::IndexWaitingUpgrade:
-        return tr("Waiting for index service upgrade.");
+        return tr("Waiting for index service upgrade");
     case HintType::IndexPausedBattery:
-        return tr("Running on battery. Some content indexing has been paused.");
+        return tr("Running on battery. Some content indexing has been paused");
     case HintType::IndexPausedPowerSave:
-        return tr("Power save mode is enabled. Some content indexing has been paused.");
+        return tr("Power save mode is enabled. Some content indexing has been paused");
     case HintType::IndexWaitingIdle:
-        return tr("Waiting for the device to become idle to continue updating.");
+        return tr("Waiting for the device to become idle to continue updating");
     case HintType::IndexUpdating:
         return updatingHintText();
     default:
@@ -289,15 +290,16 @@ QString SearchHintWidget::hintText(HintType type) const
 
 QString SearchHintWidget::updatingHintText() const
 {
-    // 按就绪情况提示当前可用的搜索模式（对齐文管 updatingHintText）
-    const bool textReady = m_textStatusValid && m_textState == kStateIdle;
-    const bool ocrReady = m_ocrStatusValid && m_ocrState == kStateIdle;
+    // 按索引就绪情况 + 对应搜索项是否勾选，提示当前可用的搜索模式（对齐文管 updatingHintText）
+    // 文件内容搜索对应全文搜索开关，图片内容搜索对应图片文本搜索开关
+    const bool textReady = m_textStatusValid && m_textState == kStateIdle && isFullTextSearchEnabled();
+    const bool ocrReady = m_ocrStatusValid && m_ocrState == kStateIdle && isOcrTextSearchEnabled();
 
     if (textReady && !ocrReady)
-        return tr("Index is being updated. File name and file content search are available.");
+        return tr("Index is being updated. File name and file content search are available");
     if (!textReady && ocrReady)
-        return tr("Index is being updated. File name and image content search are available.");
-    return tr("Index is being updated. File name search is available.");
+        return tr("Index is being updated. File name and image content search are available");
+    return tr("Index is being updated. File name search is available");
 }
 
 void SearchHintWidget::onLinkActivated(const QString &link)
@@ -375,12 +377,19 @@ void SearchHintWidget::initUi()
 
     m_hLayout = new QHBoxLayout();
     m_hLayout->setContentsMargins(0, 0, 0, 0);
-    m_hLayout->setSpacing(10);
+    m_hLayout->setSpacing(5);
 
     // 更新中提示的加载动画
     m_spinner = new DSpinner(this);
     m_spinner->setFixedSize(16, 16);
     m_spinner->hide();
+
+    // 提示类型图标（更新中使用 spinner，失败用 warning，其余用 waiting）
+    m_iconButton = new DIconButton(this);
+    m_iconButton->setIconSize({ 16, 16 });
+    m_iconButton->setFlat(true);
+    m_iconButton->setAttribute(Qt::WA_TransparentForMouseEvents);
+    m_iconButton->hide();
 
     // 文本标签（单行不换行）
     m_contentLabel = new DTipLabel("", this);
@@ -398,6 +407,7 @@ void SearchHintWidget::initUi()
     m_closeButton->hide();
 
     m_hLayout->addWidget(m_spinner, 0, Qt::AlignVCenter);
+    m_hLayout->addWidget(m_iconButton, 0, Qt::AlignVCenter);
     m_hLayout->addWidget(m_contentLabel, 1);
     m_hLayout->addWidget(m_closeButton, 0);
 
@@ -465,72 +475,21 @@ void SearchHintWidget::updateIndexStatus(IndexStatusMonitor::Index idx, const QS
 
 QString SearchHintWidget::buildElidedText(int availableWidth) const
 {
-    if (m_currentType == HintType::AuthHint)
-        return buildAuthElidedText(availableWidth);
-    return buildIndexElidedText(availableWidth);
-}
-
-QString SearchHintWidget::buildAuthElidedText(int availableWidth) const
-{
-    if (m_featuresText.isEmpty())
-        return {};
-
-    // 构建链接（始终完整显示，不省略）
-    const auto &linkColor = palette().color(QPalette::Highlight);
-    const QString linkText = tr("one-click authorization");
-    const QString linkTag = QString("<a href=\"authorize\" style=\"color:%1; text-decoration: none;\">%2</a>")
-                                    .arg(linkColor.name(), linkText);
-
-    // 各段固定文本
-    const QString prefix = tr("Supports ");
-    const QString middle = tr(", click ");
-    const QString suffix = tr(" to experience immediately");
-
-    QFontMetrics fm(m_contentLabel->font());
-
-    const int linkW = fm.horizontalAdvance(linkText);
-    const int featuresW = fm.horizontalAdvance(m_featuresText);
-    const int prefixW = fm.horizontalAdvance(prefix);
-    const int middleW = fm.horizontalAdvance(middle);
-    const int suffixW = fm.horizontalAdvance(suffix);
-
-    // 空间不足以显示链接
-    if (availableWidth <= linkW)
-        return linkTag;
-
-    // 尝试完整显示
-    if (prefixW + featuresW + middleW + linkW + suffixW <= availableWidth)
-        return prefix + m_featuresText + middle + linkTag + suffix;
-
-    // 省略功能列表（中间部分）
-    const int neededBase = prefixW + middleW + linkW + suffixW;
-    if (neededBase <= availableWidth) {
-        QString elided = fm.elidedText(m_featuresText, Qt::ElideMiddle, availableWidth - neededBase);
-        return prefix + elided + middle + linkTag + suffix;
-    }
-
-    // 省略后缀
-    if (prefixW + featuresW + middleW + linkW <= availableWidth)
-        return prefix + m_featuresText + middle + linkTag;
-
-    // 极端情况：仅链接
-    return linkTag;
-}
-
-QString SearchHintWidget::buildIndexElidedText(int availableWidth) const
-{
+    // 提示信息（描述部分，仅此部分做尾部省略）
     const QString desc = m_currentText.toHtmlEscaped();
     if (desc.isEmpty())
         return {};
 
-    // 各提示类型的操作链接（始终完整显示，不省略）
+    // 各提示类型的点击操作（始终完整显示，不省略）
     struct Link
     {
         QString href;
         QString text;
     };
     QList<Link> links;
-    if (m_currentType == HintType::IndexFailed) {
+    if (m_currentType == HintType::AuthHint) {
+        links << Link { QStringLiteral("authorize"), tr("authorize") };
+    } else if (m_currentType == HintType::IndexFailed) {
         links << Link { QStringLiteral("retry-update"), tr("Retry update") };
         links << Link { QStringLiteral("view-status"), tr("View") };
     } else if (m_currentType == HintType::IndexWaitingUpgrade) {
@@ -546,38 +505,32 @@ QString SearchHintWidget::buildIndexElidedText(int availableWidth) const
     }
 
     const auto &linkColor = palette().color(QPalette::Highlight).name();
-    const QString separator = QStringLiteral(" | ");
-    const QString gap = QStringLiteral(" ");
+    const QString clickPrefix = tr(", click ");
+    const QString orSeparator = tr(" or ");
+    const QString authSuffix = tr(" to experience immediately");
 
     QFontMetrics fm(m_contentLabel->font());
 
-    // 构建链接区并计算其宽度
-    int linksW = 0;
-    QString linksHtml;
+    // 构建点击动作部分并计算其宽度
+    QString clickHtml = clickPrefix;
+    int clickW = fm.horizontalAdvance(clickPrefix);
     for (int i = 0; i < links.size(); ++i) {
         if (i > 0) {
-            linksHtml += separator;
-            linksW += fm.horizontalAdvance(separator);
+            clickHtml += orSeparator;
+            clickW += fm.horizontalAdvance(orSeparator);
         }
-        linksHtml += QString("<a href=\"%1\" style=\"color:%2; text-decoration: none;\">%3</a>")
+        clickHtml += QString("<a href=\"%1\" style=\"color:%2; text-decoration: none;\">%3</a>")
                              .arg(links.at(i).href, linkColor, links.at(i).text.toHtmlEscaped());
-        linksW += fm.horizontalAdvance(links.at(i).text);
+        clickW += fm.horizontalAdvance(links.at(i).text);
+    }
+    if (m_currentType == HintType::AuthHint) {
+        clickHtml += authSuffix;
+        clickW += fm.horizontalAdvance(authSuffix);
     }
 
-    const int descW = fm.horizontalAdvance(desc);
-    const int gapW = fm.horizontalAdvance(gap);
-
-    // 空间不足以显示链接
-    if (availableWidth <= linksW)
-        return linksHtml;
-
-    // 尝试完整显示
-    if (descW + gapW + linksW <= availableWidth)
-        return desc + gap + linksHtml;
-
-    // 省略描述文本（保留链接完整）
-    const QString elided = fm.elidedText(desc, Qt::ElideRight, availableWidth - gapW - linksW);
-    return elided + gap + linksHtml;
+    // 只对提示信息做尾部省略，点击动作部分始终完整显示
+    const QString elided = fm.elidedText(desc, Qt::ElideRight, availableWidth - clickW);
+    return elided + clickHtml;
 }
 
 void SearchHintWidget::adjustElidedText()
@@ -590,10 +543,12 @@ void SearchHintWidget::adjustElidedText()
     const int closeBtnW = m_closeButton->isVisible()
             ? (m_closeButton->width() + m_hLayout->spacing())
             : 0;
-    const int spinnerW = m_spinner->isVisibleTo(this)
-            ? (m_spinner->width() + m_hLayout->spacing())
-            : 0;
-    const int availableWidth = width() - kMargin * 2 - closeBtnW - spinnerW;
+    int indicatorW = 0;
+    if (m_spinner->isVisibleTo(this))
+        indicatorW += m_spinner->width() + m_hLayout->spacing();
+    if (m_iconButton->isVisibleTo(this))
+        indicatorW += m_iconButton->width() + m_hLayout->spacing();
+    const int availableWidth = width() - kMargin * 2 - closeBtnW - indicatorW;
 
     m_contentLabel->setText(buildElidedText(availableWidth));
 }
