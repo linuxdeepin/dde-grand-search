@@ -421,42 +421,42 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="275"/>
         <source>Some index updates failed. Search results may be incomplete</source>
-        <translation type="unfinished"/>
+        <translation>Błąd aktualizacji niektórych indeksów. Wyniki wyszukiwania mogą być niekompletne</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="277"/>
         <source>Waiting for index service upgrade</source>
-        <translation type="unfinished"/>
+        <translation>Oczekiwanie na aktualizację usługi indeksowania</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="279"/>
         <source>Running on battery. Some content indexing has been paused</source>
-        <translation type="unfinished"/>
+        <translation>Aktualizacja niektórych indeksów jest wstrzymana podczas zasilania na baterii</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="281"/>
         <source>Power save mode is enabled. Some content indexing has been paused</source>
-        <translation type="unfinished"/>
+        <translation>Aktualizacja niektórych indeksów jest wstrzymana w trybie oszczędzania energii</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="283"/>
         <source>Waiting for the device to become idle to continue updating</source>
-        <translation type="unfinished"/>
+        <translation>Aktualizacja zostanie wznowiona po przejściu w stan bezczynności</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="299"/>
         <source>Index is being updated. File name and file content search are available</source>
-        <translation type="unfinished"/>
+        <translation>Indeks jest aktualizowany. Dostępne wyszukiwanie według nazwy lub zawartości pliku</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="301"/>
         <source>Index is being updated. File name and image content search are available</source>
-        <translation type="unfinished"/>
+        <translation>Indeks jest aktualizowany. Dostępne wyszukiwanie według nazwy lub zawartości obrazu</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="302"/>
         <source>Index is being updated. File name search is available</source>
-        <translation type="unfinished"/>
+        <translation>Indeks jest aktualizowany. Dostępne wyszukiwanie według nazwy pliku</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="491"/>
