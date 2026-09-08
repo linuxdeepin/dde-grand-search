@@ -461,7 +461,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="491"/>
         <source>authorize</source>
-        <translation type="unfinished"/>
+        <translation>Autoryzuj</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="508"/>
@@ -471,7 +471,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="509"/>
         <source> or </source>
-        <translation type="unfinished"/>
+        <translation> lub </translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="510"/>
@@ -706,7 +706,7 @@
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="44"/>
         <source>Search settings</source>
-        <translation type="unfinished"/>
+        <translation>Przeszukuj ustawienia</translation>
     </message>
 </context>
 </TS>
