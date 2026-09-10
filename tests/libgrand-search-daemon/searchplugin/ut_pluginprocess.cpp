@@ -102,7 +102,7 @@ TEST(PluginProcess, ut_startProgram)
 
     bool started = false;
     stub_ext::StubExt st;
-    auto startFunc = (void (QProcess::*)())(&QProcess::start);
+    auto startFunc = static_cast<void (QProcess::*)(QProcess::OpenMode)>(&QProcess::start);
     st.set_lamda(startFunc, [&started]() {
         started = true;
     });
@@ -279,7 +279,7 @@ TEST(PluginProcess, ut_removeChecklist)
     PluginProcess pp;
     stub_ext::StubExt st;
     int tid = -1;
-    st.set_lamda(&PluginProcess::killTimer, [&tid](QObject *, int id) {
+    st.set_lamda(static_cast<void (QObject::*)(int)>(&PluginProcess::killTimer), [&tid](QObject *, int id) {
         tid = id;
     });
 
