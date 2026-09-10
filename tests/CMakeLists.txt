@@ -97,7 +97,7 @@ include_directories("${CMAKE_SOURCE_DIR}/../3rdparty")
 add_subdirectory(grand-search)
 # FIXME Qt6: libgrand-search-daemon 源码目录结构变更、缺少头文件、
 # stub-ext 对 noexcept 函数指针不兼容，暂时跳过此模块
-# add_subdirectory(libgrand-search-daemon)
+add_subdirectory(libgrand-search-daemon)
 add_subdirectory(preview-plugin)
 add_subdirectory(grand-search-dock-plugin)
 

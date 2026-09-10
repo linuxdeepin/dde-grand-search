@@ -1,0 +1,522 @@
+{
+  "version": 1,
+  "project": "home-uos-service-codebase-repos-dde-grand-search",
+  "project_root": "/home/uos/multica_workspaces/v25-0f66ae001f2f/v-4073-87962396859f/workdir/dde-grand-search/tests",
+  "base_sha": "79f02425c054b401809129acee81ca32afc9b6e1",
+  "qt_version": null,
+  "generated_at": "2026-09-10T01:19:37.174466+00:00",
+  "scan_stats": {
+    "total_nodes": 11,
+    "filtered_methods": 11,
+    "testable": 11,
+    "non_testable": 0,
+    "high": 1,
+    "mid": 8,
+    "low": 2,
+    "review_pending": 0,
+    "usecase_covered": 8,
+    "usecase_not_covered": 3
+  },
+  "gate_thresholds": {
+    "high": {
+      "line": 90,
+      "branch": 80,
+      "function": 100
+    },
+    "mid": {
+      "line": 60,
+      "branch": 0,
+      "function": 100
+    },
+    "low": {
+      "line": 60,
+      "branch": 0,
+      "function": 100
+    }
+  },
+  "scope_rules": [
+    {
+      "pattern": "3rdparty/**",
+      "scope": "exempt",
+      "reason": "第三方库"
+    },
+    {
+      "pattern": "3rd_party/**",
+      "scope": "exempt",
+      "reason": "第三方库"
+    },
+    {
+      "pattern": "third_party/**",
+      "scope": "exempt",
+      "reason": "第三方库"
+    },
+    {
+      "pattern": "**/external/**",
+      "scope": "exempt",
+      "reason": "第三方库(external)"
+    },
+    {
+      "pattern": "**/vendor/**",
+      "scope": "exempt",
+      "reason": "第三方库(vendor)"
+    },
+    {
+      "pattern": "**/moc_*.cpp",
+      "scope": "exempt",
+      "reason": "MOC 生成"
+    },
+    {
+      "pattern": "**/moc_*.h",
+      "scope": "exempt",
+      "reason": "MOC 生成"
+    },
+    {
+      "pattern": "**/ui_*.h",
+      "scope": "exempt",
+      "reason": "UI 生成"
+    },
+    {
+      "pattern": "**/ui_*.cpp",
+      "scope": "exempt",
+      "reason": "UI 生成"
+    },
+    {
+      "pattern": "**/.pb.",
+      "scope": "exempt",
+      "reason": "Protobuf 生成"
+    },
+    {
+      "pattern": "**/generated/**",
+      "scope": "exempt",
+      "reason": "生成代码"
+    },
+    {
+      "pattern": "tests/**",
+      "scope": "exempt",
+      "reason": "测试代码本身"
+    },
+    {
+      "pattern": "autotests/**",
+      "scope": "exempt",
+      "reason": "测试代码本身"
+    },
+    {
+      "pattern": "test/**",
+      "scope": "exempt",
+      "reason": "测试代码本身"
+    }
+  ],
+  "file_overrides": [],
+  "classes": [
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.searchconfig.comboboxwidget.comboboxwidget.ComboboxWidget",
+      "name": "ComboboxWidget",
+      "file_path": "src/grand-search/gui/searchconfig/comboboxwidget/comboboxwidget.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.entrance.searchedit.SearchEdit",
+      "name": "SearchEdit",
+      "file_path": "src/grand-search/gui/entrance/searchedit.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.preview-plugin.audio-preview.audioview.AudioView",
+      "name": "AudioView",
+      "file_path": "src/preview-plugin/audio-preview/audioview.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search-dock-plugin.gui.grandsearchwidget.GrandSearchWidget",
+      "name": "GrandSearchWidget",
+      "file_path": "src/grand-search-dock-plugin/gui/grandsearchwidget.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search-dock-plugin.gui.grandsearchwidget.QuickPanel",
+      "name": "QuickPanel",
+      "file_path": "src/grand-search-dock-plugin/gui/grandsearchwidget.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.exhibition.preview.generalwidget.detailitem.DetailItem",
+      "name": "DetailItem",
+      "file_path": "src/grand-search/gui/exhibition/preview/generalwidget/detailitem.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.preview-plugin.video-preview.videoview.ThumbnailLabel",
+      "name": "ThumbnailLabel",
+      "file_path": "src/preview-plugin/video-preview/videoview.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.preview-plugin.video-preview.videoview.VideoView",
+      "name": "VideoView",
+      "file_path": "src/preview-plugin/video-preview/videoview.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.preview-plugin.text-preview.textview.TextView",
+      "name": "TextView",
+      "file_path": "src/preview-plugin/text-preview/textview.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.preview-plugin.pdf-preview.pdfview.PDFView",
+      "name": "PDFView",
+      "file_path": "src/preview-plugin/pdf-preview/pdfview.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.searchconfig.configwidget.ConfigWidget",
+      "name": "ConfigWidget",
+      "file_path": "src/grand-search/gui/searchconfig/configwidget.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.searchconfig.scopewidget.ScopeWidget",
+      "name": "ScopeWidget",
+      "file_path": "src/grand-search/gui/searchconfig/scopewidget.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.searchconfig.searchenginewidget.SearchEngineWidget",
+      "name": "SearchEngineWidget",
+      "file_path": "src/grand-search/gui/searchconfig/searchenginewidget.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.searchconfig.checkboxwidget.checkboxwidget.CheckBoxWidget",
+      "name": "CheckBoxWidget",
+      "file_path": "src/grand-search/gui/searchconfig/checkboxwidget/checkboxwidget.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.searchconfig.roundedbackground.RoundedBackground",
+      "name": "RoundedBackground",
+      "file_path": "src/grand-search/gui/searchconfig/roundedbackground.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.exhibition.exhibitionwidget.ExhibitionWidget",
+      "name": "ExhibitionWidget",
+      "file_path": "src/grand-search/gui/exhibition/exhibitionwidget.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.searchconfig.blacklistview.blacklistview.BlackListWrapper",
+      "name": "BlackListWrapper",
+      "file_path": "src/grand-search/gui/searchconfig/blacklistview/blacklistview.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.exhibition.preview.generalwidget.detailwidget.DetailWidget",
+      "name": "DetailWidget",
+      "file_path": "src/grand-search/gui/exhibition/preview/generalwidget/detailwidget.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.exhibition.preview.generalwidget.generaltoolbar.GeneralToolBar",
+      "name": "GeneralToolBar",
+      "file_path": "src/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.searchconfig.tailerwidget.TailerWidget",
+      "name": "TailerWidget",
+      "file_path": "src/grand-search/gui/searchconfig/tailerwidget.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.searchconfig.customwidget.CustomWidget",
+      "name": "CustomWidget",
+      "file_path": "src/grand-search/gui/searchconfig/customwidget.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.searchconfig.semanticsearchwidget.SemanticSearchWidget",
+      "name": "SemanticSearchWidget",
+      "file_path": "src/grand-search/gui/searchconfig/semanticsearchwidget.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.exhibition.matchresult.groupwidget.GroupWidget",
+      "name": "GroupWidget",
+      "file_path": "src/grand-search/gui/exhibition/matchresult/groupwidget.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.exhibition.preview.generalwidget.aitoolbar.AiToolBarInner",
+      "name": "AiToolBarInner",
+      "file_path": "src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.exhibition.preview.generalwidget.aitoolbar.AiToolBar",
+      "name": "AiToolBar",
+      "file_path": "src/grand-search/gui/exhibition/preview/generalwidget/aitoolbar.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.searchconfig.planwidget.PlanWidget",
+      "name": "PlanWidget",
+      "file_path": "src/grand-search/gui/searchconfig/planwidget.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.searchconfig.indexwidget.IndexWidget",
+      "name": "IndexWidget",
+      "file_path": "src/grand-search/gui/searchconfig/indexwidget.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.exhibition.matchresult.matchwidget.MatchWidget",
+      "name": "MatchWidget",
+      "file_path": "src/grand-search/gui/exhibition/matchresult/matchwidget.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.exhibition.matchresult.authpromptwidget.AuthPromptWidget",
+      "name": "AuthPromptWidget",
+      "file_path": "src/grand-search/gui/exhibition/matchresult/authpromptwidget.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.preview-plugin.image-preview.imageview.ImageView",
+      "name": "ImageView",
+      "file_path": "src/preview-plugin/image-preview/imageview.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.exhibition.preview.previewwidget.PreviewWidget",
+      "name": "PreviewWidget",
+      "file_path": "src/grand-search/gui/exhibition/preview/previewwidget.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.searchconfig.bestmatchwidget.BestMatchWidget",
+      "name": "BestMatchWidget",
+      "file_path": "src/grand-search/gui/searchconfig/bestmatchwidget.h",
+      "is_gui": true
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.grand-search.gui.searchconfig.blacklistwidget.BlackListWidget",
+      "name": "BlackListWidget",
+      "file_path": "src/grand-search/gui/searchconfig/blacklistwidget.h",
+      "is_gui": true
+    }
+  ],
+  "methods": [
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.dde-grand-search-daemon.utils.chineseletterhelper.ChineseLetterHelper.ChineseLetterHelper",
+      "name": "ChineseLetterHelper",
+      "class_qn": "ChineseLetterHelper",
+      "file_path": "src/dde-grand-search-daemon/utils/chineseletterhelper.cpp",
+      "access": "public",
+      "level": "low",
+      "score": 0,
+      "factors": [],
+      "source": "auto",
+      "testable": true,
+      "usecase_count": 0,
+      "signature": "()",
+      "exempt_reason": null,
+      "review_status": "auto",
+      "node_type": "Method"
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.dde-grand-search-daemon.utils.chineseletterhelper.ChineseLetterHelper.chinese2Pinyin",
+      "name": "chinese2Pinyin",
+      "class_qn": "ChineseLetterHelper",
+      "file_path": "src/dde-grand-search-daemon/utils/chineseletterhelper.cpp",
+      "access": "public",
+      "level": "mid",
+      "score": 2,
+      "factors": [
+        "linear_scan_in_loop:1",
+        "alloc_in_loop:2"
+      ],
+      "source": "auto",
+      "testable": true,
+      "usecase_count": 0,
+      "signature": "(const QString &words, QString &result)",
+      "exempt_reason": null,
+      "review_status": "auto",
+      "node_type": "Method"
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.dde-grand-search-daemon.utils.chineseletterhelper.ChineseLetterHelper.convertChinese2Pinyin",
+      "name": "convertChinese2Pinyin",
+      "class_qn": "ChineseLetterHelper",
+      "file_path": "src/dde-grand-search-daemon/utils/chineseletterhelper.cpp",
+      "access": "public",
+      "level": "mid",
+      "score": 1,
+      "factors": [
+        "alloc_in_loop:4"
+      ],
+      "source": "auto",
+      "testable": true,
+      "usecase_count": 6,
+      "signature": "(const QString &inStr, QString &outFirstPy, QString &outFullPy)",
+      "exempt_reason": null,
+      "review_status": "auto",
+      "node_type": "Method"
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.dde-grand-search-daemon.utils.specialtools.SpecialTools.getJsonArray",
+      "name": "getJsonArray",
+      "class_qn": "SpecialTools",
+      "file_path": "src/dde-grand-search-daemon/utils/specialtools.cpp",
+      "access": "public",
+      "level": "mid",
+      "score": 1,
+      "factors": [
+        "in_degree:2"
+      ],
+      "source": "auto",
+      "testable": true,
+      "usecase_count": 5,
+      "signature": "(QJsonObject *json, const QString &key)",
+      "exempt_reason": null,
+      "review_status": "auto",
+      "node_type": "Method"
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.dde-grand-search-daemon.utils.specialtools.SpecialTools.getJsonString",
+      "name": "getJsonString",
+      "class_qn": "SpecialTools",
+      "file_path": "src/dde-grand-search-daemon/utils/specialtools.cpp",
+      "access": "public",
+      "level": "mid",
+      "score": 1,
+      "factors": [
+        "in_degree:2"
+      ],
+      "source": "auto",
+      "testable": true,
+      "usecase_count": 5,
+      "signature": "(QJsonObject *json, const QString &key)",
+      "exempt_reason": null,
+      "review_status": "auto",
+      "node_type": "Method"
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.dde-grand-search-daemon.utils.specialtools.SpecialTools.getMimeType",
+      "name": "getMimeType",
+      "class_qn": "SpecialTools",
+      "file_path": "src/dde-grand-search-daemon/utils/specialtools.cpp",
+      "access": "public",
+      "level": "mid",
+      "score": 1,
+      "factors": [
+        "in_degree:2"
+      ],
+      "source": "auto",
+      "testable": true,
+      "usecase_count": 3,
+      "signature": "(const QFileInfo &file)",
+      "exempt_reason": null,
+      "review_status": "auto",
+      "node_type": "Method"
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.dde-grand-search-daemon.utils.chineseletterhelper.ChineseLetterHelper.initDict",
+      "name": "initDict",
+      "class_qn": "ChineseLetterHelper",
+      "file_path": "src/dde-grand-search-daemon/utils/chineseletterhelper.cpp",
+      "access": "public",
+      "level": "mid",
+      "score": 1,
+      "factors": [
+        "complexity:5"
+      ],
+      "source": "auto",
+      "testable": true,
+      "usecase_count": 2,
+      "signature": "()",
+      "exempt_reason": null,
+      "review_status": "auto",
+      "node_type": "Method"
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.dde-grand-search-daemon.utils.chineseletterhelper.ChineseLetterHelper.instance",
+      "name": "instance",
+      "class_qn": "ChineseLetterHelper",
+      "file_path": "src/dde-grand-search-daemon/utils/chineseletterhelper.cpp",
+      "access": "public",
+      "level": "low",
+      "score": 0,
+      "factors": [],
+      "source": "auto",
+      "testable": true,
+      "usecase_count": 2,
+      "signature": "()",
+      "exempt_reason": null,
+      "review_status": "auto",
+      "node_type": "Method"
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.dde-grand-search-daemon.utils.specialtools.SpecialTools.isHiddenFile",
+      "name": "isHiddenFile",
+      "class_qn": "SpecialTools",
+      "file_path": "src/dde-grand-search-daemon/utils/specialtools.cpp",
+      "access": "public",
+      "level": "high",
+      "score": 3,
+      "factors": [
+        "complexity:5",
+        "recursive",
+        "in_degree:2"
+      ],
+      "source": "auto",
+      "testable": true,
+      "usecase_count": 6,
+      "signature": "(const QString &fileName, QHash<QString, QSet<QString>> &filters, const QString &pathPrefix)",
+      "exempt_reason": null,
+      "review_status": "auto",
+      "node_type": "Method"
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.dde-grand-search-daemon.utils.specialtools.SpecialTools.splitCommand",
+      "name": "splitCommand",
+      "class_qn": "SpecialTools",
+      "file_path": "src/dde-grand-search-daemon/utils/specialtools.cpp",
+      "access": "public",
+      "level": "mid",
+      "score": 2,
+      "factors": [
+        "complexity:5",
+        "in_degree:2"
+      ],
+      "source": "auto",
+      "testable": true,
+      "usecase_count": 5,
+      "signature": "(const QString &cmd, QString &program, QStringList &args)",
+      "exempt_reason": null,
+      "review_status": "auto",
+      "node_type": "Method"
+    },
+    {
+      "qualified_name": "home-uos-service-codebase-repos-dde-grand-search.src.dde-grand-search-daemon.utils.specialtools.wpsMimeSpecialist",
+      "name": "wpsMimeSpecialist",
+      "class_qn": null,
+      "file_path": "src/dde-grand-search-daemon/utils/specialtools.cpp",
+      "access": "public",
+      "level": "mid",
+      "score": 1,
+      "factors": [
+        "in_degree:2"
+      ],
+      "source": "auto",
+      "testable": true,
+      "usecase_count": 0,
+      "signature": "(const QFileInfo &file, QMimeType &type)",
+      "exempt_reason": null,
+      "review_status": "auto",
+      "node_type": "Function"
+    }
+  ],
+  "review_queue": []
+}
