@@ -14,6 +14,7 @@
 
 #include <QTest>
 #include <QDir>
+#include <QSettings>
 
 GRANDSEARCH_USE_NAMESPACE
 
@@ -144,11 +145,11 @@ TEST(PluginLoader, ut_readInfo)
 
     QStringList called;
     QVariantHash conf;
-    st.set_lamda(&QSettings::value, [&groups, &called, &conf](QSettings *set, const QString &key, const QVariant &defaultValue)->QVariant {
+    st.set_lamda(static_cast<QVariant (QSettings::*)(QAnyStringView, const QVariant &) const>(&QSettings::value), [&groups, &called, &conf](QSettings *set, QAnyStringView key, const QVariant &defaultValue)->QVariant {
          if (!set->fileName().startsWith("/home"))
             return "";
-         called.append(key);
-         return conf.value(key, defaultValue);
+         called.append(key.toString());
+         return conf.value(key.toString(), defaultValue);
     });
 
     PluginLoader load;
