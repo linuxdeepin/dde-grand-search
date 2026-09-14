@@ -456,12 +456,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="302"/>
         <source>Index is being updated. File name search is available</source>
-        <translation type="unfinished"/>
+        <translation>Indeksointi käytössä. Tiedostohaku on käytettävissä</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="491"/>
         <source>authorize</source>
-        <translation type="unfinished"/>
+        <translation>valtuuta</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="508"/>
