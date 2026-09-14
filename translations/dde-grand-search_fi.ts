@@ -436,22 +436,22 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="281"/>
         <source>Power save mode is enabled. Some content indexing has been paused</source>
-        <translation type="unfinished"/>
+        <translation>Virransäästössä osa indeksoinnista on keskeytetty</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="283"/>
         <source>Waiting for the device to become idle to continue updating</source>
-        <translation type="unfinished"/>
+        <translation>Odotetaan siirtymistä normaaliin tilaan päivityksen jatkamiseksi</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="299"/>
         <source>Index is being updated. File name and file content search are available</source>
-        <translation type="unfinished"/>
+        <translation>Indeksointi käytössä. Tiedostohaku ja sisällönhaku on käytettävissä</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="301"/>
         <source>Index is being updated. File name and image content search are available</source>
-        <translation type="unfinished"/>
+        <translation>Indeksointi käytössä. Tiedostohaku ja kuvien sisällönhaku on käytettävissä</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="302"/>
