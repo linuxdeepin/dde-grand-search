@@ -431,37 +431,37 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="279"/>
         <source>Running on battery. Some content indexing has been paused</source>
-        <translation type="unfinished"/>
+        <translation>Es funciona amb bateria. La indexació d&apos;alguns continguts s&apos;ha pausat.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="281"/>
         <source>Power save mode is enabled. Some content indexing has been paused</source>
-        <translation type="unfinished"/>
+        <translation>El mode d&apos;estalvi d&apos;energia està activat. S&apos;ha pausat la indexació d&apos;alguns continguts.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="283"/>
         <source>Waiting for the device to become idle to continue updating</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;espera que el dispositiu quedi inactiu per continuar l&apos;actualització.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="299"/>
         <source>Index is being updated. File name and file content search are available</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;actualitza l&apos;índex. Estan disponibles la cerca per nom de fitxer i la cerca per contingut del fitxer.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="301"/>
         <source>Index is being updated. File name and image content search are available</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;actualitza l&apos;índex. Estan disponibles la cerca per nom de fitxer i la cerca pel contingut de la imatge.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="302"/>
         <source>Index is being updated. File name search is available</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;actualitza l&apos;índex. La cerca per nom de fitxer està disponible.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="491"/>
         <source>authorize</source>
-        <translation type="unfinished"/>
+        <translation>autoritza</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="508"/>
@@ -471,7 +471,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="509"/>
         <source> or </source>
-        <translation type="unfinished"/>
+        <translation>o</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="510"/>
@@ -706,7 +706,7 @@
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="44"/>
         <source>Search settings</source>
-        <translation type="unfinished"/>
+        <translation>Paràmetres de la cerca</translation>
     </message>
 </context>
 </TS>
