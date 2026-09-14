@@ -421,12 +421,12 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="275"/>
         <source>Some index updates failed. Search results may be incomplete</source>
-        <translation type="unfinished"/>
+        <translation>Algunes actualitzacions de l&apos;índex han fallat. És possible que els resultats de la cerca estiguin incomplets.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="277"/>
         <source>Waiting for index service upgrade</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;espera l&apos;actualització del servei d&apos;índex.</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="279"/>
