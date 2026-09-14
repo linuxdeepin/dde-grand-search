@@ -167,7 +167,7 @@
     <message>
         <location filename="../src/grand-search/gui/entrance/entrancewidget.cpp" line="68"/>
         <source>What would you like to search for?</source>
-        <translation>Co chciałbyś wyszukać?</translation>
+        <translation>Co chcesz wyszukać?</translation>
     </message>
 </context>
 <context>
