@@ -471,7 +471,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="509"/>
         <source> or </source>
-        <translation type="unfinished"/>
+        <translation> tai </translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="510"/>
@@ -706,7 +706,7 @@
     <message>
         <location filename="../src/grand-search-shell-plugin/package/searchitem.qml" line="44"/>
         <source>Search settings</source>
-        <translation type="unfinished"/>
+        <translation>Haun asetukset</translation>
     </message>
 </context>
 </TS>
