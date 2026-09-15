@@ -16,6 +16,7 @@ find_package(${DTK_CORE_PKG} REQUIRED)
 find_package(${QT_NS} COMPONENTS
     Core
     Gui
+    Concurrent
 REQUIRED)
 
 # 源码路径 — dde-grand-search-daemon（非 libgrand-search-daemon）
@@ -34,6 +35,21 @@ set(UTILS_UT_SRC
     "utils/ut_chineseletterhelper.cpp"
 )
 
+# app 模块源码（searcher/app/）
+set(APP_SRC
+    "${PROJECT_DAEMONSRC_PATH}/searcher/app/desktopappsearcher.cpp"
+    "${PROJECT_DAEMONSRC_PATH}/searcher/app/desktopappworker.cpp"
+    "${PROJECT_DAEMONSRC_PATH}/searcher/proxyworker.cpp"
+    "${PROJECT_DAEMONSRC_PATH}/searcher/searcher.cpp"
+    "${PROJECT_SOURCE_PATH}/global/searchhelper.cpp"
+)
+
+# app 模块单元测试文件
+set(APP_UT_SRC
+    "searcher/app/ut_desktopappsearcher.cpp"
+    "searcher/app/ut_desktopappworker.cpp"
+)
+
 # logDaemon 定义文件（源码中 Q_DECLARE_LOGGING_CATEGORY，定义在 main.cpp 之外单独提供）
 set(LOGDAEMON_SRC "${CMAKE_CURRENT_BINARY_DIR}/logdaemon_def.cpp")
 file(WRITE ${LOGDAEMON_SRC}
@@ -49,6 +65,8 @@ set(SRCS
     ${LOGDAEMON_SRC}
     ${UTILS_SRC}
     ${UTILS_UT_SRC}
+    ${APP_SRC}
+    ${APP_UT_SRC}
     ${UTILS_QRC}
     ${CPP_STUB_SRC}
 )
@@ -56,6 +74,7 @@ set(SRCS
 set(Qt_LIBS
     ${QT_NS}::Core
     ${QT_NS}::Gui
+    ${QT_NS}::Concurrent
 )
 
 # 可执行程序
