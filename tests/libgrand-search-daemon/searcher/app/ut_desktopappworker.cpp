@@ -36,9 +36,6 @@ TEST(DesktopAppWorkerTest, ut_working_0)
 
 TEST(DesktopAppWorkerTest, ut_working_1)
 {
-    stub_ext::StubExt st;
-    st.set_lamda(&QAtomicInt::loadAcquire, [](){ return ProxyWorker::Terminated; });
-
     QHash<QString, QList<QSharedPointer<GrandSearch::MatchedItem>>> indexTable;
     QSharedPointer<GrandSearch::MatchedItem> info(new GrandSearch::MatchedItem());
     info->name = "test app";
@@ -51,14 +48,12 @@ TEST(DesktopAppWorkerTest, ut_working_1)
     DesktopAppWorker worker(GRANDSEARCH_CLASS_APP_DESKTOP);
     worker.setIndexTable(indexTable);
     worker.m_context = "test";
+    worker.m_status.storeRelease(ProxyWorker::Terminated);
     EXPECT_FALSE(worker.working(nullptr));
 }
 
 TEST(DesktopAppWorkerTest, ut_working_2)
 {
-    stub_ext::StubExt st;
-    st.set_lamda(&QTime::elapsed, [](){ return 100; });
-
     QHash<QString, QList<QSharedPointer<GrandSearch::MatchedItem>>> indexTable;
     QSharedPointer<GrandSearch::MatchedItem> info(new GrandSearch::MatchedItem());
     info->name = "test app";
@@ -72,6 +67,7 @@ TEST(DesktopAppWorkerTest, ut_working_2)
     worker.setIndexTable(indexTable);
     worker.m_context = "test";
     EXPECT_TRUE(worker.working(nullptr));
+    EXPECT_TRUE(worker.hasItem());
 }
 
 TEST(DesktopAppWorkerTest, ut_terminate)
@@ -107,4 +103,58 @@ TEST(DesktopAppWorkerTest, ut_setIndexTable)
     worker.m_status.storeRelease(ProxyWorker::Runing);
     EXPECT_NO_FATAL_FAILURE(worker.setIndexTable({}));
 
+}
+
+TEST(DesktopAppWorkerTest, ut_buildKeyword_0)
+{
+    DesktopAppWorker worker(GRANDSEARCH_CLASS_APP_DESKTOP);
+    EXPECT_EQ(worker.buildKeyword("hello"), "hello");
+    EXPECT_EQ(worker.buildKeyword("he*lo"), "he\\*lo");
+    EXPECT_EQ(worker.buildKeyword(""), "");
+}
+
+TEST(DesktopAppWorkerTest, ut_buildKeyword_1)
+{
+    DesktopAppWorker worker(GRANDSEARCH_CLASS_APP_DESKTOP);
+    QString json = R"({"Keyword":["app1","app2"]})";
+    EXPECT_EQ(worker.buildKeyword(json), "app1|app2");
+}
+
+TEST(DesktopAppWorkerTest, ut_buildKeyword_2)
+{
+    DesktopAppWorker worker(GRANDSEARCH_CLASS_APP_DESKTOP);
+    QString json = R"({"Keyword":[]})";
+    EXPECT_EQ(worker.buildKeyword(json), ".*");
+}
+
+TEST(DesktopAppWorkerTest, ut_buildKeyword_3)
+{
+    DesktopAppWorker worker(GRANDSEARCH_CLASS_APP_DESKTOP);
+    QString json = R"({"Keyword":[""]})";
+    EXPECT_EQ(worker.buildKeyword(json), ".*");
+}
+
+TEST(DesktopAppWorkerTest, ut_buildKeyword_4)
+{
+    DesktopAppWorker worker(GRANDSEARCH_CLASS_APP_DESKTOP);
+    QString json = R"({"Keyword":["ap*p","te?st"]})";
+    EXPECT_EQ(worker.buildKeyword(json), "ap\\*p|te\\?st");
+}
+
+TEST(DesktopAppWorkerTest, ut_group)
+{
+    DesktopAppWorker worker(GRANDSEARCH_CLASS_APP_DESKTOP);
+    EXPECT_EQ(worker.group(), GRANDSEARCH_GROUP_APP);
+}
+
+TEST(DesktopAppWorkerTest, ut_status)
+{
+    DesktopAppWorker worker(GRANDSEARCH_CLASS_APP_DESKTOP);
+    EXPECT_EQ(worker.status(), ProxyWorker::Ready);
+
+    worker.m_status.storeRelease(ProxyWorker::Runing);
+    EXPECT_EQ(worker.status(), ProxyWorker::Runing);
+
+    worker.m_status.storeRelease(ProxyWorker::Terminated);
+    EXPECT_EQ(worker.status(), ProxyWorker::Terminated);
 }
