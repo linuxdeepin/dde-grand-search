@@ -16,6 +16,8 @@ find_package(${DTK_CORE_PKG} REQUIRED)
 find_package(${QT_NS} COMPONENTS
     Core
     Gui
+    DBus
+    Concurrent
 REQUIRED)
 
 # 源码路径 — dde-grand-search-daemon（非 libgrand-search-daemon）
@@ -28,10 +30,29 @@ set(UTILS_SRC
     "${PROJECT_DAEMONSRC_PATH}/utils/chineseletterhelper.cpp"
 )
 
+# extend 模块源码及其依赖
+set(EXTEND_SRC
+    "${PROJECT_DAEMONSRC_PATH}/searcher/extend/extendsearcher.cpp"
+    "${PROJECT_DAEMONSRC_PATH}/searcher/extend/extendworker.cpp"
+    "${PROJECT_DAEMONSRC_PATH}/searcher/searcher.cpp"
+    "${PROJECT_DAEMONSRC_PATH}/searcher/proxyworker.cpp"
+    "${PROJECT_DAEMONSRC_PATH}/searchplugin/pluginliaison.cpp"
+    "${PROJECT_DAEMONSRC_PATH}/searchplugin/convertors/dataconvertor.cpp"
+    "${PROJECT_DAEMONSRC_PATH}/searchplugin/convertors/abstractconvertor.cpp"
+    "${PROJECT_DAEMONSRC_PATH}/searchplugin/convertors/convertorv1_0.cpp"
+    "${PROJECT_DAEMONSRC_PATH}/searchplugin/interface/searchplugininterfacev1.cpp"
+)
+
 # 单元测试文件 — 仅 utils 子目录中属于本测试范围的文件
 set(UTILS_UT_SRC
     "utils/ut_specialtools.cpp"
     "utils/ut_chineseletterhelper.cpp"
+)
+
+# extend 模块单元测试文件
+set(EXTEND_UT_SRC
+    "searcher/extend/ut_extendsearcher.cpp"
+    "searcher/extend/ut_extendworker.cpp"
 )
 
 # logDaemon 定义文件（源码中 Q_DECLARE_LOGGING_CATEGORY，定义在 main.cpp 之外单独提供）
@@ -48,7 +69,9 @@ set(SRCS
     main.cpp
     ${LOGDAEMON_SRC}
     ${UTILS_SRC}
+    ${EXTEND_SRC}
     ${UTILS_UT_SRC}
+    ${EXTEND_UT_SRC}
     ${UTILS_QRC}
     ${CPP_STUB_SRC}
 )
@@ -56,6 +79,8 @@ set(SRCS
 set(Qt_LIBS
     ${QT_NS}::Core
     ${QT_NS}::Gui
+    ${QT_NS}::DBus
+    ${QT_NS}::Concurrent
 )
 
 # 可执行程序
