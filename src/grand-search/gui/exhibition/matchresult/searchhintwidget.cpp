@@ -393,6 +393,7 @@ void SearchHintWidget::initUi()
 
     // 文本标签（单行不换行）
     m_contentLabel = new DTipLabel("", this);
+    m_contentLabel->setTextFormat(Qt::RichText);
     m_contentLabel->setWordWrap(false);
     m_contentLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
     QFont contentFont = m_contentLabel->font();
