@@ -461,41 +461,39 @@
         <translation>索引更新中，已支持文件名搜索</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="491"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="492"/>
         <source>authorize</source>
         <translation>一键授权</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="508"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="507"/>
         <source>, click </source>
         <translation>，点击</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="509"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="508"/>
         <source> or </source>
         <translation>或</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="510"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="509"/>
         <source> to experience immediately</source>
         <translation>立即体验</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="493"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="496"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="495"/>
         <source>Retry update</source>
-        <translation>立即更新</translation>
+        <translation>重新更新</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="494"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="497"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="502"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="504"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="496"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="501"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="503"/>
         <source>View</source>
         <translation>查看详情</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="501"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="500"/>
         <source>Continue updating</source>
         <translation>仍要更新</translation>
     </message>

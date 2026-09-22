@@ -490,10 +490,8 @@ QString SearchHintWidget::buildElidedText(int availableWidth) const
     QList<Link> links;
     if (m_currentType == HintType::AuthHint) {
         links << Link { QStringLiteral("authorize"), tr("authorize") };
-    } else if (m_currentType == HintType::IndexFailed) {
-        links << Link { QStringLiteral("retry-update"), tr("Retry update") };
-        links << Link { QStringLiteral("view-status"), tr("View") };
-    } else if (m_currentType == HintType::IndexWaitingUpgrade) {
+    } else if (m_currentType == HintType::IndexFailed
+               || m_currentType == HintType::IndexWaitingUpgrade) {
         links << Link { QStringLiteral("retry-update"), tr("Retry update") };
         links << Link { QStringLiteral("view-status"), tr("View") };
     } else if (m_currentType == HintType::IndexPausedBattery

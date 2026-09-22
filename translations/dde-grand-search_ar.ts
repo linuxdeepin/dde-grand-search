@@ -461,41 +461,39 @@
         <translation>جارٍ تحديث الفهرس. البحث عن أسماء الملفات متاح.</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="491"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="492"/>
         <source>authorize</source>
         <translation>تفويض</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="508"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="507"/>
         <source>, click </source>
         <translation>، انقر</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="509"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="508"/>
         <source> or </source>
         <translation> أو </translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="510"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="509"/>
         <source> to experience immediately</source>
         <translation>لتجربته فورًا</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="493"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="496"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="495"/>
         <source>Retry update</source>
         <translation>إعادة محاولة التحديث</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="494"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="497"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="502"/>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="504"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="496"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="501"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="503"/>
         <source>View</source>
         <translation>عرض</translation>
     </message>
     <message>
-        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="501"/>
+        <location filename="../src/grand-search/gui/exhibition/matchresult/searchhintwidget.cpp" line="500"/>
         <source>Continue updating</source>
         <translation>مواصلة التحديث</translation>
     </message>
