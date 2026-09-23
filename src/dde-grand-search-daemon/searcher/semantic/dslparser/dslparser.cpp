@@ -330,24 +330,30 @@ DateInfoCond::DateInfoCond(const QString &text, QObject *parent)
     static QRegularExpression reg3("([\\d\\.]+) ?day", QRegularExpression::CaseInsensitiveOption);
     static QRegularExpression reg4("([\\d\\.]+) ?hour", QRegularExpression::CaseInsensitiveOption);
     static QRegularExpression reg5("([\\d\\.]+) ?(min|minute)", QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression regWeekDay("([\\d\\.]+) ?week.*?([\\d\\.]+) ?day", QRegularExpression::CaseInsensitiveOption);
     QRegularExpressionMatch match;
     if ((match = reg.match(temp)).hasMatch()) {   // 年
-        int offset = match.captured(1).toInt() - 1;
+        int offset = match.captured(1).toInt();
         auto anchor = QDateTime(QDate(curDate.year(), 1, 1), QTime(0, 0, 0));
         m_timestamp2 = anchor.addSecs(-1).toSecsSinceEpoch();
         m_timestamp = anchor.addYears(-1 * offset).toSecsSinceEpoch();
     } else if ((match = reg1.match(temp)).hasMatch()) {   // 月
-        int offset = match.captured(1).toInt() - 1;
+        int offset = match.captured(1).toInt();
         auto anchor = QDateTime(QDate(curDate.year(), curDate.month(), 1), QTime(0, 0, 0));
         m_timestamp2 = anchor.addSecs(-1).toSecsSinceEpoch();
         m_timestamp = anchor.addMonths(-1 * offset).toSecsSinceEpoch();
+    } else if ((match = regWeekDay.match(temp)).hasMatch()) {   // N week M day → total days
+        int totalDays = match.captured(1).toInt() * 7 + match.captured(2).toInt();
+        auto anchor = QDateTime(curDate, QTime(0, 0, 0));
+        m_timestamp2 = anchor.addSecs(-1).toSecsSinceEpoch();
+        m_timestamp = anchor.addDays(-1 * totalDays).toSecsSinceEpoch();
     } else if ((match = reg2.match(temp)).hasMatch()) {   // 周
-        int offset = match.captured(1).toInt() - 1;
+        int offset = match.captured(1).toInt();
         auto anchor = QDateTime(curDate.addDays(1 - curDate.dayOfWeek()), QTime(0, 0, 0));
         m_timestamp2 = anchor.addSecs(-1).toSecsSinceEpoch();
         m_timestamp = anchor.addDays(-1 * offset * 7).toSecsSinceEpoch();
     } else if ((match = reg3.match(temp)).hasMatch()) {   // 天
-        int offset = match.captured(1).toInt() - 1;
+        int offset = match.captured(1).toInt();
         auto anchor = QDateTime(curDate, QTime(0, 0, 0));
         m_timestamp2 = anchor.addSecs(-1).toSecsSinceEpoch();
         m_timestamp = anchor.addDays(-1 * offset).toSecsSinceEpoch();
