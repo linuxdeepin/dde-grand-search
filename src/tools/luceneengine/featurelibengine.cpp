@@ -127,7 +127,11 @@ QString FeatureLibEnginePrivate::packageString(const QString &key, const QString
         }
 
         ++count;
-        ret.append(QString("%0:%1").arg(key).arg(str));
+        // Escape Lucene special characters and wrap in quotes to prevent
+        // QueryParser from misinterpreting values containing spaces or
+        // special characters (e.g., album names like "Greatest Hits").
+        str.replace("\\", "\\\\").replace("\"", "\\\"");
+        ret.append(QString("%0:\"%1\"").arg(key).arg(str));
         if (i != (size - 1))
             ret.append(" OR ");
     }
