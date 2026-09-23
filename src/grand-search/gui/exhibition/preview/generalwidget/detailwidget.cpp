@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -20,7 +20,7 @@ DetailWidget::DetailWidget(QWidget *parent)
 
     m_mainLayout = new QVBoxLayout(this);
     m_mainLayout->setContentsMargins(10, 10, 10, 10);
-    m_mainLayout->setSpacing(1);
+    m_mainLayout->setSpacing(0);
 
     this->setLayout(m_mainLayout);
 
