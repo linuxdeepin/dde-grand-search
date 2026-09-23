@@ -42,6 +42,7 @@ private:
 
 private slots:
     void onMoreMenuTriggered(const QAction *action);
+    void updateButtonIcon();
     void onProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void onDownloadFinished();
     void onDownloadProgress(qint64 bytesReceived, qint64 bytesTotal);

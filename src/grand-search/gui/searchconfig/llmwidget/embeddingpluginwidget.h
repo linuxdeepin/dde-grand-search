@@ -25,6 +25,7 @@ protected:
     void paintEvent(QPaintEvent* e) Q_DECL_OVERRIDE;
 private:
     void initUI();
+    void updateButtonIcon();
 signals:
     void pluginStateChanged(bool);
 

@@ -5,6 +5,7 @@
 #include "autoindexstatus.h"
 
 #include <DFontSizeManager>
+#include <DGuiApplicationHelper>
 #include <DIconButton>
 
 DWIDGET_USE_NAMESPACE
@@ -41,10 +42,15 @@ AutoIndexStatus::AutoIndexStatus(QWidget *parent) : QWidget(parent)
     m_layout->addWidget(m_icon);
     m_layout->addSpacing(4);
     m_layout->addWidget(m_text);
+
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged,
+            this, &AutoIndexStatus::updateIcon);
 }
 
 void AutoIndexStatus::updateContent(AutoIndexStatus::Status st, const QString &text)
 {
+    m_currentStatus = st;
+    m_currentText = text;
     m_text->setText(text);
 
     switch (st) {
@@ -64,6 +70,20 @@ void AutoIndexStatus::updateContent(AutoIndexStatus::Status st, const QString &t
         m_icon->show();
         m_spinner->parentWidget()->hide();
         m_spinner->stop();
+        break;
+    default:
+        break;
+    }
+}
+
+void AutoIndexStatus::updateIcon()
+{
+    switch (m_currentStatus) {
+    case Success:
+        m_icon->setPixmap(QIcon::fromTheme("icon_ok").pixmap(m_icon->size()));
+        break;
+    case Fail:
+        m_icon->setPixmap(QIcon::fromTheme("icon_warning").pixmap(m_icon->size()));
         break;
     default:
         break;
