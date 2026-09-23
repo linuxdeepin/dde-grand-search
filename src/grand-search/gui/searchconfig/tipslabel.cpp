@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2024 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -27,5 +27,7 @@ void TipsLabel::onThemeChanged()
     QColor color = DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType
             ? QColor(0, 0, 0, 255 * 0.4) : QColor(255, 255, 255, 255 * 0.4);
     p.setColor(QPalette::Active, QPalette::WindowText, color);
+    p.setColor(QPalette::Inactive, QPalette::WindowText, color);
+    p.setColor(QPalette::Disabled, QPalette::WindowText, color);
     setPalette(p);
 }
