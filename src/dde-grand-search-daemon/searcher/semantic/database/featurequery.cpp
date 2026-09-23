@@ -72,11 +72,11 @@ FeatureLibEngine::QueryConditons FeatureQueryPrivate::translateConditons(const S
                        << "Resolution:" << entity.resolution;
 
     FeatureLibEngine::QueryConditons cond;
-    if (entity.keys.isEmpty() && entity.author.isEmpty() && entity.album.isEmpty() && entity.duration.isEmpty() && entity.resolution.isEmpty())
+    if (entity.keys.isEmpty() && entity.author.isEmpty() && entity.album.isEmpty() && entity.duration.isEmpty() && entity.resolution.isEmpty() && entity.suffix.isEmpty())
         return cond;
 
     // 图片
-    if (!entity.keys.isEmpty()) {
+    if (!entity.keys.isEmpty() || !entity.suffix.isEmpty()) {
         const QStringList suffix = SearchHelper::instance()->getSuffixByGroupName(PICTURE_GROUP);
         QStringList picSuffix;
         if (entity.types.contains(PICTURE_GROUP))
@@ -93,15 +93,17 @@ FeatureLibEngine::QueryConditons FeatureQueryPrivate::translateConditons(const S
                                << "Keys:" << entity.keys;
             FeatureLibEngine::QueryConditons tmp;
             tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::FileType, picSuffix));
-            tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
-            tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Text, entity.keys));
+            if (!entity.keys.isEmpty()) {
+                tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
+                tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Text, entity.keys));
+            }
 
             cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(tmp)));
         }
     }
 
     // 音乐
-    if (!(entity.keys.isEmpty() && entity.author.isEmpty() && entity.album.isEmpty() && entity.duration.isEmpty())) {
+    if (!(entity.keys.isEmpty() && entity.author.isEmpty() && entity.album.isEmpty() && entity.duration.isEmpty()) || !entity.suffix.isEmpty()) {
         const QStringList suffix = SearchHelper::instance()->getSuffixByGroupName(AUDIO_GROUP);
         QStringList mscSuffix;
         if (entity.types.contains(AUDIO_GROUP))
@@ -158,8 +160,10 @@ FeatureLibEngine::QueryConditons FeatureQueryPrivate::translateConditons(const S
                     isFirst = false;
                 }
 
-                tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
-                tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(subTmp)));
+                if (!subTmp.isEmpty()) {
+                    tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
+                    tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(subTmp)));
+                }
             }
 
             cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(tmp)));
@@ -167,7 +171,7 @@ FeatureLibEngine::QueryConditons FeatureQueryPrivate::translateConditons(const S
     }
 
     // 视频
-    if (!(entity.duration.isEmpty() && entity.resolution.isEmpty())) {
+    if (!(entity.duration.isEmpty() && entity.resolution.isEmpty()) || !entity.suffix.isEmpty()) {
         const QStringList suffix = SearchHelper::instance()->getSuffixByGroupName(VIDEO_GROUP);
         QStringList vidSuffix;
         if (entity.types.contains(VIDEO_GROUP))
@@ -205,8 +209,10 @@ FeatureLibEngine::QueryConditons FeatureQueryPrivate::translateConditons(const S
                     isFirst = false;
                 }
 
-                tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
-                tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(subTmp)));
+                if (!subTmp.isEmpty()) {
+                    tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::And));
+                    tmp.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(subTmp)));
+                }
             }
 
             cond.append(FeatureLibEngine::makeProperty(FeatureLibEngine::Composite, QVariant::fromValue(tmp)));
@@ -331,7 +337,7 @@ void FeatureQuery::setEntity(const QList<SemanticEntity> &entity)
 {
     d->m_entity.clear();
     for (const SemanticEntity &e : entity) {
-        if (e.keys.isEmpty() && e.author.isEmpty() && e.album.isEmpty() && e.duration.isEmpty() && e.resolution.isEmpty())
+        if (e.keys.isEmpty() && e.author.isEmpty() && e.album.isEmpty() && e.duration.isEmpty() && e.resolution.isEmpty() && e.suffix.isEmpty())
             continue;
 
         d->m_entity.append(e);

@@ -162,7 +162,7 @@ SearchQuery FileNameQueryPrivate::createSearchQuery(const SemanticEntity &entity
     } else if (keyList.size() == 1) {
         query = SearchFactory::createQuery(keyList.first(), SearchQuery::Type::Simple);
     } else {
-        query = SearchFactory::createQuery("", SearchQuery::Type::Simple);
+        query = SearchFactory::createQuery("*", SearchQuery::Type::Wildcard);
     }
 
     return query;
