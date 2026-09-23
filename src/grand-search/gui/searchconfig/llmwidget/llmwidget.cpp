@@ -75,12 +75,8 @@ void LLMWidget::initUI()
     m_pLabelSummary->setElideMode(Qt::ElideRight);
 
     m_pManageModel = new ModelManageButton(tr("Install Model"), this);
-    QPixmap pixmap = QApplication::style()->standardIcon(QStyle::SP_ArrowDown).pixmap(QSize(10, 10));
-    QPainter painter(&pixmap);
-    painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
-    painter.fillRect(pixmap.rect(), DGuiApplicationHelper::instance()->applicationPalette().textTips());
-    m_pManageModel->setIcon(pixmap);
     m_pManageModel->setProperty("modelStatus", Uninstall);
+    updateButtonIcon();
     DFontSizeManager::instance()->bind(m_pManageModel, DFontSizeManager::T8, QFont::Medium);
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
@@ -106,6 +102,17 @@ void LLMWidget::initConnect()
 {
     connect(m_pManageModel, &DCommandLinkButton::clicked, this, &LLMWidget::onClickedStatusBtn);
     connect(m_pMenu, &QMenu::triggered, this, &LLMWidget::onMoreMenuTriggered);
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged,
+            this, &LLMWidget::updateButtonIcon);
+}
+
+void LLMWidget::updateButtonIcon()
+{
+    QPixmap pixmap = QApplication::style()->standardIcon(QStyle::SP_ArrowDown).pixmap(QSize(10, 10));
+    QPainter painter(&pixmap);
+    painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+    painter.fillRect(pixmap.rect(), DGuiApplicationHelper::instance()->applicationPalette().textTips());
+    m_pManageModel->setIcon(pixmap);
 }
 
 void LLMWidget::paintEvent(QPaintEvent *e)

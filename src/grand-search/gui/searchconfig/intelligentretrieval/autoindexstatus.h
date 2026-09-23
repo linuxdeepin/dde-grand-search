@@ -23,11 +23,15 @@ public:
 signals:
 
 public slots:
+private slots:
+    void updateIcon();
 private:
     QLabel *m_text = nullptr;
     QLabel *m_icon = nullptr;
     QHBoxLayout *m_layout = nullptr;
     DTK_WIDGET_NAMESPACE::DSpinner *m_spinner = nullptr;
+    Status m_currentStatus = Success;
+    QString m_currentText;
 };
 
 }

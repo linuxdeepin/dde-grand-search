@@ -103,14 +103,10 @@ void EmbeddingPluginWidget::initUI()
     m_pLabelSummary->setElideMode(Qt::ElideRight);
 
     m_pManageModel = new ModelManageButton(tr("Install"), this);
-    QPixmap pixmap = QApplication::style()->standardIcon(QStyle::SP_ArrowDown).pixmap(QSize(10, 10));
-    QPainter painter(&pixmap);
-    painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
-    painter.fillRect(pixmap.rect(), DGuiApplicationHelper::instance()->applicationPalette().textTips());
-    m_pManageModel->setIcon(pixmap);
     m_pManageModel->setProperty("modelStatus", Uninstall);
     DFontSizeManager::instance()->bind(m_pManageModel, DFontSizeManager::T8, QFont::Medium);
     m_pManageModel->updateRectSize();
+    updateButtonIcon();
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->setContentsMargins(10, 8, 10, 6);
@@ -122,6 +118,17 @@ void EmbeddingPluginWidget::initUI()
     setLayout(mainLayout);
 
     connect(m_pManageModel, &ModelManageButton::clicked, this, &EmbeddingPluginWidget::openAppStore);
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged,
+            this, &EmbeddingPluginWidget::updateButtonIcon);
+}
+
+void EmbeddingPluginWidget::updateButtonIcon()
+{
+    QPixmap pixmap = QApplication::style()->standardIcon(QStyle::SP_ArrowDown).pixmap(QSize(10, 10));
+    QPainter painter(&pixmap);
+    painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+    painter.fillRect(pixmap.rect(), DGuiApplicationHelper::instance()->applicationPalette().textTips());
+    m_pManageModel->setIcon(pixmap);
 }
 
 void EmbeddingPluginWidget::openAppStore()
