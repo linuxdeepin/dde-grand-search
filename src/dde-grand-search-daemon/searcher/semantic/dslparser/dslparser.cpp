@@ -311,6 +311,7 @@ DateInfoCond::DateInfoCond(const QString &text, QObject *parent)
     const QDate curDate = curDT.date();
 
     m_timestamp = 0;
+    m_timestamp2 = 0;
     int pos = m_cond.indexOf("\"") + 1;
     if (pos == 0) {
         m_compType = ">";
@@ -331,7 +332,15 @@ DateInfoCond::DateInfoCond(const QString &text, QObject *parent)
     static QRegularExpression reg4("([\\d\\.]+) ?hour", QRegularExpression::CaseInsensitiveOption);
     static QRegularExpression reg5("([\\d\\.]+) ?(min|minute)", QRegularExpression::CaseInsensitiveOption);
     QRegularExpressionMatch match;
-    if ((match = reg.match(temp)).hasMatch()) {   // 年
+    // 先尝试解析绝对日期（如 "2024-10-16 00:00:00"），QueryLang 对"上周x"等
+    // 中文时间表达可能输出绝对日期而非相对时长
+    QDateTime absDT = QDateTime::fromString(temp, "yyyy-MM-dd hh:mm:ss");
+    if (!absDT.isValid())
+        absDT = QDateTime::fromString(temp, "yyyy-MM-dd");
+    if (absDT.isValid()) {
+        m_timestamp = absDT.toSecsSinceEpoch();
+        m_timestamp2 = curDT.toSecsSinceEpoch();
+    } else if ((match = reg.match(temp)).hasMatch()) {   // 年
         int offset = match.captured(1).toInt() - 1;
         auto anchor = QDateTime(QDate(curDate.year(), 1, 1), QTime(0, 0, 0));
         m_timestamp2 = anchor.addSecs(-1).toSecsSinceEpoch();
