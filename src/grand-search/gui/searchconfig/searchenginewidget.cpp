@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -54,7 +54,7 @@ SearchEngineWidget::SearchEngineWidget(QWidget *parent)
     m_mainLayout->addWidget(m_contentLabel);
 
     m_comboboxWidget = new ComboboxWidget(this);
-    m_comboboxWidget->setFixedSize(COMBOBOXWIDGETWIDTH, COMBOBOXWIDGETHEIGHT);
+    m_comboboxWidget->setFixedWidth(COMBOBOXWIDGETWIDTH);
     m_comboboxWidget->setEnableBackground(true);
     QString userChoice = SearchConfig::instance()->getConfig(GRANDSEARCH_WEB_GROUP, GRANDSEARCH_WEB_SEARCHENGINE, "").toString();
     auto comboBox = m_comboboxWidget->getComboBox();
