@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2025-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -162,7 +162,7 @@ SearchQuery FileNameQueryPrivate::createSearchQuery(const SemanticEntity &entity
     } else if (keyList.size() == 1) {
         query = SearchFactory::createQuery(keyList.first(), SearchQuery::Type::Simple);
     } else {
-        query = SearchFactory::createQuery("", SearchQuery::Type::Simple);
+        query = SearchFactory::createQuery("*", SearchQuery::Type::Wildcard);
     }
 
     return query;
