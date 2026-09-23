@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/bestmatchwidget.cpp" line="22"/>
         <source>Best match</source>
-        <translation type="unfinished"></translation>
+        <translation>མཐུན་ཤོས་གདམ་བྱ།</translation>
     </message>
 </context>
 <context>
@@ -14,12 +14,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="26"/>
         <source>Excluded path</source>
-        <translation type="unfinished"></translation>
+        <translation>འགྲོ་ལམ་ནག་ཐོ།</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistwidget.cpp" line="37"/>
         <source>Add paths to the exclusion list to prevent searching in them.</source>
-        <translation type="unfinished"></translation>
+        <translation>བཤེར་འཚོལ་མི་དགོས་པའི་འགྲོ་ལམ་ནག་ཐོའི་ནང་དུ་བསྣན་ཆོག</translation>
     </message>
 </context>
 <context>
@@ -27,7 +27,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/customwidget.cpp" line="26"/>
         <source>Custom search</source>
-        <translation type="unfinished"></translation>
+        <translation>མི་སྒེར་ཅན།</translation>
     </message>
 </context>
 <context>
@@ -49,19 +49,19 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="14"/>
         <source>Do you want to remove the path from the exclusion list?</source>
-        <translation type="unfinished"></translation>
+        <translation>ནག་ཐོ་ནས་འདེམས་ཟིན་པའི་འགྲོ་ལམ་དེ་བསུབ་རྒྱུ་ཡིན་ནམ།</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="20"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>མེད་པར་བཟོ་བ།</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/blacklistview/deletedialog.cpp" line="28"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation type="unfinished"></translation>
+        <translation>གཏན་འཁེལ།</translation>
     </message>
 </context>
 <context>
@@ -136,7 +136,7 @@
     <message>
         <location filename="../src/grand-search/gui/exhibition/matchresult/groupwidget.cpp" line="324"/>
         <source>No search results</source>
-        <translation type="unfinished">བཙལ་འབྲས་མེད།</translation>
+        <translation>བཙལ་འབྲས་མེད།</translation>
     </message>
 </context>
 <context>
@@ -144,7 +144,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/indexwidget.cpp" line="22"/>
         <source>Index</source>
-        <translation type="unfinished"></translation>
+        <translation>མཛུབ་སྟོན།</translation>
     </message>
 </context>
 <context>
@@ -170,7 +170,7 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="48"/>
         <source>Joining the search experience program means that you grant and authorize us to collect the information of your device and system, file icons, content and properties, applications and their configurations, the contents you search while using the Application, the time of search, the type of requested large model.If you refuse our collection and use of the aforementioned information, do not join the program.</source>
-        <translation type="unfinished"></translation>
+        <translation>བཤེར་འཚོལ་ཉམས་ལེན་འཆར་གཞི་ཁ་ཕྱེ་བ་ན། ཁྱེད་ཀྱིས་ངེད་ཚོར་ཁྱེད་ཀྱི་སྒྲིག་ཆས་དང་མ་ལག ཡིག་ཆའི་རི་མོ། ཡིག་ཆའི་ནང་དོན་དང་ཁྱད་ཆོས། ཉེར་སྤྱོད་མཉེན་ཆས་དང་སྒྲིག་འགོད། བཤེར་འཚོལ་ནང་དོན། བཤེར་འཚོལ་དུས་ཚོད། བཤེར་འཚོལ་སྐབས་སྤྱོད་པའི་AIམ་དཔེ་སོགས་ཀྱི་ཆ་འཕྲིན་འཚོལ་བསྡུ་བྱེད་དུ་འཇུག་པ་ཡིན། ཁྱེད་ཀྱིས་གོང་གསལ་ཆ་འཕྲིན་འཚོལ་བསྡུ་དང་བེད་སྤྱོད་དང་ལེན་མི་བྱེད་ན། བཤེར་འཚོལ་ཉམས་ལེན་འཆར་གཞི་ཁ་རྒྱོབ།</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="59"/>
@@ -180,12 +180,12 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="61"/>
         <source>https://www.uniontech.com/agreement/privacy-en</source>
-        <translation type="unfinished">https://www.uniontech.com/agreement/privacy-ti</translation>
+        <translation>https://www.uniontech.com/agreement/privacy-ti</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="62"/>
         <source>https://www.deepin.org/en/agreement/privacy/</source>
-        <translation type="unfinished">https://www.deepin.org/zh/agreement/privacy/</translation>
+        <translation>https://www.deepin.org/zh/agreement/privacy/</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/planwidget.cpp" line="64"/>
@@ -206,47 +206,47 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="31"/>
         <source>Default search engine</source>
-        <translation type="unfinished"></translation>
+        <translation>སོར་བཞག་བཤེར་འཚོལ་མ་ལག</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="39"/>
         <source>Search for keywords by the default search engine.</source>
-        <translation type="unfinished"></translation>
+        <translation>སོར་བཞག་བཤེར་འཚོལ་མ་ལག་བརྒྱུད་ནས་འགག་མིག་བཤེར་འཚོལ་བྱས་ཆོག</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="55"/>
         <source>Default search engine is</source>
-        <translation type="unfinished"></translation>
+        <translation>སོར་བཞག་བཤེར་འཚོལ་མ་ལག་ནི།</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="64"/>
         <source>Google</source>
-        <translation type="unfinished"></translation>
+        <translation>གྷུ་གྷལ།</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="65"/>
         <source>Baidu</source>
-        <translation type="unfinished"></translation>
+        <translation>པེ་ཏུ།</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="66"/>
         <source>Bing</source>
-        <translation type="unfinished"></translation>
+        <translation>བིང།</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="67"/>
         <source>Yahoo</source>
-        <translation type="unfinished"></translation>
+        <translation>ཡ་ཧུ།</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="68"/>
         <source>360</source>
-        <translation type="unfinished"></translation>
+        <translation>360</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/searchenginewidget.cpp" line="69"/>
         <source>Sogou</source>
-        <translation type="unfinished"></translation>
+        <translation>སོ་གྷོ།</translation>
     </message>
 </context>
 <context>
@@ -262,22 +262,22 @@
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="18"/>
         <source>Tailer settings</source>
-        <translation type="unfinished"></translation>
+        <translation>མཇུག་སྣོན་སྒྲིག་འགོད།</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="28"/>
         <source>It is displayed at the end of search results for better identification and distinction of items with duplicate names.</source>
-        <translation type="unfinished"></translation>
+        <translation>བཤེར་འཚོལ་མཇུག་འབྲས་ཀྱི་མཇུག་ཏུ་མངོན་པ་ཡིན། མིང་འདྲ་བའི་རྣམ་གྲངས་ངོས་འཛིན་དང་དབྱེ་འབྱེད་བྱེད་པར་ཕན།</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="41"/>
         <source>Parent directory</source>
-        <translation type="unfinished"></translation>
+        <translation>གོང་རིམ་དཀར་ཆག</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/searchconfig/tailerwidget.cpp" line="43"/>
         <source>Time modified</source>
-        <translation type="unfinished"></translation>
+        <translation>ཉེ་ཆར་བཟོ་བཅོས་བྱས་པའི་དུས་ཚོད།</translation>
     </message>
 </context>
 <context>
@@ -346,7 +346,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="24"/>
         <source>Best match</source>
-        <translation type="unfinished"></translation>
+        <translation>མཐུན་ཤོས་གདམ་བྱ།</translation>
     </message>
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="25"/>
@@ -396,7 +396,7 @@
     <message>
         <location filename="../src/grand-search/gui/datadefine.h" line="34"/>
         <source>AI Search</source>
-        <translation type="unfinished"></translation>
+        <translation>AI བཤེར་འཚོལ།</translation>
     </message>
     <message>
         <location filename="../src/preview-plugin/video-preview/videopreviewplugin.cpp" line="19"/>
@@ -431,7 +431,7 @@
     <message>
         <location filename="../src/libgrand-search-daemon/searcher/file/filesearchutils.cpp" line="203"/>
         <source>modified</source>
-        <translation type="unfinished"></translation>
+        <translation>བཟོ་བཅོས་བྱས་ཟིན།</translation>
     </message>
 </context>
 </TS>
