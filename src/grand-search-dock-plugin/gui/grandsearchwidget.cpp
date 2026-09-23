@@ -212,8 +212,10 @@ QuickPanel::QuickPanel(const QString &desc, QWidget *parent)
 void QuickPanel::updateIcon()
 {
     const QString name = DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType ? QString("grand-search-dark") : QString("grand-search-light");
-    auto icon = QIcon::fromTheme(name, QIcon(QString(":/icons/%1.svg").arg(name)));
-    iconLabel->setPixmap(icon.pixmap(PANEL_ICON_SIZE, PANEL_ICON_SIZE));
+    const auto ratio = devicePixelRatioF();
+    const auto pixmapSize = QCoreApplication::testAttribute(Qt::AA_UseHighDpiPixmaps) ? QSize(PANEL_ICON_SIZE, PANEL_ICON_SIZE) : QSize(PANEL_ICON_SIZE, PANEL_ICON_SIZE) * ratio;
+    auto pixmap = QIcon(QString(":/icons/%1.svg").arg(name)).pixmap(pixmapSize);
+    iconLabel->setPixmap(pixmap);
 
     update();
 }
