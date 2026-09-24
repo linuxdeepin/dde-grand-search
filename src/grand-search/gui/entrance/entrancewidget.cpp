@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -206,18 +206,7 @@ void EntranceWidget::initUI()
     lineFont = DFontSizeManager::instance()->get(DFontSizeManager::T4, lineFont);
     d_p->m_lineEdit->setFont(lineFont);
 
-    QPalette palette;
-    QColor colorText(0, 0, 0);
-    QColor colorBkg(0, 0, 0, 25);
-    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType) {
-        colorText = QColor(255, 255, 255);
-        colorBkg = QColor(255, 255, 255, 25);
-    }
-    palette.setColor(QPalette::Button, colorBkg);   // 背景色
-    palette.setColor(QPalette::Text, colorText);
-    palette.setColor(QPalette::ButtonText, colorText);
-
-    d_p->m_lineEdit->setPalette(palette);
+    updateLineEditPalette();
     DStyle::setFocusRectVisible(d_p->m_lineEdit, false);
 
     d_p->m_appIconLabel = new DLabel(d_p->m_searchEdit);
@@ -266,6 +255,27 @@ void EntranceWidget::initConnections()
 
     // 终止搜索时，强制设置焦点
     connect(d_p->m_searchEdit, &DSearchEdit::searchAborted, d_p->m_lineEdit, qOverload<>(&QLineEdit::setFocus));
+
+    // 主题切换时更新输入框 palette，确保光标颜色与背景色匹配
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &EntranceWidget::updateLineEditPalette);
+}
+
+void EntranceWidget::updateLineEditPalette()
+{
+    Q_ASSERT(d_p->m_lineEdit);
+
+    QPalette palette = DGuiApplicationHelper::instance()->applicationPalette();
+    QColor colorText(0, 0, 0);
+    QColor colorBkg(0, 0, 0, 25);
+    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType) {
+        colorText = QColor(255, 255, 255);
+        colorBkg = QColor(255, 255, 255, 25);
+    }
+    palette.setColor(QPalette::Button, colorBkg);   // 背景色
+    palette.setColor(QPalette::Text, colorText);
+    palette.setColor(QPalette::ButtonText, colorText);
+
+    d_p->m_lineEdit->setPalette(palette);
 }
 
 void EntranceWidget::onAppIconChanged(const QString &searchGroupName, const MatchedItem &item)
