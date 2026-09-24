@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -12,8 +12,10 @@
 #include <DLabel>
 #include <DFontSizeManager>
 #include <DGuiApplicationHelper>
+#include <DIconButton>
 
 #include <QLineEdit>
+#include <QPainter>
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QWidgetAction>
@@ -254,6 +256,8 @@ void EntranceWidget::initUI()
     d_p->m_mainLayout->setContentsMargins(WidgetMargins, WidgetMargins, WidgetMargins, WidgetMargins);
 
     this->setLayout(d_p->m_mainLayout);
+
+    updateSearchIconColor();
 }
 
 void EntranceWidget::initConnections()
@@ -266,6 +270,28 @@ void EntranceWidget::initConnections()
 
     // 终止搜索时，强制设置焦点
     connect(d_p->m_searchEdit, &DSearchEdit::searchAborted, d_p->m_lineEdit, qOverload<>(&QLineEdit::setFocus));
+
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &EntranceWidget::updateSearchIconColor);
+}
+
+void EntranceWidget::updateSearchIconColor()
+{
+    DIconButton *iconBtn = d_p->m_searchEdit->findChild<DIconButton *>("DSearchEditIconButton");
+    if (!iconBtn)
+        return;
+
+    QColor color(0, 0, 0);
+    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType) {
+        color = QColor(255, 255, 255);
+    }
+
+    QPixmap pixmap = iconBtn->icon().pixmap(iconBtn->iconSize());
+    QPainter painter(&pixmap);
+    painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+    painter.fillRect(pixmap.rect(), color);
+    painter.end();
+
+    iconBtn->setIcon(QIcon(pixmap));
 }
 
 void EntranceWidget::onAppIconChanged(const QString &searchGroupName, const MatchedItem &item)
