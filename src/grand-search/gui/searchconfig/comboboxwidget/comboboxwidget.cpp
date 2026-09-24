@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -42,7 +42,7 @@ ComboboxWidget::ComboboxWidget(QWidget *parent, QWidget *leftWidget)
     m_leftWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
     m_comboBox = new DComboBox(this);
-    m_comboBox->setFixedSize(COMBOBOXW, COMBOBOXH);
+    m_comboBox->setFixedWidth(COMBOBOXW);
 
     QHBoxLayout *labelLayout = new QHBoxLayout;
     labelLayout->addWidget(m_leftWidget);
