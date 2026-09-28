@@ -19,6 +19,9 @@ find_package(${QT_NS} COMPONENTS
     Concurrent
 REQUIRED)
 
+# deepin-qdbus-service 依赖（QDBusService 基类）
+pkg_check_modules(DEEPIN_QDBUS_SERVICE REQUIRED IMPORTED_TARGET deepin-qdbus-service)
+
 # 源码路径 — dde-grand-search-daemon（非 libgrand-search-daemon）
 set(PROJECT_DAEMONSRC_PATH "${PROJECT_SOURCE_PATH}/dde-grand-search-daemon")
 include_directories(${PROJECT_DAEMONSRC_PATH})
@@ -62,6 +65,25 @@ set(CONFIG_UT_SRC
     "configuration/ut_userpreference.cpp"
 )
 
+# dbusservice 模块源码
+set(DBUSSERVICE_SRC
+    "${PROJECT_DAEMONSRC_PATH}/dbusservice/grandsearchinterface.cpp"
+)
+
+# dbusservice 模块 MainController 桩实现（避免拉入深层依赖链）
+set(DBUSSERVICE_STUB_SRC
+    "dbusservice/stub_maincontroller.cpp"
+    "dbusservice/maincontroller_moc_generated.cpp"
+)
+
+# dbusservice 模块单元测试文件
+set(DBUSSERVICE_UT_SRC
+    "dbusservice/ut_grandsearchinterface.cpp"
+)
+
+# SERVICE_CONFIG_DIR 定义（QDBusService initPolicy 所需）
+add_definitions(-DSERVICE_CONFIG_DIR="/usr/share/deepin-service-manager/")
+
 # logDaemon 定义文件（源码中 Q_DECLARE_LOGGING_CATEGORY，定义在 main.cpp 之外单独提供）
 set(LOGDAEMON_SRC "${CMAKE_CURRENT_BINARY_DIR}/logdaemon_def.cpp")
 file(WRITE ${LOGDAEMON_SRC}
@@ -81,6 +103,9 @@ set(SRCS
     ${APP_UT_SRC}
     ${CONFIG_SRC}
     ${CONFIG_UT_SRC}
+    ${DBUSSERVICE_SRC}
+    ${DBUSSERVICE_STUB_SRC}
+    ${DBUSSERVICE_UT_SRC}
     ${UTILS_QRC}
     ${CPP_STUB_SRC}
 )
@@ -97,6 +122,7 @@ add_executable(${BIN_NAME} ${SRCS})
 target_include_directories(${BIN_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${PROJECT_3RDPARTY_PATH}
+    ${DEEPIN_QDBUS_SERVICE_INCLUDE_DIRS}
 )
 
 target_link_libraries(${BIN_NAME} PRIVATE
@@ -104,5 +130,6 @@ target_link_libraries(${BIN_NAME} PRIVATE
     ${DtkCore_LIBRARIES}
     ${GTEST_LIBRARIES}
     ${QT_NS}::Test
+    PkgConfig::DEEPIN_QDBUS_SERVICE
     -lpthread
 )
