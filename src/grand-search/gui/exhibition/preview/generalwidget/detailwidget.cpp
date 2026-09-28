@@ -20,7 +20,7 @@ DetailWidget::DetailWidget(QWidget *parent)
 
     m_mainLayout = new QVBoxLayout(this);
     m_mainLayout->setContentsMargins(10, 10, 10, 10);
-    m_mainLayout->setSpacing(1);
+    m_mainLayout->setSpacing(0);
 
     this->setLayout(m_mainLayout);
 
