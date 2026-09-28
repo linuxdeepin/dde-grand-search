@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -10,6 +10,7 @@
 #include <DWidget>
 
 #include "QObject"
+#include <QPainter>
 
 DWIDGET_BEGIN_NAMESPACE
 class DSearchEdit;
@@ -23,6 +24,35 @@ class QAction;
 class QPushButton;
 
 namespace GrandSearch {
+
+// 自绘光标控件：覆盖在 QLineEdit 之上，按设计颜色绘制 1px 竖线
+class CursorWidget : public QWidget
+{
+public:
+    explicit CursorWidget(QWidget *parent = nullptr)
+        : QWidget(parent)
+    {
+        setAttribute(Qt::WA_TransparentForMouseEvents);
+    }
+
+    void setColor(const QColor &color)
+    {
+        if (m_color == color)
+            return;
+        m_color = color;
+        update();
+    }
+
+protected:
+    void paintEvent(QPaintEvent *) override
+    {
+        QPainter painter(this);
+        painter.fillRect(rect(), m_color);
+    }
+
+private:
+    QColor m_color;
+};
 
 class EntranceWidgetPrivate : public QObject
 {
@@ -43,6 +73,10 @@ public:
     QHBoxLayout *m_mainLayout = nullptr;
 
     QTimer *m_delayChangeTimer = nullptr;               // 延迟发出搜索文本改变
+
+    CursorWidget *m_cursor = nullptr;                   // 自绘文本光标（Qt5 原生光标为背景反色，无法满足设计）
+    QTimer *m_cursorBlinkTimer = nullptr;               // 光标闪烁定时器
+    bool m_cursorOn = true;                             // 当前光标显隐状态
 
     QString m_appIconName;                              // 当前搜索框显示的默认打开应用图标名称
 };
