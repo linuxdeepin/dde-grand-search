@@ -50,6 +50,18 @@ set(APP_UT_SRC
     "searcher/app/ut_desktopappworker.cpp"
 )
 
+# configuration 模块源码
+set(CONFIG_SRC
+    "${PROJECT_DAEMONSRC_PATH}/configuration/configer.cpp"
+    "${PROJECT_DAEMONSRC_PATH}/configuration/userpreference.cpp"
+)
+
+# configuration 模块单元测试文件
+set(CONFIG_UT_SRC
+    "configuration/ut_configer.cpp"
+    "configuration/ut_userpreference.cpp"
+)
+
 # logDaemon 定义文件（源码中 Q_DECLARE_LOGGING_CATEGORY，定义在 main.cpp 之外单独提供）
 set(LOGDAEMON_SRC "${CMAKE_CURRENT_BINARY_DIR}/logdaemon_def.cpp")
 file(WRITE ${LOGDAEMON_SRC}
@@ -67,6 +79,8 @@ set(SRCS
     ${UTILS_UT_SRC}
     ${APP_SRC}
     ${APP_UT_SRC}
+    ${CONFIG_SRC}
+    ${CONFIG_UT_SRC}
     ${UTILS_QRC}
     ${CPP_STUB_SRC}
 )
