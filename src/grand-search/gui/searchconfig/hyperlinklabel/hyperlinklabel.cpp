@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -12,8 +12,12 @@
 #include <QMouseEvent>
 #include <QDesktopServices>
 #include <QLoggingCategory>
+#include <DGuiApplicationHelper>
+#include <DPalette>
 
 Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
+
+DGUI_USE_NAMESPACE
 
 using namespace GrandSearch;
 
@@ -46,7 +50,7 @@ void HyperlinkLabel::paintEvent(QPaintEvent *e)
     int startX = 0;
     int startY = 0;
     for (auto txt : m_showTextList) {
-        QRegion region = drawText(txt, startX, startY, curRow);
+        QRegion region = drawText(txt, startX, startY, curRow, txt == m_hyperlink);
         if (txt == m_hyperlink)
             m_hyperlinkRegion = region;       // 更新超链接的绘制区域
     }
@@ -61,11 +65,18 @@ void HyperlinkLabel::mouseReleaseEvent(QMouseEvent *ev)
     return QLabel::mouseReleaseEvent(ev);
 }
 
-QRegion HyperlinkLabel::drawText(QString drawText, int &startX, int &startY, int &curRow)
+QRegion HyperlinkLabel::drawText(QString drawText, int &startX, int &startY, int &curRow, bool isHyperlink)
 {
     QRegion region;
     QSize curSize;
     QPainter p(this);
+
+    // 超链接使用链接颜色，非超链接文字使用提示文字颜色
+    if (isHyperlink) {
+        p.setPen(palette().color(QPalette::Link));
+    } else {
+        p.setPen(DGuiApplicationHelper::instance()->applicationPalette().color(DPalette::TextTips));
+    }
 
     while (!drawText.isEmpty()) {
         int tmpSize = displayLength(startX, drawText);      // 当前行能够显示的字符数量

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -22,7 +22,7 @@ protected:
     void mouseReleaseEvent(QMouseEvent *ev) override;
 
 private:
-    QRegion drawText(QString drawText, int &startX, int &startY, int &curRow);
+    QRegion drawText(QString drawText, int &startX, int &startY, int &curRow, bool isHyperlink);
     int displayLength(const int startX, QString showTxt);
 
 private:
