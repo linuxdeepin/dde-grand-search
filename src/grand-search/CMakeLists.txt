@@ -245,6 +245,7 @@ set(SRCS
 
 # 指定资源文件
 set(QRCS
+    gui/entrance/resource.qrc
     gui/searchconfig/resource.qrc
     gui/exhibition/preview/resource.qrc
     gui/exhibition/matchresult/resource.qrc
