@@ -15,6 +15,7 @@
 DWIDGET_BEGIN_NAMESPACE
 class DSearchEdit;
 class DLabel;
+class DIconButton;
 DWIDGET_END_NAMESPACE
 
 class QHBoxLayout;
@@ -77,6 +78,7 @@ public:
     CursorWidget *m_cursor = nullptr;                   // 自绘文本光标（Qt5 原生光标为背景反色，无法满足设计）
     QTimer *m_cursorBlinkTimer = nullptr;               // 光标闪烁定时器
     bool m_cursorOn = true;                             // 当前光标显隐状态
+    Dtk::Widget::DIconButton *m_searchIconButton = nullptr;  // 缓存搜索图标按钮，避免递归 findChildren
 
     QString m_appIconName;                              // 当前搜索框显示的默认打开应用图标名称
 };
