@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -84,7 +84,7 @@ void GeneralToolBar::initUi()
     m_vLine1 = new DVerticalLine(this);
     m_vLine1->setFixedHeight(30);
     m_vLine2 = new DVerticalLine(this);
-    m_vLine1->setFixedHeight(30);
+    m_vLine2->setFixedHeight(30);
 
     m_hMainLayout->addWidget(m_openBtn);
     m_hMainLayout->addWidget(m_vLine1);
