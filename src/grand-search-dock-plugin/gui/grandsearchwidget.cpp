@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -221,7 +221,11 @@ void QuickPanel::updateIcon()
     const QString name = DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType ? QString("grand-search-dark") : QString("grand-search-light");
     qCDebug(logDock) << "Updating QuickPanel icon for theme - Theme:" << (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType ? "Light" : "Dark") << "Icon:" << name;
 
-    const auto &pixmap = iconPixmap(name, { PANEL_ICON_SIZE, PANEL_ICON_SIZE }, devicePixelRatioF());
+    const auto ratio = devicePixelRatioF();
+    const auto pixmapSize = QCoreApplication::testAttribute(Qt::AA_UseHighDpiPixmaps) ? QSize(PANEL_ICON_SIZE, PANEL_ICON_SIZE) : QSize(PANEL_ICON_SIZE, PANEL_ICON_SIZE) * ratio;
+    auto pixmap = QIcon(QString(":/icons/%1.svg").arg(name)).pixmap(pixmapSize);
+    if (!QCoreApplication::testAttribute(Qt::AA_UseHighDpiPixmaps))
+        pixmap.setDevicePixelRatio(ratio);
     iconLabel->setPixmap(pixmap);
 
     update();
