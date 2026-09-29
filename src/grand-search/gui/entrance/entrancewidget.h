@@ -31,6 +31,7 @@ private:
     void initConnections();
     void updateLineEditPalette();
     void updateCursor();
+    void updateSearchIconColor();
 
 public slots:
     // 切换选择搜索结果时，应用图标发生改变

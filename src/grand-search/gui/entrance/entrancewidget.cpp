@@ -12,8 +12,10 @@
 #include <DLabel>
 #include <DFontSizeManager>
 #include <DGuiApplicationHelper>
+#include <DIconButton>
 
 #include <QLineEdit>
+#include <QPainter>
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QWidgetAction>
@@ -42,6 +44,25 @@ static const uint SearchMaxLength = 512;   // 输入最大字符限制
 
 static const uint LabelIconSize = 26;   // 标签应用图标显示大小
 static const uint LabelSize = 32;   // 标签大小
+static const uint SearchIconSize = 28;   // 搜索框放大镜图标尺寸（DTK 默认 20，偏小导致视觉差异）
+
+static const QString kSearchIconPath = QStringLiteral(":/icons/search_icon.svg");
+
+// 放大 QLineEdit leading 搜索图标的绘制尺寸（QLineEditIconButton 图标大小由 PM_LineEditIconSize 决定，
+// 与 action 图标尺寸无关，默认 20 偏小）
+class LineEditIconStyle : public QProxyStyle
+{
+public:
+    using QProxyStyle::QProxyStyle;
+
+    int pixelMetric(PixelMetric metric, const QStyleOption *option = nullptr,
+                    const QWidget *widget = nullptr) const override
+    {
+        if (metric == QStyle::PM_LineEditIconSize)
+            return SearchIconSize;
+        return QProxyStyle::pixelMetric(metric, option, widget);
+    }
+};
 
 // Qt5 原生光标使用 RasterOp_NotDestination 绘制，颜色恒为背景反色，无法满足设计要求的
 // 固定光标颜色。此处将原生光标宽度置 0 隐藏，改由 CursorWidget 自绘光标。
@@ -68,6 +89,7 @@ EntranceWidgetPrivate::EntranceWidgetPrivate(EntranceWidget *parent)
 
     connect(m_delayChangeTimer, &QTimer::timeout, this, &EntranceWidgetPrivate::notifyTextChanged);
 }
+
 
 void EntranceWidgetPrivate::delayChangeText()
 {
@@ -238,7 +260,8 @@ void EntranceWidget::initUI()
     updateLineEditPalette();
 
     // 隐藏 Qt 原生光标，改用自绘光标（原生光标为背景反色，无法满足设计的固定颜色要求）
-    d_p->m_lineEdit->setStyle(new NoCursorStyle());
+    // NoCursorStyle 作为 LineEditIconStyle 的 base style 链式合并，避免 setStyle 覆盖
+    auto *noCursorStyle = new NoCursorStyle();
     d_p->m_cursor = new CursorWidget(d_p->m_lineEdit);
     d_p->m_cursor->hide();
 
@@ -250,6 +273,12 @@ void EntranceWidget::initUI()
     });
 
     DStyle::setFocusRectVisible(d_p->m_lineEdit, false);
+
+    // 放大 leading 搜索图标的绘制尺寸（NoCursorStyle 作为 base style 链式合并，同时隐藏原生光标）
+    // 将 style 的 parent 设为 m_lineEdit，利用 Qt 父子机制自动管理生命周期，避免裸指针和悬垂指针
+    auto *lineEditIconStyle = new LineEditIconStyle(noCursorStyle);
+    lineEditIconStyle->setParent(d_p->m_lineEdit);
+    d_p->m_lineEdit->setStyle(lineEditIconStyle);
 
     d_p->m_appIconLabel = new DLabel(d_p->m_searchEdit);
     d_p->m_appIconLabel->setFixedSize(LabelSize, LabelSize);
@@ -315,6 +344,11 @@ void EntranceWidget::initConnections()
         d_p->m_cursorBlinkTimer->start();
         updateCursor();
     }
+
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &EntranceWidget::updateSearchIconColor);
+
+    // DIconButton 在控件显示（polish）后才生成图标，需延迟到事件循环启动后再着色
+    QTimer::singleShot(0, this, &EntranceWidget::updateSearchIconColor);
 }
 
 void EntranceWidget::updateLineEditPalette()
@@ -360,6 +394,90 @@ void EntranceWidget::updateCursor()
     d_p->m_cursor->setGeometry(rect);
     d_p->m_cursor->setVisible(d_p->m_cursorOn);
     d_p->m_cursor->raise();
+}
+
+// 将图标渲染为目标纯色（浅色 #000000 / 深色 #ffffff）。
+// 用 SourceIn 保留原图 alpha（抗锯齿），只替换颜色，保证边缘平滑无锯齿。
+static QIcon tintSearchIcon(const QIcon &base, const QColor &color)
+{
+    if (base.isNull())
+        return QIcon();
+
+    qreal dpr = qApp->devicePixelRatio();
+    QPixmap pixmap = base.pixmap(QSize(SearchIconSize, SearchIconSize) * dpr);
+    if (pixmap.isNull())
+        return QIcon();
+
+    pixmap.setDevicePixelRatio(dpr);
+
+    QPainter painter(&pixmap);
+    painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+    painter.fillRect(QRect(0, 0, SearchIconSize, SearchIconSize), color);
+    painter.end();
+
+    return QIcon(pixmap);
+}
+
+void EntranceWidget::updateSearchIconColor()
+{
+    if (!d_p->m_searchEdit || !d_p->m_lineEdit)
+        return;
+
+    QColor color(0, 0, 0);
+    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType) {
+        color = QColor(255, 255, 255);
+    }
+
+    // 1) 可见搜索图标：QLineEdit 的 leading action（_d_search_leftAction，由 QLineEditIconButton 绘制），
+    //    这是用户实际看到的搜索图标。基底优先用内置粗描边放大镜（保证粗度与形状），兜底用原主题图标。
+    //    注意："_d_search_leftAction" 是 DTK 内部约定名称，DTK 升级时需验证兼容性。
+    bool foundAction = false;
+    for (QAction *action : d_p->m_lineEdit->actions()) {
+        if (action->objectName() == QLatin1String("_d_search_leftAction")) {
+            foundAction = true;
+            QIcon base = QIcon(kSearchIconPath);
+            if (base.isNull())
+                base = action->icon();
+            const QIcon tinted = tintSearchIcon(base, color);
+            if (!tinted.isNull())
+                action->setIcon(tinted);
+        }
+    }
+    if (!foundAction) {
+        qCWarning(logGrandSearch) << "DTK internal action '_d_search_leftAction' not found,"
+                                  << "icon color update may not work. Verify DTK compatibility.";
+    }
+
+    // 2) DIconButton（未聚焦状态显示的搜索图标），缓存指针避免每次递归搜索控件树
+    DIconButton *iconBtn = d_p->m_searchIconButton;
+    if (!iconBtn) {
+        const auto iconButtons = d_p->m_searchEdit->findChildren<DIconButton *>();
+        for (DIconButton *btn : iconButtons) {
+            // DTK 通过 accessibleName 标识搜索图标按钮（objectName 为空）
+            // 注意："DSearchEditIconButton" 是 DTK 内部约定名称，DTK 升级时需验证兼容性。
+            if (btn->accessibleName() == QLatin1String("DSearchEditIconButton")) {
+                iconBtn = btn;
+                d_p->m_searchIconButton = btn;
+                break;
+            }
+        }
+    }
+    if (!iconBtn) {
+        qCWarning(logGrandSearch) << "DTK internal button 'DSearchEditIconButton' not found,"
+                                  << "icon color update may not work. Verify DTK compatibility.";
+        return;
+    }
+
+    // 放大图标尺寸（DTK 默认 20x20 偏小）
+    iconBtn->setIconSize(QSize(SearchIconSize, SearchIconSize));
+
+    // 优先使用仓库内置放大镜图标，兜底使用按钮自身图标
+    QIcon base = QIcon(kSearchIconPath);
+    if (base.isNull())
+        base = iconBtn->icon();
+    const QIcon tinted = tintSearchIcon(base, color);
+    if (!tinted.isNull())
+        iconBtn->setIcon(tinted);
 }
 
 void EntranceWidget::onAppIconChanged(const QString &searchGroupName, const MatchedItem &item)
