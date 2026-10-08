@@ -126,9 +126,29 @@ TEST(BlackListWrapperTest, drawItemBackground)
     });
 
     d->drawItemBackground(&painter, option, QModelIndex());
-    EXPECT_FALSE(ut_call_restore);
+    EXPECT_TRUE(ut_call_restore);
 
+    ut_call_restore = false;
     ut_call_row = 2;
     d->drawItemBackground(&painter, option, QModelIndex());
+    EXPECT_TRUE(ut_call_restore);
+
+    // hover with content: hover highlight should be applied
+    w.m_model->insertRows(0, 1);
+    w.m_model->insertColumns(0, 1);
+    QModelIndex contentIndex = w.m_model->index(0, 0, QModelIndex());
+    w.m_model->setData(contentIndex, "test_path", DATAROLE);
+    EXPECT_FALSE(contentIndex.data(DATAROLE).value<QString>().isEmpty());
+
+    ut_call_restore = false;
+    QStyleOptionViewItem hoverOption;
+    hoverOption.widget = &w;
+    hoverOption.state |= QStyle::State_MouseOver;
+    d->drawItemBackground(&painter, hoverOption, contentIndex);
+    EXPECT_TRUE(ut_call_restore);
+
+    // hover without content: hover highlight should be skipped
+    ut_call_restore = false;
+    d->drawItemBackground(&painter, hoverOption, QModelIndex());
     EXPECT_TRUE(ut_call_restore);
 }
