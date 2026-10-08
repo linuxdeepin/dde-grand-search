@@ -20,7 +20,7 @@
 
 Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
-#define ICON_SIZE               96
+#define ICON_SIZE               128
 #define HOR_MARGIN_SIZE         10
 #define MARGIN_SIZE             15
 #define NAME_WIDTH              239
