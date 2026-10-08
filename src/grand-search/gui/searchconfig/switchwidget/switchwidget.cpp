@@ -56,8 +56,6 @@ SwitchWidget::SwitchWidget(QWidget *parent, QWidget *leftWidget)
 
     connect(m_switchBtn, &DSwitchButton::toggled, this, &SwitchWidget::checkedChanged);
 
-    setTopRound(true);
-    setBottomRound(true);
     qCDebug(logGrandSearch) << "SwitchWidget created successfully";
 }
 

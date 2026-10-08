@@ -80,6 +80,9 @@ ScopeWidget::ScopeWidget(QWidget *parent)
         m_mainLayout->addWidget(switchWidget);
         m_switchWidgets.append(switchWidget);
 
+        switchWidget->setTopRound(i == 0);
+        switchWidget->setBottomRound(i == displayOrder.count() - 1);
+
         connect(switchWidget, &SwitchWidget::checkedChanged, this, &ScopeWidget::onSwitchStateChanged);
     }
 

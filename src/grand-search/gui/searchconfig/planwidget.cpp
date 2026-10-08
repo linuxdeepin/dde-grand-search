@@ -49,6 +49,8 @@ PlanWidget::PlanWidget(QWidget *parent)
     m_mainLayout->addSpacerItem(new QSpacerItem(10, 10));
     m_mainLayout->addWidget(m_switchWidget);
     m_switchWidget->setProperty(GRANDSEARCH_SEARCH_GROUP, GRANDSEARCH_PLAN_EXPERIENCE);
+    m_switchWidget->setTopRound(true);
+    m_switchWidget->setBottomRound(true);
 
     QString content = tr("Joining the search experience program means that "
                          "you grant and authorize us to collect the information of "
