@@ -50,8 +50,8 @@ void BlackListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
 {
     QStyledItemDelegate::paint(painter, option, index);
     painter->setRenderHint(QPainter::Antialiasing);
-    drawPathsText(painter, option, index);
     drawItemBackground(painter, option, index);
+    drawPathsText(painter, option, index);
 }
 
 void BlackListDelegate::drawPathsText(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -104,13 +104,32 @@ void BlackListDelegate::drawPathsText(QPainter *painter, const QStyleOptionViewI
 
 void BlackListDelegate::drawItemBackground(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    if (index.row() % 2 == 1)
-        return;
     painter->save();
     if (option.widget) {
         DPalette pl(DPaletteHelper::instance()->palette(option.widget));
-        painter->setPen(Qt::NoPen);
-        painter->setBrush(pl.brush(DPalette::ItemBackground));
+        QColor borderColor;
+        if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
+            borderColor = QColor(0, 0, 0, static_cast<int>(255 * 0.1));
+        } else {
+            borderColor = QColor(255, 255, 255, static_cast<int>(255 * 0.1));
+        }
+        painter->setPen(QPen(borderColor, 1));
+        if (option.state & QStyle::State_Selected) {
+            painter->setBrush(Qt::NoBrush);
+        } else if ((option.state & QStyle::State_MouseOver)
+                   && !index.data(DATAROLE).value<QString>().isEmpty()) {
+            QColor hoverColor;
+            if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
+                hoverColor = QColor(0, 0, 0, static_cast<int>(255 * 0.05));
+            } else {
+                hoverColor = QColor(255, 255, 255, static_cast<int>(255 * 0.05));
+            }
+            painter->setBrush(hoverColor);
+        } else if (index.row() % 2 == 0) {
+            painter->setBrush(pl.brush(DPalette::ItemBackground));
+        } else {
+            painter->setBrush(Qt::NoBrush);
+        }
     }
     QRect rect = option.rect.adjusted(0, 0, -1, -1);
     painter->drawRoundedRect(rect, 8, 8);
