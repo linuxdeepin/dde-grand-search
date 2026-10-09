@@ -13,13 +13,17 @@ using namespace GrandSearch;
 
 DWIDGET_USE_NAMESPACE
 
+#define DETAIL_LEFT_MARGIN      10
+#define DETAIL_RIGHT_MARGIN     10
+#define DETAIL_BOTTOM_MARGIN    10
+
 DetailWidget::DetailWidget(QWidget *parent)
     : DWidget(parent)
 {
     m_detailItems.clear();
 
     m_mainLayout = new QVBoxLayout(this);
-    m_mainLayout->setContentsMargins(10, 10, 10, 10);
+    m_mainLayout->setContentsMargins(DETAIL_LEFT_MARGIN, 0, DETAIL_RIGHT_MARGIN, DETAIL_BOTTOM_MARGIN);
     m_mainLayout->setSpacing(0);
 
     this->setLayout(m_mainLayout);
