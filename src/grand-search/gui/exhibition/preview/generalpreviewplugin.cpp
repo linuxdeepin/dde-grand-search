@@ -86,14 +86,14 @@ GeneralPreviewPluginPrivate::GeneralPreviewPluginPrivate(GeneralPreviewPlugin *p
     vLayout->addSpacerItem(new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
     QHBoxLayout *hLayout = new QHBoxLayout();
-    hLayout->setContentsMargins(HOR_MARGIN_SIZE - 3, MARGIN_SIZE, HOR_MARGIN_SIZE, MARGIN_SIZE);
+    hLayout->setContentsMargins(0, 0, 0, 0);
     hLayout->setSpacing(HOR_MARGIN_SIZE);
     hLayout->addWidget(m_iconLabel);
     hLayout->addLayout(vLayout);
 
     m_vMainLayout = new QVBoxLayout(m_contentWidget);
 
-    m_vMainLayout->setContentsMargins(MARGIN_SIZE, 0, MARGIN_SIZE, MARGIN_SIZE);
+    m_vMainLayout->setContentsMargins(MARGIN_SIZE, MARGIN_SIZE, MARGIN_SIZE, MARGIN_SIZE);
     m_vMainLayout->addLayout(hLayout);
 }
 
