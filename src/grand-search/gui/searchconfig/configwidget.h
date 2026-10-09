@@ -27,6 +27,7 @@ public:
 private:
     void initUI();
     void initData();
+    void updateBackgroundColor();
 
 protected:
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
