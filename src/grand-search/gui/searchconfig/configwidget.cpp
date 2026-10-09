@@ -18,6 +18,8 @@
 #include <QCloseEvent>
 #include <QScrollBar>
 #include <QLoggingCategory>
+#include <QPalette>
+#include <DGuiApplicationHelper>
 
 Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
@@ -59,7 +61,7 @@ void ConfigWidget::initUI()
     setCentralWidget(mainWidget);
 
     m_mainLayout = new QVBoxLayout(mainWidget);
-    m_mainLayout->setContentsMargins(0, 10, 0, 10);
+    m_mainLayout->setContentsMargins(0, 10, 0, 0);
     m_mainLayout->setSpacing(0);
     mainWidget->setLayout(m_mainLayout);
 
@@ -85,6 +87,26 @@ void ConfigWidget::initUI()
     m_scrollLayout->addStretch();
 
     m_scrollArea->setWidget(m_scrollAreaContent);
+
+    updateBackgroundColor();
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged,
+            this, &ConfigWidget::updateBackgroundColor);
+}
+
+void ConfigWidget::updateBackgroundColor()
+{
+    QColor bgColor = (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType)
+                     ? Qt::white : Qt::black;
+
+    m_scrollArea->viewport()->setAutoFillBackground(true);
+    QPalette viewportPalette = m_scrollArea->viewport()->palette();
+    viewportPalette.setColor(QPalette::Window, bgColor);
+    m_scrollArea->viewport()->setPalette(viewportPalette);
+
+    m_scrollAreaContent->setAutoFillBackground(true);
+    QPalette contentPalette = m_scrollAreaContent->palette();
+    contentPalette.setColor(QPalette::Window, bgColor);
+    m_scrollAreaContent->setPalette(contentPalette);
 }
 
 void ConfigWidget::closeEvent(QCloseEvent *event)
