@@ -221,45 +221,48 @@ SearchHintWidget::HintType SearchHintWidget::evaluateHint() const
     if (!m_dismissedTypes.contains(HintType::AuthHint) && shouldShowAuthHint())
         return HintType::AuthHint;
 
+    const bool fullTextEnabled = isFullTextSearchEnabled();
+    const bool ocrEnabled = isOcrTextSearchEnabled();
+
     // 2. 索引失败
     if (!m_dismissedTypes.contains(HintType::IndexFailed)) {
-        if ((m_textStatusValid && m_textState == kStateFailed)
-            || (m_ocrStatusValid && m_ocrState == kStateFailed))
+        if ((fullTextEnabled && m_textStatusValid && m_textState == kStateFailed)
+            || (ocrEnabled && m_ocrStatusValid && m_ocrState == kStateFailed))
             return HintType::IndexFailed;
     }
 
     // 3. 索引待重建（库缺失/版本不兼容，结果不完整，影响大于环境暂停）
     if (!m_dismissedTypes.contains(HintType::IndexWaitingUpgrade)) {
-        if ((m_textStatusValid && m_textState == kStateWaitingUpgrade)
-            || (m_ocrStatusValid && m_ocrState == kStateWaitingUpgrade))
+        if ((fullTextEnabled && m_textStatusValid && m_textState == kStateWaitingUpgrade)
+            || (ocrEnabled && m_ocrStatusValid && m_ocrState == kStateWaitingUpgrade))
             return HintType::IndexWaitingUpgrade;
     }
 
     // 4. 电池供电暂停
     if (!m_dismissedTypes.contains(HintType::IndexPausedBattery)) {
-        if ((m_textStatusValid && m_textState == kStateWaitingPower)
-            || (m_ocrStatusValid && m_ocrState == kStateWaitingPower))
+        if ((fullTextEnabled && m_textStatusValid && m_textState == kStateWaitingPower)
+            || (ocrEnabled && m_ocrStatusValid && m_ocrState == kStateWaitingPower))
             return HintType::IndexPausedBattery;
     }
 
     // 5. 省电模式暂停
     if (!m_dismissedTypes.contains(HintType::IndexPausedPowerSave)) {
-        if ((m_textStatusValid && m_textState == kStateWaitingPowerSave)
-            || (m_ocrStatusValid && m_ocrState == kStateWaitingPowerSave))
+        if ((fullTextEnabled && m_textStatusValid && m_textState == kStateWaitingPowerSave)
+            || (ocrEnabled && m_ocrStatusValid && m_ocrState == kStateWaitingPowerSave))
             return HintType::IndexPausedPowerSave;
     }
 
     // 6. 等待系统空闲（最不紧迫的等待态，可自动恢复）
     if (!m_dismissedTypes.contains(HintType::IndexWaitingIdle)) {
-        if ((m_textStatusValid && m_textState == kStateWaitingIdle)
-            || (m_ocrStatusValid && m_ocrState == kStateWaitingIdle))
+        if ((fullTextEnabled && m_textStatusValid && m_textState == kStateWaitingIdle)
+            || (ocrEnabled && m_ocrStatusValid && m_ocrState == kStateWaitingIdle))
             return HintType::IndexWaitingIdle;
     }
 
     // 7. 更新中
     if (!m_dismissedTypes.contains(HintType::IndexUpdating)) {
-        if ((m_textStatusValid && m_textState == kStateRunning)
-            || (m_ocrStatusValid && m_ocrState == kStateRunning))
+        if ((fullTextEnabled && m_textStatusValid && m_textState == kStateRunning)
+            || (ocrEnabled && m_ocrStatusValid && m_ocrState == kStateRunning))
             return HintType::IndexUpdating;
     }
 
