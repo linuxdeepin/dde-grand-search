@@ -5,6 +5,8 @@
 
 #include <QGuiApplication>
 #include <QClipboard>
+#include <QProcess>
+#include <QStandardPaths>
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusInterface>
@@ -16,29 +18,42 @@ Q_LOGGING_CATEGORY(logClip, "convert.search.clipboard")
 namespace Clipboard {
 namespace {
 
-// 尝试通过 deepin 剪贴板 DBus 服务写入文本。
-// 兼容旧版服务名与新版服务名；不依赖未证实的私有签名，
-// 仅调用 deepin 剪贴板管理器公开接口 SetClipboardData。
+// 尝试通过 xclip 命令写入 X11 剪贴板（QCoreApplication 进程无 GUI 时的通用路径）。
+// xclip 会 fork 出持有选区所有权的子进程，需常驻而非等待退出。
+bool setViaXClip(const QString &text)
+{
+    const QString xclip = QStandardPaths::findExecutable(QStringLiteral("xclip"));
+    if (xclip.isEmpty())
+        return false;
+    QProcess proc;
+    proc.start(xclip, {QStringLiteral("-selection"), QStringLiteral("clipboard"),
+                       QStringLiteral("-i")});
+    if (!proc.waitForStarted(1000))
+        return false;
+    proc.write(text.toUtf8());
+    proc.closeWriteChannel();
+    // xclip fork 后台持有选区；主进程退出码 0 即写入发起成功
+    if (!proc.waitForFinished(2000) || proc.exitStatus() != QProcess::NormalExit
+        || proc.exitCode() != 0)
+        return false;
+    qCInfo(logClip) << "Clipboard set via xclip";
+    return true;
+}
+
+// 尝试通过 deepin/UOS 旧版剪贴板 DBus 服务写入文本（新版为面板 UI 接口，无写入方法）。
 bool setViaDeepinDBus(const QString &text)
 {
-    // 候选服务名（旧 UOS/deepin 与 新版 dde-clipboard 6.x）
     static const char *kServices[] = {
         "com.deepin.daemon.ClipboardManager",
-        "org.deepin.dde.Clipboard1",
         nullptr
     };
     const char *kPath = "/com/deepin/daemon/ClipboardManager";
-    const char *kNewPath = "/org/deepin/dde/Clipboard1";
 
     for (int i = 0; kServices[i]; ++i) {
         const QString svc = QString::fromLatin1(kServices[i]);
         if (!QDBusConnection::sessionBus().interface()->isServiceRegistered(svc))
             continue;
-        // 新版路径与旧版不同，按服务名选路径
-        const QString path = (svc == "org.deepin.dde.Clipboard1")
-                                 ? QString::fromLatin1(kNewPath)
-                                 : QString::fromLatin1(kPath);
-        QDBusInterface iface(svc, path, svc, QDBusConnection::sessionBus());
+        QDBusInterface iface(svc, QString::fromLatin1(kPath), svc, QDBusConnection::sessionBus());
         if (!iface.isValid())
             continue;
         // SetClipboardData(uuid:string, mime:string, data:ay, info:a{sv})
@@ -67,7 +82,7 @@ bool setText(const QString &text)
     if (text.isEmpty())
         return false;
 
-    // 路径 1：Qt clipboard（需 QGuiApplication，X11 会话下可直接写系统剪贴板）
+    // 路径 1：Qt clipboard（进程为 QGuiApplication 时直接写系统剪贴板）
     if (qobject_cast<QGuiApplication *>(qApp)) {
         QClipboard *cb = qApp->clipboard();
         if (cb) {
@@ -77,7 +92,11 @@ bool setText(const QString &text)
         }
     }
 
-    // 路径 2：deepin 剪贴板 DBus 服务（跨进程，无需本进程 GUI）
+    // 路径 2：xclip 命令（X11 会话通用，无需 GUI 环境变量以外的依赖）
+    if (setViaXClip(text))
+        return true;
+
+    // 路径 3：deepin/UOS 旧版剪贴板 DBus 服务
     if (setViaDeepinDBus(text))
         return true;
 

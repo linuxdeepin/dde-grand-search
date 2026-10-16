@@ -9,6 +9,8 @@
 #include <QHash>
 #include <QDateTime>
 
+class QNetworkAccessManager;
+
 #include "resultbuilder.h"
 
 // 汇率换算：静态降级表（离线可用）+ 后台联网刷新缓存（更准）。
@@ -34,6 +36,7 @@ private:
     QHash<QString, double> m_rates;    // 币种 → 相对 CNY 的汇率
     QDateTime m_cacheTime;
     bool m_fetching = false;
+    QNetworkAccessManager *m_nam = nullptr; // 网络管理（随实例生命周期，禁止 static 悬空）
 
     // 常用展示目标（to 为空时）
     static const QStringList kDefaultTargets;
