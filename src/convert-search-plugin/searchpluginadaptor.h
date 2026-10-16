@@ -11,7 +11,7 @@
 // 接口名与 convert-search.conf 中的 DBusInterface 保持一致。
 class SearchPluginAdaptor : public QDBusAbstractAdaptor {
     Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "org.deepin.dde-grand-search.convert.SearchPlugin")
+    Q_CLASSINFO("D-Bus Interface", "org.deepin.dde.GrandSearchConvert.SearchPlugin")
 public:
     explicit SearchPluginAdaptor(QObject *parent = nullptr);
     ~SearchPluginAdaptor() override;

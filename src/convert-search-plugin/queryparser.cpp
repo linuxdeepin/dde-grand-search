@@ -160,6 +160,8 @@ static const QHash<QueryParser::Type, QStringList> kTriggerWords = {
 static QueryParser::Type matchTrigger(const QString &s, QString &rest)
 {
     rest.clear();
+    // Latin 触发词整词判定：base64 不应命中触发词 base
+    static const QRegularExpression kLatinWord(R"(^[a-zA-Z]+$)");
     // 收集所有前缀命中的触发词，选「最长」者优先，避免 `时间` 误吞 `时间戳` 等前缀包含冲突。
     int bestLen = -1;
     QueryParser::Type bestType = QueryParser::Type::None;
@@ -167,6 +169,13 @@ static QueryParser::Type matchTrigger(const QString &s, QString &rest)
     for (auto it = kTriggerWords.begin(); it != kTriggerWords.end(); ++it) {
         for (const QString &kw : it.value()) {
             if (s.startsWith(kw) && kw.size() > bestLen) {
+                // 触发词为 Latin 字母且其后紧连 Latin 字母数字时，视为普通单词的一部分，
+                // 不作为触发词（如 "base64 encode" ≠ 触发词 "base"）；中文触发词不受此限，
+                // 保留 "算12*8" 类连写用法。
+                const int pos = kw.size();
+                if (pos < s.size() && kLatinWord.match(kw).hasMatch()
+                    && s.at(pos).toLatin1() != 0 && s.at(pos).isLetterOrNumber())
+                    continue;
                 QString r = s.mid(kw.size()).trimmed();
                 // 允许触发词后紧跟分隔符 : ： ? 再接内容
                 // 全角冒号 U+FF1A 超出 Latin1，需用 QChar 显式构造
@@ -218,7 +227,9 @@ Parsed parse(const QString &input)
             // 递归未识别（如「颜色 随机」「红色」）时回退到触发词类型，rest 作为内容
             if (sub.type == QueryParser::Type::None) {
                 sub.type = t;
-                sub.text = rest;
+                // 交给 provider 完整原文而非 rest：保留触发词里的动作信息
+                // （如 "hash hello" 剥掉触发词后剩 "hello"，provider 将无法识别哈希动作）
+                sub.text = p.raw;
             }
             sub.raw = p.raw; // 保留原始大小写（ascii 等大小写敏感场景）
             return sub;

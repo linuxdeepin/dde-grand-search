@@ -9,8 +9,8 @@
 #include <QDBusError>
 #include <QLoggingCategory>
 
-#define DBUS_SERVICE_NAME "org.deepin.dde-grand-search.convert"
-#define DBUS_OBJECT_PATH  "/org/deepin/dde-grand-search/convert"
+#define DBUS_SERVICE_NAME "org.deepin.dde.GrandSearchConvert"
+#define DBUS_OBJECT_PATH  "/org/deepin/dde/GrandSearchConvert"
 
 int main(int argc, char *argv[])
 {
