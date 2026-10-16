@@ -30,6 +30,13 @@ static QList<NameColor> namedColors()
         {"紫色", "purple", {128, 0, 128}}, {"黑色", "black", {0, 0, 0}},
         {"白色", "white", {255, 255, 255}}, {"灰色", "gray", {128, 128, 128}},
         {"粉色", "pink", {255, 192, 203}}, {"棕色", "brown", {165, 42, 42}},
+        // 单字色名（与 queryparser 的色名识别表对齐，识别了就要能转换）
+        {"红", "", {255, 0, 0}}, {"橙", "", {255, 165, 0}},
+        {"黄", "", {255, 255, 0}}, {"绿", "", {0, 128, 0}},
+        {"青", "", {0, 255, 255}}, {"蓝", "", {0, 0, 255}},
+        {"紫", "", {128, 0, 128}}, {"黑", "", {0, 0, 0}},
+        {"白", "", {255, 255, 255}}, {"灰", "", {128, 128, 128}},
+        {"粉", "", {255, 192, 203}}, {"棕", "", {165, 42, 42}},
     };
 }
 
@@ -38,7 +45,9 @@ static bool matchNamedColor(const QString &s, RGB &out)
 {
     QString lower = s.toLower();
     for (const NameColor &nc : namedColors()) {
-        if (lower.contains(nc.zh) || lower.contains(nc.en)) {
+        // contains("") 恒真，单字条目英文名为空串时须跳过
+        if ((!nc.zh.isEmpty() && lower.contains(nc.zh))
+            || (!nc.en.isEmpty() && lower.contains(nc.en))) {
             out = nc.rgb;
             return true;
         }
