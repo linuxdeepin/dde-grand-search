@@ -98,16 +98,16 @@ void CurrencyProvider::fetchRates()
 
     // 使用只读公开 API（frankfurter.app，免 key，EUR 基准，转换为相对 CNY）
     // 失败时保持静态表，不影响功能。
-    static QNetworkAccessManager *nam = nullptr;
-    if (!nam)
-        nam = new QNetworkAccessManager(this);
+    // nam 随实例生命周期（成员），避免 static 指针在多实例/销毁后悬空。
+    if (!m_nam)
+        m_nam = new QNetworkAccessManager(this);
 
     QUrl url("https://api.frankfurter.app/latest?from=CNY&to=USD,EUR,JPY,GBP,HKD,KRW");
     QNetworkRequest req(url);
     // 网络超时保护：弱网/无网时避免 reply 长时间挂起、m_fetching 一直为 true 不再重试。
     // convert() 本身只读缓存（静态降级表兜底），超时不影响搜索结果返回。
     req.setTransferTimeout(8000); // 8 秒
-    QNetworkReply *reply = nam->get(req);
+    QNetworkReply *reply = m_nam->get(req);
     connect(reply, &QNetworkReply::finished, this, [this, reply]() {
         m_fetching = false;
         if (reply->error() == QNetworkReply::NoError) {
