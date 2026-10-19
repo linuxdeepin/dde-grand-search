@@ -58,8 +58,8 @@ Req parseReq(const QString &s)
         return r;
     }
     // 哈希：md5 / sha1 / sha256 / sha + 内容；裸 hash/哈希 + 内容 → 三种全给
-    // 显式算法词：md5 / sha1 / sha256 / sha（sha 视作 sha1）
-    QRegularExpression hashSpecRe(R"((md5|sha1|sha256)\s+(.+))");
+    // 显式算法词：md5 / sha1 / sha256 / sha（sha 视作 sha1）；(?i) 支持大写命令（捕获内容保留大小写）
+    QRegularExpression hashSpecRe(R"((?i)(md5|sha1|sha256)\s+(.+))");
     QRegularExpressionMatch hsm = hashSpecRe.match(s.trimmed());
     if (hsm.hasMatch()) {
         r.action = "hash";
@@ -68,7 +68,7 @@ Req parseReq(const QString &s)
         return r;
     }
     // 裸 hash/哈希 + 内容 → 全给三种
-    QRegularExpression hashAllRe(R"((?:hash|哈希)\s+(.+))");
+    QRegularExpression hashAllRe(R"((?i)(?:hash|哈希)\s+(.+))");
     QRegularExpressionMatch ham = hashAllRe.match(s.trimmed());
     if (ham.hasMatch()) {
         r.action = "hash";
@@ -76,8 +76,8 @@ Req parseReq(const QString &s)
         r.content = ham.captured(1).trimmed();
         return r;
     }
-    // ascii：单字符或字符 + ascii 关键词
-    QRegularExpression asciiRe(R"(ascii\s*(.+))");
+    // ascii：单字符或字符 + ascii 关键词（(?i) 支持大写 ASCII 命令）
+    QRegularExpression asciiRe(R"((?i)ascii\s*(.+))");
     QRegularExpressionMatch am = asciiRe.match(s.trimmed());
     if (am.hasMatch()) {
         r.action = "ascii";
@@ -151,20 +151,28 @@ QList<ResultBuilder::Item> ProgramProvider::run(const QString &text)
             items.append(it);
         } else if (!r.content.isEmpty()) {
             if (r.content.size() == 1) {
-                // 单字符 → 码值
+                // 单字符 → 码值（非 Latin1 字符如实给出 Unicode 码点，不假报 ASCII 码）
                 QChar ch = r.content[0];
                 ResultBuilder::Item it;
                 it.key = "prog-ascii";
-                it.name = QString("'%1' = ASCII %2 (0x%3)")
-                    .arg(ch).arg((int)ch.toLatin1()).arg((int)ch.toLatin1(), 0, 16);
+                if (ch.unicode() <= 0xFF) {
+                    it.name = QString("'%1' = ASCII %2 (0x%3)")
+                        .arg(ch).arg((int)ch.toLatin1()).arg((int)ch.toLatin1(), 0, 16);
+                } else {
+                    // U+ 码点十六进制部分规范大写，不整串 toUpper（避免改动文案）
+                    it.name = QString("'%1' 非 ASCII 字符 (Unicode U+%2)")
+                        .arg(ch).arg(QString("%1").arg(ch.unicode(), 4, 16, QChar('0')).toUpper());
+                }
                 it.icon = "utilities-terminal"; it.type = "convert/prog-ascii";
                 items.append(it);
             } else {
-                // 多字符 → 逐字符紧凑映射（易用性）
+                // 多字符 → 逐字符紧凑映射（易用性；非 Latin1 字符标 Unicode 码点）
                 QStringList maps;
                 for (QChar ch : r.content) {
-                    int v = ch.toLatin1();
-                    maps << QString("'%1'=%2").arg(ch).arg(v);
+                    if (ch.unicode() <= 0xFF)
+                        maps << QString("'%1'=%2").arg(ch).arg((int)ch.toLatin1());
+                    else
+                        maps << QString("'%1'=U+%2").arg(ch).arg(QString("%1").arg(ch.unicode(), 4, 16, QChar('0')).toUpper());
                 }
                 ResultBuilder::Item it;
                 it.key = "prog-ascii-multi";
@@ -180,7 +188,7 @@ QList<ResultBuilder::Item> ProgramProvider::run(const QString &text)
         QByteArray data = r.content.toUtf8();
         if (r.hashAll) {
             // 裸 hash/哈希 → MD5/SHA1/SHA256 全给（不舍上限）
-            for (const QString algo : {"md5", "sha1", "sha256"}) {
+            for (const QString &algo : {"md5", "sha1", "sha256"}) {
                 ResultBuilder::Item it;
                 it.key = QString("prog-hash-%1").arg(algo);
                 it.name = QString("%1: %2").arg(algo.toUpper()).arg(hashOf(algo, data));
@@ -220,6 +228,11 @@ QList<ResultBuilder::Item> ProgramProvider::run(const QString &text)
                 QString in = r.content;
                 QByteArray out;
                 for (int i = 0; i < in.size(); ++i) {
+                    // 非 Latin1 字符（如中文）按 UTF-8 原样保留，不可 toLatin1() 截断损坏
+                    if (in[i].unicode() > 0xFF) {
+                        out += QString(in[i]).toUtf8();
+                        continue;
+                    }
                     if (in[i] == '%' && i + 2 < in.size()) {
                         bool ok = false;
                         int v = in.mid(i + 1, 2).toInt(&ok, 16);
@@ -249,6 +262,11 @@ QList<ResultBuilder::Item> ProgramProvider::run(const QString &text)
                 QString in = result;
                 QByteArray out;
                 for (int i = 0; i < in.size(); ++i) {
+                    // 非 Latin1 字符（如中文）按 UTF-8 原样保留，不可 toLatin1() 截断损坏
+                    if (in[i].unicode() > 0xFF) {
+                        out += QString(in[i]).toUtf8();
+                        continue;
+                    }
                     if (in[i] == '%' && i + 2 < in.size()) {
                         bool ok = false;
                         int v = in.mid(i + 1, 2).toInt(&ok, 16);
