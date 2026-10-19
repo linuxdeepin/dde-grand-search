@@ -102,7 +102,8 @@ void CurrencyProvider::fetchRates()
     if (!m_nam)
         m_nam = new QNetworkAccessManager(this);
 
-    QUrl url("https://api.frankfurter.app/latest?from=CNY&to=USD,EUR,JPY,GBP,HKD,KRW");
+    // 一次性拉取 frankfurter 支持的全部常用币种（RUB/TWD/MOP 数据源不含，保持静态表）
+    QUrl url("https://api.frankfurter.app/latest?from=CNY&to=USD,EUR,JPY,GBP,HKD,KRW,AUD,CAD,SGD,THB,INR");
     QNetworkRequest req(url);
     // 网络超时保护：弱网/无网时避免 reply 长时间挂起、m_fetching 一直为 true 不再重试。
     // convert() 本身只读缓存（静态降级表兜底），超时不影响搜索结果返回。

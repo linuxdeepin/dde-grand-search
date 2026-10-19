@@ -17,7 +17,16 @@ static const QHash<QString, QString> kCurrencyAliases = {
     {"jpy", "JPY"}, {"日元", "JPY"}, {"円", "JPY"},
     {"hkd", "HKD"}, {"港币", "HKD"}, {"港币", "HKD"},
     {"krw", "KRW"}, {"韩元", "KRW"},
-    {"usd", "USD"}, {"欧元", "EUR"},
+    {"usd", "USD"},
+    // 静态汇率表支持但需显式别名的币种（其中 RUB/TWD/MOP 无在线源，走静态表）
+    {"rub", "RUB"}, {"卢布", "RUB"},
+    {"aud", "AUD"}, {"澳元", "AUD"}, {"澳币", "AUD"},
+    {"cad", "CAD"}, {"加元", "CAD"},
+    {"sgd", "SGD"}, {"新币", "SGD"}, {"新加坡元", "SGD"},
+    {"thb", "THB"}, {"泰铢", "THB"},
+    {"inr", "INR"}, {"卢比", "INR"},
+    {"twd", "TWD"}, {"新台币", "TWD"},
+    {"mop", "MOP"}, {"澳门元", "MOP"},
 };
 
 // 常见单位词（含中文），用于单位识别
@@ -238,7 +247,7 @@ Parsed parse(const QString &input)
 
     // 1) 货币：符号或代码出现在数字附近
     // 形如 100usd / $50 / 100 usd to cny / 100美元 / 100usd=?cny
-    QRegularExpression curRe(R"(([0-9]+(?:\.[0-9]+)?)\s*(usd|eur|cny|gbp|jpy|hkd|krw|美元|美金|欧元|人民币|元|英镑|日元|港币|韩元|\$|€|¥|￥|£))");
+    QRegularExpression curRe(R"(([0-9]+(?:\.[0-9]+)?)\s*(usd|eur|cny|gbp|jpy|hkd|krw|rub|aud|cad|sgd|thb|inr|twd|mop|美元|美金|欧元|人民币|元|英镑|日元|港币|韩元|卢布|澳元|澳币|加元|新币|新加坡元|泰铢|卢比|新台币|澳门元|\$|€|¥|￥|£))");
     QRegularExpressionMatch curM = curRe.match(s);
     if (curM.hasMatch()) {
         p.type = Type::Currency;
@@ -247,14 +256,14 @@ Parsed parse(const QString &input)
         p.from = kCurrencyAliases.value(sym, sym.toUpper());
 
         // 目标币种：to / =? / ? 之后
-        QRegularExpression toRe(R"((?:to|=|\?)\s*(usd|eur|cny|gbp|jpy|hkd|krw|美元|美金|欧元|人民币|元|英镑|日元|港币|韩元))");
+        QRegularExpression toRe(R"((?:to|=|\?)\s*(usd|eur|cny|gbp|jpy|hkd|krw|rub|aud|cad|sgd|thb|inr|twd|mop|美元|美金|欧元|人民币|元|英镑|日元|港币|韩元|卢布|澳元|澳币|加元|新币|新加坡元|泰铢|卢比|新台币|澳门元))");
         QRegularExpressionMatch toM = toRe.match(s);
         if (toM.hasMatch())
             p.to = kCurrencyAliases.value(toM.captured(1), toM.captured(1).toUpper());
         return p;
     }
     // 仅货币符号/代码 + 数字（顺序相反：usd100 / 美元100）
-    QRegularExpression curRe2(R"((usd|eur|cny|gbp|jpy|hkd|krw|美元|美金|欧元|人民币|元|英镑|日元|港币|韩元|\$|€|¥|￥|£)\s*([0-9]+(?:\.[0-9]+)?))");
+    QRegularExpression curRe2(R"((usd|eur|cny|gbp|jpy|hkd|krw|rub|aud|cad|sgd|thb|inr|twd|mop|美元|美金|欧元|人民币|元|英镑|日元|港币|韩元|卢布|澳元|澳币|加元|新币|新加坡元|泰铢|卢比|新台币|澳门元|\$|€|¥|￥|£)\s*([0-9]+(?:\.[0-9]+)?))");
     QRegularExpressionMatch curM2 = curRe2.match(s);
     if (curM2.hasMatch()) {
         p.type = Type::Currency;
@@ -264,7 +273,8 @@ Parsed parse(const QString &input)
     }
 
     // 2) 温度：数字 + C/F/K（k 需排除热量词 kcal/kj 与 kg/km 等单位词，避免误判）
-    QRegularExpression tempRe(R"(([0-9]+(?:\.[0-9]+)?)\s*(c|f|k(?!cal|j)|摄氏度|华氏度))");
+    // 负号/正号纳入数值捕获；(?<![0-9.]) 防止「-5c」被从子串「5c」命中而丢符号
+    QRegularExpression tempRe(R"((?<![0-9.])((?:[+-])?[0-9]+(?:\.[0-9]+)?)\s*(c|f|k(?!cal|j)|摄氏度|华氏度))");
     QRegularExpressionMatch tempM = tempRe.match(s);
     if (tempM.hasMatch() && !containsUnitWord(s)) {
         p.type = Type::Unit;
@@ -294,7 +304,8 @@ Parsed parse(const QString &input)
     }
 
     // 3) 单位换算：数字 + 单位词（可选 目标单位，支持 to/=/?/空格）
-    QRegularExpression numUnitRe(R"(([0-9]+(?:\.[0-9]+)?)\s*([a-z\x{4e00}-\x{9fff}]+))");
+    // 单位部分允许「/」：复合单位 km/h、mph 等速度写法不能被截断成 km（长度误判）
+    QRegularExpression numUnitRe(R"(([0-9]+(?:\.[0-9]+)?)\s*([a-z/\x{4e00}-\x{9fff}]+))");
     QRegularExpressionMatch nuM = numUnitRe.match(s);
     if (nuM.hasMatch()) {
         p.from = nuM.captured(2);
@@ -303,13 +314,13 @@ Parsed parse(const QString &input)
             p.value = nuM.captured(1).toDouble();
             // 目标单位：from 之后的部分，支持 to/=/?/空格 分隔
             QString rest = s.mid(nuM.captured(0).length()).trimmed();
-            QRegularExpression toRe(R"(^(?:to|=|\?)\s*([a-z\x{4e00}-\x{9fff}]+))");
+            QRegularExpression toRe(R"(^(?:to|=|\?)\s*([a-z/\x{4e00}-\x{9fff}]+))");
             QRegularExpressionMatch toM = toRe.match(rest);
             if (toM.hasMatch()) {
                 p.to = toM.captured(1);
             } else {
                 // 纯空格分隔：1kg 斤 → 取 rest 首个单位词
-                QRegularExpression spRe(R"(([a-z\x{4e00}-\x{9fff}]+))");
+                QRegularExpression spRe(R"(([a-z/\x{4e00}-\x{9fff}]+))");
                 QRegularExpressionMatch spM = spRe.match(rest);
                 if (spM.hasMatch() && containsUnitWord(spM.captured(1)))
                     p.to = spM.captured(1);
