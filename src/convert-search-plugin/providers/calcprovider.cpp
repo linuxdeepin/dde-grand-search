@@ -85,6 +85,9 @@ public:
     {
         if (!m_ok) return 0.0;
         double v = parseExpr();
+        // 表达式解析结束后仍有未消费 token（如「12*8 abc」）→ 畸形输入，不返回前缀结果
+        if (cur().kind != Tok::End)
+            m_ok = false;
         return v;
     }
 
@@ -295,8 +298,11 @@ QList<ResultBuilder::Item> CalcProvider::eval(const QString &exprRaw)
             items.append(err);
             return items;
         }
-        bool isInt = std::fabs(out - std::round(out)) < 1e-9;
-        qint64 iv = (qint64)std::round(out);
+        // 整数路径前先做 qint64 范围检查，超范围按浮点展示（避免强转 UB）
+        const double rounded = std::round(out);
+        const bool inRange = rounded >= -9.2233720368547e18 && rounded <= 9.2233720368547e18;
+        bool isInt = std::fabs(out - rounded) < 1e-9 && inRange;
+        qint64 iv = inRange ? (qint64)rounded : 0;
         // 主结果
         ResultBuilder::Item main;
         main.key = "calc-result";

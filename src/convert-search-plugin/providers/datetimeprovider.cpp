@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "datetimeprovider.h"
+#include "i18n.h"
 
 #include <QRegularExpression>
 #include <QDate>
@@ -121,6 +122,17 @@ QList<ResultBuilder::Item> DateTimeProvider::run(const QString &text)
         }
         // 单独「星期几」不带日期 → 今天星期几
         if (askWeekday && dates.isEmpty()) {
+            // 文本含日期形态但解析失败（如 2026-02-30 无效日期）→ 不回退到今天
+            if (QRegularExpression(R"(\d{4}[-./]\d{1,2}[-./]\d{1,2})").match(text).hasMatch()) {
+                ResultBuilder::Item it;
+                it.key = "date-weekday-invalid";
+                it.name = I18n::isChinese()
+                    ? "无法识别该日期，请检查日期是否有效（如 2026-02-30 不存在）"
+                    : "Cannot parse the date, please check it is valid (e.g. 2026-02-30 does not exist)";
+                it.icon = "office-calendar"; it.type = "convert/date-weekday";
+                items.append(it);
+                return items;
+            }
             ResultBuilder::Item it;
             it.key = "date-weekday";
             it.name = weekdayText(today);
