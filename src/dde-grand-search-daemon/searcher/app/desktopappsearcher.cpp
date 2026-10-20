@@ -188,6 +188,22 @@ bool DesktopAppSearcherPrivate::isHidden(DesktopEntryPointer pointer)
     return false;
 }
 
+// Select the same field key used by desktopName, before decoding scalar/list values.
+static QString desktopLocaleKey(const DesktopEntryPointer &app, const QString &key, const QString &locale)
+{
+    // 本地语言为空时获取默认值
+    if (locale.isEmpty())
+        return key;
+
+    const QString localizedKey = QString("%1[%2]").arg(key, locale);
+    // 去掉_的本地标识
+    const QString language = DesktopAppSearcherPrivate::splitLocaleName(locale);
+    // 没有则找简写的
+    if (app->stringValue(localizedKey).isEmpty() && !language.isEmpty())
+        return QString("%1[%2]").arg(key, language);
+    return localizedKey;
+}
+
 QSet<QString> DesktopAppSearcherPrivate::desktopIndex(const DesktopEntryPointer &app, const QString &locale)
 {
     QSet<QString> idxs;
@@ -233,6 +249,26 @@ QSet<QString> DesktopAppSearcherPrivate::desktopIndex(const DesktopEntryPointer 
         }
     }
 
+    // Select one locale per search field; the default is only a fallback, not an extra alias.
+    for (const QString &field : {QStringLiteral("GenericName"), QStringLiteral("Keywords")}) {
+        QString key = desktopLocaleKey(app, field, locale);
+        if (app->stringValue(key).isEmpty())
+            key = field;
+
+        if (field == QLatin1String("GenericName")) {
+            const QString genericName = app->stringValue(key);
+            if (!genericName.isEmpty())
+                idxs << genericName;
+        } else {
+            // Keep list decoding in DDesktopEntry to preserve escaped delimiters.
+            for (const QString &keyword : app->stringListValue(key)) {
+                const QString trimmed = keyword.trimmed();
+                if (!trimmed.isEmpty())
+                    idxs << trimmed;
+            }
+        }
+    }
+
     return idxs;
 }
 
@@ -245,36 +281,13 @@ QString DesktopAppSearcherPrivate::desktopName(const DesktopEntryPointer &app, c
     static const QString keyName = "Name";
     static const QString keyGenericName = "GenericName";
 
-    // 本地语言为空时获取默认值
-    if (locale.isEmpty()) {
-        if (generic)
-            name = app->stringValue(keyGenericName);
-
-        if (name.isEmpty())
-            name = app->stringValue(keyName);
-        return name;
-    }
-
-    // 去掉_的本地标识
-    const QString localeSplited = DesktopAppSearcherPrivate::splitLocaleName(locale);
-
     // 找本地名称，GenericName[]
-    if (generic) {
-        name = app->stringValue(QString("%1[%2]").arg(keyGenericName).arg(locale));
-
-        // 没有则找简写的
-        if (name.isEmpty() && !localeSplited.isEmpty())
-            name = app->stringValue(QString("%1[%2]").arg(keyGenericName).arg(localeSplited));
-    }
+    if (generic)
+        name = app->stringValue(desktopLocaleKey(app, keyGenericName, locale));
 
     // 继续找Name[]
-    if (name.isEmpty()) {
-        name = app->stringValue(QString("%1[%2]").arg(keyName).arg(locale));
-
-        // 没有则找简写的
-        if (name.isEmpty() && !localeSplited.isEmpty())
-            name = app->stringValue(QString("%1[%2]").arg(keyName).arg(localeSplited));
-    }
+    if (name.isEmpty())
+        name = app->stringValue(desktopLocaleKey(app, keyName, locale));
 
     return name;
 }
