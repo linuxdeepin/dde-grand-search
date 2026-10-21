@@ -1,3 +1,14 @@
+dde-grand-search (6.1.2) unstable; urgency=medium
+
+  * test: add GTest unit tests for dde-grand-search-daemon/utils
+  * test: add unit tests for DesktopAppWorker buildKeyword/group/status
+  * test: add unit tests for configuration module
+  * feat: enable rich text in search hint label
+  * chore: update translations
+  * fix: show index hints only for enabled features
+
+ -- Zhang Sheng <zhangsheng@uniontech.com>  Wed, 21 Oct 2026 14:32:14 +0800
+
 dde-grand-search (6.1.1) unstable; urgency=medium
 
   * feat: parse .desktop files for localized app name and icon
