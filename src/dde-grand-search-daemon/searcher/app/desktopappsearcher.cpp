@@ -191,11 +191,14 @@ bool DesktopAppSearcherPrivate::isHidden(DesktopEntryPointer pointer)
 // Select the same field key used by desktopName, before decoding scalar/list values.
 static QString desktopLocaleKey(const DesktopEntryPointer &app, const QString &key, const QString &locale)
 {
+    // 本地语言为空时获取默认值
     if (locale.isEmpty())
         return key;
 
     const QString localizedKey = QString("%1[%2]").arg(key, locale);
+    // 去掉_的本地标识
     const QString language = DesktopAppSearcherPrivate::splitLocaleName(locale);
+    // 没有则找简写的
     if (app->stringValue(localizedKey).isEmpty() && !language.isEmpty())
         return QString("%1[%2]").arg(key, language);
     return localizedKey;
@@ -278,9 +281,11 @@ QString DesktopAppSearcherPrivate::desktopName(const DesktopEntryPointer &app, c
     static const QString keyName = "Name";
     static const QString keyGenericName = "GenericName";
 
+    // 找本地名称，GenericName[]
     if (generic)
         name = app->stringValue(desktopLocaleKey(app, keyGenericName, locale));
 
+    // 继续找Name[]
     if (name.isEmpty())
         name = app->stringValue(desktopLocaleKey(app, keyName, locale));
 
