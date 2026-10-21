@@ -314,3 +314,116 @@ TEST(TaskCommanderPrivate, ut_onFinished_1)
     //TaskCommander应该被释放，无需在此处释放
     EXPECT_NO_FATAL_FAILURE(tc);
 }
+
+// ---- Tests for previously uncovered methods ----
+
+TEST(TaskCommanderTest, ut_setContent)
+{
+    TaskCommander tc("initial");
+    EXPECT_EQ(tc.content(), "initial");
+
+    const QString newContent = "updated content";
+    tc.setContent(newContent);
+    EXPECT_EQ(tc.content(), newContent);
+    EXPECT_EQ(tc.d->m_content, newContent);
+
+    tc.setContent("");
+    EXPECT_TRUE(tc.content().isEmpty());
+    EXPECT_TRUE(tc.d->m_content.isEmpty());
+}
+
+TEST(TaskCommanderPrivate, ut_merge)
+{
+    MatchedItemMap addTo;
+    MatchedItemMap addFrom;
+
+    // Case 1: new key inserted into empty target
+    addFrom.insert("key1", {MatchedItem()});
+    TaskCommanderPrivate::merge(addTo, addFrom);
+    EXPECT_EQ(addTo.size(), 1);
+    EXPECT_EQ(addTo.value("key1").size(), 1);
+
+    // Case 2: existing key — values appended
+    addFrom.clear();
+    addFrom.insert("key1", {MatchedItem(), MatchedItem()});
+    TaskCommanderPrivate::merge(addTo, addFrom);
+    EXPECT_EQ(addTo.size(), 1);
+    EXPECT_EQ(addTo.value("key1").size(), 3);
+
+    // Case 3: multiple keys, mix of new and existing
+    addFrom.clear();
+    addFrom.insert("key2", {MatchedItem()});
+    addFrom.insert("key3", {MatchedItem(), MatchedItem()});
+    TaskCommanderPrivate::merge(addTo, addFrom);
+    EXPECT_EQ(addTo.size(), 3);
+    EXPECT_EQ(addTo.value("key2").size(), 1);
+    EXPECT_EQ(addTo.value("key3").size(), 2);
+
+    // Case 4: empty source — no change
+    addFrom.clear();
+    TaskCommanderPrivate::merge(addTo, addFrom);
+    EXPECT_EQ(addTo.size(), 3);
+}
+
+TEST(TaskCommanderPrivate, ut_working)
+{
+    auto worker = new TestWorker("test1");
+    worker->work = false;
+
+    TaskCommanderPrivate::working(worker);
+    EXPECT_TRUE(worker->work);
+
+    EXPECT_NO_FATAL_FAILURE(delete worker);
+}
+
+TEST(TaskCommanderPrivate, ut_onWorkFinished)
+{
+    TaskCommander tc("test");
+    auto worker = new TestWorker("test1");
+
+    stub_ext::StubExt stub;
+    bool finishedCalled = false;
+    stub.set_lamda(&TaskCommanderPrivate::onFinished, [&finishedCalled](){finishedCalled = true;});
+
+    // Case 1: direct call — sender() is nullptr, should return early
+    tc.d->m_workingWorkers.append(worker);
+    tc.d->onWorkFinished(worker);
+    EXPECT_FALSE(finishedCalled);
+    EXPECT_EQ(tc.d->m_workingWorkers.size(), 1);
+
+    // Case 2: nullptr worker — should return early
+    tc.d->onWorkFinished(nullptr);
+    EXPECT_FALSE(finishedCalled);
+    EXPECT_EQ(tc.d->m_workingWorkers.size(), 1);
+
+    // Case 3: via signal — sender() matches worker, should remove and call onFinished
+    QObject::connect(worker, &ProxyWorker::asyncFinished, tc.d, &TaskCommanderPrivate::onWorkFinished, Qt::DirectConnection);
+    emit worker->asyncFinished(worker);
+
+    EXPECT_TRUE(finishedCalled);
+    EXPECT_TRUE(tc.d->m_workingWorkers.isEmpty());
+
+    EXPECT_NO_FATAL_FAILURE(delete worker);
+}
+
+TEST(TaskCommanderTest, ut_start_sync)
+{
+    stub_ext::StubExt stub;
+    bool onFinishedCalled = false;
+    stub.set_lamda(&TaskCommanderPrivate::onFinished, [&onFinishedCalled](){onFinishedCalled = true;});
+
+    TaskCommander tc("test");
+    auto worker = new TestWorker("test1");
+    worker->async = false;
+    tc.d->m_syncWorkers.append(worker);
+
+    ASSERT_TRUE(tc.start());
+    EXPECT_TRUE(tc.d->m_working);
+
+    // Wait for sync workers to complete via QFutureWatcher::finished -> onFinished
+    QTest::qWaitFor([&onFinishedCalled](){return onFinishedCalled;}, 1000);
+    EXPECT_TRUE(onFinishedCalled);
+    EXPECT_TRUE(worker->work);
+
+    EXPECT_NO_FATAL_FAILURE(delete worker);
+}

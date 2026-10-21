@@ -62,6 +62,17 @@ set(CONFIG_UT_SRC
     "configuration/ut_userpreference.cpp"
 )
 
+
+# task 模块源码（maincontroller/task/）
+set(TASK_SRC
+    "${PROJECT_DAEMONSRC_PATH}/maincontroller/task/taskcommander.cpp"
+)
+
+# task 模块单元测试文件
+set(TASK_UT_SRC
+    "maincontroller/ut_taskcommander.cpp"
+)
+
 # logDaemon 定义文件（源码中 Q_DECLARE_LOGGING_CATEGORY，定义在 main.cpp 之外单独提供）
 set(LOGDAEMON_SRC "${CMAKE_CURRENT_BINARY_DIR}/logdaemon_def.cpp")
 file(WRITE ${LOGDAEMON_SRC}
@@ -81,6 +92,8 @@ set(SRCS
     ${APP_UT_SRC}
     ${CONFIG_SRC}
     ${CONFIG_UT_SRC}
+    ${TASK_SRC}
+    ${TASK_UT_SRC}
     ${UTILS_QRC}
     ${CPP_STUB_SRC}
 )
