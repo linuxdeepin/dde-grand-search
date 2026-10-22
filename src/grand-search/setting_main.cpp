@@ -4,6 +4,7 @@
 
 #include "environments.h"
 #include "contacts/services/grandsearchsettingservice.h"
+#include "global/logrulesmanager.h"
 
 #include "services/grandsearchsettingserviceadaptor.h"
 
@@ -19,6 +20,9 @@ using namespace GrandSearchSetting;
 
 int main(int argc, char *argv[])
 {
+    // 调试模式适配：在任何日志打印之前注册 DConfig 动态日志规则监听
+    dgsLogRulesManager->applyLogRules();
+
     DApplication app(argc, argv);
 
     // 设置应用信息

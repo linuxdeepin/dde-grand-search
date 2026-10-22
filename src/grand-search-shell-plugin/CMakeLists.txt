@@ -17,6 +17,8 @@ FILE(GLOB_RECURSE SRCS
     "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/*.json"
 )
+# 动态日志规则监听（调试模式适配，全局目录源码）
+list(APPEND SRCS "${CMAKE_SOURCE_DIR}/src/global/logrulesmanager.h" "${CMAKE_SOURCE_DIR}/src/global/logrulesmanager.cpp")
 
 find_package(Qt6 REQUIRED COMPONENTS LinguistTools)
 find_package(DDEShell REQUIRED)

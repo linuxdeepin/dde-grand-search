@@ -38,7 +38,7 @@ void SearcherGroupPrivate::initBuiltin()
     m_builtin << stWebSearcher;
 
 #ifdef ENABLE_SEMANTIC
-    qInfo() << "create SemanticSearcher.";
+    qCInfo(logDaemon) << "create SemanticSearcher.";
     auto semanticSearcher = new SemanticSearcher(this);
     m_builtin << semanticSearcher;
 #endif

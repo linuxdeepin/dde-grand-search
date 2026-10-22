@@ -22,6 +22,8 @@ set(SRCS
     gui/grandsearchwidget.cpp
     gui/tipswidget.h
     gui/tipswidget.cpp
+    ${CMAKE_SOURCE_DIR}/src/global/logrulesmanager.h
+    ${CMAKE_SOURCE_DIR}/src/global/logrulesmanager.cpp
     ${PROJECT_3RDPARTY_PATH}/interfaces/grandsearchinterface.h
     ${PROJECT_3RDPARTY_PATH}/interfaces/grandsearchinterface.cpp
     )
