@@ -194,7 +194,7 @@ bool SemanticWorker::working(void *context)
         auto future = QtConcurrent::map(querys, &SemanticWorkerPrivate::run);
         future.waitForFinished();
         if (parser.getMatchedItems().isEmpty()) {
-            qInfo() << "semantic worker is finished, total spend: " << d->m_time.elapsed() << " ms found: " << 0;
+            qCInfo(logDaemon) << "semantic worker is finished, total spend: " << d->m_time.elapsed() << " ms found: " << 0;
             return true;
         }
 
@@ -218,7 +218,7 @@ bool SemanticWorker::working(void *context)
 
         checkRuning();
 
-        qInfo() << "semantic worker is finished, total spend: " << d->m_time.elapsed() << " ms found: " << d->m_items.begin().value().size();
+        qCInfo(logDaemon) << "semantic worker is finished, total spend: " << d->m_time.elapsed() << " ms found: " << d->m_items.begin().value().size();
         // 发送所有数据
         if (!d->m_items.isEmpty())
             emit unearthed(this);

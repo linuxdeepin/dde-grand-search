@@ -142,3 +142,18 @@ add_subdirectory(src/tools/luceneengine)
 if (${BUILD_OS_VERSION} GREATER_EQUAL "25" AND QT_VERSION_MAJOR EQUAL 6)
     add_subdirectory(src/grand-search-shell-plugin)
 endif()
+
+# 安装 DConfig 配置元数据（调试模式动态日志规则），1040及以下的默认DTK环境不支持DConfig
+set(DCONFIG_APPID org.deepin.dde.grandsearch)
+file(GLOB DCONFIG_FILES "${CMAKE_SOURCE_DIR}/assets/configs/*.json")
+if (DTK_VERSION_MAJOR EQUAL "6" AND COMMAND dtk_add_config_meta_files)
+    # DSG_DATA_DIR 在子目录 find_package 时才被 Dtk6DConfig 引入，顶层不可见，此处补齐默认值
+    if (NOT DEFINED DSG_DATA_DIR)
+        set(DSG_DATA_DIR ${CMAKE_INSTALL_PREFIX}/share/dsg)
+    endif()
+    dtk_add_config_meta_files(APPID ${DCONFIG_APPID} FILES ${DCONFIG_FILES})
+    message("-- DConfig is supported by DTK")
+else()
+    install(FILES ${DCONFIG_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/dsg/configs/${DCONFIG_APPID})
+    message("-- DConfig is not supported by DTK")
+endif()

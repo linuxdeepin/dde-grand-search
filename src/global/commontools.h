@@ -9,6 +9,7 @@
 #include <QPoint>
 #include <QColor>
 #include <QtDebug>
+#include <QLoggingCategory>
 #include <QFileInfo>
 #include <QDateTime>
 #include <QImage>
@@ -50,8 +51,10 @@ inline QString normalizeDoubleString(const QString &str)
 inline QString formatFileSize(qint64 num, bool withUnitVisible = true, int precision = 1, int forceUnit = -1,
                               QStringList unitList = QStringList({ " B", " KB", " MB", " GB", " TB" }))
 {
+    // 函数内静态分类，避免头文件引入全局符号；名称归入 grandsearch 命名空间便于日志规则统一控制
+    static QLoggingCategory commonLog("org.deepin.dde.grandsearch.common");
     if (num < 0) {
-        qWarning() << "Negative number passed to formatSize():" << num;
+        qCWarning(commonLog) << "Negative number passed to formatSize():" << num;
         num = 0;
 
         return QString::number(num);

@@ -5,12 +5,15 @@
 #include "textthumbnailgenerator.h"
 
 #include <QDebug>
+#include <QLoggingCategory>
 #include <QFile>
 #include <QFileInfo>
 #include <QFont>
 #include <QImage>
 #include <QPainter>
 #include <QTextDocument>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 namespace GrandSearch {
 
@@ -52,7 +55,7 @@ QPixmap TextThumbnailGenerator::generate(const QString &filePath, const QSize &s
 
     // 检查文件大小
     if (!isFileSizeValid(filePath)) {
-        qWarning() << "TextThumbnailGenerator: file too large" << filePath;
+        qCWarning(logGrandSearch) << "TextThumbnailGenerator: file too large" << filePath;
         return QPixmap();
     }
 
@@ -108,7 +111,7 @@ QString TextThumbnailGenerator::readFileContent(const QString &filePath, int max
 {
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qWarning() << "TextThumbnailGenerator: cannot open file" << filePath;
+        qCWarning(logGrandSearch) << "TextThumbnailGenerator: cannot open file" << filePath;
         return QString();
     }
 
