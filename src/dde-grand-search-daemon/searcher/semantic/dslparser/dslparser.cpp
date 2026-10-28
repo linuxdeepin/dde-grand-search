@@ -407,7 +407,7 @@ NameCond::NameCond(const QString &text, QObject *parent)
     m_condType = querylangParser::RuleNameSearch;
     int pos = m_cond.indexOf("\"") + 1;
     m_name = m_cond.mid(pos, m_cond.length() - pos - 1);
-    qDebug() << QString("NameCond(%1): m_name(%2)").arg(m_cond).arg(m_name);
+    qCDebug(logDaemon) << QString("NameCond(%1): m_name(%2)").arg(m_cond).arg(m_name);
 
     m_entity.keys.append(m_name);
 }
@@ -443,7 +443,7 @@ SizeCond::SizeCond(const QString &text, QObject *parent)
     } else {
         m_fileSize = 0;
     }
-    qDebug() << QString("SizeCond(%1): temp(%2) m_compType(%3) m_fileSize(%4)").arg(m_cond).arg(temp).arg(m_compType).arg(m_fileSize);
+    qCDebug(logDaemon) << QString("SizeCond(%1): temp(%2) m_compType(%3) m_fileSize(%4)").arg(m_cond).arg(temp).arg(m_compType).arg(m_fileSize);
 
     m_entity.fileCompType = m_compType;
     m_entity.fileSize = m_fileSize;
@@ -459,7 +459,7 @@ TypeCond::TypeCond(const QString &text, QObject *parent)
 
     int pos = m_cond.indexOf("\"") + 1;
     m_typeName = m_cond.mid(pos, m_cond.length() - pos - 1);
-    qDebug() << QString("TypeCond(%1): m_isTrue(%2) m_typeName(%3)").arg(m_cond).arg(m_isTrueType).arg(m_typeName);
+    qCDebug(logDaemon) << QString("TypeCond(%1): m_isTrue(%2) m_typeName(%3)").arg(m_cond).arg(m_isTrueType).arg(m_typeName);
 
     /*
      * #define DOCUMENT_GROUP      "text"
@@ -528,7 +528,7 @@ DurationCond::DurationCond(const QString &text, QObject *parent)
     } else {
         m_duration = formatTime(static_cast<qint64>(match.captured(1).toFloat()) * 1000);
     }
-    qDebug() << QString("DurationCond(%1): temp(%2) compType(%3) duration(%4)").arg(m_cond).arg(temp).arg(m_compType).arg(m_duration);
+    qCDebug(logDaemon) << QString("DurationCond(%1): temp(%2) compType(%3) duration(%4)").arg(m_cond).arg(temp).arg(m_compType).arg(m_duration);
 
     m_entity.types.append(AUDIO_GROUP);
     m_entity.types.append(VIDEO_GROUP);
@@ -585,7 +585,7 @@ MetaCond::MetaCond(const QString &text, QObject *parent)
             m_metaValue = "7680*4320";
         }
     }
-    qDebug() << QString("MetaCond(%1): isTrue(%2) metaType(%3) metaValue(%4)").arg(m_cond).arg(m_isTrue).arg(m_metaType).arg(m_metaValue);
+    qCDebug(logDaemon) << QString("MetaCond(%1): isTrue(%2) metaType(%3) metaValue(%4)").arg(m_cond).arg(m_isTrue).arg(m_metaType).arg(m_metaValue);
 
     if (m_metaType == "ARTIST") {
         m_entity.types.append(AUDIO_GROUP);
@@ -606,7 +606,7 @@ QuantityCond::QuantityCond(const QString &text, QObject *parent)
     int pos = m_cond.indexOf("=") + 1;
     QString temp = m_cond.mid(pos);
     m_quantity = temp.toInt();
-    qDebug() << QString("QuantityCond(%1): temp(%2) m_quantity(%3)").arg(m_cond).arg(temp).arg(m_quantity);
+    qCDebug(logDaemon) << QString("QuantityCond(%1): temp(%2) m_quantity(%3)").arg(m_cond).arg(temp).arg(m_quantity);
 }
 
 ContentCond::ContentCond(const QString &text, QObject *parent)
@@ -615,7 +615,7 @@ ContentCond::ContentCond(const QString &text, QObject *parent)
     m_condType = querylangParser::RuleContentSearch;
     int pos = m_cond.indexOf("\"") + 1;
     m_content = m_cond.mid(pos, m_cond.length() - pos - 1);
-    qDebug() << QString("ContentCond(%1): m_content(%2)").arg(m_cond).arg(m_content);
+    qCDebug(logDaemon) << QString("ContentCond(%1): m_content(%2)").arg(m_cond).arg(m_content);
 
     m_entity.keys.append(m_content);
 }

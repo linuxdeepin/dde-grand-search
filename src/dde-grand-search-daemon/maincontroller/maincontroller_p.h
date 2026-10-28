@@ -9,6 +9,10 @@
 #include "searcher/searchergroup.h"
 #include "task/taskcommander.h"
 
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logDaemon)
+
 namespace GrandSearch {
 
 class MainControllerPrivate : public QObject
@@ -22,7 +26,7 @@ public:
         q->terminate();
 
         auto task = new TaskCommander(context);
-        qInfo() << "new task:" << task << task->taskID();
+        qCInfo(logDaemon) << "new task:" << task << task->taskID();
         Q_ASSERT(task);
 
         //直连，防止被事件循环打乱时序
@@ -38,7 +42,7 @@ public:
             return true;
         }
 
-        qWarning() << "fail to start task" << task << task->taskID();
+        qCWarning(logDaemon) << "fail to start task" << task << task->taskID();
         task->deleteSelf();
         return false;
     }

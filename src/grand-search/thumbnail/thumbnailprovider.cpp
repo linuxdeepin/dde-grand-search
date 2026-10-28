@@ -9,7 +9,10 @@
 
 #include <algorithm>
 #include <QDebug>
+#include <QLoggingCategory>
 #include <QMutexLocker>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 namespace GrandSearch {
 
@@ -58,7 +61,7 @@ void ThumbnailProvider::registerGenerator(ThumbnailGenerator *generator)
                   return a->priority() > b->priority();
               });
 
-    qDebug() << "ThumbnailProvider: registered generator" << generator->name()
+    qCDebug(logGrandSearch) << "ThumbnailProvider: registered generator" << generator->name()
              << "with priority" << generator->priority();
 }
 
@@ -71,7 +74,7 @@ void ThumbnailProvider::unregisterGenerator(ThumbnailGenerator *generator)
     QMutexLocker locker(&m_mutex);
     m_generators.removeOne(generator);
 
-    qDebug() << "ThumbnailProvider: unregistered generator" << generator->name();
+    qCDebug(logGrandSearch) << "ThumbnailProvider: unregistered generator" << generator->name();
 }
 
 ThumbnailGenerator *ThumbnailProvider::findGenerator(const QString &mimetype) const
@@ -118,7 +121,7 @@ QPixmap ThumbnailProvider::getThumbnailSync(const QString &filePath, const QStri
     // 查找生成器
     ThumbnailGenerator *generator = findGenerator(mimetype);
     if (!generator) {
-        qWarning() << "ThumbnailProvider: no generator for mimetype" << mimetype;
+        qCWarning(logGrandSearch) << "ThumbnailProvider: no generator for mimetype" << mimetype;
         return QPixmap();
     }
 

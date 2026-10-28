@@ -4,6 +4,8 @@
 
 #include "searchitem.h"
 
+#include "global/logrulesmanager.h"
+
 #include <pluginfactory.h>
 
 #include <DDBusSender>
@@ -35,6 +37,9 @@ static DDBusSender searchDbus()
 SearchItem::SearchItem(QObject *parent)
     : DApplet(parent), m_visible(true), m_grandSearchVisible(false)
 {
+    // 调试模式适配：插件随宿主进程加载，在最早的代码点注册 DConfig 动态日志规则监听
+    dgsLogRulesManager->applyLogRules();
+
     qCDebug(logShell) << "Grand Search shell plugin initialized";
 
     // Connect to VisibleChanged D-Bus signal directly

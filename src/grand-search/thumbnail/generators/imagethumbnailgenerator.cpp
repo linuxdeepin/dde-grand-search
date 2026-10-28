@@ -5,7 +5,10 @@
 #include "imagethumbnailgenerator.h"
 
 #include <QDebug>
+#include <QLoggingCategory>
 #include <QImageReader>
+
+Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
 inline constexpr qint64 DEFAULT_MAX_IMAGE_SIZE = 100 * 1024 * 1024;   // 100 MB (图片)
 
@@ -31,14 +34,14 @@ QPixmap ImageThumbnailGenerator::generate(const QString &filePath, const QSize &
 
     // 检查文件大小
     if (!isFileSizeValid(filePath)) {
-        qWarning() << "ImageThumbnailGenerator: file too large" << filePath;
+        qCWarning(logGrandSearch) << "ImageThumbnailGenerator: file too large" << filePath;
         return QPixmap();
     }
 
     QImageReader reader(filePath);
 
     if (!reader.canRead()) {
-        qWarning() << "ImageThumbnailGenerator: cannot read image" << filePath;
+        qCWarning(logGrandSearch) << "ImageThumbnailGenerator: cannot read image" << filePath;
         return QPixmap();
     }
 
@@ -52,7 +55,7 @@ QPixmap ImageThumbnailGenerator::generate(const QString &filePath, const QSize &
 
     QImage image = reader.read();
     if (image.isNull()) {
-        qWarning() << "ImageThumbnailGenerator: failed to read image" << filePath
+        qCWarning(logGrandSearch) << "ImageThumbnailGenerator: failed to read image" << filePath
                    << "error:" << reader.errorString();
         return QPixmap();
     }
