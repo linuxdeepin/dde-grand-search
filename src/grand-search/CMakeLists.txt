@@ -298,6 +298,8 @@ set(SRCS_SETTING
     contacts/services/grandsearchsettingservice_p.h
     contacts/services/grandsearchsettingservice.h
     contacts/services/grandsearchsettingservice.cpp
+    ${CMAKE_SOURCE_DIR}/src/global/logrulesmanager.h
+    ${CMAKE_SOURCE_DIR}/src/global/logrulesmanager.cpp
     ${PROJECT_3RDPARTY_PATH}/services/grandsearchsettingserviceadaptor.h
     ${PROJECT_3RDPARTY_PATH}/services/grandsearchsettingserviceadaptor.cpp
 )

@@ -5,6 +5,7 @@
 #include "environments.h"
 #include "global/grandsearch_global.h"
 #include "global/framelogmanager.h"
+#include "global/logrulesmanager.h"
 
 #include "gui/mainwindow.h"
 #include "gui/searchconfig/configwidget.h"
@@ -35,6 +36,10 @@ DCORE_USE_NAMESPACE
 
 int main(int argc, char *argv[])
 {
+    // 调试模式适配：在任何日志打印之前注册 DConfig 动态日志规则监听
+    // （qunsetenv("QT_LOGGING_RULES") 须先于 QApplication 内部可能产生的日志输出）
+    dgsLogRulesManager->applyLogRules();
+
     DApplication app(argc, argv);
 
     // 设置应用信息

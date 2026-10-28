@@ -6,6 +6,7 @@
 #include "dbusservice/grandsearchinterface.h"
 #include "global/grandsearch_global.h"
 #include "global/framelogmanager.h"
+#include "global/logrulesmanager.h"
 
 #include <DLog>
 #include <DApplication>
@@ -126,6 +127,9 @@ static void appExitHandler(int sig)
 
 int main(int argc, char *argv[])
 {
+    // 调试模式适配：在任何日志打印之前注册 DConfig 动态日志规则监听
+    dgsLogRulesManager->applyLogRules();
+
     // 安全退出
     signal(SIGINT, appExitHandler);
     signal(SIGQUIT, appExitHandler);
