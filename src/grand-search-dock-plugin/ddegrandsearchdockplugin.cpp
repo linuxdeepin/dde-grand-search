@@ -5,6 +5,7 @@
 #include "ddegrandsearchdockplugin.h"
 #include "gui/grandsearchwidget.h"
 #include "gui/tipswidget.h"
+#include "global/logrulesmanager.h"
 
 #include <DApplication>
 
@@ -31,6 +32,9 @@ DWIDGET_USE_NAMESPACE
 DdeGrandSearchDockPlugin::DdeGrandSearchDockPlugin(QObject *parent)
     : QObject(parent), m_searchWidget(nullptr)
 {
+    // 调试模式适配：插件随宿主进程加载，在最早的代码点注册 DConfig 动态日志规则监听
+    dgsLogRulesManager->applyLogRules();
+
     qCDebug(logDock) << "Grand Search dock plugin constructor called";
 }
 
