@@ -641,7 +641,7 @@ QString Utils::appIconName(const MatchedItem &item)
             DDesktopEntry entry(defaultDesktopFile);
             strAppIconName = entry.stringValue("Icon");
         } else {
-            qWarning() << defaultDesktopFile << "lost.";
+            qCWarning(logGrandSearch) << defaultDesktopFile << "lost.";
         }
 
         if (strAppIconName.isEmpty())
