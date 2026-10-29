@@ -1,3 +1,12 @@
+dde-grand-search (6.0.52) unstable; urgency=medium
+
+  * docs(grand-search): add Portuguese help manual
+  * feat: wire shell plugin and classify remaining plain logs
+  * refactor: classify plain warning log in commontools
+  * feat: add LogRulesManager for DConfig dynamic log rules
+
+ -- re2zero <yangwu@uniontech.com>  Thu, 29 Oct 2026 20:42:30 +0800
+
 dde-grand-search (6.0.51) unstable; urgency=medium
 
   * feat: update search settings menu text
