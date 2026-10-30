@@ -30,11 +30,17 @@ extern "C" {
 #include <QFileInfo>
 #include <QDesktopServices>
 #include <QDBusInterface>
+#include <QUrl>
 #include <QDBusPendingCall>
 #include <QDBusReply>
 #include <QDateTime>
 #include <QIcon>
 #include <QApplication>
+#include <QClipboard>
+#include <QGuiApplication>
+#include <QMimeData>
+#include <QProcess>
+#include <QTimer>
 #include <QLoggingCategory>
 
 Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
@@ -294,6 +300,18 @@ void Utils::updateItemsWeight(MatchedItemMap &map, const QString &content)
 
                 if (method == GRANDSEARCH_PROPERTY_WEIGHT_METHOD_LOCALFILE) {
                     weight += calcFileWeight(item.item, item.name, keys);
+                    // 文件名/文件夹名命中额外加权：仅对文件名搜索项（FILE_DEEPIN）
+                    // 叠加，内容命中（FULLTEXT）、OCR、语义等项即使其文件名同样
+                    // 含关键词也不叠加——确保“文件名匹配”在最佳结果中绝对优先
+                    // 于“内容匹配”
+                    if (item.searcher == GRANDSEARCH_CLASS_FILE_DEEPIN) {
+                        for (const QString &key : keys) {
+                            if (item.name.contains(key)) {
+                                weight += 2000;
+                                break;
+                            }
+                        }
+                    }
                 } else if (method == GRANDSEARCH_PROPERTY_WEIGHT_METHOD_APP) {
                     weight += calcAppWeight(item, keys);
                 } else if (method == GRANDSEARCH_PROPERTY_WEIGHT_METHOD_SETTING) {
@@ -357,7 +375,8 @@ double Utils::calcFileWeight(const QString &path, const QString &name, const QSt
     double weight = 0;
     for (const QString &key : keys) {
         if (name.contains(key)) {
-            weight += 43;
+            // 文件名命中基础权重（官方原值；额外加权在 updateItemsWeight 中
+            // 仅对文件名搜索项叠加，避免全文/OCR 等项的文件名同样命中时被同权）
             break;
         }
     }
@@ -508,7 +527,7 @@ void Utils::packageBestMatch(MatchedItemMap &map, int maxQuantity)
         { GRANDSEARCH_GROUP_FILE_AUDIO, false },
         { GRANDSEARCH_GROUP_FILE_PICTURE, false },
         { GRANDSEARCH_GROUP_FILE_DOCUMNET, false },
-        { GRANDSEARCH_GROUP_FOLDER, false },
+        // 文件夹组已移出黑名单：文件夹名匹配同样参与“最佳结果”并优先展示
     };
 
     // 不用去重的组别
@@ -808,9 +827,15 @@ bool Utils::openMatchedItem(const MatchedItem &item)
 
 bool Utils::openMatchedItemWithCtrl(const MatchedItem &item)
 {
-    if (GRANDSEARCH_CLASS_FILE_DEEPIN == item.searcher) {
+    // 文件类结果（文件名、全文、OCR、语义等来源）且确为本地文件时，
+    // 在文件管理器中打开所在目录并选中该文件；
+    // 目录直接打开；应用、网页、设置等其他结果回退到普通打开
+    if (item.searcher == GRANDSEARCH_CLASS_FILE_DEEPIN
+            || item.searcher == GRANDSEARCH_CLASS_FILE_FULLTEXT
+            || item.searcher == GRANDSEARCH_CLASS_FILE_SEMANTIC
+            || item.searcher == GRANDSEARCH_CLASS_OCR_TEXT) {
         QFileInfo fileInfo(item.item);
-        if (!fileInfo.isDir())
+        if (fileInfo.exists() && fileInfo.isFile())
             return openInFileManager(item);
     }
 
@@ -819,7 +844,100 @@ bool Utils::openMatchedItemWithCtrl(const MatchedItem &item)
 
 bool Utils::openInFileManager(const MatchedItem &item)
 {
-    return DDesktopServices::showFileItem(item.item);
+    // 打开路径时在文件管理器中选中该文件（org.freedesktop.FileManager1 标准接口），
+    // 比 DDesktopServices::showFileItem 更可靠（deepin 25 的 showFileItem 只打开目录不选中）
+    const QString path = item.item;
+    if (!path.isEmpty()) {
+        QDBusInterface fm("org.freedesktop.FileManager1",
+                          "/org/freedesktop/FileManager1",
+                          "org.freedesktop.FileManager1",
+                          QDBusConnection::sessionBus());
+        if (fm.isValid()) {
+            const QList<QVariant> args = { QStringList{ QUrl::fromLocalFile(path).toString() }, QString() };
+            QDBusReply<void> reply = fm.callWithArgumentList(QDBus::Block,
+                                                             QStringLiteral("ShowItems"), args);
+            if (reply.isValid())
+                return true;
+        }
+    }
+    return DDesktopServices::showFileItem(path);
+}
+
+// ---- Alt+回车：插入路径到保存/另存为对话框 --------------------------------
+// 复用 savejump 已验证的跳转时序：写剪贴板 → 激活对话框 → Ctrl+L →
+// 全选粘贴 → 回车 → Alt+N 兜底（兼容 WPS 等不响应 Ctrl+L 的对话框），
+// 1 秒后若剪贴板仍是路径则恢复用户原内容（文本/文件 uri-list 均恢复）。
+static quint32 s_jumpTargetWid = 0;
+
+void Utils::setJumpTargetWindow(quint32 wid)
+{
+    s_jumpTargetWid = wid;
+}
+
+bool Utils::jumpPathToDialog(const MatchedItem &item)
+{
+    const QString rawPath = item.item;
+    if (rawPath.isEmpty() || s_jumpTargetWid == 0)
+        return false;
+
+    // 选中文件时跳转其所在目录；选中目录直接用
+    QFileInfo fi(rawPath);
+    if (!fi.exists())
+        return false;
+    const QString targetDir = fi.isDir() ? fi.absoluteFilePath() : fi.absolutePath();
+
+    // 移植 savejump 双机实测通过（deepin25）的完整机制：
+    // 1) startDetached 启动独立后台脚本：浮窗关闭后 GUI 进程即使退出，脚本不受影响；
+    // 2) 剪贴板读写全在脚本内用 xclip 完成，写后回读验证（最多 3 次），失败即中止，
+    //    避免 deepin 剪贴板管理器导致 Ctrl+V 粘到用户旧内容；
+    // 3) 用呼出前记录的保存对话框窗口 ID（s_jumpTargetWid），windowactivate --sync
+    //    + windowfocus 激活，键发给焦点窗口（不带 --window）；
+    // 4) 时序对齐 savejump：Ctrl+L 连发两次（WPS 首次会丢）→ 0.1s → 全选+粘贴+回车
+    //    → 0.3s → Alt+N 兼容确认 → 1s 后剪贴板仍为路径才按原类型恢复。
+    // 路径经 argv 传入（bash -c 的 $1），不拼进脚本，避免引号/特殊字符问题。
+    const QString scriptBody = QStringLiteral(R"JUMPSCRIPT(
+# 记录原剪贴板完整状态（文本 + 文件 uri-list）
+SAVED_TEXT="$(xclip -selection clipboard -o 2>/dev/null)"
+SAVED_URI="$(xclip -selection clipboard -t text/uri-list -o 2>/dev/null)"
+# 写路径并回读验证（最多 3 次；失败即中止，杜绝粘旧内容）
+GOT=""
+for i in 1 2 3; do
+  printf '%s' "$1" | xclip -selection clipboard 2>/dev/null
+  sleep 0.05
+  GOT="$(xclip -selection clipboard -o 2>/dev/null)"
+  if [ "$GOT" = "$1" ]; then break; fi
+done
+if [ "$GOT" != "$1" ]; then
+  exit 1
+fi
+# 激活呼出前记录的保存对话框（--sync 保证激活完成，勿删）
+xdotool windowactivate --sync $2 2>/dev/null
+xdotool windowfocus $2 2>/dev/null
+sleep 0.1
+# 地址栏：Ctrl+L 连发两次（deepin 下 WPS 等对话框首次可能丢失）
+xdotool key --delay 40 ctrl+l ctrl+l 2>/dev/null
+sleep 0.1
+# 全选+粘贴路径+回车（此刻剪贴板已确认是路径）
+xdotool key --delay 50 ctrl+a ctrl+v Return 2>/dev/null
+sleep 0.3
+# Alt+N 兼容确认（兼容不响应 Ctrl+L 的对话框；实测 Qt 应用无副作用）
+xdotool key --delay 50 alt+n 2>/dev/null
+# 延迟恢复原剪贴板：1s 后剪贴板仍是路径才恢复（用户新复制的内容不被覆盖）
+sleep 1
+GOT2="$(xclip -selection clipboard -o 2>/dev/null)"
+if [ "$GOT2" = "$1" ]; then
+  if [ -n "$SAVED_URI" ]; then
+    printf '%s' "$SAVED_URI" | xclip -selection clipboard -t text/uri-list 2>/dev/null
+  elif [ -n "$SAVED_TEXT" ]; then
+    printf '%s' "$SAVED_TEXT" | xclip -selection clipboard 2>/dev/null
+  fi
+fi
+)JUMPSCRIPT");
+    const QString widStr = QString::number(s_jumpTargetWid);
+    qCDebug(logGrandSearch) << "jumpPathToDialog startDetached, targetDir:" << targetDir << "wid:" << widStr;
+    // bash -c 脚本 占位 argv0 路径 窗口ID → $1=路径, $2=窗口ID
+    QProcess::startDetached("bash", QStringList() << "-c" << scriptBody << "bash" << targetDir << widStr);
+    return true;
 }
 
 bool Utils::openExtendSearchMatchedItem(const MatchedItem &item)

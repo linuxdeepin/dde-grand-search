@@ -96,6 +96,26 @@ void ExhibitionWidget::onHandleItem()
     m_matchWidget->handleItem();
 }
 
+void ExhibitionWidget::onLocateItem()
+{
+    if (this->isHidden())
+        return;
+
+    Q_ASSERT(m_matchWidget);
+
+    m_matchWidget->locateItem();
+}
+
+void ExhibitionWidget::onJumpItem()
+{
+    if (this->isHidden())
+        return;
+
+    Q_ASSERT(m_matchWidget);
+
+    m_matchWidget->jumpItem();
+}
+
 void ExhibitionWidget::appendMatchedData(const MatchedItemMap &matchedData)
 {
     qCDebug(logGrandSearch) << "Appending matched data - Groups:" << matchedData.size();

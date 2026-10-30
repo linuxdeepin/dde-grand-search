@@ -54,6 +54,8 @@ signals:
     void selectPreviousItem();
     void selectNextItem();
     void handleItem();
+    void locateItem();
+    void jumpItem();      // Alt+Enter：插入路径到保存对话框
     void closeWindow();
     void searchAborted();
 

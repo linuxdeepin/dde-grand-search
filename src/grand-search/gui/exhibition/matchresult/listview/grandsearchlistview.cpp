@@ -21,6 +21,7 @@
 #include <QFileInfo>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QKeyEvent>
 
 using namespace GrandSearch;
 DCORE_USE_NAMESPACE
@@ -235,6 +236,37 @@ void GrandSearchListView::mousePressEvent(QMouseEvent *event)
     }
 
     DListView::mousePressEvent(event);
+}
+
+void GrandSearchListView::keyPressEvent(QKeyEvent *event)
+{
+    // Alt+Enter：把选中项的路径写入剪贴板并跳转到之前活动的保存/另存为对话框
+    // （在模态文件对话框里呼出本搜索框 → 选目录 → Alt+回车自动定位过去）
+    if (event && (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
+            && (event->modifiers() & Qt::AltModifier)) {
+        const QModelIndex &index = currentIndex();
+        if (index.isValid()) {
+            MatchedItem item = index.data(DATA_ROLE).value<MatchedItem>();
+            if (Utils::jumpPathToDialog(item)) {
+                emit sigItemClicked();   // 触发浮窗关闭，焦点交回对话框
+                return;
+            }
+        }
+    }
+
+    // Ctrl+Enter：在文件管理器中定位当前选中的结果（与 Ctrl+点击 行为一致）
+    if (event && (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
+            && (event->modifiers() & Qt::ControlModifier)) {
+        const QModelIndex &index = currentIndex();
+        if (index.isValid()) {
+            MatchedItem item = index.data(DATA_ROLE).value<MatchedItem>();
+            Utils::openMatchedItemWithCtrl(item);
+            emit sigItemClicked();
+            return;
+        }
+    }
+
+    DListView::keyPressEvent(event);
 }
 
 void GrandSearchListView::onThumbnailReady(const QString &filePath, const QPixmap &thumbnail)

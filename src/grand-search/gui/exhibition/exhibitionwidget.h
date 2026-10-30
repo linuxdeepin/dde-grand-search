@@ -42,6 +42,8 @@ public slots:
     void onSelectNextItem();
     void onSelectPreviousItem();
     void onHandleItem();
+    void onLocateItem();
+    void onJumpItem();   // Alt+Enter：插入路径到保存对话框
 
     void appendMatchedData(const MatchedItemMap &matchedData);   // 追加显示匹配数据
     void onSearchCompleted();

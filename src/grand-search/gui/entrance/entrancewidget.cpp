@@ -40,6 +40,7 @@ void EntranceWidget::showLabelAppIcon(bool visible)
     d_p->m_searchEdit->setAppIconVisible(visible);
 }
 
+
 void EntranceWidget::setSearching(bool searching)
 {
     Q_ASSERT(d_p->m_searchEdit);
@@ -92,6 +93,8 @@ void EntranceWidget::initConnections()
     connect(d_p->m_searchEdit, &SearchEdit::selectNextItem, this, &EntranceWidget::sigSelectNextItem);
     connect(d_p->m_searchEdit, &SearchEdit::selectPreviousItem, this, &EntranceWidget::sigSelectPreviousItem);
     connect(d_p->m_searchEdit, &SearchEdit::handleItem, this, &EntranceWidget::sigHandleItem);
+    connect(d_p->m_searchEdit, &SearchEdit::locateItem, this, &EntranceWidget::sigLocateItem);
+    connect(d_p->m_searchEdit, &SearchEdit::jumpItem, this, &EntranceWidget::sigJumpItem);
     connect(d_p->m_searchEdit, &SearchEdit::closeWindow, this, &EntranceWidget::sigCloseWindow);
 
     connect(d_p->m_searchEdit, &SearchEdit::searchAborted, d_p->m_searchEdit->lineEdit(), qOverload<>(&QLineEdit::setFocus));

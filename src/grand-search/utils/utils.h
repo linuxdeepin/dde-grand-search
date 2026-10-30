@@ -81,6 +81,11 @@ public:
     static bool openMatchedItemWithCtrl(const MatchedItem &item);
     // 在文件管理器中显示
     static bool openInFileManager(const MatchedItem &item);
+    // 记录搜索框呼出前的活动窗口（保存/另存为对话框），供 Alt+回车插入路径跳转用
+    static void setJumpTargetWindow(quint32 wid);
+    // Alt+回车：把选中项的路径写入剪贴板，激活之前记录的保存对话框并粘贴跳转
+    // 返回 true 表示已触发跳转（false 表示无有效目标窗口/路径）
+    static bool jumpPathToDialog(const MatchedItem &item);
     // 打开扩展搜索项
     static bool openExtendSearchMatchedItem(const MatchedItem &item);
     // 打开文件

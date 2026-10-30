@@ -23,6 +23,10 @@
 #include <QScreen>
 #include <QKeyEvent>
 #include <QLoggingCategory>
+#include <QDateTime>
+#include <QGuiApplication>
+
+#include <X11/Xlib.h>
 
 Q_DECLARE_LOGGING_CATEGORY(logGrandSearch)
 
@@ -87,6 +91,7 @@ void MainWindow::connectToController()
     connect(d_p->m_queryController, &QueryController::missionChanged, d_p->m_entranceWidget, [this](const QString &missionId, const QString &) {
         d_p->m_entranceWidget->setSearching(!missionId.isEmpty());
     });
+
 
     // 匹配结果解析显示
     connect(d_p->m_matchController, &MatchController::matchedResult, d_p->m_exhibitionWidget, &ExhibitionWidget::appendMatchedData);
@@ -239,6 +244,7 @@ void MainWindow::initUI()
     d_p->m_exhibitionWidget = new ExhibitionWidget(this);
     d_p->m_exhibitionWidget->hide();
 
+
     // 未搜到内容界面
     d_p->m_searchNoContentWidget = new DLabel(tr("No search results"),this);
     d_p->m_searchNoContentWidget->setAlignment(Qt::AlignCenter);
@@ -271,6 +277,8 @@ void MainWindow::initConnect()
     connect(d_p->m_entranceWidget, &EntranceWidget::sigSelectPreviousItem, d_p->m_exhibitionWidget, &ExhibitionWidget::onSelectPreviousItem);
     connect(d_p->m_entranceWidget, &EntranceWidget::sigSelectNextItem, d_p->m_exhibitionWidget, &ExhibitionWidget::onSelectNextItem);
     connect(d_p->m_entranceWidget, &EntranceWidget::sigHandleItem, d_p->m_exhibitionWidget, &ExhibitionWidget::onHandleItem);
+    connect(d_p->m_entranceWidget, &EntranceWidget::sigLocateItem, d_p->m_exhibitionWidget, &ExhibitionWidget::onLocateItem);
+    connect(d_p->m_entranceWidget, &EntranceWidget::sigJumpItem, d_p->m_exhibitionWidget, &ExhibitionWidget::onJumpItem);
     connect(d_p->m_entranceWidget, &EntranceWidget::sigCloseWindow, d_p->m_handleVisibility, &HandleVisibility::onCloseWindow);
 
     connect(d_p->m_exhibitionWidget, &ExhibitionWidget::sigCurrentItemChanged, d_p->m_entranceWidget, &EntranceWidget::onAppIconChanged);
@@ -284,6 +292,34 @@ void MainWindow::activeMainWindow()
 {
     activateWindow();
     raise();
+    // X11 下显式抢焦点：绕过窗口管理器的模态限制（保存/打开文件对话框等
+    // 模态窗口场景），确保主搜索框在模态窗口上方获得键盘输入焦点；
+    // 普通场景下 Qt activateWindow 已足够，这里作为兜底
+    if (auto *x11 = qGuiApp->nativeInterface<QNativeInterface::QX11Application>()) {
+        Display *dpy = x11->display();
+        if (dpy) {
+            const ::Window wid = static_cast<::Window>(winId());
+            XSetInputFocus(dpy, wid, RevertToParent, CurrentTime);
+            XRaiseWindow(dpy, wid);
+
+            XFlush(dpy);
+        }
+    }
+}
+
+bool MainWindow::isGracePeriodActive() const
+{
+    return QDateTime::currentMSecsSinceEpoch() - m_lastShowTime < 500;
+}
+
+bool MainWindow::neverActivatedSinceShow() const
+{
+    return !m_everActivatedSinceShow;
+}
+
+void MainWindow::markActivated()
+{
+    m_everActivatedSinceShow = true;
 }
 
 void MainWindow::updateMainWindowHeight()
@@ -308,10 +344,31 @@ void MainWindow::updateMainWindowHeight()
 void MainWindow::showEvent(QShowEvent *event)
 {
     qCDebug(logGrandSearch) << "MainWindow show event";
+    m_lastShowTime = QDateTime::currentMSecsSinceEpoch();   // 失焦宽限期起点
+    m_everActivatedSinceShow = false;   // 重置“本次显示后是否激活”标记
+
+    // 记录呼出前的活动窗口（保存/另存为对话框）：此时本窗尚未 XSetInputFocus，
+    // XGetInputFocus 拿到的是用户呼出搜索框前的焦点窗口，供 Alt+回车插入路径跳转用
+    if (auto *x11 = qGuiApp->nativeInterface<QNativeInterface::QX11Application>()) {
+        Display *dpy = x11->display();
+        if (dpy) {
+            Window focusWid = None;
+            int revertTo = 0;
+            XGetInputFocus(dpy, &focusWid, &revertTo);
+            if (focusWid != None && focusWid != static_cast<Window>(winId()))
+                Utils::setJumpTargetWindow(static_cast<quint32>(focusWid));
+        }
+    }
+
     QMetaObject::invokeMethod(this, "visibleChanged", Qt::QueuedConnection, Q_ARG(bool, true));
+
+    // 隐藏→恢复显示时，按当前 exhibition / 无结果页可见状态校正窗口高度，
+    // 避免恢复后内容区高度停留在旧档位（“搜索框下方内容缩成一团”）
+    updateMainWindowHeight();
 
     // 已禁用窗口管理器，在窗口被显示后，需要激活该窗口
     QTimer::singleShot(1, this, &MainWindow::activeMainWindow);
+
 
     d_p->m_handleVisibility->registerRegion(true);
 
@@ -339,5 +396,5 @@ void MainWindow::closeEvent(QCloseEvent *event)
         qApp->exit(0);
         _Exit(0);
     });
-    // return DBlurEffectWidget::closeEvent(event);
+    event->accept();
 }
