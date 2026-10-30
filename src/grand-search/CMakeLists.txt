@@ -284,6 +284,7 @@ target_link_libraries(${BIN_NAME} PRIVATE
     ${DTK_LIBS}
     ${GIO_LIB_LIBRARIES}
     dfm${DTK_VERSION_MAJOR}-search
+    X11
 )
 
 set(SRCS_SETTING
