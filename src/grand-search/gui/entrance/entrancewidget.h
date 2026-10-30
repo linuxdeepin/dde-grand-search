@@ -39,6 +39,8 @@ signals:
     void sigSelectNextItem();
     void sigSelectPreviousItem();
     void sigHandleItem();
+    void sigLocateItem();
+    void sigJumpItem();      // Alt+Enter：插入路径到保存对话框
     void sigCloseWindow();
 
 private:

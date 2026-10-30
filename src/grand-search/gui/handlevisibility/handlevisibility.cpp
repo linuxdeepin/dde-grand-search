@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "handlevisibility.h"
+
 #include "gui/mainwindow.h"
 
 #include <DApplication>
@@ -52,10 +53,25 @@ void HandleVisibility::onApplicationStateChanged(const Qt::ApplicationState stat
     Q_ASSERT(m_mainWindow);
 
     if (Qt::ApplicationInactive == state) {
-        // todo 二阶段：截图导致本进程窗口变为非激活，不退出。截图退出后，主动激活本进程主窗口。
+        // 呼出宽限期：主搜索框刚显示（如保存/打开文件对话框等模态场景下
+        // XSetInputFocus 抢焦点存在窗口期）时，500ms 内不因失焦关闭，
+        // 避免主搜索框一显示就被判定为失焦而立即消失
+        if (m_mainWindow->isVisible() && m_mainWindow->isGracePeriodActive()) {
+            qCDebug(logGrandSearch) << "Application inactive within grace period - keep main window";
+            return;
+        }
+        // 模态窗口场景：呼出后主窗从未获得过激活（焦点被保存/打开文件对话框
+        // 等模态窗口锁死，XSetInputFocus 抢焦点失败的兜底）——保持主窗显示，
+        // 直到用户主动关闭或插入路径，而不是一失焦就消失
+        if (m_mainWindow->isVisible() && m_mainWindow->neverActivatedSinceShow()) {
+            qCDebug(logGrandSearch) << "Application inactive with modal dialog - keep main window visible";
+            return;
+        }
+        // 主搜索框失焦 = 随用随关：直接关闭（与官方行为一致）
         qCInfo(logGrandSearch) << "Application state changed to inactive - Closing main window";
         m_mainWindow->close();
     } else if (Qt::ApplicationActive == state) {
+        m_mainWindow->markActivated();   // 记录已获得激活（区分模态锁焦与用户点击失焦）
         qCDebug(logGrandSearch) << "Application state changed to active - Showing main window";
         m_mainWindow->show();
     }
@@ -75,6 +91,8 @@ void HandleVisibility::onCloseWindow()
     Q_ASSERT(m_mainWindow);
 
     qCDebug(logGrandSearch) << "Closing main window";
+    // 主搜索框关闭（Esc / 点击结果条目）= 随用随关：直接关闭（与官方行为一致）。
+    // 关闭后的去向由 MainWindow::closeEvent 决定（面板有会话仅隐藏，无会话退出）
     m_mainWindow->close();
 }
 
@@ -104,11 +122,10 @@ void HandleVisibility::regionMousePress(const QPoint &p, const int flag)
             return;
         }
     }
-    // 点击位置在程序窗口之外则退出
+    // 点击位置在程序窗口之外则关闭主搜索框（与官方行为一致，随用随关）
     qCInfo(logGrandSearch) << "Mouse click outside application window - Position:" << p
                            << "Flag:" << flag
                            << "Scheduling window close";
-    // todo ：后期根据情况，可能需要设置为隐藏，而不能直接退出
-    // 延迟退出，便于dock插件响应时能正确获取当前状态
+    // 延迟隐藏，便于dock插件响应时能正确获取当前状态
     QTimer::singleShot(500, this, &HandleVisibility::onCloseWindow);
 }

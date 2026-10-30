@@ -34,6 +34,8 @@ public slots:
     void selectNextItem();
     void selectPreviousItem();
     void handleItem();
+    void locateItem();
+    void jumpItem();   // Alt+Enter：把选中路径插入保存对话框
 
     void onPreviewStateChanged(const bool preview);
 

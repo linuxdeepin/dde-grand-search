@@ -71,6 +71,7 @@ signals:
 protected:
     bool event(QEvent *event) Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 
 private slots:
     /**

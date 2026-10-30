@@ -21,6 +21,14 @@ public:
 
     // 必须在主界面显示后再调用该函数，处理业务相关流程
     void connectToController();
+    // 主搜索框刚显示（500ms 内）时为宽限期，失焦不立即关闭——
+    // 保存/打开文件对话框等模态场景下抢焦点存在窗口期，避免一显示就被判定失焦消失
+    bool isGracePeriodActive() const;
+    // 本次显示后是否从未获得过激活（模态窗口把焦点锁死时的典型状态）；
+    // 该状态下失焦不再关闭主窗，保证呼出后保持显示
+    bool neverActivatedSinceShow() const;
+    // 记录主窗已获得激活（HandleVisibility 收到 ApplicationActive 时调用）
+    void markActivated();
 
 private slots:
     // 主屏改变响应槽，移动已显示的主界面到主屏
@@ -62,6 +70,8 @@ signals:
     void terminateSearch();
 
 private:
+    qint64 m_lastShowTime = 0;        // 最近一次 show 的时间戳（宽限期判断用）
+    bool m_everActivatedSinceShow = false;   // 本次显示后是否曾获得激活
     QScopedPointer<MainWindowPrivate> d_p;
 };
 
