@@ -298,6 +298,7 @@ QString GroupWidget::convertDisplayName(const QString &searchGroupName)
         { GRANDSEARCH_GROUP_WEB, GroupName_Web },
         { GRANDSEARCH_GROUP_FILE_OCR, GroupName_Ocr },
         { GRANDSEARCH_GROUP_FILE_SEMANTIC, GroupName_Semantic },
+        { GRANDSEARCH_GROUP_FILE_FULLTEXT, GroupName_Fulltext },
     };
 
     return groupDisplayName.value(searchGroupName, searchGroupName);

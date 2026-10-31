@@ -9,6 +9,14 @@ dde-grand-search (6.1.2) unstable; urgency=medium
 
  -- Zhang Sheng <zhangsheng@uniontech.com>  Wed, 21 Oct 2026 14:32:14 +0800
 
+dde-grand-search (6.1.1.1) unstable; urgency=medium
+
+  * 搜索语法增强：多关键字空格分隔全部包含；-前缀排除词（不含其中任何一个）
+  * 新增类型关键字 doc:/pic:/video:/audio:/zip:/exe:/pdf:/ext:xxx,yyy 按扩展名过滤
+  * /目录片段 限定在名称含指定片段的文件夹下搜索
+  * 全文搜索结果统一归入「包含该内容的文件」分组并置后展示
+  * 应用/文件名/网页等搜索支持多关键字全部命中
+
 dde-grand-search (6.1.1) unstable; urgency=medium
 
   * feat: parse .desktop files for localized app name and icon

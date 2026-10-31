@@ -30,6 +30,7 @@
 
 #define GRANDSEARCH_GROUP_FILE_OCR           "com.deepin.dde-grand-search.group.files.ocr"
 #define GRANDSEARCH_GROUP_FILE_SEMANTIC      "com.deepin.dde-grand-search.group.files.semantic"
+#define GRANDSEARCH_GROUP_FILE_FULLTEXT      "com.deepin.dde-grand-search.group.files.fulltext"
 
 /****************** 扩展数据 *********************************/
 // 搜索项在组内的显示等级

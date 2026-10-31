@@ -59,7 +59,20 @@ bool DesktopAppWorker::working(void *context)
 
         // 匹配
         QRegularExpression regExp(m_context, QRegularExpression::CaseInsensitiveOption);
-        if (iter.key().contains(regExp)) {
+        bool nameMatched = iter.key().contains(regExp);
+
+        // 多关键字（空格分隔）：所有关键字都必须命中
+        if (nameMatched && m_keywords.size() > 1) {
+            for (const QString &kw : m_keywords) {
+                QRegularExpression kwRegExp(kw, QRegularExpression::CaseInsensitiveOption);
+                if (!iter.key().contains(kwRegExp)) {
+                    nameMatched = false;
+                    break;
+                }
+            }
+        }
+
+        if (nameMatched) {
             // 遍历该关键词匹配的项目检查是否已经被添加
             for (const QSharedPointer<MatchedItem> &item : iter.value()) {
                 // 检查是否已经添加过
@@ -161,10 +174,46 @@ QString DesktopAppWorker::buildKeyword(const QString &keyword)
 {
     QJsonParseError error;
     QJsonDocument doc = QJsonDocument::fromJson(keyword.toLocal8Bit(), &error);
-    if (error.error != QJsonParseError::NoError || doc.isEmpty())
-        return searchHelper->tropeInputSymbol(keyword);
+    if (error.error != QJsonParseError::NoError || doc.isEmpty()) {
+        // 多关键字检索：空格分隔的多个关键字需全部命中（AND），由 working() 逐关键字校验
+        m_keywords.clear();
+        // 归一化全角空格后统一处理
+        QString normalized = QString(keyword).replace(QChar(0x3000), QLatin1Char(' ')).simplified();
+
+        // /目录片段 限定语法仅作用于文件/文件夹搜索，应用搜索剥离范围片段，仅保留包含词
+        if (normalized.startsWith('/')) {
+            const int sp = normalized.indexOf(' ');
+            normalized = (sp >= 0) ? normalized.mid(sp + 1) : QString();
+        }
+
+        QStringList includeKw;
+        const QStringList spaceKeywords = normalized.simplified().split(' ', Qt::SkipEmptyParts);
+        for (const QString &k : spaceKeywords) {
+            // 排除词（-开头的词）不作用于应用搜索
+            if (k.startsWith('-'))
+                continue;
+            // 类型过滤词（doc:/pic:/video:/audio:/zip:/exe:/pdf:/ext:xxx 等，仅半角冒号）
+            // 不作用于应用搜索，避免把 “doc:” 当普通关键字导致应用永远搜不到
+            if (k.size() > 1 && k.endsWith(QLatin1Char(':')))
+                continue;
+            includeKw << searchHelper->tropeInputSymbol(k);
+        }
+
+        if (includeKw.size() > 1) {
+            m_keywords = includeKw;
+            // 基匹配先用 OR，保证不丢候选，再由 working() 做 AND 精筛
+            return m_keywords.join('|');
+        }
+
+        if (includeKw.size() == 1)
+            return includeKw.first();
+
+        // 仅有范围限定或排除词时，应用不参与检索（返回永不匹配的表达式）
+        return "^$";
+    }
 
     // 应用搜索类目，只需要获取关键字信息
+    m_keywords.clear();
     QStringList keywordList;
     QJsonObject obj = doc.object();
     QJsonArray arr = obj[JSON_KEYWORD_ATTRIBUTE].toArray();

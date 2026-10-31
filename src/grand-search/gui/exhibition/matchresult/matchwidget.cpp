@@ -52,12 +52,16 @@ void MatchWidgetPrivate::setGroupIcon(GroupWidget *wid)
 MatchWidget::MatchWidget(QWidget *parent)
     : DWidget(parent), d_p(new MatchWidgetPrivate(this))
 {
-    m_groupHashShowOrder << GRANDSEARCH_GROUP_BEST << GRANDSEARCH_GROUP_FILE_SEMANTIC
-                         << GRANDSEARCH_GROUP_APP << GRANDSEARCH_GROUP_SETTING
-                         << GRANDSEARCH_GROUP_WEB << GRANDSEARCH_GROUP_FILE_VIDEO
-                         << GRANDSEARCH_GROUP_FILE_AUDIO << GRANDSEARCH_GROUP_FILE_OCR
-                         << GRANDSEARCH_GROUP_FILE_PICTURE << GRANDSEARCH_GROUP_FILE_DOCUMNET
-                         << GRANDSEARCH_GROUP_FOLDER << GRANDSEARCH_GROUP_FILE;
+    // 分区顺序：类型区（精选/文件夹/文档/图片/视频/音频/其他文件，
+    //          设置/应用/网页置后）
+    //          + 内容命中区（包含该内容的文件/图片中的文字/智能匹配）
+    m_groupHashShowOrder << GRANDSEARCH_GROUP_BEST
+                         << GRANDSEARCH_GROUP_FOLDER << GRANDSEARCH_GROUP_FILE_DOCUMNET
+                         << GRANDSEARCH_GROUP_FILE_PICTURE << GRANDSEARCH_GROUP_FILE_VIDEO
+                         << GRANDSEARCH_GROUP_FILE_AUDIO << GRANDSEARCH_GROUP_FILE
+                         << GRANDSEARCH_GROUP_SETTING << GRANDSEARCH_GROUP_APP << GRANDSEARCH_GROUP_WEB
+                         << GRANDSEARCH_GROUP_FILE_FULLTEXT << GRANDSEARCH_GROUP_FILE_OCR
+                         << GRANDSEARCH_GROUP_FILE_SEMANTIC;
     initUi();
     initConnect();
 
@@ -615,12 +619,27 @@ void MatchWidget::reLayout()
         delete m_vScrollLayout;
         m_vScrollLayout = nullptr;
     }
+    if (m_sectionLine) {
+        delete m_sectionLine;
+        m_sectionLine = nullptr;
+    }
     m_vScrollLayout = new QVBoxLayout(m_scrollAreaContent);
     m_vScrollLayout->setContentsMargins(0, 0, 0, 0);
     m_vScrollLayout->setSpacing(0);
     m_scrollAreaContent->setLayout(m_vScrollLayout);
 
+    // 内容命中区（包含该内容的文件）前插入分隔线，与类型区区分
+    bool contentSectionStarted = false;
     for (auto groupWidget : m_vGroupWidgets) {
+        if (!contentSectionStarted
+            && groupWidget->searchGroupName() == GRANDSEARCH_GROUP_FILE_FULLTEXT) {
+            m_sectionLine = new QFrame(m_scrollAreaContent);
+            m_sectionLine->setFrameShape(QFrame::HLine);
+            m_sectionLine->setStyleSheet(QStringLiteral("color:rgba(127,127,127,80);background:transparent;"));
+            m_sectionLine->setFixedHeight(10);
+            m_vScrollLayout->addWidget(m_sectionLine, 0);
+            contentSectionStarted = true;
+        }
         if (Q_LIKELY(groupWidget))
             m_vScrollLayout->addWidget(groupWidget, 0);
     }
