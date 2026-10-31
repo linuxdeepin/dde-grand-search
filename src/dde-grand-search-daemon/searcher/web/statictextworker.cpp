@@ -28,6 +28,32 @@ void StaticTextWorker::setContext(const QString &context)
         return;
     }
     qCDebug(logDaemon) << "Setting search context:" << context;
+
+    // 组合搜索（JSON）原样传递；普通关键字搜索剥离仅对文件搜索生效的语法
+    // （/目录片段、-排除词、doc:/pic:/ext:xxx 等类型过滤词），避免污染搜索引擎关键词
+    QJsonParseError error;
+    QJsonDocument doc = QJsonDocument::fromJson(context.toLocal8Bit(), &error);
+    if (error.error != QJsonParseError::NoError || doc.isEmpty()) {
+        QString normalized = context;
+        normalized.replace(QChar(0x3000), QLatin1Char(' '));
+        normalized = normalized.simplified();
+
+        QStringList kept;
+        const QStringList parts = normalized.split(' ', Qt::SkipEmptyParts);
+        for (const QString &k : parts) {
+            if (k.startsWith('/'))
+                continue;   // /目录片段
+            if (k.startsWith('-') && k.size() > 1)
+                continue;   // 排除词
+            if (k.size() > 1 && k.endsWith(QLatin1Char(':')))
+                continue;   // 类型过滤词（仅半角冒号）
+            kept << k;
+        }
+        normalized = kept.join(' ');
+        m_context = normalized;
+        return;
+    }
+
     m_context = context;
 }
 

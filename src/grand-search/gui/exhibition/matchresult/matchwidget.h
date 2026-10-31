@@ -9,6 +9,7 @@
 
 #include <DWidget>
 
+#include <QFrame>
 #include <QScopedPointer>
 
 class QVBoxLayout;
@@ -92,6 +93,7 @@ private:
     Dtk::Widget::DScrollArea *m_scrollArea = nullptr;   // 滚动区域部件
     Dtk::Widget::DWidget *m_scrollAreaContent = nullptr;// 滚动区域内容部件
     QVBoxLayout *m_vScrollLayout = nullptr;             // 滚动区域内部部件整体布局
+    QFrame *m_sectionLine = nullptr;                    // 类型区与内容命中区分隔线
 
     QStringList m_groupHashShowOrder;                   // 类目列表显示顺序
 

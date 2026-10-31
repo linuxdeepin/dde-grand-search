@@ -30,10 +30,11 @@
 #define GroupName_Picture           QObject::tr("Pictures")
 #define GroupName_Document          QObject::tr("Documents")
 #define GroupName_Folder            QObject::tr("Folders")
-#define GroupName_File              QObject::tr("Files")
+#define GroupName_File              QObject::tr("其他文件")
 #define GroupName_Web               QObject::tr("Web")
 #define GroupName_Ocr               QObject::tr("Text found in the image")
 #define GroupName_Semantic          QObject::tr("Smart match")
+#define GroupName_Fulltext          QObject::tr("包含该内容的文件")
 
 #define GROUP_MAX_SHOW              5   // 每组默认显示数量
 
