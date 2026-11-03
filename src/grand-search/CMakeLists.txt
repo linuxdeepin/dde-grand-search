@@ -42,6 +42,21 @@ find_package(${QT_NS} COMPONENTS
 REQUIRED)
 find_package(dfm${DTK_VERSION_MAJOR}-search REQUIRED)
 
+# dde-shell 提供 Treeland（Wayland）下的 LayerShell 抽象，仅 Qt6 可用。
+# 找到则启用 HAVE_DDE_LAYER_SHELL 并链接 Dde::Shell。
+if (QT_VERSION_MAJOR EQUAL 6)
+    find_package(DDEShell QUIET)
+    if (DDEShell_FOUND)
+        add_definitions(-DHAVE_DDE_LAYER_SHELL)
+        set(DDE_SHELL_LIB Dde::Shell)
+        message("   >>> dde-shell found, enable LayerShell support")
+    else()
+        message("   >>> dde-shell not found, LayerShell support disabled")
+    endif()
+else()
+    message("   >>> Qt5 build, LayerShell support disabled")
+endif()
+
 set(DBUSSRC
     # dbus接口
     ${PROJECT_3RDPARTY_PATH}/interfaces/daemongrandsearchinterface.h
@@ -76,6 +91,9 @@ set(GUISRC
     gui/mainwindow_p.h
     gui/mainwindow.h
     gui/mainwindow.cpp
+    # LayerShell 封装（Treeland/Wayland 适配）
+    gui/layershellwindow.h
+    gui/layershellwindow.cpp
     # 可见性/退出处理
     gui/handlevisibility/handlevisibility.h
     gui/handlevisibility/handlevisibility.cpp
@@ -291,6 +309,7 @@ target_link_libraries(${BIN_NAME} PRIVATE
     ${DTK_LIBS}
     ${GIO_LIB_LIBRARIES}
     dfm${DTK_VERSION_MAJOR}-search
+    ${DDE_SHELL_LIB}
 )
 
 set(SRCS_SETTING
