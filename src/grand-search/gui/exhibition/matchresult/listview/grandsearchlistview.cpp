@@ -21,6 +21,8 @@
 #include <QFileInfo>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QDir>
+#include <QDirIterator>
 
 using namespace GrandSearch;
 DCORE_USE_NAMESPACE
@@ -273,8 +275,31 @@ void GrandSearchListView::setData(const QModelIndex &index, const MatchedItem &i
                 itemIcon = QIcon(strIcon);
         } else {
             QIcon icon = QIcon::fromTheme(strIcon);
-            if (!icon.isNull())
+            if (!icon.isNull()) {
                 itemIcon = icon;
+            } else {
+                // fromTheme 失败时，搜索标准图标路径作为 fallback
+                QStringList iconBaseDirs;
+                QString themeName = QIcon::themeName();
+                if (!themeName.isEmpty())
+                    iconBaseDirs << "/usr/share/icons/" + themeName + "/apps";
+                iconBaseDirs << "/usr/share/icons/hicolor/apps"
+                             << "/usr/share/pixmaps";
+                for (const auto &baseDir : iconBaseDirs) {
+                    QDirIterator it(baseDir, QStringList{strIcon + ".*"},
+                                    QDir::Files, QDirIterator::Subdirectories);
+                    while (it.hasNext()) {
+                        it.next();
+                        QIcon pathIcon(it.filePath());
+                        if (!pathIcon.isNull()) {
+                            itemIcon = pathIcon;
+                            break;
+                        }
+                    }
+                    if (!itemIcon.isNull())
+                        break;
+                }
+            }
         }
     }
 
