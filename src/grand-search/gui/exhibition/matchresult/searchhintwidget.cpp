@@ -40,6 +40,9 @@ inline constexpr char kEnableOcrTextSearch[] { "enableOcrTextSearch" };
 inline constexpr char kSearchSettingGroup[] { "10_advance.00_search" };
 inline constexpr int kMargin { 20 };
 
+// 索引状态信号驱动的显示刷新防抖窗口（ms）：该窗口内连续到达的信号只执行最后一次刷新
+inline constexpr int kRefreshDebounceMs { 500 };
+
 // 文管索引状态值（见文管 TaskManager::currentIndexStatus）
 inline constexpr QLatin1String kStateIdle { "Idle" };
 inline constexpr QLatin1String kStateRunning { "Running" };
@@ -70,6 +73,12 @@ SearchHintWidget::SearchHintWidget(QWidget *parent)
         qCWarning(logGrandSearch) << "Failed to create DConfig for file manager search";
 
     m_indexMonitor = new IndexStatusMonitor(this);
+
+    // 信号驱动的显示刷新防抖：单发定时器，每次状态信号重启计时，停歇后统一刷新
+    m_refreshTimer = new QTimer(this);
+    m_refreshTimer->setSingleShot(true);
+    m_refreshTimer->setInterval(kRefreshDebounceMs);
+    connect(m_refreshTimer, &QTimer::timeout, this, [this]() { evaluateAndShow(); });
 
     initUi();
     initConnect();
@@ -474,7 +483,13 @@ void SearchHintWidget::updateIndexStatus(IndexStatusMonitor::Index idx, const QS
     curGrade = grade;
     valid = true;
 
-    evaluateAndShow();
+    scheduleRefresh();
+}
+
+void SearchHintWidget::scheduleRefresh()
+{
+    // 尾沿防抖：每次调用重启计时，信号停歇超过 kRefreshDebounceMs 后统一执行一次刷新
+    m_refreshTimer->start();
 }
 
 QString SearchHintWidget::buildElidedText(int availableWidth) const
