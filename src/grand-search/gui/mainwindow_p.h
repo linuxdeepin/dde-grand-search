@@ -6,6 +6,7 @@
 #define MAINWINDOW_P_H
 
 #include "mainwindow.h"
+#include "layershellwindow.h"
 
 #include <QWidget>
 
@@ -35,6 +36,8 @@ public:
     QVBoxLayout *m_mainLayout = nullptr;
     QueryController *m_queryController = nullptr;
     MatchController *m_matchController = nullptr;
+    // Treeland/Wayland 下的 LayerShell 适配，X11 下保持为空。
+    QScopedPointer<LayerShellWindow> m_layerShellWindow;
 };
 
 }
