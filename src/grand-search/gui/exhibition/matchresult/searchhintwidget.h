@@ -17,6 +17,8 @@ namespace Dtk { namespace Core { class DConfig; } }
 
 namespace Dtk { namespace Widget { class DSpinner; class DIconButton; } }
 
+class QTimer;
+
 namespace GrandSearch {
 
 class IconButton;
@@ -106,6 +108,9 @@ private:
     QString buildElidedText(int availableWidth) const;
     void adjustElidedText();
 
+    // 防抖刷新：收到索引状态信号后延迟合并，短时间连续信号仅执行一次最终刷新
+    void scheduleRefresh();
+
 private:
     QHBoxLayout *m_hLayout = nullptr;
     Dtk::Widget::DSpinner *m_spinner = nullptr;
@@ -114,6 +119,7 @@ private:
     IconButton *m_closeButton = nullptr;
     Dtk::Core::DConfig *m_searchDConfig = nullptr;
     IndexStatusMonitor *m_indexMonitor = nullptr;
+    QTimer *m_refreshTimer = nullptr;   // 信号驱动的显示刷新防抖定时器（单发，尾沿合并）
 
     HintType m_currentType = HintType::None;
     QString m_currentText;                  // 当前提示描述文本
