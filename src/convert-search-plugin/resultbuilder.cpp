@@ -21,7 +21,9 @@ void ResultBuilder::addGroup(QJsonObject &root, const QString &group,
     if (items.isEmpty())
         return;
 
-    QJsonArray contents = root["cont"].toArray();
+    // value() 而非 operator[]：后者会在 key 缺失时向 root 插入 null 的 cont，
+    // 导致全组被丢弃时序列化出 {"cont":null} 而非协议要求的空数组。
+    QJsonArray contents = root.value("cont").toArray();
     QJsonObject groupObj;
     groupObj["group"] = group;
 

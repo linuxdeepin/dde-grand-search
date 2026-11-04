@@ -92,9 +92,7 @@ QString ConvertSearch::search(const QString &json)
     qCDebug(logConvert) << "Search mID:" << mID << "cont:" << cont;
 
     QueryParser::Parsed p = QueryParser::parse(cont);
-    QJsonObject root;
-    root["ver"] = "1.0";
-    root["mID"] = mID;
+    QJsonObject root = ResultBuilder::makeRoot(mID);
 
     // 组名按系统语言返回（统一走 I18n，便于扩展更多语言）
     const QString grpCur = I18n::groupName("currency");
