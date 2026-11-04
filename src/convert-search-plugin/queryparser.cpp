@@ -15,7 +15,7 @@ static const QHash<QString, QString> kCurrencyAliases = {
     {"¥", "CNY"}, {"￥", "CNY"}, {"cny", "CNY"}, {"rmb", "CNY"}, {"人民币", "CNY"}, {"元", "CNY"},
     {"£", "GBP"}, {"gbp", "GBP"}, {"英镑", "GBP"},
     {"jpy", "JPY"}, {"日元", "JPY"}, {"円", "JPY"},
-    {"hkd", "HKD"}, {"港币", "HKD"}, {"港币", "HKD"},
+    {"hkd", "HKD"}, {"港币", "HKD"},
     {"krw", "KRW"}, {"韩元", "KRW"},
     {"usd", "USD"},
     // 静态汇率表支持但需显式别名的币种（其中 RUB/TWD/MOP 无在线源，走静态表）
@@ -305,7 +305,8 @@ Parsed parse(const QString &input)
 
     // 3) 单位换算：数字 + 单位词（可选 目标单位，支持 to/=/?/空格）
     // 单位部分允许「/」：复合单位 km/h、mph 等速度写法不能被截断成 km（长度误判）
-    QRegularExpression numUnitRe(R"(([0-9]+(?:\.[0-9]+)?)\s*([a-z/\x{4e00}-\x{9fff}]+))");
+    // 末尾允许 2/3 上标：面积/体积的 ASCII 写法 m2、km2、cm2、m3 不能被截断成 m/km/cm（长度误判）
+    QRegularExpression numUnitRe(R"(([0-9]+(?:\.[0-9]+)?)\s*([a-z/\x{4e00}-\x{9fff}]+[23]?))");
     QRegularExpressionMatch nuM = numUnitRe.match(s);
     if (nuM.hasMatch()) {
         p.from = nuM.captured(2);
@@ -314,13 +315,13 @@ Parsed parse(const QString &input)
             p.value = nuM.captured(1).toDouble();
             // 目标单位：from 之后的部分，支持 to/=/?/空格 分隔
             QString rest = s.mid(nuM.captured(0).length()).trimmed();
-            QRegularExpression toRe(R"(^(?:to|=|\?)\s*([a-z/\x{4e00}-\x{9fff}]+))");
+            QRegularExpression toRe(R"(^(?:to|=|\?)\s*([a-z/\x{4e00}-\x{9fff}]+[23]?))");
             QRegularExpressionMatch toM = toRe.match(rest);
             if (toM.hasMatch()) {
                 p.to = toM.captured(1);
             } else {
                 // 纯空格分隔：1kg 斤 → 取 rest 首个单位词
-                QRegularExpression spRe(R"(([a-z/\x{4e00}-\x{9fff}]+))");
+                QRegularExpression spRe(R"(([a-z/\x{4e00}-\x{9fff}]+[23]?))");
                 QRegularExpressionMatch spM = spRe.match(rest);
                 if (spM.hasMatch() && containsUnitWord(spM.captured(1)))
                     p.to = spM.captured(1);
