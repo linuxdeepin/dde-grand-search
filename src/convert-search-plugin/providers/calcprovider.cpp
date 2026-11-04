@@ -251,7 +251,7 @@ QList<ResultBuilder::Item> CalcProvider::eval(const QString &exprRaw)
         }
     }
 
-    // 进制一次全给：数值 + 进制/base → DEC/HEX/BIN/OCT 全列（不舍上限）
+    // 进制一次全给：数值 + 进制/base → DEC/HEX/BIN/OCT 全列（不设上限）
     {
         QRegularExpression allBaseRe(R"((0x[0-9a-f]+|0b[01]+|0o[0-7]+|\d+(?:\.\d+)?)\s*(?:进制|base))");
         QRegularExpressionMatch ab = allBaseRe.match(s);

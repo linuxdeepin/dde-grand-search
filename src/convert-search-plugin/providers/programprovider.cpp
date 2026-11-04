@@ -187,8 +187,9 @@ QList<ResultBuilder::Item> ProgramProvider::run(const QString &text)
     if (r.action == "hash") {
         QByteArray data = r.content.toUtf8();
         if (r.hashAll) {
-            // 裸 hash/哈希 → MD5/SHA1/SHA256 全给（不舍上限）
-            for (const QString &algo : {"md5", "sha1", "sha256"}) {
+            // 裸 hash/哈希 → MD5/SHA1/SHA256 全给（不设上限）
+            static const QStringList algos = { "md5", "sha1", "sha256" };
+            for (const QString &algo : algos) {
                 ResultBuilder::Item it;
                 it.key = QString("prog-hash-%1").arg(algo);
                 it.name = QString("%1: %2").arg(algo.toUpper()).arg(hashOf(algo, data));
