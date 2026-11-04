@@ -22,6 +22,9 @@ public:
     static void addGroup(QJsonObject &root, const QString &group,
                          const QList<Item> &items);
 
+    // 构建符合协议的骨架：ver + mID + 空 cont（供调用方在追加结果前初始化）
+    static QJsonObject makeRoot(const QString &mID);
+
     // 构建带空结果的返回（cont 为空数组）
     static QString buildEmpty(const QString &mID);
 
@@ -32,9 +35,6 @@ public:
     // 例：formatNumber(200, 4) -> "200"；formatNumber(0.333333,4) -> "0.3333"。
     // 用于消除固定 'f' 格式产生的过多尾零（如 200.0000）。
     static QString formatNumber(double value, int maxDecimals);
-
-private:
-    static QJsonObject makeRoot(const QString &mID);
 };
 
 #endif // RESULTBUILDER_H
