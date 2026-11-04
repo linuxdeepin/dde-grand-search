@@ -100,4 +100,5 @@ add_subdirectory(grand-search)
 add_subdirectory(libgrand-search-daemon)
 add_subdirectory(preview-plugin)
 add_subdirectory(grand-search-dock-plugin)
+add_subdirectory(convert-search-plugin)
 
