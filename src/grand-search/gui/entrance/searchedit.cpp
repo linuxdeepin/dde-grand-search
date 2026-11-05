@@ -403,7 +403,15 @@ bool SearchEdit::eventFilter(QObject *watched, QEvent *event)
                     return true;
                 case Qt::Key_Return:
                 case Qt::Key_Enter:
-                    Q_EMIT handleItem();
+                    if (keyEvent->modifiers() & Qt::AltModifier) {
+                        // Alt+Enter：把选中路径插入到之前活动的保存/另存为对话框
+                        Q_EMIT jumpItem();
+                    } else if (keyEvent->modifiers() & Qt::ControlModifier) {
+                        // Ctrl+Enter：在文件管理器中定位当前选中结果
+                        Q_EMIT locateItem();
+                    } else {
+                        Q_EMIT handleItem();
+                    }
                     return true;
                 case Qt::Key_Escape:
                     Q_EMIT closeWindow();

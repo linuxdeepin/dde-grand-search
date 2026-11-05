@@ -311,6 +311,57 @@ void MatchWidget::handleItem()
     }
 }
 
+void MatchWidget::locateItem()
+{
+    qCDebug(logGrandSearch) << "Locating selected item";
+
+    for (int i = 0; i < m_vGroupWidgets.count(); ++i) {
+        if (hasSelectItem(i)) {
+            ViewMoreButton *viewMoreBtn = m_vGroupWidgets.at(i)->getViewMoreButton();
+            Q_ASSERT(viewMoreBtn);
+            GrandSearchListView *listView = m_vGroupWidgets.at(i)->getListView();
+            Q_ASSERT(listView);
+
+            if (viewMoreBtn->isSelected()) {
+                viewMoreBtn->click();
+                break;
+            }
+
+            MatchedItem item = listView->currentIndex().data(DATA_ROLE).value<MatchedItem>();
+            qCDebug(logGrandSearch) << "Locating matched item:" << item.name;
+            Utils::openMatchedItemWithCtrl(item);
+            emit sigCloseWindow();
+            break;
+        }
+    }
+}
+
+void MatchWidget::jumpItem()
+{
+    qCDebug(logGrandSearch) << "Jump selected item path to save dialog";
+
+    for (int i = 0; i < m_vGroupWidgets.count(); ++i) {
+        if (hasSelectItem(i)) {
+            ViewMoreButton *viewMoreBtn = m_vGroupWidgets.at(i)->getViewMoreButton();
+            Q_ASSERT(viewMoreBtn);
+            GrandSearchListView *listView = m_vGroupWidgets.at(i)->getListView();
+            Q_ASSERT(listView);
+
+            if (viewMoreBtn->isSelected()) {
+                viewMoreBtn->click();
+                break;
+            }
+
+            MatchedItem item = listView->currentIndex().data(DATA_ROLE).value<MatchedItem>();
+            if (Utils::jumpPathToDialog(item)) {
+                qCDebug(logGrandSearch) << "Jumping matched item:" << item.name;
+                emit sigCloseWindow();
+            }
+            break;
+        }
+    }
+}
+
 void MatchWidget::onPreviewStateChanged(const bool preview)
 {
     if (this->isHidden() || preview == m_isPreviewItem)
