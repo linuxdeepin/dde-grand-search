@@ -15,8 +15,8 @@ Q_DECLARE_LOGGING_CATEGORY(logDaemon)
 using namespace GrandSearch;
 DFM_SEARCH_USE_NS
 
-#define MAX_SEARCH_NUM_GROUP 100
-#define MAX_SEARCH_NUM_TOTAL 10000
+#define MAX_SEARCH_NUM_GROUP 1000
+#define MAX_SEARCH_NUM_TOTAL 20000
 #define EMIT_INTERVAL 50
 
 FileNameWorkerPrivate::FileNameWorkerPrivate(FileNameWorker *qq)
@@ -70,6 +70,12 @@ bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName)
 {
     Q_Q(FileNameWorker);
 
+    // /目录片段 范围限定与排除词后置过滤
+    if (!FileSearchUtils::matchScope(m_searchInfo, fileName)) {
+        qCDebug(logDaemon) << "File result filtered by scope rule:" << fileName;
+        return false;
+    }
+
     if (m_tmpSearchResults.contains(fileName)) {
         qCDebug(logDaemon) << "Duplicate file result ignored:" << fileName;
         return false;
@@ -77,6 +83,12 @@ bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName)
 
     auto group = FileSearchUtils::getGroupByName(fileName);
     Q_ASSERT(group >= FileSearchUtils::GroupBegin && group < FileSearchUtils::GroupCount);
+
+    // 类型过滤（doc:/pic:/ext:xxx）生效时，文件夹不参与类型浏览
+    if (!m_searchInfo.typeFilter.isEmpty() && group == FileSearchUtils::Folder) {
+        qCDebug(logDaemon) << "Folder result ignored by type filter:" << fileName;
+        return false;
+    }
 
     // 根据搜索类目配置判断是否需要进行添加
     if (!m_resultCountHash.contains(group)) {
@@ -120,16 +132,8 @@ bool FileNameWorkerPrivate::appendSearchResult(const QString &fileName)
         return true;
     }
 
-    // 文档、音频、视频、图片需添加到文件组中
-    if (group != FileSearchUtils::File && m_resultCountHash.contains(FileSearchUtils::File)) {
-        if (group != FileSearchUtils::Folder && m_resultCountHash[FileSearchUtils::File] < MAX_SEARCH_NUM_GROUP) {
-            m_items[FileSearchUtils::File].append(item);
-            m_resultCountHash[FileSearchUtils::File]++;
-            qCDebug(logDaemon) << "File also added to File group - File group count:"
-                               << m_resultCountHash[FileSearchUtils::File];
-        }
-    }
-
+    // 文档/图片/视频/音频与「其他文件」（File 组）互斥：
+    // 不再将非文件类型结果重复塞入文件组，保证各类别互斥且合计为全部文件名命中结果
     return true;
 }
 
@@ -168,7 +172,11 @@ SearchQuery FileNameWorkerPrivate::createSearchQuery() const
                        << "Bool keywords:" << boolKeywords.size()
                        << "Type keywords:" << typeKeywords.size();
 
-    bool useBoolQuery = (boolKeywords.size() >= 2);
+    // 类型过滤（doc:/pic:/ext:xxx）存在时，不走“纯 Boolean”分支：
+    // 扩展名过滤统一改为 matchScope() 后置处理，避免 dfm-search 库层
+    // “Boolean 查询 + fileExtensions”组合在部分版本上返回 0 结果
+    // （如 “doc: 8月 会议” 搜不到任何文件）。
+    bool useBoolQuery = (boolKeywords.size() >= 2) && m_searchInfo.typeFilter.isEmpty();
     bool useTypeSearch = (typeKeywords.size() >= 2) || m_searchInfo.isCombinationSearch;
     SearchQuery query;
 
@@ -188,6 +196,20 @@ SearchQuery FileNameWorkerPrivate::createSearchQuery() const
     } else if (useBoolQuery) {
         qCDebug(logDaemon) << "Using boolean search mode";
         query = SearchFactory::createQuery(boolKeywords, SearchQuery::Type::Boolean);
+        // 多关键字检索（空格分隔）：文件名必须同时包含所有关键字
+        query.setBooleanOperator(SearchQuery::BooleanOperator::AND);
+    } else if (m_searchInfo.hasScope || !m_searchInfo.excludeKeywords.isEmpty() || !m_searchInfo.typeFilter.isEmpty()) {
+        // 目录片段限定/排除词/类型过滤搜索：只基于包含词建查询；无包含词时用全量通配候选，由后置过滤
+        if (boolKeywords.size() == 1) {
+            query = SearchFactory::createQuery(boolKeywords.first(), SearchQuery::Type::Simple);
+        } else if (boolKeywords.size() >= 2) {
+            // 多包含词 + 类型过滤：Boolean AND 取候选（不带扩展名下推），扩展名由 matchScope() 后置过滤
+            query = SearchFactory::createQuery(boolKeywords, SearchQuery::Type::Boolean);
+            query.setBooleanOperator(SearchQuery::BooleanOperator::AND);
+            qCDebug(logDaemon) << "Created boolean AND query with type filter (post-filtered)";
+        } else {
+            query = SearchFactory::createQuery(QString("*"), SearchQuery::Type::Wildcard);
+        }
     } else {
         SearchQuery::Type queryType = FileSearchUtils::hasWildcard(keyword)
                 ? SearchQuery::Type::Wildcard
@@ -230,6 +252,9 @@ void FileNameWorkerPrivate::configureFileNameOptions(FileNameOptionsAPI &fileNam
         fileNameOptions.setPinyinEnabled(true);
         fileNameOptions.setPinyinAcronymEnabled(true);
     }
+
+    // 注意：doc:/pic:/ext:xxx 类型过滤不再下推到库层 setFileExtensions（部分 dfm-search
+    // 版本与 Boolean 查询组合后返回 0 结果），统一由 matchScope() 后置过滤扩展名。
 }
 
 bool FileNameWorkerPrivate::processSearchResults(const SearchResultExpected &result)

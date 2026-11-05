@@ -58,16 +58,30 @@ void MainControllerPrivate::buildWorker(TaskCommander *task, const QSet<QString>
 
     QStringList searcherData;
     {
-        // 类目、后缀搜索的判读与准备
-        QStringList groupList, suffixList, keywordList;
-        if (searchHelper->parseKeyword(task->content(), groupList, suffixList, keywordList)) {
-            qCDebug(logDaemon) << "Keyword parsing successful - Groups:" << groupList
-                               << "Suffixes:" << suffixList << "Keywords:" << keywordList;
-            if (!keywordList.isEmpty() || !suffixList.isEmpty() || !groupList.isEmpty()) {
-                searcherData = checkSearcher(groupList, suffixList, keywordList);
-                const auto &keyword = buildKeywordInJson(groupList, suffixList, keywordList);
-                if (!keyword.isEmpty())
-                    task->setContent(keyword);
+        // 类型过滤语法（doc:/pic:/video:/audio:/zip:/exe:/pdf:/ext:xxx）：
+        // 只要文本含冒号（半角 ':' 或全角 '：'）就由 FileSearchUtils 本地解析——
+        // 兼容两种冒号、多关键字 AND、排除词、/目录 限定、后置扩展名过滤；
+        // 不依赖 dfm-search 库层 “Boolean+fileExtensions” 组合（部分版本返回 0 结果）。
+        const QString rawContent = task->content();
+        // 类型筛选统一用半角英文冒号 ':'（全角冒号不再作为类型语法）
+        const bool hasTypeFilter = rawContent.contains(QLatin1Char(':'));
+        if (hasTypeFilter) {
+            // 类型过滤搜索：只激活文件搜索项，保持原始文本（FileSearchUtils 再解析）
+            searcherData << GRANDSEARCH_CLASS_FILE_DEEPIN;
+            qCDebug(logDaemon) << "Type-filter search detected - local FileSearchUtils parsing (raw content kept):"
+                               << rawContent;
+        } else {
+            // 类目、后缀搜索的判读与准备（无冒号的组名/普通关键字搜索）
+            QStringList groupList, suffixList, keywordList;
+            if (searchHelper->parseKeyword(rawContent, groupList, suffixList, keywordList)) {
+                qCDebug(logDaemon) << "Keyword parsing successful - Groups:" << groupList
+                                   << "Suffixes:" << suffixList << "Keywords:" << keywordList;
+                if (!keywordList.isEmpty() || !suffixList.isEmpty() || !groupList.isEmpty()) {
+                    searcherData = checkSearcher(groupList, suffixList, keywordList);
+                    const auto &keyword = buildKeywordInJson(groupList, suffixList, keywordList);
+                    if (!keyword.isEmpty())
+                        task->setContent(keyword);
+                }
             }
         }
     }

@@ -104,6 +104,12 @@ bool FullTextWorkerPrivate::processResults(const SearchResultExpected &result)
             continue;
         }
 
+        // /目录片段 范围限定与排除词后置过滤
+        if (!FileSearchUtils::matchScope(m_searchInfo, filePath)) {
+            qCDebug(logDaemon) << "Content result filtered by scope rule:" << filePath;
+            continue;
+        }
+
         m_tmpSearchResults << filePath;
 
         // 高亮内容改为客户端延迟加载，不再在搜索阶段提取
@@ -266,13 +272,18 @@ MatchedItemMap FullTextWorker::takeAll()
     MatchedItemMap ret;
 
     QMutexLocker lk(&d->m_mutex);
+    // 内容命中的结果统一归入「包含该内容的文件」分组，不再按文件类型散落到
+    // 文件/视频/音乐/图片/文档等分组，避免与文件名命中的结果混在一起
+    MatchedItems contentItems;
     for (int i = FileSearchUtils::GroupBegin; i < FileSearchUtils::GroupCount; ++i) {
         if (!d->m_items[i].isEmpty()) {
             MatchedItems items = std::move(d->m_items[i]);
             Q_ASSERT(d->m_items[i].isEmpty());
-            ret.insert(FileSearchUtils::groupKey(static_cast<FileSearchUtils::Group>(i)), items);
+            contentItems += items;
         }
     }
+    if (!contentItems.isEmpty())
+        ret.insert(GRANDSEARCH_GROUP_FILE_FULLTEXT, contentItems);
     lk.unlock();
 
     return ret;

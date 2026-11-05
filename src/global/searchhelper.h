@@ -28,9 +28,9 @@ APPLICATION_GROUP\
 #define JSON_KEYWORD_ATTRIBUTE   "Keyword"
 
 // 文档类目
-#define DOCUMENT_SUFFIX     "pdf,txt,doc,docx,dot,dotx,ppt,pptx,pot,potx,xls,xlsx,xlt,xltx,wps,wpt,rtf,md,latex"
-// 图片类目
-#define PICTURE_SUFFIX      "jpg,jpeg,jpe,bmp,png,gif,svg,tif,tiff"
+#define DOCUMENT_SUFFIX     "pdf,txt,doc,docx,dot,dotx,ppt,pptx,pot,potx,xls,xlsx,xlt,xltx,wps,wpt,rtf,md,latex,uof,uos,uop,uot,uott,uost,uopt,dps,et,ett,dpt,ofd"
+// 图片类目（含 webp/ico/heic，与面板预览及 doc: 类型过滤口径一致）
+#define PICTURE_SUFFIX      "jpg,jpeg,jpe,bmp,png,gif,svg,tif,tiff,webp,ico,heic"
 // 音频类目
 #define AUDIO_SUFFIX        "au,snd,mid,mp3,aif,aifc,aiff,m3u,ra,ram,wav,cda,wma,ape,mp2,mpa"
 // 视频类目

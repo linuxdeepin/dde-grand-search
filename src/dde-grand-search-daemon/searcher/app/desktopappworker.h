@@ -8,6 +8,7 @@
 #include "searcher/proxyworker.h"
 
 #include <QMutex>
+#include <QStringList>
 
 namespace GrandSearch {
 
@@ -31,6 +32,7 @@ private:
 private:
     QAtomicInt m_status = Ready;
     QString m_context;
+    QStringList m_keywords;   // 多关键字检索（空格分隔）时保存的各关键字，需全部命中
     QHash<QString, QList<QSharedPointer<MatchedItem>>> m_indexTable;
 
     //搜索结果
