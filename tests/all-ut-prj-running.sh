@@ -21,6 +21,7 @@ UT_TYPE_GRAND_SEARCH="dde-grand-search"
 UT_TYPE_LIBGRAND_SEARCH_DAEMON="libdde-grand-search-daemon"
 UT_TYPE_PREVIEW_PLUGIN="preview-plugin"
 UT_TYPE_GRAND_SEARCH_DOCK_PLUGIN="dde-grand-search-dock-plugin"
+UT_TYPE_CONVERT_SEARCH_PLUGIN="convert-search-plugin"
 
 REBUILD_PRJ=${4}
 REBUILD_TYPE_YES="yes"
@@ -104,6 +105,20 @@ if [ "$UT_PRJ_TYPE" = "$UT_TYPE_ALL" ] || [ "$UT_PRJ_TYPE" = "$UT_TYPE_GRAND_SEA
 	# report的文件夹，报告后缀名，编译路径，可执行程序名，正向解析设置，逆向解析设置
 	./../../../tests/ut-target-running.sh $BUILD_DIR grand-search-dock-plugin $DIR_TEST_GRAND_SEARCH_DOCK_PLUGIN test-dde-grand-search-dock-plugin "$extract_path_grand_search_dock_plugin" "$remove_path_grand_search_dock_plugin" $SHOW_REPORT
         check_ut_result $? $UT_TYPE_GRAND_SEARCH_DOCK_PLUGIN
+fi
+
+# 6. 运行ut-convert-search-plugin工程
+if [ "$UT_PRJ_TYPE" = "$UT_TYPE_ALL" ] || [ "$UT_PRJ_TYPE" = "$UT_TYPE_CONVERT_SEARCH_PLUGIN" ] ; then
+        echo $UT_TYPE_CONVERT_SEARCH_PLUGIN "test case is running"
+
+	DIR_TEST_CONVERT_SEARCH_PLUGIN=$UT_TESTS_FOLDER/convert-search-plugin
+	cd $DIR_TEST_CONVERT_SEARCH_PLUGIN
+
+	extract_path_convert_search_plugin="*/src/convert-search-plugin/*"
+	remove_path_convert_search_plugin="*/tests/* */3rdParty/* */build-ut/* *moc_*"
+	#报告的路径，报告后缀名，编译路径，可执行程序名，正向解析设置，逆向解析设置
+	$TESTS_FOLDER/ut-target-running.sh $BUILD_DIR convert-search-plugin $DIR_TEST_CONVERT_SEARCH_PLUGIN test-convert-search-plugin "$extract_path_convert_search_plugin" "$remove_path_convert_search_plugin" $SHOW_REPORT
+        check_ut_result $? $UT_TYPE_CONVERT_SEARCH_PLUGIN
 fi
 
 echo "end dde-grand-search all UT cases"

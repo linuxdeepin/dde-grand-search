@@ -42,5 +42,7 @@ Recommends:
  dde-daemon (>=5.12.0.31),
  startdde (>=5.6.0.34),
  deepin-anything-server[i386 amd64]
+Suggests:
+ xclip
 Description: deepin desktop-environment - search module
  Search module of deepin desktop-environment
