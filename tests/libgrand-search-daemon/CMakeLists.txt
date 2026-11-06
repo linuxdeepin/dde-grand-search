@@ -47,6 +47,7 @@ set(APP_SRC
 # app 模块单元测试文件
 set(APP_UT_SRC
     "searcher/app/ut_desktopappsearcher.cpp"
+    "searcher/app/ut_desktoplocalefallback.cpp"
     "searcher/app/ut_desktopappworker.cpp"
 )
 
