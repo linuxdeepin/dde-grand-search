@@ -1,3 +1,11 @@
+dde-grand-search (6.1.3) unstable; urgency=medium
+
+  * feat: add LayerShell support for Treeland Wayland
+  * perf: debounce search hint refresh
+  * test: add unit tests for TaskCommander uncovered methods
+
+ -- Zhang Sheng <zhangsheng@uniontech.com>  Fri, 06 Nov 2026 10:12:30 +0800
+
 dde-grand-search (6.1.2) unstable; urgency=medium
 
   * test: add GTest unit tests for dde-grand-search-daemon/utils
