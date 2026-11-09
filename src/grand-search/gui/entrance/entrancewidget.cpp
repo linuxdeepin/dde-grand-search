@@ -108,9 +108,13 @@ void EntranceWidgetPrivate::notifyTextChanged()
                             << "Length:" << currentSearchText.length();
     emit q_p->searchTextChanged(currentSearchText);
 
-    // 搜索内容改变后，清空图标显示
-    MatchedItem item;
-    q_p->onAppIconChanged(QString(), item);
+    // 仅在搜索文本为空时立即清空应用图标，非空时由搜索结果回调自然更新。
+    // 避免持续输入时每次防抖都立即隐藏图标，与搜索结果返回后重新显示形成高频显隐循环，
+    // 导致右侧出现双关闭图标错觉及清除按钮位置反复跳动。
+    if (currentSearchText.isEmpty()) {
+        MatchedItem item;
+        q_p->onAppIconChanged(QString(), item);
+    }
 }
 
 void EntranceWidgetPrivate::showMenu(const QPoint &pos)
