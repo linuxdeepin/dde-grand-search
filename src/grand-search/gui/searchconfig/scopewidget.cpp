@@ -24,7 +24,6 @@
 #include "business/config/searchconfig.h"
 #include "switchwidget/switchwidget.h"
 #include "gui/datadefine.h"
-#include "utils/utils.h"
 
 #include <DFontSizeManager>
 #include <DGuiApplicationHelper>
@@ -120,17 +119,15 @@ void ScopeWidget::updateIcons()
 {
     Q_ASSERT(m_switchWidgets.count() == m_displayIcons.count());
 
-    QString suffix = Utils::iconThemeSuffix();
-
     for (int i = 0; i < m_switchWidgets.count(); ++i) {
 
         QString iconName = m_displayIcons.at(i);
-        QIcon icon = QIcon(QString(":/icons/%1%2.svg").arg(iconName).arg(suffix));
+        const auto &icon = QIcon::fromTheme(iconName);
 
         auto switchWidget = m_switchWidgets.at(i);
         Q_ASSERT(switchWidget);
 
-        switchWidget->setIcon(icon, QSize(SWITCHWIDGETICONSIZE, SWITCHWIDGETICONSIZE));
+        switchWidget->setIcon(icon, { SWITCHWIDGETICONSIZE, SWITCHWIDGETICONSIZE });
     }
     update();
 }
