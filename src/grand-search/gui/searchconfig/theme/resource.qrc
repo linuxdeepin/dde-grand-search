@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/icons/deepin">
+        <file>builtin/icons/dde-grand-search-setting_32px.svg</file>
+        <file>builtin/texts/appsearch_24px.svg</file>
+        <file>builtin/texts/audiosearch_24px.svg</file>
+        <file>builtin/texts/bestmatch_24px.svg</file>
+        <file>builtin/texts/documentsearch_24px.svg</file>
+        <file>builtin/texts/experienceplan_24px.svg</file>
+        <file>builtin/texts/filesearch_24px.svg</file>
+        <file>builtin/texts/foldersearch_24px.svg</file>
+        <file>builtin/texts/picturesearch_24px.svg</file>
+        <file>builtin/texts/settingsearch_24px.svg</file>
+        <file>builtin/texts/videosearch_24px.svg</file>
+        <file>builtin/texts/websearch_24px.svg</file>
+    </qresource>
+</RCC>

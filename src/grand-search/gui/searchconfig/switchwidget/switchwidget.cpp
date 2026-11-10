@@ -25,8 +25,6 @@
 
 #include <QPainter>
 
-#define ICONLABELSIZE   36
-
 DWIDGET_USE_NAMESPACE
 
 namespace GrandSearch {
@@ -43,7 +41,6 @@ SwitchWidget::SwitchWidget(QWidget *parent, QWidget *leftWidget)
 {
 
     m_iconLabel = new QLabel(this);
-    m_iconLabel->setFixedSize(ICONLABELSIZE, ICONLABELSIZE);
 
     if (!m_leftWidget)
         m_leftWidget = new QLabel(this);
@@ -58,7 +55,7 @@ SwitchWidget::SwitchWidget(QWidget *parent, QWidget *leftWidget)
     m_mainLayout->setSpacing(10);
     m_mainLayout->setContentsMargins(10, 0, 10, 0);
     m_mainLayout->addWidget(m_iconLabel);
-    m_mainLayout->addLayout(labelLayout, 0);
+    m_mainLayout->addLayout(labelLayout, 1);
     m_mainLayout->addWidget(m_switchBtn, 0, Qt::AlignVCenter);
     setLayout(m_mainLayout);
 

@@ -24,7 +24,6 @@
 #include "global/searchconfigdefine.h"
 #include "switchwidget/switchwidget.h"
 #include "hyperlinklabel/hyperlinklabel.h"
-#include "utils/utils.h"
 
 #include <DFontSizeManager>
 #include <DGuiApplicationHelper>
@@ -114,9 +113,8 @@ void PlanWidget::onSwitchStateChanged(const bool checked)
 
 void PlanWidget::updateIcons()
 {
-    QString suffix = Utils::iconThemeSuffix();
-    QIcon icon = QIcon(QString(":/icons/%1%2.svg").arg(m_displayIcon).arg(suffix));
-    m_switchWidget->setIcon(icon, QSize(SWITCHWIDGETICONSIZE, SWITCHWIDGETICONSIZE));
+    const auto &icon = QIcon::fromTheme(m_displayIcon);
+    m_switchWidget->setIcon(icon, { SWITCHWIDGETICONSIZE, SWITCHWIDGETICONSIZE });
 
     update();
 }
