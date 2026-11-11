@@ -4,6 +4,7 @@
 
 #include "mainwindow_p.h"
 #include "mainwindow.h"
+#include "layershellwindow.h"
 #include "utils/utils.h"
 #include "entrance/entrancewidget.h"
 #include "exhibition/exhibitionwidget.h"
@@ -152,10 +153,24 @@ void MainWindow::onPrimaryScreenChanged(const QScreen *screen)
     disconnect(this, SLOT(onGeometryChanged(const QRect &)));
     onGeometryChanged(screen->geometry());
     connect(screen, &QScreen::geometryChanged, this, &MainWindow::onGeometryChanged);
+
+    // Wayland 下 move() 无效，layer surface 需通过 QWindow::setScreen 跟随主屏。
+    if (d_p->m_layerShellWindow && d_p->m_layerShellWindow->isValid()) {
+        d_p->m_layerShellWindow->setScreen(const_cast<QScreen *>(screen));
+    }
 }
 
 void MainWindow::onGeometryChanged(const QRect &geometry)
 {
+    // LayerShell 可用时，通过顶部锚点 + 距顶边距控制窗口位置（水平方向自动居中）。
+    if (d_p->m_layerShellWindow && d_p->m_layerShellWindow->isValid()) {
+        int topMargin = geometry.height() / 4;
+        qCDebug(logGrandSearch) << "Window geometry changed - Screen:" << geometry
+                                << "Setting layer shell top margin:" << topMargin;
+        d_p->m_layerShellWindow->setTopAnchor(topMargin);
+        return;
+    }
+
     int sWidth = geometry.width();
     int sHeight = geometry.height();
 
@@ -212,9 +227,17 @@ void MainWindow::onMissionChanged(const QString &missionId, const QString &missi
 
 void MainWindow::initUI()
 {
-    // 禁用窗口管理器并置顶
+    // 层级与窗口标志：
+    // - LayerShell 可用（编译期支持 dde-shell 且运行于 Wayland）：层级交由 LayerShell 管理，
+    //   不能设置 BypassWindowManagerHint（该标志会绕过合成器管理，与 layer surface 冲突）。
+    // - Wayland 旧路径（未编译 dde-shell）：保持原有 BypassWindowManagerHint。
+    // - X11：保持原有逻辑不变。
     if (Utils::isWayland()) {
+#ifdef HAVE_DDE_LAYER_SHELL
+        setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Tool);
+#else
         setWindowFlags(Qt::BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::Tool);
+#endif
         setAttribute(Qt::WA_QuitOnClose);
     } else {
         // 在Qt5.11版本、x11环境下，同时设置BypassWindowManagerHint与Tool属性之后，键盘切换大小写将会导致程序的激活状态发生改变。
@@ -256,6 +279,20 @@ void MainWindow::initUI()
     this->setLayout(d_p->m_mainLayout);
 
     this->winId();
+
+    // 仅在 Wayland 下创建 LayerShell 适配；X11 下保持 m_layerShellWindow 为空，
+    // 继续走原有 move()/setWindowFlags 逻辑。
+    if (Utils::isWayland()) {
+        d_p->m_layerShellWindow.reset(new LayerShellWindow(this));
+        if (d_p->m_layerShellWindow->isValid()) {
+            // 初始定位与初始尺寸，与 X11 路径的 setFixedSize + move 保持一致。
+            d_p->m_layerShellWindow->setPreferredSize(MainWindowWidth, MainWindowHeight);
+            if (QScreen *screen = qApp->primaryScreen()) {
+                d_p->m_layerShellWindow->setTopAnchor(screen->geometry().height() / 4);
+            }
+        }
+    }
+
     DPlatformHandle handle(this->windowHandle());
     handle.setWindowRadius(18);
 }
@@ -299,10 +336,14 @@ void MainWindow::updateMainWindowHeight()
     if (Q_LIKELY(d_p->m_searchNoContentWidget))
         bSearchNoContentWidgetShow = !d_p->m_searchNoContentWidget->isHidden();
 
-    if (bExhibitionWidgetShow || bSearchNoContentWidgetShow)
-        this->setFixedSize(MainWindowWidth,MainWindowExpandHeight);
-    else
-        this->setFixedSize(MainWindowWidth,MainWindowHeight);
+    const uint targetHeight = (bExhibitionWidgetShow || bSearchNoContentWidgetShow)
+            ? MainWindowExpandHeight
+            : MainWindowHeight;
+    this->setFixedSize(MainWindowWidth, targetHeight);
+
+    // LayerShell 下 setFixedSize 不会生效为 layer surface 的尺寸，需同步首选尺寸。
+    if (d_p->m_layerShellWindow && d_p->m_layerShellWindow->isValid())
+        d_p->m_layerShellWindow->setPreferredSize(MainWindowWidth, targetHeight);
 }
 
 void MainWindow::showEvent(QShowEvent *event)
