@@ -8,6 +8,7 @@
 #include "global/matcheditem.h"
 
 #include <DWidget>
+#include <DVerticalLine>
 
 #include <QScopedPointer>
 
@@ -61,6 +62,7 @@ private:
     QPushButton *m_btnClear = nullptr;
     MatchWidget *m_matchWidget = nullptr;
     PreviewWidget *m_previewWidget = nullptr;
+    Dtk::Widget::DVerticalLine *m_vLine = nullptr;
 };
 
 }

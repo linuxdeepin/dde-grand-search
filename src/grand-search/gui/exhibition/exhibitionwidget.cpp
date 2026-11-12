@@ -51,6 +51,7 @@ void ExhibitionWidget::clearData()
     qCDebug(logGrandSearch) << "Clearing exhibition data";
     m_matchWidget->clearMatchedData();
     m_previewWidget->hide();
+    m_vLine->hide();
 }
 
 void ExhibitionWidget::onSelectNextItem()
@@ -110,6 +111,7 @@ void ExhibitionWidget::previewItem(const QString &searchGroupName, const Matched
     if (!Utils::canPreview(searchGroupName) || item.name.isEmpty()) {
         qCDebug(logGrandSearch) << "Hiding preview - Group:" << searchGroupName;
         m_previewWidget->hide();
+        m_vLine->hide();
 
         // 不显示预览界面，右侧空隙需为0, 用来贴着主界面右侧显示滚动条区域
         m_hLayout->setContentsMargins(MARGIN_SIZE, 0, 0, MARGIN_SIZE);
@@ -127,6 +129,7 @@ void ExhibitionWidget::previewItem(const QString &searchGroupName, const Matched
 
     // 预览界面预览选择的匹配结果项
     m_previewWidget->previewItem(item);
+    m_vLine->show();
 
     emit sigPreviewStateChanged(true);
 }
@@ -142,8 +145,8 @@ void ExhibitionWidget::initUi()
     m_matchWidget->setFocusPolicy(Qt::NoFocus);
     m_hLayout->addWidget(m_matchWidget);
 
-    DVerticalLine* vLine = new DVerticalLine(this);
-    m_hLayout->addWidget(vLine);
+    m_vLine = new DVerticalLine(this);
+    m_hLayout->addWidget(m_vLine);
 
     m_previewWidget = new PreviewWidget(this);
     m_hLayout->addWidget(m_previewWidget);
