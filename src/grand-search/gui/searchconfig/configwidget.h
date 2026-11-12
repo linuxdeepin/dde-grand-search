@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -34,6 +34,8 @@ protected:
 
 private:
     QVBoxLayout *m_mainLayout                       = nullptr;      // 界面主体布局
+    QWidget *m_contentPanel                         = nullptr;      // 内容白底圆角面板
+    QVBoxLayout *m_panelLayout                      = nullptr;      // 内容面板内部布局
     Dtk::Widget::DScrollArea *m_scrollArea          = nullptr;      // 滚动区域部件
     Dtk::Widget::DWidget *m_scrollAreaContent       = nullptr;      // 滚动区域内容部件
     QVBoxLayout *m_scrollLayout                     = nullptr;      // 滚动区域内部部件布局
