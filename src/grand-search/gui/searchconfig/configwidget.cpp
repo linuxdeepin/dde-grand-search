@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -61,7 +61,7 @@ void ConfigWidget::initUI()
     setCentralWidget(mainWidget);
 
     m_mainLayout = new QVBoxLayout(mainWidget);
-    m_mainLayout->setContentsMargins(0, 10, 0, 0);
+    m_mainLayout->setContentsMargins(0, 10, 20, 0);
     m_mainLayout->setSpacing(0);
     mainWidget->setLayout(m_mainLayout);
 
@@ -107,6 +107,12 @@ void ConfigWidget::updateBackgroundColor()
     QPalette contentPalette = m_scrollAreaContent->palette();
     contentPalette.setColor(QPalette::Window, bgColor);
     m_scrollAreaContent->setPalette(contentPalette);
+
+    QWidget *central = centralWidget();
+    central->setAutoFillBackground(true);
+    QPalette centralPalette = central->palette();
+    centralPalette.setColor(QPalette::Window, bgColor);
+    central->setPalette(centralPalette);
 }
 
 void ConfigWidget::closeEvent(QCloseEvent *event)
