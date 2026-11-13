@@ -179,8 +179,23 @@ bool DesktopAppSearcherPrivate::isHidden(DesktopEntryPointer pointer)
             QString onlyShow = pointer->stringValue("OnlyShowIn");
             if (!onlyShow.isEmpty()) {
                 QStringList onlyShows = pointer->stringValue("OnlyShowIn").split(';');
-                if (!onlyShows.isEmpty() && !onlyShows.contains(desktop, Qt::CaseInsensitive))
-                    return true;
+                if (!onlyShows.isEmpty()) {
+                    QStringList matchDesktops;
+                    matchDesktops << desktop;
+                    if (desktop.compare("DDE", Qt::CaseInsensitive) == 0)
+                        matchDesktops << "Deepin";
+                    else if (desktop.compare("Deepin", Qt::CaseInsensitive) == 0)
+                        matchDesktops << "DDE";
+                    bool found = false;
+                    for (const QString &d : matchDesktops) {
+                        if (onlyShows.contains(d, Qt::CaseInsensitive)) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found)
+                        return true;
+                }
             }
         }
     }
