@@ -26,6 +26,7 @@
 #include <QContextMenuEvent>
 #include <QEvent>
 #include <QtGlobal>
+#include <QInputMethod>
 
 DWIDGET_USE_NAMESPACE
 using namespace GrandSearch;
@@ -120,6 +121,7 @@ bool EntranceWidget::event(QEvent *event)
 {
     if (event->type() == QEvent::FocusIn) {
         d_p->m_lineEdit->setFocus();
+        QGuiApplication::inputMethod()->show();
         return true;
     }
 
@@ -168,6 +170,7 @@ bool EntranceWidget::eventFilter(QObject *watched, QEvent *event)
     } else if (watched == d_p->m_searchEdit && QEvent::FocusIn == event->type()) {
         if (Q_LIKELY(d_p->m_lineEdit)) {
             d_p->m_lineEdit->setFocus();
+            QGuiApplication::inputMethod()->show();
             return true;
         }
     }
