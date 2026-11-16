@@ -118,3 +118,13 @@ Files: toolGenerate/**/*
 Copyright: None
 License: CC0-1.0
 
+# convert-search-plugin - source files
+Files: src/convert-search-plugin/*.cpp src/convert-search-plugin/*.h src/convert-search-plugin/providers/*
+Copyright: 2026 testerxydw
+License: GPL-3.0-or-later
+
+# convert-search-plugin - build files & config
+Files: src/convert-search-plugin/CMakeLists.txt src/convert-search-plugin/convert-search.conf.in
+Copyright: 2026 testerxydw
+License: CC0-1.0
+
