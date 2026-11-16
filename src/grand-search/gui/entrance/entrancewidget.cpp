@@ -50,7 +50,7 @@ bool EntranceWidget::event(QEvent *event)
 {
     if (event->type() == QEvent::FocusIn) {
         d_p->m_searchEdit->setFocus();
-        return true;
+        return QFrame::event(event);
     }
     return QFrame::event(event);
 }

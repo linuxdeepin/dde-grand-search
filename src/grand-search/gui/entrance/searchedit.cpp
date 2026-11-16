@@ -433,7 +433,7 @@ bool SearchEdit::event(QEvent *event)
 {
     if (event->type() == QEvent::FocusIn) {
         d->m_lineEdit->setFocus();
-        return true;
+        return QWidget::event(event);
     }
 
     return QWidget::event(event);
