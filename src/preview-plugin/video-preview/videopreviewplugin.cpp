@@ -248,7 +248,9 @@ void VideoPreviewPlugin::updateInfo(const QVariantHash &hash, bool needUpdate)
     }
 
     if (hash.contains(kKeyThumbnailer) && m_view) {
-        m_view->setThumbnail(hash.value(kKeyThumbnailer).value<QPixmap>());
+        QImage img = hash.value(kKeyThumbnailer).value<QImage>();
+        QPixmap pixmap = DecodeBridge::scaleAndRound(img, VideoView::maxThumbnailSize());
+        m_view->setThumbnail(pixmap);
         m_view->repaint();
     }
 
@@ -306,17 +308,14 @@ QVariantHash DecodeBridge::decode(QSharedPointer<DecodeBridge> self, const QStri
         if (video_thumbnailer_generate_thumbnail_to_buffer(thumbnailer, stdStr.c_str(), imageData) == 0) {
             QImage img = QImage::fromData(imageData->image_data_ptr,
                                           static_cast<int>(imageData->image_data_size), "png");
-            //缩放与圆角处理
-            QPixmap pixmap = DecodeBridge::scaleAndRound(img, maxSize);
-            info.insert(kKeyThumbnailer, QVariant::fromValue(pixmap));
+            info.insert(kKeyThumbnailer, QVariant::fromValue(img));
         } else {
             // 预览失败
             qCWarning(logVideoPreview) << "Failed to generate video thumbnail - File:" << file;
             QImage errorImg(":/icons/image_damaged.svg");
             errorImg = errorImg.scaled(46, 46);
             auto img = CommonTools::creatErrorImage({192, 108}, errorImg);
-            QPixmap pixmap = DecodeBridge::scaleAndRound(img, maxSize);
-            info.insert(kKeyThumbnailer, QVariant::fromValue(pixmap));
+            info.insert(kKeyThumbnailer, QVariant::fromValue(img));
         }
         video_thumbnailer_destroy_image_data(imageData);
         video_thumbnailer_destroy(thumbnailer);
@@ -325,8 +324,7 @@ QVariantHash DecodeBridge::decode(QSharedPointer<DecodeBridge> self, const QStri
         QImage errorImg(":/icons/image_damaged.svg");
         errorImg = errorImg.scaled(46, 46);
         auto img = CommonTools::creatErrorImage({192, 108}, errorImg);
-        QPixmap pixmap = DecodeBridge::scaleAndRound(img, VideoView::maxThumbnailSize());
-        info.insert(kKeyThumbnailer, QVariant::fromValue(pixmap));
+        info.insert(kKeyThumbnailer, QVariant::fromValue(img));
     }
 
     //检查一次是否中断
