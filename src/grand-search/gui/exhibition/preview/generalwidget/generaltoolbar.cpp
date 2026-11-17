@@ -41,10 +41,10 @@ IconButton::IconButton(QWidget *parent)
 
     if (this->font().pixelSize() < TOOLBTN_MAX_PIXELSIZE) {
         setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-        setIconSize(QSize(18, 18));
+        setIconSize(QSize(24, 24));
     } else {
         setToolButtonStyle(Qt::ToolButtonIconOnly);
-        setIconSize(size());
+        setIconSize(QSize(24, 24));
     }
 }
 
