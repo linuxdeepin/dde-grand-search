@@ -23,6 +23,7 @@ class QTimer;
 class QLineEdit;
 class QAction;
 class QPushButton;
+class QToolButton;
 
 namespace GrandSearch {
 
@@ -64,13 +65,16 @@ public:
     void delayChangeText();
     void notifyTextChanged();
 
+    // 右侧容器（清除按钮 + 应用图标）覆盖在 LineEdit 之上，按其宽度预留文本区域
+    void updateTextMargin();
+
     void showMenu(const QPoint& pos);
 
     EntranceWidget *q_p = nullptr;
     Dtk::Widget::DSearchEdit *m_searchEdit = nullptr;   // 搜索输入框控件
     QLineEdit *m_lineEdit = nullptr;                    // 输入控件
     Dtk::Widget::DLabel *m_appIconLabel = nullptr;      // 应用图标显示label
-    QAction *m_appIconAction = nullptr;                 // 应用图标显示区域占位action
+    QToolButton *m_clearButton = nullptr;               // 清除按钮（自绘，与应用图标同处右侧容器）
     QHBoxLayout *m_mainLayout = nullptr;
 
     QTimer *m_delayChangeTimer = nullptr;               // 延迟发出搜索文本改变

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -30,7 +30,7 @@ TEST(EntranceWidgetTest, constructor)
     EXPECT_TRUE(w->d_p->m_searchEdit);
     EXPECT_TRUE(w->d_p->m_lineEdit);
     EXPECT_TRUE(w->d_p->m_appIconLabel);
-    EXPECT_TRUE(w->d_p->m_appIconAction);
+    EXPECT_TRUE(w->d_p->m_clearButton);
 
     delete w;
 }
