@@ -18,6 +18,8 @@
 #include <QPainter>
 #include <QPushButton>
 #include <QHBoxLayout>
+#include <QLayout>
+#include <QToolButton>
 #include <QWidgetAction>
 #include <QAction>
 #include <QTimer>
@@ -44,6 +46,9 @@ static const uint SearchMaxLength = 512;   // 输入最大字符限制
 
 static const uint LabelIconSize = 26;   // 标签应用图标显示大小
 static const uint LabelSize = 32;   // 标签大小
+static const uint ClearIconSize = 30;   // 清除按钮图标绘制尺寸，与原生清除按钮一致
+static const uint ClearIconArtworkInset = 5;   // 图标素材在绘制区域内的透明边
+static const uint IconGap = 10;   // 清除按钮与应用图标之间的视觉间距
 static const uint SearchIconSize = 28;   // 搜索框放大镜图标尺寸（DTK 默认 20，偏小导致视觉差异）
 
 static const QString kSearchIconPath = QStringLiteral(":/icons/search_icon.svg");
@@ -80,6 +85,32 @@ public:
     }
 };
 
+// 与 DTK 内置清除按钮外观一致的图标按钮：只绘制图标本身，不绘制按钮边框。
+// 内置清除按钮的位置由 QLineEdit 的样式度量决定，会在应用图标左侧留下固定空档，
+// 无法把两者间距精确调整到设计要求的 10px；改由本控件放入右侧容器统一控制间距。
+class ClearIconButton : public QToolButton
+{
+public:
+    explicit ClearIconButton(QWidget *parent = nullptr)
+        : QToolButton(parent)
+    {
+        setCursor(Qt::ArrowCursor);
+        setFocusPolicy(Qt::NoFocus);
+        setToolButtonStyle(Qt::ToolButtonIconOnly);
+    }
+
+protected:
+    void paintEvent(QPaintEvent *) override
+    {
+        QPainter painter(this);
+        const QIcon::Mode mode = isEnabled() ? QIcon::Normal : QIcon::Disabled;
+
+        QRect iconRect(QPoint(0, 0), iconSize());
+        iconRect.moveCenter(rect().center());
+        icon().paint(&painter, iconRect, Qt::AlignCenter, mode);
+    }
+};
+
 EntranceWidgetPrivate::EntranceWidgetPrivate(EntranceWidget *parent)
     : q_p(parent)
 {
@@ -90,6 +121,21 @@ EntranceWidgetPrivate::EntranceWidgetPrivate(EntranceWidget *parent)
     connect(m_delayChangeTimer, &QTimer::timeout, this, &EntranceWidgetPrivate::notifyTextChanged);
 }
 
+
+void EntranceWidgetPrivate::updateTextMargin()
+{
+    if (!m_lineEdit || !m_clearButton)
+        return;
+
+    // 按右侧容器当前实际占用的宽度预留文本区域（隐藏的控件不计入 sizeHint）
+    const QWidget *rightWidget = m_clearButton->parentWidget();
+    const QLayout *layout = rightWidget ? rightWidget->layout() : nullptr;
+    const int reserve = layout ? layout->sizeHint().width() : 0;
+
+    const QMargins margins = m_lineEdit->textMargins();
+    if (margins.right() != reserve)
+        m_lineEdit->setTextMargins(margins.left(), margins.top(), reserve, margins.bottom());
+}
 
 void EntranceWidgetPrivate::delayChangeText()
 {
@@ -155,13 +201,12 @@ void EntranceWidget::showLabelAppIcon(bool visible)
 {
     Q_ASSERT(d_p->m_lineEdit);
     Q_ASSERT(d_p->m_appIconLabel);
-    Q_ASSERT(d_p->m_appIconAction);
     if (visible == d_p->m_appIconLabel->isVisible())
         return;
 
     qCDebug(logGrandSearch) << "App icon visibility changed - Visible:" << visible;
-    d_p->m_appIconAction->setVisible(visible);
     d_p->m_appIconLabel->setVisible(visible);
+    d_p->updateTextMargin();
     d_p->m_lineEdit->update();
 }
 
@@ -283,9 +328,51 @@ void EntranceWidget::initUI()
     d_p->m_appIconLabel = new DLabel(d_p->m_searchEdit);
     d_p->m_appIconLabel->setFixedSize(LabelSize, LabelSize);
 
-    d_p->m_appIconAction = new QAction(this);
-    d_p->m_lineEdit->addAction(d_p->m_appIconAction, QLineEdit::TrailingPosition);
-    d_p->m_searchEdit->setRightWidgets(QList<QWidget *>() << d_p->m_appIconLabel);
+    // 图标左对齐绘制：label 比图标宽出的部分全部留在右侧，左侧不产生空白，
+    // 这样清除按钮到应用图标的间距只由容器 spacing 决定，便于精确控制
+    d_p->m_appIconLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+
+    // 先取出 DTK 内置清除按钮的外观（图标 + 尺寸），再关闭内置按钮。
+    // 内置按钮的槽位由样式度量决定，会在应用图标左侧留下固定空档，间距无法精确控制；
+    // 这里改用自绘按钮，与应用图标一起放进右侧容器，由容器 layout 控制两者间距。
+    QToolButton *builtinClearButton = nullptr;
+    for (auto *btn : d_p->m_lineEdit->findChildren<QToolButton *>()) {
+        QAction *action = btn->defaultAction();
+        if (action && action->objectName() == QLatin1String("_q_qlineeditclearaction")) {
+            builtinClearButton = btn;
+            break;
+        }
+    }
+    const QIcon clearIcon = builtinClearButton
+            ? builtinClearButton->icon()
+            : d_p->m_searchEdit->style()->standardIcon(QStyle::SP_LineEditClearButton);
+    // 图标按原生尺寸 (ClearIconSize) 绘制、按钮尺寸与原生清除按钮一致，
+    // 保证圆形底板与应用图标一样大；素材内的透明边在计算间距时扣除
+    const QSize clearIconSize(ClearIconSize, ClearIconSize);
+    const QSize clearButtonSize(ClearIconSize + 4, ClearIconSize);
+    d_p->m_lineEdit->setClearButtonEnabled(false);
+
+    d_p->m_clearButton = new ClearIconButton(d_p->m_searchEdit);
+    d_p->m_clearButton->setIcon(clearIcon);
+    d_p->m_clearButton->setIconSize(clearIconSize);
+    d_p->m_clearButton->setFixedSize(clearButtonSize);
+    d_p->m_clearButton->setVisible(false);
+
+    d_p->m_searchEdit->setRightWidgets(QList<QWidget *>() << d_p->m_clearButton << d_p->m_appIconLabel);
+
+    // 清除按钮内的图标居中绘制，左右各有 clearPadding 的透明边；应用图标在 label 内左对齐，
+    // 左侧没有透明边。因此容器 spacing 需要扣掉图标自身的透明边，图标间的可见间距才是 IconGap
+    const int clearPadding = (clearButtonSize.width() - clearIconSize.width()) / 2;
+    const int iconSpacing = qMax(0, int(IconGap) - clearPadding - int(ClearIconArtworkInset));
+    if (QWidget *rightWidget = d_p->m_clearButton->parentWidget()) {
+        if (QLayout *layout = rightWidget->layout()) {
+            layout->setContentsMargins(0, 0, 0, 0);
+            layout->setSpacing(iconSpacing);
+        }
+    }
+
+    // 右侧图标区域覆盖在 LineEdit 之上，需要为其预留文本空间，避免长文本压到图标上
+    d_p->updateTextMargin();
 
     // 搜索框界面布局设置
     // 必须对搜索框控件的边距和间隔设置为0,否则其内含的LineEdit不满足大小显示要求
@@ -299,6 +386,8 @@ void EntranceWidget::initUI()
         conMar.setRight(2);
         slayout->setContentsMargins(conMar);
 
+        // LineEdit 保持整窗宽度：搜索框的圆角灰底由 LineEdit 自绘，宽度必须与搜索框一致；
+        // 右侧容器（清除按钮 + 应用图标）由 DLineEdit 布局贴在右端并覆盖在 LineEdit 之上
         d_p->m_lineEdit->setFixedSize(EntraceWidgetWidth, EntraceWidgetHeight);
     }
 
@@ -326,6 +415,23 @@ void EntranceWidget::initConnections()
 
     // 终止搜索时，强制设置焦点
     connect(d_p->m_searchEdit, &DSearchEdit::searchAborted, d_p->m_lineEdit, qOverload<>(&QLineEdit::setFocus));
+
+    // 清除按钮：有文本时显示（与 Qt 内置清除按钮行为一致）
+    connect(d_p->m_lineEdit, &QLineEdit::textChanged, this, [this](const QString &text) {
+        if (d_p->m_clearButton)
+            d_p->m_clearButton->setVisible(!text.isEmpty());
+        d_p->updateTextMargin();
+    });
+
+    // 清除按钮：行为与 DTK 内置清除按钮一致（清空文本并发出 searchAborted），
+    // 内置按钮随 setClearButtonEnabled(false) 一起销毁，故在此重新实现
+    connect(d_p->m_clearButton, &QToolButton::clicked, this, [this]() {
+        if (!d_p->m_searchEdit->text().isEmpty())
+            d_p->m_searchEdit->clearEdit();
+
+        QMetaObject::invokeMethod(d_p->m_searchEdit, "searchAborted");
+        d_p->m_lineEdit->setFocus();
+    });
 
     // 光标位置或文本变化时刷新自绘光标，并重置闪烁相位（输入后光标立即可见）
     auto resetCursorBlink = [this]() {
