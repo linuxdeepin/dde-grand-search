@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -20,6 +20,9 @@ class IconButton: public QToolButton
     Q_OBJECT
 public:
     explicit IconButton(QWidget *parent = nullptr);
+
+protected:
+    void paintEvent(QPaintEvent *event) override;
 };
 
 class GeneralToolBar : public Dtk::Widget::DWidget
