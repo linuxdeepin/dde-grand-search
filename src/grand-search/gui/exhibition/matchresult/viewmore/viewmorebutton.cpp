@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -6,6 +6,7 @@
 
 #include <DStyle>
 #include <DGuiApplicationHelper>
+#include <DPlatformTheme>
 
 #include <QPainter>
 #include <QStyleOptionToolButton>
@@ -17,6 +18,8 @@ ViewMoreButton::ViewMoreButton(const QString &text, QWidget *parent)
     : QToolButton(parent)
 {
     setText(text);
+    connect(DGuiApplicationHelper::instance()->systemTheme(), &DPlatformTheme::activeColorChanged, this, [this]() { update(); });
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, [this]() { update(); });
 }
 
 void ViewMoreButton::setSelected(bool selected)
@@ -65,7 +68,6 @@ void ViewMoreButton::paintEvent(QPaintEvent *event)
             backgroundColor = QColor(0, 0, 0, static_cast<int>(255 * 0.05));
             if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
                 backgroundColor = QColor(255, 255, 255, static_cast<int>(255 * 0.05));
-
             break;
         }
         case DStyle::SS_PressState: {
@@ -73,7 +75,8 @@ void ViewMoreButton::paintEvent(QPaintEvent *event)
             if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
                 backgroundColor = QColor(255, 255, 255, static_cast<int>(255 * 0.1));
 
-            textColor = QColor(0, 129, 255);
+            // press 态文字跟随系统活动色
+            textColor = DGuiApplicationHelper::instance()->systemTheme()->activeColor();
             break;
         }
         default:
@@ -83,7 +86,7 @@ void ViewMoreButton::paintEvent(QPaintEvent *event)
 
     p.setBrush(backgroundColor);
     p.setFont(opt.font);
-    p.drawRoundedRect(opt.rect, 13, 13);
+    p.drawRoundedRect(opt.rect, 4, 4);
 
     p.setPen(textColor);
     p.drawText(opt.rect, Qt::AlignCenter | Qt::TextShowMnemonic, opt.text);
