@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -6,6 +6,7 @@
 
 #include <DStyle>
 #include <DGuiApplicationHelper>
+#include <DPlatformTheme>
 
 #include <QPainter>
 #include <QStyleOptionToolButton>
@@ -17,6 +18,8 @@ ViewMoreButton::ViewMoreButton(const QString &text, QWidget *parent)
     : QToolButton(parent)
 {
     setText(text);
+    connect(DGuiApplicationHelper::instance()->systemTheme(), &DPlatformTheme::activeColorChanged, this, [this]() { update(); });
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, [this]() { update(); });
 }
 
 void ViewMoreButton::setSelected(bool selected)
@@ -66,6 +69,8 @@ void ViewMoreButton::paintEvent(QPaintEvent *event)
             if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
                 backgroundColor = QColor(255, 255, 255, static_cast<int>(255 * 0.05));
 
+            // hover 态文字同样跟随系统活动色，与 press 只差背景深浅
+            textColor = DGuiApplicationHelper::instance()->systemTheme()->activeColor();
             break;
         }
         case DStyle::SS_PressState: {
@@ -73,7 +78,7 @@ void ViewMoreButton::paintEvent(QPaintEvent *event)
             if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::DarkType)
                 backgroundColor = QColor(255, 255, 255, static_cast<int>(255 * 0.1));
 
-            textColor = QColor(0, 129, 255);
+            textColor = DGuiApplicationHelper::instance()->systemTheme()->activeColor();
             break;
         }
         default:
