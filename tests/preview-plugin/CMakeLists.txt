@@ -44,7 +44,8 @@ pkg_check_modules(Ffm REQUIRED libffmpegthumbnailer)
 
 set(PROJECT_SRC_PATH "${PROJECT_SOURCE_PATH}/preview-plugin")
 include_directories(${PROJECT_SRC_PATH}
-    ${PROJECT_SOURCE_PATH}/grand-search/gui/exhibition/preview)
+    ${PROJECT_SOURCE_PATH}/grand-search/gui/exhibition/preview
+    ${PROJECT_SOURCE_PATH}/grand-search)
 
 set(QRCS
     ${PROJECT_SRC_PATH}/resource.qrc
@@ -70,6 +71,7 @@ set(SRCS
     ${PRO_SRC}
     ${UT_SRC}
     ${CPP_STUB_SRC}
+    ${PROJECT_SOURCE_PATH}/grand-search/gui/exhibition/preview/generalwidget/generaltoolbar.cpp
 )
 
 add_executable(${BIN_NAME} ${SRCS} ${QRCS})
