@@ -4,6 +4,7 @@
 
 #include "detailitem.h"
 #include "replicablelabel.h"
+#include "global/widgets/tooltiputils.h"
 
 #include <DLineEdit>
 #include <DGuiApplicationHelper>
@@ -86,7 +87,7 @@ void DetailItem::setDetailInfo(const DetailInfo &info)
         if (DetailInfoProperty::Text == key) {
             auto text = valueInfos.value(key).toString();
             m_contentLabel->setText(text);
-            m_contentLabel->setToolTip(text);
+            ToolTipUtils::setToolTip(m_contentLabel, text);
         } else if (DetailInfoProperty::ElideMode == key) {
             auto elideMode = valueInfos.value(key).value<Qt::TextElideMode>();
             m_contentLabel->setElideMode(elideMode);

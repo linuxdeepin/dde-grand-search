@@ -5,6 +5,7 @@
 #include "audiopreview_global.h"
 #include "audioview.h"
 #include "global/commontools.h"
+#include "global/widgets/tooltiputils.h"
 
 #include <DGuiApplicationHelper>
 #include <DFontSizeManager>
@@ -92,10 +93,10 @@ void AudioView::setItemInfo(const ItemInfo &item)
     m_iconLabel->setPixmap(pixmap);
 
     // 设置名称，并计算换行内容
-    QString elidedText = CommonTools::lineFeed(item[PREVIEW_ITEMINFO_NAME], m_nameLabel->width(), m_nameLabel->font(), 2);
+    const QString name = item[PREVIEW_ITEMINFO_NAME];
+    QString elidedText = CommonTools::lineFeed(name, m_nameLabel->width(), m_nameLabel->font(), 2);
     m_nameLabel->setText(elidedText);
-    if (elidedText != item[PREVIEW_ITEMINFO_NAME])
-        m_nameLabel->setToolTip(item[PREVIEW_ITEMINFO_NAME]);
+    ToolTipUtils::setToolTip(m_nameLabel, elidedText != name ? name : QString());
 
     // 获取文件大小
     QFileInfo fi(item[PREVIEW_ITEMINFO_ITEM]);
