@@ -6,6 +6,7 @@
 #include "grandsearchlistview.h"
 #include "global/builtinsearch.h"
 #include "global/widgets/highlightutils.h"
+#include "global/widgets/tooltiputils.h"
 
 #include <DGuiApplicationHelper>
 #include <DFontSizeManager>
@@ -18,7 +19,6 @@
 #include <QTextCursor>
 #include <QAbstractTextDocumentLayout>
 #include <QApplication>
-#include <QToolTip>
 #include <QFontMetricsF>
 
 #define ListIconSize 24   // 列表图标大小
@@ -112,16 +112,6 @@ QSize GrandSearchListDelegate::sizeHint(const QStyleOptionViewItem &option, cons
     return QSize(ListRowWidth, totalHeight);
 }
 
-static void hideTooltipImmediately()
-{
-    QWidgetList qwl = QApplication::topLevelWidgets();
-    for (QWidget *qw : qwl) {
-        if (QStringLiteral("QTipLabel") == qw->metaObject()->className()) {
-            qw->close();
-        }
-    }
-}
-
 bool GrandSearchListDelegate::helpEvent(QHelpEvent *event, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index)
 {
     if (event->type() == QEvent::ToolTip) {
@@ -129,22 +119,13 @@ bool GrandSearchListDelegate::helpEvent(QHelpEvent *event, QAbstractItemView *vi
         const QList<TooltipRegion> &regions = m_tooltipRegionCache.value(index.row());
         for (const TooltipRegion &region : regions) {
             if (region.rect.contains(itemLocalPos)) {
-                int tooltipsize = region.fullText.size();
-                const int nlong = 32;
-                int lines = tooltipsize / nlong + 1;
-                QString strtooltip;
-                for (int i = 0; i < lines; ++i) {
-                    strtooltip.append(region.fullText.mid(i * nlong, nlong));
-                    strtooltip.append("\n");
-                }
-                strtooltip.chop(1);
-                QToolTip::showText(event->globalPos(), strtooltip, view, region.rect);
+                ToolTipUtils::showText(region.fullText, event->globalPos(), view, region.rect);
                 return true;
             }
         }
 
         // 鼠标在非省略区域，隐藏 tooltip
-        hideTooltipImmediately();
+        ToolTipUtils::hide();
         return true;
     }
 
@@ -308,15 +289,18 @@ void GrandSearchListDelegate::drawItemName(QPainter *painter, const QModelIndex 
     // 使用 QFontMetricsF 进行精确的字体宽度计算
     QFontMetricsF fontMetricsF(fontMetrics);
 
+    auto matchRanges = HighlightUtils::findMatchRanges(name, keywords);
+
+    // 命中关键词的字符会以 DemiBold 绘制，实际字宽大于常规字体。
+    // 省略宽度按加粗后的字宽计算，避免末尾省略号超出可用区域被裁掉。
+    if (!matchRanges.isEmpty())
+        fontMetricsF = QFontMetricsF(HighlightUtils::highlightFont(font));
+
     // 使用智能省略，确保高亮关键词优先显示
     HighlightUtils::ElideResult elideResult;
 
-    if (!keywords.isEmpty()) {
-        auto matchRanges = HighlightUtils::findMatchRanges(name, keywords);
-        if (!matchRanges.isEmpty()) {
-            elideResult = HighlightUtils::smartElideWithTracking(name, nameTextMaxWidth, fontMetricsF, matchRanges);
-        }
-    }
+    if (!matchRanges.isEmpty())
+        elideResult = HighlightUtils::smartElideWithTracking(name, nameTextMaxWidth, fontMetricsF, matchRanges);
     if (elideResult.text.isEmpty())
         elideResult = HighlightUtils::elideWithTracking(name, Qt::ElideRight, nameTextMaxWidth, fontMetricsF);
 
@@ -335,7 +319,7 @@ void GrandSearchListDelegate::drawItemName(QPainter *painter, const QModelIndex 
 
     // 构建高亮格式（映射到省略后的文本位置）
     QTextCharFormat hlFmt;
-    hlFmt.setFontWeight(QFont::DemiBold);
+    hlFmt.setFontWeight(HighlightUtils::kHighlightFontWeight);
     hlFmt.setForeground(isDark ? QColor("#FFFFFF") : QColor("#000000"));
     auto formats = HighlightUtils::buildFormatRanges(
             displayText, elideResult.origPositions, name, keywords, hlFmt);
@@ -380,6 +364,12 @@ void GrandSearchListDelegate::drawMatchedContext(QPainter *painter, const QModel
 
     // 以最左边的关键词匹配为锚点进行省略
     auto allRanges = HighlightUtils::findMatchRanges(matchedContext, keywords);
+
+    // 命中关键词的字符会以 DemiBold 绘制，实际字宽大于常规字体。
+    // 省略宽度按加粗后的字宽计算，避免末尾省略号超出可用区域被裁掉。
+    if (!allRanges.isEmpty())
+        fontMetricsF = QFontMetricsF(HighlightUtils::highlightFont(font));
+
     QVector<HighlightUtils::MatchRange> leftmostOnly;
     if (!allRanges.isEmpty())
         leftmostOnly.append(allRanges.constFirst());
@@ -393,7 +383,7 @@ void GrandSearchListDelegate::drawMatchedContext(QPainter *painter, const QModel
     // 构建高亮格式
     QTextCharFormat hlFmt;
     hlFmt.setFont(font);
-    hlFmt.setFontWeight(QFont::DemiBold);
+    hlFmt.setFontWeight(HighlightUtils::kHighlightFontWeight);
     hlFmt.setForeground(highlightColor);
     auto formats = HighlightUtils::buildFormatRanges(
             elideResult.text, elideResult.origPositions, matchedContext, keywords, hlFmt);

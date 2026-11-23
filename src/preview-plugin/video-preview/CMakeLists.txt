@@ -14,6 +14,8 @@ set(SRCS
     videopreviewplugin.cpp
     videoview.h
     videoview.cpp
+    ${CMAKE_SOURCE_DIR}/src/global/widgets/tooltiputils.h
+    ${CMAKE_SOURCE_DIR}/src/global/widgets/tooltiputils.cpp
 )
 
 add_library(${LIB_NAME} SHARED ${SRCS} ${QRCS})
