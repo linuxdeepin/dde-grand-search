@@ -17,6 +17,8 @@ set(SRCS
     audiofileinfo.cpp
     audioview.h
     audioview.cpp
+    ${CMAKE_SOURCE_DIR}/src/global/widgets/tooltiputils.h
+    ${CMAKE_SOURCE_DIR}/src/global/widgets/tooltiputils.cpp
 )
 
 add_library(${LIB_NAME} SHARED ${SRCS})

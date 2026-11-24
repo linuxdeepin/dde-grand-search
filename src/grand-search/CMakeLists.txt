@@ -215,6 +215,8 @@ set(GUISRC
     ../global/widgets/highlightlabel.cpp
     ../global/widgets/highlightutils.h
     ../global/widgets/highlightutils.cpp
+    ../global/widgets/tooltiputils.h
+    ../global/widgets/tooltiputils.cpp
     )
 
 # business

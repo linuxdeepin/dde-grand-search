@@ -30,7 +30,6 @@ public:
 
     ElideMode elideMode() const;
     int maxLines() const;
-    bool isElided() const;
 
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
@@ -49,7 +48,7 @@ private:
 
     void relayout();
     void doLayout();
-    ElideInfo computeElidedText(int layoutWidth) const;
+    ElideInfo computeElidedText(int layoutWidth, int extraReserved = 0) const;
     ElideInfo computeSmartElidedText(const QString &text, int maxWidth, const QFontMetrics &fm) const;
     void buildFinalLayout(const QString &displayText, const QVector<int> &origPosMapping, int layoutWidth);
     QVector<QTextLayout::FormatRange> buildFormatRanges(

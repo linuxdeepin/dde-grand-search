@@ -5,6 +5,7 @@
 #include "aitoolbar.h"
 #include "linkbutton.h"
 #include "../../exhibitionwidget.h"
+#include "global/widgets/tooltiputils.h"
 
 #include <DGuiApplicationHelper>
 #include <DFontSizeManager>
@@ -123,10 +124,11 @@ void AiToolBarInner::initUi()
     m_btList.append(m_extensionBt);
     m_btList.append(m_knowledgeBt);
 
-    m_summaryBt->setToolTip(tr("Summarize document content with UOS AI"));
-    m_translationBt->setToolTip(tr("Translate document content with UOS AI"));
-    m_extensionBt->setToolTip(tr("Extend document content with UOS AI"));
-    m_knowledgeBt->setToolTip(tr("Add document to UOS AI knowledge base"));
+    // 静态短文案不需要换行，lineCharCount 传 0
+    ToolTipUtils::setToolTip(m_summaryBt, tr("Summarize document content with UOS AI"), 0);
+    ToolTipUtils::setToolTip(m_translationBt, tr("Translate document content with UOS AI"), 0);
+    ToolTipUtils::setToolTip(m_extensionBt, tr("Extend document content with UOS AI"), 0);
+    ToolTipUtils::setToolTip(m_knowledgeBt, tr("Add document to UOS AI knowledge base"), 0);
 
     m_summarySpace = new DWidget(this);
     m_translationSpace = new DWidget(this);

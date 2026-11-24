@@ -4,6 +4,7 @@
 
 #include "videopreview_global.h"
 #include "videoview.h"
+#include "global/widgets/tooltiputils.h"
 
 #include <DFontSizeManager>
 #include <DGuiApplicationHelper>
@@ -69,10 +70,7 @@ void VideoView::setTitle(const QString &title)
         m_title->setText(title);
         QFontMetrics fontMetrics(m_title->font());
         int textWidth = fontMetrics.size(Qt::TextSingleLine, title).width();
-        if (textWidth >= m_title->width())
-            m_title->setToolTip(title);
-        else
-            m_title->setToolTip("");
+        ToolTipUtils::setToolTip(m_title, textWidth >= m_title->width() ? title : QString());
     }
 }
 
