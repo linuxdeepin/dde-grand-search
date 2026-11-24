@@ -5,6 +5,7 @@
 #ifndef HIGHLIGHTUTILS_H
 #define HIGHLIGHTUTILS_H
 
+#include <QFont>
 #include <QFontMetricsF>
 #include <QTextLayout>
 #include <QString>
@@ -14,6 +15,9 @@
 class QTextCharFormat;
 
 namespace HighlightUtils {
+
+// 关键词高亮统一使用的字重
+inline constexpr QFont::Weight kHighlightFontWeight = QFont::DemiBold;
 
 struct MatchRange
 {
@@ -51,6 +55,9 @@ QVector<QTextLayout::FormatRange> buildFormatRanges(
 
 // Convenience: create a default highlight format (DemiBold + BrightText foreground)
 QTextCharFormat defaultHighlightFormat(const QFont &baseFont, const QPalette &palette);
+
+// 基于基础字体构造高亮字体（仅改变字重），用于按实际绘制字宽做省略
+QFont highlightFont(const QFont &baseFont);
 }   // namespace HighlightUtils
 
 #endif   // HIGHLIGHTUTILS_H

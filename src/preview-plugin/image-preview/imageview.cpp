@@ -67,13 +67,9 @@ void ImageView::loadImage(const QString &file, const QString &type, const QStrin
     QFileInfo fileInfo(m_imageFile);
     QString name = fileInfo.fileName();
 
-    // HighlightLabel 内部处理省略和高亮
+    // HighlightLabel 内部处理省略、高亮和 tooltip
     m_titleLabel->setPlainText(name);
     m_titleLabel->setKeywords(keywords);
-    if (m_titleLabel->isElided())
-        m_titleLabel->setToolTip(name);
-    else
-        m_titleLabel->setToolTip("");
 
     if (!fileInfo.isReadable() || !canPreview()) {
         qCWarning(logImagePreview) << "Cannot preview image - File not readable or unsupported format:" << m_imageFile;
@@ -132,13 +128,9 @@ void ImageView::setMatchedContext(const QString &context, const QStringList &key
     m_contentLabel->setVisible(!context.isEmpty());
     m_titleLabel->setVisible(context.isEmpty());
     if (!context.isEmpty()) {
-        // HighlightLabel 内部处理省略和高亮
+        // HighlightLabel 内部处理省略、高亮和 tooltip
         m_contentLabel->setPlainText(context);
         m_contentLabel->setKeywords(keywords);
-        if (m_contentLabel->isElided())
-            m_contentLabel->setToolTip(context);
-        else
-            m_contentLabel->setToolTip("");
     }
 }
 
@@ -183,7 +175,8 @@ void ImageView::initUI()
     titleLayout->addWidget(m_contentLabel);
 
     m_mainLayout = new QVBoxLayout(this);
-    m_mainLayout->setContentsMargins(35, 12, 35, 0);
+    // 内容区宽度 372，左右各留 31，保证 310px 的图片和标题完整放入
+    m_mainLayout->setContentsMargins(31, 12, 31, 0);
     m_mainLayout->setSpacing(0);
 
     m_mainLayout->addStretch();

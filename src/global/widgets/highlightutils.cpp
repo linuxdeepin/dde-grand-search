@@ -57,53 +57,63 @@ static ElideResult buildWindowElide(const QString &text, int keepStart, int keep
     const QString ellipsis = QStringLiteral("…");
     double ellipsisWidth = charWidth(fm, QChar(0x2026));
 
-    bool needLeft = (keepStart > 0);
-    bool needRight = (keepEnd < text.length());
-    int numEllipsis = (needLeft ? 1 : 0) + (needRight ? 1 : 0);
-    double budget = maxWidth - numEllipsis * ellipsisWidth;
+    int trimLeft = 0;
+    int trimRight = 0;
+
+    auto actualStart = [&]() { return keepStart + trimLeft; };
+    auto actualEnd = [&]() { return keepEnd - trimRight; };
+    // 是否需要补省略号必须以裁剪后的实际窗口为准。初始窗口覆盖整段文本时
+    // 两侧都不需要省略号，但裁剪后可能两端都被截断，必须补上。
+    auto needLeft = [&]() { return actualStart() > 0; };
+    auto needRight = [&]() { return actualEnd() < text.length(); };
+    auto budgetWidth = [&]() {
+        int numEllipsis = (needLeft() ? 1 : 0) + (needRight() ? 1 : 0);
+        return maxWidth - numEllipsis * ellipsisWidth;
+    };
+
+    double budget = budgetWidth();
     if (budget <= 0) {
         result.text = ellipsis;
         result.origPositions = { -1 };
         return result;
     }
 
-    int keepLen = keepEnd - keepStart;
-    int trimLeft = 0, trimRight = 0;
-    double w = textWidth(fm, text.mid(keepStart, keepLen));
-    while (w > budget && keepLen > 0) {
-        double lNext = charWidth(fm, text[keepStart + trimLeft]);
-        double rNext = charWidth(fm, text[keepEnd - 1 - trimRight]);
-        if (trimRight >= keepLen - trimLeft - 1) {
-            w -= lNext;
-            ++trimLeft;
-        } else if (lNext >= rNext) {
+    double w = textWidth(fm, text.mid(keepStart, keepEnd - keepStart));
+    while (w > budget && actualEnd() > actualStart()) {
+        double lNext = charWidth(fm, text[actualStart()]);
+        double rNext = charWidth(fm, text[actualEnd() - 1]);
+        // 从较宽的一侧裁剪，尽量让保留内容在视觉上均衡
+        if (lNext >= rNext) {
             w -= lNext;
             ++trimLeft;
         } else {
             w -= rNext;
             ++trimRight;
         }
-        keepLen = (keepEnd - trimRight) - (keepStart + trimLeft);
+        budget = budgetWidth();
     }
-    if (keepLen <= 0) {
+
+    int start = actualStart();
+    int end = actualEnd();
+    if (end <= start) {
         result.text = ellipsis;
         result.origPositions = { -1 };
         return result;
     }
 
-    int actualStart = keepStart + trimLeft;
-    int actualEnd = keepEnd - trimRight;
-    QString kept = text.mid(actualStart, actualEnd - actualStart);
+    QString kept = text.mid(start, end - start);
 
-    result.text = (needLeft ? ellipsis : QString()) + kept + (needRight ? ellipsis : QString());
+    const bool leftEllipsis = (start > 0);
+    const bool rightEllipsis = (end < text.length());
+    result.text = (leftEllipsis ? ellipsis : QString()) + kept + (rightEllipsis ? ellipsis : QString());
     int pos = 0;
     result.origPositions.resize(result.text.length());
-    if (needLeft) {
+    if (leftEllipsis) {
         result.origPositions[pos++] = -1;
     }
-    for (int i = actualStart; i < actualEnd; ++i)
+    for (int i = start; i < end; ++i)
         result.origPositions[pos++] = i;
-    if (needRight)
+    if (rightEllipsis)
         result.origPositions[pos] = -1;
     return result;
 }
@@ -139,6 +149,11 @@ ElideResult smartElideWithTracking(const QString &text, int maxWidth,
     }
 
     if (keepStart >= keepEnd)
+        return {};
+
+    // 匹配覆盖了整段文本（如关键词就是完整文件名）时，没有可锚定的局部内容，
+    // 智能省略无法在保留关键词的同时收窄，交给调用方退化为常规省略。
+    if (keepStart == 0 && keepEnd == text.length())
         return {};
 
     while (true) {
@@ -361,9 +376,16 @@ QTextCharFormat defaultHighlightFormat(const QFont &baseFont, const QPalette &pa
 {
     QTextCharFormat fmt;
     fmt.setFont(baseFont);
-    fmt.setFontWeight(QFont::DemiBold);
+    fmt.setFontWeight(kHighlightFontWeight);
     fmt.setForeground(palette.color(QPalette::BrightText));
     return fmt;
+}
+
+QFont highlightFont(const QFont &baseFont)
+{
+    QFont font = baseFont;
+    font.setWeight(kHighlightFontWeight);
+    return font;
 }
 
 }   // namespace HighlightUtils

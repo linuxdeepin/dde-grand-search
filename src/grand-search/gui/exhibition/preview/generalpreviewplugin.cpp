@@ -206,26 +206,17 @@ bool GeneralPreviewPlugin::previewItem(const ItemInfo &info)
         pixmap = QIcon::fromTheme("unknown").pixmap(iconSize);
     d_p->m_iconLabel->setPixmap(pixmap);
 
-    // 设置名称，关键词高亮在 HighlightLabel 内部处理
+    // 设置名称，关键词高亮和 tooltip 在 HighlightLabel 内部处理
     d_p->m_nameLabel->setPlainText(item.name);
     d_p->m_nameLabel->setKeywords(keywords);
-    if (d_p->m_nameLabel->isElided())
-        d_p->m_nameLabel->setToolTip(item.name);
-    else
-        d_p->m_nameLabel->setToolTip("");
 
-    // 设置匹配内容，关键词高亮在 HighlightLabel 内部处理
+    // 设置匹配内容，关键词高亮和 tooltip 在 HighlightLabel 内部处理
     if (!matchedContext.isEmpty()) {
         d_p->m_contentLabel->setPlainText(matchedContext);
         d_p->m_contentLabel->setKeywords(keywords);
-        if (d_p->m_contentLabel->isElided())
-            d_p->m_contentLabel->setToolTip(matchedContext);
-        else
-            d_p->m_contentLabel->setToolTip("");
     } else {
         d_p->m_contentLabel->setPlainText("");
         d_p->m_contentLabel->setKeywords(QStringList());
-        d_p->m_contentLabel->setToolTip("");
     }
     QFileInfo fi(item.item);
 
