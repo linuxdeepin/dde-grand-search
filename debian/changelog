@@ -1,3 +1,10 @@
+dde-grand-search (6.1.4) unstable; urgency=medium
+
+  * feat: search applications by GenericName and Keywords
+  * fix: correct filename elision and tooltip wrapping
+
+ -- Zhang Sheng <zhangsheng@uniontech.com>  Tue, 24 Nov 2026 17:32:48 +0800
+
 dde-grand-search (6.1.3) unstable; urgency=medium
 
   * feat: add LayerShell support for Treeland Wayland
